@@ -444,11 +444,31 @@ body.dark-theme table {
 
 /* Print Media Query to match web design high-fidelity PDF */
 @media print {
-  body {
-    background-color: #ffffff;
-    color: #1f2937;
+  body, body.dark-theme {
+    --primary-color: #1e3a8a;
+    --secondary-color: #2563eb;
+    --text-dark: #1f2937;
+    --text-light: #4b5563;
+    --bg-main: #fcfcfc;
+    --bg-card: #ffffff;
+    --bg-code: #f3f4f6;
+    --border-color: #e5e7eb;
+    --highlight-bg: #eff6ff;
+    --highlight-border: #bfdbfe;
+
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
     font-size: 11pt;
   }
+
+  body.dark-theme blockquote {
+    background-color: transparent !important;
+  }
+
+  body.dark-theme table {
+    background-color: var(--bg-card) !important;
+  }
+
   .container {
     max-width: 100% !important;
     padding: 0 !important;
