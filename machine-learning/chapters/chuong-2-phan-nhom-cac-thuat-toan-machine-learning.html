@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Phân nhóm các thuật toán Machine Learning - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Machine Learning cơ bản</a> &raquo; Chương 2
+      </div>
+      <h1>CHƯƠNG 2. PHÂN NHÓM CÁC THUẬT TOÁN MACHINE LEARNING</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tìm hiểu 4 phương pháp phân loại thuật toán học máy chính: Học có giám sát, Học không giám sát, Học bán giám sát và Học tăng cường.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 2.1 -->
+      <section id="sec-2-1">
+        <h2>2.1 Supervised learning (Học có giám sát)</h2>
+        <p>
+          <strong>Supervised learning (Học có giám sát)</strong> là phương pháp học máy trong đó mô hình được huấn luyện trên tập dữ liệu đã được gán nhãn sẵn. Mỗi mẫu dữ liệu bao gồm các thuộc tính đầu vào và đầu ra mong muốn tương ứng. Mục tiêu của mô hình là học được mối quan hệ ánh xạ từ đầu vào sang đầu ra để có thể dự đoán chính xác nhãn của các dữ liệu mới chưa từng quan sát trong thực tế.
+        </p>
+
+        <!-- Example callout -->
+        <div class="callout" style="border-left: 4px solid var(--secondary-color); padding: 1.25rem; background-color: var(--highlight-bg); border-radius: 8px; margin: 1.5rem 0;">
+          <p><strong>Ví dụ dễ hiểu:</strong></p>
+          <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-light);">
+            Trong bài toán phân loại các bức ảnh chó mèo, dữ liệu huấn luyện gồm hàng nghìn bức ảnh đã được gán nhãn sẵn là "cat" hoặc "dog". Chúng ta đưa các bức ảnh này vào thuật toán và chỉ rõ nhãn của từng bức ảnh. Sau khi thuật toán huấn luyện tạo ra một mô hình (một hàm số ánh xạ bức ảnh đầu vào tới nhãn đầu ra), khi nhận được một bức ảnh mới, mô hình sẽ phân tích các đặc trưng học được để tự động dự đoán xem đó là chó hay mèo.
+          </p>
+        </div>
+
+        <!-- Figure 2.1 -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/supervised_learning.jpg" alt="Quy trình Supervised Learning" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 2.1:</strong> Quy trình Supervised Learning cơ bản (nguồn ảnh được sinh bởi Gemini Pro)
+          </p>
+        </div>
+
+        <p><strong>Ứng dụng:</strong></p>
+        <p>
+          Supervised learning được sử dụng rộng rãi trong các hệ thống dự đoán và ra quyết định thực tế như phát hiện giao dịch gian lận tài chính, chẩn đoán bệnh lý y tế, nhận dạng vật thể trong ảnh và các bài toán dịch máy tự động.
+        </p>
+        <p>Thuật toán học có giám sát được chia làm hai lớp bài toán chính:</p>
+
+        <!-- Sub-sections Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <!-- Classification Card -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem;">
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.5rem;">2.1.1 Classification (Phân loại)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Đầu ra dự đoán là các nhãn rời rạc (lớp/nhóm riêng biệt). Mục tiêu là gán mẫu dữ liệu vào một trong các lớp đã định sẵn.</p>
+            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Ví dụ:</strong> Phân biệt email Spam / Ham; Phân loại hồ sơ nợ xấu.</p>
+            <p style="font-size: 0.85rem; color: var(--secondary-color);"><strong>Thuật toán tiêu biểu:</strong> Logistic Regression, k-NN, SVM, Decision Tree.</p>
+          </div>
+
+          <!-- Regression Card -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem;">
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.5rem;">2.1.2 Regression (Hồi quy)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Đầu ra dự đoán là một giá trị liên tục (đại lượng số thực). Mục tiêu là tìm hàm xu hướng để khớp với phân bố điểm dữ liệu.</p>
+            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Ví dụ:</strong> Dự đoán giá nhà dựa trên diện tích và vị trí; Dự toán thời tiết.</p>
+            <p style="font-size: 0.85rem; color: var(--secondary-color);"><strong>Thuật toán tiêu biểu:</strong> Linear Regression, Ridge, Lasso, Decision Tree Regression.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2.2 -->
+      <section id="sec-2-2" style="margin-top: 3rem;">
+        <h2>2.2 Unsupervised learning (Học không giám sát)</h2>
+        <p>
+          <strong>Unsupervised learning (Học không giám sát)</strong> là phương pháp học máy trong đó dữ liệu huấn luyện hoàn toàn không được gán nhãn trước. Thuật toán sẽ phân tích cấu trúc của các đặc trưng đầu vào để tự động tìm ra các quy luật, phân cụm (Clustering) hoặc giảm chiều dữ liệu (Dimension Reduction) phục vụ cho việc lưu trữ và tính toán.
+        </p>
+
+        <div style="border-left: 4px solid var(--primary-color); padding: 1rem 1.25rem; background-color: var(--highlight-bg); border-radius: 6px; margin: 1.5rem 0; font-size: 0.95rem;">
+          <strong>So sánh cốt lõi:</strong> Supervised learning phù hợp khi dữ liệu đã có nhãn và mục tiêu là dự đoán chính xác nhãn đầu ra. Ngược lại, Unsupervised learning được sử dụng khi dữ liệu chưa có nhãn nhằm khám phá các cấu trúc hoặc mẫu hình ẩn giấu bên trong dữ liệu.
+        </div>
+
+        <p><strong>Ứng dụng:</strong></p>
+        <p>
+          Unsupervised learning thường được dùng trong phân tích thăm dò dữ liệu (EDA), phân khúc hành vi khách hàng, phát hiện các điểm bất thường hệ thống (anomaly detection) và làm tiền xử lý dữ liệu trước khi huấn luyện các mô hình có giám sát.
+        </p>
+        <p>Các bài toán học không giám sát được chia làm hai dạng chính:</p>
+
+        <h3>2.2.1 Clustering (Phân cụm)</h3>
+        <p>
+          Là bài toán gom nhóm dữ liệu đặc trưng $\mathbf{X}$ thành các cụm nhỏ dựa trên khoảng cách hoặc sự tương đồng về thuộc tính giữa các điểm dữ liệu.
+        </p>
+
+        <!-- Customer segmentation example -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0;">
+          <p><strong>Ví dụ (Phân cụm khách hàng):</strong></p>
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">
+            Giả sử ta có dữ liệu của hàng nghìn khách hàng bao gồm độ tuổi, thu nhập, tần suất mua sắm và giá trị hóa đơn. Dữ liệu này không có sẵn nhãn phân loại nhóm. Thuật toán học không giám sát (như K-means) sẽ tự động tính toán khoảng cách đặc trưng để gom nhóm họ thành các cụm khách hàng có hành vi tương tự nhau, giúp doanh nghiệp thiết lập chiến dịch tiếp thị tối ưu.
+          </p>
+        </div>
+
+        <!-- Figure 2.2 -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/clustering.jpg" alt="Phân cụm khách hàng K-means" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 2.2:</strong> Minh họa kết quả phân cụm khách hàng (nguồn ảnh được sinh bởi Gemini Pro)
+          </p>
+        </div>
+
+        <p style="margin-bottom: 0.5rem;"><strong>Thuật toán phân cụm tiêu biểu:</strong> K-means, Hierarchical Clustering, DBSCAN.</p>
+
+        <h3>2.2.2 Association rule (Luật kết hợp)</h3>
+        <p>
+          Là bài toán khai phá các mối quan hệ, sự tương quan hoặc quy luật đồng thời xuất hiện giữa các thực thể khác nhau trong một tập dữ liệu giao dịch lớn.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Ví dụ:</strong> Phát hiện quy luật giỏ hàng siêu thị (khách hàng nam mua tã giấy có xu hướng mua thêm bia); Khán giả xem phim <em>Spider Man</em> thường có xu hướng xem tiếp <em>Batman</em>. Đây là cơ sở cốt lõi để xây dựng các <strong>Hệ thống gợi ý (Recommendation System)</strong> cho thương mại điện tử và dịch vụ truyền thông.
+        </p>
+        <p style="margin-top: 0.5rem; margin-bottom: 1.5rem;"><strong>Thuật toán luật kết hợp tiêu biểu:</strong> Apriori, FP-Growth, Eclat.</p>
+      </section>
+
+      <!-- Section 2.3 -->
+      <section id="sec-2-3" style="margin-top: 3rem;">
+        <h2>2.3 Semi-supervised learning (Học bán giám sát)</h2>
+        <p>
+          <strong>Semi-supervised learning (Học bán giám sát)</strong> là phương pháp học máy trung gian kết hợp giữa học có giám sát và học không giám sát. Tập dữ liệu huấn luyện bao gồm một lượng nhỏ dữ liệu đã được gán nhãn và một lượng lớn dữ liệu chưa gán nhãn. Mục tiêu là tận dụng cấu trúc phân bố của dữ liệu không nhãn để cải thiện độ chính xác phân loại của mô hình, giúp tiết kiệm chi phí dán nhãn dữ liệu.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Ví dụ:</strong> Trong bài toán nhận dạng chữ viết tay, việc gán nhãn thủ công hàng triệu ảnh rất tốn thời gian. Học bán giám sát sẽ dùng một lượng nhỏ ảnh chữ viết tay đã gán nhãn để làm mẫu định hướng, sau đó quét qua cấu trúc hình học của tập hợp ảnh không nhãn để tự động lan truyền nhãn (label propagation) sang các ảnh tương đồng, từ đó xây dựng mô hình dự đoán chính xác trên dữ liệu mới.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Thuật toán tiêu biểu:</strong> Self-training (Pseudo-labeling), Label Propagation.
+        </p>
+      </section>
+
+      <!-- Section 2.4 -->
+      <section id="sec-2-4" style="margin-top: 3rem;">
+        <h2>2.4 Reinforcement learning (Học tăng cường)</h2>
+        <p>
+          <strong>Reinforcement learning (Học tăng cường)</strong> là phương pháp học máy dựa trên cơ chế thử và sai (trial-and-error). Một tác nhân (Agent) sẽ tự học cách đưa ra chuỗi hành động tối ưu thông qua việc tương tác trực tiếp với Môi trường (Environment). Sau mỗi hành động thực thi, tác nhân sẽ nhận được phản hồi là Điểm thưởng (Reward) hoặc Hình phạt (Penalty) từ môi trường để từ đó tự điều chỉnh chiến lược nhằm tối đa hóa tổng điểm thưởng trong dài hạn.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Ví dụ (Robot di chuyển):</strong> Robot được đặt trong mê cung chứa chướng ngại vật. Nó không được lập trình sẵn đường đi đúng. Mỗi khi đi đúng hướng tới đích, nó nhận được điểm thưởng (+1). Mỗi khi đâm vào tường, nó bị phạt (-1). Thông qua hàng triệu lượt thử-sai, Robot sẽ tự tìm ra chiến lược di chuyển thông minh nhất để về đích mà không va chạm.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Thuật toán tiêu biểu:</strong> Q-learning, SARSA, Deep Q-Network (DQN).
+        </p>
+      </section>
+
+      <!-- Terms look-up -->
+      <section style="margin-top: 3.5rem; border-top: 1px dashed var(--border-color); padding-top: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Tra cứu thuật ngữ Chương 2</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Thuật ngữ</th>
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Agent (Tác nhân)</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Đối tượng thực hiện hành động và học cách đưa ra các quyết định tối ưu trong học tăng cường.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Pseudo-labeling</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Gán nhãn giả - Phương pháp học bán giám sát tự động gán nhãn dự đoán cho dữ liệu không nhãn để huấn luyện tiếp.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Clustering Centroid</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Tâm phân cụm - Điểm trung tâm đại diện cho một nhóm dữ liệu tương đồng trong các thuật toán phân cụm.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 6: Dự án phân loại Titanic - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Machine Learning cơ bản</a> &raquo; Chương 6
+      </div>
+      <h1>CHƯƠNG 6. DỰ ÁN TITANIC - TỪ DỮ LIỆU THÔ ĐẾN MÔ HÌNH HOÀN CHỈNH</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Thực hành dự án kinh điển: Dự đoán khả năng sống sót của hành khách trên tàu Titanic qua 5 bước tiêu chuẩn trong quy trình Machine Learning.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section>
+        <p>
+          Tiếp nối chuỗi bài học về Machine Learning cơ bản, chúng ta sẽ bắt tay vào thực hiện một dự án thực tế kinh điển: <strong>Phân loại khả năng sống sót của hành khách trên tàu Titanic</strong>.
+        </p>
+        <p>
+          Đây là bài toán <strong>Classification (Phân loại nhị phân)</strong> điển hình: Dựa trên các đặc điểm đầu vào (Features) của hành khách như độ tuổi, giới tính, hạng vé... mô hình sẽ học cách dự đoán hành khách đó "Sống sót" (1) hay "Không sống sót" (0).
+        </p>
+
+        <!-- Project Links -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; display: flex; align-items: center; gap: 0.75rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--secondary-color);"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <strong>Google Colab Source Code:</strong> 
+          <a href="https://colab.research.google.com/" target="_blank" style="color: var(--secondary-color); text-decoration: underline; font-weight: 500;">Dự án ML: Phân loại Titanic</a>
+        </div>
+
+        <p>Quy trình thực hiện dự án đi qua 5 bước tiêu chuẩn của Học máy:</p>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1.5rem 0; font-weight: 500; font-size: 0.95rem;">
+          <div style="display: flex; gap: 0.5rem;"><span style="color: var(--secondary-color);">1.</span> Thu thập &amp; Khám phá dữ liệu (Tải bộ dữ liệu mẫu)</div>
+          <div style="display: flex; gap: 0.5rem;"><span style="color: var(--secondary-color);">2.</span> Làm sạch dữ liệu (Xử lý ô trống, gán nhãn ma trận)</div>
+          <div style="display: flex; gap: 0.5rem;"><span style="color: var(--secondary-color);">3.</span> Chia tập dữ liệu (Tách tập Train và tập Test)</div>
+          <div style="display: flex; gap: 0.5rem;"><span style="color: var(--secondary-color);">4.</span> Huấn luyện mô hình (Sử dụng thuật toán Random Forest Classifier)</div>
+          <div style="display: flex; gap: 0.5rem;"><span style="color: var(--secondary-color);">5.</span> Đánh giá kết quả (Đo đạc chỉ số, vẽ Ma trận nhầm lẫn)</div>
+        </div>
+      </section>
+
+      <!-- Step 1 -->
+      <section id="step-1" style="margin-top: 3rem;">
+        <h2>Bước 1: Thu thập &amp; Khám phá dữ liệu</h2>
+        <p>
+          Chúng ta nạp các thư viện xử lý và tải trực tiếp bộ dữ liệu Titanic tích hợp sẵn trong thư viện trực quan hóa Seaborn để kiểm tra cấu trúc ban đầu:
+        </p>
+        <pre><code>import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# 1. Tải bộ dữ liệu titanic mẫu
+df = sns.load_dataset('titanic')
+
+# Xem 5 dòng đầu tiên để hiểu cấu trúc dữ liệu
+print("Dữ liệu thô ban đầu:")
+print(df.head())
+
+# Kiểm tra thông tin sơ bộ (số dòng, kiểu dữ liệu, các giá trị null)
+print("\\nThông tin dữ liệu:")
+print(df.info())</code></pre>
+      </section>
+
+      <!-- Step 2 -->
+      <section id="step-2" style="margin-top: 3rem;">
+        <h2>Bước 2: Làm sạch &amp; Tiền xử lý dữ liệu</h2>
+        <p>
+          Trong Học máy, quy tắc bất hủ là <strong>"Garbage In, Garbage Out"</strong> (Dữ liệu rác vào, kết quả rác ra). Máy tính không thể tính toán trực tiếp trên các ô trống mang giá trị rỗng (NaN) và các ký tự chữ cái (như "male", "female").
+        </p>
+
+        <!-- Figure 6.1 -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/data_cleaning.jpg" alt="Quy trình Data Cleaning làm sạch dữ liệu" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 6.1:</strong> Khái niệm lọc và làm sạch dữ liệu - Data Cleaning (nguồn ảnh được sinh bởi Gemini Pro)
+          </p>
+        </div>
+
+        <p><strong>Các phương án làm sạch được áp dụng:</strong></p>
+        <ul>
+          <li><strong>Điền khuyết (Imputation):</strong> Điền các giá trị tuổi bị thiếu bằng giá trị trung vị (Median) để tránh bị lệch do điểm dị biệt.</li>
+          <li><strong>Loại bỏ đặc trưng thừa:</strong> Bỏ các trường dữ liệu trùng lặp hoặc không giúp ích nhiều cho phân tích như <code>deck</code>, <code>embark_town</code>, <code>alive</code>.</li>
+          <li><strong>Mã hóa đặc trưng (Encoding):</strong> Ánh xạ giới tính "male" về 0, "female" về 1 và thực hiện One-Hot Encoding cho các cảng biển xuất phát.</li>
+        </ul>
+
+        <pre><code># 1. XỬ LÝ DỮ LIỆU THIẾU
+df['age'] = df['age'].fillna(df['age'].median())
+df['embarked'] = df['embarked'].fillna(df['embarked'].mode()[0])
+
+# 2. LOẠI BỎ CỘT KHÔNG CẦN THIẾT
+df = df.drop(columns=['deck', 'embark_town', 'alive', 'class', 'who', 'adult_male'])
+
+# 3. MÃ HÓA DỮ LIỆU (ENCODING)
+df['sex'] = df['sex'].map({'male': 0, 'female': 1})
+df = pd.get_dummies(df, columns=['embarked'], drop_first=True)
+
+print("\\nDữ liệu sau khi làm sạch:")
+print(df.head())</code></pre>
+      </section>
+
+      <!-- Step 3 -->
+      <section id="step-3" style="margin-top: 3rem;">
+        <h2>Bước 3: Chia tập dữ liệu (Train/Test Split)</h2>
+        <p>
+          Tách tập dữ liệu đặc trưng $\mathbf{X}$ và nhãn mục tiêu $\mathbf{y}$ theo tỉ lệ tiêu chuẩn $80:20$. Việc kiểm tra mô hình trên tập Test độc lập giúp ta đánh giá khách quan và ngăn ngừa hiện tượng học vẹt (Overfitting):
+        </p>
+        <pre><code>from sklearn.model_selection import train_test_split
+
+X = df.drop('survived', axis=1) # Các đặc trưng đầu vào
+y = df['survived']              # Nhãn sống sót (0 hoặc 1)
+
+# Tách tập Train (80%) và Test (20%)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)</code></pre>
+      </section>
+
+      <!-- Step 4 -->
+      <section id="step-4" style="margin-top: 3rem;">
+        <h2>Bước 4: Huấn luyện mô hình (Training)</h2>
+        <p>
+          Chúng ta sử dụng thuật toán <strong>Random Forest Classifier (Rừng quyết định ngẫu nhiên)</strong>. Đây là thuật toán phân loại dạng Ensemble học tập kết hợp cực kỳ mạnh mẽ.
+        </p>
+
+        <!-- Figure 6.2 -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/random_forest.jpg" alt="Thuật toán Random Forest Classifier" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 6.2:</strong> Mô hình biểu quyết số đông của Random Forest Classifier (nguồn ảnh được sinh bởi Gemini Pro)
+          </p>
+        </div>
+
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; margin: 1.5rem 0; font-size: 0.95rem;">
+          💡 <strong>Ý tưởng thuật toán:</strong> Thay vì chỉ dựa vào quyết định của duy nhất một cây phân hoạch, thuật toán xây dựng 100 cây quyết định độc lập trên các mẫu Bootstrap dữ liệu khác nhau. Khi dự báo mẫu thử mới, cả 100 cây sẽ bỏ phiếu và kết quả cuối cùng lấy theo quyết định của số đông, giúp mô hình hoạt động ổn định và chính xác hơn.
+        </div>
+
+        <pre><code>from sklearn.ensemble import RandomForestClassifier
+
+# Khởi tạo mô hình với 100 cây quyết định song song
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Bắt đầu quá trình huấn luyện
+print("Đang huấn luyện mô hình...")
+model.fit(X_train, y_train)
+print("Huấn luyện hoàn tất!")</code></pre>
+      </section>
+
+      <!-- Step 5 -->
+      <section id="step-5" style="margin-top: 3rem;">
+        <h2>Bước 5: Đánh giá mô hình (Evaluation)</h2>
+        <p>
+          Sau khi mô hình học xong quy tắc dự báo, ta chạy dự báo trên tập dữ liệu Test chưa từng thấy để so sánh với kết quả thực tế thông qua các chỉ số:
+        </p>
+        <ul>
+          <li><strong>Accuracy (Độ chính xác tổng quát):</strong> Tỉ lệ dự đoán đúng trên tổng số lượng mẫu kiểm thử.</li>
+          <li><strong>Precision (Độ chuẩn xác):</strong> Tỉ lệ người thực tế sống sót trên tổng số người mô hình dự báo là sống.</li>
+          <li><strong>Recall (Độ phủ):</strong> Tỉ lệ người mô hình tìm ra được trên tổng số người thực sự đã sống sót ngoài đời thực.</li>
+        </ul>
+
+        <pre><code>from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Mô hình thực hiện dự đoán trên tập Test
+y_pred = model.predict(X_test)
+
+# 1. Tính toán độ chính xác chung
+acc = accuracy_score(y_test, y_pred)
+print(f"\\nĐộ chính xác tổng quát (Accuracy): {acc*100:.2f}%")
+
+# 2. Xuất báo cáo Precision, Recall, F1-Score
+print("\\nBáo cáo chi tiết:")
+print(classification_report(y_test, y_pred))</code></pre>
+
+        <!-- CSS confusion matrix heatmap -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 2rem 0;">
+          <h4 style="text-align: center; color: var(--primary-color); margin-top: 0; margin-bottom: 1.5rem;">Hình 6.3: Ma trận nhầm lẫn (Confusion Matrix) đánh giá kết quả thực tế</h4>
+          
+          <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;">
+            <!-- Grid container -->
+            <div style="display: grid; grid-template-columns: 80px 100px 100px; grid-template-rows: 40px 100px 100px; gap: 4px; text-align: center; align-items: center; font-weight: bold;">
+              <!-- Headers -->
+              <div></div>
+              <div style="font-size: 0.85rem; color: var(--text-light);">Dự đoán: 0</div>
+              <div style="font-size: 0.85rem; color: var(--text-light);">Dự đoán: 1</div>
+
+              <!-- Row 0 -->
+              <div style="font-size: 0.85rem; color: var(--text-light); text-align: right; padding-right: 0.5rem;">Thực tế: 0</div>
+              <div style="background-color: #2e7d32; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 4px;">
+                <span style="font-size: 1.5rem;">93</span>
+                <span style="font-size: 0.7rem; font-weight: normal; opacity: 0.85;">True Neg (TN)</span>
+              </div>
+              <div style="background-color: #c8e6c9; color: #1b5e20; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 4px;">
+                <span style="font-size: 1.5rem;">12</span>
+                <span style="font-size: 0.7rem; font-weight: normal; opacity: 0.85;">False Pos (FP)</span>
+              </div>
+
+              <!-- Row 1 -->
+              <div style="font-size: 0.85rem; color: var(--text-light); text-align: right; padding-right: 0.5rem;">Thực tế: 1</div>
+              <div style="background-color: #c8e6c9; color: #1b5e20; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 4px;">
+                <span style="font-size: 1.5rem;">20</span>
+                <span style="font-size: 0.7rem; font-weight: normal; opacity: 0.85;">False Neg (FN)</span>
+              </div>
+              <div style="background-color: #4caf50; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 4px;">
+                <span style="font-size: 1.5rem;">54</span>
+                <span style="font-size: 0.7rem; font-weight: normal; opacity: 0.85;">True Pos (TP)</span>
+              </div>
+            </div>
+
+            <!-- Explanations list -->
+            <div style="font-size: 0.9rem; line-height: 1.6; max-width: 300px; color: var(--text-light);">
+              <ul>
+                <li><strong>93 hành khách</strong> thực tế không sống sót được máy dự đoán chính xác không sống sót.</li>
+                <li><strong>54 hành khách</strong> thực tế sống sót được máy dự đoán chính xác đã sống sót.</li>
+                <li>Mô hình đạt độ chính xác Accuracy tổng quát rơi vào khoảng <strong>82.12%</strong>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          Dự án Titanic không chỉ đơn giản là bài toán dự báo rời rạc, mà còn là bài học vỡ lòng kinh điển giúp chúng ta hiểu rõ luồng đi của dữ liệu trong một dự án AI thực tế: <strong>Dữ liệu sạch + Thuật toán phù hợp = Kết quả tin cậy.</strong>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

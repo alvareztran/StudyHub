@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 1: Machine Learning là gì? - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Machine Learning cơ bản</a> &raquo; Chương 1
+      </div>
+      <h1>CHƯƠNG 1. MACHINE LEARNING LÀ GÌ?</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Giới thiệu khái quát về học máy, các định nghĩa toán học chuẩn mực và sự chuyển dịch mô hình tư duy so với lập trình truyền thống.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1.1 -->
+      <section id="sec-1-1">
+        <h2>1.1 Giới thiệu</h2>
+        <p>
+          <strong>Machine Learning (ML - Học máy)</strong> không chỉ là một từ khóa công nghệ, mà đã trở thành động lực cốt lõi cho cuộc cách mạng kỹ thuật số thế kỷ 21. Nó thay đổi căn bản cách con người giải quyết vấn đề: thay vì lập trình cứng nhắc, chúng ta dạy máy tính tự học.
+        </p>
+        <p>
+          Từ những ứng dụng gần gũi như chẩn đoán y tế, trợ lý ảo, xe tự lái, cho đến những bài toán vĩ mô như mô hình hóa khí hậu, Machine Learning đã trở thành công cụ không thể thiếu trong nền khoa học máy tính hiện đại.
+        </p>
+
+        <!-- Image Container -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/ml_workflow.jpg" alt="Quy trình học máy cơ bản" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 1.1:</strong> Quy trình cơ bản của một bài toán học máy (nguồn ảnh được sinh bởi Gemini Pro)
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 1.2 -->
+      <section id="sec-1-2" style="margin-top: 3rem;">
+        <h2>1.2 Định nghĩa và khái niệm cơ bản</h2>
+        
+        <h3>1.2.1 Định nghĩa</h3>
+        <p>
+          Machine Learning là một nhánh của <strong>Trí tuệ nhân tạo (AI)</strong>, tập trung vào việc xây dựng các thuật toán và mô hình thống kê giúp máy tính có khả năng "học" từ dữ liệu. Thay vì được lập trình chi tiết cho từng tình huống, hệ thống sẽ tự cải thiện hiệu suất của mình thông qua kinh nghiệm.
+        </p>
+
+        <h3>1.2.2 Công thức hóa (Theo Tom Mitchell)</h3>
+        <p>
+          Về mặt toán học và khoa học, một bài toán Machine Learning được định nghĩa chuẩn mực như sau:
+        </p>
+
+        <!-- Mitchell Academic Definition Box -->
+        <div class="callout" style="border-left: 4px solid var(--primary-color); padding: 1.25rem; background-color: var(--highlight-bg); border-radius: 6px; margin: 1.5rem 0;">
+          <p style="font-style: italic; font-weight: 500; color: var(--text-dark);">
+            "Một chương trình máy tính được gọi là học từ kinh nghiệm $E$ đối với một lớp tác vụ $T$ và thước đo hiệu suất $P$, nếu hiệu suất của nó đối với tác vụ $T$, được đo bởi $P$, cải thiện theo kinh nghiệm $E$."
+          </p>
+        </div>
+
+        <p><strong>Ví dụ minh họa (Bộ lọc Email Spam):</strong></p>
+        <ul>
+          <li><strong>Tác vụ ($T$):</strong> Phân loại email đầu vào là "Spam" hay "Không phải Spam".</li>
+          <li><strong>Kinh nghiệm ($E$):</strong> Xem xét và phân tích các email đã được người dùng dán nhãn thủ công trước đó.</li>
+          <li><strong>Hiệu suất ($P$):</strong> Tỷ lệ phần trăm số lượng email được hệ thống phân loại chính xác trong thực tế.</li>
+        </ul>
+
+        <h3>1.2.3 Sự chuyển dịch mô hình tư duy</h3>
+        <p>
+          Sự khác biệt lớn nhất giữa Lập trình truyền thống và Machine Learning nằm ở luồng đi của dữ liệu và quy tắc xử lý:
+        </p>
+
+        <!-- Responsive Comparison Layout -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+          <!-- Traditional Programming Card -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem;">
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.75rem;">Lập trình Truyền thống</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Con người viết code logic (quy tắc) để xử lý dữ liệu và xuất ra kết quả.</p>
+            <div style="font-family: var(--font-mono); font-size: 0.85rem; background-color: var(--bg-code); padding: 0.75rem; border-radius: 6px; text-align: center; color: var(--text-dark);">
+              Dữ liệu + Quy tắc (Code) $\rightarrow$ Kết quả
+            </div>
+          </div>
+
+          <!-- Machine Learning Card -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem;">
+            <h4 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 0.75rem;">Machine Learning</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Máy tính nhận dữ liệu và kết quả mong muốn, từ đó tự học ra mô hình (quy tắc).</p>
+            <div style="font-family: var(--font-mono); font-size: 0.85rem; background-color: var(--bg-code); padding: 0.75rem; border-radius: 6px; text-align: center; color: var(--text-dark);">
+              Dữ liệu + Kết quả (Output) $\rightarrow$ Quy tắc (Mô hình)
+            </div>
+          </div>
+        </div>
+
+        <h3>1.2.4 Mục tiêu cốt lõi</h3>
+        <p>
+          Mục tiêu cốt lõi của Học máy là tìm ra một hàm số $f: X \rightarrow Y$ sao cho nó ánh xạ dữ liệu đầu vào $X$ tới nhãn đầu ra $Y$ một cách chính xác nhất:
+        </p>
+        
+        $$f: X \rightarrow Y$$
+        
+        <p>
+          Quan trọng hơn cả, hàm số $f$ này phải có khả năng <strong>tổng quát hóa (Generalization)</strong> – tức là nó phải hoạt động tốt, cho ra kết quả dự đoán chính xác ngay cả đối với những dữ liệu mới mà nó chưa từng tiếp xúc trong quá trình huấn luyện.
+        </p>
+      </section>
+
+      <!-- Glossary lookup -->
+      <section style="margin-top: 3.5rem; border-top: 1px dashed var(--border-color); padding-top: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Tra cứu thuật ngữ Chương 1</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Thuật ngữ</th>
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Supervised Learning</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Học có giám sát - Mô hình học dựa trên tập dữ liệu đã có nhãn (nhãn mong muốn) đi kèm với đầu vào.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Generalization</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Khả năng tổng quát hóa - Khả năng dự đoán chính xác của mô hình trên dữ liệu mới ngoài tập huấn luyện.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Training (Huấn luyện)</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Quá trình cho thuật toán chạy qua dữ liệu đầu vào để tối ưu hóa tham số mô hình nhằm tìm ra quy tắc $f$.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

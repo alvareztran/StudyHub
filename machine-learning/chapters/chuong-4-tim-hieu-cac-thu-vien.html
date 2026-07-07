@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 4: Tìm hiểu các thư viện - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Machine Learning cơ bản</a> &raquo; Chương 4
+      </div>
+      <h1>CHƯƠNG 4. TÌM HIỂU CÁC THƯ VIỆN PYTHON CƠ BẢN</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Khám phá bộ 4 thư viện trụ cột bắt buộc phải nắm vững khi bắt đầu học máy: NumPy, Pandas, Matplotlib/Seaborn và Scikit-Learn.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section>
+        <p>
+          Ngôn ngữ lập trình Python cung cấp một hệ sinh thái các thư viện cực kỳ phong phú phục vụ cho việc xử lý dữ liệu, phân tích thống kê và trực quan hóa đồ thị. <strong>Thư viện (Library)</strong> là tập hợp các hàm và đối tượng đã được các chuyên gia viết sẵn, giúp chúng ta sử dụng lại một cách tối ưu thay vì phải lập trình lại mọi thứ từ đầu.
+        </p>
+        <p>
+          Khi mới bắt đầu bước chân vào lĩnh vực Machine Learning, có <strong>4 thư viện bắt buộc phải biết</strong>:
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0;">NumPy</h4>
+            <p style="font-size: 0.8rem; color: var(--text-light);">Xử lý số liệu, tính toán ma trận đa chiều.</p>
+          </div>
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0;">Pandas</h4>
+            <p style="font-size: 0.8rem; color: var(--text-light);">Thao tác dữ liệu dạng bảng (Excel/CSV).</p>
+          </div>
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0;">Matplotlib/Seaborn</h4>
+            <p style="font-size: 0.8rem; color: var(--text-light);">Trực quan hóa, vẽ đồ thị &amp; biểu đồ.</p>
+          </div>
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0;">Scikit-Learn</h4>
+            <p style="font-size: 0.8rem; color: var(--text-light);">Huấn luyện thuật toán Machine Learning.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4.1 -->
+      <section id="sec-4-1" style="margin-top: 3rem;">
+        <h2>4.1 NumPy - Nền tảng xử lý số liệu</h2>
+        <h3>4.1.1 Định nghĩa</h3>
+        <p>
+          <strong>NumPy (Numerical Python)</strong> giúp thực hiện các phép toán số học hiệu năng cao trên dữ liệu mảng đa chiều.
+        </p>
+        <p>
+          Trong Machine Learning, dữ liệu thô đầu vào (như ảnh chụp, tệp âm thanh hay văn bản) không ở dạng số trực tiếp. NumPy đóng vai trò chuyển đổi và biểu diễn toàn bộ dữ liệu này dưới dạng các ma trận số để máy tính có thể thực hiện huấn luyện.
+        </p>
+
+        <h3>4.1.2 Ví dụ minh họa với NumPy</h3>
+        <p><strong>Ví dụ 1: Tạo mảng số 1 chiều</strong></p>
+        <pre><code>import numpy as np
+
+# Tạo mảng 1 chiều
+arr = np.array([1, 2, 3, 4, 5])
+print(arr)
+# Kết quả: [1 2 3 4 5]</code></pre>
+
+        <p style="margin-top: 1rem;"><strong>Ví dụ 2: Nhân hai ma trận hai chiều</strong></p>
+        <pre><code>import numpy as np
+
+A = np.array([[1, 2],
+              [3, 4]])
+
+B = np.array([[5, 6],
+              [7, 8]])
+
+C = A @ B   # Toán tử @ thực hiện nhân ma trận
+print(C)
+# Kết quả:
+# [[19 22]
+#  [43 50]]</code></pre>
+      </section>
+
+      <!-- Section 4.2 -->
+      <section id="sec-4-2" style="margin-top: 3rem;">
+        <h2>4.2 Pandas - Làm việc với dữ liệu dạng bảng</h2>
+        <h3>4.2.1 Pandas và DataFrame là gì?</h3>
+        <p>
+          Trong thực tế, dữ liệu Machine Learning thường tồn tại ở dạng bảng (giống như tệp Excel, CSV, hoặc bảng SQL). <strong>Pandas</strong> là thư viện dùng để đọc, thao tác, làm sạch và phân tích dữ liệu dạng bảng này.
+        </p>
+        <p>
+          Cấu trúc dữ liệu cốt lõi nhất của Pandas là <strong>DataFrame</strong> – một bảng dữ liệu gồm:
+        </p>
+        <ul>
+          <li><strong>Hàng (Rows):</strong> Mỗi hàng đại diện cho một bản ghi dữ liệu (ví dụ: thông tin của một người).</li>
+          <li><strong>Cột (Columns):</strong> Mỗi cột đại diện cho một đặc trưng (Feature) của dữ liệu (ví dụ: tuổi, mức lương).</li>
+        </ul>
+
+        <!-- Side-by-side tables comparison -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+          <div>
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.5rem;">Bảng 4.1: Dữ liệu sạch lý tưởng</h4>
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+              <thead>
+                <tr style="background-color: var(--bg-code); border-bottom: 1px solid var(--border-color); text-align: left;">
+                  <th style="padding: 0.5rem;">id</th>
+                  <th style="padding: 0.5rem;">name</th>
+                  <th style="padding: 0.5rem;">age</th>
+                  <th style="padding: 0.5rem;">salary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem;">1</td><td style="padding: 0.5rem;">An</td><td style="padding: 0.5rem;">22</td><td style="padding: 0.5rem;">500</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem;">2</td><td style="padding: 0.5rem;">Bình</td><td style="padding: 0.5rem;">35</td><td style="padding: 0.5rem;">1200</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem;">3</td><td style="padding: 0.5rem;">Chi</td><td style="padding: 0.5rem;">28</td><td style="padding: 0.5rem;">800</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem;">4</td><td style="padding: 0.5rem;">Dũng</td><td style="padding: 0.5rem;">42</td><td style="padding: 0.5rem;">1500</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h4 style="color: #ef4444; margin-top: 0; margin-bottom: 0.5rem;">Bảng 4.2: Dữ liệu thực tế (Cần làm sạch)</h4>
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+              <thead>
+                <tr style="background-color: var(--bg-code); border-bottom: 1px solid var(--border-color); text-align: left;">
+                  <th style="padding: 0.5rem;">name</th>
+                  <th style="padding: 0.5rem;">age</th>
+                  <th style="padding: 0.5rem;">salary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem;">An</td><td style="padding: 0.5rem;">22</td><td style="padding: 0.5rem;">500</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color); background-color: rgba(245, 158, 11, 0.05);"><td style="padding: 0.5rem;">Bình</td><td style="padding: 0.5rem; color: #f59e0b; font-weight: bold;">(Trống)</td><td style="padding: 0.5rem;">1200</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color); background-color: rgba(239, 68, 68, 0.05);"><td style="padding: 0.5rem;">Chi</td><td style="padding: 0.5rem;">28</td><td style="padding: 0.5rem; color: #ef4444; font-weight: bold;">???</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-color); background-color: rgba(239, 68, 68, 0.05);"><td style="padding: 0.5rem;">Dũng</td><td style="padding: 0.5rem; color: #ef4444; font-weight: bold;">bốn mươi</td><td style="padding: 0.5rem;">1500</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3>4.2.2 Ví dụ minh họa với Pandas</h3>
+        <p><strong>Ví dụ 1: Tạo một DataFrame</strong></p>
+        <pre><code>import pandas as pd
+
+data = {
+    "name": ["An", "Bình", "Chi", "Dũng"],
+    "age": [22, 35, 28, 42],
+    "salary": [500, 1200, 800, 1500]
+}
+
+df = pd.DataFrame(data)
+print(df)
+# Kết quả DataFrame được tạo ra dưới dạng bảng chỉ mục</code></pre>
+
+        <p style="margin-top: 1rem;"><strong>Ví dụ 2: Thống kê nhanh mô tả trên DataFrame</strong></p>
+        <pre><code># Thống kê nhanh các chỉ số toán học
+print(df.describe())</code></pre>
+      </section>
+
+      <!-- Section 4.3 -->
+      <section id="sec-4-3" style="margin-top: 3rem;">
+        <h2>4.3 Matplotlib / Seaborn - Trực quan hóa dữ liệu</h2>
+        <h3>4.3.1 Matplotlib và Seaborn là gì?</h3>
+        <p>
+          <strong>Matplotlib</strong> và <strong>Seaborn</strong> giúp trực quan hóa kết quả phân tích số liệu dưới dạng biểu đồ cột, biểu đồ phân phối, đường xu hướng để con người dễ dàng quan sát và rút ra kết luận.
+        </p>
+
+        <h3>4.3.2 Ví dụ trực quan hóa</h3>
+        <p><strong>Ví dụ 1: Vẽ biểu đồ so sánh lương (Matplotlib)</strong></p>
+        <pre><code>import matplotlib.pyplot as plt
+
+names = ["An", "Bình", "Chi", "Dũng"]
+salary = [500, 1200, 800, 1500]
+
+plt.bar(names, salary)
+plt.xlabel("Tên")
+plt.ylabel("Lương")
+plt.title("So sánh lương theo từng người")
+plt.show()</code></pre>
+
+        <!-- CSS Bar Chart rendering -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+          <h4 style="text-align: center; color: var(--primary-color); margin-top: 0; margin-bottom: 1.5rem;">Đồ thị 4.1: Biểu đồ cột so sánh mức lương (Kết quả nhận được)</h4>
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 180px; padding: 0 1rem; border-bottom: 2px solid var(--border-color); border-left: 2px solid var(--border-color);">
+            <!-- An: 500 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 15%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">500</div>
+              <div style="background-color: var(--primary-color); width: 100%; height: 50px; border-radius: 4px 4px 0 0;"></div>
+              <div style="font-size: 0.85rem; margin-top: 0.5rem;">An</div>
+            </div>
+            <!-- Bình: 1200 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 15%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">1200</div>
+              <div style="background-color: var(--primary-color); width: 100%; height: 120px; border-radius: 4px 4px 0 0;"></div>
+              <div style="font-size: 0.85rem; margin-top: 0.5rem;">Bình</div>
+            </div>
+            <!-- Chi: 800 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 15%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">800</div>
+              <div style="background-color: var(--primary-color); width: 100%; height: 80px; border-radius: 4px 4px 0 0;"></div>
+              <div style="font-size: 0.85rem; margin-top: 0.5rem;">Chi</div>
+            </div>
+            <!-- Dũng: 1500 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 15%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">1500</div>
+              <div style="background-color: var(--primary-color); width: 100%; height: 150px; border-radius: 4px 4px 0 0;"></div>
+              <div style="font-size: 0.85rem; margin-top: 0.5rem;">Dũng</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: 2rem;"><strong>Ví dụ 2: Vẽ biểu đồ phân bố lương (Seaborn)</strong></p>
+        <pre><code>import seaborn as sns
+
+sns.histplot(salary, bins=4)
+plt.title("Phân bố mức lương")
+plt.show()</code></pre>
+
+        <!-- CSS Histogram rendering -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+          <h4 style="text-align: center; color: var(--primary-color); margin-top: 0; margin-bottom: 1.5rem;">Đồ thị 4.2: Biểu đồ phân bố tần suất mức lương (Kết quả nhận được)</h4>
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 150px; padding: 0 1rem; border-bottom: 2px solid var(--border-color); border-left: 2px solid var(--border-color);">
+            <!-- Bin 1 (500-750): 1 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 22%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">Tần suất: 1</div>
+              <div style="background-color: var(--secondary-color); width: 100%; height: 40px; border-radius: 4px 4px 0 0; opacity: 0.85;"></div>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">500-750</div>
+            </div>
+            <!-- Bin 2 (750-1000): 1 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 22%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">Tần suất: 1</div>
+              <div style="background-color: var(--secondary-color); width: 100%; height: 40px; border-radius: 4px 4px 0 0; opacity: 0.85;"></div>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">750-1000</div>
+            </div>
+            <!-- Bin 3 (1000-1250): 1 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 22%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">Tần suất: 1</div>
+              <div style="background-color: var(--secondary-color); width: 100%; height: 40px; border-radius: 4px 4px 0 0; opacity: 0.85;"></div>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">1000-1250</div>
+            </div>
+            <!-- Bin 4 (1250-1500): 1 -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 22%;">
+              <div style="font-size: 0.8rem; margin-bottom: 0.25rem;">Tần suất: 1</div>
+              <div style="background-color: var(--secondary-color); width: 100%; height: 40px; border-radius: 4px 4px 0 0; opacity: 0.85;"></div>
+              <div style="font-size: 0.8rem; margin-top: 0.5rem;">1250-1500</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4.4 -->
+      <section id="sec-4-4" style="margin-top: 3rem;">
+        <h2>4.4 Scikit-learn – Thư viện Machine Learning cơ bản</h2>
+        <h3>4.4.1 Scikit-learn là gì? Dùng khi nào?</h3>
+        <p>
+          <strong>Scikit-Learn (sklearn)</strong> là thư viện học máy phổ biến nhất trong Python, đóng gói sẵn hầu hết các thuật toán ML cổ điển cũng như các công cụ xử lý dữ liệu đầu vào.
+        </p>
+        <p>Thư viện này được áp dụng cho 3 bài toán cổ điển chính:</p>
+        <ul>
+          <li><strong>Regression (Hồi quy):</strong> Dự đoán đại lượng số thực.</li>
+          <li><strong>Classification (Phân loại):</strong> Dự đoán nhãn rời rạc.</li>
+          <li><strong>Clustering (Phân cụm):</strong> Gom cụm các đối tượng tương đồng.</li>
+        </ul>
+
+        <h3>4.4.2 Ví dụ minh họa với Scikit-learn</h3>
+        <p><strong>Ví dụ 1: Bài toán hồi quy tuyến tính (Dự đoán lương theo tuổi)</strong></p>
+        <pre><code>from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# Chuẩn bị dữ liệu đầu vào (X: tuổi, y: lương)
+X = np.array([[22], [35], [28], [42]])  # Tuổi (đặc trưng dạng mảng 2D)
+y = np.array([500, 1200, 800, 1500])    # Lương (nhãn mục tiêu)
+
+# 1. Khởi tạo mô hình hồi quy tuyến tính
+model = LinearRegression()
+
+# 2. Huấn luyện mô hình (Tìm hàm số tối ưu đi qua các điểm dữ liệu)
+model.fit(X, y)
+
+# 3. Dự đoán mức lương cho người 30 tuổi
+pred = model.predict([[30]])
+print(pred)
+# Kết quả dự đoán lương: [922.9]</code></pre>
+
+        <p style="margin-top: 1.5rem;"><strong>Ví dụ 2: Bài toán phân loại nhị phân (Đỗ / Trượt dựa trên điểm số)</strong></p>
+        <pre><code>from sklearn.linear_model import LogisticRegression
+
+# Dữ liệu huấn luyện (Điểm số)
+X = [[5], [6], [7], [8], [9]]
+y = [0, 0, 0, 1, 1]  # 0: rớt, 1: đậu
+
+# 1. Khởi tạo mô hình hồi quy Logistic
+model = LogisticRegression()
+
+# 2. Huấn luyện mô hình
+model.fit(X, y)
+
+# 3. Dự đoán xác suất cho học sinh được 7.5 điểm
+print(model.predict([[7.5]]))
+# Kết quả đầu ra: [0] (Hệ thống dự đoán trượt vì điểm 7.5 nằm sát ngưỡng rớt)</code></pre>
+      </section>
+
+      <!-- Glossary -->
+      <section style="margin-top: 3.5rem; border-top: 1px dashed var(--border-color); padding-top: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Tra cứu thuật ngữ Chương 4</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Thuật ngữ</th>
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>DataFrame</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Cấu trúc dữ liệu dạng bảng hai chiều với hàng và cột được lập chỉ mục rõ ràng của Pandas.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Matrix Multiplication</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Phép nhân ma trận - Phép toán tuyến tính cơ bản thực thi song song trên NumPy bằng toán tử @.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Logistic Regression</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Thuật toán phân loại nhị phân dựa trên hàm Sigmoid để ánh xạ kết quả về giá trị xác suất từ 0 đến 1.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

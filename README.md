@@ -37,6 +37,15 @@ Bài báo cáo môn học tham khảo từ:
 * **Đề tài:** *Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study (NeurIPS 2024)*
 * **Tác giả bài báo gốc:** Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu, Yi Wu (Tsinghua University, Shanghai Qi Zhi Institute, Shanghai Jiao Tong University)
 
+### 3. Machine Learning cơ bản
+Kho học liệu lý thuyết và bài tập thực hành học máy cơ bản:
+* **Chương 1: Machine Learning là gì?** (Khái niệm học máy, định nghĩa Mitchell, lập trình truyền thống vs học máy)
+* **Chương 2: Phân nhóm các thuật toán Machine Learning** (Học có giám sát, học không giám sát, học bán giám sát, học tăng cường)
+* **Chương 3: Lộ trình 4 Bước Cho Người Mới Bắt Đầu** (Chuẩn bị vũ khí, thuật toán nhập môn, thực hành với Scikit-Learn, Deep Learning và chuyên sâu)
+* **Chương 4: Tìm hiểu các thư viện Python cơ bản** (Trụ cột NumPy, Pandas, trực quan hóa Matplotlib/Seaborn, huấn luyện Scikit-Learn)
+* **Chương 5: Các khóa học Machine Learning cho người mới bắt đầu** (Đánh giá Andrew Ng Specialization, Google MLCC, Kaggle Learn)
+* **Chương 6: Dự án phân loại Titanic** (Quy trình ML 5 bước: thu thập, làm sạch dữ liệu, train-test split, huấn luyện Random Forest và đánh giá Confusion Matrix)
+
 ---
 
 ## 📂 Cấu Trúc Thư Mục Dự Án
@@ -45,7 +54,8 @@ Bài báo cáo môn học tham khảo từ:
 .
 ├── index.html                   # Cổng điều hướng chính (Portal Home)
 ├── css/
-│   └── style.css                # Hệ thống Design System dùng chung và CSS Print
+│   ├── style.css                # Hệ thống Design System dùng chung và CSS Print
+│   └── landing.css              # Giao diện Trang chủ tối tân và CSS Print
 ├── xu-ly-anh/
 │   ├── index.html               # Mục lục môn CT316 - Xử lý ảnh
 │   └── chapters/                # Tài liệu chi tiết 5 chương học
@@ -58,6 +68,15 @@ Bài báo cáo môn học tham khảo từ:
 │   ├── index.html               # Mục lục môn CT332 - Trí tuệ nhân tạo
 │   └── reports/
 │       └── bao-cao-mon-hoc.html             # Báo cáo môn học
+├── machine-learning/
+│   ├── index.html               # Mục lục môn Machine Learning cơ bản
+│   └── chapters/                # Các chương học chi tiết
+│       ├── chuong-1-machine-learning-la-gi.html
+│       ├── chuong-2-phan-nhom-cac-thuat-toan-machine-learning.html
+│       ├── chuong-3-lo-trinh-4-buoc-cho-nguoi-moi-bat-dau.html
+│       ├── chuong-4-tim-hieu-cac-thu-vien.html
+│       ├── chuong-5-cac-khoa-hoc-machine-learning-cho-nguoi-moi-bat-dau.html
+│       └── chuong-6-du-doan-kha-nang-song-sot-tren-tau-titanic.html
 └── README.md                    # Hướng dẫn dự án
 ```
 

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 3: Lộ trình 4 Bước Cho Người Mới Bắt Đầu - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Machine Learning cơ bản</a> &raquo; Chương 3
+      </div>
+      <h1>CHƯƠNG 3. LỘ TRÌNH 4 BƯỚC CHO NGƯỜI MỚI BẮT ĐẦU</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cung cấp sơ đồ lộ trình học tập khoa học từ cơ sở lý thuyết toán học đến lập trình thực hành Scikit-Learn và Deep Learning chuyên sâu.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section>
+        <p>
+          Đối với người mới bắt đầu, thuật ngữ <strong>"Machine Learning"</strong> thường bị bao phủ bởi lớp sương mù của những công thức toán học khô khan và hệ thống thuật toán phức tạp. Điều này dễ dẫn đến tâm lý e ngại. Tuy nhiên, sự thật là bạn không cần phải là một thiên tài toán học để có thể bắt đầu nghiên cứu lĩnh vực này.
+        </p>
+        <p>
+          Nếu có một lộ trình tiếp cận đúng đắn, kết hợp cân bằng giữa lý thuyết nền tảng và thực hành ứng dụng, bạn hoàn toàn có thể xây dựng nền tảng vững chắc chỉ trong vài tháng. Dưới đây là lộ trình 4 bước tiêu chuẩn được tổng hợp từ các chương trình đào tạo khoa học dữ liệu hàng đầu.
+        </p>
+
+        <!-- Graphic Roadmap -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/ml_roadmap.jpg" alt="Lộ trình học Machine Learning 4 bước" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 3.1:</strong> Sơ đồ tổng quan lộ trình 4 bước học tập Machine Learning hiệu quả
+          </p>
+        </div>
+      </section>
+
+      <!-- Step 1 -->
+      <section id="step-1" style="margin-top: 2.5rem;">
+        <h2>3.1 Bước 1: Chuẩn bị "Vũ Khí" – Toán học và Lập trình</h2>
+        <p>
+          Machine Learning là sự giao thoa sâu sắc giữa Khoa học máy tính và Thống kê học. Bạn cần hiểu bản chất của các công cụ mình sử dụng thay vì chỉ học vẹt các thư viện có sẵn.
+        </p>
+        
+        <h3>📐 Toán học: Nền móng tư duy</h3>
+        <p>Bạn không cần học lại toàn bộ chương trình đại học, hãy tập trung vào 3 trụ cột chính ứng dụng trực tiếp trong ML:</p>
+        <ul>
+          <li>
+            <strong>Đại số tuyến tính (Linear Algebra):</strong> Ngôn ngữ của dữ liệu.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Tại sao cần?</em> Máy tính không hiểu hình ảnh hay văn bản trực tiếp, nó chỉ hiểu các con số được sắp xếp ngăn nắp trong ma trận (matrices) và vector.</span>
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Trọng tâm:</em> Vector, ma trận, phép nhân ma trận và các phép biến đổi không gian. Đây là cơ sở để hiểu cách các mạng nơ-ron (Neural Networks) vận hành.</span>
+          </li>
+          <li style="margin-top: 0.75rem;">
+            <strong>Giải tích (Calculus):</strong> Động cơ của sự tối ưu hóa.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Tại sao cần?</em> Giúp bạn hiểu cách mô hình tự điều chỉnh tham số để giảm thiểu sai số dự đoán.</span>
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Trọng tâm:</em> Đạo hàm (Derivatives), đạo hàm riêng (Partial Derivatives) và quy tắc chuỗi (Chain rule). Khái niệm <strong>Gradient Descent (Hạ gradient)</strong> – thuật toán tối ưu quan trọng nhất – được xây dựng hoàn toàn trên giải tích.</span>
+          </li>
+          <li style="margin-top: 0.75rem;">
+            <strong>Xác suất &amp; Thống kê (Probability &amp; Statistics):</strong> Khả năng xử lý sự không chắc chắn.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Tại sao cần?</em> Giúp bạn hiểu dữ liệu, đánh giá độ tin cậy của dự báo và tránh bị "lừa" bởi các con số ngẫu nhiên.</span>
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Trọng tâm:</em> Phân phối chuẩn (Gaussian distribution), kỳ vọng (Expectation), phương sai (Variance), định lý Bayes và kiểm định giả thuyết.</span>
+          </li>
+        </ul>
+
+        <h3>💻 Lập trình: Công cụ thực thi</h3>
+        <p><strong>Python</strong> là lựa chọn số 1 hiện nay nhờ cú pháp đơn giản và hệ sinh thái thư viện khổng lồ:</p>
+        <ul>
+          <li><strong>Cơ bản:</strong> Nắm vững các khái niệm biến, hàm, vòng lặp và các cấu trúc dữ liệu cơ bản (List, Dictionary, Tuple).</li>
+          <li><strong>Bộ 3 thư viện quyền lực:</strong>
+            <ul>
+              <li><strong>NumPy:</strong> Xử lý tính toán mảng/ma trận đa chiều hiệu năng cao.</li>
+              <li><strong>Pandas:</strong> Cung cấp cấu trúc DataFrame để đọc, làm sạch và thao tác dữ liệu dạng bảng.</li>
+              <li><strong>Matplotlib / Seaborn:</strong> Trực quan hóa dữ liệu bằng các biểu đồ trực quan để tìm quy luật dữ liệu.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Step 2 -->
+      <section id="step-2" style="margin-top: 2.5rem;">
+        <h2>3.2 Bước 2: Nắm vững Tư duy &amp; Các thuật toán nhập môn</h2>
+        <p>
+          Trước khi nhảy vào viết code phức tạp, hãy học cách tư duy như một kỹ sư ML. Đầu tiên, hãy học cách nhận biết hai trạng thái lỗi điển hình của mô hình:
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: 4px;">
+            <h4 style="color: #ef4444; margin-top: 0; margin-bottom: 0.5rem;">Overfitting (Học vẹt)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Mô hình đạt độ chính xác cực cao trên tập huấn luyện (training set) nhưng dự đoán rất kém trên dữ liệu mới (test set) do ghi nhớ máy móc cả các nhiễu dữ liệu.</p>
+          </div>
+          <div style="background-color: var(--bg-card); border-left: 4px solid #f59e0b; padding: 1.25rem; border-radius: 4px;">
+            <h4 style="color: #f59e0b; margin-top: 0; margin-bottom: 0.5rem;">Underfitting (Học chưa tới)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Mô hình quá đơn giản hoặc chưa đủ tham số để học được quy luật thực tế ẩn giấu bên trong dữ liệu, dẫn đến sai số cao trên cả tập huấn luyện và tập test.</p>
+          </div>
+        </div>
+
+        <p>Sau đó, hãy làm quen với 4 thuật toán "kinh điển" làm quen ban đầu:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Linear Regression (Hồi quy tuyến tính):</strong>
+            <br>Dùng cho bài toán <em>Học có giám sát (Hồi quy)</em>. Vẽ một đường thẳng sao cho khoảng cách tổng hợp từ đường thẳng đến các điểm dữ liệu thực tế là nhỏ nhất.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Logistic Regression (Hồi quy Logistic):</strong>
+            <br>Dùng cho bài toán <em>Học có giám sát (Phân loại)</em>. Sử dụng hàm phi tuyến Sigmoid để nén giá trị đầu ra về khoảng $(0, 1)$ đại diện cho xác suất xảy ra của nhãn lớp.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Decision Tree (Cây quyết định):</strong>
+            <br>Dùng cho cả <em>Phân loại và Hồi quy</em>. Phân hoạch dữ liệu thông qua các câu hỏi logic rẽ nhánh để đưa ra dự đoán. Rất trực quan nhưng dễ bị Overfitting.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>K-Means Clustering (Phân cụm K-Means):</strong>
+            <br>Dùng cho bài toán <em>Học không giám sát</em>. Tự động gom nhóm các điểm dữ liệu tương đồng vào các cụm mà không cần nhãn gán trước.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Step 3 -->
+      <section id="step-3" style="margin-top: 2.5rem;">
+        <h2>3.3 Bước 3: Thực hành với Scikit-Learn (Hands-on)</h2>
+        <p>
+          Lý thuyết học máy sẽ nhanh chóng trôi tuột nếu bạn không bắt tay vào viết mã nguồn thực tế. Thư viện <strong>Scikit-Learn</strong> là công cụ lý tưởng hàng đầu cho việc thực hành này.
+        </p>
+        
+        <p><strong>Quy trình chuẩn hóa một bài toán Học máy:</strong></p>
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+          <ol style="margin-left: 1.25rem; font-size: 0.95rem; line-height: 1.8;">
+            <li><strong>Tiền xử lý dữ liệu:</strong> Làm sạch dữ liệu, điền khuyết thiếu, mã hóa đặc trưng rời rạc và chuẩn hóa thang đo (Scaling).</li>
+            <li><strong>Chia tập dữ liệu:</strong> Sử dụng phương pháp chia ngẫu nhiên để chia dữ liệu thành tập huấn luyện (Train set) và tập kiểm thử (Test set) theo tỉ lệ tiêu chuẩn ($80/20$ hoặc $70/30$).</li>
+            <li><strong>Huấn luyện mô hình:</strong> Thực hiện gọi hàm huấn luyện qua cú pháp: <code>model.fit(X_train, y_train)</code>.</li>
+            <li><strong>Đánh giá kết quả:</strong> Sử dụng <code>model.predict(X_test)</code> để dự đoán dữ liệu mới và đo đạc các thang đo độ chính xác (Accuracy, F1-score, MSE).</li>
+          </ol>
+        </div>
+
+        <p><strong>Dự án gợi ý ban đầu:</strong> Dự đoán người sống sót trên tàu Titanic (Kaggle), Phân loại hoa Iris, Dự báo giá nhà Boston.</p>
+      </section>
+
+      <!-- Step 4 -->
+      <section id="step-4" style="margin-top: 2.5rem;">
+        <h2>3.4 Bước 4: Mở rộng sang Deep Learning và chuyên sâu</h2>
+        <p>
+          Khi đã thành thạo các thuật toán cổ điển (Classical ML), bạn đã sẵn sàng cho bước nhảy vọt tiếp theo: <strong>Deep Learning (Học sâu)</strong>.
+        </p>
+        <ul>
+          <li><strong>Tìm hiểu Mạng nơ-ron nhân tạo (Neural Networks):</strong> Tìm hiểu các lớp ẩn (hidden layers), cơ chế truyền xuôi (Forward Propagation) và lan truyền ngược (Backpropagation) mô phỏng cấu trúc neuron sinh học.</li>
+          <li><strong>Làm quen với các thư viện Deep Learning:</strong> Sử dụng <strong>TensorFlow</strong> hoặc <strong>PyTorch</strong> để xây dựng các mô hình kiến trúc mạng lớn.</li>
+          <li><strong>Khám phá các lĩnh vực chuyên sâu:</strong>
+            <ul>
+              <li><strong>Computer Vision (Thị giác máy tính):</strong> Xử lý dữ liệu ảnh, video (nhận diện khuôn mặt, phát hiện vật thể).</li>
+              <li><strong>NLP (Xử lý ngôn ngữ tự nhiên):</strong> Xử lý văn bản, giọng nói (dịch máy, chatbot, trợ lý ảo thông minh).</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Glossary -->
+      <section style="margin-top: 3.5rem; border-top: 1px dashed var(--border-color); padding-top: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Tra cứu thuật ngữ Chương 3</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Thuật ngữ</th>
+              <th style="padding: 0.75rem 0.5rem; color: var(--text-dark);">Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>Gradient Descent</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Thuật toán tối ưu hóa tìm cực trị của hàm mất mát bằng cách cập nhật tham số ngược hướng đạo hàm (gradient).</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>DataFrame</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Cấu trúc dữ liệu hai chiều (dạng bảng) tương tự như bảng tính Excel do thư viện Pandas cung cấp để làm việc với dữ liệu.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 0.5rem;"><strong>F1-Score</strong></td>
+              <td style="padding: 0.75rem 0.5rem; color: var(--text-light); font-size: 0.9rem;">Thước đo hiệu suất đánh giá mô hình phân loại dựa trên trung bình điều hòa của độ chính xác Precision và độ triệu hồi Recall.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
