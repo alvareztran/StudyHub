@@ -1,10 +1,13 @@
-# 🎓 Personal Computer Science Learning Portal
+# <p align="center">🎓 Personal Computer Science Learning Portal</p>
 
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.spec.whatwg.org/)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/)
-[![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![KaTeX](https://img.shields.io/badge/KaTeX-319736?style=for-the-badge&logo=latex&logoColor=white)](https://katex.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <a href="https://html.spec.whatwg.org/"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"></a>
+  <a href="https://www.w3.org/Style/CSS/"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"></a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JS"></a>
+  <a href="https://katex.org/"><img src="https://img.shields.io/badge/KaTeX-319736?style=for-the-badge&logo=latex&logoColor=white" alt="KaTeX"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
+</p>
+
 
 Một cổng học liệu điện tử và kho tài liệu cá nhân được thiết kế hiện đại, khoa học, đóng vai trò là nơi lưu trữ bài giảng, ghi chép học thuật và báo cáo nghiên cứu chuyên đề cho các môn học chuyên ngành Khoa học máy tính tại **Trường Công nghệ Thông tin và Truyền thông - Đại học Cần Thơ (CTU)**.
 
