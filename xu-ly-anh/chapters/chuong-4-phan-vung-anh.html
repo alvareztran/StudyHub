@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 4: Phân Vùng Ảnh - Lý Thuyết CT316 - Xử lý ảnh</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT316 - Xử lý ảnh</a> &raquo; Chương 4
+      </div>
+      <h1>CHƯƠNG 4. PHÂN VÙNG ẢNH (IMAGE SEGMENTATION)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Nghiên cứu về các nguyên lý phân vùng ảnh số, thuật toán phân ngưỡng toàn cục và cục bộ, phương pháp chia &amp; trộn vùng, và thuật toán phân vùng Watershed.</p>
+    </header>
+
+        <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-4-def">
+        <h2>1. Phân vùng ảnh là gì?</h2>
+        <p><strong>Phân vùng ảnh (Image Segmentation)</strong> là quá trình phân chia một bức ảnh kỹ thuật số thành nhiều phân vùng (vùng ảnh - Regions) riêng biệt có ý nghĩa vật lý. Mục tiêu là làm sao cho:</p>
+        <ul>
+          <li>Các điểm ảnh (pixels) trong cùng một vùng có tính chất hoặc đặc trưng đồng nhất (giống nhau).</li>
+          <li>Các điểm ảnh thuộc các vùng khác nhau có tính chất khác biệt rõ rệt.</li>
+        </ul>
+        
+        <p>Các đặc trưng phổ biến được sử dụng để phân chia ranh giới giữa các vùng bao gồm: <strong>Độ sáng (Intensity)</strong>, <strong>Màu sắc (Color)</strong>, <strong>Kết cấu bề mặt (Texture)</strong>, <strong>Hình dạng (Shape)</strong> và <strong>Độ tương đồng (Similarity)</strong>.</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh đầu vào</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tiền xử lý (Lọc mờ, khử nhiễu)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Phân vùng (Segmentation)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Các đối tượng riêng lẻ (Người, Xe, Cây, Nền)</div>
+        </div>
+
+        <h3>Mục đích của việc phân vùng ảnh</h3>
+        <p>Phân vùng ảnh là bước trung gian quyết định sự thành bại của các thuật toán nhận dạng cấp cao trong Thị giác máy tính. Kết quả phân vùng giúp:</p>
+        <ul>
+          <li>Xác định và định vị chính xác vị trí của từng đối tượng trong ảnh.</li>
+          <li>Đếm số lượng đối tượng (ví dụ: đếm số tế bào trong ảnh y sinh, đếm số sản phẩm trên băng tải).</li>
+          <li>Đo đạc các thông số hình học như diện tích, chu vi, tỉ lệ dài rộng.</li>
+          <li>Theo dõi chuyển động của vật thể trong chuỗi video (object tracking).</li>
+        </ul>
+
+        <h3>Phân loại các phương pháp phân vùng</h3>
+        <p>Lý thuyết xử lý ảnh chia phân vùng thành nhiều trường phái giải thuật:</p>
+        <ul>
+          <li><strong>Phương pháp phân ngưỡng (Thresholding)</strong></li>
+          <li><strong>Phương pháp phát triển vùng (Region Growing)</strong></li>
+          <li><strong>Phương pháp chia và hợp nhất (Split and Merge)</strong></li>
+          <li><strong>Phương pháp phân vùng lưu vực (Watershed)</strong></li>
+          <li><strong>Phương pháp phân cụm (Clustering - K-Means, Mean Shift)</strong></li>
+          <li><strong>Phương pháp dựa trên đồ thị (Graph-based Segmentation)</strong></li>
+          <li><strong>Các mạng học sâu hiện đại (Deep Learning - U-Net, Mask R-CNN, SAM...)</strong></li>
+        </ul>
+        <p>Trong nội dung chương này, chúng ta tập trung nghiên cứu 3 phương pháp kinh điển: <strong>Thresholding</strong>, <strong>Split and Merge</strong> và <strong>Watershed</strong>.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.1 -->
+      <section id="sec-4-1">
+        <h2>4.1 Phương pháp phân ngưỡng (Thresholding)</h2>
+        <p>Đây là phương pháp phân vùng đơn giản, trực quan và tốn ít chi phí tính toán nhất. Phép phân ngưỡng biến đổi một ảnh mức xám thành một ảnh nhị phân bằng cách so sánh giá trị mỗi pixel với một ngưỡng độ sáng \(T\) xác định.</p>
+
+        <div class="callout">
+          <div class="callout-title">Công thức Phân ngưỡng Nhị phân</div>
+          <p>Nếu cường độ sáng tại pixel \((x,y)\) lớn hơn hoặc bằng ngưỡng \(T\), pixel đó được coi là đối tượng (gán giá trị <code>255</code> - màu trắng). Ngược lại, gán bằng <code>0</code> (màu đen - nền):</p>
+          <p>\[g(x,y) = \begin{cases} 255 & \text{nếu } f(x,y) \ge T \\ 0 & \text{nếu } f(x,y) \lt T \end{cases}\]</p>
+        </div>
+
+        <h4>Ví dụ phân ngưỡng nhị phân với ngưỡng $T = 100$:</h4>
+        <div style="display: flex; gap: 2rem; align-items: center; margin: 1.25rem 0;">
+          <div>
+            <p style="font-weight: 600; font-size: 0.9rem;">Ma trận ảnh xám ban đầu:</p>
+            <div class="matrix">
+              [&nbsp; 20 &nbsp; &nbsp;30 &nbsp; &nbsp;90 ]<br>
+              [ 150 &nbsp; 180 &nbsp; 210 ]
+            </div>
+          </div>
+          <span style="font-weight: bold; font-size: 1.5rem; color: var(--secondary-color);">&rarr;</span>
+          <div>
+            <p style="font-weight: 600; font-size: 0.9rem;">Ảnh nhị phân kết quả:</p>
+            <div class="matrix">
+              [&nbsp; &nbsp;0 &nbsp; &nbsp; 0 &nbsp; &nbsp; 0 ]<br>
+              [ 255 &nbsp; 255 &nbsp; 255 ]
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>Ưu điểm:</strong> Tốc độ xử lý cực kỳ nhanh, cài đặt đơn giản chỉ bằng một câu lệnh so sánh, tiêu tốn cực ít tài nguyên.</li>
+          <li><strong>Nhược điểm:</strong> Chỉ hoạt động tốt khi ảnh có độ tương phản cao và ánh sáng phân bố đồng đều. Phương pháp này hoàn toàn thất bại nếu ảnh bị nhiễu nặng, có bóng mờ hoặc ánh sáng không đều.</li>
+        </ul>
+
+        <h3>Thuật toán lặp tìm ngưỡng tối ưu (Iterative Thresholding)</h3>
+        <p>Để tìm ra ngưỡng \(T\) tự động thay vì chọn thủ công bằng mắt, thuật toán lặp sau đây được sử dụng:</p>
+        <ol>
+          <li><strong>Bước 1: Khởi tạo.</strong> Chọn một giá trị ngưỡng \(T\) ban đầu (thường chọn bằng giá trị mức xám trung bình của toàn bộ bức ảnh).</li>
+          <li><strong>Bước 2: Phân nhóm.</strong> Chia toàn bộ pixel trong ảnh thành hai nhóm: Nhóm \(G_1\) chứa các pixel có giá trị \(\le T\), nhóm \(G_2\) chứa các pixel có giá trị \(> T\).</li>
+          <li><strong>Bước 3: Tính trung bình.</strong> Tính giá trị độ sáng trung bình \(m_1\) của nhóm \(G_1\) và \(m_2\) của nhóm \(G_2\).</li>
+          <li><strong>Bước 4: Cập nhật ngưỡng mới:</strong>
+            \[T_{\text{new}} = \frac{m_1 + m_2}{2}\]
+          </li>
+          <li><strong>Bước 5: Kiểm tra điều kiện dừng.</strong> Nếu hiệu số \(|T_{\text{new}} - T| \le \Delta T\) (với \Delta T là một sai số nhỏ cho trước, ví dụ $0.5$ hoặc $0.1$), ta dừng và chọn \(T_{\text{new}}\) làm ngưỡng phân vùng. Ngược lại, gán \(T = T_{\text{new}}\) và quay lại Bước 2.</li>
+        </ol>
+
+        <h3>Thuật toán phân ngưỡng Otsu (Otsu's Method)</h3>
+        <p>Otsu là phương pháp xác định **ngưỡng toàn cục (Global Threshold)** tự động tối ưu nhất cho các bức ảnh có phân bố Histogram dạng **hai đỉnh (Bimodal)** rõ rệt.</p>
+        <ul>
+          <li><strong>Nguyên lý:</strong> Thuật toán duyệt qua tất cả các mức xám khả thi để tìm ra một ngưỡng \(T\) sao cho **phương sai giữa hai lớp (Between-class variance - \(\sigma_B^2\)) là lớn nhất**, hoặc tương đương là tối thiểu hóa phương sai trong cùng một lớp (Within-class variance).</li>
+          <li><strong>Ưu điểm:</strong> Hoàn toàn tự động, cho kết quả phân vùng biên cực tốt khi ảnh có độ tương phản phân định rõ rệt giữa nền và vật thể.</li>
+          <li><strong>Nhược điểm:</strong> Không cho kết quả tốt nếu ảnh không có dạng lược đồ 2 đỉnh (ví dụ ảnh có dải sáng chuyển tiếp đều hoặc ảnh chụp bị cháy sáng/tối đen diện rộng).</li>
+        </ul>
+
+        <h3>Phân ngưỡng cục bộ (Local / Adaptive Thresholding)</h3>
+        <p>Trong thực tế, do hướng chiếu sáng hoặc bóng đổ, các vùng khác nhau trong ảnh sẽ có độ sáng trung bình khác nhau. Phân ngưỡng toàn cục (như Otsu) sẽ làm mất chi tiết ở vùng tối. </p>
+        <p><strong>Giải pháp:</strong> Sử dụng phân ngưỡng cục bộ. Thuật toán chia nhỏ bức ảnh thành các cửa sổ con kích thước nhỏ (ví dụ 11&times;11 hoặc 15&times;15). Với mỗi pixel, ngưỡng \(T(x,y)\) sẽ được tính riêng biệt dựa trên độ sáng trung bình (hoặc trung bình trọng số Gaussian) của các pixel nằm trong cửa sổ xung quanh nó. Nhờ đó, ảnh có bóng đổ hoặc ánh sáng không đều vẫn được phân vùng hoàn hảo.</p>
+
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">Quy trình kết hợp lọc Gaussian</div>
+          <p>Để tăng độ chính xác khi phân ngưỡng nhị phân và giảm nhiễu biên (tránh các đốm trắng li ti xuất hiện do nhiễu hạt), ta nên thực hiện lọc làm mờ trước khi phân ngưỡng:</p>
+          <div style="font-weight: 500; font-size: 0.95rem; text-align: center; margin-top: 0.5rem;">
+            Ảnh gốc &rarr; Lọc Gaussian (Làm mờ giảm nhiễu) &rarr; Phân ngưỡng (Thresholding) &rarr; Ảnh nhị phân sạch
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.2 -->
+      <section id="sec-4-2">
+        <h2>4.2 Phương pháp chia và hợp nhất (Split and Merge)</h2>
+        <p>Khác với phân ngưỡng chỉ dựa trên độ sáng đơn lẻ, phương pháp **Chia và Hợp nhất** phân tích tính đồng nhất của cấu trúc trên một vùng không gian ảnh dựa trên một điều kiện kiểm thử \(Q\) cho trước.</p>
+
+        <h3>1. Quá trình chia (Split)</h3>
+        <p>Bắt đầu coi toàn bộ bức ảnh là một vùng lớn duy nhất. Ta thực hiện thuật toán đệ quy:</p>
+        <ul>
+          <li>Kiểm tra xem vùng ảnh hiện tại có thỏa mãn điều kiện đồng nhất \(Q\) hay không (ví dụ: kiểm tra độ lệch chuẩn mức xám của vùng đó có nhỏ hơn một ngưỡng \(\sigma_0 = 10\) hay không).</li>
+          <li>Nếu thỏa mãn \(Q\): Giữ nguyên vùng đó, không cần chia tiếp.</li>
+          <li>Nếu không thỏa mãn \(Q\): Chia vùng ảnh hiện tại thành 4 vùng con bằng nhau (cấu trúc hình cây tứ phân - **Quadtree**). Sau đó lập tức lặp lại bước kiểm tra trên cho từng vùng con này.</li>
+        </ul>
+
+        <h3>2. Quá trình hợp nhất (Merge)</h3>
+        <p>Sau khi kết thúc quá trình chia, ta thu được rất nhiều vùng nhỏ đồng nhất. Tuy nhiên, các vùng nằm cạnh nhau có thể có cùng tính chất. Ta tiến hành hợp nhất:</p>
+        <ul>
+          <li>Quét qua các vùng kề cạnh nhau.</li>
+          <li>Nếu hai vùng liền kề khi kết hợp lại vẫn thỏa mãn điều kiện đồng nhất \(Q\), ta gộp chúng lại thành một vùng lớn hơn.</li>
+          <li>Quá trình này lặp lại cho đến khi không còn cặp vùng kề nhau nào có thể hợp nhất được nữa.</li>
+        </ul>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Split (Chia qua cấu trúc Quadtree)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Hàng loạt ô lưới nhỏ đồng nhất</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Merge (Gộp các ô kề cạnh tương đồng)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh phân vùng hoàn thiện</div>
+        </div>
+
+        <p><strong>Ưu điểm:</strong> Phân chia vùng rất chính xác, bảo toàn được cấu trúc không gian của ảnh, hoạt động tốt với các ảnh có nhiều đối tượng phức tạp.</p>
+        <p><strong>Nhược điểm:</strong> Tốc độ tính toán chậm do phải duyệt đệ quy cây tứ phân, việc lựa chọn điều kiện đồng nhất \(Q\) tối ưu cho từng loại ảnh là tương đối phức tạp.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.3 -->
+      <section id="sec-4-3">
+        <h2>4.3 Thuật toán phân vùng Watershed (Lưu vực sông)</h2>
+        <p><strong>Watershed</strong> là một thuật toán phân vùng dựa trên lý thuyết hình thái học địa hình. Thuật toán coi bức ảnh mức xám (thường là ảnh độ lớn Gradient) giống như một bề mặt địa hình 3D:</p>
+        <ul>
+          <li>Các pixel có giá trị tối (độ lớn gradient thấp) đại diện cho các <strong>thung lũng, lòng hồ (Valleys / Local Minima)</strong>.</li>
+          <li>Các pixel có giá trị sáng (độ lớn gradient cao - thường là biên giới các vật thể) đại diện cho các <strong>dãy núi, đỉnh đồi (Ridge lines / Peaks)</strong>.</li>
+        </ul>
+
+        <h3>Mô phỏng hiện tượng ngập nước (Flooding Simulation)</h3>
+        <p>Thuật toán hoạt động bằng cách đục các lỗ nhỏ tại các cực tiểu địa phương (local minima) và cho nước dâng lên từ dưới lòng đất với tốc độ đều nhau:</p>
+        <ol>
+          <li>Nước dâng lên sẽ lấp đầy các lưu vực địa hình, tạo thành các hồ chứa nước riêng biệt gọi là **Lưu vực (Catchment Basins)**.</li>
+          <li>Khi mực nước dâng cao đến mức nước từ hai lưu vực khác nhau chuẩn bị tràn vào và hòa lẫn với nhau, thuật toán sẽ xây dựng một bức đập ngăn cách tại vị trí tiếp xúc.</li>
+          <li>Quá trình dâng nước tiếp tục cho đến khi toàn bộ địa hình ngập nước. Các bức đập được xây dựng chính là ranh giới phân vùng, gọi là đường phân lưu **(Watershed Lines)**. Đường biên này có độ rộng 1 pixel.</li>
+        </ol>
+
+        <h3>Hiện tượng phân mảnh quá mức (Over-segmentation) và giải pháp Marker</h3>
+        <p>Do ảnh thực tế luôn tồn tại nhiễu hạt li ti, các hạt nhiễu này vô tình tạo ra hàng nghìn điểm cực tiểu địa phương (local minima) giả. Nếu áp dụng Watershed trực tiếp, ảnh sẽ bị vỡ vụn thành hàng ngàn vùng nhỏ vô nghĩa, gọi là hiện tượng **Over-segmentation**.</p>
+        
+        <p><strong>Giải pháp: Marker-Controlled Watershed (Watershed có kiểm soát bằng điểm đánh dấu)</strong></p>
+        <p>Trước khi cho nước dâng, người dùng hoặc thuật toán phụ sẽ xác định trước một số điểm chắc chắn thuộc đối tượng (Foreground Marker) và các điểm chắc chắn thuộc nền (Background Marker). Nước sẽ chỉ được dâng lên từ các điểm đánh dấu này, giúp loại bỏ hoàn toàn các cực tiểu giả và cho kết quả phân vùng chính xác.</p>
+
+        <p><em>Ứng dụng tiêu biểu:</em> Phân tách các hạt tế bào nằm chồng lấn hoặc chạm nhau trong ảnh sinh học, đếm số lượng đồng xu, phân khúc các đối tượng liền kề.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.4 -->
+      <section id="sec-4-4">
+        <h2>Các phương pháp phân vùng hiện đại khác</h2>
+        <ul>
+          <li><strong>K-Means Clustering:</strong> Phương pháp phân nhóm không giám sát. Nó nhóm các pixel có đặc trưng màu sắc hoặc mức xám gần nhau vào \(K\) cụm khác nhau mà không cần quan tâm đến vị trí không gian của chúng.</li>
+          <li><strong>Superpixel (Siêu điểm ảnh):</strong> Gom cụm các pixel kề nhau có độ sáng và màu sắc tương đồng thành các đa giác nhỏ gọi là các siêu điểm ảnh (ví dụ thuật toán SLIC). Kỹ thuật này giúp giảm chiều dữ liệu của ảnh đầu vào hàng trăm lần, đẩy nhanh tốc độ cho các thuật toán nhận dạng phía sau.</li>
+          <li><strong>Graph-based Segmentation:</strong> Mô hình hóa bức ảnh thành một đồ thị toán học. Mỗi pixel là một đỉnh (node), các pixel kề nhau được nối bởi các cạnh (edge) có trọng số thể hiện độ tương đồng. Thuật toán sẽ tìm các đường cắt đồ thị tối ưu (Graph Cut, Normalized Cut) để tách ảnh thành các thành phần liên thông.</li>
+        </ul>
+
+        <h3>Bảng so sánh các phương pháp phân vùng ảnh</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Phương pháp</th>
+              <th>Ưu điểm</th>
+              <th>Nhược điểm</th>
+              <th>Trường hợp áp dụng tốt nhất</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phân ngưỡng (Threshold)</strong></td>
+              <td>Tốc độ xử lý nhanh nhất, thuật toán đơn giản nhất.</td>
+              <td>Phụ thuộc lớn vào điều kiện ánh sáng, nhạy nhiễu.</td>
+              <td>Ảnh có độ tương phản cao, nền sáng đồng đều.</td>
+            </tr>
+            <tr>
+              <td><strong>Ngưỡng Otsu</strong></td>
+              <td>Tự động tìm ngưỡng, hoạt động ổn định.</td>
+              <td>Chỉ hoạt động tốt khi histogram có dạng 2 đỉnh rõ rệt.</td>
+              <td>Phân tách chữ viết, tài liệu quét trắng đen.</td>
+            </tr>
+            <tr>
+              <td><strong>Ngưỡng cục bộ (Local)</strong></td>
+              <td>Xử lý tốt ảnh bị bóng mờ, chiếu sáng không đồng đều.</td>
+              <td>Chi phí tính toán cao hơn phân ngưỡng toàn cục.</td>
+              <td>Đọc biển số xe, quét tài liệu dưới ánh sáng thực tế.</td>
+            </tr>
+            <tr>
+              <td><strong>Chia &amp; Trộn (Split &amp; Merge)</strong></td>
+              <td>Phân vùng chính xác cấu trúc, hoạt động đa vùng tốt.</td>
+              <td>Tốc độ xử lý chậm, khó thiết lập điều kiện Q tối ưu.</td>
+              <td>Ảnh cấu trúc phức tạp, ảnh viễn thám.</td>
+            </tr>
+            <tr>
+              <td><strong>Lưu vực sông (Watershed)</strong></td>
+              <td>Biên đối tượng rõ ràng, khép kín, tách tốt các vật chạm nhau.</td>
+              <td>Nhạy cảm với nhiễu, dễ gây phân mảnh quá mức (Over-segmentation).</td>
+              <td>Đếm tế bào y tế, đếm số lượng hạt, vật thể hình tròn chạm nhau.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Formulas Section -->
+      <section id="sec-4-formulas">
+        <h2>Các công thức toán học cần nhớ</h2>
+        <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
+          <ul>
+            <li>
+              <strong>Công thức phân ngưỡng nhị phân:</strong>
+              \[g(x,y) = \begin{cases} 255 & \text{nếu } f(x,y) \ge T \\ 0 & \text{nếu } f(x,y) \lt T \end{cases}\]
+            </li>
+            <li>
+              <strong>Cập nhật ngưỡng trong thuật toán lặp:</strong>
+              \[T_{\text{new}} = \frac{m_1 + m_2}{2}\]
+            </li>
+            <li>
+              <strong>Điều kiện dừng thuật toán lặp:</strong>
+              \[|T_{\text{new}} - T| \le \Delta T\]
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

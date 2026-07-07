@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 5: Xử Lý Hình Thái Nhị Phân - Lý Thuyết CT316 - Xử lý ảnh</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT316 - Xử lý ảnh</a> &raquo; Chương 5
+      </div>
+      <h1>CHƯƠNG 5. XỬ LÝ HÌNH THÁI NHỊ PHÂN (BINARY MORPHOLOGY)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tìm hiểu hệ thống lý thuyết xử lý hình thái học nhị phân, các phép toán ăn mòn, giãn nở, đóng, mở, so khớp mẫu Hit-or-Miss và các ứng dụng trích xuất biên, lấp lỗ.</p>
+    </header>
+
+        <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-5-def">
+        <h2>1. Xử lý hình thái học (Morphology) là gì?</h2>
+        <p><strong>Xử lý hình thái học (Mathematical Morphology)</strong> là một lĩnh vực xử lý ảnh dựa trên hình dạng (Shape) và cấu trúc hình học của các đối tượng trong ảnh.</p>
+        
+        <p>Khác biệt với các phương pháp trước đó:</p>
+        <ul>
+          <li><strong>Histogram:</strong> Chỉ xử lý dựa trên mức xám mà không quan tâm đến vị trí không gian.</li>
+          <li><strong>Tích chập (Convolution):</strong> Phép toán lọc tuyến tính dựa trên giá trị mức xám lân cận.</li>
+          <li><strong>Phát hiện biên:</strong> Chỉ đi tìm các điểm có độ thay đổi đột ngột (đạo hàm).</li>
+        </ul>
+        <p>Morphology tập trung phân tích <strong>hình dạng</strong>, <strong>kích thước</strong> và <strong>mối quan hệ cấu trúc</strong> giữa các phần tử của đối tượng.</p>
+
+        <h3>Đối tượng xử lý</h3>
+        <p>Về cơ bản, xử lý hình thái học được áp dụng chủ yếu trên <strong>Ảnh nhị phân (Binary Image)</strong>. Mặc dù có thể mở rộng ra cho ảnh mức xám (Grayscale Morphology), chương này chỉ tập trung nghiên cứu trên ảnh nhị phân.</p>
+        <p>Trong ảnh nhị phân, một pixel chỉ nhận một trong hai giá trị:</p>
+        <ul>
+          <li><code>1</code>: Đại diện cho <strong>đối tượng (Foreground)</strong>, thường hiển thị màu trắng.</li>
+          <li><code>0</code>: Đại diện cho <strong>nền (Background)</strong>, thường hiển thị màu đen.</li>
+        </ul>
+        
+        <h4>Ví dụ một đối tượng nhị phân:</h4>
+        <div class="matrix">
+          0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 1 &nbsp; 1 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 1 &nbsp; 1 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0
+        </div>
+
+        <h3>Phần tử cấu trúc - Structuring Element (SE)</h3>
+        <p>Mọi phép toán hình thái học đều cần một ma trận nhỏ đi kèm đóng vai trò như một "mẫu dò" hay bộ lọc, gọi là **Phần tử cấu trúc (Structuring Element - SE)**, thường ký hiệu là \(B\).</p>
+        
+        <p>Các hình dạng SE thông dụng kích thước $3 \times 3$:</p>
+        <div style="display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0;">
+          <div>
+            <p style="text-align: center; font-weight: 600;">SE dạng hình vuông (Square):</p>
+            <div class="matrix">
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]
+            </div>
+          </div>
+          <div>
+            <p style="text-align: center; font-weight: 600;">SE dạng chữ thập (Cross):</p>
+            <div class="matrix">
+              [ 0 &nbsp; 1 &nbsp; 0 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 0 &nbsp; 1 &nbsp; 0 ]
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Vai trò:</strong> SE giống như một khuôn mẫu. Ta đặt tâm của SE lên từng pixel của ảnh gốc, so sánh sự trùng khớp giữa các điểm <code>1</code> của SE với các điểm <code>1</code> của đối tượng trên ảnh để quyết định giá trị pixel kết quả. Kích thước và hình dạng của SE quyết định hình dáng đối tượng thay đổi thế nào sau khi lọc.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.1 -->
+      <section id="sec-5-1">
+        <h2>5.1 Phép toán ăn mòn (Erosion)</h2>
+        <p>Phép toán ăn mòn làm co nhỏ kích thước của đối tượng trong ảnh nhị phân.</p>
+        <p>Ký hiệu: \[A \ominus B\]</p>
+        
+        <div class="callout">
+          <div class="callout-title">Nguyên lý hoạt động</div>
+          <p>Đặt tâm của phần tử cấu trúc \(B\) tại tọa độ \((x,y)\) của ảnh \(A\). Pixel kết quả tại \((x,y)\) bằng <code>1</code> <strong>khi và chỉ khi toàn bộ các điểm 1 của B đều khớp (nằm đè hoàn toàn) lên các điểm 1 của A</strong>. Nếu có bất kỳ điểm 1 nào của B bị lệch ra ngoài nền (Background), pixel kết quả sẽ bằng <code>0</code>.</p>
+        </div>
+
+        <p><em>Ví dụ:</em> Nếu một hình vuông đối tượng kích thước $3 \times 3$ bị ăn mòn bởi phần tử cấu trúc hình vuông kích thước $3 \times 3$, kết quả sẽ bị co lại chỉ còn duy nhất $1$ điểm ảnh nằm ở tâm.</p>
+
+        <h4>Tác dụng chính:</h4>
+        <ul>
+          <li>Làm mỏng, thu nhỏ hoặc làm co hẹp biên của vật thể.</li>
+          <li>Loại bỏ hoàn toàn các chấm nhiễu nhỏ màu trắng (nhiễu muối) có kích thước nhỏ hơn phần tử cấu trúc.</li>
+          <li>Tách các vật thể dính liền nhau thành các vật thể độc lập (ví dụ tách các tế bào chạm nhau nhẹ).</li>
+        </ul>
+        <p><strong>Nhược điểm:</strong> Có thể làm mất đi các chi tiết quan trọng kích thước nhỏ hoặc làm đứt gãy các đường nét mảnh của đối tượng.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.2 -->
+      <section id="sec-5-2">
+        <h2>5.2 Phép toán giãn nở (Dilation)</h2>
+        <p>Ngược lại với ăn mòn, phép toán giãn nở làm mở rộng kích thước của đối tượng.</p>
+        <p>Ký hiệu: \[A \oplus B\]</p>
+        
+        <div class="callout">
+          <div class="callout-title">Nguyên lý hoạt động</div>
+          <p>Đặt tâm của phần tử cấu trúc \(B\) tại tọa độ \((x,y)\). Pixel kết quả tại \((x,y)\) bằng <code>1</code> <strong>chỉ cần ít nhất một điểm 1 của B khớp (chồng lên) với điểm 1 của đối tượng A</strong>. Trừ phi toàn bộ SE nằm trong vùng nền 0 thì pixel kết quả mới bằng <code>0</code>.</p>
+        </div>
+
+        <h4>Tác dụng chính:</h4>
+        <ul>
+          <li>Làm dày biên, phóng to kích thước đối tượng.</li>
+          <li>Lấp đầy các lỗ trống nhỏ, các khe nứt li ti bên trong đối tượng.</li>
+          <li>Nối liền các đoạn vẽ bị đứt gãy gần nhau thành một đường liên tục.</li>
+        </ul>
+
+        <h3>So sánh Erosion và Dilation</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc trưng</th>
+              <th>Ăn mòn (Erosion)</th>
+              <th>Giãn nở (Dilation)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ký hiệu</strong></td>
+              <td>\(A \ominus B\)</td>
+              <td>\(A \oplus B\)</td>
+            </tr>
+            <tr>
+              <td><strong>Kích thước đối tượng</strong></td>
+              <td>Bị thu nhỏ, làm mỏng đi.</td>
+              <td>Được phóng to, làm dày lên.</td>
+            </tr>
+            <tr>
+              <td><strong>Xử lý nhiễu / Khoảng trống</strong></td>
+              <td>Xóa bỏ nhiễu trắng nhỏ ở nền.</td>
+              <td>Lấp đầy lỗ đen nhỏ trong đối tượng.</td>
+            </tr>
+            <tr>
+              <td><strong>Tác động lên nét vẽ</strong></td>
+              <td>Dễ làm đứt các nét vẽ mảnh.</td>
+              <td>Nối các nét bị đứt đoạn gần nhau.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.3 -->
+      <section id="sec-5-3">
+        <h2>5.3 Phép biến đổi Hit-or-Miss (Hit-or-Miss Transform - HMT)</h2>
+        <p>Hit-or-Miss là phép biến đổi hình thái học dùng để **so khớp mẫu (Pattern Matching)** nhằm phát hiện các cấu trúc hình học cụ thể (như điểm góc, điểm cuối đường thẳng, điểm giao nhau).</p>
+        <p>HMT sử dụng một cặp phần tử cấu trúc: \(B_1\) (để kiểm tra khớp đối tượng - Hit) và \(B_2\) (để kiểm tra khớp nền - Miss). Hai phần tử cấu trúc này không giao nhau (\(B_1 \cap B_2 = \emptyset\)).</p>
+        <p>Ký hiệu: \[A \circledast B = (A \ominus B_1) \cap (A^c \ominus B_2)\]</p>
+        <p>Trong đó \(A^c\) là ảnh bù (ngược) của ảnh \(A\).</p>
+        
+        <div class="callout">
+          <div class="callout-title">Khái niệm Don't Care (x)</div>
+          <p>Trong phần tử cấu trúc của phép Hit-or-Miss, ký hiệu <code>x</code> đại diện cho phần tử không quan tâm (don't care). Khi thực hiện so khớp, các vị trí có giá trị <code>x</code> sẽ được bỏ qua, không cần kiểm tra trùng khớp.</p>
+        </div>
+
+        <p><em>Ứng dụng:</em> Nhận diện các điểm góc (Corner Detection), các điểm mút của nét vẽ (Endpoint Detection), hỗ trợ giải thuật làm mảnh ảnh (Skeletonization).</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.4 -->
+      <section id="sec-5-4">
+        <h2>5.4 Phép toán Mở (Opening) và Đóng (Closing)</h2>
+
+        <h3>Phép toán Mở (Opening)</h3>
+        <p>Phép toán mở là sự kết hợp tuần tự: <strong>Thực hiện ăn mòn (Erosion) trước, sau đó giãn nở (Dilation) sau</strong> với cùng một phần tử cấu trúc \(B\).</p>
+        <p>Công thức: \[A \circ B = (A \ominus B) \oplus B\]</p>
+        <p><strong>Ý nghĩa hoạt động:</strong> Phép ăn mòn đầu tiên sẽ xóa sạch các đốm nhiễu nhỏ cô lập và cắt đứt các cầu nối mỏng giữa các đối tượng. Phép giãn nở tiếp theo có nhiệm vụ khôi phục lại gần như nguyên vẹn kích thước và hình dáng ban đầu của các đối tượng lớn còn sót lại.</p>
+        <p><strong>Tác dụng:</strong> Loại bỏ các chi tiết thừa nhỏ, làm trơn tru (smooth) đường biên ngoài của vật thể mà không làm thay đổi đáng kể diện tích đối tượng.</p>
+
+        <h3>Phép toán Đóng (Closing)</h3>
+        <p>Phép toán đóng là sự kết hợp tuần tự: <strong>Thực hiện giãn nở (Dilation) trước, sau đó ăn mòn (Erosion) sau</strong>.</p>
+        <p>Công thức: \[A \bullet B = (A \oplus B) \ominus B\]</p>
+        <p><strong>Ý nghĩa hoạt động:</strong> Phép giãn nở đầu tiên lấp đầy các khe hở, lỗ trống nhỏ và nối các nét đứt. Phép ăn mòn tiếp theo co lại đối tượng để khôi phục lại kích thước ban đầu.</p>
+        <p><strong>Tác dụng:</strong> Lấp đầy các lỗ trống nhỏ bên trong đối tượng, nối các vết rạn nứt nhỏ, làm trơn biên bên trong đối tượng.</p>
+
+        <h3>So sánh Opening và Closing</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc tính</th>
+              <th>Phép toán Mở (Opening)</th>
+              <th>Phép toán Đóng (Closing)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Thứ tự thực hiện</strong></td>
+              <td>Ăn mòn &rarr; Giãn nở (Erosion &rarr; Dilation)</td>
+              <td>Giãn nở &rarr; Ăn mòn (Dilation &rarr; Erosion)</td>
+            </tr>
+            <tr>
+              <td><strong>Mục tiêu chính</strong></td>
+              <td>Loại bỏ nhiễu hạt nhỏ bên ngoài vật thể.</td>
+              <td>Lấp đầy lỗ rỗng nhỏ bên trong vật thể.</td>
+            </tr>
+            <tr>
+              <td><strong>Tác dụng biên</strong></td>
+              <td>Làm mượt các góc lồi ngoài biên.</td>
+              <td>Làm mượt các góc lõm trong biên.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.5 -->
+      <section id="sec-5-5">
+        <h2>Các thuật toán hình thái học mở rộng</h2>
+        
+        <h3>1. Trích xuất đường biên (Boundary Extraction)</h3>
+        <p>Để trích xuất đường viền bao ngoài độ dày 1 pixel của đối tượng, ta lấy ảnh gốc trừ đi ảnh sau khi bị ăn mòn bởi phần tử cấu trúc \(B\) cỡ $3 \times 3$:</p>
+        <p>\[\text{Boundary} = A - (A \ominus B)\]</p>
+
+        <h3>2. Lấp lỗ rỗng (Hole Filling)</h3>
+        <p>Lấp đầy các vùng nền <code>0</code> bị bao quanh hoàn toàn bởi các pixel đối tượng <code>1</code>. Thuật toán sử dụng phép giãn nở có điều kiện lặp cho đến khi hội tụ.</p>
+
+        <h3>3. Phân tích thành phần liên thông (Connected Components)</h3>
+        <p>Vùng liên thông là tập hợp các pixel đối tượng <code>1</code> tiếp xúc kề cạnh với nhau. Thuật toán gán nhãn thành phần liên thông (Connected Component Labeling) duyệt ảnh bằng các giải thuật như loang vùng (Flood Fill), BFS, DFS hoặc Union-Find để gán một nhãn ID riêng cho từng vật thể.</p>
+        <p><em>Ứng dụng:</em> Tách biệt và đếm số lượng các vật thể rời rạc xuất hiện trong ảnh nhị phân.</p>
+
+        <h3>4. Bao lồi (Convex Hull)</h3>
+        <p>Bao lồi của tập hợp điểm đối tượng là đa giác lồi nhỏ nhất bao trọn toàn bộ đối tượng đó (tương tự việc căng một sợi dây thun vòng quanh một cụm đinh). Ứng dụng nhiều trong phân tích đặc trưng hình dạng vật thể.</p>
+
+        <h3>5. Bộ xương đối tượng (Skeletonization / Thinning)</h3>
+        <p>Phép làm mảnh lặp đi lặp lại biên ngoài của vật thể cho đến khi đối tượng co lại thành một đường nét mảnh độ dày đúng 1 pixel nằm ở giữa (bộ xương). Rất hữu ích trong nhận dạng chữ viết tay, vân tay hoặc OCR vì nó giữ lại cấu trúc nét vẽ cốt lõi.</p>
+
+        <h3>Chuỗi xử lý Morphology điển hình trong thực tế</h3>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phân ngưỡng (Threshold)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phép mở (Opening) để xóa nhiễu</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phép đóng (Closing) để lấp lỗ</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Gán nhãn liên thông (Connected Comp.)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đếm và phân tích vật thể</div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Summary Section -->
+      <section id="sec-5-summary">
+        <h2>Bảng tổng hợp các công thức Morphological</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ký hiệu / Công thức</th>
+              <th>Mục tiêu &amp; Tác dụng chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ăn mòn (Erosion)</strong></td>
+              <td>\(A \ominus B\)</td>
+              <td>Làm mảnh đối tượng, tách các vật dính nhau, xóa nhiễu nhỏ nền.</td>
+            </tr>
+            <tr>
+              <td><strong>Giãn nở (Dilation)</strong></td>
+              <td>\(A \oplus B\)</td>
+              <td>Làm dày đối tượng, lấp đầy khe hở nhỏ, nối liền nét đứt.</td>
+            </tr>
+            <tr>
+              <td><strong>Phép Mở (Opening)</strong></td>
+              <td>\(A \circ B = (A \ominus B) \oplus B\)</td>
+              <td>Loại bỏ nhiễu hạt nhỏ ngoài nền, làm trơn biên ngoài.</td>
+            </tr>
+            <tr>
+              <td><strong>Phép Đóng (Closing)</strong></td>
+              <td>\(A \bullet B = (A \oplus B) \ominus B\)</td>
+              <td>Lấp lỗ đen bên trong đối tượng, nối vật thể kề sát.</td>
+            </tr>
+            <tr>
+              <td><strong>Trích biên (Boundary)</strong></td>
+              <td>\(A - (A \ominus B)\)</td>
+              <td>Trích xuất đường viền bao ngoài của đối tượng.</td>
+            </tr>
+            <tr>
+              <td><strong>Hit-or-Miss (HMT)</strong></td>
+              <td>\(A \circledast B\)</td>
+              <td>Phát hiện các mẫu hình cụ thể (góc, điểm cuối nét, giao lộ).</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

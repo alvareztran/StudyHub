@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Các Kỹ Thuật Tiền CT316 - Xử lý ảnh - Lý Thuyết CT316 - Xử lý ảnh</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT316 - Xử lý ảnh</a> &raquo; Chương 2
+      </div>
+      <h1>CHƯƠNG 2. CÁC KỸ THUẬT TIỀN CT316 - Xử lý ảnh</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tìm hiểu các nguyên lý tiền xử lý ảnh mức xám, phân loại phép biến đổi, phân tích Histogram và phép toán tích chập không gian.</p>
+    </header>
+
+        <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 2.1 -->
+      <section id="sec-2-1">
+        <h2>2.1 Tiền xử lý ảnh là gì?</h2>
+        <p><strong>Tiền xử lý ảnh (Image Preprocessing)</strong> là tập hợp các kỹ thuật biến đổi dữ liệu ảnh thô trước khi đưa vào các bước phân tích, trích xuất đặc trưng hoặc nhận dạng tự động.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Mục tiêu của Tiền xử lý</div>
+          <ul>
+            <li>Cải thiện chất lượng trực quan của ảnh (lọc mờ, tăng nét).</li>
+            <li>Giảm nhiễu (loại bỏ các hạt nhiễu do cảm biến hoặc môi trường truyền dẫn).</li>
+            <li>Tăng độ tương phản (làm rõ các cấu trúc mờ nhạt).</li>
+            <li>Làm nổi bật các vùng đặc trưng quan trọng phục vụ phân vùng.</li>
+            <li>Chuẩn hóa kích thước, độ sáng để giảm khối lượng tính toán cho các thuật toán phía sau.</li>
+          </ul>
+        </div>
+
+        <p>Quá trình tiền xử lý <strong>không làm thay đổi nội dung thông tin gốc</strong> của ảnh, mà chỉ nhằm tối ưu hóa ảnh giúp con người quan sát dễ dàng hơn hoặc giúp các thuật toán thị giác máy tính nhận dạng chính xác hơn.</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc (nhiễu, mờ)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Tiền xử lý</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh rõ nét / chuẩn hóa</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Nhận dạng (Khuôn mặt, biển số...)</div>
+        </div>
+
+        <h3>Quy ước trong xử lý ảnh</h3>
+        <p>Trong khuôn khổ chương này, chúng ta chủ yếu xét trên <strong>ảnh mức xám (Grayscale)</strong>. Đối với ảnh màu, các phép toán này có thể được áp dụng độc lập trên từng kênh màu (như kênh R, G, B) hoặc chuyển đổi sang không gian HSV rồi xử lý riêng trên kênh sáng (kênh V).</p>
+        
+        <h4>Quy ước cơ bản:</h4>
+        <ul>
+          <li><strong>Mức sáng:</strong> Giá trị <code>0</code> biểu diễn màu đen hoàn toàn, và giá trị cực đại (ví dụ <code>255</code> với ảnh 8-bit) biểu diễn màu trắng hoàn toàn. Các giá trị trung gian biểu diễn các mức xám chuyển tiếp.</li>
+          <li>
+            <strong>Tọa độ điểm ảnh:</strong> Ảnh kích thước M&times;N được xem như một ma trận gồm M hàng (trục x) và N cột (trục y). Mỗi pixel được định vị bằng cặp tọa độ <code>(x, y)</code>.
+            <div class="matrix">
+              (0,0) &nbsp; (0,1) &nbsp; ... &nbsp; (0,N-1)<br>
+              (1,0) &nbsp; (1,1) &nbsp; ... &nbsp; (1,N-1)<br>
+              ... &nbsp; &nbsp; &nbsp; ... &nbsp; &nbsp; &nbsp; ... &nbsp; &nbsp; ...<br>
+              (M-1,0) (M-1,1) ... (M-1,N-1)
+            </div>
+          </li>
+          <li>
+            <strong>Các điểm ảnh lân cận (Neighborhoods):</strong>
+            Xét một pixel trung tâm \(P\) tại tọa độ \((x,y)\):
+            <ul>
+              <li>
+                <strong>Lân cận 4 (4-neighborhood):</strong> Chỉ gồm 4 pixel chung cạnh trực tiếp (trên, dưới, trái, phải).
+                <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+                  &nbsp; P2 &nbsp; <br>
+                  P4 P P1<br>
+                  &nbsp; P3 &nbsp; 
+                </div>
+              </li>
+              <li>
+                <strong>Lân cận 8 (8-neighborhood):</strong> Gồm 4 pixel chung cạnh và 4 pixel chung đỉnh theo đường chéo.
+                <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+                  P1 P2 P3<br>
+                  P4 P &nbsp;P5<br>
+                  P6 P7 P8
+                </div>
+              </li>
+            </ul>
+            <p>Khái niệm lân cận này là nền tảng cốt lõi trong các phép toán lọc không gian, phát hiện biên, xử lý hình thái học (morphological operations) và tìm kiếm các thành phần liên thông trong ảnh.</p>
+          </li>
+        </ul>
+
+        <h3>Phân loại các phép xử lý ảnh</h3>
+        <p>Dựa vào phạm vi pixel tham gia tính toán giá trị mới, người ta chia làm 3 nhóm chính:</p>
+        <ol>
+          <li>
+            <strong>Xử lý điểm ảnh (Point Processing):</strong>
+            Giá trị mới của một pixel chỉ phụ thuộc vào duy nhất giá trị cũ của chính pixel đó tại tọa độ \((x,y)\).
+            <p>Công thức tổng quát: \[s = T(r)\]</p>
+            Trong đó: \(r\) là giá trị độ sáng cũ, \(s\) là giá trị độ sáng mới, và \(T\) là hàm biến đổi cường độ sáng.
+          </li>
+          <li>
+            <strong>Xử lý lân cận (Neighborhood Processing):</strong>
+            Giá trị mới của một pixel được tính toán dựa trên các giá trị của chính nó và các pixel nằm trong một vùng lân cận xác định xung quanh nó (sử dụng cửa sổ lọc).
+            <p>Công thức tổng quát: \[s = T(\text{vùng lân cận của } r)\]</p>
+            Các ứng dụng tiêu biểu: Lọc làm mờ (Blurring), lọc làm nét (Sharpening), phát hiện biên (Edge Detection).
+          </li>
+          <li>
+            <strong>Xử lý toàn cục (Global Processing):</strong>
+            Giá trị mới của các pixel phụ thuộc vào thông tin thu thập được từ toàn bộ bức ảnh (ví dụ: phân bố tần suất sáng trên toàn ảnh).
+            <p>Ví dụ điển hình: Thuật toán cân bằng lược đồ xám toàn cục (Global Histogram Equalization).</p>
+          </li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 2.2 -->
+      <section id="sec-2-2">
+        <h2>2.2 Các phép biến đổi điểm ảnh và Histogram</h2>
+        <p>Giả sử ảnh mức xám được lượng tử hóa bằng \(n\) bit. Khi đó số mức xám khả dụng là \(L = 2^n\). Với ảnh 8-bit phổ biến, ta có \(L = 256\) mức xám chạy từ \(r \in [0, 255]\).</p>
+
+        <h3>Phép biến đổi ảnh âm bản (Negative)</h3>
+        <p>Biến đổi đảo ngược mức sáng: Vùng tối trở thành vùng sáng và ngược lại.</p>
+        <p>Công thức: \[s = (L - 1) - r\]</p>
+        <p>Với ảnh 8-bit: \[s = 255 - r\]</p>
+        <p><em>Ứng dụng:</em> Tăng cường khả năng hiển thị các cấu trúc màu trắng trên nền tối, rất phổ biến trong phân tích phim chụp X-quang y tế hoặc ảnh vệ tinh chụp hồng ngoại.</p>
+
+        <h3>Biến đổi Gamma (Power-law / Gamma Transformation)</h3>
+        <p>Biến đổi phi tuyến tính dùng để điều chỉnh độ tương phản và độ sáng của ảnh theo hàm mũ.</p>
+        <p>Công thức: \[s = c \cdot r^{\gamma}\]</p>
+        <p>Trong đó \(c\) là hằng số tỉ lệ (thường chọn để ánh xạ dải đầu ra về sát \([0, L-1]\)), còn \(\gamma\) (gamma) quyết định độ cong của hàm biến đổi:</p>
+        <ul>
+          <li><strong>Trường hợp \(\gamma < 1\):</strong> Hàm biến đổi cong lồi lên phía trên. Phép toán sẽ kéo giãn các mức xám ở vùng tối và nén các mức xám ở vùng sáng. Kết quả làm <strong>ảnh sáng hơn</strong> và hiển thị rõ chi tiết ở các vùng bóng tối.</li>
+          <li><strong>Trường hợp \(\gamma > 1\):</strong> Hàm biến đổi cong lõm xuống dưới. Phép toán nén vùng tối và kéo giãn các mức xám vùng sáng. Kết quả làm <strong>ảnh tối đi</strong>.</li>
+        </ul>
+        <p><em>Ứng dụng:</em> Hiệu chỉnh hiển thị của màn hình (Gamma Correction), cứu chi tiết ảnh bị thiếu sáng hoặc xử lý ảnh thô RAW từ máy ảnh.</p>
+
+        <h3>Lược đồ xám (Histogram)</h3>
+        <p><strong>Histogram</strong> là biểu đồ thống kê tần suất xuất hiện của các mức xám trong một bức ảnh.</p>
+        <ul>
+          <li><strong>Trục hoành (x):</strong> Đại diện cho các mức xám từ \(0 \rightarrow 255\).</li>
+          <li><strong>Trục tung (y):</strong> Số lượng điểm ảnh (hoặc tỉ lệ phần trăm điểm ảnh) có mức xám tương ứng.</li>
+        </ul>
+
+        <h4>Phân tích lược đồ xám (Histogram Analysis)</h4>
+        <ul>
+          <li><strong>Histogram lệch trái (tập trung nhiều ở vùng thấp):</strong> Ảnh bị tối, thiếu sáng (Under-exposed).</li>
+          <li><strong>Histogram lệch phải (tập trung nhiều ở vùng cao):</strong> Ảnh bị chói, dư sáng (Over-exposed).</li>
+          <li><strong>Histogram hẹp (pixel tập trung vào một khoảng hẹp ở giữa):</strong> Ảnh có độ tương phản thấp (Contrast thấp), các chi tiết nhạt nhòa lẫn vào nhau.</li>
+          <li><strong>Histogram rộng (pixel phân bố trải đều từ tối đến sáng):</strong> Ảnh có độ tương phản cao (Contrast cao), chi tiết rõ ràng, sắc nét.</li>
+        </ul>
+
+        <h3>Thay đổi độ sáng bằng trượt Histogram</h3>
+        <p>Tăng hoặc giảm độ sáng đồng đều cho toàn bộ bức ảnh bằng cách cộng thêm một hằng số \(c\) vào tất cả các pixel.</p>
+        <p>Công thức: \[s = r + c\]</p>
+        <div class="callout">
+          <div class="callout-title">Lưu ý về tràn số (Clipping)</div>
+          <p>Sau khi thực hiện phép tính cộng/trừ cường độ sáng, ta phải áp dụng hàm giới hạn giá trị để tránh hiện tượng tràn số:</p>
+          <pre><code>s = max(0, min(255, r + c))</code></pre>
+          <p>Nếu \(c > 0\), lược đồ xám bị trượt sang phải (ảnh sáng lên). Nếu \(c < 0\), lược đồ xám trượt sang trái (ảnh tối đi).</p>
+        </div>
+
+        <h3>Thay đổi độ tương phản</h3>
+        
+        <h4>Căng lược đồ xám (Histogram Stretching)</h4>
+        <p>Nhân giá trị pixel với một hằng số tỉ lệ \(c\): \[s = c \cdot r\]</p>
+        <ul>
+          <li>Nếu \(c > 1\): Kéo giãn các mức xám ra xa nhau, làm <strong>tăng độ tương phản</strong>.</li>
+          <li>Nếu \(0 < c < 1\): Co các mức xám lại gần nhau, làm <strong>giảm độ tương phản</strong>.</li>
+        </ul>
+
+        <h4>Biến đổi tuyến tính tổng quát</h4>
+        <p>Công thức: \[s = a \cdot r + b\]</p>
+        <p>Trong đó, hệ số \(a\) đóng vai trò điều khiển độ tương phản (Contrast), và hệ số \(b\) đóng vai trò điều khiển độ sáng (Brightness).</p>
+
+        <h4>Biến đổi tuyến tính từng phần (Piecewise Linear Transformation)</h4>
+        <p>Không áp dụng một hàm biến đổi duy nhất cho toàn bộ dải mức xám, mà chia dải mức xám ra làm nhiều phân đoạn và áp dụng các hàm tuyến tính khác nhau trên từng phân đoạn đó. Điều này cho phép kéo giãn tương phản ở một dải mức xám đặc biệt quan tâm (ví dụ vùng trung gian) và nén các vùng không quan trọng khác.</p>
+        <p><em>Ứng dụng:</em> Nâng cao độ tương phản chi tiết trong ảnh chụp chụp cắt lớp CT, ảnh quét radar quân sự hoặc ảnh vệ tinh.</p>
+
+        <h3>Cân bằng Histogram (Histogram Equalization)</h3>
+        <p>Là phương pháp tự động điều chỉnh độ tương phản của ảnh bằng cách dàn đều phân bố các mức xám trên toàn dải \([0, L-1]\).</p>
+        <p>Công thức ánh xạ dựa trên hàm phân phối tích lũy (Cumulative Distribution Function - CDF) của lược đồ xám: \[s = C(r) \cdot (L - 1)\]</p>
+        <p>Trong đó \(C(r)\) là giá trị tích lũy xác suất của mức xám từ \(0\) đến \(r\) (chạy từ \(0 \rightarrow 1\)).</p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Hoàn toàn tự động, hiệu quả cao với các bức ảnh có phân bố sáng tối không đều hoặc quá mờ.</li>
+          <li><strong>Nhược điểm:</strong> Có thể làm khuếch đại cả nhiễu nền ở các vùng mịn, hoặc gây ra hiện tượng mất tự nhiên đối với ảnh chụp phong cảnh thông thường.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 2.3 -->
+      <section id="sec-2-3">
+        <h2>2.3 Phép tích chập không gian (Spatial Convolution)</h2>
+        <p><strong>Phép tích chập (Convolution)</strong> là phép toán nền tảng quan trọng nhất trong lọc không gian. Phép toán này trượt một ma trận hệ số nhỏ gọi là <strong>Kernel</strong> (hoặc mặt nạ lọc - Mask) trên khắp bề mặt của ảnh nguồn \(f\) để tạo ra ảnh đích \(g\).</p>
+        
+        <p>Nếu kernel có kích thước lẻ là \((2a+1) \times (2b+1)\), công thức tích chập tại vị trí \((x,y)\) được định nghĩa là:
+        \[g(x,y) = f(x,y) * w(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t) \cdot f(x-s, y-t)\]
+        </p>
+
+        <h3>Các bước thực hiện tích chập</h3>
+        <ol>
+          <li><strong>Padding ảnh:</strong> Bổ sung thêm viền xung quanh ảnh để tránh hiện tượng mất kích thước ở biên khi lọc.</li>
+          <li><strong>Xoay Kernel:</strong> Xoay ma trận Kernel 180 độ theo cả hai chiều ngang và dọc (đối với các bộ lọc đối xứng thì bước này không làm thay đổi kernel).</li>
+          <li><strong>Trượt và nhân chập:</strong> Đặt tâm của kernel lên pixel \((x,y)\) cần tính. Nhân từng phần tử của kernel với pixel tương ứng đè bên dưới của ảnh.</li>
+          <li><strong>Cộng tích lũy:</strong> Cộng tất cả các kết quả nhân ở bước trên lại.</li>
+          <li><strong>Gán giá trị mới:</strong> Gán tổng vừa tính được vào tọa độ tương ứng của ảnh kết quả \(g(x,y)\).</li>
+          <li><strong>Lặp lại:</strong> Trượt kernel sang pixel tiếp theo và lặp lại cho đến hết toàn bộ ảnh.</li>
+        </ol>
+
+        <h3>Các phương pháp Padding biên ảnh</h3>
+        <p>Do kernel có kích thước lớn hơn 1&times;1, khi đặt tâm kernel ở các pixel ngoài biên ảnh, một phần của kernel sẽ nằm ra ngoài phạm vi của ảnh. Ta cần các kỹ thuật điền đầy biên (Padding):</p>
+        <ul>
+          <li>
+            <strong>Zero Padding (Điền số 0):</strong> Gán toàn bộ các pixel ảo ngoài biên bằng giá trị <code>0</code>.
+            <br>
+            <em>Đặc điểm:</em> Đơn giản nhưng có nhược điểm lớn là tạo ra viền đen bao quanh ảnh kết quả sau khi lọc mờ.
+          </li>
+          <li>
+            <strong>Mirror Padding (Phản chiếu biên):</strong> Giá trị pixel ảo được lấy bằng cách đối xứng gương các pixel thật sát biên qua đường biên.
+            <br>
+            <em>Đặc điểm:</em> Đảm bảo tính liên tục của cấu trúc ảnh tốt nhất, tránh lỗi sẫm màu ở viền.
+          </li>
+          <li>
+            <strong>Replicate Padding (Lặp lại biên):</strong> Sao chép giá trị của pixel sát biên nhất và kéo dài ra ngoài.
+            <br>
+            <em>Đặc điểm:</em> Được sử dụng rộng rãi vì tính toán nhanh và hiệu quả ổn định.
+          </li>
+        </ul>
+
+        <h3>Các bộ lọc thông thấp (Low-pass Filters)</h3>
+        <p>Mục tiêu của bộ lọc thông thấp là triệt tiêu các thành phần tần số cao (nơi cường độ sáng thay đổi đột ngột như biên cạnh, nhiễu hạt) để làm mịn ảnh và giảm nhiễu.</p>
+
+        <h4>1. Bộ lọc trung bình (Box Filter / Mean Filter)</h4>
+        <p>Tất cả các phần tử trong ma trận kernel đều bằng nhau và có tổng bằng 1. Giá trị pixel mới là trung bình cộng của các pixel trong vùng lân cận.</p>
+        <p>Ví dụ kernel Box cỡ 3&times;3:
+        <div class="matrix">
+          W = 1/9 &times; <br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]
+        </div>
+        </p>
+        <p><em>Tác dụng:</em> Làm mờ ảnh nhanh chóng, triệt tiêu nhiễu hạt nhưng đồng thời cũng làm mờ đi các đường biên quan trọng của vật thể.</p>
+
+        <h4>2. Bộ lọc Gaussian (Gaussian Filter)</h4>
+        <p>Sử dụng hàm mật độ xác suất Gaussian để tính toán trọng số cho các phần tử trong kernel. Trọng số lớn nhất nằm ở tâm và giảm dần khi ra xa tâm.</p>
+        <p>Ví dụ mẫu kernel Gaussian xấp xỉ nguyên 3&times;3:
+        <div class="matrix">
+          W = 1/16 &times; <br>
+          [ 1 &nbsp; 2 &nbsp; 1 ]<br>
+          [ 2 &nbsp; 4 &nbsp; 2 ]<br>
+          [ 1 &nbsp; 2 &nbsp; 1 ]
+        </div>
+        </p>
+        <p><strong>Vai trò của độ lệch chuẩn \(\sigma\) (Sigma):</strong> 
+          \(\sigma\) đặc trưng cho độ rộng của phân bố Gaussian. 
+          Nếu \(\sigma\) nhỏ, bộ lọc chỉ tập trung làm mờ nhẹ các chi tiết cực nhỏ. 
+          Nếu \(\sigma\) lớn, năng lượng phân bố rộng ra các pixel ở xa, làm ảnh mờ mạnh hơn.
+        </p>
+
+        <h3>So sánh Box Filter và Gaussian Filter</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc điểm so sánh</th>
+              <th>Bộ lọc trung bình (Box Filter)</th>
+              <th>Bộ lọc Gaussian (Gaussian Filter)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phân bố trọng số</strong></td>
+              <td>Mọi phần tử trong kernel đều bằng nhau.</td>
+              <td>Trọng số giảm dần từ tâm ra rìa theo hàm Gauss.</td>
+            </tr>
+            <tr>
+              <td><strong>Độ tự nhiên của ảnh</strong></td>
+              <td>Dễ xuất hiện các vệt ô vuông không tự nhiên.</td>
+              <td>Làm mờ mượt mà, tự nhiên giống hiện tượng nhòe quang học.</td>
+            </tr>
+            <tr>
+              <td><strong>Bảo toàn chi tiết biên</strong></td>
+              <td>Làm mờ biên rất mạnh, gây mất chi tiết nhanh.</td>
+              <td>Giữ lại cấu trúc biên tốt hơn ở cùng mức độ giảm nhiễu.</td>
+            </tr>
+            <tr>
+              <td><strong>Tốc độ tính toán</strong></td>
+              <td>Cực kỳ nhanh (có thể tối ưu bằng tích lũy dòng).</td>
+              <td>Chậm hơn do tính toán nhân chập phức tạp hơn.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Khái niệm Bộ lọc thông cao (High-pass Filters)</h3>
+        <p>Ngược lại với Low-pass Filter, bộ lọc thông cao (High-pass Filter) triệt tiêu các vùng có tần số thấp (vùng có màu sắc phẳng, đồng đều) và giữ lại các thành phần tần số cao. Phép toán này có tác dụng làm nổi bật biên cạnh của đối tượng, tăng cường độ sắc nét (Sharpening) cho ảnh. Chi tiết về các bộ lọc này sẽ được tìm hiểu sâu ở chương tiếp theo.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 3: Phát Hiện Đường Biên - Lý Thuyết CT316 - Xử lý ảnh</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT316 - Xử lý ảnh</a> &raquo; Chương 3
+      </div>
+      <h1>CHƯƠNG 3. PHÁT HIỆN ĐƯỜNG BIÊN (EDGE DETECTION)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Nghiên cứu về lý thuyết phát hiện đường biên trong ảnh số, phương pháp đạo hàm bậc một (toán tử gradient), đạo hàm bậc hai (Laplacian, LoG) và kỹ thuật làm nét ảnh.</p>
+    </header>
+
+        <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-3-def">
+        <h2>1. Đường biên (Edge) là gì?</h2>
+        <p><strong>Đường biên (Edge)</strong> là tập hợp các điểm ảnh nơi xảy ra sự thay đổi đột ngột hoặc có bước nhảy lớn về mức sáng (grayscale) hoặc màu sắc giữa các vùng lân cận trong bức ảnh.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Ví dụ trực quan về biên</div>
+          <p>Xét một chuỗi pixel một chiều nằm ngang chuyển tiếp từ đen sang trắng:</p>
+          <div class="matrix" style="letter-spacing: 0.2rem;">
+            [ 0 &nbsp; 0 &nbsp; 0 &nbsp; | &nbsp; 255 &nbsp; 255 &nbsp; 255 ]
+          </div>
+          <p style="margin-top: 0.5rem;">Ba điểm đầu tiên màu đen ($0$), ba điểm sau màu trắng ($255$). Vị trí ranh giới phân cách giữa giá trị $0$ và $255$ chính là <strong>đường biên</strong>.</p>
+        </div>
+
+        <h3>Tại sao phải phát hiện đường biên?</h3>
+        <p>Đường biên mang thông tin hình học cốt lõi nhất của ảnh (hình dáng, biên giới, kích thước, cấu trúc của vật thể) nhưng chiếm dung lượng dữ liệu rất nhỏ so với ảnh gốc. Do đó, phát hiện biên là bước tiền đề tối quan trọng cho các bài toán:</p>
+        
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Phát hiện biên</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đường viền vật thể</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Nhận dạng &amp; Phân tích</div>
+        </div>
+
+        <ul>
+          <li>Nhận dạng ký tự quang học (OCR) và chữ viết tay.</li>
+          <li>Hệ thống nhận dạng khuôn mặt và sinh trắc học.</li>
+          <li>Phân khúc đối tượng, hỗ trợ xe tự lái nhận diện làn đường, biển báo, chướng ngại vật.</li>
+          <li>Điều khiển robot công nghiệp định vị sản phẩm trên băng chuyền.</li>
+        </ul>
+
+        <h3>Các loại đường biên cơ bản</h3>
+        <p>Trong thực tế, đường biên thường được chia làm ba mô hình cơ bản:</p>
+        <ol>
+          <li><strong>Step Edge (Biên bậc thang):</strong> Cường độ sáng thay đổi đột ngột tại ranh giới (mô hình lý thuyết lý tưởng). Ký hiệu dạng đồ thị: <code>____|&macr;&macr;&macr;</code>.</li>
+          <li><strong>Ramp Edge (Biên dốc):</strong> Cường độ sáng thay đổi mịn hơn, từ từ chuyển tiếp qua một khoảng không gian nhỏ. Loại biên này xuất hiện phổ biến trong thực tế do hiện tượng mờ quang học hoặc nhiễu. Ký hiệu đồ thị: <code>____/&macr;&macr;&macr;</code>.</li>
+          <li><strong>Roof Edge (Biên mái nhà):</strong> Cường độ sáng tăng dần lên đạt đỉnh rồi giảm xuống, đặc trưng cho các đường nét rất mỏng (như sợi tóc, đường vẽ chỉ dẫn). Ký hiệu đồ thị: <code>&nbsp;/\&nbsp;</code>.</li>
+        </ol>
+
+        <h3>Nguyên lý toán học phát hiện biên</h3>
+        <p>Nếu tại một vùng ảnh, mức xám của các pixel lân cận gần như không thay đổi &rarr; vùng đó đồng nhất, <strong>không chứa biên</strong>.</p>
+        <p>Nếu mức xám thay đổi mạnh mẽ &rarr; vùng đó <strong>chứa biên</strong>. Do đó, bản chất của phát hiện biên là đo <strong>tốc độ thay đổi (độ dốc)</strong> của cường độ sáng.</p>
+        <p>Trong toán học, đại lượng đo tốc độ thay đổi chính là <strong>đạo hàm</strong>. Vì ảnh số là tín hiệu rời rạc nên ta không thể tính đạo hàm liên tục mà phải xấp xỉ bằng phép <strong>sai phân (Difference)</strong> giữa các pixel đứng cạnh nhau.</p>
+        <p><em>Ví dụ sai phân 1 chiều:</em> Có hai pixel liên tiếp giá trị $100$ và $110$, mức thay đổi là $110 - 100 = 10$.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.1 -->
+      <section id="sec-3-1">
+        <h2>3.1 Phương pháp đạo hàm bậc một (Gradient-based)</h2>
+        <p>Phương pháp đạo hàm bậc một sử dụng đại lượng <strong>Gradient</strong> để xác định vị trí biên ảnh. Gradient của ảnh là một vector đặc trưng cho tốc độ thay đổi nhanh nhất của cường độ sáng và hướng của sự thay đổi đó.</p>
+
+        <p>Vector Gradient tại điểm ảnh \(f(x,y)\) gồm hai thành phần sai phân theo trục ngang \(G_x\) và trục dọc \(G_y\):
+        \[\nabla f = \begin{bmatrix} G_x \\ G_y \end{bmatrix}\]
+        </p>
+
+        <h3>Độ lớn của Gradient (Gradient Magnitude)</h3>
+        <p>Độ lớn của Gradient thể hiện độ dốc hay cường độ của đường biên:
+        \[|\nabla f| = \sqrt{G_x^2 + G_y^2}\]
+        </p>
+        <p>Để giảm chi phí tính toán căn bậc hai trong lập trình nhúng hoặc phần cứng thời gian thực, người ta thường dùng công thức xấp xỉ trị tuyệt đối:
+        \[|\nabla f| \approx |G_x| + |G_y|\]
+        </p>
+        <ul>
+          <li>Nếu \(|\nabla f| \approx 0\): Vùng ảnh mịn, đồng nhất (không chứa biên).</li>
+          <li>Nếu \(|\nabla f|\) có giá trị lớn: Cường độ sáng biến đổi mạnh (có biên).</li>
+        </ul>
+
+        <h3>Hướng của Gradient (Gradient Direction)</h3>
+        <p>Góc hướng \(\theta\) của vector Gradient chỉ ra hướng mà độ sáng thay đổi nhanh nhất (luôn vuông góc với đường biên vật thể và hướng từ vùng tối sang vùng sáng):
+        \[\theta = \arctan\left(\frac{G_y}{G_x}\right)\]
+        </p>
+
+        <h3>Xấp xỉ sai phân trên ma trận $3 \times 3$</h3>
+        <p>Xét cửa sổ ảnh cục bộ $3 \times 3$ xung quanh điểm trung tâm $z_5$:</p>
+        <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+          z1 z2 z3<br>
+          z4 z5 z6<br>
+          z7 z8 z9
+        </div>
+        <p>Phép tính sai phân đơn giản nhất là hiệu trực tiếp với pixel kề cạnh:
+        \[G_x = z_6 - z_5\]
+        \[G_y = z_8 - z_5\]
+        Tuy nhiên, cách tính này chỉ sử dụng thông tin của 2 pixel nên cực kỳ nhạy với nhiễu hạt.</p>
+
+        <h3>1. Toán tử Roberts (Roberts Cross Operator)</h3>
+        <p>Được Lawrence Roberts đề xuất vào năm 1965, đây là một trong những toán tử phát hiện biên đầu tiên. Roberts sử dụng sai phân chéo để tăng độ chính xác:
+        \[G_x = z_9 - z_5\]
+        \[G_y = z_8 - z_6\]
+        </p>
+        <p>Hai mặt nạ chập (Kernel) tương ứng là:
+        \[\text{Kernel}_x = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}, \quad \text{Kernel}_y = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}\]
+        </p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Ma trận kích thước nhỏ (2&times;2), tính toán cực nhanh, tốn ít bộ nhớ.</li>
+          <li><strong>Nhược điểm:</strong> Do kích thước quá nhỏ nên khả năng chống nhiễu cực kỳ kém, biên thu được dễ bị đứt gãy.</li>
+        </ul>
+
+        <h3>2. Toán tử Sobel (Sobel Operator)</h3>
+        <p>Toán tử Sobel khắc phục nhược điểm của Roberts bằng cách sử dụng mặt nạ kích thước $3 \times 3$ kết hợp với hệ số làm mịn. Đây là toán tử phổ biến nhất hiện nay.</p>
+        <p>Các mặt nạ Sobel theo chiều X (ngang) và chiều Y (dọc):
+        \[H_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad H_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}\]
+        </p>
+        <p><strong>Tại sao Sobel tốt hơn Roberts?</strong> Việc sử dụng kích thước $3 \times 3$ và đặt trọng số bằng <code>2</code> (hoặc <code>-2</code>) ở tâm viền giúp bộ lọc tích hợp sẵn khả năng làm mờ (smooth), giảm bớt ảnh hưởng của các hạt nhiễu nhỏ, làm cho đường biên thu được liên tục và mượt mà hơn.</p>
+
+        <h3>3. Toán tử Prewitt (Prewitt Operator)</h3>
+        <p>Toán tử Prewitt tương tự Sobel nhưng không sử dụng trọng số nhấn mạnh ở giữa mà chia đều hệ số:</p>
+        <p>Mặt nạ Prewitt theo X và Y:
+        \[H_x = \begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix}, \quad H_y = \begin{bmatrix} -1 & -1 & -1 \\ 0 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix}\]
+        </p>
+
+        <h3>So sánh các toán tử đạo hàm bậc một</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Toán tử</th>
+              <th>Kích thước Kernel</th>
+              <th>Khả năng chống nhiễu</th>
+              <th>Độ sắc nét của biên</th>
+              <th>Tốc độ xử lý</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Roberts</strong></td>
+              <td>2&times;2</td>
+              <td>Kém nhất</td>
+              <td>Rất mảnh</td>
+              <td>Nhanh nhất</td>
+            </tr>
+            <tr>
+              <td><strong>Prewitt</strong></td>
+              <td>3&times;3</td>
+              <td>Trung bình</td>
+              <td>Hơi dày</td>
+              <td>Nhanh</td>
+            </tr>
+            <tr>
+              <td><strong>Sobel</strong></td>
+              <td>3&times;3</td>
+              <td>Tốt hơn</td>
+              <td>Dày và mượt</td>
+              <td>Nhanh</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Quy trình phát hiện biên bằng Gradient</h3>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Chập với $H_x$ &rarr; $G_x$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Chập with $H_y$ &rarr; $G_y$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tính $G = |G_x| + |G_y|$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Ngưỡng (Threshold)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh biên nhị phân</div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-title">Phép phân ngưỡng (Thresholding)</div>
+          <p>Sau khi có ảnh biên độ Gradient, ta thực hiện phân ngưỡng để lọc bỏ các biên giả do nhiễu gây ra và đưa ảnh về ảnh nhị phân (chỉ gồm đen và trắng):</p>
+          <p>\[g(x,y) = \begin{cases} 255 & \text{nếu } |\nabla f(x,y)| > T \\ 0 & \text{ngược lại} \end{cases}\]</p>
+          <p>Trong đó \(T\) là giá trị ngưỡng do người dùng thiết lập.</p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.2 -->
+      <section id="sec-3-2">
+        <h2>3.2 Phương pháp đạo hàm bậc hai (Laplacian-based)</h2>
+        <p>Thay vì tìm độ dốc cực đại như đạo hàm bậc một, phương pháp đạo hàm bậc hai đi tìm các điểm uốn của sự thay đổi mức sáng, tương ứng với vị trí đạo hàm bậc hai bằng 0.</p>
+
+        <h3>Toán tử Laplacian</h3>
+        <p>Laplacian là một toán tử vi phân tuyến tính đẳng hướng (không phụ thuộc vào hướng biên) được định nghĩa là tổng đạo hàm bậc hai riêng phần theo hai chiều không gian:
+        \[\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}\]
+        </p>
+
+        <p>Các ma trận kernel Laplacian thông dụng:</p>
+        <div style="display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0;">
+          <div>
+            <p style="text-align: center; font-weight: 600;">Lân cận 4:</p>
+            <div class="matrix">
+              [ &nbsp;0 &nbsp;-1 &nbsp; 0 ]<br>
+              [ -1 &nbsp; 4 &nbsp;-1 ]<br>
+              [ &nbsp;0 &nbsp;-1 &nbsp; 0 ]
+            </div>
+          </div>
+          <div>
+            <p style="text-align: center; font-weight: 600;">Lân cận 8 (bao gồm chéo):</p>
+            <div class="matrix">
+              [ -1 &nbsp;-1 &nbsp;-1 ]<br>
+              [ -1 &nbsp; 8 &nbsp;-1 ]<br>
+              [ -1 &nbsp;-1 &nbsp;-1 ]
+            </div>
+          </div>
+        </div>
+
+        <h3>Nguyên lý Zero Crossing</h3>
+        <p>Điểm biên được xác định tại các điểm mà giá trị đạo hàm bậc hai đổi dấu (từ dương sang âm hoặc ngược lại), được gọi là điểm **Zero Crossing**.</p>
+        <div class="matrix" style="letter-spacing: 0.3rem; text-align: center; margin: 1rem 0;">
+          + &nbsp; + &nbsp; [0] &nbsp; - &nbsp; -
+        </div>
+        <p>Điểm trung tâm có giá trị bằng 0 nằm giữa vùng dương và âm chính là vị trí biên chính xác.</p>
+        
+        <p><strong>Nhược điểm:</strong> Đạo hàm bậc hai cực kỳ nhạy cảm với nhiễu (nhiễu dù rất nhỏ cũng sẽ tạo ra các điểm đổi dấu giả). Vì vậy, <strong>không bao giờ áp dụng trực tiếp Laplacian lên ảnh gốc</strong>.</p>
+
+        <h3>Bộ lọc LoG (Laplacian of Gaussian)</h3>
+        <p>Để giải quyết nhược điểm nhạy nhiễu của Laplacian, quy trình LoG ra đời:</p>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Gaussian Blur (Giảm nhiễu)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tích chập Laplacian</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tìm Zero Crossing</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đường biên sạch</div>
+        </div>
+
+        <h3>Kỹ thuật làm sắc nét ảnh (Unsharp Masking)</h3>
+        <p>Unsharp Masking là kỹ thuật dùng đường biên được tách ra để cộng ngược lại vào ảnh gốc, làm cho các chi tiết biên rõ nét hơn.</p>
+        <ol>
+          <li>
+            <strong>Tìm mặt nạ biên (Mask):</strong> Trừ ảnh gốc cho ảnh đã được làm mờ (Low-pass filtered). Thành phần còn lại chính là các chi tiết tần số cao (đường biên):
+            \[\text{Mask} = \text{Original} - \text{Blurred}\]
+          </li>
+          <li>
+            <strong>Cộng tăng cường:</strong> Cộng mặt nạ vào ảnh gốc với hệ số tỉ lệ \(k\):
+            \[\text{Sharpened} = \text{Original} + k \cdot \text{Mask}\]
+            <ul>
+              <li>Nếu \(k = 1\): Gọi là Unsharp Masking thông thường.</li>
+              <li>Nếu \(k > 1\): Gọi là High-boost Filtering.</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.3 -->
+      <section id="sec-3-3">
+        <h2>So sánh Phương pháp Đạo hàm bậc 1 và Đạo hàm bậc 2</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc điểm so sánh</th>
+              <th>Đạo hàm bậc một (Gradient)</th>
+              <th>Đạo hàm bậc hai (Laplacian)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cơ chế phát hiện</strong></td>
+              <td>Tìm các điểm có độ dốc cực đại.</td>
+              <td>Tìm điểm uốn, điểm đổi dấu (Zero Crossing).</td>
+            </tr>
+            <tr>
+              <td><strong>Tính hướng</strong></td>
+              <td>Có hướng (tính được góc biên \(\theta\)).</td>
+              <td>Vô hướng (đẳng hướng, nhạy đều mọi hướng).</td>
+            </tr>
+            <tr>
+              <td><strong>Ảnh hưởng của nhiễu</strong></td>
+              <td>Ít nhạy nhiễu hơn.</td>
+              <td>Cực kỳ nhạy nhiễu, cần kết hợp Gaussian.</td>
+            </tr>
+            <tr>
+              <td><strong>Đặc điểm đường biên</strong></td>
+              <td>Biên thường dày, cần bước phân ngưỡng hoặc làm mảnh.</td>
+              <td>Tạo ra đường biên mảnh, khép kín tốt hơn.</td>
+            </tr>
+            <tr>
+              <td><strong>Thuật toán đại diện</strong></td>
+              <td>Sobel, Roberts, Prewitt</td>
+              <td>Laplacian, LoG (Laplacian of Gaussian)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Giải thuật Canny Edge Detector (Mở rộng)</h3>
+        <p>Mặc dù thuật toán Canny phức tạp hơn các toán tử chập thông thường, đây lại là giải thuật phát hiện biên chuẩn mực và được sử dụng rộng rãi nhất trong thực tế nhờ 5 bước tối ưu:</p>
+        <ol>
+          <li><strong>Lọc Gaussian:</strong> Làm mờ để giảm nhiễu hạt.</li>
+          <li><strong>Tính Gradient:</strong> Sử dụng toán tử Sobel để tìm độ lớn và hướng của biên.</li>
+          <li><strong>Non-maximum Suppression (Triệt tiêu cực đại cục bộ):</strong> Dựa vào hướng Gradient để quét dọc biên và chỉ giữ lại pixel có độ lớn lớn nhất, giúp làm mảnh đường biên về độ rộng 1 pixel.</li>
+          <li><strong>Ngưỡng kép (Double Thresholding):</strong> Sử dụng 2 ngưỡng (ngưỡng cao \(T_H\) và ngưỡng thấp \(T_L\)) để phân loại các pixel biên thành: Biên mạnh (chắc chắn là biên), Biên yếu (nghi ngờ) và Không phải biên.</li>
+          <li><strong>Theo vết biên bằng Hysteresis:</strong> Kết nối các biên yếu vào biên mạnh nếu chúng liên thông với nhau, giúp loại bỏ nhiễu biên và giữ lại các đường viền dài liên tục.</li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Formulas Section -->
+      <section id="sec-3-formulas">
+        <h2>Các công thức toán học cần nhớ</h2>
+        <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
+          <ul>
+            <li>
+              <strong>Vector Gradient:</strong>
+              \[\nabla f = \begin{bmatrix} G_x \\ G_y \end{bmatrix}\]
+            </li>
+            <li>
+              <strong>Độ lớn Gradient (Xấp xỉ nhanh):</strong>
+              \[|\nabla f| = \sqrt{G_x^2 + G_y^2} \quad \approx \quad |G_x| + |G_y|\]
+            </li>
+            <li>
+              <strong>Toán tử Laplacian liên tục:</strong>
+              \[\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}\]
+            </li>
+            <li>
+              <strong>Làm nét ảnh Unsharp Masking:</strong>
+              \[\text{Mask} = f(x,y) - f_{\text{blurred}}(x,y)\]
+              \[f_{\text{sharpened}}(x,y) = f(x,y) + k \cdot \text{Mask}(x,y)\]
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 1: Cấu Trúc Ảnh Số - Lý Thuyết CT316 - Xử lý ảnh</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT316 - Xử lý ảnh</a> &raquo; Chương 1
+      </div>
+      <h1>CHƯƠNG 1. CẤU TRÚC ẢNH SỐ</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Khái quát về khái niệm ảnh số, cấu trúc phần cứng thu nhận ảnh, các thông số kỹ thuật và định dạng lưu trữ cơ bản.</p>
+    </header>
+
+        <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1.1 -->
+      <section id="sec-1-1">
+        <h2>1.1 Ảnh và số hóa ảnh</h2>
+        
+        <h3>1.1.1 Ảnh là gì?</h3>
+        <p><strong>Ảnh</strong> là sự biểu diễn thông tin thị giác của thế giới thực. Dựa trên phương thức biểu diễn và xử lý, ảnh được chia làm hai loại chính:</p>
+        
+        <ul>
+          <li>
+            <strong>Ảnh tương tự (Analog Image):</strong> 
+            Tồn tại liên tục theo không gian và cường độ sáng. 
+            <em>Ví dụ:</em> Ảnh chụp bằng phim truyền thống. Loại ảnh này không thể biểu diễn trực tiếp bằng số và không được máy tính xử lý trực tiếp.
+          </li>
+          <li>
+            <strong>Ảnh số (Digital Image):</strong> 
+            Được biểu diễn dưới dạng các con số rời rạc và lưu trữ trong máy tính. Ảnh số thực chất là một tập hợp các điểm ảnh rời rạc. Máy tính chỉ có thể xử lý loại ảnh này.
+          </li>
+        </ul>
+
+        <div class="callout">
+          <div class="callout-title">Định nghĩa: Điểm ảnh (Pixel)</div>
+          <p><strong>Pixel (Picture Element)</strong> là đơn vị nhỏ nhất tạo nên ảnh số. Mỗi pixel tại một tọa độ xác định lưu trữ các giá trị đại diện cho mức sáng hoặc màu sắc của vị trí đó.</p>
+          <p style="margin-top: 0.5rem; font-style: italic; color: var(--text-light); font-size: 0.9rem;">Lưu ý: Pixel không phải là hình vuông trong thực tế vật lý. Hình vuông chỉ là cách các phần mềm đồ họa hiển thị pixel trên màn hình để con người dễ quan sát.</p>
+        </div>
+
+        <h4>Ví dụ về biểu diễn Pixel</h4>
+        <ul>
+          <li>
+            <strong>Ảnh xám (Grayscale):</strong> Mỗi pixel lưu một giá trị cường độ sáng duy nhất.
+            <div class="matrix">
+              [ 0 &nbsp; 120 &nbsp; 255 ]<br>
+              [ 60 &nbsp; 90 &nbsp; 180 ]
+            </div>
+            <br>
+            Trong đó: <code>255</code> ứng với màu trắng, <code>0</code> ứng với màu đen, và các giá trị trung gian như <code>128</code> ứng với màu xám.
+          </li>
+          <li>
+            <strong>Ảnh màu (Color Image):</strong> Mỗi pixel lưu ba giá trị ứng với các kênh màu cơ bản <code>(R, G, B)</code>.
+            <br>
+            Ví dụ: Giá trị <code>(255, 0, 0)</code> đại diện cho màu đỏ thuần khiết.
+          </li>
+        </ul>
+
+        <h3>Quá trình thu nhận ảnh</h3>
+        <p>Quá trình chuyển đổi thông tin ánh sáng từ thế giới thực thành một bức ảnh số trong máy tính diễn ra qua các giai đoạn sau:</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Thế giới thực</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ánh sáng</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ống kính (Lens)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Cảm biến ảnh (Sensor)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">ADC (Analog Digital Converter)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh số</div>
+        </div>
+
+        <ol>
+          <li>
+            <strong>Bước 1: Phản xạ ánh sáng.</strong> 
+            Đối tượng trong thế giới thực phản xạ ánh sáng từ nguồn sáng (như mặt trời hoặc đèn). 
+            <em>Ví dụ:</em> Quả táo hấp thụ hầu hết các bước sóng và phản xạ lại ánh sáng màu đỏ tới ống kính.
+          </li>
+          <li>
+            <strong>Bước 2: Ống kính (Lens).</strong> 
+            Nhiệm vụ hội tụ chùm sáng phản xạ, lấy nét (focusing) vào bề mặt cảm biến, đồng thời giảm thiểu các hiện tượng méo ảnh do quang học.
+          </li>
+          <li>
+            <strong>Bước 3: Cảm biến ảnh (Image Sensor).</strong> 
+            Thực hiện chuyển đổi các photon ánh sáng thành điện tích. Lượng điện tích sinh ra tỉ lệ thuận với cường độ ánh sáng chiếu vào.
+          </li>
+          <li>
+            <strong>Bước 4: ADC (Analog-to-Digital Converter).</strong> 
+            Bộ chuyển đổi tương tự - số có nhiệm vụ đo lượng điện áp tích lũy tại mỗi ô cảm biến và số hóa nó thành một giá trị nguyên (ví dụ: điện áp đo được chuyển đổi thành số nguyên <code>135</code>, ghi nhận giá trị pixel = <code>135</code>).
+          </li>
+        </ol>
+
+        <h3>Cảm biến ảnh (Image Sensor)</h3>
+        <p>Hiện nay có hai công nghệ sản xuất cảm biến ảnh phổ biến nhất:</p>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc tính</th>
+              <th>CCD (Charge Coupled Device)</th>
+              <th>CMOS (Complementary Metal Oxide Semiconductor)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cơ chế đọc</strong></td>
+              <td>Dịch chuyển điện tích qua từng dòng rồi chuyển đổi tập trung ở góc.</td>
+              <td>Tích hợp bộ chuyển đổi điện áp - số ngay tại từng pixel riêng lẻ.</td>
+            </tr>
+            <tr>
+              <td><strong>Ưu điểm</strong></td>
+              <td>Ít nhiễu, chất lượng ảnh rất cao, dải màu đẹp và trung thực.</td>
+              <td>Chi phí sản xuất rẻ, tốc độ đọc dữ liệu cực nhanh, tiết kiệm điện năng.</td>
+            </tr>
+            <tr>
+              <td><strong>Nhược điểm</strong></td>
+              <td>Giá thành đắt, tiêu thụ điện năng lớn, tốc độ đọc chậm.</td>
+              <td>(Trước đây) Nhiễu nhiều hơn CCD, dải tương phản thấp hơn.</td>
+            </tr>
+            <tr>
+              <td><strong>Xu thế hiện nay</strong></td>
+              <td>Chỉ còn dùng trong thiết bị khoa học chuyên dụng.</td>
+              <td>Đã cải tiến vượt bậc và gần như thay thế hoàn toàn CCD trong camera dân dụng và smartphone.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Bộ lọc màu Bayer (Bayer Filter &amp; Demosaicing)</h3>
+        <p>Một điểm đặc biệt là bản thân mỗi pixel trên cảm biến ảnh <strong>không thể phân biệt được màu sắc</strong>, nó chỉ đo được cường độ sáng (photon). Để thu được ảnh màu, người ta đặt một ma trận lọc màu phía trước cảm biến.</p>
+
+        <div class="bayer-container">
+          <div class="bayer-grid">
+            <div class="bayer-cell bayer-g">G</div>
+            <div class="bayer-cell bayer-r">R</div>
+            <div class="bayer-cell bayer-b">B</div>
+            <div class="bayer-cell bayer-g">G</div>
+          </div>
+          <div class="bayer-caption">Hình 1.1: Cấu trúc bộ lọc Bayer cơ bản (2&times;2)</div>
+        </div>
+
+        <ul>
+          <li><strong>Cấu trúc ma trận Bayer:</strong> Lặp lại các nhóm lọc màu kích thước 2&times;2 bao gồm: 50% xanh lá (Green - G), 25% đỏ (Red - R) và 25% lam (Blue - B).</li>
+          <li><strong>Tại sao màu xanh lá (Green) nhiều gấp đôi?</strong> Mắt người nhạy cảm với bước sóng màu xanh lá cây nhất. Việc tăng mật độ màu xanh lá giúp ảnh số hiển thị trông sắc nét và sáng hơn với thị giác con người.</li>
+          <li><strong>Quá trình nội suy màu (Demosaicing):</strong> Vì mỗi pixel thực tế chỉ ghi nhận được 1 trong 3 màu (R, G hoặc B), máy ảnh phải thực hiện thuật toán nội suy từ các pixel lân cận để khôi phục đủ 3 giá trị màu cho từng điểm ảnh. Quá trình này được gọi là <em>Demosaicing</em>.</li>
+        </ul>
+
+        <h4>Các biến thể cảm biến khác</h4>
+        <ul>
+          <li><strong>Kodak Pattern:</strong> Một biến thể của Bayer nhằm cải thiện độ chính xác màu và giảm nhiễu.</li>
+          <li><strong>Fujifilm EXR:</strong> Bố trí pixel xoay góc và nhóm lại để tăng dải động (Dynamic Range) và chụp thiếu sáng tốt hơn.</li>
+          <li><strong>Fujifilm X-Trans:</strong> Sử dụng ma trận lọc màu lớn hơn (6&times;6) sắp xếp ngẫu nhiên hơn. Giúp loại bỏ hiện tượng nhiễu răng cưa (Moiré) mà không cần dùng đến kính lọc thông thấp quang học (Optical Low Pass Filter), giữ nguyên độ sắc nét tối đa.</li>
+          <li><strong>Foveon X3 (Sigma):</strong> Cảm biến đặc biệt không dùng Bayer filter. Nó tận dụng tính chất vật lý của silicon (các bước sóng ánh sáng khác nhau đâm xuyên sâu khác nhau) để đặt 3 lớp cảm biến thu nhận đủ cả 3 màu R, G, B tại cùng một vị trí pixel. Ảnh chụp từ Foveon cực kỳ sắc nét và chuẩn màu, nhưng giá thành rất cao, nhiễu lớn ở ISO cao và ít phổ biến.</li>
+        </ul>
+
+        <h3>Số hóa ảnh (Image Digitization)</h3>
+        <p>Quá trình chuyển đổi một cảnh liên tục ở thế giới thực thành ảnh số gồm hai bước bắt buộc:</p>
+        <ol>
+          <li>
+            <strong>Lấy mẫu (Sampling):</strong>
+            Số hóa về mặt <em>không gian</em>. Quá trình này chia bức ảnh liên tục thành một lưới các pixel rời rạc. Tần số lấy mẫu quyết định <strong>độ phân giải</strong> (Resolution) của ảnh (ví dụ: lấy mẫu thành lưới 1000&times;1000 pixels).
+          </li>
+          <li>
+            <strong>Lượng tử hóa (Quantization):</strong>
+            Số hóa về mặt <em>cường độ sáng</em>. Biến đổi giá trị cường độ liên tục tại mỗi pixel thành một giá trị số nguyên rời rạc nằm trong một dải hữu hạn. Số bit dùng để lượng tử hóa quyết định độ sâu màu (Bit depth):
+            <ul>
+              <li><code>8 bit</code> &rarr; 2<sup>8</sup> = 256 mức xám (từ 0 đến 255).</li>
+              <li><code>10 bit</code> &rarr; 2<sup>10</sup> = 1024 mức xám.</li>
+              <li><code>12 bit</code> &rarr; 2<sup>12</sup> = 4096 mức xám.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>Không gian màu (Color Space)</h3>
+        <p>Không gian màu là mô hình toán học dùng để biểu diễn các màu sắc dưới dạng các tọa độ số. Các hệ màu phổ biến bao gồm:</p>
+        <ul>
+          <li><strong>RGB (Red, Green, Blue):</strong> Hệ màu cộng tính dựa trên ba màu gốc. Phổ biến nhất trong các thiết bị hiển thị như màn hình, điện thoại, máy ảnh. Giá trị thường chạy từ <code>0</code> đến <code>255</code> cho mỗi kênh.</li>
+          <li><strong>Grayscale (Ảnh xám):</strong> Không gian đơn kênh chỉ biểu diễn độ sáng thô, hoàn toàn không chứa thông tin màu sắc. Thường dùng 8 bit (256 mức độ từ đen 0 đến trắng 255).</li>
+          <li><strong>HSV (Hue, Saturation, Value):</strong> Biểu diễn màu sắc qua 3 thông số: Tông màu (Hue - H), Độ bão hòa (Saturation - S), và Giá trị sáng (Value - V). Không gian này phản ánh trực giác con người tốt hơn và rất được ưa chuộng trong các thuật toán Thị giác máy tính (Computer Vision) để phân ngưỡng màu sắc.</li>
+          <li><strong>YCbCr:</strong> Tách biệt thông tin độ sáng (Luma - Y) khỏi hai thông tin màu sắc (Chroma - Cb, Cr). Hệ màu này cực kỳ hữu ích trong việc nén dữ liệu ảnh/video (như chuẩn JPEG, MPEG) vì mắt người nhạy với chi tiết sáng hơn chi tiết màu, cho phép giảm dung lượng kênh màu mà không làm giảm chất lượng cảm nhận rõ rệt.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.2 -->
+      <section id="sec-1-2">
+        <h2>1.2 Các thông số của ảnh số</h2>
+        
+        <h3>Độ phân giải (Resolution)</h3>
+        <p>Độ phân giải biểu thị số lượng pixel có trong một bức ảnh, thường viết dưới dạng <code>Chiều rộng &times; Chiều cao</code>.</p>
+        <p><em>Ví dụ:</em> Độ phân giải Full HD <code>1920 &times; 1080</code> chứa 2.073.600 pixel (xấp xỉ 2 Megapixels). Ảnh có độ phân giải càng lớn thì càng hiển thị được nhiều chi tiết sắc nét khi thu phóng, nhưng dung lượng lưu trữ cũng tăng theo tương ứng.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Phân biệt DPI và PPI</div>
+          <ul>
+            <li><strong>PPI (Pixels Per Inch):</strong> Mật độ pixel trên mỗi inch chiều dài của màn hình hiển thị vật lý.</li>
+            <li><strong>DPI (Dots Per Inch):</strong> Mật độ điểm mực trên mỗi inch chiều dài khi in ấn ra giấy.</li>
+          </ul>
+        </div>
+
+        <h3>Độ sâu màu (Color Depth / Bit Depth)</h3>
+        <p>Độ sâu màu là số lượng bit được sử dụng để biểu diễn màu sắc cho một pixel duy nhất.</p>
+        <ul>
+          <li><strong>1 bit:</strong> Chỉ biểu diễn được 2 màu (thường là đen và trắng).</li>
+          <li><strong>8 bit:</strong> Biểu diễn được 256 màu hoặc mức xám.</li>
+          <li><strong>24 bit (True Color):</strong> Sử dụng 8 bit cho mỗi kênh trong hệ màu RGB (8 bit R + 8 bit G + 8 bit B), cho phép tạo ra tối đa 16.7 triệu màu sắc khác nhau.</li>
+          <li><strong>32 bit:</strong> Thường gồm 24 bit màu RGB và thêm 8 bit cho kênh Alpha (độ trong suốt của pixel).</li>
+        </ul>
+
+        <h3>Dải tương phản động (Dynamic Range)</h3>
+        <p>Là khả năng ghi nhận đồng thời thông tin từ vùng tối nhất (Shadows) cho đến vùng sáng nhất (Highlights) trong một khung cảnh mà không bị mất chi tiết. Đơn vị đo là <strong>Stops (EV)</strong>.</p>
+        <p>Nếu một camera có Dynamic Range thấp, chụp cảnh chênh sáng mạnh sẽ dễ bị hiện tượng "cháy sáng" (mất chi tiết vùng sáng, biến thành màu trắng tinh) hoặc "tối đen" (mất chi tiết vùng tối). Camera có Dynamic Range 15 Stops sẽ giữ chi tiết tốt hơn camera 12 Stops.</p>
+
+        <h3>Gamma (Gamma Correction)</h3>
+        <p>Mắt người cảm nhận độ sáng <strong>không theo quy luật tuyến tính</strong> (chúng ta nhạy cảm với sự thay đổi trong vùng tối hơn vùng sáng). Tuy nhiên, các cảm biến máy ảnh lại ghi nhận ánh sáng một cách tuyến tính vật lý. Do đó, ảnh cần trải qua phép biến đổi Gamma để hiển thị phù hợp với mắt người.</p>
+        <p>Nếu hệ số Gamma hiệu chỉnh quá thấp, ảnh sẽ bị tối và mất chi tiết vùng tối. Nếu quá cao, ảnh sẽ bị bạc màu và nhạt. Không gian màu tiêu chuẩn <code>sRGB</code> sử dụng giá trị Gamma hiệu chỉnh xấp xỉ <strong>2.2</strong>.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.3 -->
+      <section id="sec-1-3">
+        <h2>1.3 Đánh giá chất lượng ảnh</h2>
+        <p>Đánh giá chất lượng ảnh bao gồm việc phân tích các tiêu chí kỹ thuật và thẩm mỹ trực quan:</p>
+        
+        <ul>
+          <li><strong>Độ nét (Sharpness):</strong> Thể hiện khả năng phân tách rõ ràng các chi tiết nhỏ hoặc ranh giới biên giữa các vùng ảnh. Ảnh bị nhòe, mờ là ảnh có độ nét thấp.</li>
+          <li><strong>Độ sáng (Brightness):</strong> Tổng lượng ánh sáng trung bình của toàn bộ bức ảnh. Ảnh quá sáng gọi là <em>Over-exposure</em> (dư sáng), quá tối gọi là <em>Under-exposure</em> (thiếu sáng).</li>
+          <li><strong>Độ tương phản (Contrast):</strong> Sự chênh lệch về cường độ sáng giữa vùng sáng nhất và vùng tối nhất của ảnh. Độ tương phản thấp làm ảnh trông phẳng và mờ nhạt, độ tương phản cao làm các khối hình nổi bật sắc nét.</li>
+          <li><strong>Độ bão hòa màu (Saturation):</strong> Mức độ đậm đặc, tinh khiết của màu sắc. Ở 0% saturation, ảnh trở thành ảnh đen trắng (Grayscale). Ở 100%, màu sắc sẽ rực rỡ nhất.</li>
+          <li><strong>Cân bằng trắng (White Balance):</strong> Quá trình hiệu chỉnh màu sắc sao cho các vật thể có màu trắng trong thực tế sẽ hiển thị đúng màu trắng trên ảnh. Sai cân bằng trắng khiến ảnh bị ám màu (ví dụ: ám vàng ấm hoặc ám xanh lạnh).</li>
+          <li>
+            <strong>Nhiễu ảnh (Noise):</strong> Các hạt màu sắc hoặc độ sáng phân bố ngẫu nhiên không mong muốn trên ảnh, thường xuất hiện khi chụp ở ISO cao, cảm biến nhỏ hoặc trong điều kiện thiếu sáng. Các loại nhiễu toán học phổ biến bao gồm:
+            <ul>
+              <li><em>Nhiễu Gaussian (Gaussian Noise):</em> Nhiễu phân bố theo hàm Gauss.</li>
+              <li><em>Nhiễu muối tiêu (Salt and Pepper Noise):</em> Xuất hiện dưới dạng các đốm trắng và đen ngẫu nhiên.</li>
+              <li><em>Nhiễu Poisson (Poisson Noise):</em> Nhiễu lượng tử do bản chất hạt của ánh sáng.</li>
+              <li><em>Nhiễu Speckle (Speckle Noise):</em> Nhiễu đốm thường thấy trong ảnh radar hoặc siêu âm.</li>
+            </ul>
+          </li>
+          <li><strong>Tính thẩm mỹ (Aesthetics):</strong> Tiêu chí định tính không có công thức tính toán cố định, phụ thuộc vào bố cục, góc chụp, cách phân bổ ánh sáng, màu sắc nghệ thuật và thông điệp truyền tải.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.4 -->
+      <section id="sec-1-4">
+        <h2>1.4 Lưu trữ và biểu diễn ảnh</h2>
+        
+        <h3>Biểu diễn ảnh trong máy tính</h3>
+        <p>Máy tính biểu diễn ảnh xám dưới dạng một <strong>ma trận hai chiều</strong> kích thước <code>M &times; N</code>, trong đó mỗi phần tử ma trận tương ứng với một pixel lưu giá trị cường độ sáng.</p>
+        
+        <div class="matrix">
+          A = <br>
+          [ 100 &nbsp; 120 &nbsp; 130 ]<br>
+          [ &nbsp;80 &nbsp; &nbsp;90 &nbsp; 100 ]<br>
+          [ &nbsp;60 &nbsp; &nbsp;70 &nbsp; &nbsp;80 ]
+        </div>
+
+        <p>Đối với ảnh màu (như RGB), máy tính biểu diễn bằng <strong>ba ma trận hai chiều chồng lên nhau</strong>, tương ứng với ba kênh màu Đỏ (Red), Lục (Green) và Lam (Blue). Mỗi pixel màu là một bộ ba giá trị ví dụ <code>(120, 200, 45)</code>.</p>
+
+        <h3>Các định dạng file ảnh phổ biến</h3>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Định dạng</th>
+              <th>Đặc điểm nén</th>
+              <th>Đặc trưng nổi bật</th>
+              <th>Ứng dụng chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BMP (Bitmap)</strong></td>
+              <td>Không nén</td>
+              <td>Giữ nguyên chất lượng gốc, dung lượng file cực kỳ lớn.</td>
+              <td>Lưu trữ thô, ít dùng trên môi trường mạng.</td>
+            </tr>
+            <tr>
+              <td><strong>JPEG / JPG</strong></td>
+              <td>Nén mất dữ liệu (Lossy)</td>
+              <td>Dung lượng nhỏ, loại bỏ các chi tiết mắt người khó nhận biết. Rất phổ biến.</td>
+              <td>Ảnh chụp camera, chia sẻ mạng xã hội, website.</td>
+            </tr>
+            <tr>
+              <td><strong>PNG</strong></td>
+              <td>Nén không mất dữ liệu (Lossless)</td>
+              <td>Hỗ trợ kênh Alpha nền trong suốt (Transparency). Chi tiết đồ họa sắc nét.</td>
+              <td>Logo, icon, ảnh đồ họa, thiết kế web.</td>
+            </tr>
+            <tr>
+              <td><strong>TIFF</strong></td>
+              <td>Không nén hoặc nén lossless</td>
+              <td>Chất lượng cực cao, hỗ trợ nhiều không gian màu chuyên sâu (như CMYK).</td>
+              <td>In ấn chuyên nghiệp, y tế, lưu trữ tài liệu gốc.</td>
+            </tr>
+            <tr>
+              <td><strong>GIF</strong></td>
+              <td>Nén lossless (LZW)</td>
+              <td>Chỉ hỗ trợ tối đa 256 màu. Hỗ trợ ảnh động đơn giản.</td>
+              <td>Ảnh động vui nhộn trên mạng, đồ họa đơn sắc đơn giản.</td>
+            </tr>
+            <tr>
+              <td><strong>RAW</strong></td>
+              <td>Không nén hoặc nén tối thiểu</td>
+              <td>Lưu trữ trực tiếp dữ liệu thô từ cảm biến chưa qua xử lý của máy ảnh. Cho phép can thiệp hậu kỳ cực mạnh. Dung lượng rất lớn.</td>
+              <td>Nhiếp ảnh chuyên nghiệp.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

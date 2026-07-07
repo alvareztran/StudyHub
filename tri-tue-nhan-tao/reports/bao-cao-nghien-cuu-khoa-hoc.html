@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Nghiên Cứu: PPO vs DPO trong RLHF - Học Liệu AI</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">Cổng học liệu</a> &raquo; 
+        <a href="../index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Báo cáo nghiên cứu
+      </div>
+      <h1 style="font-size: 1.8rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+        Báo Cáo Chuyên Đề: Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study
+      </h1>
+      <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.75rem;">
+        <p><strong>Bài báo nghiên cứu:</strong> <em>"Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study"</em></p>
+        <p style="margin-top: 0.25rem;">
+          <strong>Tác giả gốc:</strong> Shusheng Xu<sup>1</sup>, Wei Fu<sup>1</sup>, Jiaxuan Gao<sup>1</sup>, Wenjie Ye<sup>2</sup>, Weilin Liu<sup>2</sup>, Zhiyu Mei<sup>1</sup>, Guangju Wang<sup>2</sup>, Chao Yu<sup>*1</sup>, Yi Wu<sup>*1,2,3</sup>
+        </p>
+        <p style="font-size: 0.8rem; margin-top: 0.25rem; color: #6b7280;">
+          <sup>1</sup> Tsinghua University &nbsp;&bull;&nbsp; <sup>2</sup> Shanghai Qi Zhi Institute &nbsp;&bull;&nbsp; <sup>3</sup> Shanghai Jiao Tong University &nbsp;&bull;&nbsp; <sup>*</sup> Corresponding Authors
+        </p>
+      </div>
+    </header>
+
+    <div class="pdf-btn-container no-print">
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-1">
+        <h2>1. Đặt vấn đề</h2>
+        <p>Các mô hình ngôn ngữ lớn (LLM) có được các tri thức và cấu trúc ngôn ngữ sâu rộng thông qua quá trình tiền huấn luyện (pre-training) trên các tập dữ liệu văn bản khổng lồ (Brown và cộng sự, 2020; OpenAI, 2023; Touvron và cộng sự, 2023; Chowdhery và cộng sự, 2023; Anil và cộng sự, 2023). Để khai thác các khả năng mạnh mẽ của LLM vào các ứng dụng thực tế, ngày càng có nhiều nghiên cứu nhấn mạnh tầm quan trọng của việc căn chỉnh (aligning) các mô hình này theo tùy chọn của con người (Agrawal và cộng sự, 2023; Kadavath và cộng sự, 2022; Shi và cộng sự, 2023; Liang và cộng sự, 2021; Sheng và cộng sự, 2019).</p>
+
+        <p>Nhiều phương pháp khác nhau đã được phát triển để tinh chỉnh (fine-tuning) các LLM, trong đó các hướng tiếp cận phổ biến bao gồm Tinh chỉnh có giám sát (SFT) (Peng và cộng sự, 2023) và Học tăng cường từ phản hồi của con người (RLHF) (Ziegler và cộng sự, 2019; Stiennon và cộng sự, 2020; Ouyang và cộng sự, 2022). Thông thường, quá trình tinh chỉnh gồm hai giai đoạn:</p>
+        <div class="flowchart">
+          <div class="flow-node">Mô hình thô (Raw LLM)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Giai đoạn 1: SFT<br><small>(Thiết lập mô hình cơ sở - Base model)</small></div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Giai đoạn 2: RLHF<br><small>(Nâng cao hiệu suất theo phản hồi)</small></div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">LLM đã căn chỉnh (Aligned LLM)</div>
+        </div>
+        <p>SFT cốt ở việc bắt chước dữ liệu mẫu chất lượng cao, trong khi RLHF cải tiến các LLM thông qua các phản hồi về mức độ ưu tiên (preference feedback).</p>
+
+        <p>Trong phạm vi RLHF, hai hướng tiếp cận nổi bật là các phương pháp dựa trên phần thưởng (reward-based) và không dựa trên phần thưởng (reward-free):</p>
+        <ul>
+          <li>
+            <strong>Các phương pháp dựa trên phần thưởng:</strong> Được tiên phong bởi OpenAI (Ouyang và cộng sự, 2022; Ziegler và cộng sự, 2019; Stiennon và cộng sự, 2020), xây dựng một mô hình phần thưởng (reward model) bằng cách sử dụng dữ liệu ưu tiên, sau đó áp dụng các thuật toán actor-critic như Tối ưu hóa chính sách cận biên (PPO) để tối ưu hóa tín hiệu phần thưởng.
+          </li>
+          <li>
+            <strong>Các phương pháp không dựa trên phần thưởng:</strong> Bao gồm Tối ưu hóa ưu tiên trực tiếp (DPO) (Rafailov và cộng sự, 2023), RRHF (Yuan và cộng sự, 2023), và PRO (Song và cộng sự, 2023), đã loại bỏ việc sử dụng tường minh một hàm phần thưởng. Là một phương pháp không dựa trên phần thưởng mang tính đại diện, DPO biểu diễn hàm phần thưởng dưới dạng logarit của chính sách (policy) và chỉ tập trung duy nhất vào việc tối ưu hóa chính sách đó.
+          </li>
+        </ul>
+
+        <p>Đáng chú ý là các ứng dụng thành công nhất như ChatGPT (OpenAI, 2022) và Claude (Anthropic, 2023) đều được tạo ra bởi PPO—một phương pháp RLHF dựa trên phần thưởng; trong khi đó, hiệu suất mạnh mẽ trên các bộ chuẩn đánh giá học thuật thường là kết quả của DPO—một phương pháp RLHF không dựa trên phần thưởng (Rafailov và cộng sự, 2023; MistralAI, 2023). Sự mâu thuẫn này đặt ra hai câu hỏi nền tảng:</p>
+        <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
+          <ol style="margin-bottom: 0;">
+            <li><strong>Câu hỏi 1:</strong> Liệu DPO có thực sự vượt trội hơn PPO trong lĩnh vực RLHF?</li>
+            <li><strong>Câu hỏi 2:</strong> Liệu hiệu suất của PPO có thể được cải thiện một cách đáng kể trên các bộ chuẩn RLHF phổ biến hay không?</li>
+          </ol>
+        </div>
+
+        <p>Trong bài báo này, chúng tôi đi sâu vào nghiên cứu các câu hỏi này. Thông qua các phân tích lý thuyết và thực nghiệm, chúng tôi vạch ra những hạn chế cơ bản của DPO, đồng thời khám phá các yếu tố quan trọng giúp nâng cao hiệu suất thực tế của PPO trong RLHF:</p>
+        <ol>
+          <li>Nghiên cứu lý thuyết của chúng tôi chỉ ra rằng DPO có thể tìm ra các nghiệm lệch (biased solutions) vốn khai thác các phản hồi nằm ngoài phân phối dữ liệu (out-of-distribution responses). Về mặt thực nghiệm, chúng tôi chứng minh rằng hiệu suất của DPO bị ảnh hưởng đáng kể bởi sự dịch chuyển phân phối (distribution shift) giữa các đầu ra của mô hình và tập dữ liệu ưu tiên.</li>
+          <li>Chúng tôi thực hiện các nghiên cứu loại trừ (ablation studies) trên các thành phần thuật toán của PPO và phát hiện ra một tập hợp các yếu tố cốt lõi giúp PPO đạt hiệu suất RLHF tốt nhất, bao gồm: chuẩn hóa hàm lợi thế (advantage normalization), kích thước lô (batch size) lớn, và cập nhật trung bình trượt lũy thừa (exponential moving average - EMA) cho mô hình tham chiếu (reference model).</li>
+          <li>Chúng tôi xác thực các phát hiện của mình thông qua các thực nghiệm quy mô lớn, bao gồm các tác vụ tạo hội thoại và các tác vụ tạo mã nguồn đầy thách thức hơn mang nhiều loại phản hồi và mức độ khó khác nhau. Kết quả cho thấy PPO liên tục vượt trội hơn DPO trong tất cả các thực nghiệm.</li>
+        </ol>
+
+        <p>Đặc biệt, trong các tác vụ thi đấu lập trình thử thách nhất, PPO đạt được các kết quả xuất sắc nhất hiện nay (state-of-the-art). Cụ thể, trên tập dữ liệu CodeContest (Li và cộng sự, 2022), mô hình PPO với 34 tỷ (34B) tham số của chúng tôi đã vượt qua AlphaCode-41B (Li và cộng sự, 2022), thể hiện sự cải tiến chỉ số pass@1k từ 16.4% lên 22.4%.</p>
+
+        <!-- Terminology glossary callout for Section 1 -->
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 1)</div>
+          <table style="margin: 0.5rem 0 0 0; background: transparent;">
+            <thead>
+              <tr style="background: transparent;">
+                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
+                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Ablation studies</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Nghiên cứu loại trừ / Thử nghiệm cắt bỏ. Phương pháp khoa học nhằm cô lập từng thành phần của hệ thống để đánh giá tác động riêng biệt đến hiệu suất chung.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Out-of-distribution (OOD)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Nằm ngoài phân phối dữ liệu huấn luyện thông thường.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Distribution shift</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Sự dịch chuyển phân phối dữ liệu giữa tập dữ liệu tĩnh và đầu ra mô hình sinh ra thực tế.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Advantage normalization</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Chuẩn hóa hàm lợi thế. Một kỹ thuật toán học chuẩn hóa tín hiệu lợi thế trong học tăng cường để làm mịn quá trình huấn luyện chính sách.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">EMA (Exponential Moving Average)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Trung bình trượt lũy thừa. Dùng để cập nhật dần trọng số của mô hình tham chiếu giúp ổn định quá trình tối ưu.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Reference model</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Mô hình tham chiếu (thường là mô hình SFT gốc) dùng để phạt KL nhằm giữ mô hình chính sách không đi quá xa khỏi phân phối ngôn ngữ tự nhiên ban đầu.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">pass@k (e.g., pass@1k)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Chỉ số đo lường khả năng lập trình. Tỉ lệ vượt qua các bài kiểm thử tự động của các mã nguồn được sinh ra (ví dụ: pass@1k nghĩa là sinh ra 1000 mẫu mã nguồn và kiểm tra xem có ít nhất một mẫu giải đúng bài toán hay không).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3 -->
+      <section id="sec-3">
+        <h2>3. Kiến thức nền tảng</h2>
+        
+        <h3>Mô hình ngôn ngữ</h3>
+        <p>Chúng tôi xem xét một mô hình ngôn ngữ lớn (LLM) như một chính sách (policy) $\pi_\theta(y | x)$ được tham số hóa bởi $\theta$. $\pi_\theta$ được thiết kế để tuân theo các câu lệnh hướng dẫn của người dùng (user instructions) $x \in \mathcal{X}$ nhằm tạo ra một phản hồi văn bản $y \in \mathcal{Y}$. Để đơn giản hóa các ký hiệu toán học, chúng tôi chỉ xem xét các cuộc hội thoại đơn thoại (single-round conversations). Khi nhận được một câu lệnh (prompt) $x$, LLM $\pi_\theta$ sẽ tạo ra phản hồi $y$ theo phương thức tự hồi quy (auto-regressive):</p>
+        <p>\[\pi_\theta (y | x) = \prod_{t} \pi_\theta (y_t | x, y_{\lt t}), \quad (1)\]</p>
+        <p>trong đó $y_t$ là token thứ $t$ trong phản hồi và $y_{\lt t}$ là các token trong phản hồi đứng trước $y_t$.</p>
+
+        <h3>SFT (Supervised Fine-Tuning)</h3>
+        <p>Là giai đoạn đầu tiên của quá trình căn chỉnh, mô hình tiền huấn luyện được buộc phải bắt chước dữ liệu mẫu chất lượng cao (hội thoại, tóm tắt văn bản, v.v.), quá trình này thường được gọi là <strong>Tinh chỉnh có giám sát (Supervised Fine-Tuning - SFT)</strong>.</p>
+
+        <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+        <p>Để tiếp tục căn chỉnh mô hình SFT $\pi_\theta$ theo tùy chọn của con người, các nghiên cứu trước đây (Ziegler và cộng sự, 2019; Ouyang và cộng sự, 2022) đã đề xuất quy trình Học tăng cường từ phản hồi của con người (RLHF) nhằm tối đa hóa hàm mục tiêu sau:</p>
+        <p>\[J_r(\pi_\theta) = \mathbb{E}_{x \sim p_{\text{data}}, y \sim \pi_\theta} \left[ r(x,y) - \beta \log \frac{\pi_\theta(y | x)}{\pi_{\text{ref}}(y | x)} \right], \quad (2)\]</p>
+        <p>trong đó:</p>
+        <ul>
+          <li>$r$ là hàm phần thưởng phản ánh tùy chọn của con người. Hàm $r$ nhận đầu vào là một câu lệnh cùng phản hồi tương ứng của nó và xuất ra một giá trị vô hướng (scalar value).</li>
+          <li>$\pi_{\text{ref}}$ là mô hình tham chiếu (reference model) được sử dụng để điều hòa (regularizing) $\pi_\theta$ bằng khoảng cách Kullback–Leibler (KL divergence).</li>
+          <li>$\beta$ là một hằng số dùng để kiểm soát mức độ điều hòa (regularization strength).</li>
+        </ul>
+
+        <p>Trong phần còn lại của mục này, chúng tôi sẽ giới thiệu hai thuật toán tiêu biểu để tối ưu hóa Phương trình (2): một hướng tiếp cận dựa trên phần thưởng là PPO, và một hướng tiếp cận không dựa trên phần thưởng là DPO.</p>
+
+        <h3>Thuật toán PPO (Proximal Policy Optimization)</h3>
+        <p>Chúng tôi có thể áp dụng trực tiếp các phương pháp học tăng cường tiêu chuẩn cho Phương trình (2). Trong bài báo này, chúng tôi chọn PPO làm thuật toán huấn luyện. Khi chưa biết hàm $r$, một mô hình phần thưởng $r_\phi \in \mathbb{R}$ trước tiên sẽ được học từ dữ liệu do con người gắn nhãn để xấp xỉ $r$.</p>
+        <p>Cách làm phổ biến là thu thập một tập dữ liệu gồm các cặp ưu tiên $\mathcal{D} = \{(x, y_w, y_l)\}$. Trong đó, $y_w$ và $y_l$ là các phản hồi cho câu lệnh $x$, và lần lượt được con người đánh dấu là "thắng" (win) và "thua" (lose). Phân phối của tập dữ liệu ưu tiên được giả định là tuân theo mô hình Bradley-Terry (Bradley &amp; Terry, 1952; Christiano và cộng sự, 2017), tức là xác suất để phản hồi $y_w$ tốt hơn $y_l$ được tính bằng:</p>
+        <p>\[P_\phi(y_w \succ y_l | x) = \frac{\exp(r_\phi(x,y_w))}{\exp(r_\phi(x,y_w)) + \exp(r_\phi(x,y_l))} = \sigma(r_\phi(x,y_w) - r_\phi(x,y_l)), \quad (3)\]</p>
+        <p>trong đó $\sigma$ là hàm sigmoid. Cho trước tập dữ liệu $\mathcal{D}$, $r_\phi$ được huấn luyện bằng cách tối thiểu hóa hàm log-likelihood âm của Phương trình (3):</p>
+        <p>\[\mathcal{L}_R(r_\phi) = -\mathbb{E}_{(x,y_w,y_l) \sim \mathcal{D}} [\log \sigma(r_\phi(x,y_w) - r_\phi(x,y_l))], \quad (4)\]</p>
+        <p>Sau khi thu được mô hình phần thưởng $r_\phi$, hàm $r$ được thay thế bằng $r_\phi$ và hàm mục tiêu $J_{r_\phi}(\pi_\theta)$ có thể được tối ưu hóa một cách tường minh bằng các thuật toán RL trực tuyến (online RL). Trong các trường hợp đã có sẵn phần thưởng thực tế khách quan (ground-truth reward), việc xây dựng mô hình phần thưởng trở nên không cần thiết, hàm phần thưởng có thể được tích hợp trực tiếp vào Phương trình (2). Mặc dù các thuật toán actor-critic khác cũng có khả năng khả thi, chúng tôi vẫn tuân theo dòng nghiên cứu chủ lưu và tập trung vào PPO cho các phân tích của mình.</p>
+
+        <div class="callout" style="background-color: #fefefe; border-left-color: #d97706;">
+          <div class="callout-title">Bảng 1: Phản ví dụ phi trạng thái (state-less) với ba hành động</div>
+          <p>Dưới đây minh họa một trường hợp đặc biệt khi DPO tối thiểu hóa hàm mất mát (loss) nhưng lại tạo ra một chính sách không mong muốn. PPO sẽ không tạo ra $\pi_{\text{PPO}}$ giống $\pi_{\text{DPO}}$ vì $\pi_{\text{ref}}$ buộc xác suất xuất ra $y_3$ phải bằng không.</p>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Đại lượng / Thành phần</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Hành động $y_1$</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Hành động $y_2$</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Hành động $y_3$</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Chính sách tham chiếu $\pi_{\text{ref}}$</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.5</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.5</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.0</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Tập dữ liệu ưu tiên $\mathcal{D}_{\text{pref}}$</td>
+                <td colspan="3" style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">$\{(y_w = y_1, y_l = y_2)\}$</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Chính sách học từ DPO $\pi_{\text{DPO}}$</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.1</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.0</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626; font-weight: 700;">0.9 (Không mong muốn)</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Chính sách học từ PPO $\pi_{\text{PPO}}$</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">1.0</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.0</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">0.0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Thuật toán DPO (Direct Preference Optimization)</h3>
+        <p>Thay vì học một mô hình phần thưởng trung gian, phương pháp Tối ưu hóa ưu tiên trực tiếp (Direct Preference Optimization - DPO) tối ưu hóa chính sách $\pi_\theta$ trực tiếp trên dữ liệu ưu tiên. DPO đã dẫn giải nghiệm dạng đóng (closed-form solution) của Phương trình (2), qua đó làm rõ mối quan hệ giữa hàm phần thưởng $r(x,y)$ và mô hình ngôn ngữ tối ưu $\pi^*(y | x)$:</p>
+        <p>\[\pi^*(y | x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y | x) \exp \left( \frac{1}{\beta} r(x,y) \right), \quad (5)\]</p>
+        <p>trong đó $Z(x)$ là một hàm phân hoạch (partition function) chỉ phụ thuộc vào câu lệnh $x$. Theo Phương trình (5), nếu $\pi_\theta$ tối đa hóa $J_{r_\phi}(\pi_\theta)$, hàm phần thưởng tiềm ẩn bên dưới có thể được dẫn giải bằng:</p>
+        <p>\[r_\phi(x,y) = \beta \log \frac{\pi_\theta(y | x)}{\pi_{\text{ref}}(y | x)} + C(x), \quad (6)\]</p>
+        <p>trong đó $C : \mathcal{X} \to \mathbb{R}$ là một hàm vô hướng. Điều này cho phép chúng tôi tái tham số hóa (reparameterize) Phương trình (4) theo chính sách $\pi_\theta$, và từ đó có thể dẫn dắt ra hàm mất mát DPO (DPO loss) để tối ưu hóa trực tiếp $\pi_\theta$, cụ thể là:</p>
+        <p>\[\mathcal{L}_{\text{DPO}}(\pi_\theta) = -\mathbb{E}_{(x,y_w,y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w | x)}{\pi_{\text{ref}}(y_w | x)} - \beta \log \frac{\pi_\theta(y_l | x)}{\pi_{\text{ref}}(y_l | x)} \right) \right]. \quad (7)\]</p>
+        <p>Chúng tôi lưu ý rằng mặc dù nghiên cứu gốc thực hiện DPO đơn vòng (single-round) trên tập dữ liệu ưu tiên tĩnh, một số nghiên cứu gần đây cũng đã điều chỉnh DPO thành một biến thể lặp (iterative variant) kết hợp với một mô hình phần thưởng đã được học. Chúng tôi cũng tiến hành khảo sát hiệu suất của phương pháp DPO lặp này.</p>
+
+        <!-- Terminology glossary callout for Section 3 -->
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 3)</div>
+          <table style="margin: 0.5rem 0 0 0; background: transparent;">
+            <thead>
+              <tr style="background: transparent;">
+                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
+                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Policy ($\pi$)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Chính sách. Trong học tăng cường và sinh văn bản, đây là phân phối xác suất quyết định hành động (hoặc từ ngữ tiếp theo) dựa trên trạng thái (hoặc ngữ cảnh câu lệnh hiện tại).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Auto-regressive</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tự hồi quy. Cơ chế sinh dữ liệu tuần tự, trong đó từ/token được tạo ra ở bước tiếp theo phụ thuộc vào toàn bộ các từ đã được tạo ra trước đó.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Regularization / Regularizing</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Điều hòa / Làm mượt. Các kỹ thuật áp đặt hình phạt toán học (như phạt khoảng cách KL) để giữ mô hình học tập không bị thay đổi quá xa, tránh quá khớp (overfitting).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">KL Divergence</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Độ đo Kullback–Leibler. Công cụ toán học đo lường mức độ khác biệt giữa hai phân phối xác suất (ở đây là giữa chính sách mới và chính sách tham chiếu SFT gốc).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Closed-form solution</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Nghiệm dạng đóng / Nghiệm giải tích. Nghiệm có thể biểu diễn tường minh dưới dạng biểu thức toán học và tính trực tiếp, thay vì phải chạy giải thuật lặp xấp xỉ số.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Partition function</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Hàm phân hoạch (ký hiệu là Z(x)). Đại lượng chuẩn hóa trong các mô hình xác suất nhằm đưa tổng các giá trị xác suất về bằng 1.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Reparameterization</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tái tham số hóa. Biểu diễn lại các tham số của một mô hình thông qua các biến số khác nhằm thuận tiện hơn cho việc đạo hàm và tối ưu hóa toán học.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4 -->
+      <section id="sec-4">
+        <h2>4. Hiểu về những hạn chế của DPO</h2>
+        <p>Trong phần này, chúng tôi chứng minh rằng DPO chưa chắc đã vượt trội hơn PPO. Đầu tiên, chúng tôi chỉ ra các vấn đề mang tính lý thuyết đối với hàm mục tiêu huấn luyện của DPO. Thứ hai, thông qua một ví dụ mô phỏng, chúng tôi minh họa rằng DPO dễ bị tổn thương hơn trước dữ liệu nằm ngoài phân phối (out-of-distribution - OOD). Cuối cùng, thông qua các thực nghiệm trên một tập dữ liệu ưu tiên thực tế, chúng tôi xác thực rằng hiệu suất của DPO có thể được cải thiện bằng cách giảm thiểu sự dịch chuyển phân phối (distribution shift) giữa đầu ra của mô hình và tập dữ liệu ưu tiên.</p>
+
+        <h3>4.1. Phân tích lý thuyết</h3>
+        <p>Một điều đã được biết đến rộng rãi là PPO có thể khai thác các lỗi của mô hình phần thưởng đã học để đạt được phần thưởng cao mà không thực sự đáp ứng đúng tùy chọn của con người; điều này thường biểu hiện qua các đầu ra sai lệch (Lewis và cộng sự, 2017) hoặc phức tạp quá mức (Singhal và cộng sự, 2023). Chúng tôi lập luận rằng, mặc dù DPO né được việc xây dựng mô hình phần thưởng, nó vẫn gặp phải một vấn đề tương tự về khả năng tổng quát hóa (generalization issue).</p>
+        
+        <p>Trong định lý dưới đây, chúng tôi sẽ chỉ ra rằng bất kỳ nghiệm nào tìm được bởi PPO cũng làm tối thiểu hóa hàm mục tiêu DPO; do đó, bất kỳ nghiệm nào tìm được bởi PPO khai thác lỗi với mô hình phần thưởng thì cũng có thể bị tìm thấy bởi DPO. Hơn nữa, DPO có khả năng tìm ra các nghiệm khai thác dữ liệu nằm ngoài phân phối, dẫn đến nguy cơ lệch quá mức khỏi chính sách tham chiếu, ngay cả khi chính sách tham chiếu đó vốn đã căn chỉnh rất tốt với tùy chọn của con người.</p>
+
+        <div class="callout" style="background-color: #f8fafc; border-left-color: var(--primary-color);">
+          <div class="callout-title">Định lý 4.1 (Quan hệ tập hợp giữa PPO và DPO)</div>
+          <p>Cho trước một hàm phần thưởng thực tế khách quan (ground-truth reward) $r$ và một tập dữ liệu ưu tiên $\mathcal{D}$. Gọi $\Pi_{\text{PPO}}$ là lớp các chính sách được tạo ra bằng cách huấn luyện mô hình phần thưởng $r_\phi$ trên $\mathcal{D}$ và chạy PPO để tối ưu hóa $J_{r_\phi}(\theta)$. Gọi $\Pi_{\text{DPO}}$ là lớp các chính sách được tạo ra bằng cách tối thiểu hóa hàm mục tiêu DPO. Ta có:</p>
+          <p style="text-align: center; font-weight: bold; font-size: 1.1rem;">$\Pi_{\text{PPO}}$ là một tập con thực sự (proper subset) của $\Pi_{\text{DPO}}$ ($\Pi_{\text{PPO}} \subsetneq  \Pi_{\text{DPO}}$)</p>
+        </div>
+
+        <div style="background-color: #fafafa; border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0;">Chứng minh Định lý 4.1</h4>
+          <p><strong>Bước 1: Chứng minh $\Pi_{\text{PPO}} \subseteq \Pi_{\text{DPO}}$.</strong></p>
+          <p>Gọi $\mathcal{R}$ là lớp các mô hình phần thưởng làm tối thiểu hóa hàm mất mát khi học phần thưởng trong Phương trình (4). Có một ánh xạ một-nhiều giữa $\Pi_{\text{PPO}}$ và $\mathcal{R}$ theo Phương trình (6). Không làm mất tính tổng quát, chúng tôi bỏ qua hệ số vô hướng $C(x)$ và định nghĩa $f$ là một ánh xạ một-một từ một chính sách sang một hàm phần thưởng:</p>
+          <p>\[f(\pi)(x,y) = \beta \log \frac{\pi(y|x)}{\pi_{\text{ref}}(y|x)}\]</p>
+          <p>Chúng tôi chỉ ra rằng hàm mất mát DPO tối thiểu cũng chính là hàm mất mát học phần thưởng tối thiểu, nghĩa là $\min_{\pi} \mathcal{L}_{\text{DPO}}(\pi) = \min_{\pi} \mathcal{L}_R(f(\pi)) \geq \min_{r} \mathcal{L}_R(r)$. Đối với một nghiệm tối thiểu $r^*$ của $\mathcal{L}_R(r)$, chúng tôi cấu trúc chính sách $\pi^*$ từ $r^*$ bằng Phương trình (5), từ đó suy ra $\min_{\pi} \mathcal{L}_{\text{DPO}}(\pi) \leq \mathcal{L}_{\text{DPO}}(\pi^*) = \min_{r} \mathcal{L}_R(r)$. Do đó, hàm mất mát học phần thưởng và hàm mất mát DPO là như nhau:</p>
+          <p>\[\forall r_\phi \in \mathcal{R}, \pi_{\text{DPO}} \in \Pi_{\text{DPO}}, \quad \min_{r} \mathcal{L}_R(r) = \mathcal{L}_R(r_\phi) = \mathcal{L}_{\text{DPO}}(\pi_{\text{DPO}}) = \min_{\pi} \mathcal{L}_{\text{DPO}}(\pi)\]</p>
+          <p>Đối với bất kỳ nghiệm nào tìm được bởi PPO, $\pi_{\text{PPO}} \in \Pi_{\text{PPO}}$, hàm phần thưởng $r^* = f(\pi_{\text{PPO}})$ thỏa mãn điều kiện $\pi_{\text{PPO}}$ là một nghiệm tối đa của $J_{r^*}(\pi)$ và $\pi_{\text{PPO}}$ có thể được biểu diễn qua $r^*$ bằng:</p>
+          <p>\[\pi_{\text{PPO}}(y | x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y | x) \exp \left( \frac{1}{\beta} r^*(x,y) \right) \quad (8)\]</p>
+          <p>Thay $\pi_{\text{PPO}}$ bằng Phương trình (8) vào $\mathcal{L}_{\text{DPO}}(\pi_{\text{PPO}})$, ta thu được $\mathcal{L}_{\text{DPO}}(\pi_{\text{PPO}}) = \mathcal{L}_R(r_\phi)$. Do đó, $\pi_{\text{PPO}}$ cũng làm tối thiểu hóa hàm mất mát DPO, tức là $\pi_{\text{PPO}} \in \Pi_{\text{DPO}}$.</p>
+          
+          <p><strong>Bước 2: Chứng minh $\Pi_{\text{PPO}} \subsetneq \Pi_{\text{DPO}}$.</strong></p>
+          <p>Chứng minh bằng phản ví dụ trong Bảng 1. Ở đây tồn tại nghiệm DPO, $\pi_{\text{DPO}} \in \Pi_{\text{DPO}}$, mà không làm tối đa hóa hàm mục tiêu RL của PPO trong Phương trình (2).</p>
+          <p>Xét trường hợp phi trạng thái đơn giản với ba hành động, tập dữ liệu ưu tiên chỉ chứa một cặp so sánh duy nhất giữa $y_1$ và $y_2$. Gọi xác suất chính sách DPO $\pi_{\text{DPO}}$ xuất ra hai hành động đầu tiên lần lượt là $a$ và $b$. Hàm mất mát DPO được tính bằng $\mathcal{L}_{\text{DPO}} = \log(1 + (b/a)^\beta)$, hàm này tối thiểu hóa khi $b = 0$.</p>
+          <p>Một chính sách tối ưu khả dĩ của DPO (như hàng 3 Bảng 1) có xác suất $0.1$ xuất ra $y_1$ và $0.9$ xuất ra $y_3$. Chính sách này không thể được tạo ra bởi PPO vì $\pi_{\text{ref}}$ buộc $\pi_{\text{PPO}}$ phải gán xác suất bằng $0$ cho $y_3$ theo Phương trình (8).</p>
+        </div>
+
+        <p>Nguyên nhân gốc rễ của việc <strong>xác định sai lệch phần thưởng (reward misspecification)</strong> là do độ bao phủ phân phối hạn hẹp của tập dữ liệu ưu tiên. Mặc dù DPO tránh việc huấn luyện mô hình phần thưởng, nó vẫn phải chịu vấn đề xác định sai lệch này trên các mẫu nằm ngoài phân phối (OOD). DPO có thể phát triển một phân phối thiên lệch (biased distribution) thiên vị các phản hồi chưa từng thấy. Ngược lại, PPO có thể tận dụng dữ liệu chỉ chứa câu lệnh (prompt-only data) để tạo ra các phản hồi mới trực tuyến, và khoảng cách KL với $\pi_{\text{ref}}$ sẽ cung cấp thêm cơ chế điều hòa bổ sung giúp PPO tránh bị chệch hướng trên các mẫu OOD này.</p>
+
+        <h3>4.2. Xác thực thực nghiệm trong một kịch bản mô phỏng</h3>
+        <p>Chúng tôi thiết kế một kịch bản mô phỏng để xác thực Định lý 4.1. Không gian câu lệnh và phản hồi rời rạc có kích thước là 8. Chính sách $\pi_\theta$ và mô hình phần thưởng $r_\phi$ được mô hình hóa bằng các mạng MLP (Perceptron đa tầng), nhận vào một vectơ một nóng (one-hot vector) và xuất ra một phân phối phân loại cho toàn bộ các phản hồi. Chúng tôi áp đặt thủ công để phản hồi tối ưu nằm ở các chỉ số đường chéo. Tập dữ liệu ưu tiên được tạo ngẫu nhiên dưới ràng buộc này và chỉ bao phủ các cặp ưu tiên hạn chế cho mỗi đầu vào.</p>
+        
+        <p>Kết quả mô phỏng chỉ ra rằng:</p>
+        <ul>
+          <li><strong>Đối với DPO:</strong> Mô hình cuối cùng có thể gán xác suất cho các phản hồi nằm ngoài phân phối (OOD) cao hơn cả mô hình tham chiếu. Ví dụ, tại một số phản hồi OOD, DPO làm tăng xác suất từ $0.11$ lên $0.23$. Đây là hành vi không mong muốn vì không thể đảm bảo chất lượng trên các vùng dữ liệu OOD này.</li>
+          <li><strong>Đối với PPO:</strong> Nhờ cơ chế điều hòa KL tường minh trực tiếp đối với mô hình tham chiếu ($\pi_{\text{ref}}$) trong suốt quá trình tương tác trực tuyến, PPO kiểm soát chặt chẽ xác suất của các hành động OOD, ngăn chặn hiện tượng rò rỉ phân phối và lệch chính sách.</li>
+        </ul>
+
+        <h3>4.3. Thực nghiệm trên các tập dữ liệu ưu tiên thực tế</h3>
+        <p>Chúng tôi tiến hành thực nghiệm trên tập dữ liệu SafeRLHF (Dai và cộng sự, 2023) nhằm huấn luyện một LLM ưu tiên tính an toàn (safety) hơn tính hữu ích (helpfulness). Các phản hồi được gán nhãn an toàn nhị phân và nhãn ưu tiên.</p>
+        <p>Mô hình cơ sở ban đầu là <strong>SFT (Alpaca)</strong> được huấn luyện trên tập dữ liệu Alpaca (Taori và cộng sự, 2023). Chúng tôi sử dụng các mô hình đánh giá độc lập chính thức để đo lường mức độ hữu ích và mức độ độc hại sau khi huấn luyện.</p>
+
+        <div class="callout" style="background-color: #fcfcfc; border-left-color: var(--secondary-color);">
+          <div class="callout-title">Bảng 2: Kết quả thực nghiệm DPO trên tập dữ liệu SafeRLHF</div>
+          <p>Bảng dưới đây thống kê tác động của sự dịch chuyển phân phối (distribution shift) và phương pháp thu thập dữ liệu lặp đối với hiệu suất của DPO:</p>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Thuật toán &amp; Cấu hình</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Mô hình cơ sở / tham chiếu</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Tỷ lệ an toàn (Safety Rate)</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Phần thưởng hữu ích (Helpfulness)</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Phân tích hiện tượng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO tiêu chuẩn</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">SFT (Alpaca)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">55.4%</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">-4.19</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Hiệu suất kém do sự dịch chuyển phân phối lớn giữa tập dữ liệu Alpaca và SafeRLHF.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO (Giảm dịch chuyển)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">SFT (Safe)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">71.8% (+16.4%)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; font-weight: bold;">-1.62</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Tinh chỉnh trước SFT trên SafeRLHF giúp căn chỉnh phân phối ban đầu, tăng vọt cả độ an toàn lẫn hữu ích.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO-Iter (DPO lặp)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">Cập nhật lặp qua các vòng</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Tương đương PPO</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">Thấp hơn nhiều so với PPO</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Giảm dịch chuyển bằng dữ liệu tự sinh lặp lại, tuy nhiên điểm phần thưởng hữu ích vẫn bị kéo thấp.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Các thực nghiệm trên chỉ ra hai yếu tố tác động mạnh mẽ đến DPO:</p>
+        <ul>
+          <li><strong>Ảnh hưởng của mô hình cơ sở:</strong> Việc dịch chuyển phân phối giữa dữ liệu tiền huấn luyện của mô hình cơ sở và dữ liệu ưu tiên làm suy giảm nặng nề DPO. Giải quyết dịch chuyển này (bằng cách tinh chỉnh SFT trên cùng tập dữ liệu ưu tiên trước) giúp DPO cải thiện rõ rệt.</li>
+          <li><strong>Độ nhạy đối với dữ liệu ưu tiên:</strong> Lọc bỏ các cặp dữ liệu gây tranh cãi (cùng-an-toàn, cùng-không-an-toàn) giúp tăng độ an toàn của DPO, nhưng việc lọc bỏ quá mức các cặp dữ liệu chất lượng cao sẽ làm tổn hại nghiêm trọng đến độ hữu ích của mô hình.</li>
+        </ul>
+
+        <div class="callout" style="background-color: #fffbeb; border-left-color: #d97706;">
+          <div class="callout-title">📌 Lưu ý thực tế về cải tiến DPO</div>
+          <p>Để cải thiện DPO, chúng tôi khuyến nghị áp dụng phương pháp <strong>DPO lặp (Iterative DPO)</strong>: Tạo phản hồi mới từ mô hình cơ sở ở mỗi vòng, gán nhãn ưu tiên bằng mô hình phần thưởng, rồi huấn luyện DPO vòng tiếp theo. Tuy nhiên, hiệu suất DPO lặp vẫn sẽ gặp giới hạn lớn trong các tác vụ tạo mã nguồn phức tạp (xem chi tiết ở Mục 6).</p>
+        </div>
+
+        <!-- Terminology glossary callout for Section 4 -->
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 4)</div>
+          <table style="margin: 0.5rem 0 0 0; background: transparent;">
+            <thead>
+              <tr style="background: transparent;">
+                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
+                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Proper subset</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tập con thực sự (toán học). Tập hợp $A$ là tập con thực sự của $B$ ký hiệu là $A \subsetneq B$, nghĩa là mọi phần tử của $A$ đều nằm trong $B$, nhưng tồn tại phần tử của $B$ không thuộc $A$.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">One-to-one mapping</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Ánh xạ một-một (đơn ánh). Ánh xạ mà mỗi phần tử ở tập nguồn được liên kết với duy nhất một phần tử ở tập đích.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">State-less</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phi trạng thái. Trong học tăng cường, mô hình phi trạng thái không lưu trữ thông tin về các bước đi trước đó mà chỉ tối ưu hóa dựa trên phần thưởng tức thời của hành động hiện tại.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Reward misspecification</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Xác định sai lệch phần thưởng. Hiện tượng hàm phần thưởng toán học học được bị lỗi hoặc có lỗ hổng (loophole), khiến tác nhân tối đa hóa điểm số phần thưởng nhưng lại hành động sai lệch hoặc tạo ra kết quả vô nghĩa.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Dual-unsafe / Dual-safe</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Cùng-không-an-toàn / Cùng-an-toàn. Các cặp phản hồi so sánh trong dữ liệu ưu tiên mà cả hai phương án đều vi phạm an toàn hoặc đều an toàn, gây khó khăn cho việc huấn luyện so sánh biên độ của DPO.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">DPO-Iter (Iterative DPO)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">DPO lặp. Phương pháp huấn luyện DPO qua nhiều vòng, ở mỗi vòng sử dụng chính mô hình của vòng trước để tự sinh dữ liệu mới và gắn nhãn, nhằm giảm thiểu sự lệch phân phối tĩnh.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5 -->
+      <section id="sec-5">
+        <h2>5. Các yếu tố then chốt đối với PPO trong RLHF</h2>
+        <p>Trong phần này, chúng tôi nghiên cứu các yếu tố then chốt quyết định hiệu suất RLHF của PPO. Chúng tôi tìm ra ba kỹ thuật cốt lõi: (1) chuẩn hóa hàm lợi thế (advantage normalization) (Raffin và cộng sự, 2021), (2) huấn luyện với kích thước lô lớn (large batch-size training) (Yu và cộng sự, 2022), và (3) cập nhật các tham số của mô hình tham chiếu bằng trung bình trượt lũy thừa (exponential moving average - EMA) (Ouyang và cộng sự, 2022).</p>
+        <p>Hai kỹ thuật đầu tiên đã được áp dụng rộng rãi trong cộng đồng Học tăng cường (RL) nhưng chưa được nghiên cứu kỹ lưỡng trong lĩnh vực RLHF. Kỹ thuật thứ ba là một phương pháp còn ít được thảo luận trong các tài liệu nghiên cứu trước đây, liên quan đến việc cập nhật dần dần mô hình tham chiếu thông qua trung bình trượt lũy thừa (Ouyang và cộng sự, 2022). Hướng tiếp cận đặc biệt này có tiềm năng mang lại những cải tiến hiệu suất bổ sung.</p>
+
+        <h3>Chi tiết triển khai</h3>
+        <p>Hệ thống triển khai PPO của chúng tôi được xây dựng dựa trên DeepSpeed-Chat (Yao và cộng sự, 2023), ngoại trừ hai thay đổi quan trọng:</p>
+        <ol>
+          <li>Chúng tôi sử dụng một phần thưởng dạng vô hướng (scalar reward) cho mỗi phản hồi thay vì các phần thưởng dày đặc (dense rewards) được gán trên từng token.</li>
+          <li>Chúng tôi bỏ qua hàm mất mát SFT bổ trợ (auxiliary SFT loss) trong quá trình huấn luyện PPO do lượng dữ liệu có hạn.</li>
+        </ol>
+        <p>Việc triển khai này bao gồm các kỹ thuật PPO phổ biến như giới hạn hàm mất mát giá trị (value loss clip) và ước lượng lợi thế tổng quát (Generalized Advantage Estimation - GAE) (Schulman và cộng sự, 2016).</p>
+
+        <h3>Thiết lập thực nghiệm</h3>
+        <p>Các thực nghiệm loại trừ (ablation experiments) của chúng tôi đối với PPO được thực hiện trên một tác vụ hội thoại HH-RLHF (Bai và cộng sự, 2022) cùng hai tác vụ tạo mã nguồn: APPS (Hendrycks và cộng sự, 2021) và CodeContest (Li và cộng sự, 2022).</p>
+        <ul>
+          <li><strong>Tác vụ HH-RLHF:</strong> Tập dữ liệu ưu tiên để huấn luyện một LLM hữu ích và vô hại thông qua phản hồi ưu tiên (preference feedback).</li>
+          <li><strong>Tác vụ APPS &amp; CodeContest:</strong> Tập dữ liệu lập trình thi đấu. Cho trước một bài toán, LLM phải xuất ra đoạn mã nguồn. Tính chính xác được xác thực trực tiếp bằng các bài kiểm thử tự động (test cases), tạo ra phản hồi phần thưởng trực tiếp (direct reward feedback) cho PPO và DPO.</li>
+        </ul>
+        <p>Trong kết quả thực nghiệm, chúng tôi ký hiệu:</p>
+        <ul>
+          <li>Kỹ thuật chuẩn hóa hàm lợi thế là <strong>Adv. Norm.</strong></li>
+          <li>Huấn luyện với kích thước lô lớn là <strong>Large Batch</strong>.</li>
+          <li>Cập nhật mô hình tham chiếu bằng trung bình trượt lũy thừa là <strong>Ref. EMA</strong>.</li>
+        </ul>
+
+        <h3>Phân tích kết quả thực nghiệm</h3>
+        <div class="callout" style="background-color: #fcfcfc; border-left-color: var(--primary-color);">
+          <div class="callout-title">Bảng 3: Nghiên cứu loại trừ (Ablation Study) về các thành phần cốt lõi của PPO</div>
+          <p>Bảng dưới đây tóm tắt định tính tác động của từng thành phần kỹ thuật lên hiệu suất của PPO trên các tập dữ liệu khác nhau:</p>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Cấu hình PPO</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">HH-RLHF (Hội thoại)</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">APPS (Mã nguồn)</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">CodeContest (Mã nguồn)</th>
+                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Nhận xét thực nghiệm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">SFT Baseline (Gốc)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Điểm cơ sở ban đầu trước khi căn chỉnh RLHF.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Baseline PPO (Lô nhỏ)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện (&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">Giảm mạnh (&darr;&darr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện nhẹ (&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Lô nhỏ (như 64) làm giảm mạnh hiệu suất trên APPS xuống 33.7% ở cấp độ nhập môn.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm.</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện tốt (&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Ổn định lại (&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Ổn định (&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Chuẩn hóa hàm lợi thế giúp làm mượt và ổn định quá trình tối ưu hóa.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm. + Large Batch</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng mạnh (&uarr;&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng vượt bậc (&uarr;&uarr;&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng tốt (&uarr;&uarr;)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Kích thước lô lớn đem lại bước đột phá lớn nhất, đặc biệt đối với các tác vụ viết code.</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm. + Large Batch + Ref. EMA</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
+                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Cập nhật trượt mô hình tham chiếu đem lại các cải tiến hiệu suất bổ sung cuối cùng.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>Phân tích logic của Ref. EMA:</strong> Trong khi mô hình chính sách LLM chính của PPO đang thay đổi nhanh chóng, mô hình tham chiếu cũng nên được cập nhật một cách mượt mà tương ứng qua trung bình trượt lũy thừa. Nếu giữ nguyên mô hình tham chiếu tĩnh SFT gốc, mô hình chính sách đang học sẽ bị ràng buộc điều hòa KL quá mạnh để buộc phải giống hệt mô hình cũ, làm cản trở việc học các tri thức tối ưu mới trong các tác vụ viết code đầy thử thách.</p>
+        
+        <p>Hình 2 của nghiên cứu chứng minh việc tăng kích thước lô của PPO liên tục cải thiện hiệu suất trên tất cả các cấp độ khó của tập dữ liệu APPS (Introductory, Interview, Competition). Phát hiện này hoàn toàn nhất quán với kết luận chung trong cộng đồng học tăng cường (RL).</p>
+
+        <!-- Terminology glossary callout for Section 5 -->
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 5)</div>
+          <table style="margin: 0.5rem 0 0 0; background: transparent;">
+            <thead>
+              <tr style="background: transparent;">
+                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
+                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Dense rewards</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phần thưởng dày đặc. Cơ chế gán điểm thưởng trên từng token sinh ra, trái ngược với phần thưởng vô hướng (scalar reward) chỉ chấm một điểm chung cho cả câu trả lời.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Value loss clip</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Giới hạn hàm mất mát giá trị. Kỹ thuật cắt bớt (clip) phần chênh lệch quá lớn trong hàm mất mát của Value Network trong thuật toán PPO nhằm ổn định cập nhật.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">GAE (Generalized Advantage Estimation)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Ước lượng lợi thế tổng quát. Một thuật toán tối ưu hóa trong RL giúp cân bằng giữa phương sai (variance) và độ chệch (bias) khi tính toán tín hiệu lợi thế của hành động.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Direct reward feedback</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phản hồi phần thưởng trực tiếp. Tín hiệu phần thưởng thu được từ việc đánh giá tự động (ví dụ: chạy code qua bộ test cases để biết đúng/sai) thay vì phải dựa trên so sánh mức độ ưu tiên tương đối của con người.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Introductory scale</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Cấp độ nhập môn. Phân khúc bài toán dễ nhất trong bộ benchmark lập trình APPS (bên cạnh cấp Interview và Competition).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 6 -->
+      <section id="sec-6">
+        <h2>6. Kết quả đánh giá đối sánh</h2>
+        <p>Trong phần này, chúng tôi tiến hành các xác thực thực nghiệm để đánh giá hiệu suất của cả DPO và PPO. Ban đầu, các thực nghiệm của chúng tôi tập trung vào các tác vụ hội thoại tổng quát, cụ thể là HH-RLHF và SafeRLHF. Mục tiêu chính là nâng cao hiệu quả của LLM thông qua việc thúc đẩy các tương tác mang tính xây dựng và giảm thiểu các thành phần độc hại bên trong mô hình. Thêm vào đó, nghiên cứu của chúng tôi cũng mở rộng sang các tác vụ tạo mã nguồn đòi hỏi khắt khe, cụ thể là APPS và CodeContest.</p>
+
+        <!-- Comparative Dashboard Grid -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin: 2rem 0;">
+          <!-- Card 1: HH-RLHF -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <h4 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+              <span>💬</span> Tập dữ liệu HH-RLHF (170K cặp hội thoại)
+            </h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Mục tiêu:</strong> Căn chỉnh LLM (Llama2-7B) trở nên hữu ích và vô hại thông qua các phản hồi ưu tiên từ con người.</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Phương pháp đánh giá:</strong> Sử dụng mô hình phần thưởng OpenAssistant độc lập và dùng GPT-4 để đánh giá tỷ lệ thắng (win rates) so sánh cặp.</p>
+            <div style="background-color: #f8fafc; border-left: 3px solid var(--secondary-color); padding: 0.75rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;">
+              <strong>Kết quả chính:</strong>
+              <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem;">
+                <li>Xếp hạng hiệu năng: <strong style="color: var(--secondary-color);">PPO &gt; DPO-Iter &gt; DPO</strong> &gt; RRHF / PRO / SFT.</li>
+                <li>PPO đạt được phần thưởng cao nhất và tỷ lệ thắng lớn nhất.</li>
+                <li>Đánh giá trực tiếp bằng GPT-4 cho thấy mô hình ưu ái phản hồi từ PPO hơn hẳn DPO.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 2: SafeRLHF -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <h4 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🛡️</span> Tập dữ liệu SafeRLHF (30K chuyên gia)
+            </h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Mục tiêu:</strong> Huấn luyện LLM tối ưu hóa đồng thời tính hữu ích (Helpfulness) và tính an toàn (Safety).</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Phương pháp đánh giá:</strong> Sử dụng mô hình phần thưởng (reward model) và mô hình chi phí (cost model) chính thức từ tác giả SafeRLHF.</p>
+            <div style="background-color: #f8fafc; border-left: 3px solid var(--secondary-color); padding: 0.75rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;">
+              <strong>Kết quả chính:</strong>
+              <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem;">
+                <li>Cả PPO và DPO đều giảm thành công tính độc hại của câu trả lời.</li>
+                <li>Tuy nhiên, <strong style="color: var(--secondary-color);">phản hồi từ PPO đạt điểm hữu ích (Helpfulness) vượt trội</strong> so với DPO.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 3: APPS -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <h4 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+              <span>💻</span> Tập dữ liệu APPS (Lập trình thi đấu)
+            </h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Mục tiêu:</strong> Tạo mã nguồn Python từ mô tả đề bài tự nhiên. Cung cấp phản hồi phần thưởng trực tiếp qua test cases (+10 nếu đúng toàn bộ, 0 nếu sai).</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Phương pháp đánh giá:</strong> Chỉ số pass@k (tỷ lệ giải đúng bằng cách tạo $k$ chương trình mẫu).</p>
+            <div style="background-color: #f8fafc; border-left: 3px solid var(--secondary-color); padding: 0.75rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;">
+              <strong>Kết quả chính:</strong>
+              <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem;">
+                <li><strong style="color: var(--secondary-color);">PPO liên tục cải thiện hiệu suất SFT</strong> trên mọi kích thước mô hình, và sự cải tiến càng mạnh khi quy mô mô hình tăng lên.</li>
+                <li>Đạt kết quả xuất sắc nhất hiện nay (SOTA) với mô hình <strong>CodeLlama-34B + PPO</strong>.</li>
+                <li>Ngược lại, <strong>DPO-Iter hoàn toàn thất bại</strong> trong việc cải thiện mô hình SFT gốc ở tất cả các kích thước.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 4: CodeContest -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <h4 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🏆</span> Tập dữ liệu CodeContest (Thi đấu lập trình nâng cao)
+            </h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Mục tiêu:</strong> Viết code Python giải các bài toán lập trình thi đấu cực khó. PPO dùng test case trực tiếp; DPO huấn luyện trên các đoạn mã đúng/sai sẵn có.</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Phương pháp đánh giá:</strong> Chỉ số k@n (lọc trên test công khai n mẫu, chọn k mẫu chạy trên test ẩn).</p>
+            <div style="background-color: #f8fafc; border-left: 3px solid var(--secondary-color); padding: 0.75rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;">
+              <strong>Kết quả chính:</strong>
+              <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem;">
+                <li><strong style="color: var(--secondary-color);">PPO nâng cấp cực mạnh mô hình SFT</strong>, đưa CodeLlama-34B đạt 22.4% pass@1k, đánh bại cả AlphaCode-41B (16.4%).</li>
+                <li><strong>DPO thất bại hoàn toàn:</strong> Sau 1 epoch huấn luyện, tỷ lệ pass của DPO rơi thẳng về <strong>0%</strong>. DPO liên tục sinh ra các đoạn mã vô nghĩa.</li>
+                <li>DPO-Iter cũng hoạt động kém hơn cả mô hình SFT gốc.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3>Phân tích sâu về sự thất bại của DPO trong lập trình</h3>
+        <p>Tạo mã nguồn là một tác vụ có tính logic cực kỳ khắt khe: chỉ cần sai một ký tự hoặc một logic nhỏ, đoạn mã sẽ thất bại hoàn toàn trước bộ test cases (phần thưởng bằng 0). Phép toán DPO học trực tiếp từ dữ liệu ưu tiên tĩnh bằng cách tối đa hóa tỉ lệ xác suất của mã đúng so với mã sai.</p>
+        <p>Tuy nhiên, do sự dịch chuyển phân phối tĩnh, mô hình DPO nhanh chóng bị chệch khỏi phân phối ngôn ngữ lập trình chuẩn, dẫn đến hiện tượng sinh ra các ký tự hoặc cấu trúc mã vô nghĩa (gibberish), làm tỉ lệ pass rơi về 0%. Trong khi đó, PPO tương tác trực tuyến, sinh mã trực tiếp và nhận phản thưởng ngay lập tức từ test cases thực tế, đồng thời được điều hòa chặt chẽ bởi khoảng cách KL với mô hình tham chiếu gốc, giữ cho cú pháp mã luôn chính xác và tập trung tối ưu thuật toán.</p>
+
+        <!-- Terminology glossary callout for Section 6 -->
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 6)</div>
+          <table style="margin: 0.5rem 0 0 0; background: transparent;">
+            <thead>
+              <tr style="background: transparent;">
+                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
+                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Cost model</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Mô hình chi phí. Trong căn chỉnh an toàn (Safe RLHF), bên cạnh mô hình phần thưởng chấm điểm độ hữu ích, mô hình chi phí đóng vai trò đo lường mức độ độc hại, nguy hiểm để phạt mô hình.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Description-to-code</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tạo mã nguồn từ mô tả. Tác vụ AI yêu cầu hiểu đề bài viết bằng ngôn ngữ tự nhiên và tự động viết chương trình mã nguồn thực thi được để giải bài toán đó.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">k@n (pass@k under n)</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Chỉ số kiểm thử lập trình thi đấu. Sinh ra $n$ mẫu mã nguồn, lọc các mẫu vượt qua bộ test case công khai, sau đó chọn ngẫu nhiên $k$ mẫu nộp lên hệ thống để chấm điểm bằng bộ test ẩn (hidden tests).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Epoch</td>
+                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Kỷ nguyên huấn luyện. Một chu kỳ trọn vẹn khi thuật toán tối ưu hóa duyệt qua và cập nhật trọng số trên toàn bộ các mẫu của tập dữ liệu huấn luyện một lần.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,404 @@
+/* Custom styling for Image Processing Lecture Notes (Scientific & Clean Theme) */
+
+:root {
+  --primary-color: #1e3a8a; /* Deep Slate Blue */
+  --secondary-color: #2563eb; /* Royal Blue for links & highlights */
+  --text-dark: #1f2937; /* Dark Gray for body text */
+  --text-light: #4b5563; /* Medium Gray for captions/subtext */
+  --bg-main: #fcfcfc; /* Off-white background */
+  --bg-card: #ffffff; /* White card background */
+  --bg-code: #f3f4f6; /* Very light gray for code/matrices */
+  --border-color: #e5e7eb; /* Light border color */
+  --highlight-bg: #eff6ff; /* Light blue accent background */
+  --highlight-border: #bfdbfe; /* Light blue border */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  background-color: var(--bg-main);
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+/* Header & Navigation */
+header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.nav-links a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumb a {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+  color: var(--primary-color);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.25rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+}
+
+/* Paragraphs & Lists */
+p {
+  margin-bottom: 1.25rem;
+  text-align: justify;
+}
+
+ul, ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.75rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Math, Code, Matrices */
+pre {
+  background-color: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background-color: var(--bg-code);
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.matrix {
+  font-family: var(--font-mono);
+  background-color: var(--bg-code);
+  border-left: 4px solid var(--primary-color);
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  letter-spacing: 0.1rem;
+  line-height: 1.5;
+  display: inline-block;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Scientific Callout Boxes */
+.callout {
+  background-color: var(--highlight-bg);
+  border-left: 4px solid var(--secondary-color);
+  border-radius: 0 6px 6px 0;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.callout-title {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* Beautiful Clean Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.95rem;
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+th {
+  background-color: #f8fafc;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #fcfcfc;
+}
+
+tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Sơ đồ quy trình (Diagram wrapper) */
+.flowchart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+}
+
+@media (min-width: 640px) {
+  .flowchart {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+.flow-node {
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--primary-color);
+  border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.flow-arrow {
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+@media (max-width: 639px) {
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+/* Bayer grid graphic */
+.bayer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.bayer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 40px);
+  grid-template-rows: repeat(2, 40px);
+  gap: 2px;
+  border: 2px solid var(--text-dark);
+  background-color: var(--text-dark);
+  width: fit-content;
+}
+
+.bayer-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.bayer-g { background-color: #10b981; } /* Green */
+.bayer-r { background-color: #ef4444; } /* Red */
+.bayer-b { background-color: #3b82f6; } /* Blue */
+
+.bayer-caption {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+
+/* Homepage Styles */
+.index-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.index-item {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background-color: var(--bg-card);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.index-item:hover {
+  border-color: var(--secondary-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.index-title {
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.index-title a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.index-title a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.index-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Footer styling */
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* PDF Export Button Styling */
+.pdf-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -1.5rem;
+  margin-bottom: 2rem;
+}
+
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--primary-color);
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.btn-pdf:hover {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-pdf:active {
+  transform: scale(0.97);
+}
+
+/* Print Media Query to match web design high-fidelity PDF */
+@media print {
+  body {
+    background-color: #ffffff;
+    color: #1f2937;
+    font-size: 11pt;
+  }
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  /* Force color printing in Chrome/Edge/Firefox */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* Page break optimization */
+  pre, code, .callout, table, blockquote, .matrix, .flowchart, .flow-node, h2, h3 {
+    page-break-inside: avoid;
+  }
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}
+
