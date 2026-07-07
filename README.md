@@ -60,21 +60,6 @@ Bài báo cáo môn học tham khảo từ:
 
 ---
 
-## 🛠️ Hướng Dẫn Sử Dụng & Xuất Bản
-
-### Xem cục bộ (Local Run)
-Vì đây là trang web tĩnh (Static Web), bạn chỉ cần tải thư mục dự án về và click đúp vào file `index.html` ở thư mục gốc để mở trên bất kỳ trình duyệt nào.
-
-### Đưa lên GitHub Pages (Deploy)
-Để tạo link web chạy trực tuyến miễn phí:
-1. Đẩy mã nguồn lên một kho lưu trữ GitHub mới của bạn.
-2. Đi tới phần **Settings** > **Pages** của repository đó.
-3. Ở mục **Build and deployment**, chọn source là **Deploy from a branch**.
-4. Chọn nhánh chính (`main` hoặc `master`) và thư mục gốc `/`, sau đó nhấn **Save**.
-5. Đợi 1-2 phút, GitHub sẽ cung cấp cho bạn một đường liên kết trực tuyến dạng: `https://<ten-user>.github.io/<ten-repo>/`.
-
----
-
 ## 👤 Người Tạo Học Liệu
 
 * **Họ và tên:** Trần Vũ Bằng
