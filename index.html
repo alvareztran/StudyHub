@@ -4,52 +4,170 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StudyHub</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
   <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+  <script src="js/theme.js"></script>
 </head>
-<body>
-  <div class="container">
-    <header>
-      <div class="breadcrumb">Hỗ trợ học tập và lưu trữ tài liệu</div>
-      <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.75rem;">
-        <img src="images/logo.jpg" alt="StudyHub Logo" style="height: 60px; border-radius: 8px;">
-        <h1 style="border: none; padding-bottom: 0; margin: 0; font-size: 2.25rem;">StudyHub</h1>
+<body class="landing-page">
+  <div class="landing-container">
+    <!-- Header & Navigation -->
+    <header class="landing-header">
+      <div class="brand-wrapper">
+        <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
+        <span class="brand-name">StudyHub</span>
       </div>
-      <p style="margin-top: 0.75rem; color: var(--text-light);">Kho tài liệu cá nhân hiển thị trên giao diện Web - Tổng hợp bài giảng và ghi chép chuyên ngành.</p>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="meta-info">
+          Trần Vũ Bằng &bull; Alvarez Tran
+        </div>
+      </div>
     </header>
 
     <main>
-      <section>
-        <h2>Danh Sách Môn Học</h2>
-        <p>Chọn môn học bên dưới để truy cập mục lục bài giảng và tài liệu chi tiết của môn học đó:</p>
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Your Digital Knowledge Universe
+          </div>
+          <h1 class="hero-title">
+            Học tập và lưu trữ<br>
+            tài liệu với <span>StudyHub</span>
+          </h1>
+          <p class="hero-desc">
+            Kho tài liệu cá nhân hiển thị trực quan trên giao diện Web - Tổng hợp bài giảng, học liệu của các môn học chuyên ngành Khoa học máy tính tại Trường Công nghệ Thông tin và Truyền thông - Đại học Cần Thơ.
+          </p>
+          <div class="hero-actions">
+            <a href="#courses" class="btn-primary">
+              Bắt đầu học
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="https://github.com/alvareztran/StudyHub" target="_blank" class="btn-secondary">
+              GitHub Repo
+            </a>
+          </div>
+        </div>
         
-        <ul class="index-list">
-          <li class="index-item">
-            <h3 class="index-title">
-              <a href="xu-ly-anh/index.html">CT316 - Xử lý ảnh</a>
-            </h3>
-            <p class="index-desc">Học phần nghiên cứu về cấu trúc ảnh số, các phép lọc ảnh, biến đổi không gian, phát hiện biên, phân vùng ảnh và các phương pháp nén, nhận dạng ảnh.</p>
-          </li>
-          
-          <li class="index-item">
-            <h3 class="index-title">
-              <a href="tri-tue-nhan-tao/index.html">CT332 - Trí tuệ nhân tạo</a>
-            </h3>
-            <p class="index-desc">Các giải thuật tìm kiếm, logic mệnh đề, học máy cơ bản, mạng neural nhân tạo và các báo cáo nghiên cứu khoa học chuyên đề.</p>
-          </li>
+        <div class="hero-visual">
+          <div class="banner-card">
+            <img src="images/banner.jpg" alt="StudyHub Network Banner">
+          </div>
+        </div>
+      </section>
 
-          <li class="index-item" style="opacity: 0.65;">
-            <h3 class="index-title">Thị Giác Máy Tính (Computer Vision)</h3>
-            <p class="index-desc">Xử lý đặc trưng ảnh, phân loại ảnh, phát hiện vật thể và các kiến trúc mạng CNN, Transformer trong thị giác máy tính. (Chưa khởi tạo học liệu)</p>
-          </li>
-        </ul>
+      <!-- Features Bar -->
+      <section class="features-bar">
+        <!-- Feature 1: KaTeX -->
+        <div class="feat-item">
+          <div class="feat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <div>
+            <h4 class="feat-title">Toán học KaTeX</h4>
+            <p class="feat-desc">Tự động biên dịch công thức toán phức tạp trực tiếp trên trình duyệt bằng thư viện KaTeX siêu tốc.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 2: PDF Export -->
+        <div class="feat-item">
+          <div class="feat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          </div>
+          <div>
+            <h4 class="feat-title">Xuất PDF Cao Cấp</h4>
+            <p class="feat-desc">Được cấu hình CSS in ấn tỉ mỉ, giúp xuất ra các bản in vector PDF chuẩn chỉ, giữ nguyên màu sắc đồ họa.</p>
+          </div>
+        </div>
+
+        <!-- Feature 3: Responsive UI -->
+        <div class="feat-item">
+          <div class="feat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <div>
+            <h4 class="feat-title">Giao Diện Tương Thích</h4>
+            <p class="feat-desc">Bố cục linh hoạt (responsive), hiển thị tối ưu trên cả điện thoại di động, máy tính bảng và màn hình lớn.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Course Selection Section -->
+      <section id="courses" style="padding: 2rem 0 5rem 0;">
+        <h2 class="course-section-title">Học Liệu &amp; Nghiên Cứu Môn Học</h2>
+        <p class="course-section-desc">Chọn học phần bên dưới để khám phá nội dung bài giảng số hóa và các báo cáo môn học.</p>
+        
+        <div class="course-grid">
+          <!-- Card 1: Image Processing -->
+          <div class="course-card">
+            <div>
+              <div class="course-badge">CT316</div>
+              <h3 class="course-title">CT316 - Xử lý ảnh</h3>
+              <p class="course-desc">Nghiên cứu về cấu trúc ảnh số, thiết bị thu nhận ảnh, các kỹ thuật biến đổi không gian, phân tích phân bố Histogram, lọc tích chập không gian và xử lý hình thái học nhị phân.</p>
+              <ul class="course-highlights">
+                <li>Cấu trúc &amp; Số hóa ảnh số</li>
+                <li>Tiền xử lý &amp; Phép lọc tích chập</li>
+                <li>Kỹ thuật phát hiện đường biên</li>
+                <li>Phân vùng ảnh &amp; Thuật toán phân ngưỡng</li>
+                <li>Xử lý hình thái nhị phân (Morphology)</li>
+              </ul>
+            </div>
+            <a href="xu-ly-anh/index.html" class="course-action-btn">
+              Xem học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card 2: AI -->
+          <div class="course-card">
+            <div>
+              <div class="course-badge">CT332</div>
+              <h3 class="course-title">CT332 - Trí tuệ nhân tạo</h3>
+              <p class="course-desc">Các giải thuật tìm kiếm, lập luận logic và chuyên đề căn chỉnh mô hình ngôn ngữ lớn (LLM Alignment) theo tùy chọn của con người, phân tích chuyên sâu thuật toán PPO và DPO.</p>
+              <ul class="course-highlights">
+                <li>Kiến thức nền tảng LLM &amp; SFT</li>
+                <li>Học tăng cường RLHF &amp; Hàm mục tiêu</li>
+                <li>Thuật toán PPO vs DPO (Theorem 4.1)</li>
+                <li>Thực nghiệm SafeRLHF &amp; DPO-Iter</li>
+                <li>Đánh giá lập trình APPS &amp; CodeContest</li>
+              </ul>
+            </div>
+            <a href="tri-tue-nhan-tao/index.html" class="course-action-btn">
+              Xem bài báo
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card 3: Computer Vision (Coming Soon) -->
+          <div class="course-card coming-soon" style="opacity: 0.65;">
+            <div>
+              <div class="course-badge" style="color: var(--text-secondary); background: transparent; border-color: var(--border-color);">CTU</div>
+              <h3 class="course-title">Thị giác máy tính (Computer Vision)</h3>
+              <p class="course-desc">Nghiên cứu kiến trúc mạng nơ-ron tích chập (CNN), cơ chế Attention &amp; Vision Transformer (ViT), các tác vụ phân loại ảnh, phát hiện vật thể (YOLO) và phân đoạn ảnh.</p>
+              <ul class="course-highlights">
+                <li>Xử lý đặc trưng ảnh nâng cao</li>
+                <li>Kiến trúc CNN &amp; Vision Transformer</li>
+                <li>Phát hiện vật thể (Object Detection)</li>
+                <li>Phân đoạn ảnh ngữ nghĩa (Segmentation)</li>
+              </ul>
+            </div>
+            <button class="course-action-btn" disabled style="cursor: not-allowed; opacity: 0.7;">
+              Sắp ra mắt
+            </button>
+          </div>
+        </div>
       </section>
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="landing-footer">
       <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
       <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
-      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thiết kế khoa học, responsive &amp; tối giản.</p>
     </footer>
   </div>
 </body>

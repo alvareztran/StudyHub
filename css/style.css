@@ -339,10 +339,13 @@ footer {
   text-align: center;
 }
 
-/* PDF Export Button Styling */
-.pdf-btn-container {
+/* PDF Export Button & Header Actions Container */
+.pdf-btn-container,
+.header-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
   margin-top: -1.5rem;
   margin-bottom: 2rem;
 }
@@ -373,6 +376,70 @@ footer {
   transform: scale(0.97);
 }
 
+/* Theme Toggle Button for Reading Pages */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
+  height: 36px;
+  width: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--highlight-bg);
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.theme-toggle-btn .sun-icon {
+  display: none;
+}
+
+.theme-toggle-btn .moon-icon {
+  display: block;
+}
+
+/* Toggle Sun/Moon icons based on theme */
+body.dark-theme .theme-toggle-btn .sun-icon {
+  display: block;
+}
+
+body.dark-theme .theme-toggle-btn .moon-icon {
+  display: none;
+}
+
+/* Dark Theme Variables for Reading Pages */
+body.dark-theme {
+  --primary-color: #38bdf8; /* sky 400 */
+  --secondary-color: #60a5fa; /* blue 400 */
+  --text-dark: #f3f4f6; /* slate 100 */
+  --text-light: #94a3b8; /* slate 400 */
+  --bg-main: #0b0f19;
+  --bg-card: #111827;
+  --bg-code: #1f2937;
+  --border-color: #374151;
+  --highlight-bg: #0c1e36;
+  --highlight-border: #1e3a8a;
+}
+
+body.dark-theme .callout {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme blockquote {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+body.dark-theme table {
+  background-color: var(--bg-card);
+}
+
 /* Print Media Query to match web design high-fidelity PDF */
 @media print {
   body {
@@ -401,4 +468,5 @@ footer {
     page-break-after: avoid;
   }
 }
+
 
