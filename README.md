@@ -32,6 +32,7 @@ Học liệu tóm tắt lý thuyết cốt lõi qua 5 chương học chi tiết:
 ### 2. CT332 - Trí tuệ nhân tạo
 Bài báo cáo nghiên cứu khoa học chuyên đề tham khảo:
 * **Đề tài:** *Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study (NeurIPS 2024)*
+* **Tác giả bài báo gốc:** Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu, Yi Wu (Tsinghua University, Shanghai Qi Zhi Institute, Shanghai Jiao Tong University)
 * **Nội dung:** Tổng hợp kiến thức nền tảng về SFT/RLHF/PPO/DPO, chứng minh toán học Định lý 4.1 ($\Pi_{\text{PPO}} \subsetneq \Pi_{\text{DPO}}$), phân tích thực nghiệm SafeRLHF và lý giải sự thất bại của DPO trong lập trình thi đấu (APPS, CodeContest).
 
 ---
