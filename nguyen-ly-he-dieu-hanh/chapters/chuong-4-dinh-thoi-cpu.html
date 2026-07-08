@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 4: Định thời CPU - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 4
+      </div>
+      <h1>CHƯƠNG 4. ĐỊNH THỜI CPU (CPU SCHEDULING)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Nghiên cứu nguyên lý định thời vi xử lý, tiêu chí tối ưu hóa, các giải thuật định thời kinh điển và cơ chế đa xử lý, thời gian thực.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section I -->
+      <section id="sec-1">
+        <h2>4.1 Khái niệm cơ bản về định thời CPU</h2>
+        
+        <h3>1. Chu kỳ CPU – I/O (CPU–I/O Burst Cycle):</h3>
+        <p>
+          Sự hoạt động của một tiến trình bao gồm các chu kỳ luân phiên tuần tự giữa xử lý tính toán và chờ đợi thiết bị nhập xuất:
+          $$\text{CPU Burst} \rightarrow \text{I/O Burst} \rightarrow \text{CPU Burst} \rightarrow \text{I/O Burst} \rightarrow \dots$$
+        </p>
+        <ul>
+          <li><strong>CPU Burst:</strong> Khoảng thời gian tiến trình chiếm quyền kiểm soát và tính toán trên CPU.</li>
+          <li><strong>I/O Burst:</strong> Khoảng thời gian tiến trình tạm dừng để chờ đợi thao tác nhập/xuất hoàn thành.</li>
+        </ul>
+        <p><em>Đặc điểm thực tế:</em> Đa phần các CPU burst có thời lượng ngắn, chỉ một tỷ lệ nhỏ tiến trình có CPU burst dài. Đây là cơ sở để thiết kế các giải thuật phân phối CPU.</p>
+
+        <h3>2. Bộ định thời CPU (CPU Scheduler) &amp; Bộ điều phối (Dispatcher):</h3>
+        <ul>
+          <li><strong>CPU Scheduler:</strong> Lựa chọn một tiến trình đang ở trạng thái Ready trong Ready Queue để trao quyền chiếm dụng CPU.</li>
+          <li><strong>Dispatcher (Bộ điều phối):</strong> Là module thực thi việc trao quyền kiểm soát CPU cho tiến trình sau khi được chọn. Nhiệm vụ gồm: Context switch, chuyển đổi CPU sang User Mode, và nhảy đến vị trí lệnh tương ứng để chạy chương trình.</li>
+          <li><strong>Độ trễ điều phối (Dispatch Latency):</strong> Khoảng thời gian bộ điều phối tiêu tốn để dừng một tiến trình cũ và khởi chạy một tiến trình mới.</li>
+        </ul>
+      </section>
+
+      <!-- Section II -->
+      <section id="sec-2" style="margin-top: 2.5rem;">
+        <h2>4.2 Các tiêu chí đánh giá giải thuật định thời</h2>
+        <p>Hệ điều hành sử dụng 5 tiêu chí toán học sau để so sánh chất lượng định thời:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hiệu suất CPU (CPU Utilization):</strong> Tỷ lệ phần trăm thời gian CPU làm việc hữu ích. Mục tiêu: <em>Càng cao càng tốt (tối ưu từ 40% đến 90%)</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thông lượng (Throughput):</strong> Số lượng tiến trình hoàn thành trọn vẹn trong một đơn vị thời gian. Mục tiêu: <em>Càng lớn càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian hoàn thành (Turnaround Time):</strong> Tổng thời gian tính từ lúc tiến trình gia nhập hệ thống đến khi kết thúc hoàn toàn:
+            $$\text{Turnaround Time} = \text{Finish Time} - \text{Arrival Time}$$
+            Mục tiêu: <em>Càng nhỏ càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian chờ (Waiting Time):</strong> Tổng thời gian tiến trình phải nằm chờ đợi trong Ready Queue:
+            $$\text{Waiting Time} = \text{Turnaround Time} - \text{CPU Burst}$$
+            Mục tiêu: <em>Càng nhỏ càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian phản hồi (Response Time):</strong> Khoảng thời gian từ khi tiến trình xuất hiện cho tới khi nhận được phản hồi/lần cấp CPU đầu tiên. Mục tiêu: <em>Càng nhỏ càng tốt (đặc biệt quan trọng trong hệ thống Time-Sharing)</em>.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section III & IV & V -->
+      <section id="sec-3-4-5" style="margin-top: 2.5rem;">
+        <h2>4.3 Phân loại giải thuật định thời</h2>
+        <p>Các giải thuật định thời được phân chia thành hai cơ chế vận hành chính:</p>
+        <ul>
+          <li><strong>Không trưng dụng (Non-preemptive):</strong> Khi CPU đã được cấp cho một tiến trình, nó sẽ giữ chặt CPU cho đến khi tự nguyện giải phóng (kết thúc tiến trình hoặc chuyển sang waiting). Ví dụ: FCFS, SJF không trưng dụng.</li>
+          <li><strong>Trưng dụng (Preemptive):</strong> Hệ điều hành có quyền cưỡng chế thu hồi CPU khi tiến trình đang chạy chưa kết thúc để cấp cho tiến trình khác ưu tiên hơn. Ví dụ: Round Robin, SRTF, Priority Preemptive.</li>
+        </ul>
+
+        <h3>1. FCFS (First-Come, First-Served):</h3>
+        <p>Đơn giản, đến trước phục vụ trước. Tuy nhiên có nhược điểm lớn là <strong>Hiệu ứng đoàn xe (Convoy Effect)</strong>: Các tiến trình ngắn phải xếp hàng chờ đợi vô lý đằng sau một tiến trình dài chạy trước, kéo thời gian chờ trung bình tăng vọt.</p>
+
+        <h3>2. SJF (Shortest Job First):</h3>
+        <p>Ưu tiên chạy tiến trình có CPU Burst kế tiếp nhỏ nhất. Đây là giải thuật tối ưu nhất về mặt thời gian chờ trung bình. Do không biết trước thời gian burst tiếp theo, hệ điều hành sử dụng công thức dự đoán trung bình mũ (Exponential Average):</p>
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          $$\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$$
+          <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+            Trong đó:
+            <br>&bull; $\tau_{n+1}$: Giá trị dự đoán cho lần tiếp theo.
+            <br>&bull; $t_n$: Thời gian chạy thực tế của lần gần nhất.
+            <br>&bull; $\tau_n$: Giá trị dự đoán lần trước đó.
+            <br>&bull; $\alpha \in [0, 1]$: Trọng số ưu tiên (thường chọn $\alpha = 0.5$).
+          </p>
+        </div>
+      </section>
+
+      <!-- Section VI & VII -->
+      <section id="sec-6-7" style="margin-top: 2.5rem;">
+        <h2>4.4 Định thời Độ ưu tiên &amp; Round Robin</h2>
+        
+        <h3>1. Định thời theo độ ưu tiên (Priority Scheduling):</h3>
+        <p>Cấp CPU cho tiến trình có độ ưu tiên cao nhất. Vấn đề lớn nhất là **Starvation (Chết đói)**: Tiến trình độ ưu tiên thấp có thể bị bỏ đói vô hạn nếu hệ thống liên tục nhận tiến trình độ ưu tiên cao.</p>
+        <p>&bull; <em>Giải pháp:</em> Sử dụng kỹ thuật <strong>Aging (Lão hóa)</strong> để tăng dần độ ưu tiên của tiến trình nằm chờ lâu trong Ready Queue theo thời gian.</p>
+
+        <h3>2. Định thời vòng tròn Round Robin (RR):</h3>
+        <p>
+          Thiết kế đặc dụng cho hệ thống chia thời gian (Time-sharing). Mỗi tiến trình được cấp một khoảng thời gian chạy cố định gọi là <strong>Time Quantum</strong> (thường từ 10ms đến 100ms). Hết quantum, tiến trình bị ngắt và đưa về cuối Ready Queue.
+        </p>
+        <ul>
+          <li>Nếu Time Quantum quá lớn: Giải thuật suy biến thành FCFS.</li>
+          <li>Nếu Time Quantum quá nhỏ: Chi phí Context Switch tăng vọt gây lãng phí năng lực CPU.</li>
+        </ul>
+      </section>
+
+      <!-- Section VIII & IX -->
+      <section id="sec-8-9" style="margin-top: 2.5rem;">
+        <h2>4.5 Hàng đợi nhiều cấp (Multilevel Queue &amp; Feedback Queue)</h2>
+        
+        <h3>1. Multilevel Queue Scheduling:</h3>
+        <p>
+          Phân chia Ready Queue thành nhiều hàng đợi riêng biệt dựa trên đặc tính tiến trình (ví dụ: hàng đợi tiến trình hệ thống, hàng đợi tiến trình tương tác Foreground, hàng đợi tiến trình Batch Background). Mỗi hàng đợi chạy giải thuật định thời riêng (ví dụ: Foreground chạy RR, Background chạy FCFS).
+        </p>
+
+        <h3>2. Multilevel Feedback Queue Scheduling:</h3>
+        <p>
+          Khắc phục nhược điểm của Multilevel Queue bằng cách **cho phép tiến trình dịch chuyển linh hoạt giữa các hàng đợi**.
+          <br>Nếu một tiến trình sử dụng quá nhiều CPU, nó sẽ bị hệ điều hành hạ cấp xuống hàng đợi có độ ưu tiên thấp hơn. Ngược lại, tiến trình chờ quá lâu ở hàng dưới sẽ được nâng cấp lên hàng trên nhờ cơ chế **Aging**.
+        </p>
+
+        <!-- Example callout -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Ví dụ mô hình 3 cấp phổ biến:</h4>
+          <ul>
+            <li><strong>Hàng đợi $Q_0$:</strong> Định thời Round Robin với Quantum = 8ms (độ ưu tiên cao nhất).</li>
+            <li><strong>Hàng đợi $Q_1$:</strong> Định thời Round Robin với Quantum = 16ms.</li>
+            <li><strong>Hàng đợi $Q_2$:</strong> Định thời FCFS (độ ưu tiên thấp nhất).</li>
+          </ul>
+          <p style="font-size: 0.9rem; color: var(--text-light); font-style: italic; margin-top: 0.5rem;">
+            Một tiến trình mới sẽ gia nhập $Q_0$. Nếu chạy quá 8ms chưa xong, nó bị đẩy xuống $Q_1$. Nếu chạy tiếp trong $Q_1$ quá 16ms vẫn chưa hoàn tất, nó bị hạ xuống $Q_2$ thực thi tuần tự.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section X, XI, XII, XIII, XIV -->
+      <section id="sec-10-11-12-13-14" style="margin-top: 2.5rem;">
+        <h2>4.6 Định thời đa xử lý, thời gian thực &amp; Đánh giá</h2>
+        
+        <h3>1. Định thời đa xử lý:</h3>
+        <p>
+          SMP (Đa xử lý đối xứng) cho phép mỗi CPU tự lập lịch định thời, hiện là kiến trúc phổ biến nhất. Đi kèm khái niệm **Processor Affinity (Tính thân thiết bộ xử lý)**: Giữ tiến trình chạy trên cùng một CPU để tránh tốn chi phí nạp lại dữ liệu bộ nhớ đệm Cache CPU (gồm <em>Soft affinity</em> và <em>Hard affinity</em>).
+        </p>
+
+        <h3>2. Định thời thời gian thực (Real-time Scheduling):</h3>
+        <p>
+          Yêu cầu khống chế độ trễ **Dispatch Latency** siêu nhỏ. Hệ điều hành thời gian thực mềm (Soft Real-Time) bắt buộc phải cấu hình nhân có thể bị trưng dụng (Preemptive Kernel) để tiến trình ưu tiên cao cướp CPU ngay lập tức.
+        </p>
+
+        <h3>3. Các phương pháp đánh giá thuật toán:</h3>
+        <ul>
+          <li><strong>Deterministic Modeling:</strong> Đánh giá bằng tập dữ liệu workload xác định trước (đơn giản, nhanh).</li>
+          <li><strong>Queueing Model:</strong> Áp dụng công thức Little để tính toán hàng đợi:
+            $$n = \lambda \times W$$
+            <span style="font-size: 0.9rem; color: var(--text-light);">(Trong đó $n$ là số tiến trình trung bình, $\lambda$ là tốc độ đến, $W$ là thời gian chờ trung bình).</span>
+          </li>
+          <li><strong>Simulation:</strong> Tạo lập chương trình mô phỏng bằng dữ liệu thực tế.</li>
+          <li><strong>Implementation:</strong> Cài đặt chạy trực tiếp trên hệ điều hành thực tế (chính xác nhất nhưng rất tốn kém).</li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 4</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Chu kỳ hoạt động tuần tự luân phiên của một tiến trình bao gồm hai trạng thái nào?",
+        options: [
+          "Ready Burst và Waiting Burst.",
+          "CPU Burst (thực thi tính toán) và I/O Burst (chờ hoàn thành nhập xuất).",
+          "Context Switch Burst và Interrupt Burst.",
+          "New Burst và Terminated Burst."
+        ],
+        answer: 1,
+        explanation: "Vòng đời thực thi của tiến trình là chu kỳ tuần tự lặp đi lặp lại giữa khoảng thời gian chạy tính toán (CPU Burst) và khoảng thời gian chờ đợi nhập xuất thiết bị ngoại vi (I/O Burst)."
+      },
+      {
+        question: "Độ trễ điều phối (Dispatch Latency) được định nghĩa là gì?",
+        options: [
+          "Thời gian từ lúc tiến trình xuất hiện đến khi nó hoàn thành toàn bộ.",
+          "Thời gian bộ điều phối (Dispatcher) cần để dừng tiến trình cũ và khởi động tiến trình mới.",
+          "Thời gian ước lượng CPU Burst tiếp theo bằng công thức trung bình mũ.",
+          "Tổng thời gian tiến trình phải xếp hàng trong Ready Queue."
+        ],
+        answer: 1,
+        explanation: "Dispatch Latency là độ trễ thời gian do Dispatcher tiêu tốn để lưu ngữ cảnh tiến trình cũ, chuyển CPU sang chế độ người dùng và nhảy lệnh bắt đầu chạy tiến trình mới."
+      },
+      {
+        question: "Turnaround Time (Thời gian hoàn thành) của tiến trình được tính bằng công thức nào?",
+        options: [
+          "Finish Time - Arrival Time",
+          "Turnaround Time - CPU Burst",
+          "CPU Burst + I/O Burst",
+          "Finish Time - Waiting Time"
+        ],
+        answer: 0,
+        explanation: "Turnaround Time là tổng thời gian từ lúc tiến trình mới bước vào hệ thống (Arrival Time) cho đến khi nó thực hiện xong hoàn toàn (Finish Time). Công thức: Turnaround = Finish - Arrival."
+      },
+      {
+        question: "Waiting Time (Thời gian chờ đợi) của tiến trình trong Ready Queue được tính bằng công thức nào?",
+        options: [
+          "Finish Time - Arrival Time",
+          "Turnaround Time - Response Time",
+          "Turnaround Time - CPU Burst",
+          "CPU Burst + I/O Burst"
+        ],
+        answer: 2,
+        explanation: "Thời gian chờ đợi thực chất là tổng thời gian hoàn thành trừ đi khoảng thời gian thực tế chạy trên CPU. Công thức: Waiting Time = Turnaround Time - CPU Burst."
+      },
+      {
+        question: "Đặc điểm của cơ chế định thời không trưng dụng (Non-preemptive Scheduling) là gì?",
+        options: [
+          "Hệ điều hành có quyền cưỡng chế thu hồi CPU bất kỳ lúc nào.",
+          "Khi một tiến trình chiếm được CPU, nó sẽ giữ CPU cho đến khi tự nguyện giải phóng (kết thúc hoặc chuyển sang waiting).",
+          "Tiến trình liên tục bị luân chuyển theo các lát cắt thời gian.",
+          "Chỉ áp dụng cho các hệ điều hành thời gian thực cứng Hard Real-time."
+        ],
+        answer: 1,
+        explanation: "Trong cơ chế không trưng dụng, một khi tiến trình đã có CPU, nó được quyền chạy liên tục mà không sợ bị tiến trình khác cướp quyền, cho đến khi tự nhường CPU (hoàn thành hoặc chờ I/O)."
+      },
+      {
+        question: "Hiệu ứng đoàn xe (Convoy Effect) trong giải thuật FCFS mô tả hiện tượng nào?",
+        options: [
+          "Các tiến trình bị khóa lẫn nhau dẫn đến bế tắc hệ thống.",
+          "Hàng loạt tiến trình ngắn bị tắc nghẽn xếp hàng chờ đợi sau một tiến trình chiếm CPU quá dài.",
+          "Độ trễ chuyển đổi ngữ cảnh tăng đột biến làm treo máy.",
+          "Hệ thống phân tán bị mất kết nối đường truyền mạng."
+        ],
+        answer: 1,
+        explanation: "Convoy Effect xảy ra trong FCFS khi một tiến trình dài chiếm CPU trước, bắt toàn bộ các tiến trình ngắn đến sau phải xếp hàng chờ đợi rất lâu, làm giảm hiệu suất sử dụng thiết bị I/O và tăng thời gian chờ trung bình."
+      },
+      {
+        question: "Giải thuật định thời nào được chứng minh là tối ưu nhất về mặt thời gian chờ đợi trung bình?",
+        options: [
+          "FCFS (First-Come, First-Served).",
+          "Round Robin (RR).",
+          "SJF (Shortest Job First).",
+          "Multilevel Queue."
+        ],
+        answer: 2,
+        explanation: "Giải thuật SJF (Shortest Job First) luôn ưu tiên chạy tiến trình có CPU Burst tiếp theo ngắn nhất, mang lại thời gian chờ đợi trung bình nhỏ nhất và tối ưu nhất về mặt toán học."
+      },
+      {
+        question: "Công thức trung bình mũ (Exponential Average) trong thuật toán SJF dùng để làm gì?",
+        options: [
+          "Tính toán độ ưu tiên của tiến trình.",
+          "Dự đoán/ước lượng thời gian CPU Burst tiếp theo của tiến trình dựa trên lịch sử chạy trước đó.",
+          "Tính toán tỷ lệ hiệu suất CPU Utilization.",
+          "Đo lường thông lượng Throughput hệ thống."
+        ],
+        answer: 1,
+        explanation: "Vì không thể biết trước chính xác tiến trình sẽ chạy trong bao lâu ở chu kỳ kế tiếp, hệ điều hành sử dụng công thức trung bình mũ để dự báo thời lượng CPU Burst dựa vào lịch sử chạy thực tế gần đây."
+      },
+      {
+        question: "Trọng số alpha bằng 0 (alpha = 0) trong công thức dự đoán của SJF nghĩa là gì?",
+        options: [
+          "Dự đoán lần sau chỉ phụ thuộc vào kết quả thực tế lần chạy gần nhất.",
+          "Dự đoán hoàn toàn bỏ qua kết quả thực tế gần đây, giữ nguyên giá trị dự đoán cũ.",
+          "Dự đoán thời gian chạy tiếp theo bằng 0.",
+          "Hệ điều hành sẽ tắt tính năng lập lịch định thời."
+        ],
+        answer: 1,
+        explanation: "Khi alpha = 0, công thức trở thành T(n+1) = T(n). Giá trị dự đoán tiếp theo bằng đúng giá trị dự đoán cũ, tức là kết quả thực tế gần đây t(n) hoàn toàn bị bỏ qua."
+      },
+      {
+        question: "Hiện tượng 'Starvation' (Chết đói) trong định thời Priority Scheduling nghĩa là gì?",
+        options: [
+          "Các tiến trình có độ ưu tiên thấp có thể phải chờ đợi vô hạn và không bao giờ được cấp CPU.",
+          "Hệ thống bị cạn kiệt tài nguyên RAM và đĩa cứng.",
+          "Lập lịch bị lặp vô hạn giữa hai tiến trình ngang hàng.",
+          "Thời gian chuyển đổi ngữ cảnh tăng quá nhanh."
+        ],
+        answer: 0,
+        explanation: "Starvation xảy ra khi hệ thống liên tục nhận các tiến trình có độ ưu tiên cao hơn, khiến tiến trình độ ưu tiên thấp ở cuối Ready Queue bị bỏ qua vô hạn."
+      },
+      {
+        question: "Kỹ thuật 'Aging' (Lão hóa) giải quyết lỗi Starvation bằng cách nào?",
+        options: [
+          "Tự động giải phóng tiến trình khi nó chờ quá lâu.",
+          "Tăng dần độ ưu tiên của các tiến trình phải xếp hàng chờ đợi lâu trong Ready Queue theo thời gian.",
+          "Tăng thời lượng Quantum cho các tiến trình chạy ngầm.",
+          "Phân công tiến trình sang các CPU rảnh rỗi khác."
+        ],
+        answer: 1,
+        explanation: "Aging tăng dần độ ưu tiên của tiến trình một cách nhân tạo sau mỗi khoảng thời gian chờ đợi nhất định, giúp nó cuối cùng cũng đạt độ ưu tiên đủ lớn để chiếm CPU chạy."
+      },
+      {
+        question: "Điều gì xảy ra trong giải thuật Round Robin (RR) nếu thiết lập Time Quantum quá lớn?",
+        options: [
+          "Tốc độ phản hồi của hệ thống tăng lên tối đa.",
+          "Số lượng chuyển ngữ cảnh Context Switch tăng mạnh.",
+          "Thuật toán hoạt động tương đương với giải thuật FCFS.",
+          "Hệ thống bị lỗi bế tắc Deadlock."
+        ],
+        answer: 2,
+        explanation: "Nếu Time Quantum lớn hơn hẳn thời gian CPU Burst của tất cả tiến trình, mọi tiến trình sẽ chạy xong trước khi hết quantum, khiến Round Robin hoạt động tương đương FCFS."
+      },
+      {
+        question: "Điều gì xảy ra trong giải thuật Round Robin (RR) nếu thiết lập Time Quantum quá nhỏ?",
+        options: [
+          "Xảy ra lỗi Starvation nghiêm trọng.",
+          "Số lượng Context Switch tăng vọt gây tiêu tốn hiệu năng CPU cho các chi phí hao phí overhead.",
+          "Thời gian chờ trung bình giảm về 0.",
+          "Hệ thống suy biến thành SJF."
+        ],
+        answer: 1,
+        explanation: "Quantum quá nhỏ khiến CPU phải liên tục dừng tiến trình để chuyển ngữ cảnh sang tiến trình khác, làm thời gian chuyển đổi ngữ cảnh (overhead) chiếm phần lớn thời gian chạy của CPU."
+      },
+      {
+        question: "Đặc điểm phân biệt của Multilevel Feedback Queue so với Multilevel Queue thông thường là gì?",
+        options: [
+          "Mỗi hàng đợi bắt buộc chạy chung một giải thuật định thời.",
+          "Tiến trình cố định ở một hàng đợi duy nhất suốt vòng đời.",
+          "Tiến trình có thể di chuyển linh hoạt giữa các hàng đợi khác nhau (được nâng cấp hoặc hạ cấp độ ưu tiên).",
+          "Chỉ hoạt động trên hệ thống đa xử lý đối xứng SMP."
+        ],
+        answer: 2,
+        explanation: "Khác với Multilevel Queue cố định tiến trình, Multilevel Feedback Queue cho phép luân chuyển tiến trình qua các hàng đợi dựa trên hành vi sử dụng CPU (dùng nhiều CPU bị đẩy xuống dưới, chờ lâu được đưa lên trên nhờ Aging)."
+      },
+      {
+        question: "Định thời SMP (Symmetric Multiprocessing) hoạt động theo nguyên lý nào?",
+        options: [
+          "Có một CPU Master chính duy nhất làm nhiệm vụ lập lịch cho các CPU khác.",
+          "Mỗi CPU tự lập lịch định thời và chạy bản sao scheduler riêng của mình.",
+          "Hệ thống không sử dụng Ready Queue.",
+          "Hệ điều hành bắt buộc chạy trên phần cứng ảo hóa máy ảo."
+        ],
+        answer: 1,
+        explanation: "SMP cấu hình kiến trúc đối xứng, mỗi bộ xử lý tự chịu trách nhiệm định thời (lập lịch) cho chính nó trên hàng đợi tiến trình sẵn sàng dùng chung hoặc riêng biệt."
+      },
+      {
+        question: "Khái niệm 'Processor Affinity' (Tính thân thiết bộ xử lý) trong hệ thống đa xử lý nghĩa là gì?",
+        options: [
+          "Tiến trình cố gắng tiếp tục chạy trên cùng một CPU để tận dụng tối đa dữ liệu đã được lưu trong bộ nhớ đệm Cache CPU đó.",
+          "Hệ điều hành chia đều tiến trình cho tất cả CPU hoạt động ngang nhau.",
+          "CPU tự động ngắt khi nhiệt độ vượt ngưỡng cho phép.",
+          "Cho phép các CPU chia sẻ trực tiếp các thanh ghi bên trong."
+        ],
+        answer: 0,
+        explanation: "Processor Affinity giữ tiến trình chạy trên một CPU để tránh lãng phí thời gian xóa bộ nhớ đệm Cache CPU cũ và nạp lại Cache CPU mới khi tiến trình bị luân chuyển sang CPU khác."
+      },
+      {
+        question: "Để giảm thiểu độ trễ điều phối (Dispatch Latency) trong hệ thống thời gian thực, giải pháp nào sau đây là hữu ích?",
+        options: [
+          "Tăng tốc độ xung nhịp của CPU.",
+          "Cho phép nhân hệ điều hành có thể bị trưng dụng (Preemptive Kernel).",
+          "Sử dụng mô hình mạng Peer-to-Peer thay cho Client-Server.",
+          "Cấu hình hàng đợi FCFS cho mọi tiến trình."
+        ],
+        answer: 1,
+        explanation: "Preemptive Kernel cho phép ngắt và thu hồi CPU ngay cả khi CPU đang thực thi mã lệnh hệ thống bên trong nhân Kernel, giúp tiến trình thời gian thực có ưu tiên cao nhận được CPU phản hồi ngay lập tức."
+      },
+      {
+        question: "Công thức Little n = lambda * W trong Queueing Model xác định mối quan hệ nào trong hàng đợi?",
+        options: [
+          "Liên kết giữa số lượng CPU và số lượng tiến trình.",
+          "Số tiến trình trung bình trong hàng đợi (n) bằng tích của tốc độ đến trung bình (lambda) và thời gian chờ trung bình (W).",
+          "Độ dài CPU Burst và thời gian phản hồi.",
+          "Số lượng Context Switch và hiệu suất CPU."
+        ],
+        answer: 1,
+        explanation: "Định lý Little xác định số lượng tiến trình trung bình trong hàng đợi (n) bằng tích của tốc độ tiến trình mới đến gia nhập (lambda) và thời gian chờ đợi trung bình trong hàng đợi (W)."
+      },
+      {
+        question: "Hệ điều hành Windows lập lịch định thời dựa trên đơn vị thực thi nào?",
+        options: [
+          "Tiến trình (Process).",
+          "Luồng (Thread).",
+          "Lời gọi hệ thống (System Call).",
+          "Hàng đợi Job Queue."
+        ],
+        answer: 1,
+        explanation: "Trong hệ điều hành Windows, đơn vị thực thi thực tế được bộ định thời CPU cấp phát thời gian chạy là Luồng (Thread) chứ không phải Tiến trình (Process)."
+      },
+      {
+        question: "Bộ lập lịch Completely Fair Scheduler (CFS) mặc định của Linux hướng tới mục tiêu chính nào?",
+        options: [
+          "Ưu tiên chạy các tiến trình thời gian thực cứng.",
+          "Phân chia thời gian chạy CPU công bằng tối đa cho các tiến trình dựa trên trọng số độ ưu tiên.",
+          "Giảm số lượng hàng đợi xuống tối thiểu.",
+          "Loại bỏ hoàn toàn tính năng hoán đổi Swapping."
+        ],
+        answer: 1,
+        explanation: "Completely Fair Scheduler (CFS) của Linux sử dụng cấu trúc cây đỏ đen (red-black tree) để phân bổ thời gian chạy CPU một cách công bằng tối ưu nhất cho các tiến trình đa nhiệm."
+      },
+      {
+        question: "Thuật toán định thời CPU trưng dụng ngắn nhất còn lại trước (SRTF - Shortest Remaining Time First) hoạt động thế nào?",
+        options: [
+          "Là phiên bản không trưng dụng của SJF.",
+          "Khi một tiến trình mới gia nhập Ready Queue có CPU Burst ngắn hơn thời gian còn lại của tiến trình đang chạy, tiến trình đang chạy lập tức bị tước CPU để nhường cho tiến trình mới.",
+          "Nó định thời luân phiên theo vòng tròn với Quantum cực ngắn.",
+          "Nó ưu tiên các tiến trình có PID lớn nhất chạy trước."
+        ],
+        answer: 1,
+        explanation: "SRTF là phiên bản trưng dụng (preemptive) của SJF. Nó so sánh thời gian chạy còn lại (remaining time) của tiến trình đang chiếm CPU với CPU burst của tiến trình mới đến để quyết định có cướp CPU hay không."
+      },
+      {
+        question: "Giả sử Ready Queue có 3 tiến trình đến cùng lúc: P1 (burst=24ms), P2 (burst=3ms), P3 (burst=3ms). Định thời theo giải thuật FCFS với thứ tự P1, P2, P3. Thời gian chờ đợi trung bình (Average Waiting Time) là bao nhiêu?",
+        options: [
+          "17 ms",
+          "3 ms",
+          "24 ms",
+          "10 ms"
+        ],
+        answer: 0,
+        explanation: "P1 chờ 0ms. P2 chờ P1 chạy xong là 24ms. P3 chờ P1 và P2 chạy xong là $24 + 3 = 27$ms. Thời gian chờ trung bình: $(0 + 24 + 27) / 3 = 17$ms."
+      },
+      {
+        question: "Vẫn với 3 tiến trình trên: P1 (burst=24ms), P2 (burst=3ms), P3 (burst=3ms). Nếu định thời theo SJF (hoặc FCFS thứ tự P2, P3, P1). Thời gian chờ đợi trung bình là bao nhiêu?",
+        options: [
+          "17 ms",
+          "3 ms",
+          "6 ms",
+          "9 ms"
+        ],
+        answer: 1,
+        explanation: "P2 chạy trước chờ 0ms. P3 chạy tiếp chờ P2 xong là 3ms. P1 chạy sau cùng chờ P2 và P3 xong là $3 + 3 = 6$ms. Thời gian chờ trung bình: $(0 + 3 + 6) / 3 = 3$ms. SJF tối ưu hóa thời gian chờ rõ rệt."
+      },
+      {
+        question: "Khái niệm 'vruntime' (Virtual Runtime) trong bộ định thời Completely Fair Scheduler (CFS) của Linux đại diện cho điều gì?",
+        options: [
+          "Thời gian ảo mà tiến trình chạy trên máy ảo JVM.",
+          "Tổng thời gian thực tế tiến trình chiếm CPU tính bằng mili-giây.",
+          "Thời gian chạy CPU thực tế của tiến trình được điều chỉnh (chia) theo trọng số độ ưu tiên (Nice value) của nó.",
+          "Độ trễ khi thực hiện chuyển ngữ cảnh Context Switch."
+        ],
+        answer: 2,
+        explanation: "CFS của Linux lập lịch dựa trên `vruntime`. Tiến trình nào chạy ít CPU hoặc có độ ưu tiên cao sẽ có `vruntime` tăng chậm hơn. CFS sử dụng cây đỏ đen để liên tục chọn tiến trình có `vruntime` nhỏ nhất để cấp CPU."
+      },
+      {
+        question: "Trong hệ thống đa xử lý, sự khác biệt giữa Hard Affinity và Soft Affinity trong Processor Affinity là gì?",
+        options: [
+          "Hard Affinity chạy trên phần cứng thật, Soft Affinity chạy trên máy ảo.",
+          "Hard Affinity là cam kết tuyệt đối tiến trình chỉ chạy trên một số CPU chỉ định (không bị di chuyển); Soft Affinity là chính sách cố gắng giữ tiến trình trên một CPU nhưng cho phép chuyển sang CPU khác nếu quá tải.",
+          "Hard Affinity yêu cầu sử dụng CPU Master.",
+          "Soft Affinity hoạt động mà không cần đồng bộ Cache."
+        ],
+        answer: 1,
+        explanation: "Hard Affinity được thiết lập cứng (ví dụ qua lệnh system call sched_setaffinity), hệ điều hành tuyệt đối không được chuyển luồng sang CPU khác. Soft Affinity chỉ là nỗ lực ưu tiên giữ luồng để tối ưu cache."
+      },
+      {
+        question: "Thuật toán lập lịch Rate-Monotonic Scheduling (RMS) cho các tiến trình thời gian thực chu kỳ (periodic tasks) hoạt động dựa trên nguyên tắc nào?",
+        options: [
+          "Ưu tiên tiến trình có PID nhỏ nhất.",
+          "Cấp độ ưu tiên tĩnh tỷ lệ nghịch với độ dài chu kỳ (tiến trình có chu kỳ ngắn hơn, tức tần suất xuất hiện cao hơn, sẽ có độ ưu tiên cao nhất).",
+          "Cấp độ ưu tiên dựa trên thời hạn hoàn thành deadline gần nhất.",
+          "Định thời xoay vòng Round Robin."
+        ],
+        answer: 1,
+        explanation: "RMS là thuật toán định thời tĩnh tối ưu cho tác vụ chu kỳ. Độ ưu tiên của tác vụ tỉ lệ nghịch với chu kỳ của nó ($Priority \\propto 1 / Period$). Tác vụ có chu kỳ ngắn nhất được chạy trước."
+      },
+      {
+        question: "Điểm khác biệt chính của thuật toán định thời Earliest Deadline First (EDF) so với Rate-Monotonic (RMS) là gì?",
+        options: [
+          "EDF chỉ chạy được trên hệ thống đơn nhiệm.",
+          "EDF sử dụng độ ưu tiên động: tiến trình nào có thời hạn hoàn thành (deadline) gần nhất tại thời điểm kiểm tra sẽ được trao độ ưu tiên cao nhất để chạy.",
+          "EDF yêu cầu tất cả các tiến trình phải có chu kỳ hoạt động bằng nhau.",
+          "EDF không cho phép trưng dụng CPU (Non-preemptive)."
+        ],
+        answer: 1,
+        explanation: "EDF là giải thuật định thời động. Cứ mỗi khi có tiến trình mới hoặc sự kiện ngắt, hệ thống duyệt lại thời hạn hoàn thành của các tiến trình trong Ready Queue và trao CPU cho tiến trình sắp hết hạn nhất (earliest deadline)."
+      },
+      {
+        question: "Trên hệ điều hành Windows, tại sao độ ưu tiên của một luồng ở hàng đợi sẵn sàng đôi khi được tự động tăng lên (Priority Boost)?",
+        options: [
+          "Để dọn dẹp bộ nhớ RAM ảo.",
+          "Nhân Windows tự động boost độ ưu tiên của các luồng vừa hoàn thành thao tác I/O hoặc đang hiển thị trên cửa sổ tương tác người dùng (Foreground) để tăng tốc độ phản hồi.",
+          "Để chuẩn bị tắt máy an toàn.",
+          "Nhằm mục đích ép buộc luồng đó thực hiện lệnh wait()."
+        ],
+        answer: 1,
+        explanation: "Windows áp dụng cơ chế Dynamic Priority Boost. Khi một luồng hoàn tất chờ I/O hoặc nhận sự kiện bàn phím/chuột từ người dùng, Windows boost độ ưu tiên của nó lên cao tạm thời để nó được cấp CPU phản hồi nhanh chóng."
+      },
+      {
+        question: "Định luật Little trong Queueing Model được viết dưới dạng công thức nào?",
+        options: [
+          "n = \\lambda \\times W",
+          "\\tau_{n+1} = \\alpha t_n + (1-\\alpha)\\tau_n",
+          "EAT = \\alpha \\times (Access\ Time)",
+          "Need = Max - Allocation"
+        ],
+        answer: 0,
+        explanation: "Định luật Little xác định mối quan hệ trong lý thuyết xếp hàng: số lượng tiến trình trung bình trong hàng đợi ($n$) bằng tích của tốc độ tiến trình mới gia nhập hệ thống ($\\lambda$) và thời gian chờ trung bình trong hàng đợi ($W$)."
+      },
+      {
+        question: "Tại sao giải thuật định thời đa cấp phản hồi (Multilevel Feedback Queue) được coi là giải thuật định thời tổng quát và tối ưu nhất cho HĐH đa nhiệm cá nhân?",
+        options: [
+          "Vì nó dễ lập trình và cấu hình nhất trong mọi giải thuật.",
+          "Vì nó tự động phân tích hành vi tiến trình để điều phối: hạ cấp tiến trình hướng CPU để nhường cho tiến trình hướng I/O cần phản hồi nhanh, đồng thời tránh starvation nhờ Aging.",
+          "Vì nó không yêu cầu sử dụng bộ nhớ chính RAM.",
+          "Vì nó ép buộc tất cả tiến trình chạy chung một lát cắt thời gian Quantum."
+        ],
+        answer: 1,
+        explanation: "MLFQ tự động thích ứng với cấu hình tiến trình. Nó tạo ra các hàng đợi với quantum tăng dần. Tiến trình hướng tương tác chạy nhanh sẽ thoát ở hàng trên có ưu tiên cao. Tiến trình tính toán dài bị hạ dần xuống hàng dưới giúp CPU hoạt động tối ưu."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

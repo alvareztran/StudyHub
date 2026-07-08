@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 6: Khóa chết (Deadlock) - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 6
+      </div>
+      <h1>CHƯƠNG 6. KHÓA CHẾT (DEADLOCK)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Nghiên cứu hiện tượng bế tắc hệ thống, 4 điều kiện cần phát sinh deadlock, đồ thị RAG/Wait-for, kỹ thuật phòng ngừa, tránh deadlock (thuật toán Banker) và phục hồi hệ thống.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Part 1 & 2 -->
+      <section id="part-1-2">
+        <h2>6.1 Khái niệm và Bốn điều kiện cần xảy ra Deadlock</h2>
+        <p>
+          <strong>Khóa chết (Deadlock)</strong> là trạng thái hệ thống trong đó một nhóm các tiến trình bị đóng băng vô hạn vì mỗi tiến trình đều đang nắm giữ tài nguyên và xếp hàng chờ đợi các tài nguyên khác do tiến trình trong nhóm đang nắm giữ.
+        </p>
+
+        <h3>Bốn điều kiện cần đồng thời xảy ra Deadlock:</h3>
+        <p>Deadlock chỉ xảy ra khi và chỉ khi hệ thống xuất hiện đồng thời cả 4 điều kiện sau:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Loại trừ tương hỗ (Mutual Exclusion):</strong> Ít nhất một tài nguyên ở trạng thái không thể chia sẻ (tại một thời điểm chỉ có tối đa một tiến trình được phép chiếm dụng tài nguyên này).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Giữ và chờ (Hold and Wait):</strong> Tiến trình đang giữ ít nhất một tài nguyên cũ đã được cấp phát và tiếp tục gửi yêu cầu xin thêm tài nguyên mới đang bị tiến trình khác chiếm giữ.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Không trưng dụng tài nguyên (No Preemption):</strong> Tài nguyên đã cấp phát không thể bị thu hồi cưỡng bức bởi hệ thống, chỉ giải phóng khi tiến trình sở hữu tự nguyện trả lại.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chờ đợi vòng tròn (Circular Wait):</strong> Tồn tại chu trình khép kín các tiến trình chờ đợi tài nguyên của nhau: $P_0$ chờ tài nguyên của $P_1$, $P_1$ chờ $P_2$,..., $P_n$ chờ tài nguyên của $P_0$.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part 3 & 4 & 5 -->
+      <section id="part-3-4-5" style="margin-top: 2.5rem;">
+        <h2>6.2 Đồ thị cấp phát tài nguyên (Resource Allocation Graph - RAG)</h2>
+        <p>
+          Mô hình hóa hệ thống bằng đồ thị có hướng $G = (V, E)$ giúp phát hiện deadlock trực quan:
+        </p>
+        <ul>
+          <li><strong>Tập đỉnh $V$:</strong> Chia làm hai nhóm: Tập tiến trình $P = \{P_1, P_2, \dots, P_n\}$ và Tập tài nguyên $R = \{R_1, R_2, \dots, R_m\}$ (mỗi tài nguyên vẽ các ô vuông nhỏ đại diện cho số thể hiện - <em>instances</em>).</li>
+          <li><strong>Tập cạnh $E$:</strong>
+            <br>&bull; <strong>Cạnh yêu cầu (Request Edge):</strong> Vẽ mũi tên đi từ Tiến trình sang Tài nguyên ($P_i \rightarrow R_j$).
+            <br>&bull; <strong>Cạnh cấp phát (Assignment Edge):</strong> Vẽ mũi tên đi từ Tài nguyên sang Tiến trình ($R_j \rightarrow P_i$).
+          </li>
+        </ul>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">Mối quan hệ giữa Chu trình và Deadlock:</div>
+          <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+            &bull; <strong>Nếu tài nguyên chỉ có 1 thể hiện (Single Instance):</strong> Chu trình trên đồ thị RAG là điều kiện cần và đủ để kết luận đang xảy ra Deadlock ($\text{Cycle} \Leftrightarrow \text{Deadlock}$).
+            <br>&bull; <strong>Nếu tài nguyên có nhiều thể hiện (Multiple Instances):</strong> Sự xuất hiện của chu trình chỉ báo hiệu nguy cơ tiềm ẩn có thể xảy ra Deadlock, không đủ để kết luận chắc chắn.
+          </p>
+        </div>
+      </section>
+
+      <!-- Part 6 & 7 -->
+      <section id="part-6-7" style="margin-top: 2.5rem;">
+        <h2>6.3 Các cách tiếp cận và Phòng ngừa Deadlock (Deadlock Prevention)</h2>
+        <p>Có 4 hướng xử lý Deadlock chính: Phòng ngừa (Prevention), Tránh (Avoidance), Phát hiện (Detection) và Phục hồi (Recovery).</p>
+        
+        <h3>Deadlock Prevention (Phòng ngừa):</h3>
+        <p>Ngăn chặn deadlock bằng cách đặt ra các quy tắc thiết kế hệ thống nhằm loại bỏ hoàn toàn ít nhất 1 trong 4 điều kiện cần:</p>
+        <ul>
+          <li><strong>Phá vỡ Mutual Exclusion:</strong> Cho phép chia sẻ tài nguyên (không khả thi với các thiết bị độc quyền như máy in, ổ ghi).</li>
+          <li><strong>Phá vỡ Hold and Wait:</strong> Bắt buộc tiến trình phải yêu cầu toàn bộ tài nguyên một lần trước khi chạy, hoặc giải phóng toàn bộ tài nguyên cũ đang giữ trước khi gửi yêu cầu xin tài nguyên mới.</li>
+          <li><strong>Phá vỡ No Preemption:</strong> Nếu một tiến trình xin thêm tài nguyên mà không được đáp ứng ngay, hệ thống tự động thu hồi cưỡng bức toàn bộ tài nguyên nó đang giữ để cấp phát cho tiến trình khác rảnh hơn.</li>
+          <li><strong>Phá vỡ Circular Wait:</strong> Đánh số thứ tự các tài nguyên và bắt buộc các tiến trình chỉ được phép yêu cầu tài nguyên theo thứ tự tăng dần ($R_1 \lt R_2 \lt \dots \lt R_m$), ngăn ngừa tuyệt đối khả năng tạo chu trình chờ khép kín.</li>
+        </ul>
+      </section>
+
+      <!-- Part 8 & 9 & 10 & 11 -->
+      <section id="part-8-9-10-11" style="margin-top: 2.5rem;">
+        <h2>6.4 Tránh Deadlock (Deadlock Avoidance) và Thuật toán Banker</h2>
+        <p>
+          Hệ điều hành giám sát trạng thái cấp phát tài nguyên và chỉ đáp ứng yêu cầu nếu hệ thống được đảm bảo duy trì trong <strong>Trạng thái an toàn (Safe State)</strong> - trạng thái tồn tại một **chuỗi an toàn (Safe Sequence)** đảm bảo mọi tiến trình đều có thể chạy xong mà không bị deadlock. Trạng thái không an toàn (Unsafe State) có nguy cơ cao dẫn tới deadlock.
+        </p>
+
+        <h3>Thuật toán Banker (Banker's Algorithm):</h3>
+        <p>Sử dụng các ma trận dữ liệu để kiểm soát cấp phát cho tài nguyên có nhiều thể hiện:</p>
+        <ul>
+          <li><code>Available[j]</code>: Số lượng tài nguyên loại $R_j$ hiện đang rảnh rỗi.</li>
+          <li><code>Max[i][j]</code>: Số lượng tài nguyên loại $R_j$ tối đa tiến trình $P_i$ có thể yêu cầu.</li>
+          <li><code>Allocation[i][j]</code>: Số lượng tài nguyên loại $R_j$ hiện đã cấp phát cho $P_i$.</li>
+          <li><code>Need[i][j] = Max[i][j] - Allocation[i][j]</code>: Số lượng tài nguyên loại $R_j$ tiến trình $P_i$ còn cần thêm để chạy xong.</li>
+        </ul>
+
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Thuật toán kiểm tra chuỗi an toàn (Safety Algorithm):</h4>
+          <ol style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+            <li>Khởi tạo vector <code>Work = Available</code> và mảng logic <code>Finish[i] = false</code> với mọi tiến trình.</li>
+            <li>Tìm tiến trình $P_i$ thỏa mãn: <code>Finish[i] == false</code> và <code>Need[i] <= Work</code>.</li>
+            <li>Nếu tìm thấy: giả định $P_i$ chạy xong và trả lại toàn bộ tài nguyên: <code>Work = Work + Allocation[i]</code>; gán <code>Finish[i] = true</code>; quay lại bước 2.</li>
+            <li>Nếu tất cả <code>Finish[i] == true</code>, hệ thống ở trạng thái an toàn. Ngược lại, hệ thống không an toàn.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Part 12 & 13 -->
+      <section id="part-12-13" style="margin-top: 2.5rem;">
+        <h2>6.5 Phát hiện và Phục hồi Deadlock</h2>
+        
+        <h3>Phát hiện Deadlock (Deadlock Detection):</h3>
+        <ul>
+          <li><strong>Với tài nguyên đơn lẻ:</strong> Lược bỏ các đỉnh tài nguyên trên đồ thị RAG để tạo ra đồ thị chờ **Wait-for Graph** (chỉ chứa các đỉnh tiến trình $P_i \rightarrow P_j$). Hệ thống bị deadlock khi và chỉ khi đồ thị Wait-for chứa chu trình.</li>
+          <li><strong>Với tài nguyên nhiều thể hiện:</strong> Chạy thuật toán phát hiện dựa trên ma trận yêu cầu thực tế `Request` thay thế cho ma trận `Need` của Banker.</li>
+        </ul>
+
+        <h3>Phục hồi hệ thống (Deadlock Recovery):</h3>
+        <p>Khi phát hiện deadlock, hệ thống khôi phục trạng thái bằng hai cách:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hủy bỏ tiến trình (Terminate Process):</strong> Hủy toàn bộ các tiến trình trong vòng lặp deadlock (tốn kém); hoặc hủy lần lượt từng tiến trình cho đến khi giải phóng đủ tài nguyên để bẻ gãy chu trình deadlock.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thu hồi tài nguyên (Resource Preemption):</strong> Cưỡng chế thu hồi tài nguyên từ một số tiến trình để cấp phát cho tiến trình khác. Cần giải quyết 3 bài toán: Chọn tiến trình nạn nhân (giảm thiểu chi phí thiệt hại), Hoàn tác trạng thái (Rollback tiến trình về điểm an toàn đã lưu) và Tránh chết đói tài nguyên (Starvation - ngăn chặn một tiến trình bị chọn làm nạn nhân liên tục).
+          </li>
+        </ol>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 6</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Khái niệm Deadlock (khóa chết) trong hệ điều hành mô tả tình trạng nào của các tiến trình?",
+        options: [
+          "Các tiến trình liên tục tranh chấp CPU làm tăng số lượng Context Switch.",
+          "Một nhóm các tiến trình chờ đợi nhau vô thời hạn vì mỗi tiến trình giữ tài nguyên mà tiến trình khác cần và không ai tự giải phóng.",
+          "Tiến trình con bị mồ côi do tiến trình cha kết thúc đột ngột trước đó.",
+          "Tiến trình bị lỗi tràn bộ nhớ RAM do cấp phát động trong Heap."
+        ],
+        answer: 1,
+        explanation: "Deadlock xảy ra khi các tiến trình trong nhóm giữ tài nguyên của nhau và xếp hàng chờ lẫn nhau tạo thành chu trình chờ vô hạn, làm đông cứng hoạt động của cả nhóm."
+      },
+      {
+        question: "Hệ thống chỉ có thể xảy ra Deadlock khi hội tụ đủ bao nhiêu điều kiện cần?",
+        options: [
+          "Chỉ cần 1 điều kiện duy nhất.",
+          "Đồng thời tồn tại cả 4 điều kiện cần.",
+          "Có ít nhất 2 điều kiện cần.",
+          "Chỉ cần 3 điều kiện cần."
+        ],
+        answer: 1,
+        explanation: "Deadlock chỉ xảy ra khi đồng thời thỏa mãn cả 4 điều kiện cần: Mutual Exclusion, Hold and Wait, No Preemption và Circular Wait."
+      },
+      {
+        question: "Điều kiện cần 'Hold and Wait' (Giữ và chờ) được giải nghĩa như thế nào?",
+        options: [
+          "Tiến trình giữ tài nguyên của mình và chặn mọi tín hiệu ngắt từ CPU.",
+          "Tiến trình đang giữ ít nhất một tài nguyên và tiếp tục yêu cầu thêm tài nguyên khác đang bị tiến trình khác nắm giữ.",
+          "Tiến trình giải phóng hết tài nguyên cũ trước khi xin tài nguyên mới.",
+          "Tiến trình phải đợi CPU giải phóng rồi mới được chạy."
+        ],
+        answer: 1,
+        explanation: "Hold and Wait nghĩa là tiến trình vừa giữ (hold) tài nguyên đã được cấp phát trước đó, vừa tiếp tục xếp hàng chờ (wait) cấp thêm tài nguyên mới đang bị giữ bởi tiến trình khác."
+      },
+      {
+        question: "Đặc điểm của điều kiện cần 'No Preemption' (Không trưng dụng) trong Deadlock là gì?",
+        options: [
+          "Hệ điều hành được quyền cưỡng chế thu hồi tài nguyên của tiến trình bất kỳ lúc nào.",
+          "Tài nguyên đã cấp phát không thể bị thu hồi cưỡng bức từ tiến trình; nó chỉ được giải phóng khi tiến trình chủ động trả lại.",
+          "Tiến trình không được phép giải phóng tài nguyên sau khi sử dụng.",
+          "Hệ thống không cho phép luân chuyển các tiến trình."
+        ],
+        answer: 1,
+        explanation: "No Preemption quy định tài nguyên hệ thống đã cấp cho tiến trình thì tiến trình đó được quyền độc chiếm, hệ điều hành không thể cưỡng chế giật lại giữa chừng."
+      },
+      {
+        question: "Trên đồ thị cấp phát tài nguyên RAG, mũi tên đi từ tiến trình Pi sang tài nguyên Rj (Pi -> Rj) đại diện cho cạnh nào?",
+        options: [
+          "Assignment Edge (Cạnh cấp phát).",
+          "Claim Edge (Cạnh nét đứt).",
+          "Request Edge (Cạnh yêu cầu tài nguyên).",
+          "Allocation Edge."
+        ],
+        answer: 2,
+        explanation: "Mũi tên đi từ Tiến trình sang Tài nguyên biểu thị tiến trình đang gửi yêu cầu và xếp hàng chờ tài nguyên đó, được gọi là Request Edge."
+      },
+      {
+        question: "Trên đồ thị cấp phát tài nguyên RAG, mũi tên đi từ tài nguyên Rj sang tiến trình Pi (Rj -> Pi) đại diện cho cạnh nào?",
+        options: [
+          "Request Edge (Cạnh yêu cầu).",
+          "Assignment Edge (Cạnh cấp phát tài nguyên).",
+          "Claim Edge (Cạnh tuyên bố tương lai).",
+          "Free Edge."
+        ],
+        answer: 1,
+        explanation: "Mũi tên đi từ Tài nguyên sang Tiến trình biểu thị tài nguyên đó đã được hệ thống phân bổ và cấp phát thành công cho tiến trình nắm giữ, gọi là Assignment Edge."
+      },
+      {
+        question: "Trong hệ thống mà mỗi loại tài nguyên chỉ có duy nhất một thể hiện (Single Instance), sự xuất hiện của chu trình trên đồ thị RAG nghĩa là gì?",
+        options: [
+          "Hệ thống chắc chắn an toàn (Safe State).",
+          "Đồ thị RAG bị vẽ sai cú pháp.",
+          "Hệ thống chắc chắn đang bị Deadlock (chu trình là điều kiện cần và đủ).",
+          "Đang xảy ra lỗi Starvation."
+        ],
+        answer: 2,
+        explanation: "Đối với tài nguyên chỉ có 1 thể hiện, sự tồn tại của chu trình trên đồ thị RAG tương đương tuyệt đối với việc hệ thống đang bị Deadlock."
+      },
+      {
+        question: "Trong hệ thống có nhiều thể hiện (Multiple Instances) cho mỗi tài nguyên, chu trình trên đồ thị RAG kết luận điều gì?",
+        options: [
+          "Hệ thống chắc chắn bị Deadlock.",
+          "Hệ thống chắc chắn an toàn.",
+          "Deadlock có thể xảy ra (chu trình là điều kiện cần chứ chưa đủ để kết luận chắc chắn).",
+          "Các tiến trình sẽ tự giải phóng tài nguyên."
+        ],
+        answer: 2,
+        explanation: "Khi tài nguyên có nhiều thể hiện, chu trình chỉ báo hiệu khả năng có deadlock. Hệ thống vẫn có thể an toàn nếu các tiến trình giải phóng bớt các thể hiện tài nguyên khác để bẻ gãy chuỗi chờ đợi."
+      },
+      {
+        question: "Phương pháp 'Phòng ngừa deadlock' (Deadlock Prevention) hoạt động dựa trên nguyên lý nào?",
+        options: [
+          "Cho phép deadlock xảy ra rồi sửa chữa sau.",
+          "Thiết lập các quy tắc cấp phát tài nguyên để loại bỏ hoàn toàn ít nhất 1 trong 4 điều kiện cần của deadlock.",
+          "Sử dụng thuật toán Banker để tính toán chuỗi an toàn.",
+          "Tự động khởi động lại hệ thống khi quá tải."
+        ],
+        answer: 1,
+        explanation: "Deadlock Prevention ngăn ngừa chủ động bằng cách thiết lập các luật lệ nghiêm ngặt cho hệ thống để triệt tiêu ít nhất 1 trong 4 điều kiện cần của Deadlock."
+      },
+      {
+        question: "Một trong các cách để phá vỡ điều kiện 'Hold and Wait' (Giữ và chờ) là gì?",
+        options: [
+          "Tiến trình chỉ được yêu cầu tài nguyên theo thứ tự giảm dần.",
+          "Bắt buộc tiến trình phải đăng ký và nhận toàn bộ tài nguyên một lần trước khi chạy, hoặc giải phóng hết tài nguyên đang giữ trước khi xin thêm tài nguyên mới.",
+          "Cho phép trưng dụng tài nguyên cưỡng bức bất cứ lúc nào.",
+          "Chuyển toàn bộ tài nguyên sang dạng chia sẻ được."
+        ],
+        answer: 1,
+        explanation: "Để phá vỡ Hold and Wait, ta phải ngăn không cho tiến trình vừa giữ tài nguyên cũ vừa đợi tài nguyên mới (bắt buộc nhận hết từ đầu hoặc trả hết tài nguyên cũ rồi mới xin tài nguyên mới)."
+      },
+      {
+        question: "Để ngăn chặn điều kiện 'Circular Wait' (Chờ đợi vòng tròn), hệ điều hành áp dụng phương pháp thiết kế nào?",
+        options: [
+          "Định thời Round Robin cho các yêu cầu.",
+          "Đánh số thứ tự các loại tài nguyên và bắt buộc tiến trình chỉ được yêu cầu tài nguyên theo thứ tự tăng dần.",
+          "Sử dụng ma trận cấp phát của thuật toán Banker.",
+          "Vô hiệu hóa ngắt toàn hệ thống."
+        ],
+        answer: 1,
+        explanation: "Đánh số thứ tự tài nguyên và ép buộc xin theo chiều tăng dần ($R_1 \\lt R_2 \\lt \\dots$) sẽ triệt tiêu khả năng các tiến trình chờ đợi chéo lẫn nhau tạo thành vòng khép kín."
+      },
+      {
+        question: "Phương pháp 'Tránh deadlock' (Deadlock Avoidance) đòi hỏi thông tin gì từ tiến trình?",
+        options: [
+          "Chỉ cần biết chỉ số định danh PID.",
+          "Tiến trình phải khai báo trước nhu cầu tài nguyên tối đa (Max) mà nó có thể yêu cầu trong suốt quá trình chạy.",
+          "Độ dài thời lượng CPU Burst của tiến trình.",
+          "Danh sách các luồng đang mở."
+        ],
+        answer: 1,
+        explanation: "Deadlock Avoidance cần tiến trình khai báo nhu cầu tối đa trước để hệ điều hành dự đoán và điều tiết cấp phát, đảm bảo hệ thống luôn nằm trong Safe State."
+      },
+      {
+        question: "Trạng thái không an toàn (Unsafe State) có mối quan hệ thế nào đối với Deadlock?",
+        options: [
+          "Trạng thái Unsafe State chắc chắn đang xảy ra deadlock.",
+          "Unsafe State chưa chắc xảy ra deadlock, nhưng có nguy cơ dẫn tới deadlock; Deadlock là tập con của Unsafe State.",
+          "Unsafe State là trạng thái hệ thống chạy song song tốt nhất.",
+          "Unsafe State hoàn toàn độc lập và không liên quan gì đến Deadlock."
+        ],
+        answer: 1,
+        explanation: "Trạng thái không an toàn (Unsafe State) chỉ là vùng nguy hiểm do không tìm được chuỗi an toàn. Nó chưa phải là deadlock nhưng hệ thống có thể bị đẩy vào deadlock nếu các tiến trình đồng loạt đòi hỏi tài nguyên tối đa."
+      },
+      {
+        question: "Trong giải thuật RAG tránh Deadlock, cạnh nét đứt đi từ tiến trình Pi sang tài nguyên Rj (Pi -> Rj) là loại cạnh nào?",
+        options: [
+          "Assignment Edge.",
+          "Request Edge.",
+          "Claim Edge (Cạnh tuyên bố yêu cầu trong tương lai).",
+          "Cycle Edge."
+        ],
+        answer: 2,
+        explanation: "Claim Edge vẽ bằng nét đứt biểu diễn việc tiến trình có khả năng sẽ yêu cầu tài nguyên đó trong tương lai, dùng để kiểm tra việc cấp phát có tạo chu trình kín hay không."
+      },
+      {
+        question: "Thuật toán Banker (Banker's Algorithm) được áp dụng cho cấu trúc hệ thống tài nguyên nào?",
+        options: [
+          "Hệ thống chỉ có một thể hiện cho mỗi loại tài nguyên.",
+          "Hệ thống có nhiều thể hiện (multiple instances) của các loại tài nguyên.",
+          "Hệ thống không sử dụng bộ nhớ RAM chia sẻ.",
+          "Hệ thống thời gian thực."
+        ],
+        answer: 1,
+        explanation: "Thuật toán Banker dùng để giải quyết tránh deadlock cho hệ thống có nhiều thể hiện (instances) của mỗi loại tài nguyên nhờ quản lý bằng các ma trận Available, Max, Allocation, Need."
+      },
+      {
+        question: "Trong thuật toán Banker, ma trận nhu cầu tài nguyên còn lại 'Need' của các tiến trình được tính như thế nào?",
+        options: [
+          "Need = Max + Allocation",
+          "Need = Max - Allocation",
+          "Need = Available - Allocation",
+          "Need = Max - Available"
+        ],
+        answer: 1,
+        explanation: "Nhu cầu tài nguyên còn lại (Need) bằng giới hạn tối tối đa (Max) trừ đi số lượng tài nguyên hiện tại đã được hệ thống cấp phát (Allocation). Công thức: Need = Max - Allocation."
+      },
+      {
+        question: "Bước đầu tiên trong thuật toán yêu cầu tài nguyên của Banker cần kiểm tra điều kiện gì đối với yêu cầu Request_i của tiến trình P_i?",
+        options: [
+          "Request_i <= Available",
+          "Request_i <= Need_i (yêu cầu không được vượt quá nhu cầu tối đa còn lại của chính nó).",
+          "Request_i <= Allocation_i",
+          "Request_i > 0"
+        ],
+        answer: 1,
+        explanation: "Hệ thống phải kiểm tra xem yêu cầu Request_i có vượt quá giới hạn tối đa mà tiến trình đã đăng ký ban đầu hay không bằng điều kiện Request_i <= Need_i. Nếu lớn hơn sẽ báo lỗi."
+      },
+      {
+        question: "Đồ thị chờ Wait-for Graph dùng trong phát hiện deadlock (Deadlock Detection) đối với tài nguyên đơn lẻ được tạo bằng cách nào?",
+        options: [
+          "Giữ nguyên đồ thị RAG và đảo ngược chiều tất cả các mũi tên.",
+          "Lược bỏ các đỉnh tài nguyên trên đồ thị RAG, vẽ cạnh trực tiếp từ Pi -> Pj biểu diễn tiến trình Pi đang chờ Pj giải phóng tài nguyên.",
+          "Thêm các cạnh nét đứt Claim Edge vào đồ thị RAG.",
+          "Nối tất cả các tiến trình thành một hàng đợi sẵn sàng."
+        ],
+        answer: 1,
+        explanation: "Wait-for Graph tối giản hóa đồ thị RAG bằng cách lược bỏ các nút tài nguyên, chỉ giữ các tiến trình và kết nối chúng bằng cạnh chờ trực tiếp giữa các tiến trình để phát hiện chu trình dễ dàng hơn."
+      },
+      {
+        question: "Một trong các phương pháp phục hồi hệ thống khỏi Deadlock (Deadlock Recovery) là gì?",
+        options: [
+          "Tự động tăng thời lượng Quantum trong Round Robin.",
+          "Hủy bỏ tiến trình (Terminate Process) bị deadlock hoặc thu hồi cưỡng bức tài nguyên (Resource Preemption).",
+          "Chuyển toàn bộ tiến trình sang trạng thái Waiting.",
+          "Sử dụng chỉ thị phần cứng test_and_set."
+        ],
+        answer: 1,
+        explanation: "Hai phương pháp phục hồi hệ thống kinh điển khi phát hiện deadlock là: Chấm dứt tiến trình (hủy toàn bộ hoặc hủy dần) hoặc Thu hồi tài nguyên cưỡng bức cấp cho tiến trình khác."
+      },
+      {
+        question: "Ba vấn đề cần xử lý khi thực hiện thu hồi tài nguyên (Resource Preemption) để phục hồi deadlock là gì?",
+        options: [
+          "Bảo mật hệ thống, tăng tốc CPU, giải phóng bộ nhớ ảo.",
+          "Chọn tiến trình nạn nhân (selecting a victim), hoàn tác trạng thái (rollback) và phòng tránh đói tài nguyên (starvation).",
+          "Đánh số thứ tự tài nguyên, vô hiệu hóa ngắt, khóa các tiến trình con.",
+          "Cấu hình máy ảo, phân hoạch bộ nhớ, lập lịch CFS."
+        ],
+        answer: 1,
+        explanation: "Khi thu hồi tài nguyên, hệ thống phải chọn tiến trình nạn nhân chịu thiệt hại nhỏ nhất, thực hiện hoàn tác (rollback) tiến trình về điểm an toàn trước đó và ngăn ngừa tiến trình này bị chọn làm nạn nhân liên tục dẫn đến chết đói tài nguyên (starvation)."
+      },
+      {
+        question: "Để vẽ đồ thị chờ Wait-for Graph từ đồ thị cấp phát tài nguyên RAG, ta thực hiện các bước lược bỏ nào?",
+        options: [
+          "Loại bỏ toàn bộ các đỉnh tiến trình.",
+          "Lược bỏ toàn bộ các đỉnh tài nguyên và vẽ các mũi tên trực tiếp từ tiến trình Pi sang tiến trình Pj nếu Pi đang chờ tài nguyên do Pj nắm giữ.",
+          "Đổi chiều toàn bộ các cạnh có hướng.",
+          "Thay thế các cạnh nét đứt bằng cạnh nét liền."
+        ],
+        answer: 1,
+        explanation: "Wait-for Graph tối giản hóa đồ thị bằng cách loại bỏ các nút tài nguyên trung gian, giúp thuật toán tìm chu trình bế tắc giữa các tiến trình hoạt động nhanh và chính xác hơn."
+      },
+      {
+        question: "Khác biệt cốt lõi giữa Phòng ngừa Deadlock (Deadlock Prevention) và Tránh Deadlock (Deadlock Avoidance) là gì?",
+        options: [
+          "Prevention thực hiện trong lúc chạy hệ thống; Avoidance thiết lập từ lúc thiết kế phần cứng.",
+          "Prevention đưa ra các luật thiết kế triệt tiêu 1 trong 4 điều kiện cần của deadlock; Avoidance giám sát động trạng thái tài nguyên trong quá trình chạy để tránh rơi vào trạng thái Unsafe.",
+          "Prevention sử dụng thuật toán Banker; Avoidance sử dụng Wait-for Graph.",
+          "Prevention chấp nhận mất dữ liệu; Avoidance đảm bảo an toàn tuyệt đối dữ liệu."
+        ],
+        answer: 1,
+        explanation: "Prevention ngăn chặn tĩnh bằng cách ép hệ thống theo các luật nghiêm ngặt (như xin tăng dần tài nguyên). Avoidance ngăn chặn động bằng cách cho hệ điều hành kiểm tra xem việc cấp phát tài nguyên tại thời điểm chạy có tạo chuỗi an toàn không."
+      },
+      {
+        question: "Giả sử hệ thống chạy Banker có: Available = (3, 3, 2). Tiến trình P0 có Allocation = (0, 1, 0) và Max = (7, 5, 3). Ma trận nhu cầu còn lại `Need[0]` của P0 là bao nhiêu?",
+        options: [
+          "(7, 4, 3)",
+          "(7, 6, 3)",
+          "(3, 2, 2)",
+          "(0, 1, 0)"
+        ],
+        answer: 0,
+        explanation: "Công thức tính nhu cầu còn lại: Need = Max - Allocation. Giá trị của Need[0] = (7, 5, 3) - (0, 1, 0) = (7, 4, 3)."
+      },
+      {
+        question: "Trong ví dụ trên, tiến trình P0 có thể được cấp phát tài nguyên ngay lập tức nếu nó yêu cầu Request_0 = (7, 4, 3) hay không, biết Available = (3, 3, 2)?",
+        options: [
+          "Có, vì hệ thống luôn ưu tiên P0.",
+          "Không, vì Request_0 vượt quá số tài nguyên rảnh rỗi hiện có Available (3, 3, 2), P0 bắt buộc phải xếp hàng chờ đợi.",
+          "Có, vì Request_0 nhỏ hơn hoặc bằng Need_0.",
+          "Không, vì hệ thống đang bị lỗi bế tắc."
+        ],
+        answer: 1,
+        explanation: "Mặc dù yêu cầu hợp lệ ($Request_0 \\le Need_0$), nhưng do lượng tài nguyên rảnh rỗi hiện có của hệ thống không đủ đáp ứng ($Request_0 \\gt Available$), hệ điều hành bắt buộc phải bắt P0 dừng chạy để chờ đợi."
+      },
+      {
+        question: "Hiện tượng 'Livelock' khác biệt thế nào so với hiện tượng Deadlock?",
+        options: [
+          "Livelock không tiêu tốn chu kỳ CPU.",
+          "Trong Deadlock, các tiến trình bị đóng băng (Blocked) và ngủ vĩnh viễn; trong Livelock, các tiến trình liên tục thay đổi trạng thái và chạy vòng lặp vô hạn nhưng không tiến triển thêm được công việc nào.",
+          "Livelock chỉ xảy ra trên hệ thống đơn nhiệm.",
+          "Livelock tự động biến mất sau một quantum thời gian."
+        ],
+        answer: 1,
+        explanation: "Livelock là bế tắc động. Các tiến trình vẫn tích cực chạy CPU, thay đổi cờ trạng thái để nhường nhịn nhau liên tục (giống hai người đi đối diện tránh nhau cùng bước sang một bên liên tục), khiến chúng tốn CPU nhưng vẫn kẹt."
+      },
+      {
+        question: "Tại sao chiến lược Ostrich (Đà điểu - giả vờ như không có deadlock) lại được các hệ điều hành thương mại phổ biến như Windows và Linux áp dụng?",
+        options: [
+          "Vì các hệ điều hành này không biết cách viết thuật toán Banker.",
+          "Vì tần suất xảy ra deadlock trong thực tế cực kỳ thấp, và chi phí hiệu năng/phát triển để liên tục phòng ngừa và phát hiện deadlock là quá lớn so với việc thỉnh thoảng khởi động lại máy.",
+          "Vì chiến lược này tăng tốc độ truy cập đĩa cứng.",
+          "Vì nó tự động bảo mật hệ thống mạng."
+        ],
+        answer: 1,
+        explanation: "Chiến lược đà điểu là sự đánh đổi kinh tế trong kỹ nghệ phần mềm. Việc kiểm tra khóa chết liên tục làm chậm hệ thống hàng ngày, trong khi lỗi deadlock chỉ xảy ra rất hiếm và người dùng có thể chấp nhận khởi động lại ứng dụng/máy."
+      },
+      {
+        question: "Trong phục hồi Deadlock bằng phương pháp Preemption (thu hồi tài nguyên), tại sao hệ thống phải giải quyết vấn đề Rollback?",
+        options: [
+          "Để tăng tốc độ chuyển ngữ cảnh.",
+          "Để đưa tiến trình bị thu hồi tài nguyên quay trở lại một trạng thái an toàn đã được ghi nhận trước đó (checkpoint) và thực thi lại từ điểm đó, tránh lỗi dữ liệu.",
+          "Để giải phóng bảng tiến trình Process Table.",
+          "Để bẻ gãy chu trình chờ đợi Circular Wait."
+        ],
+        answer: 1,
+        explanation: "Khi giật tài nguyên của một tiến trình đang chạy dở dang, dữ liệu của nó sẽ bị hỏng. Hệ thống phải thực hiện rollback (hoàn tác) trạng thái của nó về một thời điểm lưu trữ an toàn trước đó rồi bắt đầu chạy lại từ đó."
+      },
+      {
+        question: "Điều gì xảy ra nếu hệ thống có chu trình trên đồ thị RAG nhưng tất cả các tài nguyên trong chu trình đều là loại chia sẻ được (Shareable)?",
+        options: [
+          "Hệ thống chắc chắn bị Deadlock.",
+          "Hệ thống không bao giờ xảy ra Deadlock, vì điều kiện cần đầu tiên (Mutual Exclusion) đã bị loại bỏ.",
+          "Hệ thống tự động hủy các tiến trình.",
+          "Hệ thống rơi vào trạng thái Unsafe."
+        ],
+        answer: 1,
+        explanation: "Nếu tài nguyên chia sẻ được, nhiều tiến trình cùng truy cập đồng thời không cần xếp hàng loại trừ tương hỗ, điều kiện Mutual Exclusion không thỏa mãn, do đó deadlock không thể phát sinh."
+      },
+      {
+        question: "Tại sao việc chấm dứt toàn bộ các tiến trình trong vòng lặp deadlock (Abort all deadlocked processes) ít được áp dụng trong thực tế?",
+        options: [
+          "Vì hệ điều hành không thể xác định được tiến trình nào bị deadlock.",
+          "Vì chi phí cực kỳ lớn do phải hủy bỏ toàn bộ các kết quả tính toán dở dang của hàng loạt tiến trình chạy từ lâu, gây lãng phí tài nguyên nặng nề.",
+          "Vì nó làm hỏng phần cứng CPU.",
+          "Vì nó bắt buộc phải khởi động lại BIOS."
+        ],
+        answer: 1,
+        explanation: "Hủy toàn bộ tiến trình deadlock là giải pháp thô bạo. Nếu các tiến trình đã chạy tính toán trong nhiều giờ, việc hủy toàn bộ sẽ xóa sạch tiến độ làm việc, do đó người ta ưu tiên hủy dần từng tiến trình để tối thiểu hóa thiệt hại."
+      },
+      {
+        question: "Làm thế nào để tránh hiện tượng Starvation (đói tài nguyên) cho một tiến trình khi thực hiện phục hồi deadlock bằng Preemption?",
+        options: [
+          "Tự động nâng độ ưu tiên chạy của nó lên tối đa.",
+          "Bảo đảm tiến trình không bị chọn làm nạn nhân (victim) liên tục bằng cách tính thêm số lần bị thu hồi vào chi phí lựa chọn; tiến trình bị thu hồi nhiều lần sẽ giảm cơ hội bị chọn tiếp theo.",
+          "Ép buộc tiến trình giải phóng toàn bộ Stack.",
+          "Không cho phép tiến trình thực hiện System Call."
+        ],
+        answer: 1,
+        explanation: "Để tránh starvation, hệ thống phải lưu số lần tiến trình bị chọn làm nạn nhân thu hồi tài nguyên. Tiến trình bị chọn nhiều lần sẽ có chi phí đánh đổi tăng lên, khiến bộ lập lịch lựa chọn tiến trình khác làm nạn nhân thay thế."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

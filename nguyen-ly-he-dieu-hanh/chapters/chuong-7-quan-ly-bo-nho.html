@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 7: Quản lý bộ nhớ - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    /* Print styling */
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* CSS Diagram Styles */
+    .mmu-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      background-color: var(--bg-code);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+    .diagram-box {
+      border: 2px solid var(--primary-color);
+      background-color: var(--bg-card);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      min-width: 100px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .diagram-arrow {
+      font-size: 1.25rem;
+      color: var(--secondary-color);
+      font-weight: bold;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 7
+      </div>
+      <h1>CHƯƠNG 7. QUẢN LÝ BỘ NHỚ (MEMORY MANAGEMENT)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Nghiên cứu nguyên lý tổ chức bộ nhớ chính, bảo vệ vùng nhớ bằng thanh ghi cơ sở/giới hạn, các phương pháp liên kết địa chỉ, cấp phát liên tục, thuật toán chọn phân hoạch, kỹ thuật phân trang (Paging), cấu trúc bảng trang và phân đoạn (Segmentation).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Part 1: Tổng quan -->
+      <section id="part-1">
+        <h2>7.1 Tổng quan về Bộ nhớ và Tiến trình</h2>
+        <p>
+          Trong hệ thống máy tính, bộ xử lý trung tâm (CPU) chỉ có thể truy xuất trực tiếp các thanh ghi nội bộ (Registers), bộ nhớ đệm (Cache), và bộ nhớ chính (Main Memory - RAM). Mọi mã lệnh và dữ liệu của chương trình trước khi thực thi bắt buộc phải được nạp vào bộ nhớ chính và tổ chức dưới dạng một tiến trình (Process).
+        </p>
+
+        <h3>Phân cấp tốc độ truy xuất bộ nhớ:</h3>
+        <ul>
+          <li><strong>Thanh ghi (Registers):</strong> Nằm trực tiếp bên trong nhân CPU, thời gian truy xuất cực kỳ nhanh (thường chỉ mất tối đa 1 chu kỳ xung nhịp CPU).</li>
+          <li><strong>Bộ nhớ đệm (Cache):</strong> Nằm trung gian giữa CPU và bộ nhớ chính, có tốc độ nhanh hơn RAM nhưng chậm hơn thanh ghi.</li>
+          <li><strong>Bộ nhớ chính (RAM):</strong> Có dung lượng lớn nhưng tốc độ truy xuất chậm hơn nhiều chu kỳ CPU, khiến CPU đôi khi phải dừng lại chờ đợi (memory stall).</li>
+        </ul>
+
+        <h3>Bảo vệ vùng nhớ bằng thanh ghi Nền và Giới hạn:</h3>
+        <p>
+          Để đảm bảo tính đúng đắn và ngăn chặn tiến trình người dùng can thiệp vào vùng nhớ của hệ điều hành hoặc các tiến trình khác, phần cứng trang bị hai thanh ghi:
+        </p>
+        <ul>
+          <li><strong>Thanh ghi nền (Base Register):</strong> Lưu trữ địa chỉ vật lý thấp nhất (địa chỉ khởi đầu) được cấp phát cho tiến trình.</li>
+          <li><strong>Thanh ghi giới hạn (Limit Register):</strong> Xác định kích thước tổng cộng của phân vùng nhớ được cấp phát cho tiến trình.</li>
+        </ul>
+        <p>
+          Tiến trình chỉ được phép truy xuất các địa chỉ trong nửa khoảng:
+          $$\text{Base} \le \text{Địa chỉ} \lt \text{Base} + \text{Limit}$$
+          Nếu CPU phát hiện tiến trình cố tình truy xuất địa chỉ nằm ngoài phạm vi này, nó sẽ kích hoạt một ngắt phần cứng <strong>(Trap to OS)</strong>, báo lỗi vi phạm phân vùng nhớ (Segmentation Fault) và chấm dứt tiến trình. Việc chỉnh sửa hai thanh ghi này là đặc quyền riêng của hệ điều hành thực hiện trong Kernel mode.
+        </p>
+
+        <h3>Liên kết địa chỉ (Address Binding):</h3>
+        <p>
+          Quá trình chuyển đổi từ địa chỉ logic trong mã nguồn sang địa chỉ vật lý thực tế trong RAM trải qua các giai đoạn liên kết khác nhau:
+        </p>
+        <table class="data-table" style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+          <thead>
+            <tr style="background-color: var(--primary-color); color: #fff;">
+              <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Phương pháp liên kết</th>
+              <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Đặc điểm hoạt động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Compile-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Địa chỉ tuyệt đối được xác định ngay khi biên dịch chương trình. Nếu vị trí nạp chương trình vào RAM thay đổi, bắt buộc phải biên dịch lại toàn bộ mã nguồn.</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Load-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Trình biên dịch sinh ra địa chỉ tái định vị (relocatable address). Địa chỉ vật lý cuối cùng được xác định khi nạp chương trình vào RAM. Nếu vị trí nạp thay đổi, chỉ cần nạp lại.</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Execution-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Địa chỉ được liên kết động trong quá trình chạy. Tiến trình có thể di chuyển giữa các phân vùng nhớ khác nhau. Đòi hỏi hỗ trợ phần cứng đặc biệt (base/limit registers) và là giải pháp của các HĐH hiện đại.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Không gian địa chỉ luận lý (Logical) và vật lý (Physical):</h3>
+        <ul>
+          <li><strong>Địa chỉ luận lý (Logical Address / Virtual Address):</strong> Địa chỉ do CPU sinh ra trong quá trình thực thi mã lệnh.</li>
+          <li><strong>Địa chỉ vật lý (Physical Address):</strong> Địa chỉ thực tế trên các chip RAM được phần cứng MMU ghi nhận để truy xuất.</li>
+        </ul>
+        <p>
+          Trong cơ chế liên kết Compile-time và Load-time, địa chỉ luận lý trùng khớp với địa chỉ vật lý. Trái lại, trong cơ chế Execution-time, địa chỉ luận lý và vật lý hoàn toàn khác biệt.
+        </p>
+
+        <h3>Khối quản lý bộ nhớ (Memory Management Unit - MMU):</h3>
+        <p>
+          MMU là thiết bị phần cứng thực hiện ánh xạ địa chỉ luận lý sang địa chỉ vật lý. Ở dạng đơn giản nhất, MMU sử dụng một <strong>thanh ghi tái định vị (Relocation Register)</strong> chứa địa chỉ cơ sở của tiến trình:
+          $$\text{Địa chỉ vật lý} = \text{Địa chỉ luận lý} + \text{Thanh ghi tái định vị}$$
+        </p>
+        <div class="mmu-diagram">
+          <div class="diagram-box" style="border-color: var(--secondary-color);">CPU (Logical: 346)</div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-box">MMU (Relocation: 14000)</div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-box" style="border-color: #10b981;">RAM (Physical: 14346)</div>
+        </div>
+
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <div class="callout-title">Nạp động &amp; Liên kết động:</div>
+          <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+            &bull; <strong>Nạp động (Dynamic Loading):</strong> Các thủ tục chỉ được tải vào RAM khi thực sự được gọi, giúp tiết kiệm không gian bộ nhớ.
+            <br>&bull; <strong>Liên kết động (Dynamic Linking):</strong> Các thư viện chia sẻ (Shared Libraries / DLL) không được nhúng vào file thực thi mà được liên kết động tại thời điểm chạy nhờ đoạn mã trung gian (stub), giảm kích thước tệp và bộ nhớ RAM.
+          </p>
+        </div>
+      </section>
+
+      <!-- Part 2: Hoán đổi -->
+      <section id="part-2" style="margin-top: 2.5rem;">
+        <h2>7.2 Hoán đổi bộ nhớ (Swapping)</h2>
+        <p>
+          Hệ điều hành có thể tạm thời di chuyển một tiến trình không hoạt động ra khỏi bộ nhớ chính và ghi vào vùng lưu trữ phụ tốc độ cao trên đĩa gọi là <strong>Backing Store (Swap Out)</strong>, sau đó nạp lại vào RAM khi tiến trình cần chạy tiếp <strong>(Swap In)</strong>.
+        </p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Cho phép hệ thống chạy đồng thời nhiều tiến trình có tổng kích thước lớn hơn dung lượng bộ nhớ vật lý thực tế của RAM (tăng mức độ đa chương).</li>
+          <li><strong>Nhược điểm:</strong> Thời gian chuyển đổi ngữ cảnh (context switch) khi swapping rất lớn vì phụ thuộc chính vào tốc độ đọc ghi đĩa <strong>(Transfer Time)</strong>.</li>
+        </ul>
+        <p>
+          Do đó, các hệ điều hành hiện đại thường không sử dụng swapping thuần túy mà chỉ kích hoạt cơ chế hoán đổi này khi lượng RAM trống giảm xuống dưới một ngưỡng an toàn tối thiểu (threshold).
+        </p>
+      </section>
+
+      <!-- Part 3: Cấp phát kề nhau -->
+      <section id="part-3" style="margin-top: 2.5rem;">
+        <h2>7.3 Cấp phát bộ nhớ kề nhau (Contiguous Allocation)</h2>
+        <p>
+          Trong phương pháp sơ khai này, bộ nhớ chính được chia làm hai phân vùng: Vùng thấp chứa mã nguồn hệ điều hành và vector ngắt, Vùng cao chứa các tiến trình của người dùng. Mỗi tiến trình được cấp phát một vùng nhớ liên tục duy nhất để chạy.
+        </p>
+
+        <h3>Giải thuật tìm phân hoạch trống (Dynamic Storage-Allocation Problem):</h3>
+        <p>Khi có tiến trình cần nạp vào RAM, hệ thống tìm kiếm trong các lỗ trống (holes) bộ nhớ theo 3 giải thuật:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>First-fit (Khớp đầu tiên):</strong> Cấp phát lỗ trống đầu tiên tìm thấy đủ lớn. Tốc độ thực hiện nhanh nhất.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Best-fit (Khớp tốt nhất):</strong> Tìm kiếm toàn bộ bộ nhớ và cấp phát lỗ trống nhỏ nhất nhưng vẫn đủ chứa tiến trình. Giải pháp này để lại các lỗ trống dư thừa nhỏ nhất, nhưng tốn thời gian duyệt.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Worst-fit (Khớp tệ nhất):</strong> Cấp phát lỗ trống lớn nhất. Ý tưởng là để lại lỗ trống dư thừa sau khi cắt có kích thước đủ lớn để tiến trình khác dùng tiếp, nhưng thực tế hiệu quả kém.
+          </li>
+        </ol>
+
+        <h3>Lỗi phân mảnh bộ nhớ (Fragmentation):</h3>
+        <ul>
+          <li>
+            <strong>Phân mảnh ngoài (External Fragmentation):</strong> Tổng dung lượng các lỗ trống bộ nhớ còn lại đủ để nạp tiến trình, nhưng chúng nằm rải rác không liên tục khiến không thể cấp phát cho tiến trình mới.
+          </li>
+          <li>
+            <strong>Phân mảnh trong (Internal Fragmentation):</strong> Vùng nhớ được cấp phát cho tiến trình lớn hơn một chút so với kích thước thực tế của tiến trình (ví dụ phân hoạch cố định 10KB cấp cho tiến trình 8KB dư thừa 2KB không sử dụng được).
+          </li>
+        </ul>
+        <p>
+          Để khắc phục phân mảnh ngoài, hệ điều hành có thể chạy cơ chế <strong>Dồn dịch bộ nhớ (Compaction)</strong>: dịch chuyển tất cả tiến trình về một phía của RAM để gom các lỗ trống nhỏ thành một khối lớn liên tục. Compaction chỉ thực hiện được khi hệ thống sử dụng cơ chế liên kết địa chỉ tại thời điểm chạy (Execution-time binding).
+        </p>
+      </section>
+
+      <!-- Part 4: Phân trang -->
+      <section id="part-4" style="margin-top: 2.5rem;">
+        <h2>7.4 Phân trang (Paging)</h2>
+        <p>
+          Phân trang là kỹ thuật quản lý bộ nhớ hiện đại cho phép không gian địa chỉ vật lý của tiến trình không cần nằm kề nhau, loại bỏ hoàn toàn hiện tượng phân mảnh ngoài.
+        </p>
+        <ul>
+          <li><strong>Trang luận lý (Page):</strong> Không gian bộ nhớ luận lý của tiến trình được chia thành các khối kích thước cố định bằng nhau.</li>
+          <li><strong>Khung trang vật lý (Frame):</strong> Bộ nhớ vật lý RAM được chia thành các khối có kích thước bằng kích thước trang.</li>
+        </ul>
+
+        <h3>Cấu trúc dịch địa chỉ phân trang:</h3>
+        <p>
+          Địa chỉ luận lý do CPU phát ra gồm 2 phần:
+          <strong>Page Number ($p$)</strong> và <strong>Offset ($d$)</strong>.
+        </p>
+        <ul>
+          <li>Số hiệu trang $p$ được dùng làm chỉ mục (index) tra cứu trong <strong>Bảng trang (Page Table)</strong> để tìm số hiệu khung trang vật lý $f$ tương ứng trong RAM.</li>
+          <li>Địa chỉ vật lý cuối cùng được tính bằng cách ghép $f$ với độ lệch trang $d$:
+            $$\text{Địa chỉ vật lý} = f \times \text{Kích thước trang} + d$$
+          </li>
+        </ul>
+
+        <h3>Bộ đệm chuyển đổi TLB (Translation Look-aside Buffer):</h3>
+        <p>
+          Vì bảng trang được lưu trong RAM, mỗi truy xuất dữ liệu cần 2 lần đọc RAM (1 lần tra bảng trang, 1 lần đọc dữ liệu), làm giảm hiệu năng hệ thống đi 50%. Để khắc phục, phần cứng tích hợp bộ đệm cache tốc độ cao gọi là <strong>TLB</strong> hoạt động theo cơ chế tra cứu kết hợp song song.
+        </p>
+        <p>
+          Thời gian truy cập hiệu dụng <strong>(Effective Access Time - EAT)</strong> được tính theo công thức:
+          $$EAT = \alpha \times (\epsilon + t_m) + (1 - \alpha) \times (\epsilon + 2 t_m)$$
+          Trong đó:
+          <br>&bull; $\alpha$: Tỉ lệ tìm thấy thông tin dịch địa chỉ trong TLB (Hit ratio).
+          <br>&bull; $\epsilon$: Thời gian truy xuất bộ đệm TLB (TLB lookup time).
+          <br>&bull; $t_m$: Thời gian truy cập bộ nhớ RAM chính (Memory access time).
+        </p>
+
+        <h3>Chia sẻ mã lệnh (Shared Pages):</h3>
+        <p>
+          Phân trang cho phép chia sẻ mã nguồn dùng chung (reentrant code - mã không tự thay đổi trong quá trình thực thi) giữa các tiến trình. Ví dụ, 4 tiến trình cùng chạy một trình soạn thảo văn bản chỉ cần nạp duy nhất 1 bản sao mã lệnh vào RAM, mỗi tiến trình chỉ giữ phân vùng dữ liệu (data section) riêng biệt.
+        </p>
+      </section>
+
+      <!-- Part 5: Cấu trúc bảng trang -->
+      <section id="part-5" style="margin-top: 2.5rem;">
+        <h2>7.5 Các cấu trúc bảng trang nâng cao</h2>
+        <p>
+          Với kiến trúc hệ thống 32-bit và kích thước trang 4KB ($2^{12}$ bytes), bảng trang cần chứa $2^{20}$ mục. Nếu mỗi mục chiếm 4 bytes, bảng trang của 1 tiến trình sẽ chiếm tới 4MB RAM, quá lớn để lưu trữ liên tục. Hệ thống giải quyết bằng các cấu trúc:
+        </p>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang phân cấp (Hierarchical Page Table):</strong> Chia bảng trang lớn thành nhiều cấp bảng trang nhỏ hơn (như bảng trang 2 cấp). Địa chỉ luận lý được chia thành:
+            $$p_1 \mid p_2 \mid d$$
+            Trong đó $p_1$ trỏ vào bảng trang ngoài (Outer Page Table), $p_2$ trỏ vào bảng trang trong.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang băm (Hashed Page Table):</strong> Sử dụng hàm băm để ánh xạ số trang ảo. Phù hợp cho không gian địa chỉ lớn hơn 32-bit (như 64-bit). Các phần tử trùng mã băm được liên kết thành danh sách móc nối.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang ngược (Inverted Page Table):</strong> Thay vì mỗi tiến trình có một bảng trang riêng, toàn bộ hệ thống chỉ sử dụng duy nhất một bảng trang ngược. Mỗi mục trong bảng tương ứng với một khung trang vật lý RAM và lưu thông tin:
+            $$\langle \text{PID}, \text{Page Number} \rangle$$
+            Giúp tiết kiệm bộ nhớ bảng trang tối đa, nhưng tăng thời gian tìm kiếm địa chỉ (cần dùng bảng băm hỗ trợ).
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part 6: Phân đoạn -->
+      <section id="part-6" style="margin-top: 2.5rem;">
+        <h2>7.6 Phân đoạn (Segmentation)</h2>
+        <p>
+          Phân đoạn quản lý bộ nhớ theo góc nhìn luận lý của lập trình viên. Chương trình không còn là dãy byte tuyến tính mà là tập hợp các đoạn có kích thước logic khác nhau (như đoạn code chính, đoạn stack, mảng dữ liệu, bảng ký hiệu).
+        </p>
+        <p>Địa chỉ phân đoạn gồm: <strong>Số hiệu đoạn (Segment Number - $s$)</strong> và <strong>Độ lệch đoạn (Offset - $d$)</strong>.</p>
+        
+        <h3>Bảng phân đoạn (Segment Table):</h3>
+        <p>Mỗi mục trong bảng phân đoạn gồm hai trường thông tin:</p>
+        <ul>
+          <li><strong>Base (Địa chỉ cơ sở):</strong> Địa chỉ vật lý bắt đầu của đoạn trong RAM.</li>
+          <li><strong>Limit (Giới hạn):</strong> Chiều dài thực tế của đoạn đó.</li>
+        </ul>
+        <p>
+          Khi truy xuất địa chỉ $\langle s, d \rangle$, phần cứng kiểm tra xem độ lệch $d$ có nhỏ hơn giới hạn của đoạn đó hay không ($d \lt \text{Limit}$). Nếu vi phạm ($d \ge \text{Limit}$), hệ thống tạo lỗi trap truy cập bất hợp pháp.
+        </p>
+
+        <h3>Bảo vệ và Chia sẻ đoạn:</h3>
+        <p>
+          Mỗi mục bảng đoạn tích hợp các bit bảo vệ (valid/invalid, quyền đọc/ghi/thực thi). Việc chia sẻ mã nguồn dùng chung giữa các tiến trình được thực hiện dễ dàng bằng cách trỏ chung vào cùng một địa chỉ base của phân đoạn mã lệnh.
+        </p>
+      </section>
+
+      <!-- Part 7: Kết hợp phân trang và phân đoạn -->
+      <section id="part-7" style="margin-top: 2.5rem;">
+        <h2>7.7 Kết hợp phân trang và phân đoạn (Segmented Paging)</h2>
+        <p>
+          Để khắc phục nhược điểm bảng phân đoạn quá lớn và phân mảnh ngoài của phân đoạn, các kiến trúc máy tính hiện đại kết hợp cả hai kỹ thuật.
+        </p>
+        <p>
+          Trong cơ chế này, không gian tiến trình được chia thành các phân đoạn luận lý lớn, sau đó mỗi đoạn lại được chia nhỏ thành các trang kích thước cố định. Địa chỉ luận lý được biểu diễn dưới dạng:
+          $$\text{Segment Number} \mid \text{Page Number} \mid \text{Offset}$$
+          Mỗi mục trong bảng phân đoạn thay vì chứa địa chỉ vật lý RAM của đoạn thì nay chứa địa chỉ của **Bảng trang** quản lý phân đoạn đó.
+        </p>
+        <p>
+          <strong>Ví dụ thực tế:</strong>
+          <br>&bull; <strong>Intel Pentium:</strong> Sử dụng cơ chế phân đoạn thuần túy hoặc kết hợp phân đoạn + phân trang. Địa chỉ luận lý được dịch sang địa chỉ tuyến tính (Linear Address), sau đó đi qua bộ phân trang để ra địa chỉ vật lý.
+          <br>&bull; <strong>Linux:</strong> Sử dụng hệ thống phân trang 3 cấp (hoặc 4 cấp trên 64-bit) để bỏ qua tối đa bước phân đoạn phần cứng nhằm đảm bảo tính tương thích đa nền tảng.
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 7</h2>
+        <p>Bao gồm 30 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base (30 Questions)
+    const quizData = [
+      {
+        question: "CPU máy tính có thể truy xuất trực tiếp những loại bộ nhớ nào sau đây?",
+        options: [
+          "Đĩa cứng HDD, SSD, và USB ngoại vi.",
+          "Thanh ghi (Registers), Bộ nhớ đệm (Cache), và Bộ nhớ chính (RAM).",
+          "Bộ lưu trữ mạng SAN, và đĩa mềm.",
+          "Chỉ duy nhất bộ nhớ chính RAM."
+        ],
+        answer: 1,
+        explanation: "CPU chỉ có thể giao tiếp vật lý trực tiếp với các thanh ghi bên trong nhân, bộ nhớ đệm cache của CPU, và bộ nhớ chính RAM qua bus hệ thống. Mã lệnh trên đĩa cứng muốn chạy phải được nạp lên RAM trước."
+      },
+      {
+        question: "Đâu là đặc tính chính xác của thanh ghi (Register) so với bộ nhớ chính RAM?",
+        options: [
+          "Dung lượng lớn hơn RAM rất nhiều.",
+          "Tốc độ truy xuất nhanh hơn RAM, chỉ tốn tối đa 1 chu kỳ xung nhịp CPU.",
+          "Không bị mất dữ liệu khi tắt nguồn điện.",
+          "Chạy ở chế độ User Mode."
+        ],
+        answer: 1,
+        explanation: "Thanh ghi nằm trực tiếp trong CPU nên có tốc độ truy cập nhanh nhất (trong vòng 1 chu kỳ máy), tuy nhiên dung lượng cực nhỏ (chỉ vài trăm byte) và là bộ nhớ khả biến."
+      },
+      {
+        question: "Cặp thanh ghi nào sau đây được sử dụng để bảo vệ không gian nhớ của mỗi tiến trình?",
+        options: [
+          "Relocation Register và Stack Pointer Register.",
+          "Base Register (Thanh ghi nền) và Limit Register (Thanh ghi giới hạn).",
+          "Program Counter và Instruction Register.",
+          "Accumulator và Index Register."
+        ],
+        answer: 1,
+        explanation: "Base register lưu địa chỉ bắt đầu của tiến trình trong RAM, và Limit register lưu độ dài phân vùng nhớ được cấp. Hệ thống dùng cặp này để chặn tiến trình xâm nhập vùng nhớ khác."
+      },
+      {
+        question: "Một tiến trình được cấp Base = 300040 và Limit = 120900. Hỏi địa chỉ nào sau đây tiến trình được phép truy cập hợp lệ?",
+        options: [
+          "Địa chỉ 299999",
+          "Địa chỉ 420940",
+          "Địa chỉ 350000",
+          "Địa chỉ 421000"
+        ],
+        answer: 2,
+        explanation: "Khoảng địa chỉ hợp lệ là [Base, Base + Limit) = [300040, 300040 + 120900) = [300040, 420940). Địa chỉ 350000 nằm trong khoảng này nên hợp lệ. Các địa chỉ còn lại đều vượt ngoài biên."
+      },
+      {
+        question: "Điều gì xảy ra khi CPU phát hiện một tiến trình người dùng cố tình truy cập địa chỉ ngoài phạm vi bảo vệ của thanh ghi Base và Limit?",
+        options: [
+          "Hệ thống tự động tăng kích thước Limit Register.",
+          "Gây ra một ngắt phần mềm lỗi truy cập (Trap to OS) dẫn đến lỗi Segmentation Fault và chấm dứt tiến trình.",
+          "Hệ điều hành hoán đổi (swap out) tiến trình ra đĩa cứng.",
+          "CPU bỏ qua lệnh đó và thực thi lệnh tiếp theo."
+        ],
+        answer: 1,
+        explanation: "Khi truy cập sai địa chỉ, phần cứng CPU tạo ra một trap gửi đến hệ điều hành báo lỗi bộ nhớ, hệ điều hành sẽ can thiệp hủy bỏ tiến trình để đảm bảo an toàn hệ thống."
+      },
+      {
+        question: "Quyền sửa đổi nội dung thanh ghi Base và Limit thuộc về ai và chạy ở chế độ nào?",
+        options: [
+          "Tiến trình người dùng chạy ở User Mode.",
+          "Hệ điều hành chạy ở Kernel Mode sử dụng các lệnh đặc quyền.",
+          "Trình biên dịch Compiler khi tối ưu hóa mã nguồn.",
+          "Trình liên kết Linker khi tạo file thực thi."
+        ],
+        answer: 1,
+        explanation: "Để tránh tiến trình tự mở rộng vùng nhớ của mình, việc thiết lập Base/Limit registers chỉ được phép thực hiện bởi nhân Kernel (Hệ điều hành) thông qua các lệnh đặc quyền trong Kernel Mode."
+      },
+      {
+        question: "Đặc điểm của phương pháp liên kết địa chỉ tại thời điểm biên dịch (Compile-time Binding) là gì?",
+        options: [
+          "Mã chương trình được dịch thành mã tái định vị.",
+          "Nếu vị trí nạp chương trình vào RAM thay đổi, bắt buộc phải biên dịch lại toàn bộ mã nguồn.",
+          "Địa chỉ vật lý được dịch động trong lúc chạy chương trình.",
+          "Không yêu cầu sử dụng bộ nhớ RAM."
+        ],
+        answer: 1,
+        explanation: "Compile-time binding tạo ra địa chỉ tuyệt đối. Nếu địa chỉ nạp thay đổi, mã cũ không chạy được và lập trình viên phải biên dịch lại mã nguồn từ đầu."
+      },
+      {
+        question: "Cơ chế liên kết địa chỉ nào cho phép tiến trình di chuyển linh hoạt giữa các phân vùng RAM khác nhau trong quá trình thực thi?",
+        options: [
+          "Compile-time Binding.",
+          "Load-time Binding.",
+          "Execution-time (Run-time) Binding.",
+          "Static Linking."
+        ],
+        answer: 2,
+        explanation: "Execution-time Binding trì hoãn việc dịch địa chỉ cho đến khi lệnh được thực thi. Nhờ đó, nếu tiến trình bị chuyển sang vùng RAM khác khi đang chạy, hệ thống chỉ cần đổi giá trị thanh ghi cơ sở."
+      },
+      {
+        question: "Sự khác biệt cốt lõi giữa địa chỉ luận lý (Logical Address) và địa chỉ vật lý (Physical Address) là gì?",
+        options: [
+          "Địa chỉ luận lý là địa chỉ thực trên RAM; địa chỉ vật lý là địa chỉ ảo do CPU sinh ra.",
+          "Địa chỉ luận lý do CPU phát ra trong quá trình chạy; địa chỉ vật lý là địa chỉ thực tế trong chip nhớ RAM do MMU nhận biết.",
+          "Địa chỉ luận lý chỉ xuất hiện ở Compile-time.",
+          "Địa chỉ vật lý luôn luôn lớn hơn địa chỉ luận lý gấp hai lần."
+        ],
+        answer: 1,
+        explanation: "Địa chỉ luận lý (Virtual Address) là góc nhìn ảo của CPU. Địa chỉ vật lý (Physical Address) là địa chỉ thực tế trên thanh RAM. MMU đảm nhận việc dịch giữa hai loại địa chỉ này."
+      },
+      {
+        question: "Trong giai đoạn liên kết nào thì địa chỉ luận lý trùng khớp hoàn toàn với địa chỉ vật lý?",
+        options: [
+          "Chỉ ở giai đoạn Execution-time.",
+          "Ở giai đoạn Compile-time và Load-time.",
+          "Trong mọi trường hợp của hệ điều hành hiện đại.",
+          "Khi sử dụng bộ đệm TLB."
+        ],
+        answer: 1,
+        explanation: "Với Compile-time và Load-time, địa chỉ nạp là cố định hoặc đã được tính toán tĩnh từ trước khi chạy, nên địa chỉ CPU sinh ra chính là địa chỉ thực trên RAM."
+      },
+      {
+        question: "Thiết bị phần cứng nào chịu trách nhiệm ánh xạ địa chỉ luận lý sang địa chỉ vật lý tại thời điểm chạy?",
+        options: [
+          "ALU (Arithmetic Logic Unit).",
+          "MMU (Memory Management Unit).",
+          "DMA Controller.",
+          "BIOS Chip."
+        ],
+        answer: 1,
+        explanation: "MMU (Memory Management Unit) là mạch phần cứng chuyên dụng nằm giữa CPU và bus bộ nhớ để chuyển đổi địa chỉ ảo sang địa chỉ vật lý thời gian thực."
+      },
+      {
+        question: "Giả sử thanh ghi tái định vị (Relocation Register) chứa giá trị 14000. Địa chỉ luận lý do CPU sinh ra là 346. Hỏi địa chỉ vật lý tương ứng là bao nhiêu?",
+        options: [
+          "14346",
+          "13654",
+          "4842000",
+          "346"
+        ],
+        answer: 0,
+        explanation: "Công thức dịch của MMU cơ bản: Địa chỉ vật lý = Địa chỉ luận lý + Relocation Register = 346 + 14000 = 14346."
+      },
+      {
+        question: "Cơ chế nạp động (Dynamic Loading) mang lại lợi ích gì cho việc quản lý bộ nhớ?",
+        options: [
+          "Tự động tăng tốc độ xử lý của CPU.",
+          "Thủ tục chỉ được nạp vào RAM khi nó thực sự được gọi, giúp tiết kiệm bộ nhớ cho các hàm hiếm khi sử dụng.",
+          "Cho phép chia sẻ biến toàn cục giữa hai tiến trình.",
+          "Vô hiệu hóa hoàn toàn hiện tượng phân mảnh ngoài."
+        ],
+        answer: 1,
+        explanation: "Dynamic Loading giúp tiết kiệm bộ nhớ vì các hàm xử lý lỗi lớn hoặc chức năng hiếm gặp sẽ không bị nạp vào RAM nếu chương trình chạy bình thường không gọi tới chúng."
+      },
+      {
+        question: "Khác biệt chính giữa liên kết tĩnh (Static Linking) và liên kết động (Dynamic Linking) là gì?",
+        options: [
+          "Liên kết tĩnh nạp thư viện khi chương trình đang chạy.",
+          "Liên kết động gộp toàn bộ thư viện vào tệp thực thi; liên kết tĩnh để tệp ngoài.",
+          "Liên kết động chỉ nạp thư viện chia sẻ (.dll/.so) vào RAM khi thực thi và dùng chung giữa các tiến trình; liên kết tĩnh nhúng thẳng code thư viện vào tệp chạy gây lãng phí RAM.",
+          "Liên kết động chậm hơn liên kết tĩnh gấp 100 lần."
+        ],
+        answer: 2,
+        explanation: "Dynamic Linking giữ file chạy nhỏ gọn. Khi chạy, hệ thống dùng một đoạn mã ngắn (stub) để gọi thư viện dùng chung đã được nạp sẵn ở RAM, giúp tiết kiệm đĩa và bộ nhớ."
+      },
+      {
+        question: "Mục đích chính của kỹ thuật hoán đổi bộ nhớ (Swapping) là gì?",
+        options: [
+          "Tăng tốc độ truy xuất dữ liệu của đĩa cứng.",
+          "Cho phép tổng dung lượng bộ nhớ của các tiến trình đang hoạt động vượt quá dung lượng RAM vật lý hiện có của hệ thống.",
+          "Bảo vệ dữ liệu không bị mất khi mất điện.",
+          "Chuyển đổi CPU từ Kernel Mode sang User Mode."
+        ],
+        answer: 1,
+        explanation: "Swapping giúp nâng cao mức độ đa chương (multiprogramming degree) bằng cách đưa các tiến trình đang chờ (idle) ra đĩa để lấy chỗ RAM cho tiến trình khác hoạt động."
+      },
+      {
+        question: "Nhược điểm lớn nhất khiến cơ chế Swapping thuần túy ít được dùng trong các hệ điều hành hiện đại là gì?",
+        options: [
+          "Dễ gây lỗi cháy nổ RAM.",
+          "Làm tăng khả năng xảy ra race condition.",
+          "Thời gian chuyển ngữ cảnh cực kỳ lớn do phải chờ sao chép lượng lớn dữ liệu giữa RAM và đĩa cứng (Transfer Time chậm).",
+          "Không hỗ trợ mã nguồn viết bằng ngôn ngữ C."
+        ],
+        answer: 2,
+        explanation: "Vì đĩa cứng (ngay cả SSD) vẫn chậm hơn RAM hàng nghìn lần, việc sao chép toàn bộ bộ nhớ của tiến trình ra đĩa khi chuyển ngữ cảnh sẽ làm hệ thống bị treo đơ do nghẽn I/O."
+      },
+      {
+        question: "Trong phương pháp cấp phát bộ nhớ kề nhau (Contiguous Allocation), bộ nhớ chính thường được chia làm hai vùng chính chứa gì?",
+        options: [
+          "Vùng thấp chứa các tiến trình người dùng, Vùng cao chứa hệ điều hành.",
+          "Vùng thấp chứa hệ điều hành và vector ngắt, Vùng cao chứa các tiến trình người dùng.",
+          "Vùng thấp chứa bộ nhớ ảo, Vùng cao chứa thanh ghi.",
+          "Vùng thấp chứa đĩa cứng, Vùng cao chứa RAM."
+        ],
+        answer: 1,
+        explanation: "Theo thiết kế truyền thống, HĐH và bảng vector ngắt nằm ở vùng bộ nhớ thấp (gần địa chỉ 0), còn vùng nhớ cao dành để cấp phát các tiến trình người dùng."
+      },
+      {
+        question: "Hiện tượng phân mảnh ngoài (External Fragmentation) xảy ra khi nào?",
+        options: [
+          "Tiến trình yêu cầu bộ nhớ vượt quá giới hạn của đĩa cứng.",
+          "Tổng dung lượng bộ nhớ trống đủ đáp ứng yêu cầu của tiến trình mới, nhưng bộ nhớ trống bị chia cắt thành nhiều khối nhỏ nằm rải rác không liên tục.",
+          "Vùng nhớ cấp cho tiến trình lớn hơn kích thước thực tế tiến trình yêu cầu.",
+          "HĐH bị ghi đè phân vùng nhân."
+        ],
+        answer: 1,
+        explanation: "Phân mảnh ngoài là do các tiến trình liên tục nạp và giải phóng tạo ra các lỗ trống xen kẽ. Dù tổng bộ nhớ trống lớn, nhưng không có khối nào đủ lớn liền mạch để nạp tiến trình tiếp theo."
+      },
+      {
+        question: "Hiện tượng phân mảnh trong (Internal Fragmentation) được định nghĩa thế nào?",
+        options: [
+          "Phần bộ nhớ trống nằm ngoài các phân hoạch đã cấp phát.",
+          "Phần bộ nhớ dư thừa không được sử dụng nằm bên trong một phân hoạch bộ nhớ đã được cấp phát cho một tiến trình.",
+          "Lỗi phát sinh do dây cáp RAM bị lỏng.",
+          "Lỗi tràn bộ nhớ đệm Stack."
+        ],
+        answer: 1,
+        explanation: "Phân mảnh trong xuất hiện khi bộ nhớ được chia thành các khối cố định. Tiến trình nhỏ hơn khối được cấp vẫn chiếm cả khối, phần bộ nhớ dư thừa trong khối đó không thể cấp cho tiến trình khác."
+      },
+      {
+        question: "Giả sử bộ nhớ có các phân hoạch trống theo thứ tự: 100KB, 500KB, 200KB, 300KB, 600KB. Một tiến trình cần 212KB. Thuật toán Best-fit sẽ chọn phân hoạch nào?",
+        options: [
+          "Phân hoạch 500KB.",
+          "Phân hoạch 300KB.",
+          "Phân hoạch 600KB.",
+          "Phân hoạch 200KB."
+        ],
+        answer: 1,
+        explanation: "Best-fit tìm lỗ trống nhỏ nhất nhưng vẫn đủ chứa tiến trình ($212 \\le 300$). Lỗ trống 300KB là lựa chọn tốt nhất vì chỉ để lại phân mảnh ngoài nhỏ nhất là 88KB."
+      },
+      {
+        question: "Vẫn với các phân hoạch trống trên: 100KB, 500KB, 200KB, 300KB, 600KB và tiến trình cần 212KB. Thuật toán Worst-fit sẽ chọn phân hoạch nào?",
+        options: [
+          "Phân hoạch 500KB.",
+          "Phân hoạch 300KB.",
+          "Phân hoạch 600KB.",
+          "Phân hoạch 100KB."
+        ],
+        answer: 2,
+        explanation: "Worst-fit luôn chọn lỗ trống lớn nhất trong danh sách. Lỗ trống 600KB là lớn nhất, sau khi cấp phát sẽ còn thừa 388KB."
+      },
+      {
+        question: "Với các phân hoạch trống trên: 100KB, 500KB, 200KB, 300KB, 600KB và tiến trình cần 212KB. Thuật toán First-fit sẽ chọn phân hoạch nào?",
+        options: [
+          "Phân hoạch 100KB.",
+          "Phân hoạch 500KB.",
+          "Phân hoạch 200KB.",
+          "Phân hoạch 300KB."
+        ],
+        answer: 1,
+        explanation: "First-fit duyệt từ đầu danh sách lỗ trống và chọn ngay lỗ trống đầu tiên thỏa mãn kích thước. Lỗ trống 100KB không đủ, lỗ tiếp theo là 500KB đủ chứa 212KB nên chọn ngay."
+      },
+      {
+        question: "Điều kiện tiên quyết để hệ điều hành có thể thực hiện kỹ thuật dồn dịch bộ nhớ (Compaction) là gì?",
+        options: [
+          "Tiến trình phải liên kết địa chỉ tại thời điểm biên dịch (Compile-time).",
+          "Tiến trình phải liên kết địa chỉ tại thời điểm thực thi (Execution-time) để có thể thay đổi địa chỉ động.",
+          "Hệ thống phải tắt hoàn toàn bộ nhớ ảo.",
+          "CPU phải có cấu trúc đa xử lý bất đối xứng AMP."
+        ],
+        answer: 1,
+        explanation: "Vì compaction di chuyển tiến trình vật lý sang vị trí RAM mới, địa chỉ tham chiếu trong mã lệnh phải được tính toán động khi chạy (Execution-time binding) thông qua thanh ghi Relocation."
+      },
+      {
+        question: "Trong kỹ thuật phân trang (Paging), bộ nhớ luận lý được chia thành các khối gọi là ___ và bộ nhớ vật lý được chia thành các khối gọi là ___?",
+        options: [
+          "Trang (Page) / Phân đoạn (Segment).",
+          "Trang (Page) / Khung trang (Frame).",
+          "Khung trang (Frame) / Trang (Page).",
+          "Phân đoạn (Segment) / Khung trang (Frame)."
+        ],
+        answer: 1,
+        explanation: "Không gian luận lý chia thành Trang (Page), còn bộ nhớ vật lý RAM chia thành Khung trang (Frame). Kích thước của Page luôn bằng kích thước của Frame."
+      },
+      {
+        question: "Địa chỉ luận lý do CPU phát ra trong hệ thống phân trang được chia thành hai phần nào?",
+        options: [
+          "Địa chỉ nền (base) và địa chỉ giới hạn (limit).",
+          "Số hiệu trang (Page number - p) và Độ lệch trang (Offset - d).",
+          "Số hiệu đoạn (Segment number - s) và Độ lệch đoạn (Offset - d).",
+          "Địa chỉ IP và số hiệu cổng Port."
+        ],
+        answer: 1,
+        explanation: "Địa chỉ luận lý phân trang gồm số trang $p$ (để tra bảng trang tìm khung trang $f$) và offset $d$ (để xác định vị trí tương đối của byte dữ liệu trong trang đó)."
+      },
+      {
+        question: "Giả sử hệ thống có địa chỉ luận lý 16-bit, kích thước trang là 4KB. Địa chỉ luận lý được chia thành bao nhiêu bit cho Page number và bao nhiêu bit cho Offset?",
+        options: [
+          "8 bit cho Page number, 8 bit cho Offset.",
+          "4 bit cho Page number, 12 bit cho Offset.",
+          "12 bit cho Page number, 4 bit cho Offset.",
+          "10 bit cho Page number, 6 bit cho Offset."
+        ],
+        answer: 1,
+        explanation: "Kích thước trang 4KB = $2^{12}$ bytes, do đó cần 12 bit để biểu diễn Offset ($d$). Số bit còn lại dành cho Page number ($p$) là $16 - 12 = 4$ bit (cho phép quản lý tối đa $2^4 = 16$ trang)."
+      },
+      {
+        question: "Phần cứng bộ đệm TLB (Translation Look-aside Buffer) được đưa vào hệ thống phân trang nhằm mục đích gì?",
+        options: [
+          "Để tăng kích thước trang luận lý lên gấp đôi.",
+          "Để tăng tốc độ dịch địa chỉ bằng cách lưu cache bảng trang trên chip CPU, tránh việc phải truy cập RAM 2 lần cho mỗi lệnh.",
+          "Để ngăn chặn bế tắc (Deadlock) xảy ra.",
+          "Để dồn dịch bộ nhớ tự động."
+        ],
+        answer: 1,
+        explanation: "TLB là bộ nhớ cache tốc độ cao chứa một phần của bảng trang. Khi CPU cần dịch địa chỉ, nó tìm trong TLB trước. Nếu thấy (TLB hit), CPU dịch địa chỉ ngay lập tức mà không cần tốn thời gian truy cập bảng trang trong RAM."
+      },
+      {
+        question: "Tính thời gian Effective Access Time (EAT), biết tỉ lệ tìm thấy TLB là 80%, thời gian truy xuất TLB là 20ns, thời gian truy xuất RAM chính là 100ns.",
+        options: [
+          "120 ns",
+          "140 ns",
+          "220 ns",
+          "100 ns"
+        ],
+        answer: 1,
+        explanation: "Công thức EAT: $\\alpha \\times (\\epsilon + t_m) + (1 - \\alpha) \\times (\\epsilon + 2 t_m)$. Áp dụng số liệu: $0.8 \\times (20 + 100) + 0.2 \\times (20 + 2 \\times 100) = 0.8 \\times 120 + 0.2 \\times 220 = 96 + 44 = 140\\text{ns}$."
+      },
+      {
+        question: "Bảng trang ngược (Inverted Page Table) giải quyết vấn đề gì của bảng trang phân cấp?",
+        options: [
+          "Tăng tốc độ tra cứu địa chỉ.",
+          "Giảm thiểu kích thước bộ nhớ RAM dùng để lưu trữ bảng trang bằng cách chỉ dùng duy nhất một bảng trang cho toàn bộ hệ thống.",
+          "Loại bỏ hoàn toàn bộ đệm TLB.",
+          "Hỗ trợ phân đoạn tốt hơn."
+        ],
+        answer: 1,
+        explanation: "Thay vì mỗi tiến trình giữ một bảng trang lớn riêng biệt, bảng trang ngược chỉ có số mục bằng số khung trang vật lý RAM thực tế, ghi thông tin tiến trình sở hữu khung trang đó, giúp tiết kiệm RAM cực kỳ hiệu quả."
+      },
+      {
+        question: "Trong cấu trúc quản lý phân đoạn (Segmentation), bảng phân đoạn (Segment Table) ánh xạ mỗi đoạn thành gì?",
+        options: [
+          "Page Number và Frame Number.",
+          "Địa chỉ vật lý cơ sở (Base) và chiều dài giới hạn của đoạn (Limit).",
+          "Mã tiến trình PID và số hiệu cổng.",
+          "Thanh ghi Relocation và Limit."
+        ],
+        answer: 1,
+        explanation: "Mỗi phân đoạn có chiều dài thay đổi. Bảng phân đoạn quản lý bằng trường Base (vị trí bắt đầu của đoạn trong RAM) và Limit (độ dài thực tế của đoạn đó để kiểm tra tràn biên)."
+      },
+      {
+        question: "Trong ngôn ngữ lập trình C/C++, hàm nào sau đây thực hiện yêu cầu cấp phát bộ nhớ động từ vùng nhớ Heap và chịu ảnh hưởng trực tiếp bởi giải thuật quản lý bộ nhớ (như First-Fit, Best-Fit) của Hệ điều hành?",
+        options: [
+          "void* malloc(size_t size);",
+          "void* calloc(size_t num, size_t size);",
+          "void* realloc(void* ptr, size_t new_size);",
+          "Cả A, B và C đều đúng."
+        ],
+        answer: 3,
+        explanation: "Cả ba hàm malloc(), calloc(), và realloc() đều là các API cấp phát bộ nhớ động trong C nằm trên Heap. Chúng đều gọi xuống các system call cấp hệ điều hành (như brk(), sbrk(), hoặc mmap()) và được quản lý bởi bộ cấp phát bộ nhớ (Memory Allocator) áp dụng các giải thuật như First-fit hoặc Best-fit."
+      },
+      {
+        question: "Phân tích đoạn mã C sau:\n\n#include <stdlib.h>\nvoid process_data() {\n    int *arr = (int*)malloc(1000 * sizeof(int));\n    // Thực hiện xử lý dữ liệu...\n    if (error_occurred()) {\n        return; // Thoát hàm sớm do lỗi\n    }\n    free(arr);\n}\n\nLỗi quản lý bộ nhớ nào có khả năng xảy ra nếu chương trình đi vào nhánh rẽ error_occurred() == true?",
+        options: [
+          "Phân mảnh bộ nhớ vật lý.",
+          "Rò rỉ bộ nhớ (Memory Leak).",
+          "Lỗi truy cập bộ nhớ bất hợp pháp (Segmentation Fault).",
+          "Tràn bộ nhớ đệm (Buffer Overflow)."
+        ],
+        answer: 1,
+        explanation: "Nếu thoát hàm sớm do lỗi mà không gọi free(arr), phân vùng bộ nhớ Heap đã cấp phát cho mảng arr sẽ bị giữ lại vô hạn, gây ra hiện tượng rò rỉ bộ nhớ (Memory Leak)."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

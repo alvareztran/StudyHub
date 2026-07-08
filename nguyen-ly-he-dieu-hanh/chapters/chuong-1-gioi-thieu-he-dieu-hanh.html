@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 1: Giới thiệu Hệ điều hành - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 1
+      </div>
+      <h1>CHƯƠNG 1. GIỚI THIỆU HỆ ĐIỀU HÀNH (OPERATING SYSTEM)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cung cấp định nghĩa, vai trò của hệ điều hành, cấu trúc máy tính, tiến trình bootstrap và phân loại các hệ thống máy tính.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-1">
+        <h2>1.1 Hệ điều hành là gì?</h2>
+        <p>
+          <strong>Hệ điều hành (Operating System - OS)</strong> là một chương trình máy tính đóng vai trò quản lý toàn bộ tài nguyên (bao gồm phần cứng và phần mềm) của hệ thống máy tính, đồng thời đóng vai trò như một lớp giao tiếp trung gian giữa người dùng với phần cứng vật lý của máy tính.
+        </p>
+
+        <div class="callout">
+          <div class="callout-title">🎯 Ba mục tiêu cốt lõi của Hệ điều hành:</div>
+          <ol style="margin-left: 1.25rem; font-size: 0.95rem; line-height: 1.6;">
+            <li>Cung cấp phương tiện giao tiếp thuận tiện và hiệu quả giữa người dùng và máy tính.</li>
+            <li>Nhận và thực thi các yêu cầu của người dùng thông qua các chương trình ứng dụng.</li>
+            <li>Quản lý và điều phối các tài nguyên máy tính vật lý một cách hiệu quả, tối ưu nhất.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section id="sec-2" style="margin-top: 2.5rem;">
+        <h2>1.2 Thành phần của một hệ thống máy tính</h2>
+        <p>Một hệ thống máy tính tiêu chuẩn bao gồm 4 thành phần chính hoạt động phối hợp chặt chẽ:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Phần cứng (Hardware):</strong> Cung cấp các tài nguyên tính toán cơ bản của máy bao gồm bộ xử lý trung tâm (CPU), bộ nhớ chính (RAM) và các thiết bị nhập/xuất (I/O Devices).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hệ điều hành (Operating System):</strong> Kiểm soát, điều phối việc sử dụng phần cứng vật lý và quản lý sự chia sẻ tài nguyên hợp lý giữa các chương trình ứng dụng.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chương trình hệ thống và ứng dụng (System/Application Programs):</strong> Định nghĩa cách thức sử dụng tài nguyên hệ thống để giải quyết các bài toán cụ thể của người dùng. Ví dụ: Trình biên dịch (Compiler), Trình hợp dịch (Assembler), Trình soạn thảo văn bản (Text Editor), Hệ quản trị cơ sở dữ liệu (Database System), Trình duyệt Web (Web Browser).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Người dùng (User):</strong> Có thể là con người trực tiếp sử dụng, hoặc các máy tính khác, các thiết bị ngoại vi có nhu cầu thực thi tính toán.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section 3 -->
+      <section id="sec-3" style="margin-top: 2.5rem;">
+        <h2>1.3 Vai trò của hệ điều hành</h2>
+        <p>Vai trò của hệ điều hành được tiếp cận theo hai góc nhìn cơ bản khác nhau:</p>
+        
+        <h3>3.1 Góc nhìn của người dùng (User View)</h3>
+        <p>Quan điểm của người dùng về hệ điều hành phụ thuộc vào thiết bị và môi trường sử dụng:</p>
+        <ul>
+          <li><strong>Máy tính cá nhân (PC):</strong> Tối ưu cho sự dễ sử dụng (easy to use) và hiệu năng cá nhân cao. Người dùng không cần quan tâm nhiều đến việc chia sẻ tài nguyên với ai khác.</li>
+          <li><strong>Máy tính dùng chung (Mainframe, Minicomputer):</strong> Tập trung tối đa vào việc chia sẻ tài nguyên dùng chung, đảm bảo sự công bằng và sử dụng tối ưu năng lực hệ thống.</li>
+          <li><strong>Workstation (Máy trạm):</strong> Kết hợp hài hòa giữa hiệu năng xử lý cá nhân mạnh mẽ và khả năng chia sẻ tài nguyên mạng.</li>
+          <li><strong>Thiết bị cầm tay (Handheld Devices):</strong> Tối ưu hóa việc cân bằng giữa hiệu suất xử lý và tiết kiệm điện năng tiêu thụ (pin có hạn).</li>
+        </ul>
+
+        <h3>3.2 Góc nhìn của hệ thống (System View)</h3>
+        <p>Hệ thống nhìn nhận hệ điều hành dưới 3 khía cạnh quản lý:</p>
+        <ul>
+          <li><strong>Hệ điều hành là bộ cấp phát tài nguyên (Resource Allocator):</strong> Đóng vai trò quản lý, phân phối tài nguyên hệ thống (CPU time, RAM space, I/O devices, file storage) cho các tiến trình một cách công bằng và tránh xung đột.</li>
+          <li><strong>Hệ điều hành là chương trình điều khiển (Control Program):</strong> Điều khiển hoạt động thực thi của các chương trình ứng dụng để ngăn ngừa lỗi hệ thống và việc sử dụng tài nguyên không hợp lệ.</li>
+          <li><strong>Hệ điều hành là nhân hệ thống (Kernel):</strong> Kernel là chương trình lõi duy nhất chạy thường trực trong bộ nhớ chính (RAM) từ lúc máy khởi động đến lúc tắt. Các chương trình khác chỉ được nạp vào RAM khi cần sử dụng.</li>
+        </ul>
+      </section>
+
+      <!-- Section 4 -->
+      <section id="sec-4" style="margin-top: 2.5rem;">
+        <h2>1.4 Tổ chức của hệ thống máy tính</h2>
+        <p>
+          Một hệ thống máy tính hiện đại bao gồm một hoặc nhiều CPU, bộ nhớ chính RAM, và các thiết bị nhập xuất kết nối với nhau thông qua một đường truyền chung gọi là <strong>System Bus</strong>.
+        </p>
+        <p>Mỗi nhóm thiết bị I/O được phụ trách bởi một <strong>Bộ điều khiển thiết bị (Device Controller)</strong> riêng:</p>
+        <ul>
+          <li>CPU và các bộ điều khiển thiết bị có thể hoạt động song song, đồng thời.</li>
+          <li>Mỗi bộ điều khiển thiết bị sở hữu một bộ nhớ đệm (buffer) cục bộ riêng để lưu trữ dữ liệu truyền nhận.</li>
+          <li>Sau khi hoàn thành xong công việc truyền dữ liệu, Device Controller sẽ thông báo cho CPU bằng cách gửi một tín hiệu **Ngắt (Interrupt)**.</li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section id="sec-5" style="margin-top: 2.5rem;">
+        <h2>1.5 Quá trình khởi động máy tính (Boot Process)</h2>
+        <p>Khi máy tính được bật nguồn, quá trình khởi động diễn ra theo 3 bước tuần tự:</p>
+        
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Quy trình nạp khởi động (Bootstrapping):</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+            <div>
+              <strong>Bước 1: Chạy chương trình Bootstrap</strong>
+              <br>Khi máy vừa bật nguồn, RAM trống rỗng. Vi xử lý sẽ nạp và thực thi chương trình <strong>Bootstrap</strong> nhỏ được ghi sẵn trên bộ nhớ bất biến <strong>ROM</strong> hoặc <strong>EPROM</strong> (phần mềm này còn gọi là <strong>Firmware</strong>).
+            </div>
+            <div>
+              <strong>Bước 2: Định vị và nạp Kernel</strong>
+              <br>Chương trình Bootstrap quét đĩa cứng, xác định vị trí file nhân hệ điều hành (Kernel), nạp Kernel vào bộ nhớ chính RAM và chuyển quyền điều hành sang cho Kernel.
+            </div>
+            <div>
+              <strong>Bước 3: Hệ điều hành hoạt động</strong>
+              <br>Sau khi Kernel được khởi chạy thành công, nó sẽ kích hoạt các dịch vụ hệ thống thường trực (system daemons) và sẵn sàng đáp ứng yêu cầu của người dùng thông qua các cuộc gọi hệ thống (System Calls).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6 -->
+      <section id="sec-6" style="margin-top: 2.5rem;">
+        <h2>1.6 Các loại hệ thống máy tính</h2>
+        <p>Hệ thống máy tính được chia làm hai nhóm chính:</p>
+        <ul>
+          <li><strong>Hệ thống đa dụng (General Purpose Systems):</strong> Phục vụ nhiều tác vụ tính toán đa dạng như Mainframe, Desktop, hệ thống đa xử lý (Multiprocessor), hệ thống phân tán (Distributed System) và hệ thống cụm (Clustered System).</li>
+          <li><strong>Hệ thống chuyên dụng (Special Purpose Systems):</strong> Phục vụ các tác vụ đặc biệt như hệ thống thời gian thực (Real-time System), hệ thống đa phương tiện (Multimedia System) và thiết bị cầm tay (Handheld System).</li>
+        </ul>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="sec-7" style="margin-top: 2.5rem;">
+        <h2>1.7 Hệ thống Mainframe</h2>
+        <p>Hệ thống máy tính lớn Mainframe đã trải qua 3 giai đoạn tiến hóa chính trong lịch sử:</p>
+        
+        <h3>7.1 Hệ thống bó (Batch System)</h3>
+        <p>Đây là hệ điều hành sơ khai nhất trong lịch sử máy tính:</p>
+        <ul>
+          <li>Người dùng không tương tác trực tiếp với máy tính. Họ nộp công việc dưới dạng thẻ đục lỗ cho người vận hành (Operator).</li>
+          <li>Operator gom các công việc giống nhau thành từng bó (Batch) và đưa vào máy chạy tuần tự.</li>
+          <li><strong>Nhược điểm:</strong> CPU thường xuyên rơi vào trạng thái rỗi (idle) do chênh lệch tốc độ cực lớn giữa CPU điện tử siêu tốc và các thiết bị đọc thẻ/in giấy cơ khí chậm chạp.</li>
+        </ul>
+
+        <h3>7.2 Hệ thống đa chương (Multiprogramming)</h3>
+        <p>Ra đời nhằm tối ưu hóa hiệu năng CPU:</p>
+        <ul>
+          <li>Nhiều chương trình được nạp đồng thời vào bộ nhớ chính RAM.</li>
+          <li>CPU thực thi tiến trình thứ nhất. Khi tiến trình này phải chờ đợi một thao tác nhập xuất I/O (ví dụ chờ đọc băng từ), hệ điều hành sẽ chuyển quyền điều phối CPU sang thực thi tiến trình thứ hai.</li>
+          <li><strong>Ưu điểm:</strong> CPU luôn bận rộn làm việc, tận dụng tối đa năng lực phần cứng.</li>
+          <li><strong>Yêu cầu hệ điều hành:</strong> Cần có cơ chế quản lý bộ nhớ, lập lịch CPU (CPU Scheduling) và quản lý thiết bị I/O.</li>
+        </ul>
+
+        <h3>7.3 Hệ thống chia thời gian (Time-sharing / Multitasking)</h3>
+        <p>Là sự phát triển mở rộng của công nghệ đa chương hỗ trợ tương tác trực tiếp:</p>
+        <ul>
+          <li>CPU luân phiên chuyển đổi giữa nhiều người dùng với tốc độ cực nhanh (mỗi tiến trình chỉ được cấp một lát cắt thời gian - Time Slice cực ngắn). Người dùng có cảm giác như họ đang sở hữu toàn bộ máy tính riêng.</li>
+          <li>Hỗ trợ người dùng tương tác trực tiếp qua bàn phím, màn hình.</li>
+          <li>Các tiến trình được hoán đổi (swapping) liên tục giữa RAM và đĩa cứng để giải quyết giới hạn bộ nhớ vật lý.</li>
+          <li><strong>Yêu cầu hệ điều hành:</strong> Quản lý bộ nhớ ảo (Virtual Memory), đồng bộ hóa tiến trình (Process Synchronization) và truyền thông điệp liên tiến trình (IPC).</li>
+        </ul>
+      </section>
+
+      <!-- Section 8 & 9 -->
+      <section id="sec-8-9" style="margin-top: 2.5rem;">
+        <h2>1.8 Hệ thống đa xử lý (Multiprocessor Systems)</h2>
+        <p>
+          Là hệ thống tích hợp nhiều CPU dùng chung đường truyền bus, đồng hồ hệ thống, bộ nhớ RAM và các thiết bị ngoại vi. Hệ thống này đem lại 3 lợi ích lớn: **Tăng năng lực xử lý (Throughput)**, **Tiết kiệm chi phí phần cứng** và **Tăng độ tin cậy thông qua khả năng chịu lỗi (Fault Tolerance)**.
+        </p>
+        <p>Hệ thống đa xử lý chia làm 2 kiến trúc chính:</p>
+        <ul>
+          <li>
+            <strong>SMP (Symmetric Multiprocessing - Đa xử lý đối xứng):</strong> Mọi CPU đều có vai trò ngang hàng như nhau. Mỗi CPU tự chạy một bản sao của hệ điều hành và các tiến trình có thể thực thi song song độc lập. Đây là kiến trúc vi xử lý đa nhân phổ biến hiện nay trên máy tính và điện thoại.
+          </li>
+          <li>
+            <strong>AMP (Asymmetric Multiprocessing - Đa xử lý bất đối xứng):</strong> Tổ chức theo mối quan hệ Master-Slave (Chủ - Tớ). Một CPU Master chính đóng vai trò điều phối hệ thống, lập lịch và phân chia công việc cho các CPU Slave phụ thực thi. Kiến trúc này thường dùng trong các siêu máy tính hoặc hệ thống lớn.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 10 & 11 -->
+      <section id="sec-10-11" style="margin-top: 2.5rem;">
+        <h2>1.9 Hệ thống phân tán &amp; Hệ thống cụm</h2>
+        
+        <h3>9.1 Hệ thống phân tán (Distributed System)</h3>
+        <p>
+          Là hệ thống gồm nhiều máy tính vật lý độc lập, mỗi máy có bộ xử lý và bộ nhớ RAM riêng, liên kết phối hợp với nhau qua mạng truyền thông (LAN hoặc WAN) để giải quyết bài toán chung.
+        </p>
+        <ul>
+          <li><strong>Mô hình Client-Server:</strong> Server đóng vai trò cung cấp các dịch vụ dùng chung (như Web Server, File Server). Client gửi yêu cầu và nhận kết quả dịch vụ.</li>
+          <li><strong>Mô hình Peer-to-Peer (Mạng ngang hàng):</strong> Các máy trong mạng bình đẳng nhau, một máy vừa có thể sử dụng dịch vụ của máy khác, vừa có thể chia sẻ tài nguyên cung cấp ngược lại cho mạng mà không cần máy chủ trung tâm cố định.</li>
+        </ul>
+
+        <h3>9.2 Hệ thống cụm (Clustered System)</h3>
+        <p>
+          Tương tự hệ thống phân tán nhưng các máy tính được ghép nối rất chặt chẽ trong cùng một phòng máy, dùng chung một hệ thống lưu trữ lưu trữ SAN (Storage Area Network) để hoạt động như một hệ thống đơn nhất mạnh mẽ.
+        </p>
+        <ul>
+          <li><strong>Asymmetric Clustering:</strong> Một máy tính trong cụm chạy ứng dụng chính, một máy khác ở trạng thái dự phòng nóng (Hot Standby) chỉ làm nhiệm vụ giám sát. Nếu máy chính hỏng, máy dự phòng lập tức khởi chạy ứng dụng thay thế.</li>
+          <li><strong>Symmetric Clustering:</strong> Tất cả các máy trong cụm cùng hoạt động đồng thời, chạy song song các ứng dụng và giám sát chéo lẫn nhau.</li>
+        </ul>
+      </section>
+
+      <!-- Section 12 & 13 -->
+      <section id="sec-12-13" style="margin-top: 2.5rem;">
+        <h2>1.10 Hệ thống thời gian thực (Real-Time Systems)</h2>
+        <p>
+          Được sử dụng trong các môi trường yêu cầu phản hồi dữ liệu tức thời và chính xác tuyệt đối về thời gian như thiết bị y khoa, điều khiển công nghiệp, robotics và quân sự. Hệ thống chia làm 2 loại:
+        </p>
+        <ul>
+          <li>
+            <strong>Hard Real-Time (Thời gian thực cứng):</strong> Các tác vụ bắt buộc phải hoàn thành chính xác trong thời hạn định sẵn (deadline). Nếu bị trễ dù chỉ một phần triệu giây sẽ dẫn đến thảm họa hoặc hỏng hoàn toàn hệ thống. Ví dụ: Hệ thống phanh ABS ô tô, hệ thống điều khiển tên lửa, thiết bị hỗ trợ tim mạch. Nhóm này hầu như không sử dụng bộ nhớ ngoài.
+          </li>
+          <li>
+            <strong>Soft Real-Time (Thời gian thực mềm):</strong> Deadline thời gian vô cùng quan trọng nhưng nếu xảy ra trễ nhỏ ở mức chấp nhận được thì hệ thống vẫn hoạt động bình thường, không gây thảm họa. Ví dụ: Phát video trực tuyến (Video Streaming), game online đối kháng, ứng dụng thực tế ảo (VR).
+          </li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 1</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Hệ điều hành (OS) đóng vai trò gì trong kiến trúc hệ thống máy tính?",
+        options: [
+          "Là một thiết bị phần cứng hỗ trợ lưu trữ dữ liệu tạm thời.",
+          "Là lớp trung gian giao tiếp và điều phối tài nguyên giữa người dùng và phần cứng máy tính.",
+          "Là trình soạn thảo văn bản giúp người dùng nhập liệu.",
+          "Là trình biên dịch chuyển đổi ngôn ngữ C sang hợp ngữ."
+        ],
+        answer: 1,
+        explanation: "Hệ điều hành là chương trình hệ thống hoạt động như một giao diện/lớp trung gian kết nối người dùng máy tính với phần cứng vật lý, giúp quản lý và sử dụng tài nguyên một cách tiện lợi và tối ưu nhất."
+      },
+      {
+        question: "Hệ thống máy tính được cấu thành từ 4 thành phần chính nào?",
+        options: [
+          "CPU, RAM, Thiết bị I/O, Đường truyền System Bus.",
+          "Mạng LAN, Client, Server, Giao thức truyền thông.",
+          "Phần cứng, Hệ điều hành, Chương trình hệ thống & ứng dụng, Người dùng.",
+          "Kernel, Bootstrap, Trình biên dịch, Trình điều khiển thiết bị."
+        ],
+        answer: 2,
+        explanation: "Theo cấu trúc hệ thống máy tính tiêu chuẩn, 4 thành phần chính bao gồm: Phần cứng (Hardware), Hệ điều hành (OS), Các chương trình hệ thống và ứng dụng (System/Application Programs), và Người dùng (Users)."
+      },
+      {
+        question: "Trình biên dịch (Compiler), Trình duyệt web (Web Browser) và Hệ quản trị CSDL (DBMS) được xếp vào thành phần nào?",
+        options: [
+          "Hệ điều hành (Operating System).",
+          "Phần cứng (Hardware).",
+          "Nhân hệ thống (Kernel).",
+          "Chương trình hệ thống và ứng dụng."
+        ],
+        answer: 3,
+        explanation: "Đây là các phần mềm ứng dụng và hệ thống chạy trên nền của hệ điều hành, sử dụng tài nguyên phần cứng do hệ điều hành cung cấp để hoàn thành các nghiệp vụ cụ thể của người dùng."
+      },
+      {
+        question: "Trong góc nhìn người dùng đối với máy tính cá nhân (PC), tiêu chí nào được hệ điều hành ưu tiên cao nhất?",
+        options: [
+          "Khả năng chia sẻ công bằng tài nguyên cho nhiều người.",
+          "Sự dễ sử dụng (tiện dụng) và hiệu năng cá nhân cao.",
+          "Khả năng tiết kiệm pin tuyệt đối cho thiết bị.",
+          "Mức độ bảo vệ phân vùng ảo của đĩa cứng."
+        ],
+        answer: 1,
+        explanation: "Với máy tính cá nhân PC, hệ điều hành được tối ưu hóa cho trải nghiệm một người dùng duy nhất, đặt tiêu chí dễ sử dụng (Ease of use) và tốc độ phản hồi nhanh lên hàng đầu."
+      },
+      {
+        question: "Nhìn nhận hệ điều hành với tư cách là 'Resource Allocator' (Bộ cấp phát tài nguyên) là góc nhìn của đối tượng nào?",
+        options: [
+          "Người dùng thông thường.",
+          "Hệ thống máy tính.",
+          "Thiết bị ngoại vi.",
+          "Lập trình viên web."
+        ],
+        answer: 1,
+        explanation: "Dưới góc nhìn hệ thống (System View), hệ điều hành đóng vai trò là bộ quản lý và phân phối tài nguyên (CPU, RAM, thiết bị I/O) một cách hợp lý, tối ưu cho các tiến trình đang tranh chấp."
+      },
+      {
+        question: "Thành phần nào của hệ điều hành luôn thường trực trong bộ nhớ chính RAM suốt thời gian máy hoạt động?",
+        options: [
+          "Chương trình Bootstrap.",
+          "Trình quản trị tệp tin (File Manager).",
+          "Nhân hệ thống (Kernel).",
+          "Trình xử lý cuộc gọi hệ thống (System Call handler)."
+        ],
+        answer: 2,
+        explanation: "Kernel (nhân) là lõi của hệ điều hành, là chương trình duy nhất luôn chạy thường trực trong bộ nhớ chính RAM từ khi khởi động cho tới khi tắt máy."
+      },
+      {
+        question: "Đường truyền vật lý dùng kết nối CPU, bộ nhớ RAM và các bộ điều khiển thiết bị (Device Controllers) là gì?",
+        options: [
+          "System Bus.",
+          "Network Cable.",
+          "I/O Buffer.",
+          "Interrupt Line."
+        ],
+        answer: 0,
+        explanation: "System Bus là xa lộ thông tin (đường dẫn phần cứng chung) kết nối CPU, bộ nhớ RAM và các bộ điều khiển thiết bị ngoại vi để thực hiện truyền dữ liệu giữa các thành phần."
+      },
+      {
+        question: "Sau khi hoàn thành tác vụ đọc/ghi dữ liệu, bộ điều khiển thiết bị gửi tín hiệu gì cho CPU?",
+        options: [
+          "System Call.",
+          "Bootstrap Signal.",
+          "Interrupt (Tín hiệu ngắt).",
+          "Direct Memory Access."
+        ],
+        answer: 2,
+        explanation: "Khi hoàn thành xong việc đọc/ghi dữ liệu vào bộ đệm của mình, bộ điều khiển thiết bị sẽ gửi tín hiệu Ngắt (Interrupt) đến CPU để thông báo rằng tác vụ I/O đã hoàn tất."
+      },
+      {
+        question: "Chương trình Bootstrap dùng để khởi động máy tính được lưu trữ ở đâu?",
+        options: [
+          "Trong bộ nhớ chính RAM.",
+          "Trên phân vùng khởi động của ổ cứng (HDD/SSD).",
+          "Trong bộ nhớ đệm Cache của CPU.",
+          "Trong bộ nhớ ROM hoặc EPROM (Firmware)."
+        ],
+        answer: 3,
+        explanation: "Khi vừa mở nguồn, RAM hoàn toàn trống rỗng và CPU cần một mã khởi động ban đầu. Mã này bắt buộc phải được lưu ở bộ nhớ bất biến vĩnh cửu như ROM hoặc EPROM, hay còn gọi là Firmware."
+      },
+      {
+        question: "Nhiệm vụ chính của chương trình Bootstrap trong quá trình khởi động máy tính là gì?",
+        options: [
+          "Khởi tạo giao diện đồ họa cho người dùng đăng nhập.",
+          "Xác định vị trí của Kernel, nạp Kernel vào RAM và khởi động Kernel.",
+          "Kiểm tra kết nối Internet LAN/WAN.",
+          "Quét tìm và diệt mã độc trong bộ nhớ RAM."
+        ],
+        answer: 1,
+        explanation: "Nhiệm vụ cốt lõi của Bootstrap là tìm kiếm tệp tin nhân hệ điều hành (Kernel) trên thiết bị lưu trữ, nạp Kernel vào bộ nhớ chính RAM, và nhảy lệnh thực thi đến đầu Kernel để khởi động hệ điều hành."
+      },
+      {
+        question: "Đặc điểm cơ bản của hệ điều hành dạng Batch System (Hệ thống bó) là gì?",
+        options: [
+          "Nhiều người dùng tương tác trực tiếp với máy qua các dòng lệnh.",
+          "Các công việc có đặc tính giống nhau được gom thành bó và hệ thống tự động chuyển tiếp công việc.",
+          "Mô hình cho phép chạy song song hàng nghìn CPU vật lý.",
+          "Sử dụng kỹ thuật bộ nhớ ảo nâng cao để hoán đổi tiến trình."
+        ],
+        answer: 1,
+        explanation: "Batch System hoạt động bằng cách gom các công việc tương đồng thành từng bó thẻ đục lỗ. Hệ điều hành tự động nạp và thực thi tuần tự từng công việc một mà không cần người dùng thao tác trực tiếp."
+      },
+      {
+        question: "Nhược điểm lớn nhất khiến hiệu suất sử dụng của hệ thống Batch System cực kỳ thấp là gì?",
+        options: [
+          "Thiết bị I/O cơ khí quá chậm so với tốc độ tính toán điện tử của CPU khiến CPU thường bị rỗi (idle).",
+          "Hệ thống không hỗ trợ lưu trữ tệp tin.",
+          "Dữ liệu nạp vào bắt buộc phải mã hóa nhị phân thủ công.",
+          "Hệ điều hành thường xuyên xảy ra tranh chấp tài nguyên dẫn đến bế tắc."
+        ],
+        answer: 0,
+        explanation: "Do tốc độ thiết bị đọc thẻ/in giấy cơ khí quá chậm so với CPU, phần lớn thời gian CPU phải dừng lại chờ đợi thiết bị I/O hoàn thành công việc, dẫn đến hiệu suất CPU bị lãng phí nặng nề."
+      },
+      {
+        question: "Hệ thống Đa chương (Multiprogramming) hoạt động theo nguyên lý cơ bản nào?",
+        options: [
+          "Chạy nhiều chương trình cùng lúc trên nhiều máy tính độc lập nối mạng.",
+          "Luân chuyển CPU cực nhanh theo từng phần nghìn giây giữa hàng nghìn người dùng.",
+          "Nạp đồng thời nhiều tiến trình vào RAM; khi tiến trình hiện tại chờ I/O, CPU lập tức chuyển sang thực thi tiến trình khác.",
+          "Sử dụng CPU Master để phân chia công việc xử lý cho các CPU Slave phụ."
+        ],
+        answer: 2,
+        explanation: "Đa chương giữ nhiều công việc trong RAM cùng lúc. Khi công việc đang chạy phải thực hiện thao tác chờ I/O, hệ điều hành sẽ chuyển CPU sang chạy công việc khác đang sẵn sàng, giúp CPU luôn bận rộn."
+      },
+      {
+        question: "Khác biệt cốt lõi giữa hệ thống chia thời gian (Time-sharing) và đa chương (Multiprogramming) thông thường là gì?",
+        options: [
+          "Time-sharing hỗ trợ tương tác trực tuyến nhanh và phân phối CPU theo các lát cắt thời gian rất ngắn giữa nhiều người dùng.",
+          "Time-sharing không yêu cầu quản lý bộ nhớ chính.",
+          "Time-sharing chỉ cho phép duy nhất một chương trình nằm trong RAM.",
+          "Time-sharing yêu cầu kiến trúc phần cứng đa xử lý SMP đối xứng."
+        ],
+        answer: 0,
+        explanation: "Time-sharing là bước tiến của đa chương, được thiết kế để hỗ trợ nhiều người dùng tương tác trực tiếp qua thiết bị đầu cuối bằng cách chia sẻ CPU luân phiên cực kỳ nhanh theo các lát cắt thời gian (Time Slice)."
+      },
+      {
+        question: "Lợi ích nào sau đây KHÔNG phải là ưu điểm của hệ thống đa xử lý (Multiprocessor Systems)?",
+        options: [
+          "Tăng năng lực xử lý (Throughput) do có nhiều CPU cùng làm việc.",
+          "Tiết kiệm chi phí phần cứng nhờ dùng chung bus, bộ nhớ và thiết bị ngoại vi.",
+          "Tăng độ tin cậy và khả năng chịu lỗi (Fault tolerance).",
+          "Đơn giản hóa hoàn toàn cơ chế lập lịch và quản lý tiến trình của hệ điều hành."
+        ],
+        answer: 3,
+        explanation: "Hệ thống đa xử lý thực tế làm cho cơ chế lập lịch, quản lý bộ nhớ và đồng bộ hóa của hệ điều hành trở nên phức tạp hơn rất nhiều chứ không hề đơn giản hóa."
+      },
+      {
+        question: "Trong kiến trúc đa xử lý đối xứng (SMP), các vi xử lý phối hợp với nhau như thế nào?",
+        options: [
+          "Mỗi CPU chạy một bản sao của hệ điều hành độc lập và hoạt động ngang hàng bình đẳng nhau.",
+          "Một CPU đóng vai trò Master phân phối công việc cho các CPU Slave.",
+          "Tất cả các CPU hoạt động trên một xung nhịp riêng lẻ và không chia sẻ bộ nhớ RAM.",
+          "Một CPU chạy ứng dụng, các CPU còn lại ở trạng thái dự phòng nóng (Hot Standby)."
+        ],
+        answer: 0,
+        explanation: "SMP (Symmetric Multiprocessing) quy định tất cả các vi xử lý hoạt động bình đẳng ngang hàng, dùng chung tài nguyên bộ nhớ và mỗi CPU tự chạy một bản sao hệ điều hành để xử lý tiến trình song song."
+      },
+      {
+        question: "Vai trò của CPU Master trong kiến trúc đa xử lý bất đối xứng (AMP) là gì?",
+        options: [
+          "Chỉ chịu trách nhiệm xử lý các lỗi phần cứng phát sinh.",
+          "Đóng vai trò dự phòng nóng khi các CPU khác gặp lỗi vật lý.",
+          "Lập lịch, phân phối và điều phối công việc cho các CPU Slave cấp dưới thực hiện.",
+          "Hoạt động như một bộ nhớ đệm (Buffer) truyền tải trung gian."
+        ],
+        answer: 2,
+        explanation: "AMP tổ chức theo dạng phân cấp Chủ - Tớ. CPU Master sẽ làm nhiệm vụ điều khiển toàn bộ hệ thống, phân chia các tác vụ cụ thể cho các CPU Slave xử lý."
+      },
+      {
+        question: "Đặc điểm nổi bật của kiến trúc mạng Peer-to-Peer (mạng ngang hàng) là gì?",
+        options: [
+          "Có một máy chủ trung tâm cố định duy nhất cung cấp toàn bộ tài nguyên.",
+          "Các nút mạng bình đẳng nhau, một máy vừa đóng vai trò Client sử dụng dịch vụ vừa là Server cung cấp tài nguyên.",
+          "Tốc độ truyền dữ liệu chậm hơn mô hình Client-Server trong mọi trường hợp.",
+          "Bắt buộc các máy kết nối phải sử dụng chung một hệ điều hành."
+        ],
+        answer: 1,
+        explanation: "Mạng P2P không có máy chủ quản lý trung tâm. Mỗi máy (peer) hoạt động bình đẳng, có khả năng chia sẻ tài nguyên và yêu cầu tài nguyên trực tiếp lẫn nhau."
+      },
+      {
+        question: "Cơ chế Asymmetric Clustering (Cụm bất đối xứng) hoạt động theo nguyên lý nào?",
+        options: [
+          "Tất cả các máy tính trong cụm cùng chạy ứng dụng song song để chia sẻ tải.",
+          "Một máy chạy ứng dụng chính, một máy khác ở trạng thái dự phòng nóng (Hot Standby) chỉ giám sát để thay thế khi lỗi.",
+          "Một máy làm nhiệm vụ tính toán, các máy còn lại đóng vai trò là thiết bị I/O.",
+          "Các máy tính trong cụm không dùng chung bất kỳ bộ lưu trữ dữ liệu nào."
+        ],
+        answer: 1,
+        explanation: "Trong cụm bất đối xứng, máy dự phòng nóng (Hot Standby) không chạy ứng dụng mà chỉ giám sát máy chính đang chạy. Khi máy chính bị lỗi hỏng, máy dự phòng sẽ lập tức kích hoạt ứng dụng tiếp quản."
+      },
+      {
+        question: "Thiết bị phanh chống bó cứng ABS trên ô tô hoặc hệ thống lái tên lửa thuộc loại hệ thống nào?",
+        options: [
+          "Soft Real-Time System (Thời gian thực mềm).",
+          "Batch System (Hệ thống bó).",
+          "Hard Real-Time System (Thời gian thực cứng).",
+          "Time-Sharing System (Hệ thống chia thời gian)."
+        ],
+        answer: 2,
+        explanation: "ABS và lái tên lửa yêu cầu phản hồi chính xác tuyệt đối trong giới hạn thời gian cực kỳ nghiêm ngặt. Bất kỳ sự trễ hạn nào đều dẫn đến thảm họa hoặc hỏng hoàn toàn thiết bị, đây là đặc tính của Hard Real-Time."
+      },
+      {
+        question: "Cơ chế Direct Memory Access (DMA) giúp giải quyết vấn đề hiệu năng nào giữa CPU và thiết bị ngoại vi?",
+        options: [
+          "CPU không cần can thiệp vào quá trình truyền nhận dữ liệu giữa thiết bị ngoại vi và RAM, tránh được việc CPU bị quá tải ngắt (interrupt) liên tục.",
+          "Tự động tăng tốc độ bus hệ thống lên gấp đôi.",
+          "Loại bỏ hoàn toàn bộ điều khiển thiết bị (Device Controller).",
+          "Cho phép thiết bị I/O hoạt động mà không cần nguồn điện cấp."
+        ],
+        answer: 0,
+        explanation: "DMA cho phép bộ điều khiển thiết bị truyền trực tiếp các khối dữ liệu lớn vào bộ nhớ chính RAM mà không cần sự can thiệp liên tục của CPU. CPU chỉ nhận duy nhất một ngắt khi toàn bộ khối dữ liệu đã được truyền xong."
+      },
+      {
+        question: "Mục tiêu chính của chế độ hoạt động kép Dual-mode (User mode và Kernel mode) trong CPU là gì?",
+        options: [
+          "Giúp máy tính chạy được hai hệ điều hành song hành cùng lúc.",
+          "Bảo vệ hệ thống và ngăn ngừa các chương trình người dùng gây lỗi hoặc can thiệp trái phép vào hoạt động của hệ điều hành.",
+          "Hỗ trợ chạy đồng thời cả giao diện dòng lệnh CLI và giao diện đồ họa GUI.",
+          "Tăng tốc độ tính toán của các luồng tiến trình chạy song song."
+        ],
+        answer: 1,
+        explanation: "Chế độ Dual-mode phân chia quyền hạn thực thi. Chương trình ứng dụng chạy ở User Mode (bị hạn chế), còn Hệ điều hành chạy ở Kernel Mode (đặc quyền). Điều này ngăn ứng dụng gọi trực tiếp mã độc làm hỏng phần cứng hoặc ghi đè bộ nhớ nhân."
+      },
+      {
+        question: "Lệnh nào sau đây thuộc nhóm lệnh đặc quyền (Privileged Instructions) chỉ được thực thi ở chế độ Kernel Mode?",
+        options: [
+          "Lệnh đọc thời gian hệ thống hiện tại.",
+          "Lệnh tính toán số học cộng trừ nhân chia trong thanh ghi.",
+          "Lệnh thay đổi thanh ghi trạng thái ngắt hoặc tắt ngắt hệ thống (Disable Interrupts).",
+          "Lệnh xuất dữ liệu ra màn hình console của ứng dụng."
+        ],
+        answer: 2,
+        explanation: "Các lệnh can thiệp sâu vào cấu hình phần cứng như tắt ngắt, truy cập trực tiếp thanh ghi bảo vệ bộ nhớ, tắt máy là các lệnh đặc quyền chỉ được CPU chấp nhận chạy khi đang ở chế độ Kernel Mode."
+      },
+      {
+        question: "Cơ chế 'Trap' hay ngắt phần mềm (Software Interrupt) xảy ra trong trường hợp nào?",
+        options: [
+          "Khi card mạng nhận được một gói tin dữ liệu mới từ router.",
+          "Do chương trình người dùng thực hiện một lời gọi hệ thống (System Call) hoặc gây ra một lỗi logic (như chia cho 0).",
+          "Khi đĩa cứng hoàn thành thao tác đọc ghi khối dữ liệu.",
+          "Khi pin của thiết bị di động sắp cạn kiệt."
+        ],
+        answer: 1,
+        explanation: "Trap (ngắt phần mềm) được tạo ra bởi phần mềm do phát sinh lỗi (chia cho 0, truy cập bộ nhớ bất hợp pháp) hoặc do tiến trình người dùng chủ động yêu cầu dịch vụ hệ điều hành thông qua lệnh gọi hệ thống (System Call)."
+      },
+      {
+        question: "Hệ điều hành sử dụng công cụ phần cứng nào để ngăn chặn chương trình người dùng rơi vào vòng lặp vô hạn chiếm dụng CPU vĩnh viễn?",
+        options: [
+          "Đường truyền dữ liệu System Bus.",
+          "Bộ lập lịch định thời dài hạn Long-Term Scheduler.",
+          "Bộ đếm thời gian (Timer) tự động gửi tín hiệu ngắt sau một khoảng thời gian định sẵn.",
+          "Bộ nhớ đệm ảo Cache Coherency."
+        ],
+        answer: 2,
+        explanation: "Timer phần cứng được thiết lập để tự động tạo ra một ngắt sau một khoảng thời gian nhất định. Hệ điều hành tận dụng ngắt này để giành lại quyền kiểm soát CPU từ các chương trình bị lặp vô hạn."
+      },
+      {
+        question: "Trong phân cấp thiết bị lưu trữ (Storage Device Hierarchy), bộ phận nào có tốc độ truy cập nhanh nhất nhưng dung lượng nhỏ nhất?",
+        options: [
+          "Bộ nhớ RAM chính (Main Memory).",
+          "Ổ cứng trạng thái rắn (SSD).",
+          "Các thanh ghi bên trong CPU (Registers).",
+          "Bộ nhớ đệm L3 Cache."
+        ],
+        answer: 2,
+        explanation: "Các thanh ghi (Registers) nằm trực tiếp bên trong nhân CPU có tốc độ truy cập nhanh nhất (bằng tốc độ xung nhịp CPU), nhưng có dung lượng cực kỳ giới hạn (chỉ vài chục hoặc vài trăm byte)."
+      },
+      {
+        question: "Vấn đề 'Cache Coherency' (Tính nhất quán bộ nhớ đệm) đặc biệt quan trọng trong kiến trúc hệ thống nào?",
+        options: [
+          "Hệ thống đơn xử lý (Single-processor).",
+          "Hệ thống đa xử lý (Multiprocessor Systems) có các bộ đệm cache riêng lẻ cho từng nhân CPU.",
+          "Hệ thống Batch chạy tuần tự.",
+          "Mạng máy tính Client-Server đơn giản."
+        ],
+        answer: 1,
+        explanation: "Trong hệ thống đa xử lý, mỗi CPU có bộ đệm cache riêng. Nếu một dữ liệu được nhân bản ở nhiều cache và bị một CPU chỉnh sửa, hệ thống phải đồng bộ để các CPU khác không đọc phải dữ liệu cũ (stale data). Đây gọi là vấn đề Cache Coherency."
+      },
+      {
+        question: "Sự khác biệt chính giữa Symmetric Clustering (Cụm đối xứng) và Asymmetric Clustering (Cụm bất đối xứng) là gì?",
+        options: [
+          "Cụm đối xứng yêu cầu cấu hình phần cứng đắt đỏ hơn.",
+          "Trong cụm đối xứng, tất cả các máy chủ đều tích cực chạy ứng dụng song song; còn cụm bất đối xứng giữ một máy ở trạng thái chờ (Hot Standby) chỉ để giám sát.",
+          "Cụm đối xứng không sử dụng chung hệ thống lưu trữ mạng SAN.",
+          "Cụm bất đối xứng chỉ hỗ trợ kết nối qua mạng Internet WAN."
+        ],
+        answer: 1,
+        explanation: "Cụm đối xứng tận dụng tối đa năng lực phần cứng bằng cách cho tất cả các nút cùng xử lý ứng dụng đồng thời. Cụm bất đối xứng giữ một nút rảnh rỗi làm nhiệm vụ sao lưu nóng (Standby) sẵn sàng tiếp quản khi nút chính gặp sự cố."
+      },
+      {
+        question: "Đặc tính nào mô tả chính xác nhất hệ thống thời gian thực mềm (Soft Real-Time Systems)?",
+        options: [
+          "Không có bất kỳ ràng buộc nào về thời gian phản hồi.",
+          "Tác vụ ưu tiên cao được đảm bảo thực thi trước và hệ thống cố gắng đáp ứng nhanh nhất, nhưng trễ hạn nhỏ không gây thảm họa hỏng hóc thiết bị.",
+          "Bắt buộc không được phép sử dụng đĩa cứng vật lý SSD.",
+          "Chỉ hoạt động trên các vi điều khiển nhúng 8-bit."
+        ],
+        answer: 1,
+        explanation: "Soft Real-Time ưu tiên các tác vụ quan trọng và đáp ứng nhanh (như xem video, chơi game trực tuyến), chấp nhận trễ nhỏ mà không gây chết người hay hỏng thiết bị như trong hệ thời gian thực cứng."
+      },
+      {
+        question: "Tiến trình người dùng yêu cầu hệ điều hành thực hiện nạp một tệp tin từ đĩa cứng lên RAM bằng cách nào?",
+        options: [
+          "Ghi đè trực tiếp mã lệnh lên phân vùng nhân Kernel.",
+          "Tự động chuyển CPU sang chế độ Kernel mode bằng lệnh hợp ngữ nhảy.",
+          "Gửi lời gọi hệ thống (System Call) tạo ngắt phần mềm để hệ điều hành tiếp quản thực hiện dưới quyền đặc quyền.",
+          "Truy cập trực tiếp vào bus dữ liệu của đĩa cứng SSD."
+        ],
+        answer: 2,
+        explanation: "Ứng dụng ở User Mode không được phép điều khiển phần cứng đĩa cứng. Nó phải thực hiện cuộc gọi hệ thống System Call, CPU sẽ chuyển sang Kernel Mode để hệ điều hành đọc đĩa và nạp dữ liệu an toàn hộ ứng dụng."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

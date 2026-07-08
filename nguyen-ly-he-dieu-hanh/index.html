@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyên lý Hệ điều hành - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; Nguyên lý Hệ điều hành</div>
+      <h1>NGUYÊN LÝ HỆ ĐIỀU HÀNH</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Học phần cung cấp các nguyên lý cơ bản của hệ thống máy tính, cơ chế quản lý tiến trình, định thời CPU, đồng bộ hóa, bế tắc, quản lý bộ nhớ vật lý/ảo và lưu trữ phụ trợ.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+
+    <main>
+      <section>
+        <h2>Mục Lục Chương Học</h2>
+        <p>Các chương học lý thuyết kết hợp trắc nghiệm kiểm tra tương tác được số hóa bài bản:</p>
+        
+        <ul class="index-list">
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-1-gioi-thieu-he-dieu-hanh.html">Chương 1: Giới thiệu Hệ điều hành (Operating System)</a>
+            </h3>
+            <p class="index-desc">Tổng quan về định nghĩa hệ điều hành, cấu trúc bốn thành phần của hệ thống máy tính, vai trò bộ quản lý tài nguyên, quy trình khởi động Bootstrap và phân loại các hệ thống Batch, Multiprogramming, Time-sharing, Multiprocessor và Real-time.</p>
+          </li>
+          
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-2-cau-truc-he-dieu-hanh.html">Chương 2: Cấu trúc Hệ điều hành (Operating System Structures)</a>
+            </h3>
+            <p class="index-desc">Phân tích chi tiết cấu trúc phân rã thành phần hệ điều hành (quản lý tiến trình, bộ nhớ chính, file, I/O, lưu trữ thứ cấp), các dịch vụ cho người dùng/hệ thống, giao diện CLI/GUI, lời gọi hệ thống (System Call) và các cấu trúc nhân monolithic/layered/microkernel/máy ảo.</p>
+          </li>
+          
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-3-tien-trinh.html">Chương 3: Tiến trình (Process)</a>
+            </h3>
+            <p class="index-desc">Khám phá bản chất tiến trình, cấu trúc các phân vùng bộ nhớ (text, stack, heap, data), 5 trạng thái vòng đời, khối quản lý PCB, chi phí chuyển ngữ cảnh (Context Switch), các hàng đợi, các loại bộ định thời, quan hệ tiến trình cha/con (fork, exec, wait) và giao tiếp liên tiến trình IPC.</p>
+          </li>
+          
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-4-dinh-thoi-cpu.html">Chương 4: Định thời CPU (CPU Scheduling)</a>
+            </h3>
+            <p class="index-desc">Nghiên cứu nguyên lý định thời vi xử lý, các tiêu chí tối ưu hóa (CPU Utilization, Throughput, Turnaround, Waiting, Response Time), giải thuật định thời không trưng dụng (FCFS, SJF) và trưng dụng (Round Robin, SRTF, Priority), hàng đợi đa cấp, lập lịch đa nhân SMP/AMP và định thời thời gian thực.</p>
+          </li>
+
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-5-dong-bo-hoa-tien-trinh.html">Chương 5: Đồng bộ hóa tiến trình (Process Synchronization)</a>
+            </h3>
+            <p class="index-desc">Nghiên cứu bản chất sự tranh chấp dữ liệu Race Condition, bài toán miền tương trục CSP, giải pháp phần mềm Peterson/Bakery, đồng bộ phần cứng lock/test_and_set, công cụ Semaphore và cấu trúc dữ liệu trừu tượng Monitor hỗ trợ Condition Variables.</p>
+          </li>
+
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-6-khoa-chet.html">Chương 6: Khóa chết (Deadlock)</a>
+            </h3>
+            <p class="index-desc">Tìm hiểu định nghĩa bế tắc hệ thống, 4 điều kiện cần xảy ra deadlock, đồ thị cấp phát tài nguyên RAG, Wait-for Graph, các giải pháp ngăn chặn Prevention, tránh deadlock Avoidance bằng thuật toán Banker, phát hiện và khôi phục hệ thống.</p>
+          </li>
+
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chapters/chuong-7-quan-ly-bo-nho.html">Chương 7: Quản lý bộ nhớ (Memory Management)</a>
+            </h3>
+            <p class="index-desc">Nguyên lý phân cấp bộ nhớ, bảo vệ bằng Base/Limit registers, không gian địa chỉ Logic vs Physical, MMU dịch địa chỉ, hoán đổi Swapping, cấp phát kề nhau với First-fit/Best-fit/Worst-fit, phân mảnh ngoài/trong, compaction, kỹ thuật Phân trang (Paging), bộ đệm TLB, các cấu trúc bảng trang và Phân đoạn (Segmentation).</p>
+          </li>
+
+          <li class="index-item" style="opacity: 0.65;">
+            <h3 class="index-title">Chương 8: Hệ thống bộ nhớ ảo &amp; Lưu trữ (Đang chờ cập nhật)</h3>
+            <p class="index-desc">Cơ chế phân trang theo yêu cầu (Demand Paging), các thuật toán thay thế trang (FIFO, LRU, Optimal), cấu trúc ổ đĩa cứng và các thuật toán định thời đĩa.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

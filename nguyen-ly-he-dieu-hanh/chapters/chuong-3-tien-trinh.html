@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 3: Tiến trình - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 3
+      </div>
+      <h1>CHƯƠNG 3. TIẾN TRÌNH (PROCESS)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Khám phá khái niệm tiến trình, cấu trúc phân vùng nhớ, 5 trạng thái vòng đời, khối quản lý PCB, hàng đợi định thời, giao tiếp IPC và Socket Client-Server.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section I & II -->
+      <section id="sec-1-2">
+        <h2>3.1 Khái niệm Tiến trình</h2>
+        <p>
+          <strong>Tiến trình (Process)</strong> là một thể hiện (instance) của một chương trình máy tính đang được thực thi hoặc đang chờ được thực thi trong bộ nhớ chính RAM. Để quản lý, hệ điều hành gán cho mỗi tiến trình một mã số nguyên định danh duy nhất gọi là **PID (Process Identifier)**.
+        </p>
+
+        <h3>Cấu trúc phân vùng nhớ của một tiến trình:</h3>
+        <p>Một tiến trình đang hoạt động trong bộ nhớ RAM được phân chia thành 6 phân vùng dữ liệu riêng biệt:</p>
+        <ul>
+          <li><strong>Program Code (Text Section):</strong> Chứa các mã lệnh máy của chương trình được CPU đọc tuần tự.</li>
+          <li><strong>Program Counter (PC):</strong> Thanh ghi con trỏ lệnh, chứa địa chỉ của câu lệnh tiếp theo sẽ thực thi.</li>
+          <li><strong>CPU Registers:</strong> Chứa giá trị của các thanh ghi trong quá trình CPU thực thi tính toán.</li>
+          <li><strong>Stack:</strong> Vùng nhớ chứa các dữ liệu tạm thời co giãn tự động khi gọi hàm (tham số hàm truyền vào, biến cục bộ khai báo trong hàm, địa chỉ trả về của hàm).</li>
+          <li><strong>Data Section:</strong> Chứa các biến toàn cục (global variables) và biến tĩnh (static variables).</li>
+          <li><strong>Heap:</strong> Vùng nhớ được cấp phát động trong quá trình chạy chương trình (ví dụ qua các hàm <code>malloc()</code>/<code>new</code>).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">Phân biệt rõ giữa Chương trình và Tiến trình:</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem;">Đặc tính</th>
+              <th style="padding: 0.75rem;">Chương trình (Program)</th>
+              <th style="padding: 0.75rem;">Tiến trình (Process)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Bản chất thực thể</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Thực thể bị động (Passive entity)</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Thực thể chủ động (Active entity)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Vị trí lưu trữ</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Lưu trữ trên thiết bị ngoại vi (đĩa cứng, SSD)</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Tồn tại và vận hành trong bộ nhớ chính RAM</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Tiêu thụ tài nguyên</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Không tiêu tốn chu kỳ CPU hay RAM</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Đòi hỏi CPU, RAM và các thiết bị I/O hoạt động</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+          <em>Chú ý:</em> Một chương trình đơn lẻ có thể tạo ra nhiều tiến trình đồng thời trong RAM (ví dụ: mở nhiều tab trình duyệt Chrome cùng lúc).
+        </p>
+      </section>
+
+      <!-- Section III -->
+      <section id="sec-3" style="margin-top: 2.5rem;">
+        <h2>3.2 Trạng thái của tiến trình</h2>
+        <p>Trong suốt vòng đời của mình, một tiến trình luân chuyển qua 5 trạng thái cơ bản:</p>
+        <ul>
+          <li><strong>New:</strong> Tiến trình đang được tạo lập ban đầu.</li>
+          <li><strong>Ready:</strong> Tiến trình đã nạp vào RAM, sẵn sàng chạy và đang xếp hàng đợi cấp phát CPU.</li>
+          <li><strong>Running:</strong> CPU đang trực tiếp thực thi các mã lệnh của tiến trình.</li>
+          <li><strong>Waiting (Blocked):</strong> Tiến trình tạm dừng để chờ một sự kiện (ví dụ chờ thao tác đọc ghi I/O hoàn thành hoặc chờ tín hiệu đồng bộ).</li>
+          <li><strong>Terminated:</strong> Tiến trình kết thúc hoàn toàn và được giải phóng khỏi RAM.</li>
+        </ul>
+
+        <!-- Diagram states -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../../images/process_states.jpg" alt="Vòng đời 5 trạng thái của tiến trình" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 3.1:</strong> Sơ đồ chuyển đổi giữa 5 trạng thái cơ bản của tiến trình
+          </p>
+        </div>
+      </section>
+
+      <!-- Section IV & V -->
+      <section id="sec-4-5" style="margin-top: 2.5rem;">
+        <h2>3.3 PCB và Chuyển Ngữ Cảnh (Context Switch)</h2>
+        
+        <h3>Khối điều khiển tiến trình PCB (Process Control Block):</h3>
+        <p>
+          Hệ điều hành quản lý mỗi tiến trình thông qua một cấu trúc dữ liệu gọi là **PCB**. PCB đóng vai trò là "hồ sơ lý lịch" chứa toàn bộ thông tin của tiến trình:
+        </p>
+        <ul>
+          <li><strong>Trạng thái tiến trình:</strong> Ready, Running, Waiting...</li>
+          <li><strong>Program Counter (PC):</strong> Địa chỉ lệnh tiếp theo CPU cần chạy của tiến trình này.</li>
+          <li><strong>Thanh ghi CPU:</strong> Lưu trữ trạng thái giá trị các thanh ghi của tiến trình khi bị ngắt.</li>
+          <li><strong>Thông tin lập lịch CPU:</strong> Độ ưu tiên (Priority), thời lượng quantum chạy.</li>
+          <li><strong>Thông tin quản lý bộ nhớ:</strong> Bảng trang (Page Table), thanh ghi nền (Base).</li>
+          <li><strong>Thông tin kế toán &amp; I/O:</strong> Mã PID, danh sách tệp tin đang mở, thiết bị đang chiếm dụng.</li>
+        </ul>
+
+        <h3>Chuyển ngữ cảnh (Context Switch):</h3>
+        <p>
+          Khi CPU chuyển đổi phục vụ từ tiến trình cũ $P_1$ sang tiến trình mới $P_2$, hệ điều hành phải thực hiện **Context Switch**:
+        </p>
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <ol style="margin-left: 1.25rem; font-size: 0.95rem; line-height: 1.6;">
+            <li>Lưu trữ toàn bộ trạng thái ghi nhận của $P_1$ vào khối PCB $P_1$.</li>
+            <li>Nạp lại các thông số trạng thái đã lưu trước đó của $P_2$ từ PCB $P_2$ lên các thanh ghi CPU.</li>
+            <li>CPU bắt đầu thực thi tiếp tục tiến trình $P_2$ từ vị trí con trỏ lệnh được nạp lại.</li>
+          </ol>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light); font-style: italic;">
+            <strong>Lưu ý về hiệu năng:</strong> Quá trình Context Switch hoàn toàn không tạo ra công việc hữu ích cho người dùng mà chỉ tiêu tốn tài nguyên xử lý của CPU. Đây là chi phí hao tổn (overhead) bắt buộc của hệ điều hành đa nhiệm.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section VI, VII, VIII -->
+      <section id="sec-6-7-8" style="margin-top: 2.5rem;">
+        <h2>3.4 Định thời và Các Bộ định thời (Process Scheduling)</h2>
+        <p>
+          Định thời tiến trình là việc lựa chọn tiến trình thích hợp trong hàng đợi để trao quyền kiểm soát CPU. Các tiến trình di chuyển qua 3 loại hàng đợi chính:
+        </p>
+        <ul>
+          <li><strong>Job Queue (Hàng đợi công việc):</strong> Lưu toàn bộ các tiến trình của hệ thống trên ổ đĩa.</li>
+          <li><strong>Ready Queue (Hàng đợi sẵn sàng):</strong> Lưu các tiến trình đã nạp vào RAM và sẵn sàng chạy chờ CPU.</li>
+          <li><strong>Device Queue (Hàng đợi thiết bị):</strong> Lưu các tiến trình đang chờ đợi phản hồi từ thiết bị I/O ngoại vi.</li>
+        </ul>
+
+        <h3>Ba bộ định thời (Schedulers) trong hệ thống:</h3>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời dài hạn (Long-Term / Job Scheduler):</strong> Chọn tiến trình từ Job Queue trên đĩa để nạp vào RAM. Quyết định mức độ đa chương của hệ thống. Gọi không thường xuyên.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời ngắn hạn (Short-Term / CPU Scheduler):</strong> Chọn tiến trình từ Ready Queue trong RAM để cấp CPU thực thi. Được gọi rất thường xuyên (mức mili-giây) nên yêu cầu tốc độ xử lý siêu tốc.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời trung hạn (Medium-Term Scheduler):</strong> Thực hiện cơ chế hoán đổi **swapping** (đưa bớt tiến trình tạm ngừng từ RAM ra đĩa cứng và ngược lại) để giải phóng không gian RAM khi quá tải bộ nhớ.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section IX & X -->
+      <section id="sec-9-10" style="margin-top: 2.5rem;">
+        <h2>3.5 Vòng đời Tiến trình: Tạo lập &amp; Kết thúc</h2>
+        <p>Một tiến trình cha (Parent Process) có thể tạo lập ra các tiến trình con (Child Process) thông qua các lời gọi hệ thống, xây dựng nên cấu trúc cây tiến trình (Process Tree).</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border-left: 4px solid var(--secondary-color); padding: 1rem; border-radius: 4px;">
+            <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--secondary-color);">Tạo lập tiến trình con</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              &bull; <strong>Trên UNIX/Linux:</strong> Sử dụng hàm <code>fork()</code> để sao chép nguyên trạng không gian bộ nhớ cha sang con. Sau đó dùng <code>exec()</code> để nạp chương trình mới đè lên con.
+              <br>&bull; <strong>Trên Windows:</strong> Sử dụng hàm API <code>CreateProcess()</code> để đồng thời tạo tiến trình con mới và nạp mã lệnh chạy mới trong một lần gọi duy nhất.
+            </p>
+          </div>
+          
+          <div style="background-color: var(--bg-card); border-left: 4px solid #ef4444; padding: 1rem; border-radius: 4px;">
+            <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #ef4444;">Các trạng thái kết thúc đặc biệt</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              &bull; <strong>Zombie Process (Thây ma):</strong> Tiến trình con đã gọi kết thúc (exit) nhưng PCB vẫn tồn tại trên bảng hệ thống do cha chưa thực hiện cuộc gọi hàm thu dọn <code>wait()</code>.
+              <br>&bull; <strong>Orphan Process (Mồ côi):</strong> Tiến trình cha đã kết thúc đột ngột trước khi tiến trình con kết thúc. Tiến trình con sẽ được hệ thống gán lại cho tiến trình gốc <code>init</code> (PID 1) làm cha nuôi để dọn dẹp sau này.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section XI, XII, XIII, XIV, XV -->
+      <section id="sec-11-12-13-14-15" style="margin-top: 2.5rem;">
+        <h2>3.6 Hợp tác và Giao tiếp liên tiến trình (IPC)</h2>
+        <p>Hợp tác liên tiến trình mang lại các lợi ích lớn: Chia sẻ thông tin, tăng tốc độ xử lý song song và tăng tính mô-đun hóa phần mềm. Có 2 cơ chế giao tiếp liên tiến trình chính:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ nhớ chia sẻ (Shared Memory):</strong>
+            <br>Các tiến trình ánh xạ chung một vùng RAM vật lý để đọc ghi trực tiếp. Tốc độ truyền tải nhanh tối đa vì không cần sự can thiệp của nhân Kernel trong suốt quá trình truyền nhận dữ liệu.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chuyển thông điệp (Message Passing):</strong>
+            <br>Giao tiếp thông qua hai thao tác <code>send(message)</code> và <code>receive(message)</code> dưới sự điều phối của nhân hệ điều hành. Phù hợp tuyệt đối cho kiến trúc mạng phân tán, không đòi hỏi các máy phải dùng chung RAM vật lý.
+          </li>
+        </ol>
+
+        <h3>Mô hình Socket trong giao tiếp Client - Server:</h3>
+        <p>
+          <strong>Socket</strong> được định nghĩa là một điểm cuối giao tiếp (endpoint) giữa hai tiến trình truyền dữ liệu qua mạng. Một socket được cấu thành duy nhất bởi sự kết hợp giữa:
+          <br><strong style="color: var(--primary-color);">[Địa chỉ mạng IP Address] + [Số hiệu cổng Port Number]</strong>
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 3</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Tiến trình (Process) khác biệt như thế nào so với Chương trình (Program)?",
+        options: [
+          "Chương trình chạy trực tiếp trong RAM, Tiến trình chỉ lưu trữ trên ổ đĩa cứng.",
+          "Chương trình là thực thể bị động lưu trữ trên đĩa, Tiến trình là thực thể chủ động đang được CPU thực thi trong RAM.",
+          "Cả hai đều là những thực thể tĩnh và không tiêu thụ năng lượng xử lý của CPU.",
+          "Một chương trình chỉ có thể tạo ra tối đa một tiến trình duy nhất trong RAM."
+        ],
+        answer: 1,
+        explanation: "Chương trình là thực thể bị động (như file thực thi trên đĩa). Khi được nạp vào RAM và chạy bởi CPU, nó biến thành một thực thể chủ động được gọi là Tiến trình."
+      },
+      {
+        question: "Mã số nguyên duy nhất do hệ điều hành cấp phát để định danh và quản lý mỗi tiến trình là gì?",
+        options: [
+          "Port Number.",
+          "IP Address.",
+          "PID (Process Identifier).",
+          "System Call ID."
+        ],
+        answer: 2,
+        explanation: "PID (Process Identifier) là mã số định danh tiến trình duy nhất do hệ điều hành cấp phát để phân biệt các tiến trình với nhau trong hệ thống."
+      },
+      {
+        question: "Phân vùng nào của tiến trình chứa mã lệnh máy được CPU thực thi tuần tự?",
+        options: [
+          "Data Section.",
+          "Stack.",
+          "Heap.",
+          "Text Section (Program Code)."
+        ],
+        answer: 3,
+        explanation: "Text Section (hoặc Code Section) là phân vùng bộ nhớ dùng để chứa mã lệnh máy của chương trình được nạp từ đĩa cứng lên để CPU đọc thực thi."
+      },
+      {
+        question: "Vùng nhớ 'Stack' trong tiến trình được thiết kế dùng để lưu trữ thông tin gì?",
+        options: [
+          "Các dữ liệu cấp phát động qua lệnh malloc/new.",
+          "Mã lệnh chương trình.",
+          "Các tham số hàm, biến cục bộ khai báo trong hàm và địa chỉ trả về của hàm.",
+          "Các biến toàn cục và biến tĩnh."
+        ],
+        answer: 2,
+        explanation: "Stack là vùng nhớ tạm thời co giãn tự động theo cơ chế LIFO. Khi một hàm được gọi, tham số, biến cục bộ và địa chỉ trả về của hàm được đẩy vào Stack."
+      },
+      {
+        question: "Vùng nhớ 'Heap' trong tiến trình được dùng cho mục đích nào?",
+        options: [
+          "Lưu trữ mã nguồn đã dịch của chương trình.",
+          "Cấp phát bộ nhớ động trong quá trình thực thi chương trình (ví dụ qua lệnh malloc/new).",
+          "Chứa các biến toàn cục dùng chung.",
+          "Lưu giữ con trỏ lệnh Program Counter."
+        ],
+        answer: 1,
+        explanation: "Heap là vùng nhớ dùng để cấp phát động theo yêu cầu của lập trình viên tại thời điểm chạy (Runtime) thông qua các lệnh như `malloc()`/`free()` hoặc `new`."
+      },
+      {
+        question: "Một tiến trình đang chờ đợi một sự kiện xảy ra (như chờ I/O hoàn tất) thì nằm ở trạng thái nào?",
+        options: [
+          "Ready.",
+          "Running.",
+          "Waiting (Blocked).",
+          "New."
+        ],
+        answer: 2,
+        explanation: "Khi tiến trình phải dừng lại để đợi một sự kiện (hoàn thành nhập xuất I/O, nhận tín hiệu mạng,...), nó được chuyển sang trạng thái Waiting (hoặc Blocked)."
+      },
+      {
+        question: "Khi bộ định thời CPU (CPU Scheduler) quyết định lựa chọn tiến trình chạy tiếp theo, tiến trình chuyển trạng thái như thế nào?",
+        options: [
+          "Ready sang Running.",
+          "New sang Ready.",
+          "Running sang Waiting.",
+          "Waiting sang Ready."
+        ],
+        answer: 0,
+        explanation: "Các tiến trình sẵn sàng nằm trong Ready Queue. Khi được bộ định thời CPU lựa chọn và cấp CPU, tiến trình chuyển từ Ready sang trạng thái đang chạy (Running)."
+      },
+      {
+        question: "Khi một tiến trình đang chạy bị hết thời lượng quantum (Time Slice) hoặc bị ngắt ưu tiên, nó chuyển sang trạng thái nào?",
+        options: [
+          "Waiting (Blocked).",
+          "Ready.",
+          "Terminated.",
+          "New."
+        ],
+        answer: 1,
+        explanation: "Khi bị hết thời gian chạy hoặc bị ngắt bởi tiến trình ưu tiên cao hơn, tiến trình đang chạy (Running) bị thu hồi CPU và trả về Ready Queue ở trạng thái Ready."
+      },
+      {
+        question: "Hệ điều hành lưu trữ toàn bộ hồ sơ dữ liệu quản lý của một tiến trình trong cấu trúc dữ liệu nào?",
+        options: [
+          "System Bus.",
+          "Device Controller.",
+          "PCB (Process Control Block).",
+          "System Registry."
+        ],
+        answer: 2,
+        explanation: "PCB (Process Control Block) là khối điều khiển tiến trình chứa toàn bộ dữ liệu quản lý của tiến trình bao gồm PID, trạng thái, PC, các thanh ghi, thông tin bộ nhớ."
+      },
+      {
+        question: "Chuyển ngữ cảnh (Context Switch) được định nghĩa là gì?",
+        options: [
+          "Sự chuyển đổi giao diện hệ điều hành từ CLI sang GUI.",
+          "Quá trình hệ điều hành lưu trạng thái của tiến trình cũ vào PCB của nó và nạp lại trạng thái của tiến trình mới từ PCB của nó lên CPU để chạy tiếp.",
+          "Phép ánh xạ từ địa chỉ bộ nhớ ảo sang địa chỉ bộ nhớ vật lý.",
+          "Cơ chế hoán đổi tiến trình từ bộ nhớ RAM ra đĩa cứng."
+        ],
+        answer: 1,
+        explanation: "Context Switch là quá trình CPU chuyển đổi thực thi giữa các tiến trình bằng cách lưu lại trạng thái đăng ký của tiến trình cũ và khôi phục trạng thái đăng ký của tiến trình mới từ các khối PCB tương ứng."
+      },
+      {
+        question: "Đặc điểm hiệu năng của quá trình chuyển ngữ cảnh (Context Switch) là gì?",
+        options: [
+          "Giúp nâng cao tốc độ tính toán phần cứng của hệ thống.",
+          "Không tạo ra công việc hữu ích thực tế và là chi phí hao tổn (overhead) bắt buộc của hệ điều hành đa nhiệm.",
+          "Số lượng Context Switch càng nhiều thì hiệu năng máy tính càng cao.",
+          "Chỉ xảy ra khi máy tính gặp sự cố lỗi phần cứng bộ nhớ."
+        ],
+        answer: 1,
+        explanation: "Context Switch tiêu tốn chu kỳ CPU để đọc/ghi bộ nhớ thanh ghi mà không thực thi mã lệnh hữu ích nào của người dùng, đây là chi phí hao tổn (overhead) hệ thống."
+      },
+      {
+        question: "Hàng đợi (Queue) nào lưu trữ các tiến trình đã nạp vào bộ nhớ RAM và đang ở trạng thái Ready chờ CPU?",
+        options: [
+          "Job Queue.",
+          "Ready Queue.",
+          "Device Queue.",
+          "I/O Queue."
+        ],
+        answer: 1,
+        explanation: "Ready Queue lưu các tiến trình đang thường trực trong RAM, ở trạng thái Ready để chờ đợi được CPU Scheduler điều phối CPU chạy lệnh."
+      },
+      {
+        question: "Bộ định thời nào chịu trách nhiệm chọn tiến trình từ Job Queue trên ổ đĩa để nạp vào bộ nhớ RAM?",
+        options: [
+          "Short-Term Scheduler.",
+          "Medium-Term Scheduler.",
+          "Long-Term Scheduler (Job Scheduler).",
+          "Swapper."
+        ],
+        answer: 2,
+        explanation: "Long-Term Scheduler (Bộ định thời dài hạn) lựa chọn tiến trình từ hàng đợi công việc trên đĩa nạp vào RAM, trực tiếp quyết định mức độ đa chương."
+      },
+      {
+        question: "Bộ định thời nào được gọi liên tục (mức phần nghìn giây) để chọn tiến trình từ Ready Queue chạy CPU?",
+        options: [
+          "Long-Term Scheduler.",
+          "Medium-Term Scheduler.",
+          "Short-Term Scheduler (CPU Scheduler).",
+          "I/O Scheduler."
+        ],
+        answer: 2,
+        explanation: "Short-Term Scheduler (CPU Scheduler) liên tục chọn tiến trình sẵn sàng để cấp CPU nên nó được gọi cực kỳ thường xuyên và yêu cầu tốc độ xử lý nhanh tối đa."
+      },
+      {
+        question: "Lệnh tạo tiến trình con nhân bản không gian địa chỉ của tiến trình cha trên hệ điều hành UNIX là gì?",
+        options: [
+          "`CreateProcess()`",
+          "`exec()`",
+          "`wait()`",
+          "`fork()`"
+        ],
+        answer: 3,
+        explanation: " UNIX cung cấp lời gọi hệ thống `fork()` để nhân bản tiến trình hiện tại tạo ra một tiến trình con mới sao chép không gian bộ nhớ của cha."
+      },
+      {
+        question: "Sự khác biệt chính giữa cuộc gọi hệ thống `fork()` và `exec()` là gì?",
+        options: [
+          "`fork()` nhân bản tiến trình hiện tại tạo tiến trình con; `exec()` nạp chương trình mới đè lên không gian bộ nhớ tiến trình hiện tại để thực thi.",
+          "`fork()` tắt tiến trình; `exec()` khởi chạy tiến trình.",
+          "`fork()` chỉ chạy trên Windows; `exec()` chỉ chạy trên Linux.",
+          "`fork()` cấp phát bộ nhớ RAM; `exec()` giải phóng bộ nhớ."
+        ],
+        answer: 0,
+        explanation: "Sau khi `fork()` nhân bản tiến trình con, người ta thường dùng tiếp `exec()` để nạp một chương trình nhị phân mới ghi đè lên bộ nhớ của tiến trình con để thực thi chương trình mới đó."
+      },
+      {
+        question: "Tiến trình con đã kết thúc công việc (gọi exit) nhưng thông tin PCB vẫn tồn tại trên bảng hệ thống do cha chưa gọi wait() được gọi là gì?",
+        options: [
+          "Orphan Process (Tiến trình mồ côi).",
+          "Zombie Process (Tiến trình thây ma).",
+          "Background Process.",
+          "Daemons."
+        ],
+        answer: 1,
+        explanation: "Zombie Process xảy ra khi tiến trình con kết thúc nhưng cha chưa thực hiện thu hồi trạng thái qua lệnh `wait()`, dẫn đến hệ điều hành vẫn phải lưu thông tin PCB của con."
+      },
+      {
+        question: "Tiến trình 'Orphan Process' (Tiến trình mồ côi) xuất hiện trong trường hợp nào?",
+        options: [
+          "Tiến trình con đã gọi exit thoát trước khi cha chạy xong.",
+          "Tiến trình cha kết thúc đột ngột trước khi tiến trình con kết thúc.",
+          "Tiến trình bị ngắt do tranh chấp tài nguyên bộ nhớ.",
+          "Tiến trình giao tiếp qua bộ nhớ chia sẻ Shared Memory."
+        ],
+        answer: 1,
+        explanation: "Tiến trình mồ côi xuất hiện khi tiến trình cha đã tắt trước trong khi con vẫn đang hoạt động. Tiến trình con này sẽ được gán lại cho tiến trình gốc `init` (PID 1) nhận làm cha nuôi."
+      },
+      {
+        question: "Đặc điểm cơ bản của giao tiếp liên tiến trình dạng bộ nhớ chia sẻ (Shared Memory) so với Message Passing là gì?",
+        options: [
+          "Truyền dữ liệu qua mạng LAN tốt hơn.",
+          "Tốc độ giao tiếp nhanh tối đa vì các tiến trình đọc ghi trực tiếp vào vùng RAM chung, không cần qua nhân Kernel sau khi tạo vùng nhớ.",
+          "Cần gọi hàm nhân Kernel liên tục để đồng bộ hóa dữ liệu gửi nhận.",
+          "Chỉ cho phép giao tiếp giữa hai tiến trình trên hai máy tính độc lập."
+        ],
+        answer: 1,
+        explanation: "Shared Memory cho phép các tiến trình đọc ghi trực tiếp trên cùng một phân vùng RAM dùng chung mà không cần nhân OS làm trung gian điều phối dữ liệu, mang lại hiệu năng tốc độ cực cao."
+      },
+      {
+        question: "Một Socket trong giao tiếp Client-Server được định nghĩa và cấu thành bởi các yếu tố nào?",
+        options: [
+          "Mã PID và địa chỉ MAC vật lý.",
+          "Đường dẫn file logic và dung lượng bộ đệm.",
+          "Sự kết hợp giữa địa chỉ mạng IP Address và số hiệu cổng Port Number.",
+          "Tên tiến trình và trạng thái hàng đợi Ready."
+        ],
+        answer: 2,
+        explanation: "Socket đại diện cho điểm cuối giao tiếp mạng (endpoint), được xác định duy nhất bằng địa chỉ IP (để định vị máy) và cổng Port (để định vị ứng dụng trên máy đó)."
+      },
+      {
+        question: "Phân tích đoạn mã sau trên UNIX: `pid_t pid = fork(); if (pid == 0) { printf(\"Child\"); } else if (pid > 0) { printf(\"Parent\"); }`. Điều gì xảy ra?",
+        options: [
+          "Chương trình báo lỗi biên dịch do khai báo biến sai.",
+          "Tạo ra một tiến trình con; tiến trình con sẽ in ra chữ 'Child', còn tiến trình cha sẽ in ra chữ 'Parent'.",
+          "Cả cha và con cùng in ra chữ 'Child Parent'.",
+          "Chương trình bị lặp vô hạn in liên tục."
+        ],
+        answer: 1,
+        explanation: "Lệnh `fork()` trả về giá trị 0 cho tiến trình con vừa tạo, và trả về giá trị PID của tiến trình con (số nguyên dương) cho tiến trình cha. Do đó điều kiện rẽ nhánh giúp phân tách công việc giữa cha và con."
+      },
+      {
+        question: "Phân tích đoạn mã sau: `fork(); fork(); fork();`. Tổng số tiến trình (bao gồm cả tiến trình cha ban đầu) sau các lệnh này là bao nhiêu?",
+        options: [
+          "3 tiến trình.",
+          "6 tiến trình.",
+          "8 tiến trình.",
+          "4 tiến trình."
+        ],
+        answer: 2,
+        explanation: "Mỗi lần gọi `fork()`, số lượng tiến trình tăng gấp đôi. Sau 3 lệnh `fork()` liên tiếp, số lượng tiến trình sẽ là $2^3 = 8$ tiến trình (gồm 1 tiến trình cha gốc ban đầu và 7 tiến trình con cháu mới được tạo)."
+      },
+      {
+        question: "Khối dữ liệu `task_struct` trong hệ điều hành Linux đóng vai trò gì?",
+        options: [
+          "Là cấu trúc dữ liệu lưu trữ mã lệnh của chương trình.",
+          "Là biểu diễn thực tế của khối quản lý PCB (Process Control Block) của mỗi tiến trình trong nhân Linux.",
+          "Là thanh ghi lưu trữ con trỏ lệnh PC của CPU.",
+          "Là hàm thực thi việc hoán đổi bộ nhớ đệm Swapping."
+        ],
+        answer: 1,
+        explanation: "Nhân Linux sử dụng cấu trúc struct `task_struct` trong C để biểu diễn khối điều khiển tiến trình PCB, chứa đầy đủ các trường thông tin trạng thái, PID, độ ưu tiên, danh sách file mở, thông tin bộ nhớ."
+      },
+      {
+        question: "Lệnh `wait(NULL)` được tiến trình cha gọi nhằm mục đích gì trong vòng đời tiến trình?",
+        options: [
+          "Để tạm dừng vô hạn hệ thống.",
+          "Để xếp hàng chờ đợi được cấp phát thêm bộ nhớ RAM.",
+          "Để chặn tiến trình cha cho đến khi có một tiến trình con kết thúc, đồng thời thu dọn tài nguyên và PCB của con để tránh lỗi Zombie.",
+          "Để gửi một thông điệp IPC sang tiến trình con."
+        ],
+        answer: 2,
+        explanation: "Khi con kết thúc, nó chuyển thành Zombie. Cha bắt buộc phải gọi `wait()` (hoặc `waitpid()`) để đón nhận trạng thái thoát của con, hệ điều hành lúc đó mới giải phóng hoàn toàn bảng PCB của con khỏi bộ nhớ."
+      },
+      {
+        question: "Hiện tượng rò rỉ tài nguyên bảng tiến trình (Process Table Leak) xảy ra khi nào?",
+        options: [
+          "Khi đĩa cứng bị đầy không thể ghi tệp tin.",
+          "Khi hệ thống tích tụ quá nhiều tiến trình Zombie do tiến trình cha không bao giờ gọi hàm wait() để thu dọn con.",
+          "Khi RAM bị mất nguồn điện cấp bất ngờ.",
+          "Khi các socket mạng sử dụng trùng một số hiệu cổng Port."
+        ],
+        answer: 1,
+        explanation: "Mỗi tiến trình Zombie vẫn chiếm dụng một dòng trong bảng tiến trình (Process Table) của hệ điều hành. Nếu cha tạo quá nhiều con rồi bỏ mặc, bảng tiến trình bị lấp đầy và hệ thống không thể tạo thêm bất kỳ tiến trình nào mới."
+      },
+      {
+        question: "Sự khác biệt cốt lõi giữa hai cơ chế IPC: Hàng đợi tin nhắn (Message Queue) và Bộ nhớ chia sẻ (Shared Memory) là gì?",
+        options: [
+          "Message Queue nhanh hơn vì chạy ở User Space.",
+          "Shared Memory yêu cầu sự can thiệp của nhân Kernel trong mỗi lần đọc ghi; Message Queue thì không.",
+          "Shared Memory truyền dữ liệu trực tiếp qua vùng RAM chung tốc độ cao; Message Queue chuyển các gói tin nhắn qua nhân Kernel điều phối thích hợp cho hệ phân tán.",
+          "Message Queue không hỗ trợ truyền dữ liệu dạng văn bản."
+        ],
+        answer: 2,
+        explanation: "Shared Memory tạo vùng nhớ chung để đọc ghi trực tiếp (nhanh nhất). Message Queue đóng vai trò là một hàng đợi các hộp thư trong Kernel, đòi hỏi gọi System Call để gửi/nhận nên chậm hơn nhưng an toàn và tiện lợi cho mạng."
+      },
+      {
+        question: "Khi hai tiến trình trên cùng một máy tính giao tiếp qua mô hình Socket, điều gì xảy ra nếu chúng cố gắng đăng ký sử dụng cùng một số hiệu cổng (Port Number)?",
+        options: [
+          "Hệ điều hành tự động nhân bản cổng đó.",
+          "Xảy ra lỗi xung đột cổng (Port Conflict), hệ điều hành sẽ từ chối cấp phát cổng cho tiến trình đăng ký sau.",
+          "Hai tiến trình nhận chung một gói tin song song.",
+          "CPU tự động khởi động lại."
+        ],
+        answer: 1,
+        explanation: "Số hiệu cổng Port Number dùng để định danh duy nhất ứng dụng mạng trên một máy. Hai tiến trình không thể dùng chung một cổng cùng lúc trên một địa chỉ IP."
+      },
+      {
+        question: "Khái niệm 'Context Switch Time' (Thời gian chuyển ngữ cảnh) phụ thuộc nhiều nhất vào yếu tố nào?",
+        options: [
+          "Dung lượng đĩa cứng SSD còn trống.",
+          "Hỗ trợ phần cứng của CPU (như số lượng tập thanh ghi) và cấu trúc quản lý bộ nhớ của hệ điều hành.",
+          "Tốc độ của đường truyền mạng LAN.",
+          "Độ phân giải hiển thị của màn hình GUI."
+        ],
+        answer: 1,
+        explanation: "Chuyển ngữ cảnh yêu cầu sao lưu/nạp lại thanh ghi. Nếu CPU hỗ trợ nhiều tập thanh ghi phần cứng (multiple register sets), việc chuyển đổi chỉ đơn giản là đổi con trỏ tập thanh ghi, diễn ra cực nhanh."
+      },
+      {
+        question: "Một tiến trình con vẫn tiếp tục chạy sau khi tiến trình cha của nó bị tắt đột ngột được gọi là gì và sẽ được xử lý thế nào trong UNIX?",
+        options: [
+          "Zombie Process; hệ điều hành sẽ tự động khai tử nó lập tức.",
+          "Orphan Process; hệ điều hành sẽ gán nó cho tiến trình gốc `init` (hoặc `systemd` có PID = 1) làm cha nuôi để dọn dẹp sau này.",
+          "Orphan Process; tiến trình con sẽ bị treo vĩnh viễn.",
+          "Background Process; tiến trình con tự động tăng độ ưu tiên."
+        ],
+        answer: 1,
+        explanation: "Tiến trình mồ côi (Orphan) được nhân hệ điều hành tự động chuyển quyền sở hữu sang tiến trình tổ tiên `init` (PID 1) để giám sát và gọi wait() dọn dẹp khi nó thoát."
+      },
+      {
+        question: "Tại sao trong mô hình Message Passing, cơ chế Non-blocking Receive (Nhận không chặn) lại hữu ích cho lập trình đa nhiệm?",
+        options: [
+          "Vì nó bắt buộc tiến trình gửi phải đợi.",
+          "Vì nó cho phép tiến trình tiếp tục thực thi các công việc khác mà không bị đóng băng (treo) luồng khi chưa có tin nhắn đến.",
+          "Vì nó tự động loại bỏ mã độc tin nhắn.",
+          "Vì nó tăng tốc độ đường truyền mạng lên gấp đôi."
+        ],
+        answer: 1,
+        explanation: "Non-blocking Receive (Asynchronous) trả về dữ liệu ngay lập tức (dữ liệu thực tế hoặc giá trị rỗng/null nếu chưa có tin nhắn). Nhờ đó, ứng dụng (nhuy giao diện game) không bị đơ đơ đợi tin nhắn."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

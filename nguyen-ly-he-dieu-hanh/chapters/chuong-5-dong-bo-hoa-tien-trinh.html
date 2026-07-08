@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 5: Đồng bộ hóa tiến trình - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 5
+      </div>
+      <h1>CHƯƠNG 5. ĐỒNG BỘ HÓA TIẾN TRÌNH (PROCESS SYNCHRONIZATION)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tìm hiểu bản chất cạnh tranh tài nguyên, hiện tượng Race Condition, bài toán miền tương trục CSP, giải thuật Peterson/Bakery, chỉ thị phần cứng, Semaphore và cấu trúc Monitor.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Part I & II -->
+      <section id="part-1-2">
+        <h2>5.1 Giới thiệu và Tình trạng tranh đua (Race Condition)</h2>
+        <p>
+          Khi nhiều tiến trình hoặc luồng cùng truy cập và thay đổi dữ liệu dùng chung song song, nếu không được kiểm soát đồng bộ, kết quả cuối cùng của dữ liệu sẽ phụ thuộc vào thứ tự thực thi của các tiến trình đó. Hiện tượng lỗi này gọi là **Race Condition** (Tình trạng tranh đua).
+        </p>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">Ví dụ: Thao tác counter++ và counter--</div>
+          <p style="font-size: 0.95rem;">
+            Thao tác tăng/giảm biến đếm không phải là thao tác <strong>nguyên tử (atomic)</strong> ở mức ngôn ngữ máy, mà được phân rã thành 3 lệnh:
+            <br><code>1. register = counter</code>
+            <br><code>2. register = register &plusmn; 1</code>
+            <br><code>3. counter = register</code>
+            <br>Nếu xảy ra chuyển ngữ cảnh (Context Switch) xen kẽ giữa các lệnh máy này, giá trị của <code>counter</code> sẽ bị sai lệch (ví dụ: bắt đầu bằng 5, tăng và giảm đồng thời có thể ra kết quả bằng 4 hoặc 6 thay vì 5).
+          </p>
+        </div>
+
+        <p>Để đảm bảo tính nhất quán của dữ liệu, các thao tác trên tài nguyên dùng chung phải đạt tính chất:</p>
+        <ul>
+          <li><strong>Nguyên tử (Atomic):</strong> Không thể chia nhỏ thao tác; hoặc thực thi trọn vẹn, hoặc không thực thi gì.</li>
+          <li><strong>Cô lập (Isolated):</strong> Tiến trình khác không thể quan sát trạng thái trung gian dở dang của dữ liệu.</li>
+        </ul>
+      </section>
+
+      <!-- Part III & IV -->
+      <section id="part-3-4" style="margin-top: 2.5rem;">
+        <h2>5.2 Bài toán Miền tương trục (Critical Section Problem - CSP)</h2>
+        <p>
+          <strong>Miền tương trục (Critical Section)</strong> là đoạn mã nguồn của tiến trình có chứa các thao tác ghi dữ liệu, chỉnh sửa tệp tin, cập nhật cơ sở dữ liệu hoặc sử dụng thiết bị I/O dùng chung.
+        </p>
+        <p>Cấu trúc chuẩn của một tiến trình khi tham gia giải quyết miền tương trục:</p>
+        <pre><code>do {
+    entry section    // Xin phép vào miền tương trục
+        critical section  // Thực thi thao tác trên tài nguyên dùng chung
+    exit section     // Giải phóng khóa, nhường quyền cho tiến trình khác
+        remainder section // Làm các công việc độc lập khác
+} while(true);</code></pre>
+
+        <h3>Ba yêu cầu bắt buộc của một lời giải CSP đúng:</h3>
+        <ol>
+          <li style="margin-bottom: 0.5rem;"><strong>Loại trừ tương hỗ (Mutual Exclusion):</strong> Tại một thời điểm, có tối đa duy nhất một tiến trình được thực thi bên trong Critical Section của nó.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Tiến triển (Progress):</strong> Nếu không có tiến trình nào trong Critical Section và có tiến trình muốn vào, việc quyết định lựa chọn tiến trình được vào không được trì hoãn vô hạn.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Chờ đợi có giới hạn (Bounded Waiting):</strong> Có giới hạn số lần các tiến trình khác được phép vượt mặt vào trước một tiến trình đã gửi yêu cầu vào Critical Section, tránh hiện tượng tiến trình đó bị chờ đợi vô hạn (**Starvation**).</li>
+        </ol>
+      </section>
+
+      <!-- Part V & VI -->
+      <section id="part-5-6" style="margin-top: 2.5rem;">
+        <h2>5.3 Các giải pháp Phần mềm và Phần cứng</h2>
+        
+        <h3>1. Các giải pháp phần mềm:</h3>
+        <ul>
+          <li><strong>Thuật toán Peterson (Peterson's Algorithm):</strong> Giải quyết CSP cho đúng 2 tiến trình ($P_0$ và $P_1$) sử dụng hai biến chia sẻ là <code>int turn;</code> và <code>boolean flag[2];</code>. Thỏa mãn tuyệt đối cả 3 yêu cầu CSP.</li>
+          <li><strong>Thuật toán Bakery (Bakery Algorithm):</strong> Giải quyết CSP cho $n$ tiến trình. Sử dụng ý tưởng rút phiếu lấy số thứ tự ở ngân hàng: tiến trình có số phiếu nhỏ hơn được ưu tiên vào trước; nếu số phiếu trùng nhau, tiến trình có chỉ số định danh PID nhỏ hơn sẽ được ưu tiên.</li>
+        </ul>
+
+        <h3>2. Các giải pháp phần cứng:</h3>
+        <p>Sử dụng các lệnh phần cứng nguyên tử để bảo vệ miền tương trục thông qua cơ chế khóa (locks):</p>
+        <ul>
+          <li><strong>Disable Interrupt:</strong> Vô hiệu hóa ngắt toàn bộ hệ thống khi tiến trình vào Critical Section (chỉ hiệu quả trên hệ đơn nhân).</li>
+          <li><strong>test_and_set:</strong> Trả về giá trị hiện tại của khóa và gán khóa bằng true một cách nguyên tử.</li>
+          <li><strong>compare_and_swap:</strong> Hoán đổi giá trị của khóa một cách nguyên tử nếu giá trị hiện tại khớp với mong đợi.</li>
+        </ul>
+        <p style="font-size: 0.9rem; color: var(--text-light); font-style: italic;">
+          *Nhược điểm:* Các giải pháp phần cứng đơn giản dẫn đến hiện tượng **Busy Waiting (Chờ bận/Spinlock)**: tiến trình liên tục chạy vòng lặp kiểm tra khóa làm tiêu tốn 100% tài nguyên CPU một cách lãng phí.
+        </p>
+      </section>
+
+      <!-- Part VII -->
+      <section id="part-7" style="margin-top: 2.5rem;">
+        <h2>5.4 Semaphore</h2>
+        <p>
+          <strong>Semaphore</strong> là công cụ đồng bộ hóa mạnh mẽ được hệ điều hành cung cấp để tránh chờ đợi bận bằng cách cho tiến trình tạm ngủ. Một Semaphore $S$ sở hữu một biến số nguyên được truy cập qua hai thao tác nguyên tử:
+        </p>
+        <ul>
+          <li><code>wait(S)</code> (hoặc <code>P(S)</code>): Giảm giá trị của S đi 1 đơn vị. Nếu S &lt; 0, tiến trình gọi sẽ bị khóa và tạm dừng.</li>
+          <li><code>signal(S)</code> (hoặc <code>V(S)</code>): Tăng giá trị của S lên 1 đơn vị. Nếu có tiến trình đang chờ, đánh thức tiến trình đó dậy.</li>
+        </ul>
+
+        <h3>Phân loại Semaphore:</h3>
+        <ul>
+          <li><strong>Binary Semaphore (Mutex):</strong> Biến số nguyên chỉ có giá trị là 0 hoặc 1. Sử dụng như một ổ khóa loại trừ tương hỗ.</li>
+          <li><strong>Counting Semaphore:</strong> Biến số nguyên có giá trị không âm bất kỳ, dùng để quản lý một tập hợp gồm nhiều tài nguyên đồng dạng.</li>
+        </ul>
+        <p><strong>Cơ chế không chờ đợi bận:</strong> Hệ điều hành tích hợp hai lời gọi hệ thống <code>block()</code> (đưa tiến trình vào hàng đợi chờ và dừng chạy) và <code>wakeup()</code> (đánh thức tiến trình đưa về Ready Queue) để tối ưu hiệu năng CPU.</p>
+      </section>
+
+      <!-- Part VIII & IX -->
+      <section id="part-8-9" style="margin-top: 2.5rem;">
+        <h2>5.5 Các bài toán đồng bộ hóa kinh điển</h2>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Nhà sản xuất - Người tiêu thụ (Producer - Consumer):</strong>
+            <br>Sử dụng 3 Semaphore: <code>mutex = 1</code> (loại trừ tương hỗ), <code>empty = n</code> (theo dõi số ô trống trong bộ đệm), <code>full = 0</code> (theo dõi số ô chứa dữ liệu).
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Bộ đọc - Bộ ghi (Readers - Writers):</strong>
+            <br>Đảm bảo nguyên tắc: Nhiều Reader được đọc dữ liệu đồng thời, nhưng khi Writer thực hiện ghi dữ liệu thì bắt buộc phải độc chiếm tài nguyên (cấm tất cả Reader và Writer khác). Sử dụng <code>rw_mutex</code>, <code>mutex</code>, và biến đếm <code>read_count</code>.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Năm triết gia ăn tối (Dining Philosophers):</strong>
+            <br>Mô tả 5 triết gia ngồi ăn tối với 5 chiếc đũa xen kẽ. Giải pháp dùng Semaphore cơ bản dễ xảy ra **Deadlock (Khóa chết)** khi cả 5 người cùng đói và cầm đũa trái.
+            <br><em>Cách giải quyết:</em> Tối đa 4 người ngồi bàn; chỉ lấy đũa khi cả hai đũa đều sẵn sàng; hoặc triết gia số lẻ lấy đũa trái trước còn triết gia số chẵn lấy đũa phải trước.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part X -->
+      <section id="part-10" style="margin-top: 2.5rem;">
+        <h2>5.6 Cấu trúc Monitor</h2>
+        <p>
+          <strong>Monitor</strong> là một cấu trúc dữ liệu trừu tượng (ADT) tích hợp ở mức ngôn ngữ lập trình (như Java, C#) giúp đồng bộ hóa an toàn. Monitor tự động đảm bảo đặc tính **Mutual Exclusion**: tại một thời điểm chỉ có tối đa một tiến trình được phép hoạt động bên trong Monitor.
+        </p>
+        <p>Để lập trình các điều kiện chờ đợi phức tạp hơn, Monitor cung cấp các **Biến điều kiện (Condition Variables)** với hai thao tác:</p>
+        <ul>
+          <li><code>x.wait()</code>: Tạm dừng tiến trình gọi và đưa vào hàng đợi chờ điều kiện x, giải phóng Monitor cho tiến trình khác vào.</li>
+          <li><code>x.signal()</code>: Đánh thức duy nhất một tiến trình đang chờ trên điều kiện x. Khác với Semaphore, nếu không có tiến trình nào đang chờ sẵn, lệnh <code>x.signal()</code> sẽ trôi đi và không lưu lại trạng thái lịch sử.</li>
+        </ul>
+
+        <h3>Hai cơ chế xử lý khi gọi signal():</h3>
+        <ul>
+          <li><strong>Signal and Wait:</strong> Tiến trình gọi signal tạm dừng để tiến trình được đánh thức thực thi ngay lập tức.</li>
+          <li><strong>Signal and Continue:</strong> Tiến trình gọi signal tiếp tục thực thi; tiến trình được đánh thức phải chờ cho đến khi tiến trình phát tín hiệu thoát khỏi Monitor.</li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 5</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Hiện tượng tranh đua (Race Condition) xảy ra trong trường hợp nào?",
+        options: [
+          "Khi các tiến trình chạy độc lập và không bao giờ chia sẻ dữ liệu với nhau.",
+          "Khi nhiều tiến trình đồng thời truy cập, chỉnh sửa dữ liệu dùng chung và kết quả cuối cùng phụ thuộc vào thứ tự thực thi của các tiến trình.",
+          "Khi CPU bị quá nhiệt dẫn đến ngắt đột ngột tiến trình đang thực thi.",
+          "Khi tiến trình cha kết thúc trước khi tiến trình con hoàn thành nhiệm vụ."
+        ],
+        answer: 1,
+        explanation: "Race Condition xảy ra khi nhiều tiến trình/luồng cùng thao tác ghi nhận trên tài nguyên chia sẻ mà không có sự kiểm soát đồng bộ, khiến dữ liệu cuối cùng phụ thuộc vào thứ tự chạy xen kẽ của chúng."
+      },
+      {
+        question: "Đặc tính quan trọng nào mô tả một thao tác nguyên tử (Atomic Operation)?",
+        options: [
+          "Thao tác chỉ chạy được trên một siêu máy tính đa nhân.",
+          "Thao tác không thể chia nhỏ hơn: hoặc thực hiện trọn vẹn toàn bộ, hoặc không thực hiện gì, và không bị ngắt giữa chừng.",
+          "Thao tác đòi hỏi phải sao lưu ra đĩa cứng trước khi chạy.",
+          "Thao tác chạy song song trên nhiều CPU."
+        ],
+        answer: 1,
+        explanation: "Thao tác nguyên tử (Atomic) đảm bảo tính trọn vẹn của dữ liệu: nó được CPU thực thi như một bước duy nhất, không thể bị chia tách hoặc bị xen ngang bởi tiến trình khác."
+      },
+      {
+        question: "Miền tương trục (Critical Section) của một tiến trình là gì?",
+        options: [
+          "Vùng nhớ chứa ngăn xếp Stack của tiến trình.",
+          "Đoạn mã của tiến trình chứa các thao tác truy cập và chỉnh sửa dữ liệu dùng chung (biến chung, tệp tin, I/O...).",
+          "Thư mục chứa các tệp tin thực thi nhị phân của hệ điều hành.",
+          "Đoạn mã khởi động Bootstrap nạp Kernel lên RAM."
+        ],
+        answer: 1,
+        explanation: "Critical Section (miền tương trục/vùng tranh chấp) là đoạn mã nguồn của tiến trình có chứa các thao tác đọc/ghi trực tiếp vào tài nguyên dùng chung của hệ thống."
+      },
+      {
+        question: "Cấu trúc chuẩn của một tiến trình để giải quyết Critical Section Problem (CSP) sắp xếp các phân đoạn mã như thế nào?",
+        options: [
+          "Critical Section -> Entry Section -> Exit Section -> Remainder Section.",
+          "Entry Section -> Critical Section -> Exit Section -> Remainder Section.",
+          "Entry Section -> Exit Section -> Critical Section -> Remainder Section.",
+          "Remainder Section -> Entry Section -> Critical Section -> Exit Section."
+        ],
+        answer: 1,
+        explanation: "Tiến trình phải xin cấp quyền ở Entry Section, sau đó thực thi trong Critical Section, giải phóng khóa ở Exit Section rồi tiếp tục chạy đoạn mã còn lại ở Remainder Section."
+      },
+      {
+        question: "Ba yêu cầu bắt buộc của một lời giải đúng cho bài toán miền tương trục (CSP) là gì?",
+        options: [
+          "Mutual Exclusion, Speed, Fairness.",
+          "Mutual Exclusion, Progress, Bounded Waiting.",
+          "Mutual Exclusion, Deadlock Avoidance, Accounting.",
+          "Mutual Exclusion, Memory Protection, Context Switch."
+        ],
+        answer: 1,
+        explanation: "Ba yêu cầu kinh điển để đánh giá một thuật toán giải quyết CSP là: Loại trừ tương hỗ (Mutual Exclusion), Tiến triển (Progress) và Chờ đợi có giới hạn (Bounded Waiting)."
+      },
+      {
+        question: "Yêu cầu 'Progress' (Tiến triển) trong giải pháp CSP quy định điều gì?",
+        options: [
+          "Tiến trình phải liên tục tăng độ ưu tiên chạy CPU.",
+          "Nếu không có tiến trình nào ở miền tương trục và có tiến trình muốn vào, việc quyết định chọn tiến trình được vào không được trì hoãn vô hạn.",
+          "Hệ thống phải báo cáo tiến độ chạy ra màn hình.",
+          "Tất cả các tiến trình đều phải kết thúc cùng lúc."
+        ],
+        answer: 1,
+        explanation: "Progress đảm bảo rằng nếu miền tương trục đang trống và có tiến trình muốn vào, các tiến trình này phải được tham gia quyết định chọn tiến trình tiếp theo được vào ngay lập tức mà không bị trì hoãn vô hạn."
+      },
+      {
+        question: "Yêu cầu 'Bounded Waiting' (Chờ đợi hữu hạn) giúp giải quyết hiện tượng tiêu cực nào?",
+        options: [
+          "Deadlock (Khóa chết).",
+          "Starvation (Chết đói / Chờ đợi vô hạn).",
+          "Convoy Effect (Đoàn xe).",
+          "Context Switch (Chuyển ngữ cảnh)."
+        ],
+        answer: 1,
+        explanation: "Bounded Waiting giới hạn số lần các tiến trình khác được phép vào miền tương trục trước một tiến trình đã gửi yêu cầu, ngăn không cho tiến trình đó bị bỏ đói (Starvation) chờ đợi vô hạn."
+      },
+      {
+        question: "Thuật toán Peterson (Peterson's Algorithm) giải quyết bài toán miền tương trục cho mấy tiến trình?",
+        options: [
+          "Vô số tiến trình.",
+          "Đúng 5 tiến trình.",
+          "Đúng 2 tiến trình.",
+          "Chỉ 1 tiến trình duy nhất."
+        ],
+        answer: 2,
+        explanation: "Thuật toán Peterson là giải pháp phần mềm kinh điển giải quyết miền tương trục cho đúng 2 tiến trình sử dụng biến turn và mảng flag[2]."
+      },
+      {
+        question: "Ý tưởng chính của Thuật toán Bakery (Bakery Algorithm) dùng giải quyết CSP cho n tiến trình là gì?",
+        options: [
+          "Tiến trình nào có PID lớn nhất sẽ được vào miền tương trục trước.",
+          "Các tiến trình muốn vào miền tương trục sẽ nhận số thứ tự (ticket); tiến trình có số nhỏ hơn được vào trước, nếu trùng số thì ưu tiên tiến trình có PID nhỏ hơn.",
+          "Cấu hình một hàng đợi luân phiên Round Robin.",
+          "Sử dụng CPU Master để điều phối."
+        ],
+        answer: 1,
+        explanation: "Thuật toán Bakery hoạt động giống nguyên lý lấy phiếu xếp hàng: ai rút số nhỏ hơn được vào trước, giải quyết trường hợp trùng số thứ tự bằng chỉ số PID của tiến trình."
+      },
+      {
+        question: "Nhược điểm lớn nhất của các giải pháp phần cứng đơn giản như test_and_set hay compare_and_swap là gì?",
+        options: [
+          "Không đảm bảo tính loại trừ tương hỗ Mutual Exclusion.",
+          "Không giải quyết được bài toán cho 2 tiến trình.",
+          "Dẫn đến hiện tượng Chờ bận (Busy Waiting / Spinlock) lãng phí tài nguyên CPU.",
+          "Không thể viết mã nguồn bằng ngôn ngữ lập trình hệ thống."
+        ],
+        answer: 2,
+        explanation: "Các lệnh phần cứng đơn giản bắt tiến trình chạy vòng lặp kiểm tra khóa liên tục (Busy Waiting/Spinlock), tiêu tốn chu kỳ CPU vô ích khi tiến trình khác đang giữ khóa."
+      },
+      {
+        question: "Semaphore là gì và được truy cập qua hai thao tác nguyên tử nào?",
+        options: [
+          "Là một biến logic; truy cập qua set() và reset().",
+          "Là một công cụ đồng bộ hóa dùng biến số nguyên; truy cập qua wait(S) (hoặc P) và signal(S) (hoặc V).",
+          "Là bộ nhớ đệm; truy cập qua read() và write().",
+          "Là hàng đợi; truy cập qua block() và wakeup()."
+        ],
+        answer: 1,
+        explanation: "Semaphore là công cụ đồng bộ hóa sử dụng biến số nguyên S, hoạt động dựa trên hai thao tác nguyên tử wait(S) (giảm và chặn) và signal(S) (tăng và đánh thức)."
+      },
+      {
+        question: "Để tránh lãng phí CPU do Chờ bận (Busy Waiting), Semaphore không chờ bận sử dụng cơ chế nào?",
+        options: [
+          "Tự động tăng tốc độ xung nhịp CPU.",
+          "Sử dụng các lệnh block() để tạm dừng tiến trình và wakeup() để đánh thức tiến trình thông qua hàng đợi của hệ điều hành.",
+          "Chuyển đổi sang kiến trúc nguyên khối Monolithic.",
+          "Tự động khai tử các tiến trình đang chờ lâu."
+        ],
+        answer: 1,
+        explanation: "Semaphore không chờ bận cho tiến trình tạm nghỉ bằng cách gọi block() đưa tiến trình vào hàng đợi chờ của semaphore, giải phóng CPU. Khi nhận signal, hệ thống gọi wakeup() để đưa tiến trình trở lại Ready Queue."
+      },
+      {
+        question: "Binary Semaphore (Semaphore nhị phân) còn được biết đến với tên gọi phổ biến nào khác?",
+        options: [
+          "Counting Semaphore.",
+          "Mutex (Mutual Exclusion Lock).",
+          "Monitor.",
+          "Condition Variable."
+        ],
+        answer: 1,
+        explanation: "Semaphore nhị phân chỉ nhận giá trị 0 hoặc 1, đóng vai trò như một ổ khóa loại trừ tương hỗ nên thường được gọi tắt là Mutex."
+      },
+      {
+        question: "Trong bài toán Producer - Consumer dùng Semaphore, Semaphore 'mutex' được khởi tạo bằng bao nhiêu và đóng vai trò gì?",
+        options: [
+          "Khởi tạo bằng 0; dùng để đếm số ô chứa dữ liệu.",
+          "Khởi tạo bằng n; dùng để đếm số ô trống trong bộ đệm.",
+          "Khởi tạo bằng 1; dùng để đảm bảo loại trừ tương hỗ khi truy cập bộ đệm dùng chung.",
+          "Khởi tạo bằng 5; dùng để định danh PID."
+        ],
+        answer: 2,
+        explanation: "Semaphore mutex được khởi tạo bằng 1, đóng vai trò bảo vệ miền tương trục (bộ đệm dùng chung), đảm bảo chỉ có tối đa một tiến trình Producer hoặc Consumer thay đổi dữ liệu bộ đệm tại một thời điểm."
+      },
+      {
+        question: "Quy tắc đồng bộ trong bài toán Readers - Writers quy định thế nào?",
+        options: [
+          "Chỉ cho phép một Reader đọc hoặc một Writer viết tại một thời điểm.",
+          "Nhiều Reader được phép đọc dữ liệu đồng thời; nhưng chỉ có duy nhất một Writer được ghi dữ liệu và cấm các Reader đọc khi Writer đang ghi.",
+          "Cho phép nhiều Writer ghi dữ liệu song song.",
+          "Cho phép đọc và ghi tự do không cần kiểm soát khóa."
+        ],
+        answer: 1,
+        explanation: "Để đảm bảo nhất quán dữ liệu, việc đọc (Reader) có thể diễn ra đồng thời, nhưng việc ghi (Writer) bắt buộc phải độc quyền loại trừ tương hỗ tuyệt đối."
+      },
+      {
+        question: "Hiện tượng Deadlock xảy ra trong bài toán 5 triết gia ăn tối sử dụng Semaphore khi nào?",
+        options: [
+          "Khi có hai triết gia ngồi ăn chung một chiếc đĩa.",
+          "Khi cả 5 triết gia cùng đói và đồng thời cầm chiếc đũa bên trái của mình, dẫn đến tất cả cùng chờ chiếc đũa bên phải.",
+          "Khi một triết gia ăn quá lâu không chịu buông đũa.",
+          "Khi tiến trình cha kết thúc trước tiến trình con."
+        ],
+        answer: 1,
+        explanation: "Nếu cả 5 triết gia cùng cầm đũa trái, toàn bộ 5 đũa bị chiếm. Mỗi triết gia cầm 1 đũa và đợi người bên phải buông đũa còn lại để ăn, tạo ra vòng lặp chờ đợi vô hạn (Deadlock)."
+      },
+      {
+        question: "Đặc tính tự động quan trọng nhất của cấu trúc đồng bộ hóa 'Monitor' là gì?",
+        options: [
+          "Cho phép nhiều luồng ghi dữ liệu đồng thời vào cùng một biến.",
+          "Tự động đảm bảo tính loại trừ tương hỗ (Mutual Exclusion): tại một thời điểm chỉ có tối đa một tiến trình được hoạt động bên trong Monitor.",
+          "Không cần sử dụng bộ nhớ RAM để vận hành.",
+          "Bắt buộc phải chạy trong hệ phân tán."
+        ],
+        answer: 1,
+        explanation: "Monitor được các ngôn ngữ lập trình cấp cao hỗ trợ, tự động quản lý khóa để đảm bảo chỉ có tối đa một tiến trình nằm bên trong các thủ tục của monitor tại một thời điểm, tránh Race Condition."
+      },
+      {
+        question: "Thao tác 'x.wait()' trên biến điều kiện (Condition Variable) của Monitor thực hiện việc gì?",
+        options: [
+          "Tiến trình gọi tiếp tục thực thi và bỏ qua điều kiện x.",
+          "Tiến trình gọi bị tạm dừng thực thi ngay lập tức, giải phóng Monitor và đưa vào hàng đợi chờ điều kiện x cho tới khi tiến trình khác gọi x.signal().",
+          "Đánh thức tất cả các tiến trình đang chờ trên biến x.",
+          "Tự động tăng giá trị của biến điều kiện x lên 1 đơn vị."
+        ],
+        answer: 1,
+        explanation: "Lệnh wait() của biến điều kiện dừng tiến trình gọi ngay lập tức, đưa nó vào hàng đợi chờ và mở khóa Monitor để cho phép tiến trình khác đi vào hoạt động."
+      },
+      {
+        question: "Sự khác biệt cốt lõi giữa lệnh signal() của Semaphore và x.signal() của Condition Variable trong Monitor là gì?",
+        options: [
+          "Lệnh của Semaphore hoạt động chậm hơn.",
+          "Semaphore có lưu trạng thái (tăng giá trị biến đếm), còn Condition Variable trong Monitor không lưu trạng thái (stateless) - nếu không có tiến trình nào đang wait, lệnh x.signal() sẽ bị trôi đi vô ích.",
+          "Lệnh của Monitor chỉ dùng được trên Windows.",
+          "Lệnh của Semaphore tự động xóa sạch dữ liệu đĩa."
+        ],
+        answer: 1,
+        explanation: "Condition Variable không lưu giữ trạng thái lịch sử (stateless). Do đó, signal() trên biến điều kiện chỉ có tác dụng đánh thức tiến trình đang bị chặn tại thời điểm đó, nếu không có ai chờ thì tín hiệu biến mất không dấu vết."
+      },
+      {
+        question: "Trong cơ chế 'Signal and Wait' của Monitor, điều gì xảy ra khi tiến trình P gọi x.signal() đánh thức tiến trình Q?",
+        options: [
+          "Cả hai tiến trình P và Q cùng thực thi song song trong Monitor.",
+          "P tạm dừng thực thi ngay để nhường quyền kiểm soát Monitor cho Q thực thi; P chỉ tiếp tục khi Q thoát khỏi Monitor hoặc chờ điều kiện khác.",
+          "P tiếp tục chạy bình thường, Q tiếp tục phải chờ cho đến khi P thoát khỏi Monitor.",
+          "Hệ điều hành lập tức chấm dứt hoạt động của tiến trình P."
+        ],
+        answer: 1,
+        explanation: "Để giữ tính loại trừ tương hỗ (chỉ 1 tiến trình trong monitor), cơ chế Signal and Wait quy định P phải tạm lánh để nhường quyền cho Q vừa được đánh thức chạy ngay lập tức."
+      },
+      {
+        question: "Trong thuật toán Peterson giải quyết bài toán miền tương trục (CSP), nếu ta lược bỏ dòng lệnh gán `turn = j;` ở Entry Section thì điều gì sẽ xảy ra?",
+        options: [
+          "Thuật toán vẫn hoạt động bình thường không ảnh hưởng.",
+          "Vi phạm nghiêm trọng điều kiện Loại trừ tương hỗ (Mutual Exclusion): cả hai tiến trình có thể đồng thời cùng đi vào miền tương trục.",
+          "Hệ thống lập tức bị khóa chết Deadlock vĩnh viễn.",
+          "Tiến trình bị lặp vô hạn ở Remainder Section."
+        ],
+        answer: 1,
+        explanation: "Dòng lệnh `turn = j;` thể hiện sự 'nhường nhịn'. Nếu bỏ nó đi, cả hai tiến trình Pi và Pj đều đặt `flag = true` và cùng vượt qua vòng lặp kiểm tra `while(flag[j] && turn == j);` vì turn không đổi, dẫn đến cả hai cùng vào Critical Section đồng thời."
+      },
+      {
+        question: "Mã giả định nghĩa chỉ thị TestAndSet nguyên tử hoạt động như thế nào?",
+        options: [
+          "Gán khóa bằng false và trả về giá trị true cũ.",
+          "Đọc giá trị khóa hiện tại, gán khóa bằng true, và trả về giá trị cũ vừa đọc được.",
+          "Hoán đổi ngẫu nhiên hai giá trị biến.",
+          "Chờ cho đến khi khóa bằng false rồi mới chạy."
+        ],
+        answer: 1,
+        explanation: "TestAndSet hoạt động nguyên tử: đọc giá trị cũ của khóa để trả về cho người gọi kiểm tra, đồng thời lập tức khóa lại (gán bằng true). Nếu khóa đang rảnh (false), người gọi nhận về false (được vào) và khóa tự động chuyển sang bận (true)."
+      },
+      {
+        question: "Một Semaphore S được khởi tạo giá trị ban đầu là 3. Sau khi thực thi chuỗi thao tác gồm: 5 lần `wait(S)` và 4 lần `signal(S)`, giá trị hiện tại của S là bao nhiêu?",
+        options: [
+          "3",
+          "2",
+          "0",
+          "1"
+        ],
+        answer: 1,
+        explanation: "Thao tác `wait(S)` giảm S đi 1 đơn vị. Thao tác `signal(S)` tăng S lên 1 đơn vị. Giá trị hiện tại: $3 - 5 + 4 = 2$."
+      },
+      {
+        question: "Tại sao giải pháp dùng Spinlock (vòng lặp chờ bận) lại hữu hiệu trên hệ thống đa nhân (Multicore) đối với các vùng tranh chấp cực kỳ ngắn?",
+        options: [
+          "Vì Spinlock tiết kiệm dung lượng RAM.",
+          "Vì thời gian chờ khóa ngắn hơn thời gian hệ điều hành thực hiện hai lần chuyển ngữ cảnh (lưu luồng cũ đi ngủ và đánh thức luồng cũ dậy), giúp tối ưu hiệu năng CPU.",
+          "Vì Spinlock không yêu cầu phần cứng hỗ trợ.",
+          "Vì nó tự động bẻ gãy mọi chu trình Deadlock."
+        ],
+        answer: 1,
+        explanation: "Chuyển ngữ cảnh (Context Switch) để cho luồng đi ngủ và đánh thức tiêu tốn một khoảng thời gian nhất định (overhead). Nếu khóa được giải phóng rất nhanh, việc chạy vòng lặp chờ bận (Spinlock) trên nhân kia sẽ tiết kiệm thời gian hơn."
+      },
+      {
+        question: "Trong bài toán Bounded Buffer (Nhà sản xuất - Người tiêu thụ), tại sao ở tiến trình Producer, hai dòng lệnh `wait(empty);` và `wait(mutex);` KHÔNG được phép đổi chỗ cho nhau?",
+        options: [
+          "Vì đổi chỗ sẽ làm giảm tốc độ truyền tải mạng.",
+          "Vì nếu đổi thành `wait(mutex); wait(empty);`, khi bộ đệm bị đầy (empty = 0), Producer chiếm khóa mutex rồi đi ngủ chờ ô trống. Consumer muốn vào lấy dữ liệu để tạo ô trống nhưng bị khóa mutex chặn lại, dẫn đến Deadlock.",
+          "Vì trình biên dịch C sẽ báo lỗi cú pháp.",
+          "Vì bộ đệm sẽ bị ghi đè dữ liệu trùng lặp."
+        ],
+        answer: 1,
+        explanation: "Việc chiếm khóa loại trừ tương hỗ (`mutex`) trước khi kiểm tra tài nguyên còn trống (`empty`) là lỗi thiết kế kinh điển gây ra khóa chết (Deadlock) giữa Producer và Consumer."
+      },
+      {
+        question: "Trong bài toán Readers-Writers, điều gì xảy ra nếu hệ thống ưu tiên tuyệt đối cho Reader (First Readers-Writers Problem) và liên tục có Reader mới gia nhập?",
+        options: [
+          "Hệ thống bị sập bộ nhớ RAM.",
+          "Các tiến trình Writer sẽ bị rơi vào trạng thái chết đói tài nguyên (Starvation) và chờ đợi vô hạn do không bao giờ giải phóng được khóa ghi.",
+          "Các Reader sẽ đọc phải dữ liệu rác.",
+          "Xảy ra lỗi xung đột cổng Port mạng."
+        ],
+        answer: 1,
+        explanation: "Nếu ưu tiên Reader, chỉ cần có ít nhất một Reader đang đọc, các Reader khác được phép vào trực tiếp mà không cần đợi khóa. Nếu Reader liên tục đến, biến đếm Reader không bao giờ về 0, khóa ghi bị chiếm giữ vô hạn khiến Writer bị Starvation."
+      },
+      {
+        question: "Trong cơ chế Monitor, tại sao biến điều kiện (Condition Variable) được coi là không có bộ nhớ lưu trữ (Stateless)?",
+        options: [
+          "Vì nó không chiếm dụng bộ nhớ RAM vật lý.",
+          "Vì nếu không có tiến trình nào đang ở trạng thái wait chờ điều kiện x, cuộc gọi lệnh `x.signal()` sẽ trôi đi vô ích và không làm thay đổi trạng thái của biến điều kiện cho tương lai.",
+          "Vì nó tự động reset về giá trị 1 sau mỗi giây.",
+          "Vì nó chỉ nhận giá trị logic âm."
+        ],
+        answer: 1,
+        explanation: "Khác với Semaphore lưu trữ lịch sử bằng biến đếm nguyên, biến điều kiện Monitor không lưu trạng thái. Lệnh signal chỉ tác động đánh thức tiến trình đang xếp hàng chờ tại đúng thời điểm gọi; nếu hàng đợi rỗng, tín hiệu trôi mất."
+      },
+      {
+        question: "Khái niệm 'Priority Inversion' (Đảo ngược độ ưu tiên) mô tả hiện tượng tiêu cực nào?",
+        options: [
+          "Tiến trình độ ưu tiên thấp tự động tăng độ ưu tiên cao hơn cha.",
+          "Tiến trình độ ưu tiên cao bị chặn gián tiếp bởi tiến trình độ ưu tiên trung bình do tiến trình trung bình đang chiếm CPU còn tiến trình ưu tiên thấp đang giữ khóa mà tiến trình ưu tiên cao cần.",
+          "CPU tự động đảo lộn thứ tự lập lịch trong Ready Queue.",
+          "Lập lịch RMS bị suy biến thành lập lịch EDF."
+        ],
+        answer: 1,
+        explanation: "Priority Inversion xảy ra khi luồng ưu tiên cao H cần khóa do luồng ưu tiên thấp L giữ. H phải đợi L giải phóng khóa. Tuy nhiên, luồng ưu tiên trung bình M xuất hiện chiếm CPU (không cần khóa), ngăn L chạy để giải phóng khóa, khiến H phải đợi cả M."
+      },
+      {
+        question: "Giao thức kế thừa độ ưu tiên (Priority Inheritance Protocol) giải quyết Priority Inversion bằng cơ chế nào?",
+        options: [
+          "Tự động hủy bỏ tiến trình ưu tiên trung bình.",
+          "Khi một tiến trình ưu tiên cao H phải đợi khóa của tiến trình ưu tiên thấp L, tiến trình L sẽ tạm thời kế thừa độ ưu tiên cao của H để chạy nhanh và giải phóng khóa, sau đó trả lại độ ưu tiên cũ.",
+          "Vô hiệu hóa ngắt toàn hệ thống.",
+          "Sử dụng thuật toán Banker để cấp phát khóa."
+        ],
+        answer: 1,
+        explanation: "Bằng cách cho tiến trình ưu tiên thấp L kế thừa độ ưu tiên của H, các tiến trình ưu tiên trung bình M không thể cướp CPU từ L. L sẽ chạy xong Critical Section và giải phóng khóa cho H chạy tiếp."
+      },
+      {
+        question: "Thao tác Compare-And-Swap (CAS) nguyên tử thường được sử dụng trong mục đích phát triển lập trình nào?",
+        options: [
+          "Lập lịch định thời CPU thời gian thực.",
+          "Xây dựng các cấu trúc dữ liệu không dùng khóa (Lock-free data structures) đạt hiệu năng tốc độ cực cao trong môi trường đa luồng.",
+          "Đồng bộ hóa các máy tính trong cụm đối xứng.",
+          "Quản lý việc nạp đè chương trình bằng lệnh exec()."
+        ],
+        answer: 1,
+        explanation: "CAS kiểm tra giá trị biến và cập nhật giá trị mới chỉ khi giá trị cũ khớp với kỳ vọng một cách nguyên tử. Nó là nền tảng để viết các thuật toán Lock-free, tránh chi phí chuyển ngữ cảnh của các cơ chế khóa Mutex/Semaphore truyền thống."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Cấu trúc Hệ điều hành - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Premium Quiz Theme Variables */
+    :root {
+      --quiz-correct-bg: #ebfbee; /* slightly darker, richer fresh green background */
+      --quiz-correct-border: #37b24d; /* vibrant grass green border (darker green) */
+      --quiz-correct-text: #2b8a3e; /* contrast green text */
+      --quiz-incorrect-bg: #fff5f5; /* light bright red background */
+      --quiz-incorrect-border: #ff3333; /* bright red border */
+      --quiz-incorrect-text: #c92a2a; /* contrast red text */
+    }
+    body.dark-theme {
+      --quiz-correct-bg: rgba(55, 178, 77, 0.2);
+      --quiz-correct-border: #40c057; /* vibrant neon green border */
+      --quiz-correct-text: #40c057;
+      --quiz-incorrect-bg: rgba(255, 51, 51, 0.2);
+      --quiz-incorrect-border: #ff6b6b; /* neon bright red border */
+      --quiz-incorrect-text: #ff6b6b;
+    }
+    /* Styling specific to interactive quiz */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-color);
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+        .quiz-option-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      padding-right: 2.5rem; /* Make room for the indicator icon */
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-option-btn.correct {
+      background-color: var(--quiz-correct-bg) !important;
+      border: 2px solid var(--quiz-correct-border) !important;
+      color: var(--quiz-correct-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.correct::after {
+      content: "✓";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-correct-border);
+    }
+    .quiz-option-btn.incorrect {
+      background-color: var(--quiz-incorrect-bg) !important;
+      border: 2px solid var(--quiz-incorrect-border) !important;
+      color: var(--quiz-incorrect-text) !important;
+      font-weight: bold;
+    }
+    .quiz-option-btn.incorrect::after {
+      content: "✗";
+      position: absolute;
+      right: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--quiz-incorrect-border);
+    }
+    .quiz-option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    .quiz-explanation {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+      line-height: 1.6;
+      display: none; /* Controlled by JS */
+    }
+    .quiz-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .quiz-badge.unanswered {
+      background-color: var(--bg-code);
+      color: var(--text-light);
+    }
+    .quiz-badge.answered {
+      background-color: var(--highlight-bg);
+      color: var(--secondary-color);
+    }
+
+    @media print {
+      .quiz-option-btn {
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .quiz-option-btn.correct {
+        background-color: #c8e6c9 !important;
+        border-color: #4caf50 !important;
+        color: #1b5e20 !important;
+      }
+      .quiz-explanation {
+        display: block !important; /* Show explanations in PDF print */
+        background-color: #f5f5f5 !important;
+        border-left: 4px solid #1e3a8a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .quiz-main-content {
+      min-width: 0; /* Prevents overflow in grid items */
+    }
+    .quiz-sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .quiz-nav-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .quiz-nav-item:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.08);
+      border-color: #10b981;
+      color: #065f46;
+    }
+    body.dark-theme .quiz-nav-item.answered {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .quiz-nav-item.flagged {
+      border-color: #f59e0b !important;
+      background-color: rgba(245, 158, 11, 0.08);
+      color: #b45309;
+    }
+    body.dark-theme .quiz-nav-item.flagged {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .quiz-nav-item.flagged::after {
+      content: "🚩";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 0.55rem;
+    }
+    .flag-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .flag-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+    .flag-btn.active {
+      background-color: rgba(245, 158, 11, 0.1) !important;
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+    @media (max-width: 768px) {
+      .quiz-layout {
+        grid-template-columns: 1fr;
+      }
+      .quiz-sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+    @media print {
+      .quiz-layout {
+        display: block;
+      }
+      .quiz-sidebar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Chương 2
+      </div>
+      <h1>CHƯƠNG 2. CẤU TRÚC HỆ ĐIỀU HÀNH (OPERATING SYSTEM STRUCTURES)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tìm hiểu cấu trúc phân rã thành phần hệ điều hành, các dịch vụ hệ thống, lời gọi hệ thống (System Call), cấu trúc nhân monolithic/layered/microkernel và máy ảo.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Part I -->
+      <section id="part-1">
+        <h2>I. Các Thành Phần của Hệ Điều Hành</h2>
+        <p>
+          Hệ điều hành hiện đại là một phần mềm hệ thống phức tạp bao gồm nhiều thành phần con hoạt động độc lập, thực thi các nghiệp vụ cụ thể.
+        </p>
+
+        <!-- Component 1 -->
+        <h3>1. Quản lý tiến trình (Process Management)</h3>
+        <p>
+          <strong>Tiến trình (Process)</strong> là một chương trình máy tính đang ở trạng thái thực thi. Khác với chương trình là một thực thể tĩnh lưu trên đĩa, tiến trình là một thực thể động sở hữu con trỏ lệnh (program counter), ngăn xếp (stack) và các tài nguyên riêng.
+        </p>
+        <p>Khi chạy, tiến trình đòi hỏi các tài nguyên hệ thống: CPU time, bộ nhớ RAM, tệp tin và thiết bị ngoại vi I/O.</p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Tạo lập/hủy bỏ tiến trình; tạm dừng/tiếp tục tiến trình; cung cấp cơ chế đồng bộ hóa (synchronization), truyền thông liên tiến trình (IPC) và xử lý tránh tắc nghẽn bế tắc (deadlock).</p>
+
+        <!-- Component 2 -->
+        <h3>2. Quản lý bộ nhớ chính (Main Memory Management)</h3>
+        <p>
+          Bộ nhớ chính (RAM) là một mảng lớn gồm các từ (words) hoặc byte, mỗi từ có địa chỉ vật lý riêng biệt. Đây là nơi duy nhất CPU có thể đọc và ghi dữ liệu trực tiếp trong quá trình làm việc. RAM có đặc tính <strong>bay hơi (volatile)</strong>: dữ liệu hoàn toàn biến mất khi ngắt nguồn điện.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Theo dõi trạng thái chi tiết của từng ô nhớ (đang rảnh hay đã cấp); quyết định nạp tiến trình nào vào RAM khi bộ nhớ trống; thực thi cấp phát và thu hồi không gian bộ nhớ linh hoạt.</p>
+
+        <!-- Component 3 -->
+        <h3>3. Quản lý hệ thống tập tin (File Management)</h3>
+        <p>
+          Tập tin (File) là sự trừu tượng hóa các không gian lưu trữ vật lý khác nhau (HDD, SSD, đĩa quang, băng từ) thành một tập hợp các thông tin logic liên quan có cấu trúc.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Tạo/xóa các tệp tin và thư mục (directories); cung cấp các hàm gọi đọc, ghi, sửa file; ánh xạ cấu trúc logic của file lên các khối lưu trữ vật lý của đĩa cứng và hỗ trợ sao lưu dự phòng.</p>
+
+        <!-- Component 4 -->
+        <h3>4. Quản lý hệ thống nhập/xuất (I/O Management)</h3>
+        <p>Hệ thống I/O che giấu sự khác biệt phần cứng của các thiết bị ngoại vi thông qua 3 cơ chế đệm:</p>
+        <ul>
+          <li><strong>Buffering:</strong> Lưu trữ dữ liệu tạm thời trong bộ nhớ đệm trong quá trình truyền dữ liệu giữa hai thiết bị có tốc độ chênh lệch.</li>
+          <li><strong>Caching:</strong> Lưu giữ các dữ liệu hay truy cập trong vùng nhớ tốc độ cao để tăng tốc độ phản hồi.</li>
+          <li><strong>Spooling:</strong> Đưa các yêu cầu xử lý dữ liệu vào hàng đợi trên đĩa cứng trước khi gửi thiết bị ngoại vi xử lý tuần tự (ví dụ hàng đợi máy in).</li>
+        </ul>
+
+        <!-- Component 5 -->
+        <h3>5. Quản lý lưu trữ thứ cấp (Secondary Storage Management)</h3>
+        <p>
+          Vì RAM có dung lượng nhỏ và mất dữ liệu khi mất nguồn điện, hệ thống bắt buộc cần hệ lưu trữ thứ cấp (Secondary Storage) như HDD, SSD để lưu trữ thông tin vĩnh viễn.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Quản lý không gian trống trên đĩa; cấp phát các khối dữ liệu lưu trữ và lập lịch đầu đọc đĩa (Disk Scheduling) để tối ưu tốc độ đọc ghi.</p>
+
+        <!-- Component 6, 7, 8 -->
+        <h3>6. Các thành phần khác</h3>
+        <ul>
+          <li><strong>Hệ thống mạng và phân tán:</strong> Liên kết các bộ xử lý không dùng chung bộ nhớ lại với nhau qua mạng truyền thông, giao tiếp thông qua các giao thức mạng tiêu chuẩn như FTP, NFS, HTTP.</li>
+          <li><strong>Hệ thống bảo vệ (Protection System):</strong> Kiểm soát việc truy cập của người dùng hoặc tiến trình đối với tài nguyên hệ thống (CPU, RAM, file, thiết bị).</li>
+          <li><strong>Giao diện người dùng (User Interface):</strong> Cung cấp giao diện dòng lệnh <strong>CLI (Shell/Command Interpreter)</strong> như CMD, Bash, Zsh hoặc giao diện đồ họa trực quan <strong>GUI (Graphical User Interface)</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- Part II -->
+      <section id="part-2" style="margin-top: 3rem;">
+        <h2>II. Các Dịch Vụ Của Hệ Điều Hành</h2>
+        <p>Hệ điều hành đóng vai trò cung cấp các dịch vụ tiện ích chia làm hai nhóm chính:</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.75rem;">1. Dịch vụ cho Người dùng &amp; Chương trình</h4>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+              <li><strong>Giao diện người dùng:</strong> GUI hoặc CLI.</li>
+              <li><strong>Thực thi chương trình:</strong> Nạp ứng dụng từ đĩa vào RAM và chạy.</li>
+              <li><strong>Thao tác I/O:</strong> Giao tiếp đọc/ghi thiết bị.</li>
+              <li><strong>Thao tác file:</strong> Tạo, đọc, viết, xóa file.</li>
+              <li><strong>Truyền thông liên tiến trình (IPC):</strong> Giao tiếp qua <em>Shared Memory</em> hoặc <em>Message Passing</em>.</li>
+              <li><strong>Phát hiện lỗi:</strong> Báo lỗi phần cứng hoặc phần mềm ứng dụng.</li>
+            </ul>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 0.75rem;">2. Dịch vụ cho Hệ thống (System Services)</h4>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+              <li><strong>Cấp phát tài nguyên:</strong> Phân bổ CPU, RAM, thiết bị ngoại vi cho các tiến trình chạy đồng thời.</li>
+              <li><strong>Tính toán chi phí (Accounting):</strong> Ghi nhật ký theo dõi lượng tài nguyên và thời gian sử dụng tài nguyên của từng người dùng.</li>
+              <li><strong>Bảo vệ và An ninh (Protection &amp; Security):</strong> Kiểm soát và ngăn ngừa việc truy cập bất hợp pháp vào dữ liệu hệ thống.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part III -->
+      <section id="part-3" style="margin-top: 3rem;">
+        <h2>III. Lời Gọi Hệ Thống (System Call)</h2>
+        <p>
+          <strong>Lời gọi hệ thống (System Call)</strong> là giao diện lập trình cung cấp cách thức để các chương trình người dùng ở chế độ <strong>User Mode</strong> gửi yêu cầu tài nguyên hoặc dịch vụ cho hệ điều hành thực thi ở chế độ đặc quyền <strong>Kernel Mode</strong>.
+        </p>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">API Lập Trình Phổ Biến:</div>
+          <p style="font-size: 0.95rem;">
+            Người lập trình thường không gọi trực tiếp System Call mà sử dụng thông qua các thư viện giao diện lập trình ứng dụng (API):
+            <br>&bull; <strong>Windows API:</strong> Cho các hệ điều hành Windows.
+            <br>&bull; <strong>POSIX API:</strong> Cho các hệ thống nhân UNIX, Linux, macOS.
+            <br>&bull; <strong>Java API:</strong> Cho máy ảo Java (JVM).
+          </p>
+        </div>
+
+        <h3>Các phương thức truyền tham số vào System Call:</h3>
+        <ol>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua thanh ghi (Registers):</strong> Nhanh nhất nhưng bị giới hạn bởi số lượng thanh ghi phần cứng của CPU.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua vùng nhớ (Block/Table):</strong> Lưu toàn bộ tham số vào một bảng trong RAM, rồi truyền địa chỉ của bảng đó vào một thanh ghi duy nhất để CPU trỏ tới.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua vùng nhớ ngăn xếp (Stack):</strong> Chương trình người dùng đẩy (push) tham số vào ngăn xếp, hệ điều hành lấy ra (pop) để xử lý.</li>
+        </ol>
+      </section>
+
+      <!-- Part V -->
+      <section id="part-5" style="margin-top: 3rem;">
+        <h2>IV. Kiến Trúc Nhân Hệ Điều Hành</h2>
+        <p>Có 4 kiến trúc tổ chức nhân hệ điều hành chính:</p>
+        
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc nguyên khối (Monolithic Kernel):</strong>
+            <br>Tất cả các dịch vụ hệ thống (CPU scheduler, RAM allocator, file system, driver) được viết chung và gộp vào một không gian nhân (Kernel Space) duy nhất.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Tốc độ gọi dịch vụ cực nhanh vì không tốn chi phí chuyển đổi ngữ cảnh (context switch). Tuy nhiên, hệ thống cực kỳ khó sửa lỗi, một lỗi driver nhỏ cũng có thể làm sập toàn bộ hệ điều hành. Ví dụ: UNIX cổ điển, Linux truyền thống.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc phân tầng (Layered Architecture):</strong>
+            <br>Hệ điều hành chia thành nhiều lớp đồng tâm xếp chồng lên nhau. Lớp $i$ chỉ được phép gọi các hàm dịch vụ do lớp $i-1$ (kề dưới) cung cấp. Lớp 0 là phần cứng, lớp cao nhất là UI.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Tính mô-đun cao, dễ kiểm thử và sửa lỗi. Tuy nhiên, việc phân chia chức năng giữa các tầng rất khó khăn và chi phí gọi hàm xuyên tầng (overhead) làm giảm tốc độ hệ thống.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc vi nhân (Microkernel):</strong>
+            <br>Kernel tối giản hết mức, chỉ giữ lại 3 nhiệm vụ cốt lõi: Quản lý bộ nhớ, định thời CPU và giao tiếp IPC. Các thành phần khác (File system, Driver, Network protocol) chuyển ra chạy độc lập ở chế độ người dùng (User Space).
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Độ an toàn cực cao (driver hỏng không làm sập nhân). Dễ mở rộng và bảo trì. Điểm yếu là hiệu năng kém hơn do mất chi phí chuyển đổi ngữ cảnh liên tục qua Message Passing. Ví dụ: nhân Mach (macOS), QNX.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Máy ảo (Virtual Machine):</strong>
+            <br>Sử dụng phần mềm giám sát (Hypervisor/VMM) để mô phỏng chính xác phần cứng vật lý, tạo ra nhiều máy tính logic chạy độc lập các hệ điều hành khách trên cùng một máy vật lý duy nhất. Mang lại sự cách ly an toàn tuyệt đối.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part VI -->
+      <section id="part-6" style="margin-top: 3rem;">
+        <h2>V. Thiết Kế và Cài Đặt Hệ Điều Hành</h2>
+        
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <div class="callout-title">💡 Phân biệt Cơ chế (Mechanism) và Chính sách (Policy):</div>
+          <p style="font-size: 0.95rem;">
+            Trong kỹ nghệ thiết kế hệ điều hành, việc tách biệt hai khái niệm này là nguyên tắc thiết kế tối quan trọng:
+            <br>&bull; <strong>Cơ chế (Mechanism):</strong> Trả lời câu hỏi <em>"Làm như thế nào?" (How)</em>. Đây là phần công cụ thực thi phần cứng (ví dụ: cơ chế cấp phát thanh ghi bảo vệ bộ nhớ).
+            <br>&bull; <strong>Chính sách (Policy):</strong> Trả lời câu hỏi <em>"Làm cái gì?" (What)</em>. Đây là quy tắc quyết định (ví dụ: tiến trình nào được ưu tiên chạy trước).
+            <br>Việc tách biệt giúp hệ thống có thể thay đổi chính sách linh hoạt bằng phần mềm mà không cần phải thay đổi cơ chế phần cứng vật lý bên dưới.
+          </p>
+        </div>
+
+        <p>
+          Hệ điều hành hiện đại ngày nay hầu hết được lập trình bằng các ngôn ngữ hệ thống hiệu năng cao như **C, C++** và gần đây là **Rust** để tối ưu hóa tốc độ và tương tác sâu với phần cứng.
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz-section" class="no-print" style="margin-top: 4rem; border-top: 2px dashed var(--border-color); padding-top: 2.5rem; margin-bottom: 3rem;">
+        <h2>✍️ BÀI TẬP TRẮC NGHIỆM TƯƠNG TÁC CHƯƠNG 2</h2>
+        <p>Bao gồm 20 câu hỏi trắc nghiệm bao phủ toàn bộ lý thuyết đã học phía trên. Bấm chọn trực tiếp đáp án để kiểm tra và xem giải thích chi tiết.</p>
+        
+        <!-- Scoreboard -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 1.5rem 0 2.5rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Tiến trình hoàn thành:</span>
+            <strong id="quiz-progress" style="font-size: 1.1rem; color: var(--primary-color); margin-left: 0.25rem;">0 / 30 câu hỏi</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.95rem; color: var(--text-light); font-weight: 500;">Điểm số đạt được:</span>
+            <strong id="quiz-score" style="font-size: 1.5rem; color: #10b981; margin-left: 0.25rem;">0%</strong>
+          </div>
+        </div>
+
+        <!-- Quiz Layout Container -->
+        <div class="quiz-layout">
+          <div class="quiz-main-content">
+            <div id="quiz-container">
+              <!-- Dynamic rendering via JavaScript -->
+            </div>
+          </div>
+          <div class="quiz-sidebar">
+            <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              🗺️ Bản đồ câu hỏi
+            </h3>
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-main); border: 1px solid var(--border-color);"></span> Chưa làm
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;"></span> Đã trả lời
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b;"></span> Đã gắn cờ (🚩)
+              </div>
+            </div>
+            <div id="quiz-nav-grid" class="quiz-nav-grid"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Quiz Questions Data Base
+    const quizData = [
+      {
+        question: "Tiến trình (Process) được định nghĩa chuẩn xác trong hệ điều hành là gì?",
+        options: [
+          "Một tệp tin nhị phân đang được lưu trữ trên ổ lưu trữ đĩa cứng.",
+          "Một chương trình máy tính đang ở trạng thái được CPU thực thi.",
+          "Một phần mềm quản lý việc cấp phát bộ nhớ RAM.",
+          "Một thiết bị ngoại vi thực hiện đọc ghi dữ liệu."
+        ],
+        answer: 1,
+        explanation: "Tiến trình là thực thể động biểu thị một chương trình đang chạy thực tế, sở hữu con trỏ lệnh và các tài nguyên hệ thống được cấp phát."
+      },
+      {
+        question: "Đặc điểm quan trọng nào sau đây thuộc về bộ nhớ chính (RAM)?",
+        options: [
+          "Có dung lượng vô hạn để chứa mọi chương trình.",
+          "Có tốc độ truy cập chậm hơn nhiều lần so với SSD.",
+          "Là bộ nhớ bay hơi (volatile), thông tin sẽ biến mất hoàn toàn khi tắt máy nguồn.",
+          "Sử dụng các công nghệ quang học để lưu trữ dữ liệu."
+        ],
+        answer: 2,
+        explanation: "Bộ nhớ chính RAM có tốc độ đọc ghi rất nhanh để phục vụ CPU truy cập trực tiếp, nhưng là bộ nhớ bay hơi và mất sạch dữ liệu khi mất nguồn điện cấp."
+      },
+      {
+        question: "Cơ chế 'Buffering' trong quản lý I/O của hệ điều hành được dùng để làm gì?",
+        options: [
+          "Gom nhiều công việc tương đồng chạy tuần tự.",
+          "Lưu trữ tạm thời dữ liệu trong bộ đệm trong quá trình truyền tải giữa các thiết bị chênh lệch tốc độ.",
+          "Lưu trữ vĩnh viễn dữ liệu trên đĩa cứng.",
+          "Giám sát nhiệt độ hoạt động của các thiết bị phần cứng."
+        ],
+        answer: 1,
+        explanation: "Buffering sử dụng vùng nhớ RAM tạm thời (buffer) để trung chuyển dữ liệu giữa các thiết bị ngoại vi chậm chạp và CPU/RAM tốc độ cao."
+      },
+      {
+        question: "Trong quản lý I/O, kỹ thuật 'Spooling' hoạt động theo cơ chế nào?",
+        options: [
+          "Lưu dữ liệu thường truy cập để truy xuất nhanh chóng.",
+          "Đưa dữ liệu cần xuất ra thiết bị vào một hàng đợi trên đĩa cứng để thiết bị xử lý dần.",
+          "Chuyển đổi dữ liệu dạng text sang mã nhị phân.",
+          "Ánh xạ địa chỉ logic của tiến trình lên địa chỉ vật lý."
+        ],
+        answer: 1,
+        explanation: "Spooling (như bộ spooler máy in) cho phép ứng dụng ghi dữ liệu lên ổ đĩa trước, đĩa sẽ làm trung gian điều phối đưa dữ liệu đến thiết bị ngoại vi xử lý tuần tự mà ứng dụng không cần chờ đợi lâu."
+      },
+      {
+        question: "Tại sao hệ điều hành bắt buộc phải quản lý lưu trữ thứ cấp (Secondary Storage)?",
+        options: [
+          "Vì RAM có dung lượng nhỏ và mất hoàn toàn dữ liệu khi tắt máy nguồn.",
+          "Vì CPU chỉ có thể đọc mã máy trực tiếp từ ổ cứng SSD.",
+          "Để điều khiển hoạt động của bàn phím và chuột.",
+          "Nhằm ngăn ngừa lỗi ngắt Interrupt xảy ra."
+        ],
+        answer: 0,
+        explanation: "Vì bộ nhớ RAM vừa nhỏ vừa không giữ được dữ liệu khi ngắt điện, hệ điều hành bắt buộc phải cấp phát và quản lý lưu trữ thứ cấp (HDD, SSD) để lưu thông tin vĩnh viễn với dung lượng lớn."
+      },
+      {
+        question: "Giao diện dòng lệnh CLI (Command Line Interface) còn được gọi là gì?",
+        options: [
+          "Window Manager.",
+          "File Explorer.",
+          "Shell hoặc Command Interpreter.",
+          "System Registry."
+        ],
+        answer: 2,
+        explanation: "CLI đóng vai trò tiếp nhận và dịch các dòng lệnh gõ tay của người dùng để thực thi, thường được gọi là Shell hoặc trình thông dịch lệnh (Command Interpreter)."
+      },
+      {
+        question: "Cơ chế IPC nào cho phép các tiến trình giao tiếp nhanh nhất bằng cách dùng chung một vùng nhớ vật lý?",
+        options: [
+          "Message Passing.",
+          "Shared Memory.",
+          "System Bus.",
+          "Virtual Machine."
+        ],
+        answer: 1,
+        explanation: "Shared Memory (Bộ nhớ chia sẻ) thiết lập một vùng nhớ chung mà các tiến trình đều có thể đọc/ghi trực tiếp vào đó, mang lại tốc độ truyền dữ liệu nhanh hơn hẳn so với chuyển thông điệp Message Passing."
+      },
+      {
+        question: "Lời gọi hệ thống (System Call) đóng vai trò gì trong hệ điều hành?",
+        options: [
+          "Là giao diện để chương trình người dùng yêu cầu các dịch vụ đặc quyền từ hệ điều hành.",
+          "Là cơ chế để CPU gửi tín hiệu ngắt đến bộ điều khiển thiết bị.",
+          "Là ngôn ngữ lập trình dùng để viết hệ điều hành.",
+          "Là trình kiểm tra lỗi của phần cứng RAM."
+        ],
+        answer: 0,
+        explanation: "System Call là chiếc cầu nối (giao diện lập trình) duy nhất cho phép các ứng dụng chạy ở User Mode có thể gọi các dịch vụ đặc quyền chạy ở Kernel Mode của hệ điều hành."
+      },
+      {
+        question: "Phương pháp nào sau đây giúp truyền tham số vào System Call có tốc độ thực thi nhanh nhất?",
+        options: [
+          "Lưu tham số vào một bảng trong RAM rồi truyền địa chỉ bảng.",
+          "Đẩy tham số vào vùng nhớ ngăn xếp Stack.",
+          "Truyền trực tiếp tham số thông qua các thanh ghi (Registers) của CPU.",
+          "Ghi tham số ra một file tạm trên đĩa cứng."
+        ],
+        answer: 2,
+        explanation: "Truyền qua thanh ghi CPU là nhanh nhất vì thanh ghi nằm trực tiếp bên trong vi xử lý, không tốn thời gian đọc ghi bộ nhớ RAM, dù số lượng tham số truyền đi bị giới hạn."
+      },
+      {
+        question: "Nhóm System Call nào phụ trách các thao tác như tạo tệp tin, ghi dữ liệu vào tệp tin và đóng tệp tin?",
+        options: [
+          "Process Control.",
+          "Device Management.",
+          "Information Maintenance.",
+          "File Management."
+        ],
+        answer: 3,
+        explanation: "Các thao tác với tệp tin (tạo, đọc, viết, đóng, xóa) thuộc về nhóm quản lý tệp tin (File Management System Calls)."
+      },
+      {
+        question: "Đặc điểm cơ bản của cấu trúc nhân hệ điều hành nguyên khối (Monolithic Kernel) là gì?",
+        options: [
+          "Các chức năng được phân tách thành nhiều tầng xếp chồng nghiêm ngặt.",
+          "Tất cả các dịch vụ hệ thống chạy chung một không gian địa chỉ nhân (Kernel Space).",
+          "Dịch vụ chạy hoàn toàn độc lập ở không gian người dùng (User Space).",
+          "Chỉ có 3 chức năng tối thiểu được giữ lại trong kernel."
+        ],
+        answer: 1,
+        explanation: "Cấu trúc nguyên khối monolithic gộp toàn bộ dịch vụ và trình điều khiển (drivers) vào cùng một file nhị phân chạy ở Kernel Space để đạt tốc độ giao tiếp nội bộ tối ưu."
+      },
+      {
+        question: "Nhược điểm lớn nhất của kiến trúc nhân nguyên khối (Monolithic Kernel) là gì?",
+        options: [
+          "Tốc độ xử lý cuộc gọi dịch vụ chậm chạp.",
+          "Hệ thống khó bảo trì, sửa lỗi và kém an toàn; một lỗi driver nhỏ cũng có thể làm crash toàn bộ hệ thống.",
+          "Không thể tương thích với các ứng dụng lập trình bằng ngôn ngữ Java.",
+          "Chi phí xây dựng phần cứng tương thích quá đắt đỏ."
+        ],
+        answer: 1,
+        explanation: "Vì tất cả thành phần chạy chung một bộ nhớ nhân đặc quyền, lỗi vùng nhớ của một driver ngoại vi nhỏ cũng có thể làm sập toàn bộ hệ điều hành."
+      },
+      {
+        question: "Trong kiến trúc nhân phân tầng (Layered Architecture), lớp thứ i được quyền gọi dịch vụ của lớp nào?",
+        options: [
+          "Mọi lớp trong hệ thống.",
+          "Chỉ lớp i + 1 (kề trên nó).",
+          "Chỉ lớp i - 1 (kề dưới nó).",
+          "Chỉ lớp phần cứng 0."
+        ],
+        answer: 2,
+        explanation: "Kiến trúc phân tầng quy định rõ ràng: lớp cấp cao hơn kề trên (lớp i) chỉ được phép sử dụng các hàm dịch vụ do lớp kề dưới nó (lớp i-1) cung cấp."
+      },
+      {
+        question: "Điểm hạn chế lớn của kiến trúc nhân phân tầng là gì?",
+        options: [
+          "Khó sửa lỗi và tính mô-đun hóa kém.",
+          "Rất khó phân chia chính xác chức năng cho từng tầng và tăng chi phí overhead do gọi hàm xuyên nhiều tầng trung gian.",
+          "Dễ bị ứng dụng người dùng tấn công làm sập nhân.",
+          "Chỉ hoạt động được trên các máy tính Mainframe."
+        ],
+        answer: 1,
+        explanation: "Rất khó định nghĩa ranh giới thiết kế xem dịch vụ nào thuộc tầng nào. Thêm vào đó, việc luân chuyển dữ liệu qua nhiều tầng trung gian làm giảm hiệu năng hệ thống."
+      },
+      {
+        question: "Ý tưởng cốt lõi của cấu trúc nhân vi nhân (Microkernel) là gì?",
+        options: [
+          "Gộp tất cả các chức năng hệ thống vào kernel để chạy nhanh hơn.",
+          "Chỉ giữ lại các chức năng tối thiểu thiết yếu (RAM, định thời CPU, IPC) trong kernel, đưa các dịch vụ khác ra chạy ở chế độ người dùng.",
+          "Chia hệ điều hành thành hàng nghìn tầng nhỏ.",
+          "Chạy toàn bộ hệ điều hành trên máy ảo."
+        ],
+        answer: 1,
+        explanation: "Microkernel tối giản hóa kernel bằng cách đưa các dịch vụ (file system, device driver) thành các tiến trình riêng chạy ở chế độ User Mode để tăng độ an toàn."
+      },
+      {
+        question: "Tại sao kiến trúc nhân vi nhân (Microkernel) được đánh giá là an toàn và tin cậy hơn nguyên khối?",
+        options: [
+          "Vì nó không cho phép người dùng chạy các file thực thi `.exe`.",
+          "Vì nếu một dịch vụ (như driver) bị lỗi, nó chỉ làm sập tiến trình đó ở chế độ người dùng chứ không ảnh hưởng đến kernel.",
+          "Vì nó được mã hóa bằng thuật toán quân sự.",
+          "Vì hệ thống không sử dụng lời gọi hệ thống System Call."
+        ],
+        answer: 1,
+        explanation: "Nhờ chạy độc lập ở User Space, nếu driver mạng bị sập, hệ thống chỉ cần khởi động lại driver đó mà không hề làm sập toàn bộ hệ điều hành."
+      },
+      {
+        question: "Nhược điểm chính của kiến trúc nhân vi nhân (Microkernel) là gì?",
+        options: [
+          "Hệ thống không thể mở rộng và nâng cấp.",
+          "Mất nhiều chi phí overhead về thời gian do phải thực hiện nhiều thông điệp giao tiếp liên tiến trình (IPC) và chuyển đổi ngữ cảnh.",
+          "Yêu cầu dung lượng bộ nhớ RAM cực lớn.",
+          "Không hỗ trợ chạy song song đa nhiệm."
+        ],
+        answer: 1,
+        explanation: "Để ứng dụng gọi file, dữ liệu phải gửi qua lại giữa User space và Kernel space liên tục bằng cơ chế Message Passing, sinh ra nhiều overhead làm chậm hệ thống."
+      },
+      {
+        question: "Ưu điểm lớn nhất của việc sử dụng công nghệ Máy ảo (Virtual Machine) là gì?",
+        options: [
+          "Mô phỏng phần cứng giúp tăng gấp đôi hiệu suất vật lý.",
+          "Tạo ra sự cách ly hoàn toàn (complete isolation) tài nguyên, an toàn tuyệt đối và tiện lợi cho thử nghiệm.",
+          "Giúp đĩa cứng đọc dữ liệu nhanh hơn RAM.",
+          "Không cần sử dụng nhân Kernel."
+        ],
+        answer: 1,
+        explanation: "Máy ảo cô lập hoàn toàn môi trường. Lỗi hệ thống hoặc virus ở một máy ảo không thể lan sang các máy ảo khác hay ảnh hưởng tới máy chủ vật lý bên dưới."
+      },
+      {
+        question: "Trong thiết kế hệ điều hành, 'Mechanism' (Cơ chế) giải quyết câu hỏi nào?",
+        options: [
+          "Làm cái gì? (What)",
+          "Làm như thế nào? (How)",
+          "Ai sẽ làm?",
+          "Làm khi nào?"
+        ],
+        answer: 1,
+        explanation: "Cơ chế (Mechanism) trả lời câu hỏi 'Làm như thế nào?' (How) - tức là công cụ thực thi phần cứng. Trong khi Chính sách (Policy) trả lời câu hỏi 'Làm cái gì?' (What) - tức là quy luật điều khiển."
+      },
+      {
+        question: "Hầu hết các hệ điều hành hiện đại ngày nay (như Linux, Windows) được lập trình bằng ngôn ngữ nào?",
+        options: [
+          "Java và Python để đạt hiệu năng an toàn cao.",
+          "HTML, CSS và JavaScript để chạy trực tiếp trên web.",
+          "C, C++ và Rust để đạt tốc độ xử lý tối đa và can thiệp sâu phần cứng.",
+          "Ngôn ngữ máy (Machine code) nhị phân thuần túy."
+        ],
+        answer: 2,
+        explanation: "Hệ điều hành yêu cầu hiệu năng thực thi cực nhanh và quyền can thiệp phần cứng sâu, do đó các ngôn ngữ lập trình hệ thống mạnh mẽ như C, C++ và Rust là lựa chọn tối ưu."
+      },
+      {
+        question: "Tại sao các nhà phát triển phần mềm thường lập trình ứng dụng thông qua các giao diện API thay vì gọi trực tiếp System Call?",
+        options: [
+          "Vì API chạy trực tiếp trên phần cứng không cần thông qua hệ điều hành.",
+          "Để tăng tính tương thích của chương trình (khả năng di động), dễ lập trình hơn và che giấu các chi tiết phức tạp của các System Call bên dưới.",
+          "Vì API bảo mật hơn và không tốn bộ nhớ RAM.",
+          "Vì System Call chỉ được viết bằng ngôn ngữ máy nhị phân."
+        ],
+        answer: 1,
+        explanation: "API (như POSIX hay Win32) trừu tượng hóa các lời gọi hệ thống. Một chương trình dùng API có thể biên dịch và chạy trên nhiều phiên bản OS khác nhau mà không cần sửa code gọi System Call chi tiết của phiên bản đó."
+      },
+      {
+        question: "Cơ chế truyền tham số cho System Call bằng phương pháp dùng Vùng nhớ (Block/Table) hoạt động như thế nào?",
+        options: [
+          "Tham số được lưu vào các thanh ghi của CPU.",
+          "Tham số được ghi trực tiếp vào một file trên đĩa cứng.",
+          "Toàn bộ tham số được ghi vào một bảng dữ liệu trong RAM, và địa chỉ của bảng đó được truyền vào một thanh ghi của CPU.",
+          "Tham số được gửi qua giao tiếp mạng Client-Server."
+        ],
+        answer: 2,
+        explanation: "Khi số lượng tham số lớn hơn số thanh ghi CPU hiện có, hệ điều hành lưu chúng thành một khối (block) trong RAM và chỉ truyền con trỏ (địa chỉ khối) vào thanh ghi để nhân Kernel truy xuất."
+      },
+      {
+        question: "Trong cấu trúc nhân Microkernel, quá trình giao tiếp giữa hai dịch vụ chạy ở User Space (ví dụ Driver mạng và Hệ thống tệp) diễn ra như thế nào?",
+        options: [
+          "Hai dịch vụ ghi dữ liệu trực tiếp vào thanh ghi của nhau.",
+          "Giao tiếp gián tiếp thông qua cơ chế gửi nhận thông điệp (Message Passing) do nhân Microkernel làm trung gian điều phối.",
+          "Chúng dùng chung một ngăn xếp Stack của ứng dụng.",
+          "Chúng tự động chuyển đổi ngữ cảnh mà không cần gọi nhân."
+        ],
+        answer: 1,
+        explanation: "Vì các dịch vụ chạy độc lập ở chế độ người dùng (User Space), chúng không thể can thiệp bộ nhớ của nhau. Chúng bắt buộc phải gửi thông điệp IPC đi qua nhân Microkernel để trung chuyển dữ liệu."
+      },
+      {
+        question: "Nhân lai Hybrid Kernel (ví dụ nhân Windows NT, macOS) được thiết kế nhằm mục đích gì?",
+        options: [
+          "Chạy đồng thời cả mã nguồn nguồn đóng và mã nguồn mở.",
+          "Kết hợp tính mô-đun an toàn của Microkernel và hiệu năng tốc độ chạy nhanh của Monolithic bằng cách giữ một số dịch vụ quan trọng trong Kernel space.",
+          "Tự động ảo hóa phần cứng máy tính.",
+          "Chạy các ứng dụng di động mà không cần giả lập."
+        ],
+        answer: 1,
+        explanation: "Nhân lai Hybrid kết hợp ưu điểm của cả hai thế giới: giữ kiến trúc mô-đun phân tách dịch vụ của Microkernel nhưng đưa các thành phần nhạy cảm hiệu năng (như giao diện đồ họa hoặc file system) vào trong Kernel space để giảm chi phí IPC."
+      },
+      {
+        question: "Trong quá trình khởi động hệ thống (System Boot), vai trò của Master Boot Record (MBR) là gì?",
+        options: [
+          "Lưu trữ các file cấu hình giao diện người dùng.",
+          "Là phân khu đầu tiên trên đĩa chứa bảng phân vùng và đoạn mã khởi động ngắn để tìm và nạp trình tải hệ điều hành (Boot Loader) vào RAM.",
+          "Là trình diệt virus hoạt động ở mức BIOS.",
+          "Đóng vai trò là thanh ghi chứa địa chỉ con trỏ lệnh tiếp theo."
+        ],
+        answer: 1,
+        explanation: "MBR nằm ở sector đầu tiên của đĩa khởi động, chứa mã máy giúp BIOS định vị phân vùng kích hoạt (active partition) để nạp Boot Loader (như GRUB) vào RAM thực thi tiếp."
+      },
+      {
+        question: "Trong thiết kế hệ điều hành, sự khác biệt giữa 'Mechanism' (Cơ chế) và 'Policy' (Chính sách) có ý nghĩa thực tiễn thế nào?",
+        options: [
+          "Cơ chế quyết định phân quyền người dùng, Chính sách quản lý phần cứng.",
+          "Giúp hệ điều hành linh hoạt: ta có thể thay đổi các chính sách (luật quyết định) bằng phần mềm mà không cần sửa đổi lại các cơ chế (công cụ thực thi phần cứng) bên dưới.",
+          "Chính sách là bắt buộc, Cơ chế là tùy chọn.",
+          "Cơ chế được viết bằng Assembly, Chính sách viết bằng C/C++."
+        ],
+        answer: 1,
+        explanation: "Ví dụ: Cơ chế là sử dụng một bộ định thời ngắt CPU (Timer). Chính sách là quyết định cho mỗi tiến trình chạy tối đa bao nhiêu mili-giây. Việc tách biệt giúp ta đổi chính sách chạy đa nhiệm dễ dàng mà không cần sửa thiết kế CPU."
+      },
+      {
+        question: "Máy ảo Java Virtual Machine (JVM) được phân loại là loại máy ảo nào?",
+        options: [
+          "Hệ máy ảo giám sát phần cứng Hypervisor loại 1.",
+          "Máy ảo mức ứng dụng/tiến trình (Process/Application Virtual Machine) tạo môi trường thực thi mã độc lập nền tảng.",
+          "Hệ thống đa xử lý đối xứng SMP ảo.",
+          "Hệ thống cụm ảo Clustered System."
+        ],
+        answer: 1,
+        explanation: "JVM là máy ảo mức tiến trình, nó chạy như một ứng dụng bình thường trên hệ điều hành chủ để thông dịch mã bytecode của Java thành mã máy tương thích hệ điều hành chủ, mang lại tính độc lập nền tảng."
+      },
+      {
+        question: "Thành phần 'System Program' (chương trình hệ thống) của hệ điều hành nằm ở phân lớp nào?",
+        options: [
+          "Nằm bên trong Kernel space đặc quyền.",
+          "Nằm ở lớp trung gian giữa giao diện lập trình System Call và các ứng dụng của người dùng.",
+          "Nằm hoàn toàn ở phần cứng BIOS/ROM.",
+          "Nằm trong thanh ghi con trỏ lệnh PC."
+        ],
+        answer: 1,
+        explanation: "Chương trình hệ thống (như trình quản lý file, compiler, công cụ status) chạy ở chế độ người dùng (User space), đóng vai trò cung cấp môi trường thuận tiện để người dùng và ứng dụng tương tác với các System Call của Kernel."
+      },
+      {
+        question: "Khi xảy ra lỗi sập hệ thống nghiêm trọng (Kernel Crash), hệ điều hành thường thực hiện hành động nào để hỗ trợ sửa lỗi?",
+        options: [
+          "Tự động xóa sạch toàn bộ dữ liệu đĩa cứng.",
+          "Ghi toàn bộ trạng thái bộ nhớ nhân hiện tại ra một tệp tin gọi là Crash Dump (Core Dump) để phục vụ phân tích sau đó.",
+          "Vô hiệu hóa toàn bộ các cổng mạng ngoại vi.",
+          "Chuyển CPU về chạy chế độ User Mode."
+        ],
+        answer: 1,
+        explanation: "Crash Dump lưu lại ảnh bộ nhớ RAM tại thời điểm xảy ra sự cố nghiêm trọng, giúp kỹ sư hệ thống sử dụng các trình debugger để dò tìm nguyên nhân lỗi gây sập nhân (Kernel panic)."
+      },
+      {
+        question: "Tại sao kiến trúc nguyên khối Monolithic vẫn được Linux và Windows sử dụng phổ biến bất chấp nhược điểm dễ sập hệ thống của nó?",
+        options: [
+          "Vì nó dễ lập trình và bảo trì hơn vi nhân.",
+          "Vì hiệu năng vượt trội do các dịch vụ giao tiếp trực tiếp qua lời gọi hàm bộ nhớ trong nhân, không mất chi phí overhead chuyển đổi ngữ cảnh IPC.",
+          "Vì nó tiết kiệm điện năng cho thiết bị di động hơn.",
+          "Vì nó tự động sửa toàn bộ các lỗi phần cứng đĩa."
+        ],
+        answer: 1,
+        explanation: "Trong monolithic, mọi dịch vụ chạy chung không gian bộ nhớ nên gọi nhau trực tiếp như các hàm C thông thường, tốc độ chạy cực nhanh. Đây là lý do chính giúp Linux đạt hiệu năng cao."
+      }
+    ];
+
+    let answeredQuestions = new Array(quizData.length).fill(null);
+    let flaggedQuestions = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      // Render navigation grid
+      const navGrid = document.getElementById("quiz-nav-grid");
+      if (navGrid) {
+        navGrid.innerHTML = "";
+        quizData.forEach((_, qIdx) => {
+          const navItem = document.createElement("div");
+          navItem.className = "quiz-nav-item";
+          navItem.id = `quiz-nav-item-${qIdx}`;
+          navItem.innerText = qIdx + 1;
+          navItem.onclick = () => {
+            const targetCard = document.getElementById(`quiz-card-${qIdx}`);
+            if (targetCard) {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          };
+          navGrid.appendChild(navItem);
+        });
+      }
+
+      quizData.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `quiz-card-${qIdx}`;
+
+        // Create Card Header to hold Badge and Flag Button
+        const cardHeader = document.createElement("div");
+        cardHeader.style.display = "flex";
+        cardHeader.style.justify = "space-between";
+        cardHeader.style.alignItems = "center";
+        cardHeader.style.marginBottom = "0.75rem";
+
+        const badge = document.createElement("div");
+        badge.className = "quiz-badge unanswered";
+        badge.id = `quiz-badge-${qIdx}`;
+        badge.innerText = `Câu hỏi ${qIdx + 1}`;
+
+        const flagBtn = document.createElement("button");
+        flagBtn.className = "flag-btn";
+        flagBtn.id = `flag-btn-${qIdx}`;
+        flagBtn.innerHTML = `🚩 Gắn cờ`;
+        flagBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleFlag(qIdx);
+        };
+
+        cardHeader.appendChild(badge);
+        cardHeader.appendChild(flagBtn);
+        card.appendChild(cardHeader);
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerText = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "quiz-options";
+
+        q.options.forEach((opt, optIdx) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option-btn";
+          btn.id = `quiz-btn-${qIdx}-${optIdx}`;
+          
+          const label = String.fromCharCode(65 + optIdx); // A, B, C, D
+          btn.innerHTML = `<strong>${label}.</strong> ${opt}`;
+          
+          btn.onclick = () => selectOption(qIdx, optIdx);
+          optionsDiv.appendChild(btn);
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "quiz-explanation";
+        explanation.id = `quiz-explain-${qIdx}`;
+        explanation.innerHTML = `<strong>💡 Giải thích chi tiết:</strong> ${q.explanation}`;
+
+
+        card.appendChild(questionText);
+        card.appendChild(optionsDiv);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answeredQuestions[qIdx] !== null) return; // Already answered
+
+      answeredQuestions[qIdx] = optIdx;
+      const question = quizData[qIdx];
+      const correctIdx = question.answer;
+
+      // Update badge style
+      const badge = document.getElementById(`quiz-badge-${qIdx}`);
+      badge.className = "quiz-badge answered";
+      badge.innerText = `Câu hỏi ${qIdx + 1} (Đã trả lời)`;
+
+      // Update nav grid item
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      if (navItem) {
+        navItem.classList.add("answered");
+      }
+
+      // Loop through options to color correct/incorrect and disable them
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`quiz-btn-${qIdx}-${i}`);
+        btn.disabled = true;
+
+        if (i === correctIdx) {
+          btn.classList.add("correct");
+        } else if (i === optIdx) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      // Show explanation
+      const explain = document.getElementById(`quiz-explain-${qIdx}`);
+      explain.style.display = "block";
+
+      // Update scoreboard
+      updateScoreboard();
+    }
+
+    function toggleFlag(qIdx) {
+      flaggedQuestions[qIdx] = !flaggedQuestions[qIdx];
+      const flagBtn = document.getElementById(`flag-btn-${qIdx}`);
+      const navItem = document.getElementById(`quiz-nav-item-${qIdx}`);
+      
+      if (flaggedQuestions[qIdx]) {
+        flagBtn.classList.add("active");
+        navItem.classList.add("flagged");
+      } else {
+        flagBtn.classList.remove("active");
+        navItem.classList.remove("flagged");
+      }
+    }
+
+    function updateScoreboard() {
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      answeredQuestions.forEach((ans, idx) => {
+        if (ans !== null) {
+          answeredCount++;
+          if (ans === quizData[idx].answer) {
+            correctCount++;
+          }
+        }
+      });
+
+      // Update text in DOM
+      document.getElementById("quiz-progress").innerText = `${answeredCount} / ${quizData.length} câu hỏi`;
+      
+      const percentage = answeredCount > 0 ? Math.round((correctCount / quizData.length) * 100) : 0;
+      document.getElementById("quiz-score").innerText = `${percentage}% (Đúng: ${correctCount}/${answeredCount})`;
+    }
+
+    // Initialize quiz
+    window.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

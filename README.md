@@ -46,6 +46,16 @@ Kho học liệu lý thuyết và bài tập thực hành học máy cơ bản:
 * **Chương 5: Các khóa học Machine Learning cho người mới bắt đầu** (Đánh giá Andrew Ng Specialization, Google MLCC, Kaggle Learn)
 * **Chương 6: Dự án phân loại Titanic** (Quy trình ML 5 bước: thu thập, làm sạch dữ liệu, train-test split, huấn luyện Random Forest và đánh giá Confusion Matrix)
 
+### 4. Nguyên lý Hệ điều hành
+Kho học liệu lý thuyết và bộ câu hỏi trắc nghiệm tương tác:
+* **Chương 1: Giới thiệu Hệ điều hành** (Định nghĩa, vai trò bộ quản lý tài nguyên, quy trình khởi động Bootstrap, các hệ thống đa chương/chia thời gian/thời gian thực/phân tán)
+* **Chương 2: Cấu trúc Hệ điều hành** (Thành phần hệ điều hành, các dịch vụ hệ thống, lời gọi hệ thống System Call, kiến trúc nhân Monolithic/Layered/Microkernel/Máy ảo)
+* **Chương 3: Tiến trình** (Bản chất tiến trình, cấu trúc phân vùng nhớ, 5 trạng thái vòng đời, PCB, hàng đợi và bộ định thời, tạo/hủy tiến trình và IPC)
+* **Chương 4: Định thời CPU** (Chu kỳ CPU-I/O Burst, Dispatcher, các tiêu chí đánh giá, giải thuật FCFS/SJF/Priority/Round Robin/Multilevel Queue, định thời đa nhân và thời gian thực)
+* **Chương 5: Đồng bộ hóa tiến trình** (Hiện tượng Race Condition, bài toán CSP, các giải pháp Peterson/Bakery, chỉ thị phần cứng test_and_set/compare_and_swap, công cụ Semaphore và cấu trúc Monitor)
+* **Chương 6: Khóa chết** (Định nghĩa Deadlock, 4 điều kiện cần, đồ thị RAG, Wait-for Graph, giải thuật Banker, phát hiện và khôi phục hệ thống)
+* **Chương 7: Quản lý bộ nhớ** (Cơ chế Base/Limit, địa chỉ Logic vs Physical, MMU, Hoán đổi bộ nhớ Swapping, giải thuật cấp phát kề nhau First/Best/Worst-fit, Phân trang Paging, bộ đệm TLB và Phân đoạn Segmentation)
+
 ---
 
 ## 📂 Cấu Trúc Thư Mục Dự Án
@@ -77,6 +87,16 @@ Kho học liệu lý thuyết và bài tập thực hành học máy cơ bản:
 │       ├── chuong-4-tim-hieu-cac-thu-vien.html
 │       ├── chuong-5-cac-khoa-hoc-machine-learning-cho-nguoi-moi-bat-dau.html
 │       └── chuong-6-du-doan-kha-nang-song-sot-tren-tau-titanic.html
+├── nguyen-ly-he-dieu-hanh/
+│   ├── index.html               # Mục lục môn Nguyên lý Hệ điều hành
+│   └── chapters/                # Các chương học chi tiết
+│       ├── chuong-1-gioi-thieu-he-dieu-hanh.html
+│       ├── chuong-2-cau-truc-he-dieu-hanh.html
+│       ├── chuong-3-tien-trinh.html
+│       ├── chuong-4-dinh-thoi-cpu.html
+│       ├── chuong-5-dong-bo-hoa-tien-trinh.html
+│       ├── chuong-6-khoa-chet.html
+│       └── chuong-7-quan-ly-bo-nho.html
 └── README.md                    # Hướng dẫn dự án
 ```
 
