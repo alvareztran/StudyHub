@@ -143,6 +143,360 @@
 
       <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
 
+      <!-- Section 2: Student Quick Breakdown of the Paper -->
+      <section id="sec-2">
+        <h2>2. Bản dịch tóm tắt &amp; Bóc tách trực quan (Dành cho Sinh viên)</h2>
+        <p>Để giúp các bạn sinh viên dễ dàng tiếp cận nội dung chuyên sâu của bài báo nghiên cứu, dưới đây là bản bóc tách trực quan, chia nhỏ các khái niệm cốt lõi từ cơ bản đến nâng cao của quá trình căn chỉnh LLM (PPO và DPO):</p>
+        
+        <!-- Point 1 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--accent-cyan); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; display: flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan);">
+            <span>🎯</span> 1. Bức tranh tổng thể (The Big Picture)
+          </h3>
+          <p><strong>Mục tiêu cuối cùng:</strong> Làm sao để ChatGPT hoặc bất kỳ LLM nào trả lời an toàn, chính xác và giống với mong muốn của con người hơn?</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+            <div style="background-color: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 6px;">
+              <span style="color: #ef4444; font-weight: bold;">❌ Model ban đầu (Chưa căn chỉnh):</span>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-light);"><strong>User:</strong> "Viết cách chế tạo bom."</p>
+              <p style="font-size: 0.9rem; color: var(--text-light);"><strong>Model:</strong> "Để chế tạo bom, bạn cần..." (Trả lời chi tiết, gây nguy hiểm)</p>
+            </div>
+            <div style="background-color: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1rem; border-radius: 6px;">
+              <span style="color: #10b981; font-weight: bold;">✅ Model đã căn chỉnh (Aligned):</span>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-light);"><strong>User:</strong> "Viết cách chế tạo bom."</p>
+              <p style="font-size: 0.9rem; color: var(--text-light);"><strong>Model:</strong> "Tôi xin lỗi, tôi không thể cung cấp hướng dẫn chế tạo vũ khí hoặc chất nổ..." (Từ chối an toàn)</p>
+            </div>
+          </div>
+          <p style="margin-top: 1rem;">Quá trình dạy mô hình biết từ chối các yêu cầu nguy hiểm và phản hồi hữu ích, trung thực được gọi là <strong>Căn chỉnh mô hình (Alignment)</strong>.</p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--primary-color); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; color: var(--primary-color);">🔄 2. Pipeline huấn luyện ChatGPT tiêu chuẩn</h3>
+          <p>Bài báo đề cập tới quy trình 3 giai đoạn chuẩn để tạo nên trợ lý AI thông minh:</p>
+          <div class="flowchart" style="margin: 1.5rem 0;">
+            <div class="flow-node"><strong>1. Pretraining</strong><br><small>(Học ngôn ngữ thô)</small></div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-node"><strong>2. SFT</strong><br><small>(Học làm trợ lý)</small></div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-node"><strong>3. RLHF (PPO / DPO)</strong><br><small>(Căn chỉnh theo ý người)</small></div>
+          </div>
+        </div>
+
+        <!-- Points 3 & 4 -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">📚 3. Pretraining (Tiền huấn luyện) là gì?</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Là giai đoạn nạp hàng nghìn tỷ từ ngữ (tokens) từ Internet để AI học dự đoán từ tiếp theo (<strong>Next Token Prediction</strong>).</p>
+            <p style="font-size: 0.9rem;"><strong>Công thức xác suất:</strong></p>
+            <p style="text-align: center; margin: 0.75rem 0;">
+              $P(w_t \mid w_1, w_2, \dots, w_{t-1})$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); border-top: 1px solid var(--border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
+              <strong>Ví dụ:</strong> Với câu "I love ...", AI sẽ phân bổ xác suất cho các từ tiếp theo:
+            </p>
+            <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-top: 0.5rem;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <th style="text-align: left; padding: 0.25rem 0;">Token tiếp theo ($w_t$)</th>
+                  <th style="text-align: right; padding: 0.25rem 0;">Xác suất ($P$)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding: 0.25rem 0;">you</td><td style="text-align: right; font-weight: bold; color: var(--accent-cyan);">60% (0.6)</td></tr>
+                <tr><td style="padding: 0.25rem 0;">cats</td><td style="text-align: right;">20% (0.2)</td></tr>
+                <tr><td style="padding: 0.25rem 0;">pizza</td><td style="text-align: right;">10% (0.1)</td></tr>
+                <tr><td style="padding: 0.25rem 0;">football</td><td style="text-align: right;">10% (0.1)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">⚙️ 4. SFT (Supervised Fine-Tuning) là gì?</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">AI sau bước pretraining biết rất nhiều từ nhưng chưa biết hội thoại như một trợ lý ảo. SFT dạy AI học bắt chước các cặp câu hỏi-trả lời mẫu.</p>
+            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 0.75rem;">
+              <strong>Yêu cầu (Instruction):</strong> "Viết email xin nghỉ học."<br>
+              <strong>Đáp án mẫu (SFT):</strong> "Kính gửi thầy/cô, em xin phép..."
+            </div>
+            <p style="font-size: 0.9rem;"><strong>Hàm mất mát (Cross Entropy Loss):</strong></p>
+            <p style="text-align: center; margin: 0.75rem 0;">
+              $\mathcal{L}_{\text{SFT}}(\theta) = -\sum y \log(\hat{y})$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              <strong>Ý nghĩa:</strong> So sánh câu trả lời của AI ($\hat{y}$) với đáp án mẫu ($y$). Nếu AI đoán đúng với xác suất càng cao thì loss càng nhỏ; đoán lệch xa thì loss cực lớn.
+            </p>
+          </div>
+        </div>
+
+        <!-- Points 5 & 6 -->
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">👥 5. RLHF là gì? (Reinforcement Learning from Human Feedback)</h4>
+            <p style="font-size: 0.9rem;">Sau khi qua SFT, mô hình vẫn có thể trả lời dài dòng, chứa thông tin sai lệch hoặc không thân thiện. RLHF căn chỉnh mô hình dựa trên sự so sánh ưu tiên của con người.</p>
+            <div style="margin-top: 0.75rem; border-left: 3px solid var(--primary-color); padding-left: 0.75rem; font-size: 0.85rem;">
+              <strong>Quy trình thu thập dữ liệu:</strong>
+              <ol style="margin-top: 0.25rem; padding-left: 1rem;">
+                <li>Đưa ra câu lệnh (Prompt $x$): <em>"Giải thích OOP."</em></li>
+                <li>Mô hình sinh ra 2 câu trả lời ứng cử viên: <strong>Response A</strong> và <strong>Response B</strong>.</li>
+                <li>Con người đánh giá: <em>"A viết mạch lạc và dễ hiểu hơn B"</em> $\rightarrow$ <strong>A là Winner ($y_w$)</strong>, <strong>B là Loser ($y_l$)</strong>.</li>
+              </ol>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 0.75rem; background-color: rgba(6, 182, 212, 0.05); padding: 0.5rem; border-radius: 4px;">
+              💡 Tập dữ liệu thu được có dạng các cặp ưu tiên: <strong>$(y_w, y_l)$</strong>. Đây là ký hiệu chính trong toàn bộ bài báo.
+            </p>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">🏅 6. Reward Model (Mô hình phần thưởng)</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Con người không thể ngồi chấm điểm thủ công hàng tỷ câu trả lời. Vì vậy, ta huấn luyện một AI làm "giám khảo" gọi là Reward Model.</p>
+            <p style="font-size: 0.85rem;"><strong>Ký hiệu toán học:</strong> $r(x, y)$</p>
+            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem;">(Trong đó $x$ là prompt, $y$ là câu trả lời. Đầu ra là một điểm số thực biểu diễn chất lượng câu trả lời).</p>
+            <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-top: 0.75rem; text-align: center;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <th style="text-align: left; padding: 0.25rem 0;">Câu trả lời ($y$)</th>
+                  <th style="padding: 0.25rem 0;">Điểm số ($r$)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="text-align: left; padding: 0.25rem 0;">Chính xác, lịch sự</td><td style="font-weight: bold; color: var(--accent-cyan);">+8.0</td></tr>
+                <tr><td style="text-align: left; padding: 0.25rem 0;">Chung chung, sơ sài</td><td>+5.0</td></tr>
+                <tr><td style="text-align: left; padding: 0.25rem 0;">Chứa mã độc, nguy hiểm</td><td style="font-weight: bold; color: #ef4444;">-5.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Point 7 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--primary-color); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; color: var(--primary-color);">📋 7. Policy (Chính sách) trong LLM là gì?</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+              <strong>Trong học tăng cường (RL) truyền thống:</strong>
+              <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-light);">Policy $\pi(a \mid s)$ biểu thị xác suất tác nhân thực hiện hành động $a$ khi đang ở trạng thái $s$.</p>
+            </div>
+            <div>
+              <strong>Trong mô hình ngôn ngữ lớn (LLM):</strong>
+              <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-light);">Policy $\pi_\theta(y \mid x)$ biểu thị xác suất mô hình sinh ra chuỗi câu trả lời $y$ khi nhận đầu vào là prompt $x$.</p>
+            </div>
+          </div>
+          <div style="background-color: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-top: 1rem;">
+            <strong>Ví dụ minh họa:</strong> Nhận prompt $x = \text{"2 + 2 = "}$, chính sách $\pi_\theta$ sẽ phân bổ xác suất cho các câu trả lời $y$:<br>
+            &bull; $y = \text{"4"}$ &rarr; Xác suất: $0.95$<br>
+            &bull; $y = \text{"5"}$ &rarr; Xác suất: $0.03$<br>
+            &bull; $y = \text{"22"}$ &rarr; Xác suất: $0.02$
+          </div>
+        </div>
+
+        <!-- Point 8 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--accent-cyan); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; color: var(--accent-cyan);">🔑 8. Công thức quan trọng nhất của RLHF</h3>
+          <p>Mục tiêu của RLHF là cực đại hóa điểm thưởng từ Reward Model, đồng thời phạt KL Divergence để mô hình mới không thay đổi quá xa so với mô hình tham chiếu gốc (SFT):</p>
+          <p style="text-align: center; font-size: 1.25rem; margin: 1.5rem 0; font-weight: bold; color: var(--accent-cyan);">
+            $\mathcal{J}_r(\pi_\theta) = \mathbb{E}_{(x,y) \sim \pi_\theta} \left[ r(x,y) - \beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} \right]$
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; text-align: center;">
+            <div style="background: rgba(255, 255, 255, 0.02); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+              <span style="color: var(--accent-cyan); font-weight: bold; font-size: 1.1rem;">$r(x,y)$</span><br>
+              <strong>Reward (Phần thưởng)</strong><br>
+              <span style="color: var(--text-light);">Cố gắng tối đa hóa chất lượng và độ an toàn của phản hồi theo ý người dùng.</span>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+              <span style="color: #ef4444; font-weight: bold; font-size: 1.1rem;">$\log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)}$</span><br>
+              <strong>KL Penalty (Phạt khoảng cách)</strong><br>
+              <span style="color: var(--text-light);">Phạt mô hình nếu phân phối xác suất lệch quá xa so với mô hình SFT tham chiếu cũ ($\pi_{\text{ref}}$).</span>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+              <span style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">$\beta$</span><br>
+              <strong>Hệ số phạt</strong><br>
+              <span style="color: var(--text-light);">Trọng số phạt KL. $\beta$ càng lớn thì mô hình mới càng ít thay đổi; $\beta$ nhỏ giúp mô hình thay đổi mạnh mẽ hơn.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Points 9 & 10 -->
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">📊 9. KL Divergence (Khoảng cách Kullback-Leibler)</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Công thức đo lường mức độ khác biệt giữa hai phân phối xác suất $P$ và $Q$:</p>
+            <p style="text-align: center; margin: 1rem 0; font-size: 1.05rem;">
+              $\mathbb{D}_{\text{KL}}(P \parallel Q) = \sum_{x} P(x) \log \frac{P(x)}{Q(x)}$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              <strong>Ý nghĩa thực tế:</strong>
+              Nếu mô hình cũ trả về xác suất từ "4" là $90\%$ và mô hình mới trả về $89\%$, KL divergence sẽ rất nhỏ. Nhưng nếu mô hình cũ trả về $90\%$ và mô hình mới đột ngột tụt xuống $5\%$, KL divergence sẽ cực kỳ lớn, biểu thị mô hình đang mất đi các tri thức cơ bản.
+            </p>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">🤖 10. PPO (Proximal Policy Optimization)</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">PPO là thuật toán học tăng cường dựa trên mô hình phần thưởng (Reward-based RLHF) chuẩn:</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; font-size: 0.8rem; margin: 0.75rem 0; align-items: center;">
+              <span style="border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.02);">Ưu tiên con người</span>
+              <span>&rarr;</span>
+              <span style="border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.02);">Reward Model</span>
+              <span>&rarr;</span>
+              <span style="border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.02);">PPO</span>
+              <span>&rarr;</span>
+              <span style="border: 1px solid var(--accent-cyan); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(6, 182, 212, 0.05); font-weight: bold;">LLM mới</span>
+            </div>
+            <p style="font-size: 0.9rem;"><strong>Hàm mục tiêu Clipped Objective của PPO:</strong></p>
+            <p style="text-align: center; margin: 0.75rem 0; font-size: 0.95rem;">
+              $\mathcal{L}_{\text{PPO}}(\theta) = \hat{\mathbb{E}}_t \left[ \min \left( r_t(\theta)\hat{A}_t, \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_t \right) \right]$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              Trong đó $r_t(\theta) = \frac{\pi_\theta(a_t \mid s_t)}{\pi_{\text{old}}(a_t \mid s_t)}$ là tỷ lệ thay đổi chính sách. Hàm $\text{clip}()$ đóng vai trò khống chế tỷ lệ này nằm trong khoảng $[1-\epsilon, 1+\epsilon]$ (thường $\epsilon = 0.2$) để ngăn mô hình thay đổi quá đột ngột phá vỡ tính ổn định.
+            </p>
+          </div>
+        </div>
+
+        <!-- Points 11 & 12 -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">📈 11. Advantage (Hàm lợi thế) trong PPO</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Hàm lợi thế đo lường mức độ tốt hơn của một hành động cụ thể so với trung bình các hành động khác tại trạng thái đó:</p>
+            <p style="text-align: center; margin: 1rem 0; font-size: 1.1rem;">
+              $A(s, a) = Q(s, a) - V(s)$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              <strong>Ý nghĩa:</strong>
+              Nếu tại trạng thái $s$ (ví dụ: prompt nhận được), giá trị trung bình của các phản hồi là $70$ điểm ($V(s)$), nhưng hành động $a$ (từ được sinh ra tiếp theo) mang lại giá trị kỳ vọng $90$ điểm ($Q(s,a)$), thì hàm lợi thế $A(s,a) = 20$. Bài báo nhấn mạnh việc chuẩn hóa hàm lợi thế (Advantage normalization) là vô cùng quan trọng đối với sự thành công của PPO.
+            </p>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">⏱️ 12. GAE (Generalized Advantage Estimation)</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Thuật toán ước lượng lợi thế tổng quát hóa dùng để tính toán lợi thế đa bước một cách trơn tru:</p>
+            <p style="text-align: center; margin: 1rem 0; font-size: 1.1rem;">
+              $\hat{A}_t^{\text{GAE}} = \sum_{l=0}^{\infty} (\gamma\lambda)^l \delta_{t+l}$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              <strong>Ưu điểm:</strong>
+              Bằng cách kết hợp giữa các ước lượng một bước và vô hạn bước thông qua các tham số suy giảm $\gamma$ và $\lambda$, GAE giúp làm giảm đáng kể phương sai (variance) của tín hiệu lợi thế, đồng thời nâng cao độ ổn định huấn luyện cho LLM.
+            </p>
+          </div>
+        </div>
+
+        <!-- Point 13 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--accent-cyan); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; color: var(--accent-cyan);">💡 13. DPO (Direct Preference Optimization) là gì?</h3>
+          <p><strong>Ý tưởng đột phá:</strong> Loại bỏ hoàn toàn mô hình phần thưởng (Reward Model) trung gian và giai đoạn RL để huấn luyện chính sách trực tiếp từ dữ liệu ưu tiên!</p>
+          <div style="display: flex; gap: 0.5rem; justify-content: center; font-size: 0.8rem; margin: 1rem 0; align-items: center;">
+            <span style="border: 1px solid var(--border-color); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.02);">Ưu tiên con người</span>
+            <span>&rarr;</span>
+            <span style="border: 1px solid var(--accent-cyan); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(6, 182, 212, 0.05); font-weight: bold;">DPO</span>
+            <span>&rarr;</span>
+            <span style="border: 1px solid var(--accent-cyan); padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(6, 182, 212, 0.05); font-weight: bold;">LLM mới</span>
+          </div>
+          <p>Nhờ biến đổi toán học, bài báo DPO đã chứng minh rằng <strong>Chính sách tối ưu (Policy) thực chất đã chứa hàm phần thưởng ngầm định bên trong nó</strong>:</p>
+          <p style="text-align: center; font-size: 1.15rem; margin: 1rem 0;">
+            $r(x, y) = \beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} + C(x)$
+          </p>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Công thức này cho phép biểu diễn điểm số thưởng của bất kỳ phản hồi nào chỉ bằng cách so sánh xác suất sinh từ của chính mô hình hiện tại với mô hình tham chiếu gốc.</p>
+        </div>
+
+        <!-- Points 14 & 15 -->
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">📉 14. Hàm mất mát (Loss function) của DPO</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Sử dụng biểu thức phần thưởng ngầm định ở trên để đưa vào hàm mục tiêu so sánh cặp:</p>
+            <p style="text-align: center; margin: 1rem 0; font-size: 0.95rem; font-weight: bold; color: var(--accent-cyan);">
+              $\mathcal{L}_{\text{DPO}}(\pi_\theta) = -\mathbb{E}_{(x,y_w,y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \right) \right]$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              <strong>Mục tiêu tối ưu:</strong> Tăng xác suất sinh ra câu trả lời chiến thắng ($y_w$) của mô hình hiện tại $\pi_\theta$ so với mô hình tham chiếu $\pi_{\text{ref}}$, đồng thời giảm xác suất sinh ra câu trả lời thua cuộc ($y_l$). Ký hiệu $\sigma$ là hàm sigmoid.
+            </p>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--secondary-color);">⚠️ 15. Điểm yếu lớn nhất của DPO: Dữ liệu OOD</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Bài báo chứng minh bằng định lý toán học 4.1:</p>
+            <p style="text-align: center; font-size: 1.05rem; font-weight: bold; margin: 0.5rem 0;">
+              $\Pi_{\text{PPO}} \subsetneq \Pi_{\text{DPO}}$
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">
+              Nghĩa là mọi nghiệm tối ưu mà PPO tìm được đều nằm trong không gian nghiệm của DPO. Tuy nhiên, DPO có không gian nghiệm rộng hơn và có thể hội tụ về những nghiệm rất kỳ dị nằm ngoài phân phối dữ liệu (Out Of Distribution - OOD).
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4; margin-top: 0.5rem;">
+              <strong>Ví dụ:</strong> Tập dữ liệu chỉ chỉ ra $A$ tốt hơn $B$. PPO có cơ chế phạt KL trực tuyến ngăn mô hình tự suy luận quá đà. Trong khi đó, DPO không có cơ chế này và có thể tự suy luận ra một câu trả lời $C$ (chưa bao giờ được huấn luyện hay đánh giá) là tốt nhất, dẫn đến rủi ro mất an toàn.
+            </p>
+          </div>
+        </div>
+
+        <!-- Point 16 -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+          <h4 style="margin-top: 0; color: var(--secondary-color); text-align: center; margin-bottom: 1rem;">📊 16. So sánh đối sánh thuật toán (DPO vs PPO)</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 1rem; text-align: center;">Bảng tổng hợp kết quả đối sánh hiệu năng thực tế từ các thí nghiệm quy mô lớn của bài báo:</p>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border-color); background-color: rgba(255,255,255,0.02);">
+                  <th style="padding: 0.75rem; text-align: left;">Tiêu chí so sánh</th>
+                  <th style="padding: 0.75rem; color: var(--accent-cyan);">DPO (Direct Preference Optimization)</th>
+                  <th style="padding: 0.75rem; color: var(--primary-color);">PPO (Proximal Policy Optimization)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem; text-align: left; font-weight: bold;">Độ phức tạp quy trình</td>
+                  <td style="color: #10b981;">Đơn giản (Không cần huấn luyện Reward Model)</td>
+                  <td style="color: #f59e0b;">Phức tạp (Cần huấn luyện Actor, Critic, Ref, Reward)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem; text-align: left; font-weight: bold;">Tài nguyên &amp; Tốc độ</td>
+                  <td style="color: #10b981;">Nhanh hơn, tốn ít VRAM hơn</td>
+                  <td style="color: #ef4444;">Chậm hơn, tốn nhiều tài nguyên GPU hơn</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem; text-align: left; font-weight: bold;">Độ ổn định huấn luyện</td>
+                  <td style="color: #ef4444;">Nhạy cảm cao với phân phối dữ liệu SFT ban đầu</td>
+                  <td style="color: #10b981;">Ổn định hơn nhờ Advantage Normalization và GAE</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem; text-align: left; font-weight: bold;">Tác vụ lập trình (Code Gen)</td>
+                  <td style="color: #ef4444;">Kém hơn (Dễ thất bại trước các bài toán khó)</td>
+                  <td style="color: #10b981;">Thắng hoàn toàn (Đạt hiệu năng pass@k vượt trội)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem; text-align: left; font-weight: bold;">Kết luận chung</td>
+                  <td>Tốt cho tác vụ hội thoại đơn giản, tài nguyên ít</td>
+                  <td style="font-weight: bold; color: var(--primary-color);">Mạnh mẽ và toàn diện nhất trên các tác vụ khó</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Point 17 -->
+        <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--primary-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h3 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+            <span>🎓</span> 17. Lộ trình kiến thức dành cho Sinh viên (Học từ dễ đến khó)
+          </h3>
+          <p style="font-size: 0.95rem; margin-bottom: 1rem;">Để nắm vững chuyên đề căn chỉnh mô hình ngôn ngữ lớn này, các bạn sinh viên nên học theo lộ trình tích lũy kiến thức sau:</p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #000; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">1</span>
+              <span><strong>Supervised Learning (Học có giám sát)</strong>: Hiểu về cách khớp phân phối dữ liệu nhãn.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #000; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">2</span>
+              <span><strong>Reinforcement Learning (Học tăng cường)</strong>: Khái niệm MDP, Policy, Value, Reward.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #000; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">3</span>
+              <span><strong>RLHF (Căn chỉnh mô hình)</strong>: Thu thập dữ liệu ưu tiên cặp và thiết lập mô hình thưởng.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #000; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">4</span>
+              <span><strong>PPO (Thuật toán chính sách cận biên)</strong>: Ước lượng lợi thế Advantage, GAE và cơ chế Clip.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #000; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">5</span>
+              <span><strong>DPO (Thuật toán tối ưu trực tiếp)</strong>: Nghiệm toán dạng đóng, tối ưu hóa bỏ qua Reward model.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Section 3 -->
       <section id="sec-3">
         <h2>3. Kiến thức nền tảng</h2>

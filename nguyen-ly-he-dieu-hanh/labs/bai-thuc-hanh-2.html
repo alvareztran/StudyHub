@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thực hành 2: Cơ bản về lập trình Shell - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Custom styles for lab layout */
+    .cmd-output {
+      background-color: var(--highlight-bg);
+      border-left: 3px solid var(--secondary-color);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      color: var(--text-dark);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Thực hành 2
+      </div>
+      <h1>BÀI THỰC HÀNH BUỔI 2 - CƠ BẢN VỀ LẬP TRÌNH SHELL</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Mục tiêu: Làm quen với cách viết, cấp quyền và thực thi một Shell Script; định nghĩa và sử dụng biến; thực hiện các phép toán số học; sử dụng lệnh đọc dữ liệu và nhận đối số truyền vào từ dòng lệnh.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 -->
+      <section id="sec-1">
+        <h2>1. Tạo một Shell Script</h2>
+        <p>Shell Script thực chất chỉ là một file văn bản thường chứa một tập hợp nhiều câu lệnh Linux được sắp xếp theo thứ tự thực thi từ trên xuống dưới.</p>
+        <p>Thay vì phải nhập thủ công từng câu lệnh:</p>
+        <pre><code>echo Hello
+date
+pwd</code></pre>
+        <p>Chúng ta lưu các dòng lệnh này vào một file văn bản và yêu cầu Shell biên dịch và thực thi nó.</p>
+
+        <h3>Bước 1: Tạo file script</h3>
+        <p>Có thể sử dụng bất kỳ trình soạn thảo văn bản thô nào trên Linux như <code>gedit</code> (đồ họa), <code>nano</code> (dòng lệnh đơn giản), <code>vim</code> hoặc <code>vi</code> (dòng lệnh nâng cao):</p>
+        <pre><code>gedit firstscript</code></pre>
+
+        <h3>Bước 2: Cấp quyền thực thi</h3>
+        <p>Sau khi được lưu, Linux vẫn coi tệp tin này chỉ là tệp văn bản thông thường. Muốn hệ điều hành chấp nhận chạy tệp tin này như một chương trình, bạn bắt buộc phải cấp quyền thực thi (Execute):</p>
+        <pre><code>chmod 755 firstscript</code></pre>
+        <p>Phân bổ quyền cụ thể:</p>
+        <ul>
+          <li><strong>Chủ sở hữu (Owner)</strong>: Có quyền đọc, ghi và thực thi (<code>rwx</code> - 7).</li>
+          <li><strong>Nhóm (Group)</strong>: Chỉ có quyền đọc và thực thi (<code>r-x</code> - 5).</li>
+          <li><strong>Người khác (Others)</strong>: Chỉ có quyền đọc và thực thi (<code>r-x</code> - 5).</li>
+        </ul>
+
+        <h3>Bước 3: Thực thi script</h3>
+        <p>Có 3 cách chạy một tệp tin Shell Script từ Terminal:</p>
+        <ul>
+          <li style="margin-bottom: 0.5rem;"><strong>Cách 1:</strong> <code>bash firstscript</code></li>
+          <li style="margin-bottom: 0.5rem;"><strong>Cách 2:</strong> <code>sh firstscript</code></li>
+          <li style="margin-bottom: 0.5rem;"><strong>Cách 3:</strong> <code>./firstscript</code> (Chỉ chạy được khi file đã được gán quyền thực thi bằng chmod).</li>
+        </ul>
+
+        <h3>Ví dụ script đầu tiên:</h3>
+        <pre><code>#!/bin/bash
+clear
+echo "This is my first script!!!"</code></pre>
+        <p>Giải thích ý nghĩa từng dòng lệnh:</p>
+        <ul>
+          <li style="margin-bottom: 0.5rem;"><code>#!/bin/bash</code>: Dòng này được gọi là <strong>Shebang</strong>. Nó cho nhân hệ điều hành biết chương trình thông dịch nào sẽ dùng để chạy script này (ở đây là Bash Shell).</li>
+          <li style="margin-bottom: 0.5rem;"><code>clear</code>: Xóa sạch toàn bộ nội dung hiển thị hiện tại trên cửa sổ Terminal.</li>
+          <li style="margin-bottom: 0.5rem;"><code>echo "This is my first script!!!"</code>: In chuỗi văn bản ra màn hình.</li>
+        </ul>
+      </section>
+
+      <!-- Section 2 -->
+      <section id="sec-2" style="margin-top: 2.5rem;">
+        <h2>2. Tại sao chạy script lại báo "Permission denied"?</h2>
+        <p>Khi bạn cố gắng thực thi script bằng cú pháp <code>./firstscript</code> và nhận được thông báo lỗi:</p>
+        <div class="cmd-output" style="border-left-color: #ef4444;">
+          bash: ./firstscript: Permission denied
+        </div>
+        <p><strong>Nguyên nhân:</strong> Do tệp tin vừa tạo mới chưa được cấp quyền thực thi (Execute) cho người dùng hiện hành.</p>
+        <p><strong>Cách khắc phục:</strong> Chạy lệnh gán quyền sau trước khi chạy lại script:</p>
+        <pre><code>chmod 755 firstscript</code></pre>
+      </section>
+
+      <!-- Section 3 -->
+      <section id="sec-3" style="margin-top: 2.5rem;">
+        <h2>3. Shell tìm script ở đâu?</h2>
+        <p>Để Shell tìm thấy và chạy đúng script của bạn, có 2 cách thực hiện:</p>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Cách 1: Sử dụng đường dẫn tuyệt đối (Absolute Path)</strong>
+            <p>Trỏ thẳng vị trí lưu trữ từ gốc <code>/</code> của hệ thống:</p>
+            <pre><code>/root/shellscript/hello</code></pre>
+            <p>Hoặc chạy thông qua trình thông dịch:</p>
+            <pre><code>bash /root/shellscript/hello</code></pre>
+            <p>Cách này giúp bạn chạy được file dù đang làm việc ở bất cứ thư mục nào.</p>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Cách 2: Đăng ký thư mục chứa script vào biến PATH</strong>
+            <p>Khai báo đường dẫn thư mục vào danh sách tìm kiếm lệnh tự động của Shell:</p>
+            <pre><code>PATH=$PATH:/root/shellscript</code></pre>
+            <p>Sau khi cập nhật PATH, bạn có thể chạy script ở bất kỳ đâu chỉ bằng cách gõ tên file:</p>
+            <pre><code>hello</code></pre>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section 4 -->
+      <section id="sec-4" style="margin-top: 2.5rem;">
+        <h2>4. Bài tập thực hành đầu tiên</h2>
+        <p>Hãy viết và chạy thử đoạn script sau:</p>
+        <pre><code>clear
+echo "Hello $USER"
+echo -e "Today is \c"; date
+echo -e "Number of user login : \c"; who | wc -l
+echo "Calendar"
+cal
+exit 0</code></pre>
+
+        <h3>Giải thích chi tiết các thành phần trong đoạn code:</h3>
+        <ul>
+          <li style="margin-bottom: 0.5rem;"><code>$USER</code>: Biến hệ thống chứa tên của người dùng đang đăng nhập (ví dụ: <code>bang</code>).</li>
+          <li style="margin-bottom: 0.5rem;"><code>date</code>: Lệnh hiển thị ngày giờ hiện hành của hệ thống.</li>
+          <li style="margin-bottom: 0.5rem;"><code>who | wc -l</code>: Sử dụng cơ chế đường ống (Pipe). Lệnh <code>who</code> liệt kê danh sách người dùng đang đăng nhập, kết quả được gửi làm đầu vào cho lệnh <code>wc -l</code> để đếm tổng số dòng (tương ứng với số người dùng đang online).</li>
+          <li style="margin-bottom: 0.5rem;"><code>cal</code>: Hiển thị lịch của tháng hiện hành.</li>
+          <li style="margin-bottom: 0.5rem;"><code>exit 0</code>: Kết thúc chương trình và trả về mã trạng thái 0 (thành công) cho hệ thống.</li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section id="sec-5" style="margin-top: 2.5rem;">
+        <h2>5. Biến trong Shell</h2>
+        <p>Biến (Variable) là các vùng nhớ dùng để lưu trữ dữ liệu tạm thời trong bộ nhớ RAM khi chạy script.</p>
+        <p>Ví dụ gán giá trị cho biến:</p>
+        <pre><code>name=Bang
+age=20</code></pre>
+
+        <h3>Có hai loại biến chính trong Shell:</h3>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Biến hệ thống (System Variables):</strong>
+            <p>Là các biến được tạo và quản lý sẵn bởi hệ điều hành Linux. Tên của chúng thường được quy định viết bằng chữ HOA.</p>
+            <div style="overflow-x: auto; margin-top: 0.5rem;">
+              <table style="width: 100%; border-collapse: collapse; border: 1px solid var(--border-color);">
+                <thead>
+                  <tr style="background-color: var(--highlight-bg); border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 0.5rem; text-align: left; border-right: 1px solid var(--border-color);">Biến</th>
+                    <th style="padding: 0.5rem; text-align: left;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">HOME</td>
+                    <td style="padding: 0.5rem;">Thư mục home cá nhân của người dùng hiện hành.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">PATH</td>
+                    <td style="padding: 0.5rem;">Danh sách các thư mục tìm kiếm lệnh của Shell.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">PWD</td>
+                    <td style="padding: 0.5rem;">Đường dẫn thư mục làm việc hiện tại.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">SHELL</td>
+                    <td style="padding: 0.5rem;">Đường dẫn chương trình Shell đang sử dụng.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">LOGNAME</td>
+                    <td style="padding: 0.5rem;">Tên tài khoản người dùng đăng nhập.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">BASH_VERSION</td>
+                    <td style="padding: 0.5rem;">Phiên bản của Bash Shell đang chạy.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin-top: 0.75rem;">Ví dụ in giá trị biến hệ thống:</p>
+            <pre><code>echo $PWD</code></pre>
+            <div class="cmd-output">/home/bang</div>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Biến do người dùng tự định nghĩa (User Defined Variables):</strong>
+            <p>Do lập trình viên tự khai báo để phục vụ mục đích lưu trữ dữ liệu cá nhân trong script. Viết bằng chữ thường để phân biệt.</p>
+            <pre><code>n=10
+name=Bang
+score=100</code></pre>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section 6 -->
+      <section id="sec-6" style="margin-top: 2.5rem;">
+        <h2>6. Quy tắc đặt tên biến</h2>
+        <p>Khi tự đặt tên biến trong Shell, bạn phải tuân thủ nghiêm ngặt các quy tắc sau:</p>
+        <ul>
+          <li>Bắt buộc phải bắt đầu bằng một chữ cái (a-z, A-Z) hoặc dấu gạch dưới <code>_</code>.</li>
+          <li>Ký tự tiếp theo có thể là chữ cái, số (0-9) hoặc dấu gạch dưới <code>_</code>.</li>
+          <li>Không được chứa các ký tự đặc biệt (như <code>-</code>, <code>@</code>, <code>#</code>, <code>$</code>...).</li>
+        </ul>
+        <p><strong>Ví dụ đặt tên hợp lệ:</strong> <code>d100</code>, <code>a1_1</code>, <code>_head</code>, <code>_abc_</code>.</p>
+        <p><strong>Ví dụ đặt tên SAI:</strong></p>
+        <ul>
+          <li><code>1name=Bang</code> (Sai vì bắt đầu bằng số).</li>
+          <li><code>my-name=Bang</code> (Sai vì chứa ký tự đặc biệt là dấu gạch ngang).</li>
+        </ul>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="sec-7" style="margin-top: 2.5rem;">
+        <h2>7. Lưu ý cực kỳ quan trọng khi khai báo biến</h2>
+        <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+          ⚠️ <strong>Quy tắc khoảng trắng:</strong> Tuyệt đối không được phép chèn khoảng trắng xung quanh dấu bằng <code>=</code> khi gán giá trị biến.
+        </p>
+        <p>Ví dụ gán SAI:</p>
+        <pre><code>n = 10
+n= 10
+n =10</code></pre>
+        <p>Ví dụ gán ĐÚNG:</p>
+        <pre><code>n=10</code></pre>
+
+        <h3>Phân biệt chữ hoa và chữ thường:</h3>
+        <p>Shell phân biệt chữ hoa và chữ thường (case-sensitive). Hai biến sau là hoàn toàn độc lập và lưu hai giá trị khác nhau:</p>
+        <pre><code>No=10
+no=20</code></pre>
+
+        <h3>Định nghĩa biến rỗng:</h3>
+        <pre><code>name=</code></pre>
+        <p>Hoặc:</p>
+        <pre><code>name=""</code></pre>
+
+        <h3>In giá trị của biến:</h3>
+        <p>Bắt buộc phải sử dụng ký tự đô la <code>$</code> đứng trước tên biến để lấy giá trị của nó ra:</p>
+        <pre><code>echo $name</code></pre>
+        <p>Bạn có thể nhúng trực tiếp biến vào trong chuỗi đặt trong cặp dấu ngoặc kép:</p>
+        <pre><code>echo "My name is $LOGNAME"</code></pre>
+      </section>
+
+      <!-- Section 8 -->
+      <section id="sec-8" style="margin-top: 2.5rem;">
+        <h2>8. Tìm lỗi trong đoạn code mẫu</h2>
+        <p>Xét đoạn mã nguồn Shell chứa lỗi sau:</p>
+        <pre><code>myname=Vivek
+myos = TroubleOS
+myno=5
+
+echo "My name is $myname"
+echo "My os is $myos"
+echo "My number is myno, can you see this number"</code></pre>
+
+        <h3>Các lỗi được phát hiện và cách sửa đổi:</h3>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Lỗi 1 tại dòng 2:</strong> <code>myos = TroubleOS</code>
+            <br>Có khoảng trắng xung quanh dấu <code>=</code> khiến Shell hiểu lầm <code>myos</code> là một tên lệnh và dấu bằng là đối số.
+            <br>Sửa lại: <code>myos=TroubleOS</code>
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Lỗi 2 tại dòng 6:</strong> <code>echo "My number is myno"</code>
+            <br>In ra trực tiếp chữ "myno" thay vì giá trị của biến vì thiếu ký tự <code>$</code> đứng trước.
+            <br>Sửa lại: <code>echo "My number is $myno"</code>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section 9 -->
+      <section id="sec-9" style="margin-top: 2.5rem;">
+        <h2>9. Lệnh echo</h2>
+        <p>Lệnh <code>echo</code> dùng để hiển thị các chuỗi ký tự ra màn hình.</p>
+        <p>Cú pháp:</p>
+        <pre><code>echo [options] "nội_dung"</code></pre>
+
+        <h3>Option <code>-n</code> (Không xuống dòng):</h3>
+        <p>Lệnh echo mặc định sẽ tự động thêm ký tự xuống dòng ở cuối chuỗi. Option <code>-n</code> giúp tắt tính năng này để lệnh echo tiếp theo in nối tiếp trên cùng 1 dòng.</p>
+        <pre><code>echo -n "Hello "
+echo "World"</code></pre>
+        <div class="cmd-output">Hello World</div>
+
+        <h3>Option <code>-e</code> (Kích hoạt ký tự thoát - Escape characters):</h3>
+        <p>Cho phép diễn giải các ký tự điều khiển định dạng văn bản đặc biệt:</p>
+        <div style="overflow-x: auto; margin-top: 0.5rem;">
+          <table style="width: 100%; border-collapse: collapse; border: 1px solid var(--border-color);">
+            <thead>
+              <tr style="background-color: var(--highlight-bg); border-bottom: 1px solid var(--border-color);">
+                <th style="padding: 0.5rem; text-align: left; border-right: 1px solid var(--border-color); width: 20%;">Ký tự</th>
+                <th style="padding: 0.5rem; text-align: left;">Ý nghĩa định dạng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">\n</td>
+                <td style="padding: 0.5rem;">Ngắt dòng và xuống dòng mới (newline).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">\t</td>
+                <td style="padding: 0.5rem;">Chèn một khoảng tab ngang (horizontal tab).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">\a</td>
+                <td style="padding: 0.5rem;">Phát ra một tiếng beep cảnh báo hệ thống (alert).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">\b</td>
+                <td style="padding: 0.5rem;">Xóa ngược lại 1 ký tự phía trước (backspace).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">\\</td>
+                <td style="padding: 0.5rem;">In ra duy nhất một ký tự gạch chéo ngược <code>\</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 10 -->
+      <section id="sec-10" style="margin-top: 2.5rem;">
+        <h2>10. Tính toán bằng <code>expr</code></h2>
+        <p>Mặc định Shell xem mọi giá trị của biến là chuỗi ký tự. Để thực hiện các phép toán số học cơ bản, ta phải sử dụng công cụ hỗ trợ tính toán <code>expr</code> (Expression).</p>
+        <p>Cú pháp cơ bản:</p>
+        <pre><code>expr toán_hạng1 toán_tử toán_hạng2</code></pre>
+        <p>Ví dụ các phép toán:</p>
+        <pre><code>expr 1 + 3
+expr 5 - 2
+expr 10 / 2
+expr 20 % 3
+expr 10 \* 3</code></pre>
+
+        <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+          ⚠️ <strong>Quy tắc sử dụng expr bắt buộc:</strong>
+          <br>1. Phải có khoảng trắng phân cách giữa các toán hạng và toán tử. Ví dụ <code>expr 5 + 3</code> là ĐÚNG, <code>expr 5+3</code> là SAI.
+          <br>2. Phải thêm dấu gạch chéo ngược <code>\</code> đứng trước dấu nhân <code>*</code> (tức là <code>\*</code>) để ngăn Shell diễn giải nó như ký tự đại diện wildcard.
+        </p>
+
+        <h3>Sử dụng expr gán giá trị hoặc in kết quả lồng nhau:</h3>
+        <p>Sử dụng cặp dấu nháy ngược <code>`</code> (backquote - phím nằm dưới phím Esc) để lấy kết quả tính toán của lệnh <code>expr</code> nhúng vào chuỗi:</p>
+        <pre><code>echo "Tong la `expr 6 + 3`"</code></pre>
+        <div class="cmd-output">Tong la 9</div>
+      </section>
+
+      <!-- Section 11 -->
+      <section id="sec-11" style="margin-top: 2.5rem;">
+        <h2>11. Exit Status (Mã trạng thái kết thúc)</h2>
+        <p>Khi bất kỳ câu lệnh nào trong hệ điều hành Linux chạy xong, nó luôn trả về cho hệ thống một mã số nguyên nằm trong khoảng từ 0 đến 255 để biểu diễn trạng thái kết thúc.</p>
+        <ul>
+          <li><strong>Mã bằng 0</strong>: Lệnh thực thi thành công hoàn toàn (Success).</li>
+          <li><strong>Mã khác 0 (1-255)</strong>: Lệnh gặp lỗi trong quá trình thực thi (Failure/Error).</li>
+        </ul>
+        <p>Để xem mã trạng thái kết thúc của câu lệnh vừa chạy gần nhất, sử dụng biến đặc biệt <code>$?</code>:</p>
+        <pre><code>echo $?</code></pre>
+        <p>Ví dụ lệnh thành công:</p>
+        <pre><code>date
+echo $?</code></pre>
+        <div class="cmd-output">0</div>
+        <p>Ví dụ lệnh lỗi (xóa file không tồn tại):</p>
+        <pre><code>rm file_khong_ton_tai
+echo $?</code></pre>
+        <div class="cmd-output">1 (hoặc mã khác 0 tùy lỗi)</div>
+      </section>
+
+      <!-- Section 12 -->
+      <section id="sec-12" style="margin-top: 2.5rem;">
+        <h2>12. Đọc dữ liệu từ bàn phím</h2>
+        <p>Lệnh <code>read</code> dừng chương trình để chờ đợi và nhận dữ liệu nhập vào từ bàn phím của người dùng, sau đó gán dữ liệu đó vào biến.</p>
+        <p>Ví dụ script nhận tên:</p>
+        <pre><code>echo "Your first name please:"
+read fname
+echo "Hello $fname"</code></pre>
+        <p>Nếu người dùng nhập vào chữ <code>Bang</code> và gõ Enter, kết quả in ra sẽ là:</p>
+        <div class="cmd-output">Hello Bang</div>
+      </section>
+
+      <!-- Section 13 -->
+      <section id="sec-13" style="margin-top: 2.5rem;">
+        <h2>13. Thực hiện nhiều lệnh trên một dòng</h2>
+        <p>Bạn có thể viết nhiều câu lệnh nằm liên tiếp nhau trên cùng một dòng lệnh duy nhất bằng cách phân tách chúng bởi dấu chấm phẩy <code>;</code>.</p>
+        <pre><code>echo Hello ; date</code></pre>
+      </section>
+
+      <!-- Section 14 -->
+      <section id="sec-14" style="margin-top: 2.5rem;">
+        <h2>14. Truyền tham số cho Shell Script (Arguments)</h2>
+        <p>Khi gọi chạy một script, ta có thể truyền thêm các đối số trực tiếp từ dòng lệnh:</p>
+        <pre><code>./myscript foo bar</code></pre>
+        <p>Hệ điều hành sẽ tự động gán các đối số này vào các biến số tương ứng dựa trên vị trí của chúng:</p>
+        <ul>
+          <li><code>$0</code>: Tên của tệp tin script đang chạy (ở đây là <code>./myscript</code>).</li>
+          <li><code>$1</code>: Tham số truyền vào ở vị trí đầu tiên (<code>foo</code>).</li>
+          <li><code>$2</code>: Tham số truyền vào ở vị trí thứ hai (<code>bar</code>).</li>
+          <li><code>$3</code>, <code>$4</code>...: Các tham số tiếp theo.</li>
+        </ul>
+
+        <h3>Các biến đối số đặc biệt quan trọng:</h3>
+        <div style="overflow-x: auto; margin-top: 0.5rem;">
+          <table style="width: 100%; border-collapse: collapse; border: 1px solid var(--border-color);">
+            <thead>
+              <tr style="background-color: var(--highlight-bg); border-bottom: 1px solid var(--border-color);">
+                <th style="padding: 0.5rem; text-align: left; border-right: 1px solid var(--border-color); width: 20%;">Biến</th>
+                <th style="padding: 0.5rem; text-align: left;">Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">$#</td>
+                <td style="padding: 0.5rem;">Trả về tổng số lượng tham số được truyền vào script (không tính $0).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">$*</td>
+                <td style="padding: 0.5rem;">Lấy tất cả các tham số truyền vào dưới dạng một chuỗi đơn duy nhất.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-family: monospace;">$@</td>
+                <td style="padding: 0.5rem;">Lấy tất cả các tham số truyền vào, phân tách thành các chuỗi riêng biệt.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 15 -->
+      <section id="sec-15" style="margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+        <h2>15. Hướng dẫn giải chi tiết các bài tập cuối buổi thực hành</h2>
+        <p>Dưới đây là mã nguồn Shell Script hoàn chỉnh và hướng dẫn kiểm thử cho các bài tập thực hành buổi 2:</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+          <!-- Ex 1 -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 1: Thực hiện lại toàn bộ ví dụ trong tài liệu</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Tạo lại và chạy thử các tập tin script ví dụ về gán biến, lệnh echo, toán tử expr, tham số $1, $2.</p>
+          </div>
+
+          <!-- Ex 2 -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 2: Viết script hiển thị thông tin hệ thống và chờ nhấn phím</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Tạo file script đặt tên là <code>sysinfo.sh</code>:</p>
+            <pre><code>#!/bin/bash
+clear
+echo "==== THÔNG TIN HỆ THỐNG ===="
+echo "Ngày giờ hiện tại : $(date)"
+echo "Tên người dùng    : $USER"
+echo "Thư mục hiện hành : $PWD"
+echo "Thư mục cá nhân   : $HOME"
+echo "============================"
+echo -n "Nhấn phím Enter để tiếp tục..."
+read dummy
+exit 0</code></pre>
+          </div>
+
+          <!-- Ex 3 -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 3: Viết script tính toán số học từ 2 tham số truyền vào</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Tạo file script đặt tên là <code>calculator.sh</code>. Có kiểm tra điều kiện đầu vào:</p>
+            <pre><code>#!/bin/bash
+# Kiểm tra xem người dùng có truyền đủ 2 tham số hay không
+if [ $# -lt 2 ]; then
+  echo "Lỗi: Vui lòng truyền vào 2 số làm tham số dòng lệnh!"
+  echo "Ví dụ: ./calculator.sh 15 5"
+  exit 1
+fi
+
+num1=$1
+num2=$2
+
+echo "==== KẾT QUẢ TÍNH TOÁN ===="
+echo "$num1 + $num2 = `expr $num1 + $num2`"
+echo "$num1 - $num2 = `expr $num1 - $num2`"
+echo "$num1 * $num2 = `expr $num1 \* $num2`"
+
+# Kiểm tra phép chia cho số 0
+if [ $num2 -eq 0 ]; then
+  echo "Lỗi: Số chia bằng 0, không thể thực hiện phép chia và chia lấy dư."
+else
+  echo "$num1 / $num2 = `expr $num1 / $num2`"
+  echo "$num1 % $num2 = `expr $num1 % $num2`"
+fi
+echo "==========================="
+exit 0</code></pre>
+          </div>
+
+          <!-- Ex 4 -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 4: Viết script taothumuc và xử lý lỗi</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Tạo file script đặt tên là <code>taothumuc.sh</code>. Sử dụng mã exit status để bắt lỗi:</p>
+            <pre><code>#!/bin/bash
+echo -n "Nhập tên thư mục muốn tạo: "
+read folder_name
+
+# Tạo thư mục và chuyển hướng đầu ra lỗi stderr sang /dev/null để ẩn thông báo lỗi mặc định
+mkdir "$folder_name" 2>/dev/null
+
+# Kiểm tra mã trạng thái kết thúc của lệnh mkdir
+if [ $? -ne 0 ]; then
+  echo "Khong the tao duoc thu muc!!!"
+  exit 1
+else
+  echo "Thư mục '$folder_name' đã được tạo thành công!"
+  exit 0
+fi</code></pre>
+          </div>
+
+          <!-- Ex 5 -->
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 5: Viết script thuchien thực thi câu lệnh truyền vào</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Tạo file script đặt tên là <code>thuchien.sh</code>. Sử dụng biến <code>$*</code>:</p>
+            <pre><code>#!/bin/bash
+if [ $# -lt 1 ]; then
+  echo "Lỗi: Vui lòng cung cấp câu lệnh muốn thực thi!"
+  echo "Ví dụ: ./thuchien.sh mkdir test_dir"
+  exit 1
+fi
+
+echo "Đang thực hiện lệnh: $*"
+echo "-----------------------------------"
+# Thực thi toàn bộ chuỗi đối số như một câu lệnh thực tế
+$*
+exit 0</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
