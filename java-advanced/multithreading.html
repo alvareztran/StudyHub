@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 24: Đa luồng &amp; Concurrency - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 24</div>
+      <h1>CHƯƠNG 24: ĐA LUỒNG (MULTITHREADING)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế xử lý luồng chạy song song trong JVM. Khảo sát mô hình bộ nhớ Thread Stack vs Shared Heap, vòng đời luồng, các giao diện thực thi Thread, Runnable, Callable và phiếu thu hoạch tương lai Future.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html" class="active">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Multithreading Overview -->
+        <div class="sub-section" id="multithreading-overview">
+          <h3>Tổng quan về Multithreading</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p><strong>Multithreading (Đa luồng)</strong> là kỹ thuật cho phép một ứng dụng xử lý song song (concurrency) nhiều tác vụ cùng một lúc bằng cách phân chia công việc cho nhiều phân luồng (Thread) chạy độc lập dưới sự điều phối của CPU.</p>
+          <p>Ứng dụng thực tế: Xử lý nhiều request HTTP đồng thời từ Client trên Web Server (Tomcat, Jetty), download tập tin lớn ở chế độ background, gửi email hàng loạt không gây nghẽn giao diện người dùng.</p>
+          
+          <div class="block-title">Mô hình bộ nhớ Thread trong JVM</div>
+          <p>Khi một luồng mới được tạo ra, JVM cấp phát riêng cho nó một phân vùng nhớ độc lập gọi là **Thread Stack** (để lưu biến cục bộ, tham số và khung gọi hàm LIFO). Tuy nhiên, toàn bộ các Thread này đều **chia sẻ chung phân vùng Heap Memory** và **Method Area** của Process cha:</p>
+          <div class="ascii-art">
+[ JVM Process ] ──────── Shared Heap &amp; Method Area ──────┐
+       │                                                 │
+       ├── [ Thread 1 ] ──> Cấp phát riêng: Thread Stack 1 │
+       ├── [ Thread 2 ] ──> Cấp phát riêng: Thread Stack 2 │
+       └── [ Thread 3 ] ──> Cấp phát riêng: Thread Stack 3 ┘</div>
+
+          <div class="block-title">Vòng đời của Thread (Thread Lifecycle)</div>
+          <p>Một Thread trong Java trải qua các trạng thái tuần tự được quản lý bởi Thread Scheduler của hệ điều hành:</p>
+          <ol>
+            <li style="margin-bottom: 0.25rem;"><strong>NEW:</strong> Khởi tạo đối tượng Thread nhưng chưa chạy <code>start()</code>.</li>
+            <li style="margin-bottom: 0.25rem;"><strong>RUNNABLE:</strong> Luồng sẵn sàng chạy và đợi hệ điều hành cấp CPU Core.</li>
+            <li style="margin-bottom: 0.25rem;"><strong>BLOCKED / WAITING:</strong> Luồng bị tạm dừng do chờ khóa đồng bộ (monitor lock) hoặc đợi tín hiệu notify từ luồng khác.</li>
+            <li style="margin-bottom: 0.25rem;"><strong>TERMINATED:</strong> Phương thức <code>run()</code> kết thúc hoàn toàn vòng đời.</li>
+          </ol>
+        </div>
+
+        <!-- Section 24.1 & 24.2 -->
+        <div class="sub-section" id="sub-24-1-2">
+          <h3>24.1 Class Thread &amp; 24.2 Interface Runnable</h3>
+
+          <div class="block-title">1. Kế thừa Class Thread</div>
+          <p>Tạo luồng bằng cách tạo class con kế thừa lớp <code>java.lang.Thread</code> và ghi đè phương thức <code>run()</code>.</p>
+          <pre><code>class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread đang chạy");
+    }
+}
+// Chạy luồng:
+MyThread t = new MyThread();
+t.start(); // Tạo OS Thread động và đẩy vào Thread Scheduler</code></pre>
+          <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+            ⚠️ <strong>Sai lầm chí mạng:</strong> Gọi trực tiếp <code>thread.run()</code> thay vì <code>thread.start()</code>. Phương thức <code>run()</code> chỉ thực thi như một hàm thông thường trên luồng hiện tại (Main Thread), hoàn toàn không khởi tạo luồng song song mới nào.
+          </p>
+
+          <div class="block-title">2. Implement Interface Runnable (Khuyên dùng)</div>
+          <p>Do Java không hỗ trợ đa kế thừa, nếu Class của bạn đã kế thừa một class cha khác thì không thể kế thừa Thread. Giải pháp tối ưu là implement giao diện đơn hàm **`Runnable`**:</p>
+          <pre><code>// Sử dụng cú pháp Lambda tối giản:
+Thread t = new Thread(() -> {
+    System.out.println("Tác vụ Runnable chạy song song");
+});
+t.start();</code></pre>
+        </div>
+
+        <!-- Section 24.3 & 24.4 -->
+        <div class="sub-section" id="sub-24-3-4">
+          <h3>24.3 Callable &amp; 24.4 Future (Thu thập kết quả trả về)</h3>
+
+          <div class="block-title">1. Interface Callable - Trả kết quả và ném Exception</div>
+          <p>Khác với <code>Runnable</code> chỉ thực thi tác vụ kiểu <code>void</code> và không thể ném checked exception, interface <code>Callable&lt;V&gt;</code> cho phép trả về một kết quả kiểu dữ liệu động và ném lỗi an toàn:</p>
+          <pre><code>@FunctionalInterface
+public interface Callable&lt;V&gt; {
+    V call() throws Exception;
+}</code></pre>
+
+          <div class="block-title">2. Interface Future - Phiếu thu hoạch kết quả tương lai</div>
+          <p>Khi gửi (submit) một <code>Callable</code> vào dịch vụ quản lý luồng <code>ExecutorService</code>, bạn nhận về một đối tượng **`Future`** đóng vai trò như một "phiếu chờ nhận món ăn":</p>
+          <pre><code>import java.util.concurrent.*;
+
+public class FutureDemo {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Callable&lt;Integer&gt; task = () -> {
+            Thread.sleep(2000); // Giả lập tính toán nặng mất 2 giây
+            return 42;
+        };
+
+        // Gửi tác vụ vào luồng background và nhận phiếu Future
+        Future&lt;Integer&gt; future = executor.submit(task);
+        System.out.println("Đang làm việc khác song song...");
+
+        // Lấy kết quả (hàm get() sẽ chặn luồng hiện tại cho tới khi task hoàn thành)
+        Integer result = future.get(); 
+        System.out.println("Kết quả thu được: " + result); // 42
+        
+        executor.shutdown(); // Bắt buộc tắt executor để tránh rò rỉ tài nguyên
+    }
+}</code></pre>
+
+          <div class="block-title">Các phương thức điều khiển chính của Future</div>
+          <ul>
+            <li style="margin-bottom: 0.25rem;"><code>get()</code>: Chặn luồng (blocking) để lấy kết quả.</li>
+            <li style="margin-bottom: 0.25rem;"><code>isDone()</code>: Kiểm tra tác vụ đã xử lý xong hay chưa (không gây block).</li>
+            <li style="margin-bottom: 0.25rem;"><code>cancel(true)</code>: Gửi tín hiệu hủy bỏ thực thi tác vụ.</li>
+          </ul>
+        </div>
+
+        <!-- Thread comparison -->
+        <div class="sub-section" id="compare-section">
+          <h3>Bảng so sánh Thread vs Runnable vs Callable</h3>
+          <table class="java-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Kế thừa Thread</th>
+                <th>Implement Runnable</th>
+                <th>Implement Callable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Đa kế thừa Class</strong></td><td>Không (đã tốn lượt extends)</td><td>Có (tự do extends class khác)</td><td>Có (tự do extends class khác)</td></tr>
+              <tr><td><strong>Kết quả trả về</strong></td><td>Không (trả về void)</td><td>Không (trả về void)</td><td>Có (trả về kiểu Generic V)</td></tr>
+              <tr><td><strong>Ném Exception</strong></td><td>Không</td><td>Không</td><td>Có (throws Checked Exception)</td></tr>
+              <tr><td><strong>Cách thức thực thi</strong></td><td><code>start()</code> trực tiếp</td><td>Đóng gói vào <code>new Thread(runnable)</code></td><td>Gửi vào <code>ExecutorService.submit()</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Common Bugs -->
+        <div class="sub-section" id="errors-section3">
+          <h3>Các lỗi nghiệp vụ nguy hiểm khi lập trình đa luồng</h3>
+          <ul>
+            <li style="margin-bottom: 0.75rem;">
+              <strong>Không tắt ExecutorService:</strong> Khởi tạo các thread pool (ví dụ: <code>Executors.newFixedThreadPool()</code>) nhưng quên gọi <code>shutdown()</code> khi dừng ứng dụng. Các luồng nền vẫn tiếp tục duy trì hoạt động làm rò rỉ bộ nhớ nghiêm trọng (Memory Leak) khiến hệ điều hành quá tải.
+            </li>
+            <li style="margin-bottom: 0.75rem;">
+              <strong>Tạo luồng mới vô tội vạ:</strong> Viết vòng lặp tạo mới thực thể Thread thủ công (<code>new Thread().start()</code>) hàng nghìn lần làm sập RAM do chi phí cấp phát bộ nhớ Stack cho mỗi Thread quá lớn. Giải pháp luôn là sử dụng **Thread Pool** thông qua `ExecutorService`.
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

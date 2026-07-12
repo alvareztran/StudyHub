@@ -321,12 +321,18 @@ header.landing-header {
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
   margin-bottom: 5rem;
 }
 
-@media (max-width: 868px) {
+@media (max-width: 968px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
   .course-grid {
     grid-template-columns: 1fr;
   }
@@ -335,8 +341,8 @@ header.landing-header {
 .course-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 2rem;
+  border-radius: 12px;
+  padding: 1.25rem;
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
@@ -379,20 +385,21 @@ header.landing-header {
 
 .course-title {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .course-desc {
-  font-size: 0.925rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   flex-grow: 1;
+  line-height: 1.5;
 }
 
 .course-highlights {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   list-style: none;
 }
 

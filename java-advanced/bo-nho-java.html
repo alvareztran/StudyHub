@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 14: Bộ nhớ trong Java - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 14</div>
+      <h1>CHƯƠNG 14: BỘ NHỚ TRONG JAVA</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ cấu quản lý vùng nhớ JVM. Tìm hiểu chuyên sâu bộ nhớ Stack theo luồng, ô nhớ Heap chứa đối tượng, String Pool tối ưu, Method Area cấp Class, vùng nhớ Metaspace mở rộng và các lỗi rò rỉ bộ nhớ.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html" class="active">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 14.1 -->
+        <div class="sub-section" id="sub-14-1">
+          <h3>14.1 Stack Memory (Vùng nhớ Stack)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Stack Memory (Bộ nhớ ngăn xếp) là vùng nhớ trong JVM chịu trách nhiệm lưu trữ thông tin tạm thời phục vụ lời gọi hàm và luồng thực thi của chương trình. Bộ nhớ Stack bao gồm:</p>
+          <ul>
+            <li>Các biến cục bộ (Local Variables) thuộc kiểu nguyên thủy.</li>
+            <li>Các biến tham chiếu (Reference Variables) chứa địa chỉ đối tượng.</li>
+            <li>Thông tin tham số truyền vào của phương thức.</li>
+          </ul>
+          <p><strong>Cơ chế phân tách luồng:</strong> Mỗi Thread (luồng chạy) trong Java đều sở hữu riêng biệt một vùng nhớ Stack độc lập hoàn toàn, không chia sẻ cho các luồng khác.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong (LIFO - Last In First Out)</div>
+          <p>Stack hoạt động chặt chẽ theo cơ chế vào sau ra trước. Mỗi khi một phương thức được gọi, JVM lập tức tạo mới một Stack Frame đẩy (push) lên đỉnh của Stack. Khi phương thức chạy xong, Stack Frame đó bị hủy (pop) lập tức.</p>
+          <p>Hãy phân tích ví dụ gọi hàm lồng nhau:</p>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        methodA();
+    }
+    public static void methodA() {
+        methodB();
+    }
+    public static void methodB() {
+        int number = 10;
+    }
+}</code></pre>
+          <p>Quá trình nạp xếp chồng Stack Frame tương ứng trong JVM:</p>
+          <div class="ascii-art">
+Khi methodB() đang chạy:      Khi methodB() chạy xong:
+┌─────────────────────────┐    ┌─────────────────────────┐
+│ Stack Frame: methodB()  │    │                         │ (Đã pop giải phóng)
+├─────────────────────────┤    ├─────────────────────────┤
+│ Stack Frame: methodA()  │    │ Stack Frame: methodA()  │
+├─────────────────────────┤    ├─────────────────────────┤
+│ Stack Frame: main()     │    │ Stack Frame: main()     │
+└─────────────────────────┘    └─────────────────────────┘</div>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Tất cả biến khai báo cục bộ bên trong hàm đều được lưu trữ trực tiếp trên Stack:</p>
+          <pre><code>int age = 20; // Giá trị 20 nằm trực tiếp tại Stack Frame</code></pre>
+          <p>Biến đối tượng: Biến tham chiếu nằm ở Stack nhưng giá trị của nó chỉ là địa chỉ pointer trỏ sang Heap:</p>
+          <pre><code>User user = new User(); // Biến "user" nằm ở Stack, đối tượng thực tế "User" nằm ở Heap</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Trong kiến trúc web Spring Boot, mỗi Request gửi tới API được xử lý bởi một Thread độc lập riêng biệt từ Thread Pool. Nhờ mỗi Thread có Stack riêng, các biến cục bộ khai báo trong các phương thức của Service hoàn toàn cô lập, an toàn đa luồng (Thread-safe) mà không cần khóa đồng bộ.</p>
+        </div>
+
+        <!-- Section 14.2 -->
+        <div class="sub-section" id="sub-14-2">
+          <h3>14.2 Heap Memory (Vùng nhớ Heap)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Heap Memory là vùng nhớ lớn nhất trong JVM, được chia sẻ dùng chung cho toàn bộ tất cả mọi Threads trong chương trình. Nó được sử dụng để chứa:</p>
+          <ul>
+            <li>Toàn bộ các thực thể đối tượng (Objects) được khởi tạo bằng từ khóa <code>new</code>.</li>
+            <li>Các mảng dữ liệu (Arrays).</li>
+            <li>Các Collection Framework (ArrayList, HashMap...).</li>
+            <li>Các String Objects tạo qua new.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Ví dụ: <code>User user = new User();</code></p>
+          <div class="ascii-art">
+Vùng nhớ STACK                    Vùng nhớ HEAP
+┌───────────────┐                 ┌───────────────────────────────┐
+│ user: 0x5501  ├────────────────>│ Address 0x5501: User Object   │
+└───────────────┘                 │  - name = null, age = 0       │
+                                  └───────────────────────────────┘</div>
+          <p>Khi ta ngắt liên kết tham chiếu bằng cách gán: <code>user = null;</code>, đối tượng tại địa chỉ <code>0x5501</code> không còn bất kỳ biến tham chiếu nào quản lý nữa. Nó trở thành **Garbage Object (Đối tượng rác)** và sẽ bị bộ dọn rác Garbage Collector quét qua thu hồi bộ nhớ vào chu kỳ kế tiếp.</p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>User user1 = new User();
+User user2 = user1; // u1 và u2 cùng trỏ về 1 đối tượng ở Heap
+
+user1 = null; // Ngắt u1, đối tượng vẫn tồn tại trên Heap vì còn u2 trỏ tới</code></pre>
+        </div>
+
+        <!-- Section 14.3 -->
+        <div class="sub-section" id="sub-14-3">
+          <h3>14.3 String Pool (Hồ chứa chuỗi)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>String Pool là một phân vùng bộ nhớ đặc biệt nằm trong Heap dùng để lưu trữ các chuỗi String Literal để tái sử dụng tối ưu RAM.</p>
+          <p>Cơ chế phân bổ bộ nhớ khi khai báo String Literal vs New String:</p>
+          <div class="ascii-art">
+Khai báo s1 = "Java", s2 = "Java":    Khai báo s3 = new String("Java"):
+┌──────────────┐                       ┌──────────────┐
+│ s1: 0x101    ├──┐                    │ s3: 0x909    ├─> [Heap Object 0x909]
+├──────────────┤  │                    └──────────────┘         │
+│ s2: 0x101    ├──┼─> [String Pool]                             ▼
+└──────────────┘  └──> "Java" (0x101)                      "Java" (String Pool)</div>
+          <p>Phép so sánh địa chỉ:</p>
+          <ul>
+            <li><code>s1 == s2</code> trả về <code>true</code> (cùng tham chiếu String Pool).</li>
+            <li><code>s1 == s3</code> trả về <code>false</code> (s3 trỏ qua đối tượng Heap trung gian).</li>
+          </ul>
+        </div>
+
+        <!-- Section 14.4 -->
+        <div class="sub-section" id="sub-14-4">
+          <h3>14.4 Method Area (Vùng nhớ Phương thức)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Method Area là vùng nhớ dùng để lưu giữ thông tin cấp Class (Class-level data) phục vụ cấu trúc hoạt động chung của chương trình. Vùng nhớ này được dùng chung cho tất cả các luồng (Threads), bao gồm:</p>
+          <ul>
+            <li>Cấu trúc thông tin Metadata của lớp (Class Metadata).</li>
+            <li>Mã Bytecode thô của tất cả phương thức.</li>
+            <li>Các biến tĩnh (Static Variables) dùng chung của Class.</li>
+            <li>Runtime Constant Pool chứa các hằng số.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Vì biến static được lưu tại Method Area, chúng có vòng đời tồn tại độc lập với sự sống của đối tượng. Ta có thể gọi trực tiếp thông qua tên lớp mà không cần sử dụng từ khóa <code>new</code> để tạo đối tượng.</p>
+          <pre><code>class Counter {
+    static int count = 0;
+    Counter() { count++; }
+}
+
+// Thực thi:
+new Counter();
+new Counter();
+System.out.println(Counter.count); // Kết quả in ra: 2 (Dùng chung ô nhớ static duy nhất)</code></pre>
+        </div>
+
+        <!-- Section 14.5 -->
+        <div class="sub-section" id="sub-14-5">
+          <h3>14.5 Metaspace</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Metaspace là vùng nhớ chứa Class Metadata được Java giới thiệu từ phiên bản **Java 8 trở lên** nhằm thay thế hoàn toàn cho phân vùng **Permanent Generation (PermGen)** cũ.</p>
+          <p>Bảng so sánh sự thay đổi kiến trúc giữa PermGen và Metaspace:</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>PermGen (Java 7 trở xuống)</th>
+                <th>Metaspace (Java 8 trở lên)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Vị trí bộ nhớ vật lý</strong></td><td>Nằm bên trong phân vùng Heap JVM cấu hình cứng.</td><td>Nằm trực tiếp trên **Bộ nhớ ngoài Native Memory** của hệ điều hành.</td></tr>
+              <tr><td><strong>Giới hạn kích thước tối đa</strong></td><td>Cố định (Fixed). Dễ dẫn đến lỗi tràn bộ nhớ `OutOfMemoryError: PermGen space`.</td><td>Tự động co giãn theo dung lượng RAM trống của hệ điều hành.</td></tr>
+              <tr><td><strong>Cách cấu hình tham số</strong></td><td><code>-XX:MaxPermSize=128m</code></td><td><code>-XX:MaxMetaspaceSize=256m</code></td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Các ứng dụng Spring Boot lớn sử dụng rất nhiều framework như Hibernate, Lombok, Jackson để tự động sinh ra các class động (Dynamic Proxy Class) tại thời điểm Runtime. Metaspace giúp hệ thống tự động co giãn ô nhớ tải các class động này một cách an toàn mà không lo bị tràn bộ nhớ cứng như PermGen trước đây.</p>
+        </div>
+
+        <!-- Section Summary -->
+        <div class="sub-section" id="summary-section">
+          <h3>Tổng quan phân bổ bộ nhớ trong JVM</h3>
+          <div class="ascii-art">
+                              BỘ NHỚ JVM
+ ┌─────────────────────────────────────────────────────────────┐
+ │  [ Vùng nhớ riêng của từng Thread (Thread-Private) ]         │
+ │  ┌───────────────────────────────────────────────────────┐  │
+ │  │ Stack Memory (Lưu Stack Frames, Local vars, Pointer)  │  │
+ │  └───────────────────────────────────────────────────────┘  │
+ ├─────────────────────────────────────────────────────────────┤
+ │  [ Vùng nhớ dùng chung cho tất cả Threads (Thread-Shared) ]  │
+ │  ┌───────────────────────────────────────────────────────┐  │
+ │  │ Heap Memory (Lưu đối tượng Object, Array, Collection)  │  │
+ │  ├───────────────────────────────────────────────────────┤  │
+ │  │ String Pool (Lưu trữ hằng chuỗi tái sử dụng)           │  │
+ │  ├───────────────────────────────────────────────────────┤  │
+ │  │ Method Area (Lưu Class Metadata, static variables)     │  │
+ │  └───────────────────────────────────────────────────────┘  │
+ └─────────────────────────────────────────────────────────────┘
+  *Lưu ý: Metaspace lưu Metadata của Class nằm ở Native Memory của OS.</div>
+        </div>
+
+        <!-- Section Memory Errors -->
+        <div class="sub-section" id="memory-errors">
+          <h3>Các lỗi bộ nhớ thường gặp &amp; Phỏng vấn tuyển dụng</h3>
+
+          <div class="block-title">1. Lỗi tràn bộ nhớ Stack (java.lang.StackOverflowError)</div>
+          <p>Xảy ra khi vùng nhớ Stack bị đầy do số lượng Stack Frame vượt quá giới hạn thiết lập.</p>
+          <ul>
+            <li><strong>Nguyên nhân phổ biến:</strong> Lập trình thuật toán đệ quy vô hạn (không có điểm dừng) hoặc các phương thức gọi lặp lồng nhau quá sâu.</li>
+            <li><strong>Mã ví dụ lỗi:</strong>
+              <pre><code>public void test() {
+    test(); // Đệ quy liên tục làm sập Stack lập tức
+}</code></pre>
+            </li>
+          </ul>
+
+          <div class="block-title">2. Lỗi tràn bộ nhớ Heap (java.lang.OutOfMemoryError: Java heap space)</div>
+          <p>Xảy ra khi vùng nhớ Heap không còn đủ dung lượng trống để cấp phát bộ nhớ cho đối tượng mới và bộ dọn rác GC đã cố gắng hết sức nhưng không thể giải phóng thêm.</p>
+          <ul>
+            <li><strong>Nguyên nhân phổ biến:</strong> Tạo quá nhiều đối tượng có kích thước lớn, hoặc xảy ra lỗi **Rò rỉ bộ nhớ (Memory Leak)** do lưu giữ tham chiếu đối tượng rác trong các danh sách tĩnh static khiến GC chịu thua không thể xóa.</li>
+            <li><strong>Mã ví dụ lỗi:</strong>
+              <pre><code>List&lt;byte[]&gt; list = new ArrayList&lt;&gt;();
+while(true) {
+    list.add(new byte[1024 * 1024]); // Nạp liên tục mảng 1MB vào Heap cho đến sập app
+}</code></pre>
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

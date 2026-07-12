@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 20: Lớp Optional - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 20</div>
+      <h1>CHƯƠNG 20: LỚP OPTIONAL</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế ngăn ngừa NullPointerException (NPE) trong Java 8. Tìm hiểu cách thiết lập an toàn qua of(), ofNullable(), trích xuất dữ liệu bằng orElse() vs orElseGet() và các quy chuẩn sử dụng tối ưu trong dự án Spring Boot.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html" class="active">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Optional Overview -->
+        <div class="sub-section" id="optional-overview">
+          <h3>Tổng quan về lớp Optional</h3>
+
+          <div class="block-title">Khái niệm và sự ra đời</div>
+          <p>Lớp <code>java.util.Optional&lt;T&gt;</code> được giới thiệu từ **Java 8** là một lớp wrapper đối tượng chứa giá trị có thể tồn tại hoặc rỗng (null). Mục đích tối thượng của Optional là giải quyết tận gốc lỗi sập ứng dụng kinh điển **`NullPointerException` (NPE)**.</p>
+          <p>Sự cải tiến so với kiểm tra null truyền thống:</p>
+          <pre><code>// Trước Java 8 (Dễ bị quên kiểm tra null dẫn đến NPE):
+String city = null;
+if (user != null &amp;&amp; user.getAddress() != null) {
+    city = user.getAddress().getCity();
+}
+
+// Từ Java 8 (Viết mạch lạc an toàn tuyệt đối):
+String city = Optional.ofNullable(user)
+                      .map(User::getAddress)
+                      .map(Address::getCity)
+                      .orElse("Default City");</code></pre>
+
+          <div class="block-title">Cơ chế đóng gói bên trong</div>
+          <div class="ascii-art">
+             [ Vỏ bọc Optional<T> ]
+                       │
+       ┌───────────────┴───────────────┐
+       ▼ (Có dữ liệu)                  ▼ (Rỗng)
+Optional[ value = Object ]     Optional[ value = null ] (Optional.empty())</div>
+        </div>
+
+        <!-- Section 20.1 & 20.2 -->
+        <div class="sub-section" id="sub-20-1-2">
+          <h3>20.1 Optional.of() &amp; 20.2 Optional.ofNullable()</h3>
+
+          <div class="block-title">1. Optional.of(value) - Khởi tạo chắc chắn không Null</div>
+          <p>Dùng để tạo một đối tượng Optional bao bọc lấy giá trị truyền vào khi bạn đảm bảo giá trị đó **chắc chắn không bao giờ rỗng**.</p>
+          <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+            ⚠️ <strong>Cảnh báo:</strong> Nếu bạn truyền giá trị <code>null</code> vào phương thức <code>Optional.of(null)</code>, JVM sẽ lập tức ném ra lỗi <code>NullPointerException</code> ngay tại dòng khởi tạo.
+          </p>
+          <pre><code>Optional&lt;String&gt; appName = Optional.of("My Application"); // OK
+Optional&lt;String&gt; appNameNull = Optional.of(null); // Crash app lập tức!</code></pre>
+
+          <div class="block-title">2. Optional.ofNullable(value) - Khởi tạo cho phép Null</div>
+          <p>Dùng để bao bọc một giá trị có thể có dữ liệu hoặc có thể bị rỗng. Nếu giá trị truyền vào là <code>null</code>, phương thức tự động trả về một đối tượng **`Optional.empty()`** thay vì ném lỗi.</p>
+          <pre><code>String name = null;
+Optional&lt;String&gt; opt = Optional.ofNullable(name); // Trả về Optional.empty() an toàn</code></pre>
+        </div>
+
+        <!-- Section 20.3 & 20.4 -->
+        <div class="sub-section" id="sub-20-3-4">
+          <h3>20.3 orElse() vs orElseGet() &amp; 20.4 ifPresent()</h3>
+
+          <div class="block-title">1. orElse(defaultValue) vs orElseGet(Supplier)</div>
+          <p>Cả hai đều dùng để định nghĩa giá trị mặc định thay thế nếu Optional ở trạng thái rỗng. Tuy nhiên, có sự khác biệt rất lớn về mặt hiệu năng chạy chương trình:</p>
+          <ul>
+            <li><strong><code>orElse(defaultValue)</code>:</strong> Giá trị mặc định truyền vào **luôn luôn được tính toán/khởi tạo** bất kể Optional có chứa dữ liệu thực hay không.</li>
+            <li><strong><code>orElseGet(Supplier)</code>:</strong> Sử dụng lazy-evaluation, giá trị mặc định **chỉ được khởi tạo khi và chỉ khi Optional thực sự rỗng** (tiết kiệm tài nguyên RAM/CPU).</li>
+          </ul>
+          <pre><code>// orElse (Gây lãng phí hiệu năng vì databaseQuery() luôn chạy):
+String name = Optional.of("Bang").orElse(databaseQuery()); 
+
+// orElseGet (Tối ưu: databaseQuery() chỉ chạy khi name rỗng):
+String name = Optional.of("Bang").orElseGet(() -> databaseQuery());</code></pre>
+
+          <div class="block-title">2. ifPresent(Consumer) - Thực thi hành động khi có dữ liệu</div>
+          <p>Nếu Optional chứa dữ liệu, thực thi khối code Lambda bên trong. Nếu rỗng, bỏ qua an toàn không ném lỗi.</p>
+          <pre><code>Optional&lt;String&gt; opt = Optional.of("Java");
+opt.ifPresent(System.out::println); // In ra "Java"</code></pre>
+        </div>
+
+        <!-- Practical Spring Boot -->
+        <div class="sub-section" id="practical-springboot">
+          <h3>Quy chuẩn sử dụng Optional trong Spring Boot (JPA)</h3>
+          <p>Trong các dự án Backend hiện đại, Optional là chuẩn mực trả về của tầng Database Access (Spring Data JPA) để ép lập trình viên phải xử lý trường hợp không tìm thấy bản ghi:</p>
+          <pre><code>// Kiểu viết cũ (Dễ sót kiểm tra null):
+User user = userRepository.findById(id);
+if (user == null) {
+    throw new ResourceNotFoundException("User not found");
+}
+
+// Kiểu viết chuẩn hóa hiện đại kết hợp Lambda:
+User user = userRepository.findById(id)
+                          .orElseThrow(() -> new ResourceNotFoundException("User not found"));</code></pre>
+
+          <div class="block-title">Quy tắc vàng khi đi làm (Best Practices)</div>
+          <ul>
+            <li><strong>KHÔNG dùng Optional làm tham số truyền vào của phương thức:</strong> <code>public void save(Optional&lt;User&gt; user)</code> (Bị coi là bad practice). Hãy truyền đối tượng thô.</li>
+            <li><strong>KHÔNG dùng Optional làm thuộc tính (field) của Class/Entity:</strong> Gây khó khăn cho quá trình Serialization dữ liệu. Chỉ nên dùng làm kiểu dữ liệu trả về của phương thức.</li>
+            <li><strong>TRÁNH gọi hàm <code>get()</code> trực tiếp:</strong> Gọi <code>optional.get()</code> mà không kiểm tra <code>isPresent()</code> trước đó sẽ phát sinh lỗi <code>NoSuchElementException</code> nếu Optional rỗng. Hãy luôn ưu tiên dùng <code>orElse</code>, <code>orElseGet</code> hoặc <code>orElseThrow</code>.</li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

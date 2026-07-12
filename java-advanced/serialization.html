@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 21: Serialization trong Java - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 21</div>
+      <h1>CHƯƠNG 21: SERIALIZATION</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế tuần tự hóa đối tượng. Khảo sát luồng nhị phân ObjectOutputStream / ObjectInputStream, vai trò marker interface Serializable, mã phiên bản serialVersionUID và bộ lọc từ khóa transient.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html" class="active">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Serialization Overview -->
+        <div class="sub-section" id="serialization-overview">
+          <h3>Tổng quan về Serialization</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p><strong>Serialization (Tuần tự hóa)</strong> là cơ chế trong Java cho phép chuyển đổi trạng thái của một đối tượng (Object) thành một chuỗi byte nhị phân (Byte Stream). Chuỗi byte này có thể lưu trữ xuống ổ đĩa, lưu vào bộ đệm Cache hoặc truyền gửi qua mạng.</p>
+          <p><strong>Deserialization (Giải tuần tự hóa)</strong> là quá trình ngược lại: JVM tiếp nhận chuỗi byte để tái tạo ngược trở lại trạng thái đối tượng gốc trong bộ nhớ Heap.</p>
+          
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Quy trình vận chuyển trạng thái ô nhớ qua dòng dữ liệu nhị phân:</p>
+          <div class="ascii-art">
+[ Java Object (Heap) ] ──> ObjectOutputStream ──> Byte Stream ──> [ Lưu trữ file/mạng ]
+                                                                       │ (Dịch chuyển)
+[ Java Object (Heap) ] ◄── ObjectInputStream  ◄── Byte Stream ◄── [ Đọc nhị phân ]</div>
+
+          <div class="block-title">Ví dụ ứng dụng trong dự án thực tế</div>
+          <ul>
+            <li><strong>Lưu trữ HTTP Session:</strong> Khi thực hiện cấu hình Session phân tán bằng Redis (Spring Session + Redis), dữ liệu người dùng đăng nhập phải được serialize trước khi lưu trữ vào DB Redis.</li>
+            <li><strong>Truyền nhận tin nhắn (Message Broker):</strong> Gửi nhận DTO đối tượng qua Kafka, RabbitMQ, ActiveMQ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 21.1 -->
+        <div class="sub-section" id="sub-21-1">
+          <h3>21.1 Interface Serializable</h3>
+
+          <div class="block-title">Khái niệm Marker Interface</div>
+          <p>Interface <code>java.io.Serializable</code> là một **Marker Interface** (giao diện đánh dấu) đặc biệt - nó hoàn toàn **không chứa bất kỳ phương thức trừu tượng nào**. Nó chỉ đóng vai trò cấp quyền, thông báo cho JVM biết rằng Class này được phép tuần tự hóa.</p>
+          <p>Nếu bạn cố tình gọi ghi file nhị phân một đối tượng không implement Serializable, JVM lập tức ném lỗi sập luồng: **`java.io.NotSerializableException`**.</p>
+
+          <div class="block-title">Mã số định danh phiên bản: serialVersionUID</div>
+          <p>Trong mỗi class implement <code>Serializable</code>, ta cần khai báo hằng số:</p>
+          <pre><code>private static final long serialVersionUID = 1L;</code></pre>
+          <p>JVM sử dụng mã số này để xác thực tính đồng nhất phiên bản giữa lớp gửi (lúc serialize) và lớp nhận (lúc deserialize). Nếu mã này khác nhau (do thay đổi thuộc tính class mà không quản lý phiên bản), JVM ném lỗi <code>InvalidClassException</code>.</p>
+
+          <div class="block-title">Ví dụ mã nguồn ghi/đọc File nhị phân</div>
+          <pre><code>import java.io.*;
+
+class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    public User(String name) { this.name = name; }
+    @Override
+    public String toString() { return "User: " + name; }
+}
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // 1. Serialization (Ghi đối tượng xuống file)
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("user.dat"))) {
+            out.writeObject(new User("Bang"));
+        }
+
+        // 2. Deserialization (Đọc đối tượng từ file)
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("user.dat"))) {
+            User user = (User) in.readObject();
+            System.out.println(user); // Kết quả: User: Bang
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 21.2 -->
+        <div class="sub-section" id="sub-21-2">
+          <h3>21.2 Từ khóa transient (Loại trừ thuộc tính nhạy cảm)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Từ khóa <strong>`transient`</strong> dùng để đánh dấu một biến thuộc tính sẽ **hoàn toàn bị bỏ qua (không ghi dữ liệu)** trong quá trình tuần tự hóa.</p>
+          <p>Ứng dụng thực tế: Ngăn chặn rò rỉ dữ liệu nhạy cảm hoặc bỏ qua các đối tượng không thể tuần tự hóa vật lý (như Database Connection, Socket, Thread, I/O Streams):</p>
+          <pre><code>public class UserSession implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String username; // Được serialize
+    private transient String password; // Bị BỎ QUA không serialize
+    private transient Connection dbConnection; // Bị BỎ QUA tránh lỗi crash app
+}</code></pre>
+
+          <div class="block-title">Giá trị nhận lại sau khi giải tuần tự hóa (Deserialization)</div>
+          <p>Khi giải tuần tự hóa ngược lại, các thuộc tính đánh dấu <code>transient</code> sẽ tự động nhận giá trị mặc định của kiểu dữ liệu tương ứng trong bộ nhớ:</p>
+          <ul>
+            <li>Kiểu đối tượng (String, Object): Nhận giá trị mặc định là **`null`**.</li>
+            <li>Kiểu số nguyên thủy (int, long): Nhận giá trị mặc định là **`0`**.</li>
+            <li>Kiểu logic nguyên thủy (boolean): Nhận giá trị mặc định là **`false`**.</li>
+          </ul>
+        </div>
+
+        <!-- Common Bugs -->
+        <div class="sub-section" id="errors-section">
+          <h3>Các lỗi bảo mật &amp; Nghiệp vụ thường gặp khi đi làm</h3>
+          <ul>
+            <li style="margin-bottom: 0.75rem;">
+              <strong>Không serialize các thuộc tính tham chiếu con:</strong> Nếu Class cha implement <code>Serializable</code> chứa một đối tượng Class con bên trong, thì bắt buộc Class con đó cũng phải implement <code>Serializable</code>. Nếu không, quá trình ghi file sẽ ném ra lỗi <code>NotSerializableException</code>.
+            </li>
+            <li style="margin-bottom: 0.75rem;">
+              <strong>Rò rỉ thông tin mật khẩu bảo mật:</strong> Quên không khai báo <code>transient</code> cho các thuộc tính nhạy cảm như password, token, pin code dẫn đến việc các thông tin này ghi thô ở dạng nhị phân xuống ổ đĩa, dễ bị hacker khai thác.
+            </li>
+            <li style="margin-bottom: 0.75rem;">
+              <strong>deploy phiên bản lỗi:</strong> Sửa đổi cấu trúc Class (thêm bớt field) mà không cấu hình cố định <code>serialVersionUID</code>, làm cho dữ liệu cũ đã lưu ở DB Cache/Redis không thể đọc được nữa khi server khởi động phiên bản code mới.
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

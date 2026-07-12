@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 1: Giới thiệu Java - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 1</div>
+      <h1>CHƯƠNG 1: GIỚI THIỆU JAVA</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cẩm nang nhập môn Java. Tìm hiểu bản chất ngôn ngữ Java, hệ sinh thái JDK/JRE/JVM, cấu trúc Bytecode, cơ chế biên dịch &amp; thông dịch và cấu trúc chương trình đầu tiên.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html" class="active">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1.1 -->
+        <div class="sub-section" id="sub-1-1">
+          <h3>1.1 Java là gì</h3>
+          
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Java là một ngôn ngữ lập trình hướng đối tượng (Object-Oriented Programming - OOP) được phát triển bởi Sun Microsystems vào năm 1995 và hiện nay thuộc sở hữu của Oracle.</p>
+          <p>Java được thiết kế theo triết lý:</p>
+          <blockquote>
+            <strong>"Write Once, Run Anywhere" (WORA)</strong><br>
+            Viết một lần, chạy ở mọi nơi.
+          </blockquote>
+          <p>Điều này có nghĩa là chương trình Java sau khi biên dịch có thể chạy trên mọi hệ điều hành như Windows, Linux hoặc macOS mà không cần biên dịch lại.</p>
+          <p>Java được sử dụng rộng rãi trong:</p>
+          <ul>
+            <li>Phát triển ứng dụng doanh nghiệp (Enterprise Application)</li>
+            <li>Backend Web với Spring Boot</li>
+            <li>Ứng dụng Android</li>
+            <li>Hệ thống ngân hàng, tài chính</li>
+            <li>Hệ thống thương mại điện tử</li>
+            <li>Big Data và Distributed System</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khác với C/C++, Java không biên dịch trực tiếp thành mã máy của hệ điều hành.</p>
+          <div class="ascii-art">
+Java Source Code (.java)
+        ↓
+Compiler (javac)
+        ↓
+Bytecode (.class)
+        ↓
+JVM (Máy ảo Java)
+        ↓
+Machine Code của hệ điều hành (Windows/Linux/Mac)</div>
+          <p>Nhờ JVM mà cùng một file <code>.class</code> có thể chạy trên nhiều hệ điều hành khác nhau.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Tên file Java phải trùng với tên của class public. Ví dụ:</p>
+          <pre><code>public class Main {
+    // Nội dung class
+}</code></pre>
+          <p>File chứa đoạn code này bắt buộc phải được lưu với tên trùng khớp hoàn toàn:</p>
+          <pre><code>Main.java</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello Java");
+    }
+}</code></pre>
+          <p>Kết quả đầu ra:</p>
+          <pre><code>Hello Java</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Trong thực tế phát triển dự án Spring Boot, tệp khởi chạy ứng dụng được cấu hình như sau:</p>
+          <pre><code>@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}</code></pre>
+          <p>Đây chính là điểm bắt đầu (entry point) của toàn bộ ứng dụng doanh nghiệp Spring Boot.</p>
+        </div>
+
+        <!-- Section 1.2 -->
+        <div class="sub-section" id="sub-1-2">
+          <h3>1.2 JDK, JRE, JVM</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <h4>1. JVM (Java Virtual Machine)</h4>
+          <p>JVM là máy ảo Java chịu trách nhiệm thực thi bytecode. Nhiệm vụ chính:</p>
+          <ul>
+            <li>Chạy file <code>.class</code></li>
+            <li>Quản lý và cấp phát bộ nhớ</li>
+            <li>Dọn rác bộ nhớ tự động (Garbage Collection)</li>
+            <li>Chuyển đổi Bytecode thành mã máy gốc cụ thể của hệ điều hành</li>
+          </ul>
+
+          <h4>2. JRE (Java Runtime Environment)</h4>
+          <p>JRE cung cấp môi trường cần thiết để chạy một ứng dụng Java. Bao gồm:</p>
+          <ul>
+            <li>JVM (Máy ảo Java)</li>
+            <li>Thư viện Java chuẩn hóa (Core libraries)</li>
+          </ul>
+          <p><em>Mục đích:</em> Chỉ dùng để chạy chương trình Java có sẵn, không chứa trình biên dịch để lập trình viên phát triển mã nguồn.</p>
+
+          <h4>3. JDK (Java Development Kit)</h4>
+          <p>JDK là bộ công cụ hoàn chỉnh để lập trình và phát triển phần mềm Java. Bao gồm:</p>
+          <ul>
+            <li>JRE</li>
+            <li>Trình biên dịch <code>javac</code></li>
+            <li>Công cụ đóng gói <code>jar</code>, Debugger, Javadoc...</li>
+          </ul>
+          <p><em>Mục đích:</em> Viết, biên dịch và chạy chương trình Java trong quá trình phát triển dự án.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Mối quan hệ bao đóng giữa các thành phần:</p>
+          <div class="ascii-art">
+JDK (Development Tools: javac, jar...)
+ └── JRE (Core Libraries)
+      └── JVM (Virtual Machine Execution)</div>
+          <p>Công thức biểu diễn:</p>
+          <pre><code>JDK = JRE + Development Tools
+JRE = JVM + Libraries</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Kiểm tra sự tồn tại và phiên bản của môi trường JRE/JVM cài đặt trên hệ thống:</p>
+          <pre><code>java -version</code></pre>
+          <p>Kiểm tra trình biên dịch JDK cài đặt trên hệ thống máy phát triển:</p>
+          <pre><code>javac -version</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <p>Để biên dịch file mã nguồn bằng JDK:</p>
+          <pre><code>javac Main.java</code></pre>
+          <p>Sau khi lệnh biên dịch hoàn thành, hệ thống sinh ra file Bytecode:</p>
+          <pre><code>Main.class</code></pre>
+          <p>Để thực thi file bytecode vừa tạo bằng JRE:</p>
+          <pre><code>java Main</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Khi chạy và phát triển dự án Spring Boot thông qua Maven:</p>
+          <pre><code>mvn spring-boot:run</code></pre>
+          <p>Hoặc khi đóng gói và triển khai ứng dụng trên máy chủ server thực tế:</p>
+          <pre><code>java -jar app.jar</code></pre>
+          <p>Thực tế JVM trên máy chủ Server sẽ nhận lệnh và trực tiếp thực thi file <code>.jar</code> đã đóng gói.</p>
+        </div>
+
+        <!-- Section 1.3 -->
+        <div class="sub-section" id="sub-1-3">
+          <h3>1.3 Bytecode và cơ chế chạy Java</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Bytecode là mã lệnh trung gian chứa các chỉ thị nhị phân dạng tối giản được tạo ra sau khi lập trình viên thực hiện biên dịch file mã nguồn <code>.java</code>. Bytecode được lưu với phần mở rộng tệp là <code>.class</code> và hoàn toàn không phụ thuộc vào hệ điều hành nền.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Ví dụ dòng lệnh xuất chuỗi:</p>
+          <pre><code>System.out.println("Hello");</code></pre>
+          <p>Quy trình thực thi thông qua sơ đồ:</p>
+          <div class="ascii-art">
+Main.java (Source Code)
+    ↓
+javac (Biên dịch)
+    ↓
+Main.class (Bytecode trung gian độc lập hệ điều hành)
+    ↓
+JVM (Đọc bytecode, dịch sang tập lệnh tương ứng của OS)
+    ↓
+CPU thực thi lệnh máy vật lý</div>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Thực hiện biên dịch tạo bytecode:</p>
+          <pre><code>javac Main.java</code></pre>
+          <p>Sử dụng công cụ tháo rời bytecode (disassembler) tích hợp sẵn trong JDK để đọc các lệnh bytecode thực tế:</p>
+          <pre><code>javap -c Main</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int a = 5;
+        int b = 10;
+        System.out.println(a + b);
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Trong các dự án quản lý bằng công cụ Maven, khi bạn thực hiện câu lệnh đóng gói:</p>
+          <pre><code>mvn package</code></pre>
+          <p>Toàn bộ các file Bytecode <code>.class</code> sẽ được tự động biên dịch và gom cụm lưu trữ tại thư mục đích:</p>
+          <pre><code>target/classes</code></pre>
+        </div>
+
+        <!-- Section 1.4 -->
+        <div class="sub-section" id="sub-1-4">
+          <h3>1.4 Compile và Interpret</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <h4>1. Compile (Biên dịch)</h4>
+          <p>Là quá trình quét và dịch toàn bộ tệp mã nguồn Java (<code>.java</code>) sang định dạng Bytecode trung gian (<code>.class</code>). Công cụ đảm nhận là trình biên dịch <code>javac</code>.</p>
+          
+          <h4>2. Interpret (Thông dịch)</h4>
+          <p>Là quá trình máy ảo JVM đọc và thông dịch từng dòng lệnh Bytecode thành mã máy vật lý tương ứng của hệ điều hành ngay tại thời điểm runtime. Công cụ đảm nhận là bộ **JVM Interpreter**.</p>
+          <p>Java là ngôn ngữ đặc sắc khi kết hợp đồng thời cả hai cơ chế: **Vừa Compile vừa Interpret** để cân bằng giữa tốc độ khởi động và tính độc lập nền tảng.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <div class="ascii-art">
+[Mã nguồn .java]
+       │ (Compile bằng javac)
+       ▼
+[Bytecode .class]
+       │
+       ├───> Interpreter (Dịch từng dòng lệnh) ──> Mã máy chạy ngay
+       │
+       └───> JIT Compiler (Dịch khối mã nóng) ──> Mã máy lưu Cache (Tối ưu hiệu năng)</div>
+          <p><strong>JIT Compiler (Just-In-Time):</strong> Trong lúc chạy, nếu phát hiện ra đoạn code nào được gọi chạy đi chạy lại nhiều lần (Hot Code), JVM sẽ dùng JIT Compiler để biên dịch trực tiếp khối code đó thẳng thành mã máy vật lý và lưu vào bộ nhớ cache, giúp các lần gọi sau chạy với tốc độ tối đa.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Thực thi biên dịch (Compile):</p>
+          <pre><code>javac Main.java</code></pre>
+          <p>Thực thi chạy chương trình (Interpret + JIT):</p>
+          <pre><code>java Main</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("Compile and Run");
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Luồng quy trình triển khai phần mềm chuẩn doanh nghiệp:</p>
+          <div class="ascii-art">
+Lập trình viên (Viết code)
+      ↓
+Build project (Biên dịch tạo File JAR chứa Bytecode)
+      ↓
+Deploy lên Server chạy Linux OS
+      ↓
+JVM Linux tiến hành thông dịch và tối ưu JIT thực thi ứng dụng</div>
+        </div>
+
+        <!-- Section 1.5 -->
+        <div class="sub-section" id="sub-1-5">
+          <h3>1.5 Cấu trúc chương trình Java đầu tiên</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Mỗi câu lệnh và từ khóa trong chương trình Java đầu tiên đều có quy định bắt buộc về cú pháp và cấu trúc để JVM nhận diện điểm bắt đầu thực thi.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khi bạn gọi lệnh khởi chạy:</p>
+          <pre><code>java Main</code></pre>
+          <p>Hệ thống JVM sẽ tiến hành tìm kiếm phương thức bắt buộc có chữ ký (signature) chính xác:</p>
+          <pre><code>public static void main(String[] args)</code></pre>
+          <p>Nếu không tìm thấy phương thức này, JVM sẽ báo lỗi khởi chạy và dừng chương trình lập tức.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        // Lệnh thực thi viết tại đây
+    }
+}</code></pre>
+          <ul>
+            <li><strong><code>public</code>:</strong> Cho phép JVM truy cập class/phương thức từ phạm vi bên ngoài hệ thống.</li>
+            <li><strong><code>static</code>:</strong> Cho phép JVM gọi chạy phương thức trực tiếp mà không cần khởi tạo đối tượng bằng từ khóa `new`.</li>
+            <li><strong><code>void</code>:</strong> Hàm thực thi tác vụ trực tiếp và không trả về bất kỳ giá trị nào cho JVM.</li>
+            <li><strong><code>main</code>:</strong> Tên phương thức mặc định làm điểm khởi chạy ứng dụng được JVM quy ước sẵn.</li>
+            <li><strong><code>String[] args</code>:</strong> Mảng chứa các chuỗi tham số truyền vào từ dòng lệnh khi chạy chương trình.</li>
+          </ul>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("Xin chào Java");
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Truyền và xử lý tham số cấu hình khởi chạy từ bên ngoài dòng lệnh:</p>
+          <pre><code>java Main Bang 20</code></pre>
+          <p>Code xử lý đọc tham số:</p>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("Tên: " + args[0]);
+        System.out.println("Tuổi: " + args[1]);
+    }
+}</code></pre>
+          <p>Kết quả hiển thị:</p>
+          <pre><code>Tên: Bang
+Tuổi: 20</code></pre>
+          <p>Trong thực tế, Spring Boot cũng sử dụng cơ chế đọc mảng <code>args</code> này để nhận các cấu hình môi trường bên ngoài khi khởi chạy.</p>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

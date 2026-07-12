@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu TailwindCSS cho Fullstack Developer - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom documentation layout styles */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    .unit-table th, .unit-table td {
+      padding: 0.6rem;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+    .unit-table th {
+      background-color: var(--highlight-bg);
+    }
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+    }
+    .class-tag {
+      background-color: var(--highlight-bg);
+      border: 1px solid var(--highlight-border);
+      color: var(--secondary-color);
+      padding: 0.35rem 0.65rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; TailwindCSS</div>
+      <h1>TAILWIND CSS - CẨM NANG FULLSTACK DEVELOPER</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cẩm nang tra cứu và học liệu chuyên sâu về TailwindCSS, trang bị đầy đủ tư duy giao diện, hệ thống class cốt lõi và lộ trình thực chiến đi làm cho lập trình viên fullstack.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation Index -->
+      <aside class="sidebar no-print">
+        <h3>1. Kiến thức nền tảng</h3>
+        <ul>
+          <li><a href="#sec-1">1.1 Nền tảng CSS cơ bản</a></li>
+          <li><a href="#sec-2">1.2 Triết lý Utility-First</a></li>
+          <li><a href="#sec-3">1.3 Cấu trúc class Tailwind</a></li>
+        </ul>
+
+        <h3>2. Spacing &amp; Kích thước</h3>
+        <ul>
+          <li><a href="#sec-4">2.1 Hệ thống đơn vị</a></li>
+          <li><a href="#sec-5">2.2 Padding &amp; Margin</a></li>
+          <li><a href="#sec-6">2.3 Width, Height &amp; Min-Max</a></li>
+        </ul>
+
+        <h3>3. Class Cheatsheet</h3>
+        <ul>
+          <li><a href="#sec-7">3.1 Typography</a></li>
+          <li><a href="#sec-8">3.2 Background &amp; Colors</a></li>
+          <li><a href="#sec-9">3.3 Border &amp; Shadow</a></li>
+          <li><a href="#sec-10">3.4 Bố cục Flexbox</a></li>
+          <li><a href="#sec-11">3.5 Bố cục Grid</a></li>
+          <li><a href="#sec-12">3.6 Position &amp; Z-Index</a></li>
+          <li><a href="#sec-13">3.7 Display, Overflow &amp; Cursor</a></li>
+          <li><a href="#sec-14">3.8 Object Fit &amp; Effects</a></li>
+        </ul>
+
+        <h3>4. Kỹ thuật nâng cao</h3>
+        <ul>
+          <li><a href="#sec-15">4.1 Responsive Design</a></li>
+          <li><a href="#sec-16">4.2 Dark Mode</a></li>
+          <li><a href="#sec-17">4.3 Custom Tailwind Config</a></li>
+          <li><a href="#sec-18">4.4 Tối ưu Production (JIT)</a></li>
+        </ul>
+
+        <h3>5. Thực chiến đi làm</h3>
+        <ul>
+          <li><a href="#sec-19">5.1 Class thông dụng đi làm</a></li>
+          <li><a href="#sec-20">5.2 Bộ class thuộc lòng</a></li>
+          <li><a href="#sec-21">5.3 Lộ trình học Fullstack</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <!-- SECTION 1 -->
+        <section id="sec-1">
+          <h2>1.1 Nền tảng CSS cơ bản &amp; Hệ thống biến</h2>
+          <p>Trước khi chuyển sang Tailwind, một nhà phát triển Full-stack cần làm chủ các kỹ thuật cốt lõi của CSS thuần:</p>
+          
+          <h3>Root CSS (<code>:root</code>) và biến CSS</h3>
+          <p>Mã giả lớp <code>:root</code> đại diện cho thẻ cao nhất <code>&lt;html&gt;</code>. Đây là nơi định nghĩa các biến màu sắc, phông chữ toàn cục để tái sử dụng:</p>
+          <pre><code>:root {
+  --accent-cyan: #06b6d4;
+  --bg-card: #0d1527;
+  --text-primary: #f3f4f6;
+}</code></pre>
+          
+          <h3>CSS Reset / Preflight trong Tailwind</h3>
+          <p>Các trình duyệt luôn có khoảng cách lề (margin/padding) mặc định cho các thẻ. Tailwind tự động tích hợp **Preflight** để đưa toàn bộ thiết lập này về không, giúp giao diện đồng bộ trên mọi nền tảng trình duyệt.</p>
+
+          <h3>Mô hình hộp (Box Model) &amp; Box-Sizing</h3>
+          <p>Thuộc tính <code>box-sizing: border-box</code> cực kỳ quan trọng trong bố cục giao diện hiện đại. Nó đảm bảo kích thước chiều rộng/chiều cao bạn khai báo đã bao gồm cả phần đệm (padding) và đường viền (border), tránh việc giao diện bị đẩy lệch do tăng kích thước ngoài mong muốn.</p>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section id="sec-2" style="margin-top: 3rem;">
+          <h2>1.2 Triết lý thiết kế Utility-First</h2>
+          <p><strong>Utility-First</strong> là phương pháp viết CSS sử dụng các class đơn chức năng để ghép nối trực tiếp trên thẻ HTML, giúp bạn xây dựng giao diện nhanh chóng mà không cần rời mắt khỏi tệp tin mã nguồn (HTML/React Component).</p>
+          
+          <div style="background-color: var(--bg-card); border-left: 4px solid var(--primary-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+            <p><strong>So sánh BEM truyền thống vs Utility-first:</strong></p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+              ❌ <strong>BEM:</strong> Viết <code>class="card-container"</code>, sau đó mở file CSS khai báo <code>.card-container { padding: 16px; border-radius: 8px; background: white; }</code>.
+            </p>
+            <p style="font-size: 0.9rem;">
+              ✅ <strong>Tailwind:</strong> Viết trực tiếp: <code>class="p-4 rounded-lg bg-white"</code>.
+            </p>
+          </div>
+          <p>Cơ chế này loại bỏ hoàn toàn việc tốn thời gian suy nghĩ đặt tên class và ngăn ngừa file CSS phình to không kiểm soát khi dự án mở rộng.</p>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section id="sec-3" style="margin-top: 3rem;">
+          <h2>1.3 Cấu trúc câu lệnh class Tailwind</h2>
+          <p>Hệ thống class của Tailwind được chuẩn hóa theo công thức tổng quát:</p>
+          <div style="background-color: var(--bg-code); padding: 0.75rem 1rem; border-radius: 6px; font-family: monospace; font-size: 1rem; text-align: center; margin: 1rem 0; color: var(--accent-cyan);">
+            [modifier/prefix]:[property]-[value]
+          </div>
+          <p>Ví dụ phân loại:</p>
+          <ul>
+            <li style="margin-bottom: 0.5rem;"><strong>Class cơ bản:</strong> <code>p-4</code> (Padding), <code>m-2</code> (Margin), <code>text-xl</code> (Cỡ chữ), <code>bg-blue-500</code> (Màu nền).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Thiết kế đáp ứng (Responsive):</strong> <code>md:text-lg</code> (Từ màn hình cỡ trung sẽ hiển thị cỡ chữ lớn).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Trạng thái tương tác (Pseudo):</strong> <code>hover:bg-blue-600</code> (Đổi màu nền khi di chuột qua), <code>disabled:opacity-50</code> (Mờ đi khi nút bị khóa).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Giao diện tối (Dark mode):</strong> <code>dark:bg-gray-900</code>, <code>dark:text-white</code>.</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 4 -->
+        <section id="sec-4" style="margin-top: 3rem;">
+          <h2>2.1 Hệ thống đơn vị đo lường &amp; Spacing</h2>
+          <p>Mặc định, Tailwind sử dụng đơn vị đo lường cơ sở là <code>rem</code> nhằm phục vụ tối ưu cho khả năng tiếp cận (Accessibility - hỗ trợ thu phóng màn hình). Hầu hết các trình duyệt quy định font chữ cơ sở gốc là $1\text{rem} = 16\text{px}$.</p>
+          <p>Công thức quy đổi chuẩn của Tailwind:</p>
+          <div style="background-color: var(--highlight-bg); border: 1px solid var(--highlight-border); padding: 1rem; border-radius: 6px; text-align: center; margin: 1rem 0; font-size: 1.1rem; font-weight: 700; color: var(--secondary-color);">
+            $$1\text{ đơn vị Tailwind} = 0.25\text{rem} = 4\text{px}$$
+          </div>
+          <p>Ví dụ: Class <code>p-4</code> tương đương với kích thước khoảng đệm bằng $4 \times 4\text{px} = 16\text{px}$ (tức $1\text{rem}$).</p>
+          <p><strong>Cú pháp giá trị tùy ý (Arbitrary Values):</strong> Khi cần gán kích thước nằm ngoài thiết lập chuẩn, ta sử dụng cú pháp ngoặc vuông: <code>w-[283px]</code> hoặc <code>h-[80vh]</code>.</p>
+        </section>
+
+        <!-- SECTION 5 -->
+        <section id="sec-5" style="margin-top: 3rem;">
+          <h2>2.2 Padding, Margin, Gap &amp; Space Between</h2>
+          <p>Hệ thống lớp điều chỉnh khoảng cách đệm (Padding) và lề (Margin):</p>
+          
+          <h3>Padding (Khoảng đệm trong)</h3>
+          <div class="class-grid">
+            <div class="class-tag">p-{size} (Tất cả)</div>
+            <div class="class-tag">px-{size} (Trục X)</div>
+            <div class="class-tag">py-{size} (Trục Y)</div>
+            <div class="class-tag">pt-{size} (Trên)</div>
+            <div class="class-tag">pb-{size} (Dưới)</div>
+            <div class="class-tag">pl-{size} (Trái)</div>
+            <div class="class-tag">pr-{size} (Phải)</div>
+          </div>
+          <p>Ví dụ: <code>&lt;div class="px-6 py-3"&gt;&lt;/div&gt;</code> tương đương padding trái/phải 24px và trên/dưới 12px.</p>
+
+          <h3>Margin (Lề khoảng cách ngoài)</h3>
+          <div class="class-grid">
+            <div class="class-tag">m-{size}</div>
+            <div class="class-tag">mx-{size}</div>
+            <div class="class-tag">my-{size}</div>
+            <div class="class-tag">mt-{size} (Lề trên)</div>
+            <div class="class-tag">mb-{size} (Lề dưới)</div>
+            <div class="class-tag">mx-auto (Căn giữa)</div>
+          </div>
+
+          <h3>Gap (Khoảng cách giữa các ô)</h3>
+          <p>Chỉ sử dụng khi bố cục phần tử cha được khai báo hiển thị là <code>flex</code> hoặc <code>grid</code>:</p>
+          <div class="class-grid">
+            <div class="class-tag">gap-{size} (Tất cả)</div>
+            <div class="class-tag">gap-x-{size} (Cột)</div>
+            <div class="class-tag">gap-y-{size} (Hàng)</div>
+          </div>
+
+          <h3>Space Between (Tạo khoảng cách giữa các phần tử con liên tiếp)</h3>
+          <p>Lớp tiện ích tự động thêm lề ngoài cho tất cả các phần tử con bắt đầu từ phần tử thứ 2:</p>
+          <div class="class-grid">
+            <div class="class-tag">space-x-{size}</div>
+            <div class="class-tag">space-y-{size}</div>
+          </div>
+        </section>
+
+        <!-- SECTION 6 -->
+        <section id="sec-6" style="margin-top: 3rem;">
+          <h2>2.3 Chiều rộng (Width), Chiều cao (Height) &amp; Min-Max</h2>
+          
+          <h3>Chiều rộng (Width)</h3>
+          <div class="class-grid">
+            <div class="class-tag">w-{size} (w-4, w-32)</div>
+            <div class="class-tag">w-full (100% width)</div>
+            <div class="class-tag">w-screen (100vw)</div>
+            <div class="class-tag">w-fit (Vừa khít)</div>
+            <div class="class-tag">w-auto (Tự động)</div>
+          </div>
+          <p>Khai báo kích thước theo tỷ lệ phần trăm phân số:</p>
+          <div class="class-grid">
+            <div class="class-tag">w-1/2 (50%)</div>
+            <div class="class-tag">w-1/3 (33.3%)</div>
+            <div class="class-tag">w-2/3 (66.6%)</div>
+            <div class="class-tag">w-1/4 (25%)</div>
+            <div class="class-tag">w-3/4 (75%)</div>
+          </div>
+
+          <h3>Chiều cao (Height)</h3>
+          <div class="class-grid">
+            <div class="class-tag">h-{size} (h-10, h-32)</div>
+            <div class="class-tag">h-full (100% height)</div>
+            <div class="class-tag">h-screen (100vh)</div>
+            <div class="class-tag">h-fit</div>
+          </div>
+
+          <h3>Độ rộng/Cao tối đa và tối thiểu (Min/Max Width/Height)</h3>
+          <div class="class-grid">
+            <div class="class-tag">min-w-0</div>
+            <div class="class-tag">min-h-screen (Ít nhất 100vh)</div>
+            <div class="class-tag">max-w-sm</div>
+            <div class="class-tag">max-w-md</div>
+            <div class="class-tag">max-w-lg</div>
+            <div class="class-tag">max-w-xl</div>
+            <div class="class-tag">max-w-7xl (Chuẩn layout)</div>
+          </div>
+        </section>
+
+        <!-- SECTION 7 -->
+        <section id="sec-7" style="margin-top: 3rem;">
+          <h2>3.1 Typography (Font, Alignment, Color &amp; Line-Height)</h2>
+          
+          <h3>Cỡ chữ (Font Size)</h3>
+          <div class="class-grid">
+            <div class="class-tag">text-xs (12px)</div>
+            <div class="class-tag">text-sm (14px)</div>
+            <div class="class-tag">text-base (16px)</div>
+            <div class="class-tag">text-lg (18px)</div>
+            <div class="class-tag">text-xl (20px)</div>
+            <div class="class-tag">text-2xl (24px)</div>
+            <div class="class-tag">text-3xl (30px)</div>
+            <div class="class-tag">text-4xl (36px)</div>
+          </div>
+
+          <h3>Độ dày chữ (Font Weight)</h3>
+          <div class="class-grid">
+            <div class="class-tag">font-thin</div>
+            <div class="class-tag">font-light</div>
+            <div class="class-tag">font-normal</div>
+            <div class="class-tag">font-medium</div>
+            <div class="class-tag">font-semibold</div>
+            <div class="class-tag">font-bold</div>
+            <div class="class-tag">font-extrabold</div>
+          </div>
+
+          <h3>Căn lề chữ (Text Align) và Chuyển kiểu (Text Transform)</h3>
+          <div class="class-grid">
+            <div class="class-tag">text-left</div>
+            <div class="class-tag">text-center</div>
+            <div class="class-tag">text-right</div>
+            <div class="class-tag">text-justify</div>
+            <div class="class-tag">uppercase</div>
+            <div class="class-tag">lowercase</div>
+            <div class="class-tag">capitalize</div>
+            <div class="class-tag">normal-case</div>
+          </div>
+
+          <h3>Màu chữ (Text Color) &amp; Độ rộng dòng (Line Height / Leading)</h3>
+          <div class="class-grid">
+            <div class="class-tag">text-red-500</div>
+            <div class="class-tag">text-blue-500</div>
+            <div class="class-tag">text-white</div>
+            <div class="class-tag">text-black</div>
+            <div class="class-tag">leading-none (Khít)</div>
+            <div class="class-tag">leading-tight (Chặt)</div>
+            <div class="class-tag">leading-normal (Thường)</div>
+            <div class="class-tag">leading-loose (Rộng)</div>
+          </div>
+
+          <h3>Khoảng cách chữ (Letter Spacing) &amp; Xử lý chữ tràn (Text Overflow)</h3>
+          <div class="class-grid">
+            <div class="class-tag">tracking-tight</div>
+            <div class="class-tag">tracking-wide</div>
+            <div class="class-tag">truncate (Thêm dấu ...)</div>
+            <div class="class-tag">text-ellipsis</div>
+          </div>
+        </section>
+
+        <!-- SECTION 8 -->
+        <section id="sec-8" style="margin-top: 3rem;">
+          <h2>3.2 Background &amp; Colors (Màu nền, Gradient, Vị trí)</h2>
+          
+          <h3>Màu nền (Background Color) &amp; Độ mờ (Opacity)</h3>
+          <div class="class-grid">
+            <div class="class-tag">bg-red-500</div>
+            <div class="class-tag">bg-blue-500</div>
+            <div class="class-tag">bg-gray-100</div>
+            <div class="class-tag">bg-opacity-50</div>
+            <div class="class-tag">opacity-50</div>
+            <div class="class-tag">opacity-75</div>
+          </div>
+
+          <h3>Kích thước &amp; Vị trí ảnh nền</h3>
+          <div class="class-grid">
+            <div class="class-tag">bg-center</div>
+            <div class="class-tag">bg-top</div>
+            <div class="class-tag">bg-bottom</div>
+            <div class="class-tag">bg-cover (Phủ kín)</div>
+            <div class="class-tag">bg-contain (Thu nhỏ vừa)</div>
+          </div>
+
+          <h3>Màu chuyển sắc (Gradient Backgrounds)</h3>
+          <p>Tạo màu nền chuyển sắc từ xanh lam sang tím rồi sang hồng:</p>
+          <pre><code>&lt;div class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"&gt;
+  Nền Gradient
+&lt;/div&gt;</code></pre>
+        </section>
+
+        <!-- SECTION 9 -->
+        <section id="sec-9" style="margin-top: 3rem;">
+          <h2>3.3 Border &amp; Shadow (Độ rộng viền, Bo góc, Bóng đổ)</h2>
+          
+          <h3>Độ rộng viền (Border Width) &amp; Màu viền (Border Color)</h3>
+          <div class="class-grid">
+            <div class="class-tag">border (1px)</div>
+            <div class="class-tag">border-2 (2px)</div>
+            <div class="class-tag">border-4 (4px)</div>
+            <div class="class-tag">border-gray-300</div>
+            <div class="class-tag">border-red-500</div>
+          </div>
+
+          <h3>Bo góc (Border Radius)</h3>
+          <div class="class-grid">
+            <div class="class-tag">rounded (4px)</div>
+            <div class="class-tag">rounded-md (6px)</div>
+            <div class="class-tag">rounded-lg (8px)</div>
+            <div class="class-tag">rounded-xl (12px)</div>
+            <div class="class-tag">rounded-2xl (16px)</div>
+            <div class="class-tag">rounded-full (Tròn)</div>
+          </div>
+
+          <h3>Bóng đổ (Box Shadow)</h3>
+          <div class="class-grid">
+            <div class="class-tag">shadow-sm</div>
+            <div class="class-tag">shadow</div>
+            <div class="class-tag">shadow-md</div>
+            <div class="class-tag">shadow-lg</div>
+            <div class="class-tag">shadow-xl</div>
+            <div class="class-tag">shadow-2xl</div>
+          </div>
+        </section>
+
+        <!-- SECTION 10 -->
+        <section id="sec-10" style="margin-top: 3rem;">
+          <h2>3.4 Bố cục Flexbox</h2>
+          <p>Flexbox là công cụ bố cục chính yếu của lập trình viên giúp sắp xếp các khối theo 1 chiều ngang hoặc dọc.</p>
+          
+          <h3>Bật chế độ hiển thị Flex:</h3>
+          <div class="class-grid">
+            <div class="class-tag">flex</div>
+            <div class="class-tag">inline-flex</div>
+          </div>
+
+          <h3>Hướng bố cục (Direction) &amp; Co giãn phần tử (Grow/Shrink)</h3>
+          <div class="class-grid">
+            <div class="class-tag">flex-row (Hàng ngang)</div>
+            <div class="class-tag">flex-col (Hàng dọc)</div>
+            <div class="class-tag">grow (Chiếm không gian trống)</div>
+            <div class="class-tag">grow-0 (Không co giãn)</div>
+            <div class="class-tag">shrink</div>
+            <div class="class-tag">shrink-0 (Không bị co lại)</div>
+          </div>
+
+          <h3>Căn lề theo trục chính (Justify Content)</h3>
+          <div class="class-grid">
+            <div class="class-tag">justify-start</div>
+            <div class="class-tag">justify-center</div>
+            <div class="class-tag">justify-end</div>
+            <div class="class-tag">justify-between (Dàn đều)</div>
+            <div class="class-tag">justify-around</div>
+            <div class="class-tag">justify-evenly</div>
+          </div>
+
+          <h3>Căn lề theo trục phụ (Align Items) và Tự động bọc dòng (Flex Wrap)</h3>
+          <div class="class-grid">
+            <div class="class-tag">items-start</div>
+            <div class="class-tag">items-center</div>
+            <div class="class-tag">items-end</div>
+            <div class="class-tag">items-stretch (Kéo dãn)</div>
+            <div class="class-tag">flex-wrap</div>
+            <div class="class-tag">flex-nowrap</div>
+          </div>
+        </section>
+
+        <!-- SECTION 11 -->
+        <section id="sec-11" style="margin-top: 3rem;">
+          <h2>3.5 Bố cục Grid Layout</h2>
+          <p>Grid Layout chia không gian hiển thị thành hệ lưới gồm các hàng và cột bằng nhau.</p>
+          
+          <h3>Khai báo Grid &amp; Số lượng cột chính</h3>
+          <div class="class-grid">
+            <div class="class-tag">grid</div>
+            <div class="class-tag">grid-cols-1 (1 cột)</div>
+            <div class="class-tag">grid-cols-2 (2 cột)</div>
+            <div class="class-tag">grid-cols-3 (3 cột)</div>
+            <div class="class-tag">grid-cols-4 (4 cột)</div>
+            <div class="class-tag">grid-cols-12 (12 cột chuẩn)</div>
+          </div>
+
+          <h3>Trải rộng ô (Span Columns/Rows)</h3>
+          <div class="class-grid">
+            <div class="class-tag">col-span-2 (Chiếm 2 cột)</div>
+            <div class="class-tag">col-span-3</div>
+            <div class="class-tag">row-span-3 (Chiếm 3 hàng)</div>
+          </div>
+        </section>
+
+        <!-- SECTION 12 -->
+        <section id="sec-12" style="margin-top: 3rem;">
+          <h2>3.6 Position &amp; Z-Index (Vị trí, Định vị &amp; Độ ưu tiên đè lớp)</h2>
+          
+          <h3>Các kiểu định vị Position:</h3>
+          <div class="class-grid">
+            <div class="class-tag">static</div>
+            <div class="class-tag">relative (Đặt mốc)</div>
+            <div class="class-tag">absolute (Định vị tự do)</div>
+            <div class="class-tag">fixed (Ghim trên màn hình)</div>
+            <div class="class-tag">sticky (Ghim khi cuộn)</div>
+          </div>
+
+          <h3>Tọa độ vị trí:</h3>
+          <div class="class-grid">
+            <div class="class-tag">top-0</div>
+            <div class="class-tag">bottom-0</div>
+            <div class="class-tag">left-0</div>
+            <div class="class-tag">right-0</div>
+          </div>
+          <p>Ví dụ tạo nút đóng (close) nằm ở góc trên bên phải của một hộp:</p>
+          <pre><code>&lt;div class="relative p-6"&gt;
+  &lt;button class="absolute top-2 right-2"&gt;X&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+          <h3>Độ ưu tiên đè lớp (Z-Index)</h3>
+          <div class="class-grid">
+            <div class="class-tag">z-0</div>
+            <div class="class-tag">z-10</div>
+            <div class="class-tag">z-20</div>
+            <div class="class-tag">z-30</div>
+            <div class="class-tag">z-40</div>
+            <div class="class-tag">z-50 (Thường dùng cho Modal/Popups)</div>
+          </div>
+        </section>
+
+        <!-- SECTION 13 -->
+        <section id="sec-13" style="margin-top: 3rem;">
+          <h2>3.7 Display, Overflow &amp; Con trỏ (Cursor)</h2>
+          
+          <h3>Hiển thị (Display)</h3>
+          <div class="class-grid">
+            <div class="class-tag">block</div>
+            <div class="class-tag">inline</div>
+            <div class="class-tag">inline-block</div>
+            <div class="class-tag">hidden (display: none)</div>
+            <div class="class-tag">table</div>
+          </div>
+
+          <h3>Xử lý phần tử tràn viền (Overflow)</h3>
+          <div class="class-grid">
+            <div class="class-tag">overflow-hidden (Ẩn phần tràn)</div>
+            <div class="class-tag">overflow-auto</div>
+            <div class="class-tag">overflow-scroll</div>
+            <div class="class-tag">overflow-x-auto (Cuộn ngang)</div>
+            <div class="class-tag">overflow-y-scroll (Cuộn dọc)</div>
+          </div>
+
+          <h3>Định dạng con trỏ chuột (Cursor)</h3>
+          <div class="class-grid">
+            <div class="class-tag">cursor-pointer (Bàn tay)</div>
+            <div class="class-tag">cursor-not-allowed (Cấm click)</div>
+            <div class="class-tag">cursor-wait (Chờ đợi)</div>
+            <div class="class-tag">cursor-text (Nhập liệu)</div>
+          </div>
+        </section>
+
+        <!-- SECTION 14 -->
+        <section id="sec-14" style="margin-top: 3rem;">
+          <h2>3.8 Object Fit &amp; Hiệu ứng chuyển động (Transition, Animation)</h2>
+          
+          <h3>Định dạng ảnh/video (Object Fit)</h3>
+          <div class="class-grid">
+            <div class="class-tag">object-cover (Cắt ảnh vừa khít khung)</div>
+            <div class="class-tag">object-contain (Giữ nguyên tỉ lệ)</div>
+            <div class="class-tag">object-fill (Kéo giãn ảnh)</div>
+          </div>
+
+          <h3>Chuyển đổi hiệu ứng (Transition &amp; Transform)</h3>
+          <div class="class-grid">
+            <div class="class-tag">transition</div>
+            <div class="class-tag">transition-all</div>
+            <div class="class-tag">duration-300 (Chuyển động 300ms)</div>
+            <div class="class-tag">ease-out</div>
+            <div class="class-tag">scale-95 (Thu nhỏ 95%)</div>
+            <div class="class-tag">rotate-45 (Xoay 45 độ)</div>
+          </div>
+
+          <h3>Hoạt ảnh (Animation)</h3>
+          <div class="class-grid">
+            <div class="class-tag">animate-spin (Xoay tròn vô tận)</div>
+            <div class="class-tag">animate-pulse (Nhấp nháy nhẹ)</div>
+            <div class="class-tag">animate-bounce (Nảy lên nảy xuống)</div>
+            <div class="class-tag">animate-ping (Lan tỏa vòng tròn)</div>
+          </div>
+        </section>
+
+        <!-- SECTION 15 -->
+        <section id="sec-15" style="margin-top: 3rem;">
+          <h2>4.1 Thiết kế đáp ứng (Responsive Design Breakpoints)</h2>
+          <p>Tailwind áp dụng triết lý thiết kế ưu tiên giao diện di động trước (Mobile-First). Các class không có tiền tố là hiển thị cho thiết bị nhỏ. Khi màn hình lớn dần lên, ta sử dụng các breakpoint sau để tùy biến giao diện:</p>
+
+          <div style="overflow-x: auto; margin: 1.5rem 0;">
+            <table class="unit-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+              <thead>
+                <tr>
+                  <th>Tiền tố</th>
+                  <th>Kích thước màn hình tối thiểu</th>
+                  <th>CSS Media Query tương ứng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>sm</code></td>
+                  <td>640px</td>
+                  <td><code>@media (min-width: 640px) { ... }</code></td>
+                </tr>
+                <tr>
+                  <td><code>md</code></td>
+                  <td>768px</td>
+                  <td><code>@media (min-width: 768px) { ... }</code></td>
+                </tr>
+                <tr>
+                  <td><code>lg</code></td>
+                  <td>1024px</td>
+                  <td><code>@media (min-width: 1024px) { ... }</code></td>
+                </tr>
+                <tr>
+                  <td><code>xl</code></td>
+                  <td>1280px</td>
+                  <td><code>@media (min-width: 1280px) { ... }</code></td>
+                </tr>
+                <tr>
+                  <td><code>2xl</code></td>
+                  <td>1536px</td>
+                  <td><code>@media (min-width: 1536px) { ... }</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Ví dụ: <code>&lt;div class="text-sm md:text-lg lg:text-2xl"&gt;</code></p>
+        </section>
+
+        <!-- SECTION 16 -->
+        <section id="sec-16" style="margin-top: 3rem;">
+          <h2>4.2 Giao diện tối (Dark Mode) &amp; Trạng thái tương tác (State Modifiers)</h2>
+          
+          <h3>Khai báo Dark Mode trong HTML:</h3>
+          <p>Mặc định, khi kích hoạt chế độ tối qua lớp <code>.dark</code> trên body, các tiền tố <code>dark:</code> sẽ hoạt động:</p>
+          <pre><code>&lt;div class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white dark:border-gray-700"&gt;
+  Nội dung tự động phản hồi theo chế độ Light/Dark.
+&lt;/div&gt;</code></pre>
+
+          <h3>Trạng thái tương tác (Interactive States):</h3>
+          <ul>
+            <li style="margin-bottom: 0.5rem;"><code>hover:bg-blue-600</code>: Thay đổi màu nền khi người dùng di chuột qua.</li>
+            <li style="margin-bottom: 0.5rem;"><code>focus:ring-2 focus:ring-blue-500</code>: Hiển thị viền bao quanh khi nhấp chọn (thường dùng cho các thẻ input trong Form).</li>
+            <li style="margin-bottom: 0.5rem;"><code>active:scale-95</code>: Tạo hiệu ứng nút lún nhẹ xuống khi bấm chuột vào.</li>
+            <li style="margin-bottom: 0.5rem;"><code>disabled:opacity-50 disabled:cursor-not-allowed</code>: Hiển thị trạng thái vô hiệu hóa của phần tử.</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 17 -->
+        <section id="sec-17" style="margin-top: 3rem;">
+          <h2>4.3 Tùy biến cấu hình Tailwind (Tailwind Config)</h2>
+          <p>Trong thực tế phát triển dự án, doanh nghiệp thường có bộ mã màu nhận diện thương hiệu riêng. Chúng ta thực hiện mở rộng cấu hình theme mặc định bằng tệp tin <code>tailwind.config.js</code>:</p>
+          <pre><code>module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#f0f9ff',
+          500: '#0ea5e9',
+          900: '#0c4a6e',
+        }
+      }
+    }
+  }
+}</code></pre>
+          <p>Sau khi khai báo màu sắc thương hiệu trên, Tailwind sẽ tự động tạo ra một hệ thống class tương ứng cho dự án của bạn: <code>bg-brand-500</code>, <code>text-brand-900</code>, <code>border-brand-50</code>...</p>
+        </section>
+
+        <!-- SECTION 18 -->
+        <section id="sec-18" style="margin-top: 3rem;">
+          <h2>4.4 JIT Compiler &amp; Tối ưu hóa dung lượng file CSS Production</h2>
+          <p>Từ phiên bản 3.0 trở lên, Tailwind chuyển sang sử dụng trình biên dịch **JIT (Just-In-Time)** mặc định.</p>
+          <p>Trình biên dịch JIT quét toàn bộ các file mã nguồn của bạn theo thời gian thực khi viết code, chỉ trích xuất và biên dịch đúng những class nào bạn thực tế có viết trong code để tạo ra file CSS đầu ra cực kỳ nhỏ gọn (thường dưới 10KB sau khi nén).</p>
+          
+          <p class="callout" style="border-left: 4px solid #ef4444; background-color: var(--highlight-bg);">
+            ⚠️ <strong>Hạn chế viết class động (Dynamic Class Concatenation):</strong>
+            JIT quét mã nguồn dưới dạng phân tích chuỗi tĩnh thô, nó sẽ không thể nhận diện được các class sinh ra bằng cơ chế ghép chuỗi động JavaScript.
+            <br><br>
+            ❌ <strong>SAI:</strong> <code>class="text-${color}-500"</code>
+            <br>
+            ✅ <strong>ĐÚNG:</strong> <code>class={color === 'blue' ? 'text-blue-500' : 'text-red-500'}</code>
+          </p>
+        </section>
+
+        <!-- SECTION 19 -->
+        <section id="sec-19" style="margin-top: 3rem;">
+          <h2>5.1 Các bộ thẻ component kết hợp thông dụng khi đi làm</h2>
+          <p>Dưới đây là một số tổ hợp lớp tiện ích kinh điển thường được sử dụng khi phát triển ứng dụng web thực tế:</p>
+
+          <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+            <!-- Component 1 -->
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: var(--primary-color);">1. Cấu trúc khung bao cục chính (Layout Wrapper)</h4>
+              <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Thiết lập độ rộng tối đa chuẩn của trang web và căn giữa nội dung:</p>
+              <pre><code>container mx-auto px-4 max-w-7xl</code></pre>
+            </div>
+
+            <!-- Component 2 -->
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: var(--primary-color);">2. Thẻ hiển thị thông tin (Card Component)</h4>
+              <pre><code>bg-white rounded-xl shadow-md p-6 border border-gray-100</code></pre>
+            </div>
+
+            <!-- Component 3 -->
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: var(--primary-color);">3. Nút bấm tương tác chuẩn (Button Component)</h4>
+              <pre><code>px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 active:scale-95 disabled:opacity-50</code></pre>
+            </div>
+
+            <!-- Component 4 -->
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: var(--primary-color);">4. Ô nhập liệu trong biểu mẫu (Form Input Field)</h4>
+              <pre><code>w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 20 -->
+        <section id="sec-20" style="margin-top: 3rem;">
+          <h2>5.2 Bộ class cốt lõi cần thuộc lòng</h2>
+          <p>Chỉ cần ghi nhớ và thành thục khoảng 60 class cơ bản dưới đây là bạn đã có thể làm chủ và xây dựng được hơn 90% giao diện dự án thực tế:</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+            <div style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px;">
+              <strong style="color: var(--accent-cyan); display: block; margin-bottom: 0.5rem;">Cơ cấu &amp; Bố cục</strong>
+              <code style="display: block; line-height: 1.6; font-size: 0.85rem;">
+                flex | grid | block | hidden <br>
+                items-center | justify-center | justify-between <br>
+                gap-2 | gap-4 | gap-6 <br>
+                w-full | h-full | max-w-7xl <br>
+                relative | absolute | top-0 | right-0 | z-50
+              </code>
+            </div>
+            <div style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px;">
+              <strong style="color: var(--accent-cyan); display: block; margin-bottom: 0.5rem;">Spacing &amp; Typography</strong>
+              <code style="display: block; line-height: 1.6; font-size: 0.85rem;">
+                p-2 | p-4 | p-6 | px-4 | py-2 <br>
+                m-2 | mt-4 | mb-4 | mx-auto <br>
+                text-sm | text-base | text-lg | text-xl | text-2xl <br>
+                font-medium | font-semibold | font-bold | text-center <br>
+                text-gray-700 | text-white | bg-white | bg-blue-500
+              </code>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 21 -->
+        <section id="sec-21" style="margin-top: 3rem;">
+          <h2>5.3 Lộ trình học thực chiến dành cho Fullstack Developer</h2>
+          <p>Để tối ưu hóa thời gian học tập, bạn hãy tập trung nghiên cứu theo lộ trình tích lũy kiến thức sau:</p>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; margin-top: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">1</span>
+              <span><strong>Làm chủ Spacing &amp; Sizes:</strong> Thuộc các lớp padding, margin, gap và công thức quy đổi pixel/rem.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">2</span>
+              <span><strong>Bố cục trang nâng cao:</strong> Thành thục cách dựng layout bằng Flexbox và Grid (grid-cols-12, justify-between).</span>
+            </li>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">3</span>
+              <span><strong>Responsive &amp; Dark Mode:</strong> Thiết kế thích ứng trên mọi màn hình sử dụng tiền tố md, lg và xây dựng Dark Mode.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">4</span>
+              <span><strong>Tự chỉnh cấu hình &amp; Kết hợp thư viện UI:</strong> Cách viết file tailwind.config.js và tìm hiểu các thư viện UI ăn liền cực mạnh hiện nay như <strong>DaisyUI</strong> hoặc <strong>Shadcn UI</strong> để tăng tốc độ làm dự án thực tế.</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

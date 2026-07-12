@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 19: Stream API - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 19</div>
+      <h1>CHƯƠNG 19: STREAM API</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế xử lý luồng dữ liệu khai báo. Nghiên cứu chuỗi vận hành Stream Pipeline, Lazy Evaluation, các phép lọc filter(), chuyển đổi map(), rút gọn reduce(), gom nhóm groupingBy() và tối ưu đa nhân Parallel Stream.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html" class="active">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Stream Overview -->
+        <div class="sub-section" id="stream-overview">
+          <h3>Stream API &amp; Stream Pipeline</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Stream API (giới thiệu trong **Java 8**) là công cụ cho phép xử lý các tập dữ liệu Collection theo phong cách **khai báo (Declarative Programming)** thay thế hoàn toàn cho cách viết duyệt vòng lặp truyền thống **mệnh lệnh (Imperative Programming)**.</p>
+          <p>Lợi ích: Giúp mã nguồn cực kỳ ngắn gọn, trực quan, loại bỏ các biến cờ cồng kềnh và giảm thiểu tối đa các lỗi logic chỉ mục.</p>
+
+          <div class="block-title">Cơ chế hoạt động của đường ống dẫn dữ liệu (Stream Pipeline)</div>
+          <p>Một chu trình xử lý Stream hoàn chỉnh bao gồm 3 bước bắt buộc được thực hiện theo cơ chế pipeline ống nước:</p>
+          <div class="ascii-art">
+[ Source Collection ] (Nguồn cấp dữ liệu thô)
+       │
+       ▼ (1. Khởi tạo Stream: .stream() )
+[ Intermediate Operation ] (filter, map, sorted, distinct...) -> Trả về Stream mới
+       │
+       ▼ (2. Hỗ trợ Lazy Evaluation - Không chạy cho đến khi có Terminal Operation)
+[ Terminal Operation ] (collect, forEach, reduce, count...) -> Kết thúc &amp; sinh kết quả</div>
+          <p><strong>Tính chất cốt lõi:</strong></p>
+          <ul>
+            <li><strong>Không lưu trữ dữ liệu:</strong> Stream chỉ là một ống dẫn, không sở hữu ô nhớ lưu trữ phần tử.</li>
+            <li><strong>Không biến đổi Collection gốc:</strong> Kết quả luôn được đẩy ra một Collection hoặc giá trị mới.</li>
+            <li><strong>Lazy Evaluation (Đánh giá lười biếng):</strong> Các hàm trung gian (Intermediate) không hề xử lý cho tới khi hàm cuối (Terminal) được kích hoạt.</li>
+          </ul>
+        </div>
+
+        <!-- Section 19.1 & 19.2 -->
+        <div class="sub-section" id="sub-19-1-2">
+          <h3>19.1 filter() &amp; 19.2 map()</h3>
+
+          <div class="block-title">1. filter() - Phép lọc điều kiện</div>
+          <p>Hàm <code>filter()</code> nhận vào tham số là một <code>Predicate&lt;T&gt;</code> (kiểm tra boolean) để sàng lọc và giữ lại các phần tử thỏa mãn.</p>
+          <pre><code>// Ví dụ: Lọc danh sách User đang kích hoạt (Active)
+List&lt;User&gt; activeUsers = users.stream()
+                              .filter(User::isActive) // Thỏa mãn điều kiện thì giữ lại
+                              .toList();</code></pre>
+
+          <div class="block-title">2. map() - Phép ánh xạ chuyển đổi dữ liệu</div>
+          <p>Hàm <code>map()</code> nhận vào một <code>Function&lt;T, R&gt;</code> để biến đổi kiểu dữ liệu của từng phần tử từ cấu trúc này sang cấu trúc khác.</p>
+          <pre><code>// Ví dụ: Ánh xạ chuyển đổi từ danh sách Entity sang DTO để trả về Client
+List&lt;UserDTO&gt; dtos = users.stream()
+                          .map(user -> new UserDTO(user.getId(), user.getName()))
+                          .toList();</code></pre>
+        </div>
+
+        <!-- Section 19.3 -->
+        <div class="sub-section" id="sub-19-3">
+          <h3>19.3 reduce() (Phép thu gọn/gộp)</h3>
+
+          <div class="block-title">Khái niệm và cơ chế vận hành</div>
+          <p>Phương thức <code>reduce()</code> thực hiện gộp toàn bộ các phần tử trong Stream lại với nhau thông qua một phép toán tích lũy để tạo ra một giá trị duy nhất.</p>
+          <p>Cú pháp:</p>
+          <pre><code>stream.reduce(identity, accumulator)</code></pre>
+          <ul>
+            <li><code>identity</code>: Giá trị khởi tạo mặc định ban đầu.</li>
+            <li><code>accumulator</code>: Hàm tích lũy thực hiện cộng dồn giá trị tích lũy với phần tử tiếp theo.</li>
+          </ul>
+          <p>Cơ chế tích lũy tính tổng doanh thu hóa đơn:</p>
+          <div class="ascii-art">
+Doanh thu đơn hàng: [ 10.0, 20.0, 50.0 ] với identity = 0.0
+Bước 1: 0.0 + 10.0 = 10.0
+Bước 2: 10.0 + 20.0 = 30.0
+Bước 3: 30.0 + 50.0 = 80.0 (Kết quả cuối cùng thu gọn)</div>
+          <pre><code>double totalRevenue = orders.stream()
+                            .map(Order::getTotal)
+                            .reduce(0.0, Double::sum);</code></pre>
+        </div>
+
+        <!-- Section 19.4 & 19.5 -->
+        <div class="sub-section" id="sub-19-4-5">
+          <h3>19.4 collect() &amp; 19.5 groupingBy()</h3>
+
+          <div class="block-title">1. collect() - Thu gom kết quả cuối đường ống</div>
+          <p><code>collect()</code> là Terminal Operation phổ biến nhất dùng để đóng gói toàn bộ luồng Stream sau xử lý vào các cấu trúc dữ liệu mong muốn thông qua các Collector tiện ích:</p>
+          <pre><code>Set&lt;String&gt; emails = users.stream()
+                          .map(User::getEmail)
+                          .collect(Collectors.toSet()); // Gom vào Set để loại bỏ trùng lặp</code></pre>
+
+          <div class="block-title">2. groupingBy() - Gom nhóm phân loại dữ liệu (SQL GROUP BY)</div>
+          <p>Bộ thu gom <code>Collectors.groupingBy()</code> phân nhóm các phần tử trong Stream dựa trên thuộc tính chung và trả về kết quả dạng <code>Map&lt;K, List&lt;T&gt;&gt;</code>.</p>
+          <p>Ví dụ: Nhóm danh sách đơn hàng theo trạng thái thanh toán:</p>
+          <pre><code>Map&lt;OrderStatus, List&lt;Order&gt;&gt; ordersByStatus = orders.stream()
+    .collect(Collectors.groupingBy(Order::getStatus));
+// Kết quả trả về:
+// Map { PENDING -> [Order1, Order2], COMPLETED -> [Order3] }</code></pre>
+        </div>
+
+        <!-- Stream vs Loop -->
+        <div class="sub-section" id="stream-vs-loop">
+          <h3>So sánh Stream và Vòng lặp For Loop truyền thống</h3>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Vòng lặp For / While</th>
+                <th>Stream API</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Tốc độ thực thi</strong></td><td><strong>Nhanh hơn</strong> (Truy cập chỉ số trực tiếp, không tốn chi phí khởi tạo object)</td><td><strong>Chậm hơn một chút</strong> (Chi phí tạo pipeline và nạp các hàm lamda)</td></tr>
+              <tr><td><strong>Độ rõ ràng của code</strong></td><td>Kém khi logic lồng nhau phức tạp (nhiều if, temporary lists)</td><td>Cực kỳ sáng sủa, mô tả rõ ràng nghiệp vụ theo luồng</td></tr>
+              <tr><td><strong>Xử lý đa luồng song song</strong></td><td>Viết code phức tạp (ExecutorService, Thread Pools...)</td><td>Cực kỳ đơn giản bằng việc gọi <code>.parallelStream()</code></td></tr>
+            </tbody>
+          </table>
+          <p><em>Lời khuyên tối ưu:</em> Đối với các tác vụ xử lý tính toán số học siêu hiệu năng yêu cầu latency cực thấp nên chọn For Loop. Với các tác vụ thao tác dữ liệu, ánh xạ nghiệp vụ kinh doanh, luôn ưu tiên **Stream**.</p>
+        </div>
+
+        <!-- Common Bugs -->
+        <div class="sub-section" id="common-bugs">
+          <h3>Các lỗi nghiêm trọng thường gặp khi làm Stream</h3>
+
+          <div class="block-title">1. Lỗi tái sử dụng luồng Stream đã đóng</div>
+          <p>Một Stream trong Java chỉ được sử dụng duy nhất một lần. Khi một Terminal Operation đã chạy qua, Stream đó lập tức bị đóng lại vĩnh viễn.</p>
+          <pre><code>Stream&lt;String&gt; stream = names.stream();
+long count = stream.count(); // Stream bị đóng tại đây
+stream.forEach(System.out::println); // Ném lỗi sập app: IllegalStateException</code></pre>
+
+          <div class="block-title">2. Lỗi quên hàm kết thúc (Terminal Operation)</div>
+          <p>Do cơ chế **Lazy Evaluation**, các hàm trung gian chỉ là khai báo đường ống, chúng sẽ hoàn toàn không thực thi nếu không có hàm kết thúc ở cuối.</p>
+          <pre><code>numbers.stream().filter(n -> n > 10); // Không có bất kỳ phần tử nào được lọc hay in ra!</code></pre>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

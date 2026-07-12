@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu học NodeJS &amp; ExpressJS cho Fullstack Developer - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom documentation layout styles */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; NodeJS &amp; ExpressJS</div>
+      <h1>NODEJS &amp; EXPRESSJS - PHÁT TRIỂN BACKEND CHUYÊN NGHIỆP</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cẩm nang và học liệu toàn diện về phát triển ứng dụng phía máy chủ với NodeJS và ExpressJS, từ kiến trúc lõi đến thiết kế RESTful API, cơ sở dữ liệu và bảo mật JWT thực chiến.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>1. Kiến trúc lõi</h3>
+        <ul>
+          <li><a href="#sec-1">1.1 NodeJS Core là gì?</a></li>
+          <li><a href="#sec-2">1.2 Vấn đề bất đồng bộ</a></li>
+        </ul>
+
+        <h3>2. Module &amp; NPM</h3>
+        <ul>
+          <li><a href="#sec-3">2.1 Module hệ thống</a></li>
+          <li><a href="#sec-4">2.2 Quản lý NPM package</a></li>
+        </ul>
+
+        <h3>3. ExpressJS Cơ bản</h3>
+        <ul>
+          <li><a href="#sec-5">3.1 Cài đặt &amp; Cấu hình</a></li>
+          <li><a href="#sec-6">3.2 Định tuyến (Routing)</a></li>
+        </ul>
+
+        <h3>4. Middleware</h3>
+        <ul>
+          <li><a href="#sec-7">4.1 Kiến trúc Middleware</a></li>
+          <li><a href="#sec-8">4.2 Custom Middleware</a></li>
+        </ul>
+
+        <h3>5. RESTful API &amp; MVC</h3>
+        <ul>
+          <li><a href="#sec-9">5.1 Cấu trúc chuẩn MVC</a></li>
+          <li><a href="#sec-10">5.2 Xử lý lỗi tập trung</a></li>
+        </ul>
+
+        <h3>6. Database Integration</h3>
+        <ul>
+          <li><a href="#sec-11">6.1 Kết nối NoSQL (MongoDB)</a></li>
+          <li><a href="#sec-12">6.2 Kết nối SQL (PostgreSQL)</a></li>
+        </ul>
+
+        <h3>7. Bảo mật &amp; JWT</h3>
+        <ul>
+          <li><a href="#sec-13">7.1 Mã hóa bcrypt &amp; JWT</a></li>
+          <li><a href="#sec-14">7.2 Middleware phân quyền</a></li>
+        </ul>
+
+        <h3>8. Deploy &amp; PM2</h3>
+        <ul>
+          <li><a href="#sec-15">8.1 Quản lý tiến trình PM2</a></li>
+          <li><a href="#sec-16">8.2 Lộ trình Backend thực tế</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <section id="sec-1">
+          <h2>1.1 NodeJS Core &amp; Kiến trúc Event Loop</h2>
+          <p><strong>NodeJS</strong> là một môi trường chạy mã JavaScript (Run-time environment) phía máy chủ, được xây dựng trên bộ máy JavaScript V8 hiệu năng cao của Google Chrome.</p>
+          
+          <h3>Kiến trúc Single-threaded &amp; Non-blocking I/O</h3>
+          <p>Khác với các công nghệ backend truyền thống như Java (Tomcat) hay PHP (Apache) vốn sử dụng mô hình đa luồng (Multi-threaded - mỗi Request từ Client sẽ mở ra một luồng xử lý riêng của CPU), NodeJS hoạt động trên cơ chế **Single-threaded** (đơn luồng) kết hợp với **Event Loop** (Vòng lặp sự kiện).</p>
+          <p>Mô hình xử lý luồng công việc:</p>
+          <ol>
+            <li style="margin-bottom: 0.5rem;">Khi có Request gửi tới, NodeJS nhận yêu cầu và xếp vào hàng đợi sự kiện (Event Queue).</li>
+            <li style="margin-bottom: 0.5rem;">Single thread chính sẽ liên tục quét hàng đợi này. Đối với các tác vụ tốn thời gian như đọc file (I/O), truy vấn Database hoặc gọi API ngoài, thread chính sẽ không đứng đợi mà đẩy tác vụ đó xuống cho hệ thống nhân hệ điều hành xử lý (thông qua thư viện Libuv C++).</li>
+            <li style="margin-bottom: 0.5rem;">Khi tác vụ hoàn thành, hệ thống sẽ gửi một sự kiện kèm dữ liệu phản hồi vào Callback Queue để luồng chính tiếp tục trả kết quả về cho Client.</li>
+          </ol>
+          <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+            💡 <strong>Ưu thế của NodeJS:</strong> Xử lý cực kỳ hiệu quả hàng triệu kết nối đồng thời (Concurrent Connections) có mức tiêu tốn tài nguyên I/O cao (như ứng dụng Chat, Real-time telemetry, Streaming). Tuy nhiên, NodeJS không phù hợp cho các bài toán tính toán CPU nặng (như giải mã video, AI training) vì nó sẽ làm nghẽn luồng xử lý đơn duy nhất này.
+          </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="sec-2" style="margin-top: 3rem;">
+          <h2>1.2 Quản lý xử lý bất đồng bộ (Callbacks, Promises, Async/Await)</h2>
+          <p>Vì NodeJS hoạt động theo cơ chế Non-blocking, việc quản lý luồng dữ liệu bất đồng bộ là kiến thức bắt buộc:</p>
+
+          <h3>1. Callback Pattern &amp; Callback Hell</h3>
+          <p>Là cơ chế sơ khai nhất, đưa hàm làm đối số. Khi lồng nhau quá nhiều sẽ gây khó đọc (Callback Hell):</p>
+          <pre><code>fs.readFile('file1.txt', (err, data1) => {
+  fs.readFile('file2.txt', (err, data2) => {
+    // Lồng nhau quá nhiều lớp...
+  });
+});</code></pre>
+
+          <h3>2. Promises &amp; Async/Await</h3>
+          <p>Async/Await giúp viết mã bất đồng bộ trông giống như mã đồng bộ (Synchronous) cực kỳ trực quan và sạch sẽ:</p>
+          <pre><code>const fs = require('fs').promises;
+
+async function readAllFiles() {
+  try {
+    const data1 = await fs.readFile('file1.txt', 'utf-8');
+    const data2 = await fs.readFile('file2.txt', 'utf-8');
+    console.log(data1, data2);
+  } catch (error) {
+    console.error('Lỗi khi đọc file:', error);
+  }
+}</code></pre>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="sec-3" style="margin-top: 3rem;">
+          <h2>2.1 NodeJS Built-in Modules (fs, path, http)</h2>
+          <p>NodeJS cung cấp một số mô-đun lõi tích hợp sẵn để tương tác trực tiếp với phần cứng máy chủ:</p>
+
+          <h3>Mô-đun Path: Quản lý đường dẫn tệp tin</h3>
+          <pre><code>const path = require('path');
+// Ghép nối đường dẫn tuyệt đối an toàn trên mọi hệ điều hành (Windows, Linux)
+const filePath = path.join(__dirname, 'uploads', 'images', 'avatar.png');</code></pre>
+
+          <h3>Mô-đun Fs (File System): Thao tác đọc/ghi tệp</h3>
+          <pre><code>const fs = require('fs');
+
+// Đọc file bất đồng bộ (Non-blocking)
+fs.readFile('readme.md', 'utf-8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});</code></pre>
+
+          <h3>Mô-đun HTTP: Khởi tạo Server thô</h3>
+          <pre><code>const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello from raw NodeJS server!');
+});
+
+server.listen(3000, () => {
+  console.log('Server running on port 3000');
+});</code></pre>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="sec-4" style="margin-top: 3rem;">
+          <h2>2.2 Quản lý thư viện bên ngoài với NPM &amp; Package.json</h2>
+          <p><strong>NPM (Node Package Manager)</strong> là kho lưu trữ và quản lý mã nguồn mở lớn nhất thế giới của JavaScript.</p>
+          
+          <h3>Tệp package.json</h3>
+          <p>Chứa toàn bộ siêu dữ liệu (metadata), các câu lệnh chạy nhanh (Scripts) và danh sách thư viện phụ thuộc (Dependencies) của dự án.</p>
+          <pre><code>{
+  "name": "my-backend-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}</code></pre>
+          <p>Sự khác biệt giữa Dependency phân loại:</p>
+          <ul>
+            <li style="margin-bottom: 0.5rem;"><strong>dependencies</strong>: Thư viện cần thiết khi chạy ứng dụng thực tế trên môi trường production (ví dụ: express, mongoose).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>devDependencies</strong>: Các công cụ chỉ phục vụ quá trình viết code ở máy lập trình viên (ví dụ: nodemon tự động tải lại code khi file thay đổi, jest để viết unit test).</li>
+          </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="sec-5" style="margin-top: 3rem;">
+          <h2>3.1 ExpressJS - Thiết lập khung ứng dụng Web</h2>
+          <p>Việc viết server bằng mô-đun HTTP thô của Node.js rất tốn công sức khi xử lý định tuyến (Routing). **ExpressJS** là thư viện web framework phổ biến nhất giúp tối giản hóa công việc này.</p>
+          
+          <h3>Khởi tạo server Express cơ bản:</h3>
+          <pre><code>const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware giúp Express đọc được dữ liệu JSON gửi lên trong body request
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Chào mừng bạn đến với ExpressJS API!' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});</code></pre>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="sec-6" style="margin-top: 3rem;">
+          <h2>3.2 Định tuyến ExpressJS (Routing, Request &amp; Response)</h2>
+          <p>Express cung cấp các phương thức tương ứng với các phương thức HTTP Request tiêu chuẩn (GET, POST, PUT, DELETE):</p>
+          <pre><code>// 1. Lấy dữ liệu qua URL Parameters (req.params)
+app.get('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  res.send(`Lấy thông tin user có ID: ${userId}`);
+});
+
+// 2. Lấy bộ lọc qua Query String parameters (req.query)
+// Ví dụ: /products?category=laptop&sort=desc
+app.get('/products', (req, res) => {
+  const { category, sort } = req.query;
+  res.json({ category, sort });
+});
+
+// 3. Tạo mới dữ liệu nhận từ Request Body (req.body)
+app.post('/products', (req, res) => {
+  const newProduct = req.body;
+  res.status(210).json({
+    message: 'Tạo sản phẩm thành công',
+    data: newProduct
+  });
+});</code></pre>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="sec-7" style="margin-top: 3rem;">
+          <h2>4.1 Kiến trúc Middleware</h2>
+          <p><strong>Middleware</strong> là trái tim của ExpressJS. Bản chất Middleware là một hàm trung gian nằm giữa Request của Client và Response cuối cùng của Router. Mỗi request đi qua server sẽ lần lượt đi qua các middleware này.</p>
+
+          <div style="background-color: var(--bg-card); border: 1px dashed var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+            <p><strong>Cấu trúc của một Middleware hàm:</strong></p>
+            <p style="font-size: 0.85rem; font-family: monospace; color: var(--accent-cyan); margin-top: 0.5rem;">
+              function myMiddleware(req, res, next) { ... }
+            </p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+              Trong đó:
+              <br>- <code>req</code>, <code>res</code>: Các đối tượng Request và Response tiêu chuẩn.
+              <br>- <code>next</code>: Hàm điều khiển. Khi được gọi, request sẽ được chuyển tiếp sang middleware hoặc router tiếp theo. Nếu không gọi <code>next()</code>, request sẽ bị treo vô tận tại đây.
+            </p>
+          </div>
+
+          <h3>Các loại Middleware phổ biến:</h3>
+          <ol>
+            <li style="margin-bottom: 0.5rem;"><strong>Built-in:</strong> Tích hợp sẵn của Express (như <code>express.json()</code>, <code>express.static()</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Third-party:</strong> Các thư viện cài thêm (như <code>cors</code> mở khóa bảo mật truy cập chéo, <code>helmet</code> chống tấn công XSS, <code>morgan</code> ghi lại log truy cập).</li>
+          </ol>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="sec-8" style="margin-top: 3rem;">
+          <h2>4.2 Viết Custom Middleware thực tế (Logger &amp; Auth check)</h2>
+          <p>Ví dụ viết middleware tự động ghi lại lịch sử truy cập (Logger) của client và kiểm tra quyền admin:</p>
+          <pre><code>// 1. Logger Middleware
+const requestLogger = (req, res, next) => {
+  const time = new Date().toISOString();
+  console.log(`[${time}] ${req.method} - Đường dẫn: ${req.url}`);
+  next(); // Cho phép request đi tiếp
+};
+
+// Áp dụng logger cho toàn bộ hệ thống
+app.use(requestLogger);
+
+// 2. Auth Guard Middleware
+const requireAdmin = (req, res, next) => {
+  const { role } = req.headers;
+  if (role === 'admin') {
+    next(); // Hợp lệ, đi tiếp tới API
+  } else {
+    res.status(403).json({ error: 'Quyền truy cập bị từ chối!' });
+  }
+};
+
+// Áp dụng bảo vệ riêng cho router nhạy cảm
+app.delete('/database/clean', requireAdmin, (req, res) => {
+  res.send('Đã dọn dẹp cơ sở dữ liệu.');
+});</code></pre>
+        </section>
+
+        <!-- Section 9 -->
+        <section id="sec-9" style="margin-top: 3rem;">
+          <h2>5.1 Thiết kế RESTful API chuẩn và cấu trúc thư mục MVC</h2>
+          <p>Mô hình MVC (Model - View - Controller) chia cấu trúc dự án backend thành các lớp riêng biệt để dễ dàng bảo trì và mở rộng khi làm việc nhóm:</p>
+          
+          <h3>Cấu trúc thư mục khuyên dùng cho dự án Node/Express:</h3>
+          <pre><code>📂 my-express-app
+ ├── 📂 config          # Kết nối Database, cấu hình môi trường (.env)
+ ├── 📂 controllers     # Chứa logic nghiệp vụ điều khiển
+ ├── 📂 models          # Định nghĩa cấu trúc dữ liệu (Database Schema)
+ ├── 📂 routes          # Định nghĩa các tuyến đường dẫn API
+ ├── 📂 middlewares     # Middleware tự định nghĩa (Auth, Logger)
+ ├── 📄 app.js          # Khởi chạy Express và nạp các middleware
+ └── 📄 server.js       # Điểm khởi động ứng dụng (Listen port)</code></pre>
+
+          <h3>Ví dụ viết Route &amp; Controller sạch tách biệt:</h3>
+          <pre><code>// File: routes/userRoutes.js
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+
+router.get('/', userController.getAllUsers);
+module.exports = router;
+
+// File: controllers/userController.js
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi máy chủ' });
+  }
+};</code></pre>
+        </section>
+
+        <!-- Section 10 -->
+        <section id="sec-10" style="margin-top: 3rem;">
+          <h2>5.2 Xử lý lỗi tập trung trong ExpressJS</h2>
+          <p>Thay vì viết khối <code>try-catch</code> và tự trả về lỗi `500` ở từng controller, ExpressJS cho phép bạn ném lỗi ra ngoài và xử lý tại một Middleware xử lý lỗi duy nhất nằm ở cuối tệp tin cấu hình.</p>
+          <p>Để chỉ định đó là middleware xử lý lỗi, hàm callback phải có đủ **4 tham số đầu vào**:</p>
+          <pre><code>// Middleware xử lý lỗi tập trung (Error Handling Middleware)
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Ghi lại lỗi log ra server console
+
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'Lỗi hệ thống không xác định!',
+    // Chỉ hiển thị stack trace của lỗi ở môi trường dev để bảo mật
+    stack: process.env.NODE_ENV === 'development' ? err.stack : {}
+  });
+});</code></pre>
+        </section>
+
+        <!-- Section 11 -->
+        <section id="sec-11" style="margin-top: 3rem;">
+          <h2>6.1 Tích hợp cơ sở dữ liệu NoSQL (MongoDB &amp; Mongoose)</h2>
+          <p>MongoDB là cơ sở dữ liệu dạng tài liệu (Document-based) cực kỳ phổ biến kết hợp với Node.js. Thư viện <strong>Mongoose</strong> đóng vai trò làm ORM/ODM giúp định nghĩa Schema chặt chẽ cho dữ liệu.</p>
+          
+          <h3>Mã nguồn kết nối và định nghĩa Model:</h3>
+          <pre><code>const mongoose = require('mongoose');
+
+// Kết nối MongoDB
+mongoose.connect('mongodb://localhost:27017/studyhub_db')
+  .then(() => console.log('Đã kết nối MongoDB thành công!'))
+  .catch(err => console.error('Lỗi kết nối:', err));
+
+// Định nghĩa lược đồ dữ liệu (Schema)
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  inStock: { type: Boolean, default: true }
+});
+
+const Product = mongoose.model('Product', productSchema);</code></pre>
+        </section>
+
+        <!-- Section 12 -->
+        <section id="sec-12" style="margin-top: 3rem;">
+          <h2>6.2 Tích hợp cơ sở dữ liệu SQL (PostgreSQL &amp; Sequelize / Prisma)</h2>
+          <p>Đối với cơ sở dữ liệu quan hệ (SQL) như PostgreSQL hay MySQL, <strong>Prisma</strong> là bộ công cụ ORM thế hệ mới được khuyên dùng nhất hiện nay nhờ khả năng gõ kiểu mạnh (Type-safe).</p>
+          
+          <h3>Sử dụng Prisma Client trong Express Controller:</h3>
+          <pre><code>const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+exports.getUserPosts = async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  try {
+    const posts = await prisma.post.findMany({
+      where: { authorId: userId },
+      include: { author: true } // Tự động JOIN liên kết bảng User
+    });
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};</code></pre>
+        </section>
+
+        <!-- Section 13 -->
+        <section id="sec-13" style="margin-top: 3rem;">
+          <h2>7.1 Bảo mật tài khoản (Bcrypt mật khẩu &amp; Cấp mã JWT)</h2>
+          <p>An ninh hệ thống đòi hỏi mật khẩu của người dùng không bao giờ được lưu dưới dạng văn bản thô (Plain text) trong cơ sở dữ liệu.</p>
+          
+          <h3>1. Mã hóa mật khẩu với Bcrypt</h3>
+          <p>Bcrypt sử dụng giải thuật băm một chiều (One-way hash) kèm Salt (muối) để mã hóa mật khẩu cực kỳ an toàn:</p>
+          <pre><code>const bcrypt = require('bcrypt');
+
+// Đăng ký: Băm mật khẩu để lưu vào DB
+const saltRounds = 10;
+const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
+
+// Đăng nhập: Đối chiếu mật khẩu người dùng nhập vào với DB
+const isMatch = await bcrypt.compare(loginPassword, user.password);</code></pre>
+
+          <h3>2. Cấp phát Token xác thực JSON Web Token (JWT)</h3>
+          <p>Sau khi đăng nhập thành công, server sẽ cấp cho client một chuỗi mã JWT đã được ký số bằng mã bí mật ở phía server:</p>
+          <pre><code>const jwt = require('jsonwebtoken');
+
+// Tạo token chứa ID người dùng và có hạn sử dụng 1 ngày
+const token = jwt.sign(
+  { id: user._id, role: user.role },
+  process.env.JWT_SECRET,
+  { expiresIn: '24h' }
+);</code></pre>
+        </section>
+
+        <!-- Section 14 -->
+        <section id="sec-14" style="margin-top: 3rem;">
+          <h2>7.2 Xây dựng Middleware bảo vệ Route truy cập</h2>
+          <p>Để ngăn chặn người dùng chưa đăng nhập truy cập các tài nguyên nhạy cảm, ta viết một middleware xác thực token JWT gửi kèm lên tiêu đề header:</p>
+          <pre><code>const jwt = require('jsonwebtoken');
+
+const authGuard = (req, res, next) => {
+  // Lấy token từ header Authorization (Thường ở dạng: Bearer <token>)
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Không tìm thấy token. Truy cập bị từ chối!' });
+  }
+
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified; // Lưu trữ thông tin đã giải mã vào req.user
+    next();
+  } catch (error) {
+    res.status(403).json({ error: 'Mã token không hợp lệ hoặc đã hết hạn!' });
+  }
+};
+
+// Áp dụng bảo vệ route
+app.get('/dashboard', authGuard, (req, res) => {
+  res.send(`Xin chào User có ID: ${req.user.id}`);
+});</code></pre>
+        </section>
+
+        <!-- Section 15 -->
+        <section id="sec-15" style="margin-top: 3rem;">
+          <h2>8.1 Môi trường Production &amp; Quản lý tiến trình PM2</h2>
+          <p>Khi đẩy dự án NodeJS lên máy chủ chạy thực tế (Production VPS/Cloud), việc dùng lệnh chạy thô <code>node app.js</code> có hai nhược điểm cực lớn: server sẽ sập ngay lập tức nếu xảy ra lỗi ngoại lệ chưa bắt (Unhandled exception) và không tận dụng được sức mạnh đa nhân của CPU.</p>
+
+          <h3>Trình quản lý tiến trình PM2</h3>
+          <p>PM2 giúp khắc phục triệt để bằng cơ chế giám sát tự động khởi động lại và cân bằng tải đa nhân CPU (Cluster mode).</p>
+          
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+            <p><strong>Các câu lệnh PM2 thiết yếu khi đi làm:</strong></p>
+            <ul>
+              <li style="margin-bottom: 0.5rem;"><code>npm install pm2 -g</code>: Cài đặt PM2 toàn cục hệ thống.</li>
+              <li style="margin-bottom: 0.5rem;"><code>pm2 start server.js --name "my-app"</code>: Khởi chạy dự án.</li>
+              <li style="margin-bottom: 0.5rem;"><code>pm2 start server.js -i max</code>: Chạy ở chế độ **Cluster Mode**, tự động nhân bản server tương ứng với số lõi CPU của VPS để tối đa hiệu năng.</li>
+              <li style="margin-bottom: 0.5rem;"><code>pm2 list</code>: Liệt kê danh sách các server đang chạy ngầm.</li>
+              <li style="margin-bottom: 0.5rem;"><code>pm2 logs</code>: Xem log lỗi và truy cập trực tiếp thời gian thực.</li>
+              <li style="margin-bottom: 0.5rem;"><code>pm2 stop/restart/delete all</code>: Điều khiển tắt, bật lại hoặc xóa tiến trình.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 16 -->
+        <section id="sec-16" style="margin-top: 3rem;">
+          <h2>8.2 Lộ trình phát triển Fullstack Backend thực tế</h2>
+          <p>Để trở thành một lập trình viên backend NodeJS vững tay nghề, bạn nên học tập theo trình tự lũy tiến sau:</p>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; margin-top: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">1</span>
+              <span><strong>Lõi Javascript &amp; Built-in module:</strong> Nắm vững Event Loop và xử lý đọc/ghi file, luồng dữ liệu (Streams).</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">2</span>
+              <span><strong>Thiết kế RESTful API với ExpressJS:</strong> Biết phân chia Routing, viết Controller, làm chủ Middleware và cơ chế bắt lỗi tập trung.</span>
+            </li>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">3</span>
+              <span><strong>Làm việc với Cơ sở dữ liệu:</strong> Tạo các thao tác CRUD và thiết lập liên kết dữ liệu quan hệ (Prisma/SQL) hoặc phi quan hệ (Mongoose/MongoDB).</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">4</span>
+              <span><strong>An ninh &amp; Bảo mật:</strong> Thực thi xác thực phiên làm việc người dùng bằng mã token JWT, băm mật khẩu bcrypt và thiết lập quyền truy cập.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px;">
+              <span style="background: var(--primary-color); color: #fff; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem;">5</span>
+              <span><strong>Mở rộng nâng cao đi làm:</strong> Tìm hiểu về Socket.io (Real-time), lập lịch tác vụ (Cron job), cấu hình caching Redis và làm quen với framework cấp tiến <strong>NestJS</strong> (TypeScript).</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

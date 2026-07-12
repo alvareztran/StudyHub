@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 8: Các kiểu Class đặc biệt trong Java - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 8</div>
+      <h1>CHƯƠNG 8: CÁC KIỂU CLASS ĐẶC BIỆT TRONG JAVA</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ cấu thiết kế nâng cao. Phân tích sự khác biệt của Abstract Class, Interface giao ước hành vi, cấu trúc Typesafe Enum, lớp lồng Inner Class, lớp ẩn danh Anonymous Class và bảng so sánh chi tiết.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html" class="active">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 8.1 -->
+        <div class="sub-section" id="sub-8-1">
+          <h3>8.1 Abstract Class (Lớp trừu tượng)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Abstract Class là lớp được khai báo kèm từ khóa <code>abstract</code>. Lớp này không thể khởi tạo đối tượng trực tiếp qua từ khóa <code>new</code> mà chỉ dùng làm lớp cha cơ sở cho các lớp con kế thừa mở rộng.</p>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Thiết lập bộ khung thuộc tính (fields) và hành vi chung cho các lớp con cùng dòng họ</li>
+            <li>Ép buộc các lớp con kế thừa bắt buộc phải định nghĩa lại các phương thức trừu tượng (abstract methods)</li>
+            <li>Hỗ trợ tối ưu hóa và tái sử dụng mã nguồn</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Abstract Class có thể chứa cả các phương thức rỗng không có code thân (Abstract Method) và phương thức có mã nguồn đầy đủ (Concrete Method).</p>
+          <p>Nếu một Class con kế thừa từ Abstract Class:</p>
+          <ul>
+            <li>Bắt buộc phải ghi đè (Override) toàn bộ các abstract methods của cha.</li>
+            <li>Hoặc nếu không ghi đè, bản thân lớp con đó cũng phải được khai báo là một <code>abstract class</code>.</li>
+          </ul>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>abstract class Animal {
+    abstract void sound(); // Phương thức abstract không có thân hàm
+
+    void sleep() {
+        System.out.println("Sleeping..."); // Phương thức concrete có thân hàm
+    }
+}</code></pre>
+          <p>Ràng buộc biên dịch:</p>
+          <ul>
+            <li>Không thể gọi: <code>Animal a = new Animal();</code> (Báo lỗi biên dịch)</li>
+            <li>Vẫn chứa Constructor bình thường để lớp con kế thừa gọi qua <code>super()</code></li>
+            <li>Chứa đầy đủ các thuộc tính và phương thức như lớp thông thường</li>
+          </ul>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>abstract class Animal {
+    abstract void sound();
+    void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Woof Woof");
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Thiết lập lớp thực thể cơ sở (Base Entity) lưu vết thời gian trong các bảng cơ sở dữ liệu:</p>
+          <pre><code>public abstract class BaseEntity {
+    protected LocalDateTime createdAt;
+    protected LocalDateTime updatedAt;
+
+    public void updateTimestamp() {
+        this.updatedAt = LocalDateTime.now();
+    }
+}
+
+public class User extends BaseEntity {
+    // Tự động có các thuộc tính createdAt, updatedAt và hàm updateTimestamp
+}</code></pre>
+        </div>
+
+        <!-- Section 8.2 -->
+        <div class="sub-section" id="sub-8-2">
+          <h3>8.2 Interface</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Interface là bản hợp đồng (giao kèo) thiết lập các hành vi bắt buộc mà các lớp triển khai phải tuân thủ.</p>
+          <p>Mục đích:</p>
+          <ul>
+            <li>Giải quyết bài toán đa kế thừa hành vi trong Java (một Class có thể thực thi nhiều Interface cùng lúc)</li>
+            <li>Giảm thiểu tối đa sự liên kết cứng (Loose Coupling) giữa các module nghiệp vụ</li>
+            <li>Nền tảng hỗ trợ cơ chế Dependency Injection của Spring Boot</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Kiến trúc thiết kế kết nối lỏng lẻo:</p>
+          <div class="ascii-art">
+             PaymentService (Interface)
+                 ├── PaypalServiceImpl (Implementation)
+                 ├── StripeServiceImpl (Implementation)
+                 └── MomoServiceImpl   (Implementation)</div>
+          <p>JVM sẽ tự động tìm kiếm và thực thi phương thức của lớp triển khai cụ thể được chọn chạy ở thời điểm Runtime.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>public interface Flyable {
+    void fly(); // Mặc định là public abstract method
+}
+
+public class Bird implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Bird is flying...");
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>interface Payment {
+    void pay();
+}
+
+class MomoPayment implements Payment {
+    @Override
+    public void pay() {
+        System.out.println("Thanh toán qua ví MoMo");
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Khai báo Interface Service phân tách lớp nghiệp vụ Service trong dự án Spring Boot:</p>
+          <pre><code>public interface UserService {
+    User findById(Long id);
+}
+
+@Service
+public class UserServiceImpl implements UserService {
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 8.3 -->
+        <div class="sub-section" id="sub-8-3">
+          <h3>8.3 Enum (Kiểu dữ liệu liệt kê)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Enum (Enumeration) là một kiểu dữ liệu đặc biệt dùng để biểu diễn một danh sách cố định hữu hạn các giá trị hằng số không đổi.</p>
+          <p>Mục đích:</p>
+          <ul>
+            <li>Loại bỏ việc sử dụng các chuỗi String hard-code dễ gõ sai chính tả</li>
+            <li>Đảm bảo tính an toàn kiểu dữ liệu cao (Typesafety)</li>
+            <li>Giúp mã nguồn rõ ràng, tự nhiên</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Thực chất, mỗi hằng số trong Enum được JVM biên dịch thành một thực thể đối tượng hằng (static final object) được khởi sinh duy nhất một lần khi ứng dụng khởi chạy.</p>
+          <p>Mã nguồn khi bạn viết:</p>
+          <pre><code>enum Role { ADMIN, STAFF }</code></pre>
+          <p>Được JVM hiểu ngầm định tương đương với cấu trúc class:</p>
+          <pre><code>public final class Role extends java.lang.Enum&lt;Role&gt; {
+    public static final Role ADMIN = new Role("ADMIN", 0);
+    public static final Role STAFF = new Role("STAFF", 1);
+}</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>enum Status {
+    PENDING,
+    APPROVED,
+    REJECTED
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>enum Gender {
+    MALE, FEMALE
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Gender gender = Gender.MALE;
+        System.out.println(gender); // MALE
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Kiểm tra quyền truy cập hệ thống của người dùng an toàn dữ liệu:</p>
+          <pre><code>public enum UserRole {
+    ADMIN, STAFF, CUSTOMER
+}
+
+// Xử lý logic check:
+if (user.getRole() == UserRole.ADMIN) {
+    System.out.println("Cho phép truy cập trang quản trị Admin");
+}</code></pre>
+        </div>
+
+        <!-- Section 8.4 -->
+        <div class="sub-section" id="sub-8-4">
+          <h3>8.4 Inner Class (Lớp lồng nhau)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Inner Class là một lớp được khai báo nằm bên trong phạm vi dấu ngoặc nhọn của một lớp khác (Outer Class).</p>
+          <p>Mục đích:</p>
+          <ul>
+            <li>Gom nhóm logic các class có mối liên hệ mật thiết khép kín vào cùng 1 nơi</li>
+            <li>Tăng tính đóng gói bảo mật (lớp ngoài có thể ẩn lớp trong hoàn toàn bằng private)</li>
+            <li>Giúp mã nguồn gọn gàng, giảm số lượng file class phụ</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Một Inner Class thông thường (phi tĩnh) sở hữu một tham chiếu ngầm định trỏ ngược về thực thể của Outer Class chứa nó. Nhờ vậy, Inner Class có toàn quyền truy xuất trực tiếp tới mọi thuộc tính và phương thức private của Outer Class.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>class Car {
+    private String brand = "Toyota";
+
+    class Engine {
+        void start() {
+            System.out.println(brand + " Engine is starting..."); // Gọi trực tiếp private brand
+        }
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Car {
+    private String brand;
+    public Car(String brand) { this.brand = brand; }
+
+    class Engine {
+        public void start() {
+            System.out.println(brand + " engine started!");
+        }
+    }
+}
+
+// Gọi khởi sinh:
+Car car = new Car("Honda");
+Car.Engine engine = car.new Engine(); // Khởi tạo thông qua thực thể car
+engine.start();</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Cấu trúc giao diện <code>Map.Entry&lt;K, V&gt;</code> dùng để duyệt Map thực chất là một Inner Interface nằm bên trong lớp cha <code>java.util.Map</code>.</p>
+        </div>
+
+        <!-- Section 8.5 -->
+        <div class="sub-section" id="sub-8-5">
+          <h3>8.5 Anonymous Class (Lớp vô danh)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Anonymous Class là lớp không có tên định danh cụ thể, được khai báo và khởi tạo thực thể trực tiếp cùng lúc ngay tại câu lệnh sử dụng.</p>
+          <p>Mục đích: Viết nhanh mã triển khai của một Interface hoặc ghi đè lớp khác chỉ để sử dụng duy nhất một lần, giúp tránh tạo file class vật lý phụ rác dự án.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khi biên dịch mã nguồn, trình biên dịch Java sẽ tự động tạo ra một file class bytecode riêng biệt cho lớp vô danh này với cách đặt tên tự sinh theo định dạng:</p>
+          <pre><code>OuterClassName$1.class
+OuterClassName$2.class</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>InterfaceName object = new InterfaceName() {
+    @Override
+    public void method() {
+        // Viết code thân triển khai ở đây
+    }
+};</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>interface Greeting {
+    void sayHello();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greeting = new Greeting() {
+            @Override
+            public void sayHello() {
+                System.out.println("Hello Java Anonymous Class");
+            }
+        };
+        greeting.sayHello();
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Trước khi Java 8 ra đời, Anonymous Class cực kỳ phổ biến khi lắng nghe sự kiện nút bấm Click hoặc tạo luồng chạy song song:</p>
+          <pre><code>button.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Nút đã được click!");
+    }
+});</code></pre>
+          <p>Ngày nay, hầu hết các biểu thức Anonymous Class này đã được viết tối giản thay thế bằng cú pháp <strong>Lambda Expression</strong> ngắn gọn:</p>
+          <pre><code>button.addActionListener(e -> System.out.println("Nút đã được click!"));</code></pre>
+        </div>
+
+        <!-- Section Compare -->
+        <div class="sub-section" id="compare-section">
+          <h3>So sánh Abstract Class và Interface</h3>
+          <table class="java-table" style="width: 100%; margin-top: 1rem;">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Abstract Class (Lớp trừu tượng)</th>
+                <th>Interface (Giao diện)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hàm khởi tạo (Constructor)</strong></td>
+                <td>Có thể chứa Constructor để lớp con gọi qua <code>super()</code>.</td>
+                <td>Tuyệt đối không chứa Constructor.</td>
+              </tr>
+              <tr>
+                <td><strong>Thuộc tính (Variables)</strong></td>
+                <td>Có thể chứa các thuộc tính thông thường với mọi access modifier.</td>
+                <td>Chỉ chứa hằng số mặc định là <code>public static final</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Kế thừa (Inheritance)</strong></td>
+                <td>Đơn kế thừa (lớp con chỉ <code>extends</code> duy nhất 1 lớp cha).</td>
+                <td>Đa thực thi (lớp con có thể <code>implements</code> nhiều interface).</td>
+              </tr>
+              <tr>
+                <td><strong>Phương thức (Methods)</strong></td>
+                <td>Chứa được cả phương thức abstract rỗng và concrete có code thân.</td>
+                <td>Mặc định là abstract method. Chỉ chứa code thân với hàm default/static (từ Java 8).</td>
+              </tr>
+              <tr>
+                <td><strong>Mục đích chính</strong></td>
+                <td>Thiết lập mối quan hệ gia đình hệ thống ("is-a"), chia sẻ code dùng chung.</td>
+                <td>Thiết lập bản hợp đồng cam kết các hành vi hệ thống ("can-do").</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Khi nào chọn sử dụng?</div>
+          <ul>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Chọn dùng Abstract Class:</strong> Khi các lớp có mối liên hệ gia đình rõ ràng (ví dụ: Chó, Mèo, Chim đều Kế thừa từ lớp Động Vật <code>Animal</code>), có nhu cầu dùng chung mã nguồn và cần lưu trữ các thuộc tính biến đổi trạng thái (state).
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Chọn dùng Interface:</strong> Khi bạn chỉ quan tâm đến việc quy chuẩn hành vi chung cho các lớp không có liên hệ gia đình (ví dụ: Hóa Đơn và Xe Hơi đều có khả năng <code>Printable</code> - in ấn), hoặc khi thiết kế kiến trúc các module nghiệp vụ kết nối lỏng lẻo (như Service, Repository).
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 4: Cấu trúc điều khiển - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 4</div>
+      <h1>CHƯƠNG 4: CẤU TRÚC ĐIỀU KHIỂN (CONTROL FLOW STATEMENTS)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ cấu rẽ nhánh và lặp. Khám phá các biểu thức điều kiện if-else, bộ chọn lọc switch truyền thống và Switch Expression hiện đại, vòng lặp for/while/do-while cùng cách điều hướng bằng break/continue.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html" class="active">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 4.1 -->
+        <div class="sub-section" id="sub-4-1">
+          <h3>4.1 if - else</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Cấu trúc điều kiện <code>if - else</code> cho phép chương trình rẽ sang các nhánh xử lý khác nhau tùy thuộc vào điều kiện biểu thức kiểm tra.</p>
+          <p>Khi điều kiện trả về giá trị logic là <code>true</code> thì khối lệnh trong khối <code>if</code> được thực thi. Ngược lại, nếu giá trị logic trả về là <code>false</code>, chương trình sẽ bỏ qua và thực hiện khối lệnh định nghĩa trong phần <code>else</code>.</p>
+          <p>Ứng dụng thực tế phổ biến:</p>
+          <ul>
+            <li>Kiểm tra tính hợp lệ của dữ liệu đầu vào (Validation)</li>
+            <li>Phân quyền người dùng (Authorization)</li>
+            <li>Kiểm tra trạng thái nghiệp vụ trước khi cập nhật DB</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>JVM tiến hành đánh giá biểu thức bên trong dấu ngoặc đơn của câu lệnh <code>if</code>. Biểu thức này bắt buộc phải trả về kiểu logic <code>boolean</code>.</p>
+          <div class="ascii-art">
+             Biểu thức điều kiện
+                 /        \
+          (True) /          \ (False)
+                v            v
+           Chạy khối if    Chạy khối else
+                \            /
+                 \---><-----/
+                      ↓
+             Chạy tiếp code phía sau</div>
+          <p>Khi gặp chuỗi điều kiện <code>if - else if - else</code> liên tiếp, JVM quét tuần tự từ trên xuống dưới. Ngay khi tìm thấy điều kiện khớp <code>true</code> đầu tiên, nó lập tức nhảy vào xử lý khối lệnh đó và bỏ qua hoàn toàn các nhánh <code>else if</code> hay <code>else</code> còn lại phía dưới.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>1. Cấu trúc if đơn:</p>
+          <pre><code>if (condition) {
+    // Thực thi khi condition là true
+}</code></pre>
+          <p>2. Cấu trúc if - else đôi:</p>
+          <pre><code>if (condition) {
+    // Thực thi khi condition là true
+} else {
+    // Thực thi khi condition là false
+}</code></pre>
+          <p>3. Cấu trúc lồng ghép nhiều nhánh if - else if - else:</p>
+          <pre><code>if (condition1) {
+    // Khối 1
+} else if (condition2) {
+    // Khối 2
+} else {
+    // Khối mặc định khi không có điều kiện nào đúng
+}</code></pre>
+          <p><strong>Quy tắc biên dịch nghiêm ngặt:</strong> Biểu thức điều kiện trong <code>if(...)</code> bắt buộc phải có kiểu trả về là <code>boolean</code>. Java không tự động coi các số nguyên khác không hoặc chuỗi không rỗng là true như ngôn ngữ JavaScript/C++.</p>
+          <pre><code>int age = 18;
+// LỖI BIÊN DỊCH: if (age) { ... }
+if (age >= 18) { ... } // Hợp lệ</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int age = 20;
+
+        if (age >= 18) {
+            System.out.println("Đủ tuổi");
+        } else {
+            System.out.println("Chưa đủ tuổi");
+        }
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Xử lý ném ngoại lệ khi dữ liệu rỗng hoặc tài khoản bị khóa trong nghiệp vụ API:</p>
+          <pre><code>if (user == null) {
+    throw new RuntimeException("Không tìm thấy thông tin tài khoản");
+}
+
+if (!user.isActive()) {
+    throw new RuntimeException("Tài khoản hiện đang bị khóa tạm thời");
+}
+
+// Kiểm tra so sánh mật khẩu mã hóa trong Spring Security:
+if (passwordEncoder.matches(password, user.getPassword())) {
+    // Tiến hành cấp phát token đăng nhập thành công
+}</code></pre>
+        </div>
+
+        <!-- Section 4.2 -->
+        <div class="sub-section" id="sub-4-2">
+          <h3>4.2 switch</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Cấu trúc rẽ nhánh <code>switch</code> được tối ưu hóa cho các tác vụ so sánh một biến đơn lẻ với nhiều giá trị không đổi khác nhau (cố định), giúp mã nguồn sạch hơn so với viết quá nhiều câu lệnh <code>if-else if</code> chồng chéo.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>JVM lấy giá trị của biểu thức truyền vào, so khớp trực tiếp với giá trị khai báo ở các nhánh <code>case</code>. Khi tìm thấy case khớp, nó thực hiện các dòng lệnh bên trong.</p>
+          <p><strong>Hiện tượng Fall-Through:</strong> Nếu ở cuối khối xử lý của case không có từ khóa ngắt lệnh <code>break</code>, JVM sẽ tiếp tục "trôi" tự do chạy tất cả các case bên dưới bất chấp giá trị so sánh có khớp hay không. Đây là lỗi logic thường gặp của lập trình viên.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>1. Cấu trúc Switch truyền thống:</p>
+          <pre><code>switch (expression) {
+    case value1:
+        // Lệnh xử lý 1
+        break; // Thoát switch
+    case value2:
+        // Lệnh xử lý 2
+        break;
+    default:
+        // Xử lý mặc định khi không khớp case nào
+}</code></pre>
+          <p>2. Cấu trúc Switch Expression hiện đại (Hỗ trợ từ Java 14+ giúp chống lỗi quên viết break):</p>
+          <pre><code>switch (day) {
+    case "MONDAY" -> System.out.println("Thứ Hai");
+    case "TUESDAY" -> System.out.println("Thứ Ba");
+    default -> System.out.println("Ngày chưa xác định");
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int month = 2;
+
+        switch (month) {
+            case 1:
+                System.out.println("January");
+                break;
+            case 2:
+                System.out.println("February");
+                break;
+            case 3:
+                System.out.println("March");
+                break;
+            default:
+                System.out.println("Unknown");
+        }
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Kiểm tra quyền truy cập menu dashboard theo phân quyền người dùng (Role):</p>
+          <pre><code>switch (user.getRole()) {
+    case ADMIN:
+        showAdminDashboard();
+        break;
+    case STAFF:
+        showStaffDashboard();
+        break;
+    case CUSTOMER:
+        showCustomerDashboard();
+        break;
+}</code></pre>
+        </div>
+
+        <!-- Section 4.3 -->
+        <div class="sub-section" id="sub-4-3">
+          <h3>4.3 for</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Vòng lặp <code>for</code> được sử dụng để thực hiện lặp đi lặp lại một khối lệnh với số lần lặp xác định trước.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Quy trình chạy tuần tự của vòng lặp for trong JVM:</p>
+          <div class="ascii-art">
+Khởi tạo giá trị biến đếm (int i = 0) -> Chạy duy nhất 1 lần đầu
+                     ↓
+┌───> Kiểm tra điều kiện (i < N)
+│                    ↓ (Nếu True)
+│            Thực thi khối lệnh
+│                    ↓
+│         Cập nhật biến đếm (i++)
+└────────────────────┘ (Quay lại kiểm tra)</div>
+          <p>Khi điều kiện kiểm tra trả về <code>false</code>, vòng lặp dừng ngay lập tức.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>for (initialization; condition; update) {
+    // Khối code lặp
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(i);
+        }
+    }
+}</code></pre>
+          <p>Kết quả đầu ra:</p>
+          <pre><code>1
+2
+3
+4
+5</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Duyệt qua danh sách đối tượng đọc từ Database và in ra thông tin email của họ:</p>
+          <pre><code>List&lt;User&gt; users = userRepository.findAll();
+
+// Duyệt bằng vòng lặp For-Each cải tiến (Enhanced For Loop)
+for (User user : users) {
+    System.out.println(user.getEmail());
+}</code></pre>
+        </div>
+
+        <!-- Section 4.4 -->
+        <div class="sub-section" id="sub-4-4">
+          <h3>4.4 while</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Vòng lặp <code>while</code> dùng để lặp lại một khối lệnh khi không biết trước chính xác số lần lặp. Vòng lặp sẽ tiếp tục chạy miễn là biểu thức điều kiện đầu vào còn đúng (<code>true</code>).</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>JVM tiến hành kiểm tra điều kiện trước. Nếu điều kiện đúng, khối lệnh trong thân <code>while</code> mới được chạy. Nếu điều kiện sai ngay từ đầu, khối lệnh sẽ không được chạy bất kỳ lần nào.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>while (condition) {
+    // Khối code lặp
+    // Bắt buộc phải có dòng code thay đổi trạng thái điều kiện để tránh lặp vô tận
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int i = 1;
+        while (i <= 5) {
+            System.out.println(i);
+            i++; // Tăng điều kiện
+        }
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Đọc tuần tự từng dòng văn bản từ file (không biết trước file dài bao nhiêu dòng):</p>
+          <pre><code>String line;
+while ((line = reader.readLine()) != null) {
+    System.out.println(line); // Đọc cho đến khi hết file (null)
+}
+
+// Đọc kết nối Socket nhận dữ liệu liên tục từ Client gửi về:
+while (socket.isConnected()) {
+    byte[] data = receiveBuffer();
+    process(data);
+}</code></pre>
+        </div>
+
+        <!-- Section 4.5 -->
+        <div class="sub-section" id="sub-4-5">
+          <h3>4.5 do while</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Vòng lặp <code>do while</code> tương tự như <code>while</code>, tuy nhiên điểm khác biệt lớn nhất là nó đảm bảo khối lệnh được **thực thi ít nhất một lần** trước khi kiểm tra điều kiện lặp.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>JVM chạy trực tiếp toàn bộ khối code nằm trong nhãn <code>do { ... }</code> trước. Sau đó, nó mới đi xuống nhãn <code>while(condition)</code> để đánh giá điều kiện. Nếu đúng, nó tiếp tục quay lên lặp; nếu sai, nó thoát vòng lặp.</p>
+          <ul>
+            <li><strong>Vòng lặp <code>while</code>:</strong> Kiểm tra điều kiện rồi mới chạy (Check-first).</li>
+            <li><strong>Vòng lặp <code>do-while</code>:</strong> Chạy trước rồi mới kiểm tra điều kiện (Execute-first).</li>
+          </ul>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>do {
+    // Khối code lặp
+} while (condition); // Bắt buộc phải có dấu chấm phẩy ";" ở cuối cùng</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int number = 1;
+        do {
+            System.out.println(number);
+            number++;
+        } while (number <= 5);
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Thiết lập màn hình hiển thị menu console chọn lựa dịch vụ và kiểm tra phản hồi người dùng nhập vào:</p>
+          <pre><code>int choice;
+do {
+    System.out.println("--- MENU LỰA CHỌN ---");
+    System.out.println("1. Đăng nhập hệ thống");
+    System.out.println("2. Đăng ký tài khoản");
+    System.out.println("0. Thoát chương trình");
+    
+    choice = scanner.nextInt(); // Nhập lựa chọn
+} while (choice != 0); // Vòng lặp chỉ dừng khi người dùng chủ động chọn 0</code></pre>
+        </div>
+
+        <!-- Section 4.6 -->
+        <div class="sub-section" id="sub-4-6">
+          <h3>4.6 break và continue</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <ul>
+            <li><strong><code>break</code>:</strong> Dùng để thoát hoàn toàn khỏi cấu trúc vòng lặp hoặc cấu trúc <code>switch</code> hiện tại chứa nó lập tức.</li>
+            <li><strong><code>continue</code>:</strong> Bỏ qua phần mã nguồn xử lý phía dưới của lượt lặp hiện tại để chuyển sang lượt lặp kế tiếp lập tức.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khi gặp <code>break</code>, JVM lập tức hủy bỏ vòng lặp và nhảy dòng lệnh thực thi xuống dòng tiếp theo nằm ngoài vòng lặp.</p>
+          <p>Khi gặp <code>continue</code>, JVM bỏ qua phần lệnh còn lại, quay ngược lại đầu vòng lặp để cập nhật biến đếm (đối với for) hoặc kiểm tra điều kiện lặp (đối với while).</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>break;</code></pre>
+          <pre><code>continue;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <p>1. Ví dụ dùng break (dừng khi gặp số 5):</p>
+          <pre><code>for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+        break; // Thoát vòng lặp
+    }
+    System.out.println(i);
+} // Chỉ in ra: 1, 2, 3, 4</code></pre>
+
+          <p>2. Ví dụ dùng continue (bỏ qua số 3):</p>
+          <pre><code>for (int i = 1; i <= 5; i++) {
+    if (i == 3) {
+        continue; // Bỏ qua in ra số 3, tiếp tục vòng lặp
+    }
+    System.out.println(i);
+} // In ra: 1, 2, 4, 5</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>1. Tối ưu hóa tìm kiếm phần tử trong danh sách:</p>
+          <pre><code>User foundUser = null;
+for (User user : users) {
+    if (user.getId().equals(targetId)) {
+        foundUser = user;
+        break; // Tìm thấy thì dừng ngay lập tức để tiết kiệm tài nguyên CPU
+    }
+}</code></pre>
+
+          <p>2. Lọc bỏ và chỉ xử lý các tài khoản người dùng đang hoạt động:</p>
+          <pre><code>for (User user : users) {
+    if (!user.isActive()) {
+        continue; // Tài khoản bị khóa thì bỏ qua, chuyển sang tài khoản kế tiếp
+    }
+    sendEmail(user); // Chỉ gửi email cho người dùng đang active
+}</code></pre>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

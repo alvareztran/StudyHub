@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Biến và kiểu dữ liệu - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 2</div>
+      <h1>CHƯƠNG 2: BIẾN VÀ KIỂU DỮ LIỆU</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cẩm nang xử lý dữ liệu. Tìm hiểu 8 kiểu dữ liệu nguyên thủy, kiểu tham chiếu heap pointer, quy tắc đặt tên biến, ép kiểu casting dữ liệu và cơ chế Autoboxing/Unboxing của Wrapper classes.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html" class="active">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 2.1 -->
+        <div class="sub-section" id="sub-2-1">
+          <h3>2.1 Primitive Data Types</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Primitive Data Types (Kiểu dữ liệu nguyên thủy) là các kiểu dữ liệu cơ bản được Java cung cấp sẵn để lưu trữ giá trị đơn giản như số nguyên, số thực, ký tự hoặc giá trị đúng/sai.</p>
+          <p>Java có tổng cộng <strong>8 kiểu dữ liệu nguyên thủy</strong>:</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Kiểu dữ liệu</th>
+                <th>Kích thước</th>
+                <th>Phạm vi giá trị</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>byte</code></td><td>1 byte</td><td>-128 đến 127</td></tr>
+              <tr><td><code>short</code></td><td>2 bytes</td><td>-32,768 đến 32,767</td></tr>
+              <tr><td><code>int</code></td><td>4 bytes</td><td>$-2^{31}$ đến $2^{31}-1$</td></tr>
+              <tr><td><code>long</code></td><td>8 bytes</td><td>$-2^{63}$ đến $2^{63}-1$</td></tr>
+              <tr><td><code>float</code></td><td>4 bytes</td><td>Số thực đơn chính xác (độ chính xác đơn)</td></tr>
+              <tr><td><code>double</code></td><td>8 bytes</td><td>Số thực kép chính xác (độ chính xác kép)</td></tr>
+              <tr><td><code>char</code></td><td>2 bytes</td><td>Ký tự đơn trong bảng mã Unicode</td></tr>
+              <tr><td><code>boolean</code></td><td>Phụ thuộc JVM</td><td><code>true</code> hoặc <code>false</code></td></tr>
+            </tbody>
+          </table>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Tiết kiệm tối đa bộ nhớ RAM</li>
+            <li>Tăng tốc độ tính toán thô của CPU (hiệu năng xử lý cao)</li>
+            <li>Thực hiện các phép toán học cơ bản trực tiếp</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Các biến thuộc kiểu nguyên thủy (Primitive variables) lưu trực tiếp giá trị thực tế của chúng bên trong các ô nhớ thuộc vùng nhớ Stack.</p>
+          <p>Ví dụ: <code>int age = 20;</code></p>
+          <div class="ascii-art">
+Bộ nhớ STACK
+[Biến age]
+┌────────┐
+│   20   │
+└────────┘ (Không trỏ địa chỉ bộ nhớ hay tạo đối tượng ở Heap)</div>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>datatype variableName = value;</code></pre>
+          <p>Ví dụ khai báo:</p>
+          <pre><code>int age = 20;
+double salary = 1500.5;
+char grade = 'A';
+boolean isActive = true;</code></pre>
+          <p><strong>Lưu ý bắt buộc khi viết code:</strong></p>
+          <ul>
+            <li>Kiểu <code>long</code> cần hậu tố <code>L</code> hoặc <code>l</code> phía sau giá trị: <code>long num = 9999999999L;</code></li>
+            <li>Kiểu <code>float</code> cần hậu tố <code>F</code> hoặc <code>f</code>: <code>float rate = 5.75F;</code></li>
+          </ul>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int age = 20;
+        double gpa = 3.5;
+        char grade = 'A';
+        boolean passed = true;
+
+        System.out.println(age);
+        System.out.println(gpa);
+        System.out.println(grade);
+        System.out.println(passed);
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Khai báo lưu trữ thông tin thực tế trong các hệ thống phần mềm doanh nghiệp:</p>
+          <pre><code>int userId = 1001;
+double accountBalance = 15000000.0;
+boolean isVerified = true;
+char gender = 'M';</code></pre>
+        </div>
+
+        <!-- Section 2.2 -->
+        <div class="sub-section" id="sub-2-2">
+          <h3>2.2 Reference Data Types</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Reference Data Types (Kiểu dữ liệu tham chiếu) là các kiểu dữ liệu lưu trữ địa chỉ bộ nhớ (con trỏ tham chiếu) trỏ đến một thực thể đối tượng thực tế nằm trên bộ nhớ Heap thay vì lưu trữ giá trị dữ liệu thô trực tiếp.</p>
+          <p>Các kiểu dữ liệu tham chiếu phổ biến:</p>
+          <ul>
+            <li><code>String</code> (Chuỗi ký tự)</li>
+            <li>Mảng (Array)</li>
+            <li>Các lớp tự định nghĩa (Class)</li>
+            <li>Interface</li>
+            <li>Enum</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Ví dụ: <code>String name = "Bang";</code></p>
+          <div class="ascii-art">
+Vùng nhớ STACK                       Vùng nhớ HEAP
+┌──────────────┐                     ┌─────────────────────┐
+│ name: 0x7a12 ├────────────────────>│ Address 0x7a12:     │
+└──────────────┘                     │ "Bang" (String Obj) │
+                                     └─────────────────────┘</div>
+          <p>Biến <code>name</code> nằm ở Stack chỉ chứa giá trị là địa chỉ bộ nhớ <code>0x7a12</code>. Khi gọi biến này, JVM tự động đi tìm theo địa chỉ ở Heap để đọc dữ liệu chuỗi thực tế.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>String name = "Bang";
+Person person = new Person();
+int[] numbers = {1, 2, 3};</code></pre>
+          <p><strong>Giá trị mặc định:</strong> Khác với kiểu nguyên thủy có giá trị mặc định bằng số hoặc false, giá trị mặc định của mọi biến kiểu tham chiếu khi không được gán khởi tạo là: <code>null</code>.</p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        String name = "Bang";
+        System.out.println(name);
+        System.out.println(name.length()); // Gọi được phương thức đi kèm của Object
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Xử lý dữ liệu nghiệp vụ thực tế trong Spring Boot:</p>
+          <pre><code>User user = new User();
+List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+// Tìm kiếm người dùng, nếu không có thì trả về tham chiếu null
+User userDb = userRepository.findById(id).orElse(null);</code></pre>
+        </div>
+
+        <!-- Section 2.3 -->
+        <div class="sub-section" id="sub-2-3">
+          <h3>2.3 Khai báo biến</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Biến là tên định danh đại diện cho một vùng nhớ bộ nhớ được hệ thống cấp phát để lưu trữ dữ liệu thay đổi trong suốt quá trình chạy chương trình.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khi thực hiện khai báo: <code>int age = 20;</code></p>
+          <p>JVM cấp phát ô nhớ 4 bytes tại Stack và gán giá trị nhị phân tương ứng với 20. Khi thực hiện ghi đè giá trị mới: <code>age = 25;</code>, giá trị 20 cũ bị ghi đè hoàn toàn và ô nhớ chứa giá trị mới là 25.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>1. Chỉ khai báo chưa khởi tạo:</p>
+          <pre><code>int age;</code></pre>
+          <p>2. Khai báo kèm khởi tạo giá trị:</p>
+          <pre><code>int age = 20;</code></pre>
+          <p>3. Khai báo nhiều biến cùng kiểu dữ liệu trên một dòng:</p>
+          <pre><code>int a = 1, b = 2, c = 3;</code></pre>
+          <p><strong>Quy tắc đặt tên biến trong Java:</strong></p>
+          <ul>
+            <li>Không bắt đầu đặt tên bằng số (Ví dụ sai: <code>1age</code>).</li>
+            <li>Không chứa các ký tự đặc biệt (Ví dụ sai: <code>@student</code>, <code>my-name</code>).</li>
+            <li>Sử dụng quy chuẩn đặt tên dạng <strong>camelCase</strong> (lạc đà) bắt đầu bằng chữ thường (Ví dụ đúng: <code>studentAge</code>, <code>totalPrice</code>, <code>isLogin</code>).</li>
+            <li>Tên phải mang ý nghĩa rõ ràng, mô tả đúng dữ liệu lưu giữ.</li>
+          </ul>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        String fullName = "Tran Vu Bang";
+        int age = 20;
+
+        System.out.println(fullName);
+        System.out.println(age);
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Thiết lập biến lưu trữ thông tin đăng nhập trong các form xử lý:</p>
+          <pre><code>String email = "bang@gmail.com";
+String password = "xxxx";
+boolean rememberMe = true;</code></pre>
+        </div>
+
+        <!-- Section 2.4 -->
+        <div class="sub-section" id="sub-2-4">
+          <h3>2.4 Type Casting (Ép kiểu dữ liệu)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Type Casting là quá trình chuyển đổi giá trị của một biến từ kiểu dữ liệu này sang một kiểu dữ liệu khác tương thích.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <h4>1. Ép kiểu tự động (Implicit / Widening Casting)</h4>
+          <p>Xảy ra khi chuyển từ kiểu dữ liệu có kích thước nhỏ sang kiểu lớn hơn:</p>
+          <div class="ascii-art">
+byte ──> short ──> int ──> long ──> float ──> double</div>
+          <p>JVM tự động thực thi chạy ngầm vì không có nguy cơ mất mát dữ liệu.</p>
+
+          <h4>2. Ép kiểu tường minh (Explicit / Narrowing Casting)</h4>
+          <p>Xảy ra khi chuyển từ kiểu dữ liệu có kích thước lớn về kiểu nhỏ hơn:</p>
+          <div class="ascii-art">
+double ──> float ──> long ──> int ──> short ──> byte</div>
+          <p>Lập trình viên phải ra lệnh tường minh. Quá trình này có thể dẫn tới tràn số hoặc mất phần thập phân sau số thực.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Cú pháp ép kiểu tự động:</p>
+          <pre><code>int a = 10;
+double b = a; // Tự động nhận giá trị b = 10.0</code></pre>
+          <p>Cú pháp ép kiểu tường minh:</p>
+          <pre><code>double x = 9.8;
+int y = (int) x; // Trích xuất và chỉ giữ phần nguyên y = 9</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int age = 20;
+        double ageDouble = age;
+        System.out.println(ageDouble); // 20.0
+
+        double salary = 9999.99;
+        int salaryInt = (int) salary;
+        System.out.println(salaryInt); // 9999 (bị mất 0.99)
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Lấy giá trị thực tế sau khi tính toán tiền tệ và làm tròn sang số nguyên để phân trang hoặc in hóa đơn:</p>
+          <pre><code>double totalAmount = 99999.99;
+int roundedAmount = (int) totalAmount; // roundedAmount = 99999</code></pre>
+        </div>
+
+        <!-- Section 2.5 -->
+        <div class="sub-section" id="sub-2-5">
+          <h3>2.5 Wrapper Classes</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Wrapper Class là lớp đối tượng được cung cấp để đóng gói (bao bọc) các kiểu dữ liệu nguyên thủy thô tương ứng thành các thực thể Object hoàn chỉnh.</p>
+          <p>Bảng đối chiếu kiểu nguyên thủy và Wrapper Class:</p>
+          <ul>
+            <li><code>byte</code> &rarr; <code>Byte</code></li>
+            <li><code>short</code> &rarr; <code>Short</code></li>
+            <li><code>int</code> &rarr; <code>Integer</code></li>
+            <li><code>long</code> &rarr; <code>Long</code></li>
+            <li><code>float</code> &rarr; <code>Float</code></li>
+            <li><code>double</code> &rarr; <code>Double</code></li>
+            <li><code>char</code> &rarr; <code>Character</code></li>
+            <li><code>boolean</code> &rarr; <code>Boolean</code></li>
+          </ul>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Bắt buộc khi sử dụng trong Collection Framework (chỉ nhận đối tượng)</li>
+            <li>Dùng trong khai báo Generic kiểu mẫu</li>
+            <li>Cung cấp nhiều hàm tĩnh tiện ích đi kèm (ví dụ: chuyển đổi kiểu chữ sang số)</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Biến kiểu nguyên thủy được cấp phát trực tiếp tại Stack. Biến kiểu Wrapper do bản chất là thực thể lớp (Object) nên giá trị thực tế được lưu trên Heap, còn Stack chỉ giữ địa chỉ trỏ sang Heap tương tự kiểu tham chiếu.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>Integer age = 20;
+Double salary = 1000.5;
+Boolean active = true;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        Integer number = 100;
+        System.out.println(number.doubleValue()); // Chuyển sang dạng double: 100.0
+        System.out.println(number.toString());    // Chuyển sang dạng chuỗi: "100"
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Khai báo cấu trúc danh sách trong dự án (Collection chỉ chấp nhận đối tượng Wrapper):</p>
+          <pre><code>// LỖI BIÊN DỊCH: List&lt;int&gt; numbers = new ArrayList&lt;&gt;();
+List&lt;Integer&gt; numbers = new ArrayList&lt;&gt;(); // Khai báo chuẩn xác</code></pre>
+        </div>
+
+        <!-- Section 2.6 -->
+        <div class="sub-section" id="sub-2-6">
+          <h3>2.6 Autoboxing và Unboxing</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <ul>
+            <li><strong>Autoboxing:</strong> Tiến trình Java tự động chuyển đổi từ kiểu dữ liệu nguyên thủy sang đối tượng Wrapper tương ứng.</li>
+            <li><strong>Unboxing:</strong> Tiến trình Java tự động chuyển ngược từ thực thể đối tượng Wrapper về kiểu dữ liệu nguyên thủy thô.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Trình biên dịch Java tự động dịch chuyển đổi code khi build chương trình chạy ngầm:</p>
+          <p>1. Khi viết code: <code>Integer number = 10;</code> (Autoboxing)</p>
+          <p>Trình biên dịch dịch thành: <code>Integer number = Integer.valueOf(10);</code></p>
+          <p>2. Khi viết code: <code>int x = number;</code> (Unboxing)</p>
+          <p>Trình biên dịch dịch thành: <code>int x = number.intValue();</code></p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>Integer x = 10; // Autoboxing
+int y = x;      // Unboxing</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        Integer age = 20; // Autoboxing
+        int value = age;  // Unboxing
+        System.out.println(value);
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Cơ chế tự động chuyển đổi giúp lập trình viên thao tác cực kỳ tự nhiên khi nạp dữ liệu thô vào Collection:</p>
+          <pre><code>List&lt;Integer&gt; scores = new ArrayList&lt;&gt;();
+
+scores.add(10); // Thực tế JVM chạy: scores.add(Integer.valueOf(10));
+scores.add(20);
+
+int score = scores.get(0); // Thực tế JVM chạy: scores.get(0).intValue();</code></pre>
+          <p>Nhờ cơ chế này, mã nguồn dự án của bạn sạch sẽ hơn rất nhiều vì không cần gọi ép kiểu thủ công liên tục.</p>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

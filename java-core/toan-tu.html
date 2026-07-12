@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 3: Toán tử (Operators) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 3</div>
+      <h1>CHƯƠNG 3: TOÁN TỬ (OPERATORS)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ sở biểu thức điều kiện. Tìm hiểu các toán tử số học, toán tử so sánh logic, cơ chế đánh giá ngắn mạch Short-Circuit, toán tử gán tích hợp và toán tử ba ngôi (Ternary).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html" class="active">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 3.1 -->
+        <div class="sub-section" id="sub-3-1">
+          <h3>3.1 Arithmetic Operators (Toán tử số học)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Toán tử số học được sử dụng để thực hiện các phép tính toán học cơ bản như cộng, trừ, nhân, chia và chia lấy dư.</p>
+          <p>Các toán tử số học trong Java:</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>+</code></td><td>Phép toán Cộng</td></tr>
+              <tr><td><code>-</code></td><td>Phép toán Trừ</td></tr>
+              <tr><td><code>*</code></td><td>Phép toán Nhân</td></tr>
+              <tr><td><code>/</code></td><td>Phép toán Chia</td></tr>
+              <tr><td><code>%</code></td><td>Phép toán Chia lấy dư (Modulo)</td></tr>
+              <tr><td><code>++</code></td><td>Tăng giá trị lên 1 đơn vị</td></tr>
+              <tr><td><code>--</code></td><td>Giảm giá trị đi 1 đơn vị</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Đối với phép toán chia hai số nguyên (<code>int</code>, <code>long</code>, <code>short</code>, <code>byte</code>), Java tự động loại bỏ hoàn toàn phần thập phân của kết quả:</p>
+          <pre><code>int a = 5;
+int b = 2;
+System.out.println(a / b); // Kết quả hiển thị: 2</code></pre>
+          <p>Để nhận giá trị thực có phần thập phân đầy đủ, bạn bắt buộc phải ép kiểu ít nhất một số hạng sang kiểu số thực (<code>double</code> hoặc <code>float</code>):</p>
+          <pre><code>System.out.println((double) a / b); // Kết quả hiển thị: 2.5</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>result = operand1 operator operand2;</code></pre>
+          <p>Ví dụ cú pháp:</p>
+          <pre><code>int sum = a + b;
+int product = a * b;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 3;
+
+        System.out.println("a + b = " + (a + b));
+        System.out.println("a - b = " + (a - b));
+        System.out.println("a * b = " + (a * b));
+        System.out.println("a / b = " + (a / b));
+        System.out.println("a % b = " + (a % b));
+    }
+}</code></pre>
+          <p>Kết quả đầu ra:</p>
+          <pre><code>a + b = 13
+a - b = 7
+a * b = 30
+a / b = 3
+a % b = 1</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Tính tổng giá trị đơn hàng thực tế của khách hàng:</p>
+          <pre><code>double price = 120000.0;
+int quantity = 3;
+double total = price * quantity;
+System.out.println("Tổng tiền: " + total);</code></pre>
+        </div>
+
+        <!-- Section 3.2 -->
+        <div class="sub-section" id="sub-3-2">
+          <h3>3.2 Relational Operators (Toán tử so sánh)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Toán tử so sánh được sử dụng để đối chiếu, so sánh quan hệ giữa hai giá trị số hạng và trả về kết quả kiểu <code>boolean</code>.</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>==</code></td><td>Bằng nhau</td></tr>
+              <tr><td><code>!=</code></td><td>Khác nhau (Không bằng)</td></tr>
+              <tr><td><code>&gt;</code></td><td>Lớn hơn</td></tr>
+              <tr><td><code>&lt;</code></td><td>Nhỏ hơn</td></tr>
+              <tr><td><code>&gt;=</code></td><td>Lớn hơn hoặc bằng</td></tr>
+              <tr><td><code>&lt;=</code></td><td>Nhỏ hơn hoặc bằng</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Các biểu thức so sánh này khi được JVM đánh giá sẽ luôn luôn chỉ trả về một trong hai kết quả logic duy nhất: <code>true</code> hoặc <code>false</code>.</p>
+          <pre><code>int age = 20;
+System.out.println(age >= 18); // JVM xuất ra: true</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>expression1 relationalOperator expression2</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>age >= 18;
+salary > 10000000;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+
+        System.out.println(a == b); // false
+        System.out.println(a != b); // true
+        System.out.println(a &lt; b);  // true
+        System.out.println(a >= b); // false
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Kiểm tra độ tuổi đăng ký tài khoản hợp lệ của thành viên:</p>
+          <pre><code>int age = 17;
+boolean canRegister = age >= 18;
+System.out.println(canRegister); // false</code></pre>
+        </div>
+
+        <!-- Section 3.3 -->
+        <div class="sub-section" id="sub-3-3">
+          <h3>3.3 Logical Operators (Toán tử logic)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Toán tử logic dùng để kết hợp nhiều biểu thức so sánh đơn lẻ lại với nhau để tạo ra các điều kiện logic phức tạp.</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Ý nghĩa logic</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>&amp;&amp;</code></td><td>Toán tử VÀ (AND)</td></tr>
+              <tr><td><code>||</code></td><td>Toán tử HOẶC (OR)</td></tr>
+              <tr><td><code>!</code></td><td>Toán tử PHỦ ĐỊNH (NOT)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <h4>1. Bảng chân trị toán tử AND (<code>&amp;&amp;</code>)</h4>
+          <p>Chỉ trả về <code>true</code> khi tất cả mọi điều kiện thành phần đều đúng.</p>
+          <table class="java-table">
+            <thead><tr><th>A</th><th>B</th><th>A &amp;&amp; B</th></tr></thead>
+            <tbody>
+              <tr><td>true</td><td>true</td><td><strong>true</strong></td></tr>
+              <tr><td>true</td><td>false</td><td>false</td></tr>
+              <tr><td>false</td><td>true</td><td>false</td></tr>
+              <tr><td>false</td><td>false</td><td>false</td></tr>
+            </tbody>
+          </table>
+
+          <h4>2. Bảng chân trị toán tử OR (<code>||</code>)</h4>
+          <p>Trả về <code>true</code> khi chỉ cần ít nhất một điều kiện thành phần đúng.</p>
+          <table class="java-table">
+            <thead><tr><th>A</th><th>B</th><th>A || B</th></tr></thead>
+            <tbody>
+              <tr><td>true</td><td>true</td><td><strong>true</strong></td></tr>
+              <tr><td>true</td><td>false</td><td><strong>true</strong></td></tr>
+              <tr><td>false</td><td>true</td><td><strong>true</strong></td></tr>
+              <tr><td>false</td><td>false</td><td>false</td></tr>
+            </tbody>
+          </table>
+
+          <h4>3. Cơ chế đánh giá ngắn mạch (Short-Circuit Evaluation)</h4>
+          <p>Đây là cơ chế tối ưu hiệu năng chạy của JVM. Ví dụ:</p>
+          <pre><code>int a = 5;
+if (a > 10 &amp;&amp; a / 0 > 1) {
+    System.out.println("Hello");
+}</code></pre>
+          <p>Ở điều kiện trên, vế trái <code>a &gt; 10</code> trả về <code>false</code>. Vì đây là toán tử <code>&amp;&amp;</code>, JVM biết chắc kết quả cuối cùng luôn là <code>false</code> nên lập tức dừng lại, bỏ qua không kiểm tra vế phải <code>a / 0 &gt; 1</code>. Nhờ vậy, chương trình không bị lỗi chia cho 0 (ArithmeticException) làm sập hệ thống.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>condition1 &amp;&amp; condition2
+condition1 || condition2
+!condition</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int age = 20;
+        boolean verified = true;
+        boolean canLogin = age >= 18 &amp;&amp; verified;
+        System.out.println(canLogin); // true
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Kiểm tra quyền truy cập vào chức năng admin quản lý:</p>
+          <pre><code>boolean isAdmin = true;
+boolean isActive = true;
+
+if (isAdmin &amp;&amp; isActive) {
+    System.out.println("Hệ thống cho phép truy cập admin");
+}</code></pre>
+        </div>
+
+        <!-- Section 3.4 -->
+        <div class="sub-section" id="sub-3-4">
+          <h3>3.4 Assignment Operators (Toán tử gán)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Toán tử gán dùng để lưu trữ giá trị từ vế phải vào ô nhớ của biến ở vế trái. Hỗ trợ các cú pháp gán tích hợp số học giúp mã nguồn ngắn gọn hơn.</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Cú pháp viết tương đương</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>=</code></td><td><code>a = b</code> (Gán trực tiếp)</td></tr>
+              <tr><td><code>+=</code></td><td><code>a = a + b</code></td></tr>
+              <tr><td><code>-=</code></td><td><code>a = a - b</code></td></tr>
+              <tr><td><code>*=</code></td><td><code>a = a * b</code></td></tr>
+              <tr><td><code>/=</code></td><td><code>a = a / b</code></td></tr>
+              <tr><td><code>%=</code></td><td><code>a = a % b</code></td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Khi compiler gặp câu lệnh gán phức <code>a += 5;</code>, nó sẽ biên dịch ngầm thành <code>a = a + 5;</code>, lấy giá trị hiện tại của biến, cộng thêm 5 và cập nhật ghi đè lại vào ô nhớ của biến đó.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>variable operator value;</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>score += 10;
+quantity -= 2;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int score = 50;
+        score += 10; // score = 60
+        score -= 5;  // score = 55
+        score *= 2;  // score = 110
+        System.out.println(score); // 110
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Cập nhật lại số lượng sản phẩm tăng thêm trong giỏ hàng:</p>
+          <pre><code>int quantity = 1;
+quantity += 2; // Khách hàng tăng thêm 2 sản phẩm
+System.out.println("Số lượng sản phẩm: " + quantity);</code></pre>
+        </div>
+
+        <!-- Section 3.5 -->
+        <div class="sub-section" id="sub-3-5">
+          <h3>3.5 Ternary Operator (Toán tử ba ngôi)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Toán tử ba ngôi là cú pháp rút gọn viết trên một dòng của câu lệnh điều kiện <code>if-else</code> cơ bản nhằm trả về một giá trị duy nhất.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Dòng code:</p>
+          <pre><code>String result = age >= 18 ? "Adult" : "Child";</code></pre>
+          <p>Thực tế khi biên dịch sang mã máy hoạt động hoàn toàn tương đồng với khối điều kiện:</p>
+          <pre><code>String result;
+if (age >= 18) {
+    result = "Adult";
+} else {
+    result = "Child";
+}</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>variable = condition ? value1 : value2;</code></pre>
+          <p><strong>Quy tắc lập trình sạch (Clean Code):</strong> Chỉ nên sử dụng toán tử 3 ngôi khi biểu thức điều kiện ngắn gọn, rõ ràng. Tuyệt đối không lồng nhiều toán tử 3 ngôi vào nhau (ví dụ: <code>a ? b : c ? d : e</code>) vì sẽ làm code cực kỳ rối và khó bảo trì.</p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int age = 20;
+        String status = age >= 18 ? "Đủ tuổi" : "Chưa đủ tuổi";
+        System.out.println(status); // Đủ tuổi
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Hiển thị trạng thái của tài khoản người dùng hoặc xử lý tránh lỗi tham chiếu rỗng (NullPointerException):</p>
+          <pre><code>boolean active = true;
+String accountStatus = active ? "Tài khoản đang hoạt động" : "Tài khoản đã bị khóa";
+
+// Tránh lỗi null khi hiển thị ảnh đại diện (avatar)
+String avatar = user.getAvatar() != null ? user.getAvatar() : "default-avatar.png";</code></pre>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

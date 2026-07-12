@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 27: JVM Internals - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 27</div>
+      <h1>CHƯƠNG 27: JVM INTERNALS</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế vận hành của máy ảo Java. Khảo sát luồng nạp Class Loader, quy chuẩn thu hồi rác Garbage Collection phân vùng (Minor/Major/Full GC) và mô hình Java Memory Model.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html" class="active">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- JVM Introduction -->
+        <div class="sub-section" id="jvm-overview">
+          <h3>Tổng quan Máy ảo Java (JVM)</h3>
+
+          <div class="block-title">Khái niệm và vai trò</div>
+          <p><strong>JVM (Java Virtual Machine - Máy ảo Java)</strong> là môi trường thực thi ảo hóa bytecode của Java, chịu trách nhiệm chuyển dịch file trung gian <code>.class</code> thành mã máy (Machine Code) tương thích với hệ điều hành và CPU vật lý bên dưới. Đây là nền tảng của khẩu hiệu huyền thoại **"Write Once, Run Anywhere"**.</p>
+          <div class="ascii-art">
+[ Java Code .java ] ──( javac )──> [ Bytecode .class ] ──( Class Loader )
+                                                               │
+                                                               ▼ (Quét RAM)
+[ CPU thực thi ] ◄── Machine Code ◄── Execution Engine ◄── Runtime Data Areas</div>
+        </div>
+
+        <!-- Section 27.1 -->
+        <div class="sub-section" id="sub-27-1">
+          <h3>27.1 Class Loader Subsystem (Hệ thống nạp Class)</h3>
+
+          <div class="block-title">Vòng đời nạp Class vào bộ nhớ</div>
+          <p>Quá trình Class Loader tải tệp bytecode lên RAM diễn ra qua 3 giai đoạn độc lập:</p>
+          <ol>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Loading (Nạp tệp):</strong> Đọc file vật lý <code>.class</code> từ ổ đĩa và ánh xạ thành cấu trúc nhị phân <code>java.lang.Class</code> lưu trữ ở vùng nhớ Metaspace (Method Area).
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Linking (Liên kết):</strong>
+              <ul>
+                <li><em>Verification:</em> Kiểm tra tính hợp lệ của bytecode, đảm bảo an ninh hệ thống (không chọc phá ô nhớ bất hợp pháp).</li>
+                <li><em>Preparation:</em> Cấp phát vùng nhớ cho các biến static và gán <strong>giá trị mặc định ban đầu</strong> (ví dụ: static int được gán bằng 0).</li>
+                <li><em>Resolution:</em> Chuyển đổi Symbolic References (tham chiếu ký hiệu bằng chuỗi) trong bytecode thành Direct References (địa chỉ ô nhớ vật lý trực tiếp).</li>
+              </ul>
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Initialization (Khởi tạo):</strong> Chạy khối mã static block <code>static { ... }</code> và gán <strong>giá trị thực tế</strong> cho các biến static (ví dụ gán static int từ 0 thành giá trị cấu hình thực tế).
+            </li>
+          </ol>
+
+          <div class="block-title">Mô hình phân quyền ủy thác (Parent Delegation Model)</div>
+          <p>JVM tổ chức Class Loader phân cấp theo hình cây. Khi nhận yêu cầu nạp Class, Loader hiện tại luôn ủy quyền kiểm tra lên Loader cha trước, nếu cha không tìm thấy thì con mới tự quét nạp:</p>
+          <div class="ascii-art">
+[ Bootstrap ClassLoader ] (Nạp gói lõi jdk: java.lang.*, java.util.*)
+           ▲ (Ủy quyền ngược lên)
+[ Platform ClassLoader ] (Nạp các gói mở rộng extension)
+           ▲ (Ủy quyền ngược lên)
+[ Application ClassLoader ] (Nạp class trong source code của lập trình viên)</div>
+          <p><strong>Lợi ích:</strong> Ngăn chặn việc ghi đè bất hợp pháp lên các class hệ thống (ví dụ: hacker cố tình định nghĩa class <code>java.lang.String</code> giả mạo).</p>
+        </div>
+
+        <!-- Section 27.2, 27.3 & 27.4 -->
+        <div class="sub-section" id="sub-27-2-3-4">
+          <h3>27.2 Garbage Collection (Minor GC vs Major GC)</h3>
+
+          <div class="block-title">Cơ chế phát hiện rác - Reachability Analysis</div>
+          <p>Java sử dụng cơ chế dọn rác tự động thông qua bộ **Garbage Collector (GC)**. Để xác định đối tượng nào đã chết, GC dùng thuật toán phân tích khả năng tiếp cận (Reachability Analysis) xuất phát từ các điểm gốc **GC Roots** (Biến cục bộ Stack, luồng đang chạy Active Thread, biến tĩnh Static). Nếu đối tượng không có đường đi kết nối tới GC Roots, nó lập tức bị coi là rác.</p>
+
+          <div class="block-title">Phân chia vùng nhớ trong Java Heap</div>
+          <div class="ascii-art">
+ ┌───────────────────────────────── HEAP MEMORY ──────────────────────────────────┐
+ │      Young Generation (Chứa đối tượng ngắn hạn)       │    Old Generation     │
+ │ ┌───────────────────┬──────────────┬────────────────┐ │ (Đối tượng sống lâu)  │
+ │ │    Eden Space     │ Survivor S0  │  Survivor S1   │ │                       │
+ └─┴───────────────────┴──────────────┴────────────────┴─┴───────────────────────┘</div>
+
+          <div class="block-title">Sự khác biệt giữa Minor GC và Major GC</div>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Minor GC (Young Gen GC)</th>
+                <th>Major GC (Old Gen GC)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Phân vùng xử lý</strong></td>
+                <td>Chỉ quét dọn vùng <strong>Young Generation</strong> (Eden, S0, S1).</td>
+                <td>Quét dọn vùng <strong>Old Generation</strong>.</td>
+              </tr>
+              <tr>
+                <td><strong>Cơ chế thăng hạng</strong></td>
+                <td>Object mới sinh nằm ở Eden. Sau mỗi lần Minor GC còn sống sót sẽ tăng tuổi, chuyển qua S0/S1.</td>
+                <td>Object vượt qua ngưỡng tuổi quy định (mặc định là 15 tuổi) sẽ thăng hạng lên Old Gen.</td>
+              </tr>
+              <tr>
+                <td><strong>Tần suất &amp; Pause Time</strong></td>
+                <td>Xử lý rất thường xuyên, tốc độ dọn dẹp cực nhanh (Pause time nhỏ).</td>
+                <td>Ít xảy ra hơn, thời gian xử lý rất lâu và có thể làm đóng băng app (Stop The World).</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Full GC:</strong> Là chu trình dọn dẹp toàn diện dọn sạch cả Young Gen, Old Gen và Metaspace. Đây là tác vụ đắt đỏ nhất và có nguy cơ gây trễ (latency) nghiêm trọng cho ứng dụng Backend.</p>
+        </div>
+
+        <!-- Section 27.5 -->
+        <div class="sub-section" id="sub-27-5">
+          <h3>27.5 Java Memory Model (JMM)</h3>
+
+          <div class="block-title">Tính năng và vai trò của JMM</div>
+          <p>Java Memory Model định nghĩa các quy tắc kiểm soát luồng đọc/ghi dữ liệu của các Thread giữa bộ nhớ làm việc riêng của CPU (Working Memory) và bộ nhớ chính của RAM (Main Memory).</p>
+
+          <div class="block-title">Khái niệm Happens-Before Relationship</div>
+          <p>Happens-before là tập quy tắc của JMM nhằm đảm bảo rằng các thao tác ghi dữ liệu của Thread A tại một thời điểm chắc chắn sẽ hiển thị thấy được (visible) đối với thao tác đọc dữ liệu của Thread B sau đó. Ví dụ: Thao tác mở khóa `unlock` một Monitor Lock luôn xảy ra trước (`happens-before`) thao tác `lock` tiếp theo trên cùng một lock.</p>
+
+          <div class="block-title">Các tiêu chuẩn cốt lõi</div>
+          <ul>
+            <li style="margin-bottom: 0.5rem;"><strong>Atomicity (Tính nguyên tử):</strong> Đảm bảo tác vụ chạy trọn vẹn không bị ngắt quãng giữa chừng (ví dụ dùng block <code>synchronized</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Visibility (Tính hiển thị):</strong> Đảm bảo thay đổi giá trị của Thread A hiển thị tức thì sang Thread B (ví dụ dùng biến <code>volatile</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Ordering (Tính thứ tự):</strong> Ngăn chặn JVM và CPU tự ý sắp xếp lại thứ tự thực hiện câu lệnh (Instruction Reordering) làm biến đổi logic của mã nguồn đa luồng.</li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

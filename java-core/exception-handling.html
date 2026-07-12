@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 10: Exception Handling - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 10</div>
+      <h1>CHƯƠNG 10: EXCEPTION HANDLING (XỬ LÝ NGOẠI LỆ)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế kiểm soát và phòng ngừa lỗi runtime. Tìm hiểu mô hình phân cấp Exception, sự khác biệt Checked vs Unchecked Exception, cấu trúc try-catch-finally nâng cao và xây dựng Custom Exception thực tế.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html" class="active">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 10.1 -->
+        <div class="sub-section" id="sub-10-1">
+          <h3>10.1 Exception là gì</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Exception (Ngoại lệ) là một sự kiện bất thường xảy ra trong quá trình thực thi chương trình, làm gián đoạn hoặc phá hỏng luồng chạy tuần tự bình thường của mã nguồn.</p>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Ngăn chặn hệ thống bị sập hay dừng chạy đột ngột khi gặp lỗi thô (Graceful Degradation)</li>
+            <li>Định nghĩa cơ chế ghi lại thông tin lỗi chi tiết giúp phục vụ việc gỡ lỗi (Debugging)</li>
+            <li>Tách rời mã nguồn xử lý nghiệp vụ chính và mã nguồn xử lý lỗi giúp hệ thống sạch hơn</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong (Lan truyền ngoại lệ - Exception Propagation)</div>
+          <p>Khi một lỗi xảy ra trong phương thức, JVM tạo ra một đối tượng Exception chứa thông tin lỗi và bắt đầu tìm kiếm khối xử lý:</p>
+          <div class="ascii-art">
+Phương thức hiện tại phát sinh lỗi
+                 ↓
+JVM tìm kiếm khối catch tại phương thức này
+                 ├── Có catch khớp → Nhảy vào xử lý lỗi
+                 └── Không có catch
+                         ↓ (Lan truyền ngược về nơi gọi hàm - Propagation)
+                 Tiếp tục đẩy Exception lên phương thức cha gọi nó
+                 ...
+                 Không có bất kỳ nơi nào bắt catch
+                         ↓
+                 JVM dừng luồng chạy đột ngột, in ra Stack Trace lỗi.</div>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Ví dụ một lỗi chia số học cho 0:</p>
+          <pre><code>int result = 10 / 0; // JVM lập tức ném ra ArithmeticException</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 0;
+        int result = a / b; // Chương trình sập tại đây
+        System.out.println(result);
+    }
+}</code></pre>
+          <p>Màn hình console báo lỗi sập:</p>
+          <pre><code>Exception in thread "main" java.lang.ArithmeticException: / by zero</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Chủ động ném ngoại lệ khi không tìm thấy dữ liệu người dùng yêu cầu:</p>
+          <pre><code>User user = userRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng này!"));</code></pre>
+        </div>
+
+        <!-- Section 10.2 -->
+        <div class="sub-section" id="sub-10-2">
+          <h3>10.2 Checked Exception</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Checked Exception là những ngoại lệ phát sinh ngoài tầm kiểm soát của ứng dụng và **bắt buộc phải được kiểm tra (xử lý)** ngay tại thời điểm biên dịch code (Compile Time).</p>
+          <p>Các Checked Exception phổ biến:</p>
+          <ul>
+            <li><code>IOException</code> (Lỗi vào ra dữ liệu luồng)</li>
+            <li><code>SQLException</code> (Lỗi truy vấn cơ sở dữ liệu)</li>
+            <li><code>FileNotFoundException</code> (Không tìm thấy tệp tin vật lý)</li>
+            <li><code>ParseException</code> (Lỗi chuyển đổi kiểu dữ liệu ngày tháng)</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Nếu bạn viết một câu lệnh đọc file thô:</p>
+          <pre><code>FileReader reader = new FileReader("data.txt");</code></pre>
+          <p>Trình biên dịch Java phát hiện dòng code này có nguy cơ lỗi hệ thống tệp tin bên ngoài nên lập tức báo lỗi đỏ, bắt buộc bạn phải viết bao bọc nó trong <code>try-catch</code> hoặc khai báo <code>throws</code> ở signature của hàm mới cho phép build dự án.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Có 2 cách giải quyết bắt buộc:</p>
+          <p><strong>Cách 1:</strong> Bao bọc xử lý trực tiếp bằng <code>try-catch</code>:</p>
+          <pre><code>try {
+    FileReader reader = new FileReader("data.txt");
+} catch (FileNotFoundException e) {
+    System.out.println("Hãy kiểm tra lại đường dẫn file");
+}</code></pre>
+          <p><strong>Cách 2:</strong> Khai báo né tránh lỗi thông qua từ khóa <code>throws</code> ở chữ ký phương thức để đẩy trách nhiệm cho nơi gọi nó xử lý:</p>
+          <pre><code>public void readFile() throws FileNotFoundException {
+    FileReader reader = new FileReader("data.txt");
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Khai báo API xuất dữ liệu báo cáo sang file Excel có rủi ro luồng ghi:</p>
+          <pre><code>public void exportExcelReport() throws IOException {
+    // Code xử lý ghi workbook xuất file
+}</code></pre>
+        </div>
+
+        <!-- Section 10.3 -->
+        <div class="sub-section" id="sub-10-3">
+          <h3>10.3 Unchecked Exception (Runtime Exception)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Unchecked Exception là những ngoại lệ phát sinh trong suốt quá trình chạy chương trình (Runtime), thường xảy ra do lỗi logic trong code của lập trình viên.</p>
+          <p>Trình biên dịch **không bắt buộc** bạn phải khai báo xử lý lỗi Unchecked bằng try-catch khi viết code.</p>
+          <p>Các Unchecked Exception phổ biến:</p>
+          <ul>
+            <li><code>NullPointerException</code> (Lỗi tham chiếu con trỏ null)</li>
+            <li><code>ArithmeticException</code> (Lỗi số học như chia cho 0)</li>
+            <li><code>ArrayIndexOutOfBoundsException</code> (Lỗi chỉ số index mảng nằm ngoài phạm vi)</li>
+            <li><code>IllegalArgumentException</code> (Truyền đối số đầu vào không hợp lệ)</li>
+            <li><code>NumberFormatException</code> (Ép chuỗi không phải chữ số sang số nguyên)</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Tất cả Unchecked Exception đều kế thừa từ lớp cha <code>java.lang.RuntimeException</code>. Lỗi chỉ được phát hiện khi luồng dữ liệu lỗi chạy qua dòng lệnh thực tế lúc vận hành hệ thống.</p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        String data = "abc";
+        int number = Integer.parseInt(data); // Ném ra NumberFormatException tại Runtime
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Chủ động ném ngoại lệ Runtime khi tham số truyền vào từ client vi phạm nguyên tắc nghiệp vụ:</p>
+          <pre><code>if (orderQuantity <= 0) {
+    throw new IllegalArgumentException("Số lượng mua sản phẩm bắt buộc phải lớn hơn 0");
+}</code></pre>
+        </div>
+
+        <!-- Section 10.4 -->
+        <div class="sub-section" id="sub-10-4">
+          <h3>10.4 try - catch - finally</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Đây là khối xử lý kiểm soát ngoại lệ cơ bản nhất:</p>
+          <ul>
+            <li><strong><code>try</code>:</strong> Chứa khối câu lệnh có rủi ro cao gây ra lỗi ngoại lệ.</li>
+            <li><strong><code>catch</code>:</strong> Nơi bắt và xử lý lỗi cụ thể nếu xảy ra ngoại lệ trong khối try.</li>
+            <li><strong><code>finally</code>:</strong> Khối mã nguồn **bắt buộc luôn luôn được thực thi** dù có ngoại lệ xảy ra hay không.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Dù trong khối <code>try</code> hoặc <code>catch</code> có chứa lệnh ngắt hàm <code>return</code>, JVM vẫn đảm bảo phải nhảy vào thực thi xong toàn bộ mã nguồn của khối <code>finally</code> trước khi thực hiện trả về kết quả cho hàm. Điều này cực kỳ quan trọng dùng để giải phóng tài nguyên.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>try {
+    // Code có thể lỗi
+} catch (SpecificException e) {
+    // Xử lý lỗi cụ thể
+} catch (Exception e) {
+    // Bắt các lỗi chung chung còn lại (luôn đặt Exception cha ở catch cuối cùng)
+} finally {
+    // Luôn giải phóng tài nguyên tại đây
+}</code></pre>
+          <p><strong>Cơ chế tự đóng tài nguyên (Try-with-resources):</strong> Từ Java 7+, với các tài nguyên implement giao diện <code>AutoCloseable</code> (như Connection, InputStream), ta nên khai báo trực tiếp trong ngoặc đơn sau <code>try</code> để JVM tự động đóng khi kết thúc, không cần viết giải phóng ở finally thủ công nữa:</p>
+          <pre><code>try (Connection conn = dataSource.getConnection()) {
+    // Thực thi database... (Tự động đóng conn khi hoàn thành)
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        try {
+            int val = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Không thể thực hiện chia cho 0");
+        } finally {
+            System.out.println("Luôn in ra câu này");
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 10.5 -->
+        <div class="sub-section" id="sub-10-5">
+          <h3>10.5 throw và throws</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <ul>
+            <li><strong><code>throw</code>:</strong> Dùng để chủ động bắn (ném) ra một đối tượng Exception cụ thể tại một dòng code.</li>
+            <li><strong><code>throws</code>:</strong> Khai báo ở chữ ký phương thức cảnh báo nơi gọi hàm rằng phương thức này có khả năng ném ra các ngoại lệ Checked.</li>
+          </ul>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Sử dụng <code>throw</code>:</p>
+          <pre><code>throw new RuntimeException("Thông điệp lỗi");</code></pre>
+          <p>Sử dụng <code>throws</code>:</p>
+          <pre><code>public void checkDatabase() throws SQLException, IOException { ... }</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Chủ động kiểm tra và ném lỗi nghiệp vụ trong API Spring Boot:</p>
+          <pre><code>if (user == null) {
+    throw new RuntimeException("Tài khoản không tồn tại trên hệ thống!");
+}
+
+// Đối với Spring Boot REST API:
+throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy người dùng");</code></pre>
+        </div>
+
+        <!-- Section 10.6 -->
+        <div class="sub-section" id="sub-10-6">
+          <h3>10.6 Custom Exception (Tự định nghĩa ngoại lệ)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Custom Exception là ngoại lệ do lập trình viên tự tạo ra bằng cách kế thừa từ các lớp Exception của Java nhằm mô tả chính xác và phân loại các nghiệp vụ đặc thù của doanh nghiệp.</p>
+          <p>Ví dụ thực tế:</p>
+          <ul>
+            <li><code>UserNotFoundException</code> (Không tìm thấy tài khoản)</li>
+            <li><code>InsufficientBalanceException</code> (Số dư tài khoản không đủ thanh toán)</li>
+            <li><code>InvalidPasswordException</code> (Mật khẩu nhập sai)</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Trong các dự án Spring Boot hiện đại, đa số Custom Exception được kế thừa trực tiếp từ <code>RuntimeException</code> (Unchecked) để tránh làm rối code ở tầng Controller bởi các khai báo <code>throws</code>.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <pre><code>public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException(String message) {
+        super(message); // Đẩy thông điệp lỗi lên RuntimeException xử lý
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>1. Định nghĩa Custom Exception:</p>
+          <pre><code>public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException(Long id) {
+        super("Không tìm thấy người dùng có mã ID: " + id);
+    }
+}</code></pre>
+          <p>2. Gọi ném lỗi ở tầng Service:</p>
+          <pre><code>User user = userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException(id));</code></pre>
+          <p>3. Kết hợp bắt lỗi tập trung (Global Exception Handler) bằng <code>@RestControllerAdvice</code> ở Spring Boot:</p>
+          <pre><code>@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity&lt;String&gt; handleUserNotFound(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+}</code></pre>
+          <p>Nhờ cấu hình Global Handler này, API trả về mã HTTP 404 chuẩn kèm thông điệp lỗi tự tạo cực kỳ đẹp đẽ và sạch sẽ.</p>
+        </div>
+
+        <!-- Section Hierarchy -->
+        <div class="sub-section" id="hierarchy-section">
+          <h3>Cây phân cấp Exception trong Java</h3>
+          <div class="ascii-art">
+                            Throwable
+                            /       \
+              (Lỗi hệ thống) /         \ (Ngoại lệ ứng dụng)
+                           v           v
+                         Error     Exception
+                                    /     \
+                      (Checked)   /         \ (Unchecked)
+                                 v           v
+                            IOException   RuntimeException
+                            ...            /    \
+                                          v      v
+                       NullPointerException  ArithmeticException
+                                             ...</div>
+
+          <div class="block-title">Quyết định lựa chọn sử dụng</div>
+          <ul>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Sử dụng Checked Exception khi:</strong> Gặp lỗi khách quan, hệ thống có khả năng tự phục hồi xử lý lại sau khi bắt lỗi (Ví dụ: File bị mất thì báo người dùng chọn file khác, kết nối DB lỗi thì thử kết nối lại).
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Sử dụng Unchecked Exception khi:</strong> Gặp các lỗi logic kỹ thuật lập trình của developer (Ví dụ: truyền giá trị null, chỉ số mảng vượt biên, ép sai kiểu chữ sang số) không thể phục hồi giữa chừng, bắt buộc phải sửa code hoặc ném lỗi báo hiệu nghiệp vụ.
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

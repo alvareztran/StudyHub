@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 25: Synchronization &amp; Concurrency - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 25</div>
+      <h1>CHƯƠNG 25: SYNCHRONIZATION</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ chế kiểm soát truy cập đồng thời. Khảo sát tranh chấp tài nguyên Race Condition, khóa giám sát Monitor Lock qua synchronized block/method, tính hiển thị bộ nhớ volatile và phòng tránh Deadlock.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html" class="active">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Concurrency Issues Overview -->
+        <div class="sub-section" id="concurrency-overview">
+          <h3>Đồng bộ hóa luồng (Synchronization)</h3>
+
+          <div class="block-title">Khái niệm và sự cần thiết</div>
+          <p>Khi ứng dụng vận hành đa luồng, nhiều Thread có thể đồng thời truy cập và ghi dữ liệu vào một tài nguyên dùng chung (Shared Resource). Nếu không có cơ chế điều phối đồng bộ, dữ liệu sẽ bị sai lệch ngoài kiểm soát.</p>
+          <p><strong>Synchronization</strong> cung cấp giải pháp bảo vệ dữ liệu bằng cách ép buộc các Thread phải xếp hàng truy cập tài nguyên tuần tự tại các vùng mã được bảo vệ.</p>
+        </div>
+
+        <!-- Section 25.1 -->
+        <div class="sub-section" id="sub-25-1">
+          <h3>25.1 Race Condition (Tranh chấp tài nguyên)</h3>
+
+          <div class="block-title">Khái niệm và cơ chế Lost Update</div>
+          <p><strong>Race Condition</strong> xảy ra khi kết quả cuối cùng của chương trình phụ thuộc vào thứ tự thực thi ngẫu nhiên của các luồng. Lỗi phổ biến nhất là <strong>Lost Update (Mất lượt cập nhật)</strong>.</p>
+          <p>Ví dụ: Thao tác tăng số <code>count++</code> trông như một dòng lệnh nguyên tử, nhưng thực chất JVM biên dịch nó thành 3 bước Bytecode độc lập:</p>
+          <div class="ascii-art">
+Bước 1: Đọc count từ RAM (ví dụ: count = 5)
+Bước 2: Tăng giá trị lên 1 ở CPU Register (5 + 1 = 6)
+Bước 3: Ghi lại giá trị mới vào ô nhớ RAM</div>
+          <p>Nếu hai Thread cùng đọc giá trị 5 cùng lúc, cả hai sẽ tính toán ra 6 và ghi đè 6 vào RAM. Lượt tăng của một Thread đã bị nuốt mất.</p>
+          <pre><code>// Đoạn mã tạo lỗi Race Condition
+class Counter {
+    int count = 0;
+    public void increment() { count++; } // Thiếu đồng bộ hóa!
+}</code></pre>
+        </div>
+
+        <!-- Section 25.2 -->
+        <div class="sub-section" id="sub-25-2">
+          <h3>25.2 Từ khóa synchronized (Khóa giám sát Monitor Lock)</h3>
+
+          <div class="block-title">Cơ chế Monitor Lock</div>
+          <p>Mỗi Object trong Java đều sở hữu một khóa nội bộ ẩn gọi là <strong>Monitor Lock</strong> (hoặc Intrinsic Lock). Khi một Thread đi vào vùng mã được đánh dấu <code>synchronized</code>, nó lập tức chiếm giữ khóa này. Mọi Thread khác muốn truy cập đều bị block và xếp vào hàng đợi cho đến khi Thread đầu tiên hoàn thành và nhả khóa.</p>
+
+          <div class="block-title">Các hình thức đồng bộ hóa</div>
+          <ul>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Synchronized Method (Đồng bộ hóa phương thức):</strong> Khóa đối tượng gọi hàm (<code>this</code>):
+              <pre><code>public synchronized void increment() { count++; }</code></pre>
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Synchronized Block (Đồng bộ hóa khối lệnh):</strong> Tối ưu hiệu năng bằng cách chỉ khóa đoạn mã thực sự ghi dữ liệu:
+              <pre><code>public void increment() {
+    // Chỉ khóa khối mã tính toán, cho phép chạy song song đoạn mã khác
+    synchronized(this) { count++; }
+}</code></pre>
+            </li>
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Synchronized Static Method:</strong> Khóa đối tượng Class Loader (<code>Counter.class</code>) của JVM thay vì instance:
+              <pre><code>public static synchronized void resetAll() { totalCount = 0; }</code></pre>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Section 25.3 -->
+        <div class="sub-section" id="sub-25-3">
+          <h3>25.3 Từ khóa volatile (Đảm bảo Visibility bộ nhớ)</h3>
+
+          <div class="block-title">Khái niệm và cơ chế hoạt động</div>
+          <p>Trong kiến trúc máy tính, mỗi nhân CPU có cache riêng (L1/L2/L3). Khi một luồng chạy, nó lưu bản sao của biến vào CPU Cache của nhân đó để tăng tốc truy cập. Điều này làm phát sinh lỗi **Memory Visibility (Tính hiển thị bộ nhớ)**: Luồng A thay đổi giá trị của biến ở nhân 1 nhưng luồng B ở nhân 2 vẫn đọc giá trị cũ lưu trong cache nhân 2.</p>
+          <p>Đánh dấu biến bằng từ khóa <strong>`volatile`</strong> ép buộc JVM phải luôn đọc và ghi biến trực tiếp từ **Main Memory (Bộ nhớ chính RAM)**, đảm bảo mọi luồng luôn thấy giá trị mới nhất.</p>
+          <pre><code>private volatile boolean running = true; // Luôn đọc ghi trực tiếp từ RAM</code></pre>
+          <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+            ⚠️ <strong>Lưu ý cực kỳ quan trọng:</strong> <code>volatile</code> <strong>KHÔNG</strong> giải quyết được Race Condition (không đảm bảo Atomicity). Do đó <code>volatile int count = 0; count++;</code> vẫn bị sai lệch giá trị khi chạy đa luồng.
+          </p>
+        </div>
+
+        <!-- Section 25.4 -->
+        <div class="sub-section" id="sub-25-4">
+          <h3>25.4 Deadlock (Khóa chết)</h3>
+
+          <div class="block-title">Khái niệm và kịch bản xảy ra</div>
+          <p><strong>Deadlock</strong> là hiện tượng treo hệ thống vĩnh viễn khi từ hai luồng trở lên bị kẹt vào vòng lặp chờ khóa lẫn nhau vô hạn.</p>
+          <div class="ascii-art">
+[ Thread A ] ── giữ Lock 1 ── muốn lấy Lock 2 ──┐
+     ▲                                           │ (Chờ nhau vô hạn)
+     └────────── muốn lấy Lock 1 ── giữ Lock 2 ──[ Thread B ]</div>
+
+          <div class="block-title">4 Điều kiện kích hoạt Deadlock (Coffman Conditions)</div>
+          <ol>
+            <li><strong>Mutual Exclusion:</strong> Tài nguyên không thể chia sẻ (chỉ 1 luồng giữ lock).</li>
+            <li><strong>Hold and Wait:</strong> Luồng đang giữ lock này và đòi xin thêm lock khác.</li>
+            <li><strong>No Preemption:</strong> Không thể cưỡng đoạt lock từ luồng khác.</li>
+            <li><strong>Circular Wait:</strong> Chờ đợi xoay vòng (A chờ B, B chờ A).</li>
+          </ol>
+
+          <div class="block-title">Cách phòng tránh Deadlock</div>
+          <ul>
+            <li style="margin-bottom: 0.25rem;"><strong>Sắp xếp thứ tự lấy khóa đồng nhất:</strong> Ép mọi luồng phải lấy Lock 1 trước rồi mới lấy Lock 2.</li>
+            <li style="margin-bottom: 0.25rem;"><strong>Sử dụng ReentrantLock:</strong> Dùng <code>lock.tryLock(timeout)</code> để tự động nhả khóa nếu đợi quá lâu, không chờ vô hạn.</li>
+          </ul>
+        </div>
+
+        <!-- Mechanism Table -->
+        <div class="sub-section" id="mechanism-compare">
+          <h3>So sánh volatile vs synchronized</h3>
+          <table class="java-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Từ khóa volatile</th>
+                <th>Từ khóa synchronized</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Đảm bảo Visibility</strong></td><td>Có (Đọc ghi thẳng từ RAM)</td><td>Có (Đồng bộ cache khi nhả lock)</td></tr>
+              <tr><td><strong>Đảm bảo tính nguyên tử (Atomicity)</strong></td><td>Không (Hàm như <code>count++</code> vẫn bị lỗi)</td><td>Có (Ngăn chặn Race Condition hoàn toàn)</td></tr>
+              <tr><td><strong>Gây nghẽn luồng (Blocking)</strong></td><td>Không (Non-blocking, hiệu năng cao)</td><td>Có (Luồng khác phải xếp hàng chờ đợi lock)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 15: Lớp Object trong Java - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="bo-nho-java.html">Advanced Java Core</a> &raquo; Chương 15</div>
+      <h1>CHƯƠNG 15: OBJECT CLASS</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cơ sở gốc của mọi lớp. Phân tích chi tiết phương thức equals() so sánh giá trị, mã băm hashCode(), mô tả toString(), nhân bản clone() và sự khác biệt giữa nông sao chép (Shallow Copy) &amp; sâu sao chép (Deep Copy).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Advanced Java</h3>
+        <ul>
+          <li><a href="bo-nho-java.html">14. Bộ nhớ trong Java</a></li>
+          <li><a href="object-class.html" class="active">15. Lớp Object trong Java</a></li>
+          <li><a href="collections-nang-cao.html">16. Collections nâng cao</a></li>
+          <li><a href="date-time-api.html">17. Date Time API</a></li>
+          <li><a href="lambda-expression.html">18. Lambda Expression</a></li>
+          <li><a href="stream-api.html">19. Stream API</a></li>
+          <li><a href="optional.html">20. Lớp Optional</a></li>
+          <li><a href="serialization.html">21. Serialization</a></li>
+          <li><a href="annotation.html">22. Annotations</a></li>
+          <li><a href="reflection-annotations.html">23. Reflection &amp; Annotations</a></li>
+          <li><a href="multithreading.html">24. Đa luồng &amp; Concurrency</a></li>
+          <li><a href="synchronization.html">25. Synchronization</a></li>
+          <li><a href="concurrency-framework.html">26. Concurrency Framework</a></li>
+          <li><a href="jvm-internals.html">27. JVM Internals</a></li>
+          <li><a href="design-patterns.html">28. Design Patterns</a></li>
+          <li><a href="socket-programming.html">29. Socket &amp; Network I/O</a></li>
+          <li><a href="jdbc-pool.html">30. JDBC &amp; Connection Pool</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 15.1 -->
+        <div class="sub-section" id="sub-15-1">
+          <h3>15.1 equals()</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Phương thức <code>equals()</code> dùng để so sánh **nội dung giá trị thực tế** (Value/State) của hai đối tượng có tương đồng hay không.</p>
+          <p>Sự khác biệt cốt lõi giữa so sánh bằng toán tử <code>==</code> và phương thức <code>equals()</code>:</p>
+          <ul>
+            <li><strong>Toán tử <code>==</code>:</strong> So sánh địa chỉ con trỏ vùng nhớ (Reference) của hai đối tượng trên Heap. Chỉ trả về true khi cả hai biến trỏ chung về cùng 1 ô nhớ.</li>
+            <li><strong>Phương thức <code>equals()</code>:</strong> Đi sâu so sánh thuộc tính, trạng thái nội dung của đối tượng (sau khi đã được ghi đè logic).</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Mặc định, nếu bạn không override phương thức này, lớp <code>java.lang.Object</code> triển khai code thô như sau:</p>
+          <pre><code>public boolean equals(Object obj) {
+    return (this == obj); // Mặc định vẫn chỉ so sánh địa chỉ bộ nhớ
+}</code></pre>
+          <p>Do đó, để so sánh giá trị các thuộc tính của lớp tự định nghĩa, ta **bắt buộc phải ghi đè (Override) phương thức equals()**.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Tạo 2 đối tượng độc lập có thuộc tính trùng khớp hoàn toàn:</p>
+          <pre><code>User u1 = new User("Bang");
+User u2 = new User("Bang");
+System.out.println(u1.equals(u2)); // Trả về false nếu chưa override, và true nếu đã override chuẩn</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <p>Triển khai ghi đè <code>equals()</code> an toàn và chuẩn mực:</p>
+          <pre><code>import java.util.Objects;
+
+class User {
+    private String name;
+    public User(String name) { this.name = name; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Cùng địa chỉ ô nhớ thì chắc chắn bằng nhau
+        if (obj == null || getClass() != obj.getClass()) return false; // Khác class hoặc rỗng
+
+        User user = (User) obj; // Ép kiểu
+        return Objects.equals(name, user.name); // So sánh thuộc tính name an toàn null
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Trong các lớp thực thể (Entity) quản lý bởi ORM Hibernate / JPA, phương thức <code>equals()</code> thường được cấu hình so sánh duy nhất thuộc tính khóa chính **`id`**:</p>
+          <pre><code>@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (!(obj instanceof User)) return false;
+    User other = (User) obj;
+    return id != null && id.equals(other.getId());
+}</code></pre>
+        </div>
+
+        <!-- Section 15.2 -->
+        <div class="sub-section" id="sub-15-2">
+          <h3>15.2 hashCode()</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Phương thức <code>hashCode()</code> trả về một giá trị số nguyên 32-bit đại diện duy nhất cho trạng thái của đối tượng đó tại thời điểm chạy.</p>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Giúp tăng tốc độ tìm kiếm phần tử cực nhanh trong các cấu trúc dữ liệu bảng băm (Hashing) như HashSet, HashMap, HashTable.</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong cấu trúc Hashing</div>
+          <p>Khi thêm một cặp khóa vào map: <code>map.put(user, "Admin");</code>, JVM thực thi:</p>
+          <div class="ascii-art">
+user (Key) ──> Gọi user.hashCode() ──> Tính bucket index
+                                            ↓
+                                    Truy cập ô bucket
+                                            ↓
+                              Nếu có node: Gọi equals() đối chiếu</div>
+
+          <div class="block-title">Quy tắc liên kết tối thượng (Contract equals &amp; hashCode)</div>
+          <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
+            ⚠️ <strong>Quy tắc phỏng vấn vàng:</strong> <br>
+            - Nếu <code>a.equals(b) == true</code> thì bắt buộc giá trị hash <code>a.hashCode() == b.hashCode()</code>.<br>
+            - Nếu <code>a.hashCode() == b.hashCode()</code> thì không bắt buộc <code>a.equals(b)</code> phải trả về true (Hiện tượng đụng độ mã băm).
+          </p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>import java.util.Objects;
+
+class User {
+    private String name;
+    public User(String name) { this.name = name; }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name); // Tính mã hash dựa trên giá trị của name
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 15.3 -->
+        <div class="sub-section" id="sub-15-3">
+          <h3>15.3 toString()</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Phương thức <code>toString()</code> trả về chuỗi văn bản đại diện mô tả ngắn gọn thông tin trạng thái thuộc tính của đối tượng.</p>
+          <p>Mục đích: Hỗ trợ ghi log thông tin nghiệp vụ và debug theo dõi lỗi lập trình trực quan.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Mặc định nếu không ghi đè, hàm <code>toString()</code> của Object trả về chuỗi định dạng thô khan hiếm thông tin:</p>
+          <pre><code>public String toString() {
+    return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+// Ví dụ: User@5e91993f</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>class User {
+    private String name;
+    private int age;
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{name='" + name + "', age=" + age + "}";
+    }
+}</code></pre>
+
+          <div class="block-title">Hỗ trợ của thư viện Lombok trong dự án thực tế</div>
+          <p>Trong môi trường đi làm doanh nghiệp, lập trình viên không viết code boiler-plate này thủ công, mà sử dụng Annotation <strong>`@Data`</strong> hoặc <strong>`@ToString`</strong> của thư viện Lombok để tự động sinh mã nguồn toString, equals, hashCode lúc build:</p>
+          <pre><code>import lombok.Data;
+
+@Data // Tự động sinh getter, setter, toString, equals, hashCode
+public class User {
+    private String name;
+    private int age;
+}</code></pre>
+        </div>
+
+        <!-- Section 15.4 -->
+        <div class="sub-section" id="sub-15-4">
+          <h3>15.4 clone()</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Phương thức <code>clone()</code> dùng để nhân bản sao chép, tạo ra một thực thể đối tượng mới có dữ liệu y hệt đối tượng hiện tại nhưng nằm ở địa chỉ bộ nhớ Heap độc lập.</p>
+
+          <div class="block-title">Cú pháp và quy tắc sử dụng</div>
+          <p>Để gọi được hàm clone, một Class bắt buộc phải:</p>
+          <ol>
+            <li>Khai báo thực thi Interface đánh dấu (marker interface): <code>Cloneable</code>. Nếu không có, JVM ném lỗi <code>CloneNotSupportedException</code> lúc chạy.</li>
+            <li>Ghi đè phương thức <code>clone()</code> đổi phạm vi truy cập từ protected thành public.</li>
+          </ol>
+          <pre><code>class User implements Cloneable {
+    private String name;
+    public User(String name) { this.name = name; }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section Shallow vs Deep Copy -->
+        <div class="sub-section" id="copy-section">
+          <h3>Shallow Copy (Sao chép nông) và Deep Copy (Sao chép sâu)</h3>
+          <p>Đây là kiến trúc phân tích cực kỳ quan trọng khi nhân bản đối tượng phức tạp chứa các tham chiếu đối tượng con bên trong:</p>
+          
+          <div class="block-title">1. Shallow Copy (Sao chép nông)</div>
+          <p>Chỉ nhân bản đối tượng lớp ngoài. Các đối tượng tham chiếu bên trong vẫn dùng chung địa chỉ con trỏ với đối tượng gốc.</p>
+          <div class="ascii-art">
+user1 (0x10) ──> AddressObj (0x99)
+user2 (0x20) ──> AddressObj (0x99) (Dùng chung địa chỉ đối tượng con Address)</div>
+          <p><em>Hậu quả:</em> Nếu thay đổi thông tin địa chỉ của user2 thì địa chỉ của user1 cũng bị sửa đổi theo.</p>
+
+          <div class="block-title">2. Deep Copy (Sao chép sâu)</div>
+          <p>Nhân bản toàn diện từ lớp ngoài vào tận các đối tượng tham chiếu nằm sâu bên trong. Tạo ra các thực thể đối tượng độc lập hoàn toàn.</p>
+          <div class="ascii-art">
+user1 (0x10) ──> AddressObj1 (0x99)
+user2 (0x20) ──> AddressObj2 (0x77) (Hai địa chỉ đối tượng con Address khác biệt hoàn toàn)</div>
+          <p><strong>Cảnh báo thực tế:</strong> Do cơ chế `clone()` mặc định của Java chỉ thực hiện sao chép nông (Shallow Copy) và dễ gây lỗi rò rỉ, các dự án phần mềm hiện đại **không khuyến khích sử dụng clone()**. Thay vào đó, lập trình viên ưu tiên sử dụng các phương pháp thay thế an toàn hơn:</p>
+          <ul>
+            <li>Sử dụng **Copy Constructor**: <code>public User(User other) { ... }</code></li>
+            <li>Sử dụng mẫu thiết kế **Builder Pattern**</li>
+            <li>Sử dụng các thư viện mapping đối tượng tự động như **MapStruct** hoặc **ModelMapper**.</li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

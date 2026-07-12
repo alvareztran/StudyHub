@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 11: Collections Framework - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 11</div>
+      <h1>CHƯƠNG 11: COLLECTIONS FRAMEWORK</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cấu trúc dữ liệu động. Nghiên cứu sơ đồ phân cấp Iterable, List chứa mảng động ArrayList vs LinkedList, Set loại bỏ trùng lặp, hàng đợi Queue FIFO, cấu trúc ánh xạ Key-Value Map và cơ chế lặp Iterator.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html" class="active">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 11.1 -->
+        <div class="sub-section" id="sub-11-1">
+          <h3>11.1 Collection Hierarchy (Sơ đồ phân cấp bộ khung Collection)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Collections Framework là tập hợp các Interfaces, Classes triển khai và Algorithms tối ưu được Java cung cấp sẵn để quản lý, lưu trữ, thao tác với tập hợp dữ liệu có kích thước động co giãn linh hoạt.</p>
+          <p>So sánh cơ bản giữa Mảng thô (Array) và Collection:</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí so sánh</th>
+                <th>Mảng thô (Array)</th>
+                <th>Bộ khung Collection</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Kích thước chứa</strong></td><td>Cố định (Fixed size) tại thời điểm khởi tạo</td><td>Động (Dynamic size) tự động co giãn ô nhớ</td></tr>
+              <tr><td><strong>Kiểu dữ liệu lưu</strong></td><td>Chứa được cả kiểu nguyên thủy và đối tượng</td><td>Chỉ lưu trữ đối tượng (Wrapper / Custom Object)</td></tr>
+              <tr><td><strong>Tính năng đi kèm</strong></td><td>Ít phương thức bổ trợ thô sơ</td><td>Đầy đủ thư viện thuật toán sắp xếp, lọc, tìm kiếm</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cơ chế hoạt động bên trong (Sơ đồ phân cấp Hierarchy)</div>
+          <div class="ascii-art">
+                              Iterable (Gốc duyệt for-each)
+                                 ↑
+                             Collection
+            ┌────────────────────┼────────────────────┐
+            v                    v                    v
+          List                  Set                 Queue
+      (ArrayList)            (HashSet)         (PriorityQueue)
+     (LinkedList)         (LinkedHashSet)       (ArrayDeque)
+                            (TreeSet)
+
+         *Chú ý: Cấu trúc Map lưu Key-Value độc lập, không thừa kế Collection
+                                Map
+                       (HashMap, TreeMap...)</div>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p><strong>Nguyên tắc thiết kế tốt (Loose Coupling):</strong> Luôn khai báo biến bằng kiểu Interface cha, và chỉ khởi tạo bằng Class con triển khai thực tế:</p>
+          <pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+Map&lt;Long, User&gt; userMap = new HashMap&lt;&gt;();</code></pre>
+        </div>
+
+        <!-- Section 11.2 -->
+        <div class="sub-section" id="sub-11-2">
+          <h3>11.2 List (Danh sách tuyến tính)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p><code>List</code> là một Collection cho phép lưu giữ các phần tử theo đúng **thứ tự thêm vào**, cho phép chứa các phần tử có **giá trị trùng lặp**, và hỗ trợ truy xuất ngẫu nhiên qua chỉ số index.</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <h4>1. ArrayList (Mảng động resizable array)</h4>
+          <p>ArrayList lưu dữ liệu bên trong một mảng tĩnh thô. Khi số lượng phần tử vượt quá dung lượng hiện tại, JVM tự động thực thi quy trình giãn nở:</p>
+          <div class="ascii-art">
+Mảng cũ đầy: [10][20][30][40] (Dung lượng: 4)
+                      ↓
+JVM tạo mảng mới có kích thước = cũ * 1.5 (Dung lượng mới: 6)
+                      ↓
+Copy toàn bộ dữ liệu từ mảng cũ sang mảng mới: [10][20][30][40][ ][ ]
+                      ↓
+Hủy mảng cũ, cập nhật con trỏ trỏ sang mảng mới.</div>
+
+          <h4>2. LinkedList (Danh sách liên kết đôi - Doubly Linked List)</h4>
+          <p>Mỗi phần tử được bọc trong một Node chứa giá trị và 2 con trỏ liên kết trỏ tới Node liền trước (prev) và Node liền sau (next):</p>
+          <div class="ascii-art">
+[Node 1: 10] <---> [Node 2: 20] <---> [Node 3: 30]</div>
+          <p>Không dùng mảng liên tiếp. Ô nhớ được phân bổ phân tán tự do trên Heap.</p>
+
+          <div class="block-title">Khi nào chọn ArrayList hay LinkedList?</div>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Thao tác</th>
+                <th>ArrayList (Mảng động)</th>
+                <th>LinkedList (Liên kết đôi)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Truy cập qua index <code>get(i)</code></strong></td><td>$O(1)$ (Cực nhanh nhờ cộng địa chỉ)</td><td>$O(N)$ (Phải quét duyệt từ đầu node)</td></tr>
+              <tr><td><strong>Thêm/Xóa ở đuôi <code>add()</code></strong></td><td>$O(1)$ (Mặc định thêm cuối mảng)</td><td>$O(1)$ (Có sẵn con trỏ tail)</td></tr>
+              <tr><td><strong>Thêm/Xóa ở giữa danh sách</strong></td><td>$O(N)$ (Phải dịch chuyển các phần tử sau)</td><td>$O(1)$ (Chỉ cần thay đổi liên kết con trỏ)</td></tr>
+              <tr><td><strong>Chi phí bộ nhớ RAM</strong></td><td>Thấp</td><td>Cao (Tốn thêm ô nhớ cho các con trỏ prev/next)</td></tr>
+            </tbody>
+          </table>
+          <p><em>Lời khuyên thực tế:</em> Trong 90% bài toán thực tế đi làm, ta ưu tiên sử dụng **`ArrayList`** do tính năng đọc index chiếm ưu thế tuyệt đối.</p>
+        </div>
+
+        <!-- Section 11.3 -->
+        <div class="sub-section" id="sub-11-3">
+          <h3>11.3 Set (Tập hợp không trùng lặp)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p><code>Set</code> là một Collection chứa các phần tử **không trùng lặp** nhau. Nếu nạp phần tử đã có sẵn vào Set, JVM tự động bỏ qua.</p>
+          <p>Các Class triển khai chính:</p>
+          <ul>
+            <li><strong>HashSet:</strong> Không đảm bảo thứ tự của phần tử (Tốc độ nhanh nhất).</li>
+            <li><strong>LinkedHashSet:</strong> Giữ nguyên thứ tự thêm vào phần tử.</li>
+            <li><strong>TreeSet:</strong> Tự động sắp xếp các phần tử theo thứ tự tăng dần (Sử dụng cấu trúc Red-Black Tree).</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong của HashSet</div>
+          <p>Thực chất, HashSet sử dụng cấu trúc của một <code>HashMap</code> chạy ngầm bên dưới. Các giá trị nạp vào Set đóng vai trò là các <code>Key</code> của HashMap, còn <code>Value</code> nhận giá trị là một hằng số dummy giả.</p>
+          <p>JVM kiểm tra trùng lặp phần tử bằng cách gọi song song hai hàm:</p>
+          <pre><code>hashCode() và equals()</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>import java.util.HashSet;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+        Set&lt;String&gt; skills = new HashSet&lt;&gt;();
+        skills.add("Java");
+        skills.add("Spring");
+        skills.add("Java"); // Phần tử trùng lặp bị bỏ qua
+
+        System.out.println(skills); // Xuất ra: [Java, Spring]
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 11.4 -->
+        <div class="sub-section" id="sub-11-4">
+          <h3>11.4 Queue (Hàng đợi)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Queue là cấu trúc dữ liệu hoạt động chặt chẽ theo nguyên tắc xếp hàng <strong>FIFO (First In First Out)</strong> - Phần tử nào được nạp vào trước sẽ được trích xuất lấy ra xử lý trước.</p>
+
+          <div class="block-title">Cơ chế hoạt động và cú pháp</div>
+          <div class="ascii-art">
+offer() (Vào đuôi)  ───>  [30][20][10]  ───>  poll() (Ra ở đầu hàng đợi)</div>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Phương thức</th>
+                <th>Hành vi xử lý</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>offer(E e)</code></td><td>Thêm phần tử vào cuối hàng đợi</td></tr>
+              <tr><td><code>poll()</code></td><td>Lấy và xóa phần tử ở đầu hàng đợi. Trả về null nếu trống.</td></tr>
+              <tr><td><code>peek()</code></td><td>Chỉ xem phần tử ở đầu hàng đợi mà không xóa.</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Ứng dụng làm hàng đợi lưu tạm các email cần gửi của hệ thống để tiến hành gửi tuần tự ngầm tránh nghẽn luồng:</p>
+          <pre><code>Queue&lt;EmailTask&gt; emailQueue = new LinkedList&lt;&gt;();
+emailQueue.offer(new EmailTask("user1@gmail.com"));
+emailQueue.offer(new EmailTask("user2@gmail.com"));
+
+// Xử lý gửi:
+while(!emailQueue.isEmpty()) {
+    EmailTask task = emailQueue.poll();
+    sendEmail(task); // Gửi tuần tự
+}</code></pre>
+        </div>
+
+        <!-- Section 11.5 -->
+        <div class="sub-section" id="sub-11-5">
+          <h3>11.5 Map (Cấu trúc ánh xạ Key - Value)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p><code>Map</code> là cấu trúc dữ liệu lưu trữ các cặp thông tin ánh xạ liên kết **Key (Khóa) &rarr; Value (Giá trị)**. Trong đó, mỗi Key là duy nhất không trùng lặp, trỏ đến một Value tương ứng.</p>
+          <p>Các Class triển khai chính:</p>
+          <ul>
+            <li><strong>HashMap:</strong> Lưu trữ không sắp xếp thứ tự (Tốc độ cao nhất).</li>
+            <li><strong>LinkedHashMap:</strong> Giữ nguyên thứ tự nạp thẻ key vào map.</li>
+            <li><strong>TreeMap:</strong> Tự động sắp xếp các key theo thứ tự tăng dần.</li>
+          </ul>
+
+          <div class="block-title">HashMap hoạt động bên trong như thế nào? (Câu hỏi phỏng vấn Senior cực hot)</div>
+          <p>HashMap lưu trữ dữ liệu bằng cấu trúc mảng các Buckets. Quy trình lưu trữ cặp (Key, Value):</p>
+          <ol>
+            <li>JVM gọi hàm <code>key.hashCode()</code> để tính toán ra một mã hash nguyên.</li>
+            <li>Chuyển mã hash này thành chỉ số index của Bucket trong mảng: $\text{Index} = \text{hash} \pmod{\text{Dung lượng mảng}}$.</li>
+            <li>Nếu Bucket trống: Nạp Node (Key, Value) vào.</li>
+            <li>Nếu xảy ra **Trùng Bucket (Hash Collision)**:
+              <ul>
+                <li>Java sử dụng một danh sách liên kết (Linked List) để nối các Node bị trùng vào cùng bucket.</li>
+                <li><strong>Java 8 Optimization:</strong> Nếu danh sách liên kết tại 1 bucket có độ dài vượt quá ngưỡng 8 phần tử, JVM tự động chuyển đổi danh sách này thành một **Cây đỏ đen (Red-Black Tree)** để giảm độ phức tạp tìm kiếm từ $O(N)$ xuống còn $O(\log N)$.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+    public static void main(String[] args) {
+        Map&lt;String, Integer&gt; scores = new HashMap&lt;&gt;();
+        scores.put("Toán", 9);
+        scores.put("Anh", 8);
+
+        System.out.println(scores.get("Toán")); // In ra: 9
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 11.6 -->
+        <div class="sub-section" id="sub-11-6">
+          <h3>11.6 Iterator</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Iterator là đối tượng cung cấp cơ chế duyệt tuần tự qua các phần tử của mọi Collection một cách an toàn.</p>
+
+          <div class="block-title">Tại sao cần Iterator? (Tránh ConcurrentModificationException)</div>
+          <p>Nếu bạn thực hiện xóa phần tử trực tiếp của một List khi đang dùng vòng lặp for-each thông thường:</p>
+          <pre><code>// GÂY RA LỖI CRASH SẬP APP: java.util.ConcurrentModificationException
+for (User user : users) {
+    if (!user.isActive()) {
+        users.remove(user); // Lỗi do cấu trúc danh sách bị thay đổi đột ngột khi đang duyệt
+    }
+}</code></pre>
+          <p>Để xóa phần tử an toàn khi đang duyệt danh sách, bạn **bắt buộc** phải sử dụng phương thức <code>remove()</code> của đối tượng <code>Iterator</code>:</p>
+          <pre><code>Iterator&lt;User&gt; iterator = users.iterator();
+while (iterator.hasNext()) {
+    User user = iterator.next();
+    if (!user.isActive()) {
+        iterator.remove(); // Xử lý xóa an toàn tuyệt đối
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section Summary -->
+        <div class="sub-section" id="real-world-summary">
+          <h3>Bản đồ lựa chọn Collection khi đi làm</h3>
+          <table class="java-table" style="width: 100%; margin-top: 1rem;">
+            <thead>
+              <tr>
+                <th>Nghiệp vụ thực tế</th>
+                <th>Cấu trúc khuyên dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Cần lưu danh sách tuần tự, lấy dữ liệu theo vị trí chỉ số index</td><td><strong><code>ArrayList</code></strong></td></tr>
+              <tr><td>Cần lưu thông tin cấu hình dạng khóa ngoại lệ (Key -> Value), tra cứu nhanh</td><td><strong><code>HashMap</code></strong></td></tr>
+              <tr><td>Cần lọc trùng lặp các thẻ phân quyền, danh sách email độc nhất</td><td><strong><code>HashSet</code></strong></td></tr>
+              <tr><td>Cần làm hàng đợi trung gian gửi tin, xử lý yêu cầu khách hàng vào trước ra trước</td><td><strong><code>Queue (LinkedList / PriorityQueue)</code></strong></td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top: 1.5rem; font-weight: 700; color: var(--secondary-color);">Thống kê tần suất xuất hiện Collection trong dự án Backend thực tế:</p>
+          <ul>
+            <li><strong>ArrayList:</strong> Chiếm khoảng 70% tần suất code viết.</li>
+            <li><strong>HashMap:</strong> Chiếm khoảng 20% tần suất code.</li>
+            <li><strong>HashSet:</strong> Chiếm khoảng 5% tần suất.</li>
+            <li>Các loại Collection khác: Chiếm 5% còn lại.</li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

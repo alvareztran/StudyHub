@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 6: Mảng (Array) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2.5rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .ascii-art {
+      font-family: monospace;
+      white-space: pre;
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary-color);
+      overflow-x: auto;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+    .java-table th, .java-table td {
+      padding: 0.6rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+    .java-table th {
+      background-color: var(--highlight-bg);
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; <a href="gioi-thieu-java.html">Java Core Basic</a> &raquo; Chương 6</div>
+      <h1>CHƯƠNG 6: MẢNG (ARRAY)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cấu trúc lưu trữ tuyến tính. Tìm hiểu mảng 1 chiều lưu trữ liên tiếp trong bộ nhớ Heap, mảng 2 chiều dạng Jagged Array, các phương pháp duyệt mảng và lớp tiện ích Arrays Utility.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục Java Core</h3>
+        <ul>
+          <li><a href="gioi-thieu-java.html">1. Giới thiệu Java</a></li>
+          <li><a href="bien-kieu-du-lieu.html">2. Biến &amp; Kiểu dữ liệu</a></li>
+          <li><a href="toan-tu.html">3. Toán tử</a></li>
+          <li><a href="cau-truc-dieu-khien.html">4. Cấu trúc điều khiển</a></li>
+          <li><a href="method.html">5. Phương thức (Method)</a></li>
+          <li><a href="mang.html" class="active">6. Mảng (Array)</a></li>
+          <li><a href="oop.html">7. Lập trình OOP</a></li>
+          <li><a href="class-dac-biet.html">8. Các kiểu Class đặc biệt</a></li>
+          <li><a href="string.html">9. Xử lý chuỗi (String)</a></li>
+          <li><a href="exception-handling.html">10. Exception Handling</a></li>
+          <li><a href="collections-framework.html">11. Collections Framework</a></li>
+          <li><a href="generic.html">12. Generic</a></li>
+          <li><a href="file-io.html">13. File I/O cơ bản</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 6.1 -->
+        <div class="sub-section" id="sub-6-1">
+          <h3>6.1 Array 1 chiều</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Mảng một chiều (One-Dimensional Array) là tập hợp chứa nhiều phần tử có cùng kiểu dữ liệu, được cấp phát liên tiếp nhau trong vùng nhớ Heap và truy xuất thông qua chỉ số (index).</p>
+          <p>Mục đích sử dụng:</p>
+          <ul>
+            <li>Quản lý danh sách phần tử cùng loại thay vì khai báo hàng trăm biến đơn lẻ rời rạc</li>
+            <li>Tối ưu hóa không gian lưu trữ và truy cập nhanh</li>
+            <li>Làm nền tảng để tự xây dựng các cấu trúc dữ liệu phức tạp hơn như ArrayList, Stack, Queue</li>
+          </ul>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Mảng được JVM cấp phát một vùng nhớ liên tục (contiguous) trên bộ nhớ Heap.</p>
+          <p>Ví dụ: <code>int[] numbers = {10, 20, 30, 40};</code></p>
+          <div class="ascii-art">
+Vùng nhớ STACK                    Vùng nhớ HEAP
+┌────────────────┐                ┌──────────────────────────┐
+│ numbers: 0x5a  ├───────────────>│ 0x5a: Index 0: 10        │ (Mỗi ô chiếm 4 bytes)
+└────────────────┘                │       Index 1: 20        │
+                                  │       Index 2: 30        │
+                                  │       Index 3: 40        │
+                                  └──────────────────────────┘</div>
+          <p>Công thức tính toán địa chỉ vật lý của phần tử ở chỉ số $i$:</p>
+          <p>$$\text{Địa chỉ phần tử } i = \text{Địa chỉ đầu (Base Address)} + i \times \text{Kích thước kiểu dữ liệu}$$</p>
+          <p>Nhờ phép toán số học cộng địa chỉ trực tiếp này, CPU có thể nhảy tới bất kỳ ô nhớ của index nào lập tức, giúp truy xuất mảng đạt hiệu năng tối đa với độ phức tạp thời gian: $O(1)$.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>1. Khai báo (Chưa cấp phát ô nhớ ở Heap):</p>
+          <pre><code>int[] numbers; // Khuyên dùng cú pháp này</code></pre>
+          <p>2. Khởi tạo kích thước cố định (Các phần tử nhận giá trị mặc định ban đầu là 0):</p>
+          <pre><code>int[] numbers = new int[5]; // Mảng chứa tối đa 5 số nguyên</code></pre>
+          <p>3. Khởi tạo và gán giá trị trực tiếp:</p>
+          <pre><code>int[] numbers = {10, 20, 30, 40, 50};</code></pre>
+          <p>Để lấy số lượng phần tử của mảng, dùng thuộc tính:</p>
+          <pre><code>int length = numbers.length;</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int[] numbers = {10, 20, 30, 40, 50};
+
+        System.out.println(numbers[0]);      // 10
+        System.out.println(numbers[4]);      // 50
+        System.out.println(numbers.length);  // 5
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Lưu danh sách điểm số đánh giá sao của sản phẩm hoặc dãy nhiệt độ cảm biến:</p>
+          <pre><code>double[] ratings = {4.5, 4.0, 5.0, 4.8};
+double[] temperatures = {30.2, 30.5, 31.0, 29.8};</code></pre>
+        </div>
+
+        <!-- Section 6.2 -->
+        <div class="sub-section" id="sub-6-2">
+          <h3>6.2 Array 2 chiều</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Mảng hai chiều thực chất là một mảng lớn mà mỗi phần tử bên trong nó lại chứa một mảng một chiều khác. Dùng để biểu diễn cấu trúc dạng bảng gồm Hàng (Rows) và Cột (Columns).</p>
+
+          <div class="block-title">Cơ chế hoạt động bên trong</div>
+          <p>Trong Java, mảng hai chiều không phải là một ma trận phẳng liên tục thực tế, mà là **Mảng chứa các mảng (Array of Arrays)**.</p>
+          <div class="ascii-art">
+matrix [Stack: 0x99]
+     ↓
+[Heap Array of References (0x99)]
+┌────────────┬────────────┬────────────┐
+│ Row 0: 0x01│ Row 1: 0x02│ Row 2: 0x03│
+└─────┬──────┴─────┬──────┴─────┬──────┘
+      │            │            │
+      v            v            v
+  [1, 2, 3]    [4, 5, 6]    [7, 8, 9] (Các mảng 1 chiều riêng biệt)</div>
+          <p><strong>Mảng không đều (Jagged Array):</strong> Vì cơ chế này, các mảng con ở từng hàng hoàn toàn không bắt buộc phải có độ dài bằng nhau:</p>
+          <pre><code>int[][] jaggedArray = {
+    {1, 2},
+    {3, 4, 5},
+    {6}
+};</code></pre>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Khai báo và khởi tạo ma trận có kích thước cố định:</p>
+          <pre><code>int[][] matrix = new int[3][4]; // 3 hàng, 4 cột</code></pre>
+          <p>Khởi tạo trực tiếp:</p>
+          <pre><code>int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>public class Main {
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        System.out.println(matrix[1][2]); // In ra: 6 (Hàng chỉ số 1, cột chỉ số 2)
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Thiết lập bàn cờ vua, lưới tọa độ rạp phim, hoặc xử lý điểm ảnh Grayscale:</p>
+          <pre><code>char[][] chessBoard = new char[8][8];
+boolean[][] cinemaSeats = new boolean[10][20]; // true là ghế đã được đặt
+int[][] imagePixels = new int[512][512];      // Ma trận điểm ảnh 512x512</code></pre>
+        </div>
+
+        <!-- Section 6.3 -->
+        <div class="sub-section" id="sub-6-3">
+          <h3>6.3 Duyệt mảng</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Duyệt mảng (Array Traversal) là hành động truy xuất tuần tự qua tất cả các ô chỉ số của mảng để hiển thị dữ liệu, tìm kiếm phần tử, tính toán hoặc cập nhật dữ liệu.</p>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <h4>1. Sử dụng vòng lặp For truyền thống</h4>
+          <p>Cho phép vừa đọc vừa ghi dữ liệu và tương tác trực tiếp với chỉ số index.</p>
+          <pre><code>for (int i = 0; i &lt; arr.length; i++) {
+    // Xử lý với arr[i]
+}</code></pre>
+
+          <h4>2. Sử dụng vòng lặp For-Each cải tiến (Enhanced For Loop)</h4>
+          <p>Code ngắn gọn hơn. Tuy nhiên **chỉ hỗ trợ đọc dữ liệu** (Read-only), không cho phép cập nhật ghi đè phần tử và không có chỉ số index đi kèm.</p>
+          <pre><code>for (int value : arr) {
+    // Xử lý trực tiếp với giá trị value
+}</code></pre>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <p>1. Duyệt và in mảng 1 chiều:</p>
+          <pre><code>int[] numbers = {10, 20, 30, 40};
+for (int number : numbers) {
+    System.out.println(number);
+}</code></pre>
+          <p>2. Duyệt qua mảng 2 chiều bằng 2 vòng lặp lồng nhau:</p>
+          <pre><code>int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+for (int i = 0; i &lt; matrix.length; i++) {
+    for (int j = 0; j &lt; matrix[i].length; j++) {
+        System.out.print(matrix[i][j] + " ");
+    }
+    System.out.println();
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Tính tổng tiền giỏ hàng và quét tìm sản phẩm khớp mã ID trong danh sách:</p>
+          <pre><code>// 1. Tính tổng hóa đơn
+double[] prices = {100000.0, 250000.0, 50000.0};
+double total = 0;
+for (double price : prices) {
+    total += price;
+}
+
+// 2. Tìm kiếm phần tử
+Product foundProduct = null;
+for (Product product : products) {
+    if (product.getId() == targetId) {
+        foundProduct = product;
+        break; // Dừng duyệt ngay khi tìm thấy để tối ưu CPU
+    }
+}</code></pre>
+        </div>
+
+        <!-- Section 6.4 -->
+        <div class="sub-section" id="sub-6-4">
+          <h3>6.4 Arrays Utility (Lớp tiện ích java.util.Arrays)</h3>
+
+          <div class="block-title">Khái niệm và mục đích sử dụng</div>
+          <p>Lớp tiện ích <code>java.util.Arrays</code> cung cấp một tập hợp các phương thức tĩnh (static methods) tối ưu hóa sẵn cấu trúc thuật toán để thao tác nhanh gọn với mảng thô.</p>
+          <p>Bảng phân tích cơ chế hoạt động các phương thức chính:</p>
+          <table class="java-table">
+            <thead>
+              <tr>
+                <th>Phương thức</th>
+                <th>Thuật toán cốt lõi bên dưới JVM</th>
+                <th>Ứng dụng thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Arrays.sort()</code></td><td>Dual-Pivot Quicksort ($O(N \log N)$)</td><td>Sắp xếp tăng dần</td></tr>
+              <tr><td><code>Arrays.binarySearch()</code></td><td>Binary Search ($O(\log N)$)</td><td>Tìm kiếm nhị phân cực nhanh</td></tr>
+              <tr><td><code>Arrays.equals()</code></td><td>So sánh tuần tự từng ô nhớ phần tử</td><td>Kiểm tra tính trùng khớp dữ liệu</td></tr>
+              <tr><td><code>Arrays.fill()</code></td><td>Vòng lặp ghi đè hàng loạt</td><td>Khởi tạo giá trị mặc định ban đầu</td></tr>
+              <tr><td><code>Arrays.copyOf()</code></td><td>System.arraycopy (Native copy cấp thấp)</td><td>Sao chép nhân bản mảng</td></tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Cú pháp và quy tắc</div>
+          <p>Bắt buộc import thư viện trước khi gọi:</p>
+          <pre><code>import java.util.Arrays;</code></pre>
+          <p><em>Chú ý:</em> Phương thức <code>Arrays.binarySearch()</code> chỉ hoạt động chính xác khi mảng truyền vào đã được **sắp xếp thứ tự tăng dần** từ trước.</p>
+
+          <div class="block-title">Ví dụ mã nguồn đơn giản</div>
+          <pre><code>import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] numbers = {5, 2, 8, 1, 9};
+
+        // 1. Sắp xếp mảng
+        Arrays.sort(numbers);
+        System.out.println(Arrays.toString(numbers)); // [1, 2, 5, 8, 9]
+
+        // 2. Tìm kiếm nhị phân giá trị 8
+        int index = Arrays.binarySearch(numbers, 8);
+        System.out.println("Vị trí index: " + index); // 3
+
+        // 3. Khởi tạo mảng toàn giá trị 100
+        int[] arr = new int[3];
+        Arrays.fill(arr, 100);
+        System.out.println(Arrays.toString(arr)); // [100, 100, 100]
+    }
+}</code></pre>
+
+          <div class="block-title">Ví dụ thực tế trong dự án</div>
+          <p>Thực hiện sao lưu mảng dữ liệu trước khi chỉnh sửa và kiểm tra thay đổi:</p>
+          <pre><code>// Sao lưu mảng
+int[] backupData = Arrays.copyOf(sensorData, sensorData.length);
+
+// Đối chiếu thay đổi cấu hình
+if (Arrays.equals(oldConfigs, newConfigs)) {
+    System.out.println("Không phát hiện thay đổi cấu hình mới nào");
+}</code></pre>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; padding-bottom: 2rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
