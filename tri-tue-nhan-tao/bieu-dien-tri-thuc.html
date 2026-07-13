@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 4: Biểu diễn tri thức - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .comparison-table th {
+      background-color: var(--highlight-bg);
+      color: var(--text-dark);
+      font-weight: bold;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Chương 4
+      </div>
+      <h1>CHƯƠNG 4: BIỂU DIỄN TRI THỨC (KNOWLEDGE REPRESENTATION)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Cơ chế lưu trữ và biểu diễn tri thức trong AI. Phân biệt Dữ liệu - Thông tin - Tri thức. Phân tích các mô hình biểu diễn tri thức: Logic, Hệ luật sinh, Mạng ngữ nghĩa và Cấu trúc Frame.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="giai-quyet-van-de-bang-tim-kiem.html">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="bieu-dien-tri-thuc.html" class="active">4. Biểu diễn tri thức</a></li>
+          <li><a href="thu-tuc-hop-giai.html">5. Thủ tục hợp giải</a></li>
+          <li><a href="suy-dien-tien-lui.html">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="giai-thuat-di-truyen.html">7. Giải thuật di truyền</a></li>
+        </ul>
+        <h3>Luyện tập</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html">📝 Trắc nghiệm Chương 1</a></li>
+          <li><a href="trac-nghiem-chuong-2.html">📝 Trắc nghiệm Chương 2</a></li>
+          <li><a href="trac-nghiem-chuong-3.html">📝 Trắc nghiệm Chương 3</a></li>
+          <li><a href="trac-nghiem-chuong-4.html">📝 Trắc nghiệm Chương 4</a></li>
+          <li><a href="trac-nghiem-chuong-5.html">📝 Trắc nghiệm Chương 5</a></li>
+          <li><a href="trac-nghiem-chuong-6.html">📝 Trắc nghiệm Chương 6</a></li>
+          <li><a href="trac-nghiem-chuong-7.html">📝 Trắc nghiệm Chương 7</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <div class="sub-section" id="sec-1">
+          <h3>1. Tại sao cần biểu diễn tri thức?</h3>
+          <p>Con người sử dụng ngôn ngữ tự nhiên và ký hiệu để lưu trữ thông tin, truyền đạt tri thức và thực hiện suy luận giải quyết vấn đề. Tương tự, máy tính trong hệ thống AI cũng cần một cơ chế mô hình hóa tương tự nhằm:</p>
+          <ul>
+            <li>Giúp máy tính hiểu và cấu trúc hóa được bài toán thực tế.</li>
+            <li>Lưu trữ kho kiến thức của một lĩnh vực chuyên biệt dưới dạng cơ sở tri thức (Knowledge Base).</li>
+            <li>Thực hiện các suy luận logic tự động để sinh ra tri thức mới từ các tri thức đã có.</li>
+            <li>Hỗ trợ đưa ra các quyết định hoặc giải pháp tối ưu.</li>
+          </ul>
+          <blockquote>
+            <strong>Biểu diễn tri thức (Knowledge Representation - KR)</strong> là việc mã hóa tri thức từ thế giới thực vào các cấu trúc dữ liệu máy tính để máy tính có thể suy luận một cách logic.
+          </blockquote>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="sec-2">
+          <h3>2. Tri thức là gì?</h3>
+          <p><strong>Tri thức (Knowledge)</strong> là toàn bộ những thông tin, sự kiện, quy luật, kinh nghiệm hoặc kỹ năng mà một thực thể thu nhận được thông qua quá trình học tập, nghiên cứu và trải nghiệm thực tế.</p>
+          
+          <div class="block-title">2.1 Phân loại tri thức cơ bản</div>
+          <ul>
+            <li><strong>Tri thức sự kiện (Factual Knowledge):</strong> Mô tả các sự kiện tĩnh, thông tin thực tế về các đối tượng trong thế giới thực.
+              <ul>
+                <li><em>Ví dụ:</em> "Cần Thơ thuộc Việt Nam", "Trái Đất quay quanh Mặt Trời", "Chim yến có 2 cánh".</li>
+              </ul>
+            </li>
+            <li><strong>Tri thức suy diễn (Inferential Knowledge):</strong> Mô tả các quy luật, luật nhân quả hay các mối quan hệ động giữa các sự kiện.
+              <ul>
+                <li><em>Ví dụ:</em> "Nếu trời mưa thì đường trơn", "Nếu một động vật là chim thì nó có cánh".</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="sec-3">
+          <h3>3. Phân biệt Dữ liệu (Data), Thông tin (Information) và Tri thức (Knowledge)</h3>
+          <p>Ba khái niệm này đại diện cho các cấp độ nhận thức khác nhau trong AI:</p>
+          
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Định nghĩa</th>
+                <th>Ví dụ thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dữ liệu (Data)</strong></td>
+                <td>Các ký hiệu, số liệu thô, chưa qua xử lý hay phân tích ngữ cảnh.</td>
+                <td><code>30, 32, 34, 36</code></td>
+              </tr>
+              <tr>
+                <td><strong>Thông tin (Information)</strong></td>
+                <td>Dữ liệu đã được xử lý, tổ chức và gán ý nghĩa nhất định.</td>
+                <td>"Nhiệt độ đo được đang tăng dần qua các ngày."</td>
+              </tr>
+              <tr>
+                <td><strong>Tri thức (Knowledge)</strong></td>
+                <td>Quy luật, hiểu biết và kinh nghiệm rút ra từ thông tin để áp dụng giải quyết vấn đề.</td>
+                <td>"Nếu nhiệt độ tiếp tục tăng liên tục, có khả năng cao sẽ xảy ra hiện tượng nắng nóng kéo dài."</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="sec-4">
+          <h3>4. Các yêu cầu của một hệ biểu diễn tri thức tốt</h3>
+          <p>Để xây dựng một hệ thống cơ sở tri thức hoạt động hiệu quả trong AI, hệ biểu diễn cần đáp ứng 4 tiêu chí cốt lõi:</p>
+          <ul>
+            <li><strong>4.1 Tính thích hợp biểu diễn (Representational Adequacy):</strong> Có khả năng biểu diễn đầy đủ, chính xác toàn bộ các loại tri thức cần thiết của lĩnh vực ứng dụng.</li>
+            <li><strong>4.2 Tính thích hợp suy diễn (Inferential Adequacy):</strong> Hỗ trợ các cơ chế lập luận để sinh ra các thông tin mới từ các tri thức gốc có sẵn.
+              <ul>
+                <li><em>Ví dụ:</em> Từ luật "Mọi loài chim đều có cánh" và sự kiện "Chim yến là một loài chim" suy ra được "Chim yến có cánh".</li>
+              </ul>
+            </li>
+            <li><strong>4.3 Tính hiệu quả suy diễn (Inferential Efficiency):</strong> Khả năng thực hiện suy luận nhanh chóng, tốn ít thời gian tính toán và tài nguyên bộ nhớ.</li>
+            <li><strong>4.4 Tính hiệu quả thu nhận tri thức (Acquisitional Efficiency):</strong> Cho phép người quản trị dễ dàng chèn thêm tri thức mới, cập nhật hoặc sửa đổi tri thức cũ mà không làm phá vỡ cấu trúc hệ thống.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="sec-5">
+          <h3>5. Khái niệm Ánh xạ (Mapping)</h3>
+          <p>Hệ thống AI không thao tác trực tiếp trên các đối tượng vật lý của thế giới thực mà thao tác trên một **mô hình tính toán** đại diện. Quá trình chuyển đổi này được gọi là <strong>Ánh xạ (Mapping)</strong>:</p>
+          
+          <div class="flowchart" style="display: flex; justify-content: space-around; align-items: center; margin: 1.5rem 0;">
+            <div style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-align: center;">
+              <strong>Thế giới thực</strong><br>
+              <span style="font-size: 0.9rem; color: var(--text-light);">Đối tượng thực tế (Chim, Cá, Xe)</span>
+            </div>
+            <div style="font-size: 1.5rem; color: var(--secondary-color);">&rarr; Ánh xạ (Mapping) &rarr;</div>
+            <div style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-align: center;">
+              <strong>Thế giới tính toán</strong><br>
+              <span style="font-size: 0.9rem; color: var(--text-light);">Ký hiệu logic: <code>bird(X)</code>, <code>fly(X)</code></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="sec-6">
+          <h3>6. Các mô hình biểu diễn tri thức phổ biến</h3>
+          <p>Có 4 hướng tiếp cận chính để xây dựng cơ sở tri thức:</p>
+          <ol>
+            <li><strong>Mô hình Logic:</strong> Sử dụng các hệ logic toán học (Logic mệnh đề, Logic vị từ bậc nhất).</li>
+            <li><strong>Mô hình thủ tục (Procedural Model):</strong> Biểu diễn tri thức dưới dạng các bước thực hiện, luật sản xuất (Production Rules: dạng <code>IF - THEN</code>).</li>
+            <li><strong>Mô hình mạng (Network Model):</strong> Sử dụng cấu trúc đồ thị liên kết. Ví dụ: Mạng ngữ nghĩa (Semantic Network).</li>
+            <li><strong>Mô hình cấu trúc (Structured Model):</strong> Biểu diễn tri thức dạng cấu trúc phân cấp, nhiều thuộc tính. Ví dụ: Hệ thống khung (Frame).</li>
+          </ol>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="sec-7">
+          <h3>7. Mô hình Logic</h3>
+          <p>Sử dụng ngôn ngữ logic toán để biểu diễn tri thức một cách chính xác và chặt chẽ.</p>
+          
+          <div class="block-title">Ví dụ biểu diễn</div>
+          <p>Câu tri thức: <em>"Không phải tất cả sinh viên CNTT đều thông minh"</em> (tức là tồn tại ít nhất một sinh viên CNTT không thông minh).</p>
+          <p>Quy ước ký hiệu:</p>
+          <ul>
+            <li>\(sv\_cntt(X)\): \(X\) là sinh viên ngành CNTT.</li>
+            <li>$thong\_minh(X)$: \(X\) thông minh.</li>
+          </ul>
+          <p>Biểu diễn dưới dạng logic vị từ:</p>
+          <div style="text-align: center; margin: 1rem 0; font-size: 1.2rem; font-weight: bold; color: var(--secondary-color);">
+            \(\exists X (sv\_cntt(X) \land \neg thong\_minh(X))\)
+          </div>
+
+          <div class="block-title">Đánh giá mô hình Logic</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Cực kỳ chặt chẽ, chính xác và có các thuật toán chứng minh định lý toán học vững chắc hỗ trợ suy luận.</li>
+            <li><strong>Nhược điểm:</strong> Khó biểu diễn các dạng tri thức mập mờ, mang tính ước lượng hoặc không chắc chắn. Dễ bùng nổ tính toán khi hệ thống lớn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="sec-8">
+          <h3>8. Mô hình thủ tục và Hệ luật sinh (Production Rules)</h3>
+          <p>Mô hình thủ tục không tập trung mô tả "cái gì đúng" (declarative) mà tập trung mô tả <strong>"làm việc đó như thế nào"</strong> (procedural) thông qua cấu trúc:</p>
+          <div style="text-align: center; margin: 1rem 0; font-weight: bold;">
+            <code>IF &lt;Điều kiện&gt; THEN &lt;Hành động/Kết luận&gt;</code>
+          </div>
+          <p>Đây là nền tảng cốt lõi của các **Hệ chuyên gia (Expert Systems)** giải quyết vấn đề bằng suy luận tiến (forward chaining) hoặc suy luận lùi (backward chaining).</p>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="sec-9">
+          <h3>9. Mạng ngữ nghĩa (Semantic Network)</h3>
+          
+          <div class="block-title">9.1 Định nghĩa</div>
+          <p>Mạng ngữ nghĩa biểu diễn tri thức dưới dạng một <strong>đồ thị có hướng</strong> bao gồm:</p>
+          <ul>
+            <li><strong>Các nút (Nodes):</strong> Đại diện cho các đối tượng, khái niệm hoặc thực thể.</li>
+            <li><strong>Các cung/cạnh (Edges):</strong> Biểu diễn mối quan hệ ngữ nghĩa giữa các đối tượng.</li>
+          </ul>
+
+          <div class="block-title">9.2 Các mối quan hệ kinh điển</div>
+          <ul>
+            <li><strong>Quan hệ Kế thừa (IS-A):</strong> Chỉ ra mối quan hệ phân cấp lớp cha - lớp con.
+              <ul>
+                <li><em>Ví dụ:</em> <code>Chim yến IS-A Chim</code> (Chim yến là một loại chim, kế thừa mọi đặc tính của chim).</li>
+              </ul>
+            </li>
+            <li><strong>Quan hệ Sở hữu (HAS-A / Có):</strong> Chỉ ra mối quan hệ thành phần, bộ phận.
+              <ul>
+                <li><em>Ví dụ:</em> <code>Chim HAS-A Cánh</code> (Chim có cánh).</li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="block-title">9.3 Đặc tính của mạng ngữ nghĩa</div>
+          <ul>
+            <li><strong>Tính kế thừa (Inheritance):</strong> Các nút con tự động thừa hưởng các thuộc tính của các nút cha thông qua quan hệ <code>IS-A</code>. Ví dụ: Nếu <code>Chim có cánh</code> và <code>Chim yến IS-A Chim</code> thì mặc nhiên <code>Chim yến có cánh</code>.</li>
+            <li><strong>Tính ngoại lệ (Exception Handling):</strong> Cho phép ghi đè luật chung cho các trường hợp đặc biệt. Ví dụ: Luật chung <code>Chim biết bay</code>, nhưng ta có thể định nghĩa cung ngoại lệ cho Chim cánh cụt: <code>Chim cánh cụt không biết bay</code>.</li>
+            <li><strong>Tính mở rộng:</strong> Dễ dàng bổ sung thêm đỉnh mới hoặc mối quan hệ mới mà không làm phá vỡ cấu trúc đồ thị hiện hành.</li>
+          </ul>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="sec-10">
+          <h3>10. Ví dụ ứng dụng: Bài toán Tam giác thông minh</h3>
+          <p>Mạng ngữ nghĩa là công cụ đắc lực để giải quyết các bài toán hình học bằng cách liên kết các đại lượng thông qua công thức:</p>
+          <ul>
+            <li>Các nút đại diện cho: Các cạnh (\(a, b, c\)), các góc (\(A, B, C\)), chiều cao (\(h\)), diện tích (\(S\)), chu vi (\(P\)).</li>
+            <li>Các cạnh là các công thức toán học kết nối chúng:
+              <ul>
+                <li>\(S = \frac{1}{2} a \cdot h\)</li>
+                <li>\(P = a + b + c\)</li>
+                <li>\(\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}\)</li>
+              </ul>
+            </li>
+          </ul>
+          <p>Khi người dùng cung cấp một số đại lượng đầu vào, hệ thống AI sẽ duyệt mạng để tìm công thức phù hợp, tính toán và suy luận ra giá trị của các đại lượng còn lại.</p>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="sec-11">
+          <h3>11. Mô hình cấu trúc Frame (Khung tri thức)</h3>
+          
+          <div class="block-title">11.1 Khái niệm</div>
+          <p>Frame là một cấu trúc dữ liệu được Marvin Minsky đề xuất năm 1974. Nó là sự mở rộng trực tiếp của mạng ngữ nghĩa, trong đó mỗi nút không chỉ là một tên nhãn đơn giản mà là một <strong>khung chứa cấu trúc thông tin phức tạp</strong> (tương tự khái niệm Class/Object trong Lập trình hướng đối tượng).</p>
+
+          <div class="block-title">11.2 Các thành phần của một Frame</div>
+          <ul>
+            <li><strong>Tên Frame (Frame Name):</strong> Xác định duy nhất đối tượng hoặc khái niệm.</li>
+            <li><strong>Quan hệ kế thừa:</strong> Thuộc tính chỉ lớp cha (thường dùng quan hệ <code>IS-A</code>).</li>
+            <li><strong>Slot (Khe cắm):</strong> Các thuộc tính của đối tượng (ví dụ: màu sắc, số chân, kích thước).</li>
+            <li><strong>Facet (Khía cạnh):</strong> Mô tả tính chất của Slot, lưu trữ giá trị mặc định, hoặc định nghĩa các <strong>thủ tục kích hoạt (demons)</strong> để tự động tính toán giá trị cho Slot khi cần thiết (ví dụ: công thức tính diện tích hình tròn khi biết bán kính).</li>
+          </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="sec-12">
+          <h3>12. Ví dụ thực tế về Frame</h3>
+          
+          <div class="block-title">Ví dụ 1: Frame CHIM</div>
+          <table class="comparison-table" style="width: auto; min-width: 400px;">
+            <thead>
+              <tr>
+                <th>Slot (Thuộc tính)</th>
+                <th>Giá trị / Kiểu dữ liệu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>IS-A</strong></td>
+                <td>Động vật</td>
+              </tr>
+              <tr>
+                <td><strong>Số cánh</strong></td>
+                <td>2 (mặc định)</td>
+              </tr>
+              <tr>
+                <td><strong>Biết bay</strong></td>
+                <td>True (mặc định)</td>
+              </tr>
+              <tr>
+                <td><strong>Thức ăn</strong></td>
+                <td>Côn trùng, hạt</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Ví dụ 2: Frame Hình tròn (CIRCLE)</div>
+          <table class="comparison-table" style="width: auto; min-width: 500px;">
+            <thead>
+              <tr>
+                <th>Slot (Thuộc tính)</th>
+                <th>Facet (Quy tắc tính toán / Giá trị)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bán kính (r)</strong></td>
+                <td>Nhập từ người dùng</td>
+              </tr>
+              <tr>
+                <td><strong>Đường kính (d)</strong></td>
+                <td>Quy tắc tính: \(d = 2r\)</td>
+              </tr>
+              <tr>
+                <td><strong>Diện tích (S)</strong></td>
+                <td>Quy tắc tính: \(S = \pi r^2\)</td>
+              </tr>
+              <tr>
+                <td><strong>Chu vi (P)</strong></td>
+                <td>Quy tắc tính: \(P = 2\pi r\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section Highlights -->
+        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
+          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
+          <ul>
+            <li><strong>Phân biệt Data - Information - Knowledge:</strong> Nhớ ví dụ chuỗi số thô (Data) &rarr; nhiệt độ tăng (Information) &rarr; nguy cơ nắng nóng (Knowledge).</li>
+            <li><strong>4 yêu cầu của hệ KR tốt:</strong> Tính thích hợp biểu diễn, tính thích hợp suy diễn, tính hiệu quả suy diễn, và tính hiệu quả thu nhận.</li>
+            <li><strong>Mạng ngữ nghĩa (Semantic Network):</strong> Nắm chắc cấu trúc nút (đối tượng) và cung (mối quan hệ). Phân biệt quan hệ kế thừa <code>IS-A</code> và sở hữu <code>HAS-A</code>.</li>
+            <li><strong>Đặc tính mạng ngữ nghĩa:</strong> Tính kế thừa và ghi đè ngoại lệ.</li>
+            <li><strong>Khái niệm Frame:</strong> Hiểu rõ Frame tương tự Class/Object. Phân biệt Slot (thuộc tính) và Facet (khía cạnh mô tả/công thức tính).</li>
+          </ul>
+        </div>
+
+        <!-- Section Review Questions -->
+        <div class="sub-section" id="questions">
+          <h3>❓ Câu hỏi ôn tập tự luận</h3>
+          <ol>
+            <li>Tại sao hệ thống AI cần biểu diễn tri thức? Trình bày khái niệm Ánh xạ (Mapping) từ thế giới thực vào máy tính.</li>
+            <li>Hãy phân biệt Dữ liệu, Thông tin và Tri thức. Cho ví dụ minh họa tự chọn.</li>
+            <li>Trình bày 4 yêu cầu cốt lõi để đánh giá một hệ thống biểu diễn tri thức là tốt hay không.</li>
+            <li>Nêu các đặc điểm của Mạng ngữ nghĩa. Trình bày cách biểu diễn tri thức kế thừa và xử lý ngoại lệ trên mạng ngữ nghĩa.</li>
+            <li>Frame là gì? Hãy thiết lập cấu trúc Frame cho đối tượng "Hình chữ nhật" gồm các thuộc tính chiều dài, chiều rộng, chu vi, diện tích và đường chéo cùng công thức tính toán tương ứng.</li>
+            <li>So sánh ưu điểm và nhược điểm của phương pháp biểu diễn tri thức bằng Logic so với Mạng ngữ nghĩa.</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

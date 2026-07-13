@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 1: Trí tuệ nhân tạo là gì? - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Chương 1
+      </div>
+      <h1>CHƯƠNG 1: TRÍ TUỆ NHÂN TẠO LÀ GÌ?</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tổng quan về trí tuệ nhân tạo: Các định nghĩa cơ bản, mục tiêu, nền tảng học thuật, mô hình kiểm tra Turing, cách phân loại và lịch sử phát triển.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="tri-tue-nhan-tao-la-gi.html" class="active">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="giai-quyet-van-de-bang-tim-kiem.html">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
+          <li><a href="thu-tuc-hop-giai.html">5. Thủ tục hợp giải</a></li>
+          <li><a href="suy-dien-tien-lui.html">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="giai-thuat-di-truyen.html">7. Giải thuật di truyền</a></li>
+        </ul>
+        <h3>Luyện tập</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html">📝 Trắc nghiệm Chương 1</a></li>
+          <li><a href="trac-nghiem-chuong-2.html">📝 Trắc nghiệm Chương 2</a></li>
+          <li><a href="trac-nghiem-chuong-3.html">📝 Trắc nghiệm Chương 3</a></li>
+          <li><a href="trac-nghiem-chuong-4.html">📝 Trắc nghiệm Chương 4</a></li>
+          <li><a href="trac-nghiem-chuong-5.html">📝 Trắc nghiệm Chương 5</a></li>
+          <li><a href="trac-nghiem-chuong-6.html">📝 Trắc nghiệm Chương 6</a></li>
+          <li><a href="trac-nghiem-chuong-7.html">📝 Trắc nghiệm Chương 7</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <div class="sub-section" id="sec-1">
+          <h3>1. Khái niệm Trí tuệ (Intelligence)</h3>
+          <p>Trí tuệ là khả năng của một thực thể trong việc:</p>
+          <ul>
+            <li>Học hỏi từ kinh nghiệm đã qua.</li>
+            <li>Nhận thức và hiểu rõ môi trường xung quanh.</li>
+            <li>Suy luận logic và đưa ra quyết định tối ưu.</li>
+            <li>Giải quyết các vấn đề phức tạp.</li>
+            <li>Thích nghi linh hoạt với các tình huống mới phát sinh.</li>
+          </ul>
+          
+          <div class="block-title">Đặc điểm hệ thống có trí tuệ</div>
+          <ol>
+            <li>Giải quyết được các tình huống mới, chưa từng gặp trước đây trong dữ liệu huấn luyện.</li>
+            <li>Hành động dựa trên lý trí (rationality) thay vì phản ứng ngẫu nhiên hoặc rập khuôn.</li>
+            <li>Có khả năng hành xử và tư duy tương tự con người trong một số nhiệm vụ cụ thể.</li>
+          </ol>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="sec-2">
+          <h3>2. Trí tuệ nhân tạo là gì?</h3>
+          <p><strong>Trí tuệ nhân tạo (Artificial Intelligence - AI)</strong> là ngành khoa học và kỹ thuật nghiên cứu việc thiết kế, xây dựng các hệ thống máy tính có khả năng thực hiện các công việc đòi hỏi trí thông minh của con người.</p>
+          
+          <div class="block-title">Các khả năng cốt lõi của AI</div>
+          <ul>
+            <li><strong>Học tập (Learning):</strong> Tự cải thiện hiệu năng dựa trên dữ liệu.</li>
+            <li><strong>Suy luận (Reasoning):</strong> Sử dụng các quy tắc logic để rút ra kết luận.</li>
+            <li><strong>Lập kế hoạch (Planning):</strong> Thiết lập các bước hành động hướng tới mục tiêu.</li>
+            <li><strong>Nhận dạng (Perception):</strong> Xử lý hình ảnh, âm thanh từ môi trường.</li>
+            <li><strong>Giao tiếp:</strong> Hiểu và tương tác bằng ngôn ngữ tự nhiên.</li>
+            <li><strong>Ra quyết định (Decision Making):</strong> Chọn phương án hành động tối ưu nhất.</li>
+          </ul>
+
+          <blockquote>
+            <strong>Nói cách ngắn gọn:</strong> AI là lĩnh vực nghiên cứu giúp máy tính có khả năng "suy nghĩ" và "hành động thông minh" tương đương hoặc vượt trội con người.
+          </blockquote>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="sec-3">
+          <h3>3. Mục tiêu của Trí tuệ nhân tạo</h3>
+          
+          <div class="block-title">3.1 Xây dựng lý thuyết về sự thông minh</div>
+          <p>AI không chỉ tạo ra máy thông minh mà còn cố gắng làm sáng tỏ các câu hỏi khoa học:</p>
+          <ul>
+            <li>Con người suy nghĩ và xử lý thông tin như thế nào?</li>
+            <li>Con người học tập từ thực tế ra sao?</li>
+            <li>Tri thức được biểu diễn, lưu trữ và tái sử dụng như thế nào trong bộ não?</li>
+          </ul>
+
+          <div class="block-title">3.2 Hiểu cơ chế hoạt động của trí thông minh con người</div>
+          <p>Nghiên cứu các cơ chế nhận thức sinh học để mô hình hóa lại trên máy tính:</p>
+          <ul>
+            <li>Cách bộ não liên kết và ghi nhớ thông tin dài hạn/ngắn hạn.</li>
+            <li>Cách con người thực hiện các suy luận bắc cầu, suy luận quy nạp.</li>
+            <li>Cách con người giải quyết các bài toán mập mờ, thiếu thông tin.</li>
+          </ul>
+
+          <div class="block-title">3.3 Xây dựng cơ chế thực hiện trí thông minh trên máy tính</div>
+          <p>Hiện thực hóa các mô hình toán học thành các thuật toán phần mềm thực tế:</p>
+          <ul>
+            <li>Hệ thống nhận diện khuôn mặt, vật thể từ ảnh/video.</li>
+            <li>Chatbot thông minh và hệ thống trả lời câu hỏi tự động.</li>
+            <li>Hệ thống điều khiển xe tự lái.</li>
+            <li>Hệ thống chuyên gia hỗ trợ chẩn đoán bệnh lý trong y tế.</li>
+          </ul>
+
+          <div class="block-title">3.4 Ứng dụng AI phục vụ cuộc sống</div>
+          <p>Giải phóng sức lao động và tối ưu năng suất:</p>
+          <ul>
+            <li>Tự động hóa các quy trình sản xuất, công việc lặp đi lặp lại.</li>
+            <li>Thực hiện các nhiệm vụ nguy hiểm (như robot dò bom mìn, robot hoạt động trong lò phản ứng hạt nhân).</li>
+            <li>Nâng cao hiệu quả kinh tế và hỗ trợ đưa ra quyết định chính xác hơn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="sec-4">
+          <h3>4. Các nền tảng của Trí tuệ nhân tạo</h3>
+          <p>AI là một ngành liên ngành (interdisciplinary), được xây dựng trên nền tảng vững chắc của nhiều môn khoa học:</p>
+
+          <div class="block-title">4.1 Toán học</div>
+          <ul>
+            <li><strong>Đại số Boolean (Logic Toán):</strong> Nền tảng cho logic số, biểu diễn tri thức bằng các mệnh đề và thực hiện suy luận tự động.</li>
+            <li><strong>Lý thuyết xác suất &amp; Thống kê:</strong> Giúp AI xử lý thông tin không chắc chắn, dự đoán xu hướng và ra quyết định tối ưu. Ví dụ: Thuật toán lọc thư rác (Spam email), dự báo thời tiết.</li>
+            <li><strong>Logic mờ (Fuzzy Logic):</strong> Cho phép máy tính xử lý các khái niệm định tính, không có ranh giới tuyệt đối (ví dụ: "nóng", "lạnh", "cao", "thấp") thay vì chỉ có hai giá trị nhị phân Đúng/Sai.</li>
+          </ul>
+
+          <div class="block-title">4.2 Khoa học thần kinh và não bộ (Neuroscience)</div>
+          <p>Mô phỏng cấu trúc sinh học của não người (nơ-ron và khớp thần kinh) để phát triển:</p>
+          <ul>
+            <li>Mạng nơ-ron nhân tạo (Artificial Neural Networks - ANN).</li>
+            <li>Học sâu (Deep Learning) - cốt lõi của các mô hình AI hiện đại ngày nay.</li>
+          </ul>
+
+          <div class="block-title">4.3 Giải thuật di truyền (Genetic Algorithms)</div>
+          <p>Mô phỏng quá trình tiến hóa và chọn lọc tự nhiên sinh học (chọn lọc, lai ghép, đột biến) nhằm tìm kiếm lời giải tối ưu hoặc gần tối ưu cho các bài toán phức tạp.</p>
+
+          <div class="block-title">4.4 Lý thuyết điều khiển (Control Theory)</div>
+          <p>Ứng dụng trực tiếp vào robot, máy bay không người lái (drone), xe tự hành để duy trì trạng thái cân bằng và định hướng di chuyển chính xác trong không gian thực tế.</p>
+
+          <div class="block-title">4.5 Ngôn ngữ học (Linguistics)</div>
+          <p>Là nền tảng của Xử lý ngôn ngữ tự nhiên (NLP), dịch máy, nhận dạng tiếng nói, giúp máy tính hiểu được cú pháp và ngữ nghĩa ngôn ngữ loài người. Ví dụ: Google Translate, ChatGPT, Siri.</p>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="sec-5">
+          <h3>5. Mô hình kiểm tra Turing (Turing Test)</h3>
+          
+          <div class="block-title">5.1 Khái niệm</div>
+          <p>Được đề xuất bởi nhà toán học vĩ đại <strong>Alan Turing năm 1950</strong> nhằm đưa ra câu trả lời thực nghiệm cho câu hỏi: <em>"Liệu máy móc có thể suy nghĩ được không?"</em></p>
+
+          <div class="block-title">5.2 Cách thức hoạt động</div>
+          <p>Trò chơi bắt chước (Imitation Game) gồm ba đối tượng ở các phòng cách biệt:</p>
+          <ul>
+            <li><strong>A:</strong> Người thẩm vấn (Interrogator).</li>
+            <li><strong>B:</strong> Một con người thật (Human).</li>
+            <li><strong>C:</strong> Hệ thống AI cần kiểm tra (Machine).</li>
+          </ul>
+          <p>Người thẩm vấn đặt câu hỏi và nhận câu trả lời hoàn toàn dưới dạng văn bản (text-only). Nếu sau một khoảng thời gian trò chuyện, người thẩm vấn không thể phân biệt được đâu là máy, đâu là người, thì <strong>hệ thống AI được xem là đã vượt qua bài kiểm tra Turing</strong> và có trí thông minh.</p>
+
+          <div class="block-title">5.3 Ý nghĩa</div>
+          <p>Turing Test đặt nền móng và tiêu chuẩn hành vi (behavioral standard) để đánh giá khả năng mô phỏng trí thông minh của AI mà không cần đi sâu tranh cãi về mặt triết học của nhận thức.</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="sec-6">
+          <h3>6. Tiêu chuẩn đánh giá sự thành công của AI</h3>
+          <p>Để đánh giá mức độ thành công của một ứng dụng hay giải pháp AI, chúng ta thường kiểm tra các tiêu chí sau:</p>
+          <ol>
+            <li><strong>Mô tả bài toán:</strong> Bài toán thực tế có được mô hình hóa và mô tả toán học rõ ràng không?</li>
+            <li><strong>Hệ luật và ràng buộc:</strong> Có các quy tắc hoặc điều kiện biên rõ ràng để giải quyết bài toán không?</li>
+            <li><strong>Khả năng giải quyết:</strong> Thuật toán AI có tìm ra lời giải chính xác trong giới hạn tài nguyên tính toán cho phép không?</li>
+            <li><strong>Kiểm tra Turing:</strong> Đối với các tác vụ giao tiếp hoặc tương tác xã hội, hệ thống có đạt được mức độ tự nhiên tương tự con người không?</li>
+          </ol>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="sec-7">
+          <h3>7. Phân loại AI</h3>
+          <p>Dựa trên khả năng hoạt động, AI được phân làm hai nhóm chính:</p>
+
+          <div class="block-title">7.1 AI hẹp (Narrow AI / Weak AI)</div>
+          <p>Là tất cả các hệ thống AI đang tồn tại trong thực tế hiện nay.</p>
+          <ul>
+            <li><strong>Đặc điểm:</strong> Chỉ được thiết kế và huấn luyện để thực hiện cực kỳ xuất sắc một nhiệm vụ cụ thể. Không có khả năng tự nhận thức hay áp dụng tri thức sang lĩnh vực khác.</li>
+            <li><strong>Ví dụ:</strong> Google Translate (dịch thuật), AlphaGo (chơi cờ vây), hệ thống gợi ý của Netflix, hệ thống nhận diện FaceID trên điện thoại, ChatGPT (tạo sinh văn bản).</li>
+          </ul>
+
+          <div class="block-title">7.2 AI tổng quát (General AI - AGI / Strong AI)</div>
+          <p>Là mục tiêu tối thượng mang tính giả thuyết của ngành khoa học máy tính.</p>
+          <ul>
+            <li><strong>Đặc điểm:</strong> Sở hữu trí thông minh toàn diện như con người. Có khả năng tự học tập, suy luận logic, giải quyết bất kỳ công việc trí tuệ nào trong bất kỳ lĩnh vực nào mà không cần lập trình lại.</li>
+            <li><strong>Hiện trạng:</strong> Chưa được tạo ra hoàn chỉnh, vẫn đang là chủ đề nghiên cứu và tranh biện công nghệ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="sec-8">
+          <h3>8. Lịch sử phát triển AI</h3>
+          <p>Lịch sử AI trải qua nhiều thăng trầm với các cột mốc quan trọng:</p>
+          <ul>
+            <li><strong>1950:</strong> Alan Turing đề xuất Turing Test.</li>
+            <li><strong>1956:</strong> Hội thảo Dartmouth - Thuật ngữ <em>"Artificial Intelligence"</em> chính thức ra đời do John McCarthy đề xuất.</li>
+            <li><strong>1997:</strong> Siêu máy tính Deep Blue của IBM đánh bại nhà vô địch cờ vua thế giới Garry Kasparov.</li>
+            <li><strong>2012:</strong> Sự bùng nổ của mạng nơ-ron sâu (Deep Learning) nhờ mô hình AlexNet giành chiến thắng vang dội tại cuộc thi ImageNet.</li>
+            <li><strong>2016:</strong> AlphaGo của Google DeepMind đánh bại kỳ thủ cờ vây 9 đẳng Lee Sedol.</li>
+            <li><strong>2022:</strong> OpenAI ra mắt ChatGPT, mở đầu kỷ nguyên bùng nổ của AI tạo sinh (Generative AI) trên quy mô toàn cầu.</li>
+            <li><strong>2024:</strong> AI tiếp tục tiến sâu vào nghiên cứu khoa học, tối ưu hóa thuật toán Reinforcement Learning và các mô hình đa phương thức (Multimodal models).</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="sec-9">
+          <h3>9. Ứng dụng thực tế của AI</h3>
+          
+          <div class="block-title">9.1 Kỹ thuật tiếng nói (Speech Engineering)</div>
+          <p>Nhận dạng giọng nói (Speech-to-Text) và tổng hợp giọng nói (Text-to-Speech). Ví dụ: Google Voice Assistant, Siri, trợ lý ảo thông minh.</p>
+
+          <div class="block-title">9.2 Xử lý ngôn ngữ tự nhiên (NLP)</div>
+          <p>Dịch thuật tự động, phân tích cảm xúc văn bản, tóm tắt tài liệu, chatbot trả lời tự động. Ví dụ: Google Translate, ChatGPT.</p>
+
+          <div class="block-title">9.3 Thị giác máy tính (Computer Vision)</div>
+          <p>Nhận dạng khuôn mặt, phát hiện vật thể lạ trên camera an ninh, kiểm tra chất lượng sản phẩm tự động trong nhà máy, phân tích ảnh X-quang. Ví dụ: Face ID trên iPhone.</p>
+
+          <div class="block-title">9.4 Robotics</div>
+          <p>Robot tự động di chuyển trong nhà kho (Amazon Kiva), cánh tay robot lắp ráp ô tô, robot y tế hỗ trợ phẫu thuật nội soi.</p>
+
+          <div class="block-title">9.5 Hệ chuyên gia (Expert Systems)</div>
+          <p>Hệ thống mô phỏng tri thức của chuyên gia để giải quyết vấn đề. Ví dụ: Hệ thống hỗ trợ ra quyết định tài chính, hệ thống chẩn đoán lỗi phần cứng máy bay.</p>
+
+          <div class="block-title">9.6 Trò chơi (Gaming)</div>
+          <p>Huấn luyện bot tự chơi cờ, chơi game đối kháng trực tuyến ở cấp độ chuyên nghiệp. Ví dụ: AlphaStar (StarCraft II), OpenAI Five (Dota 2).</p>
+
+          <div class="block-title">9.7 Lập kế hoạch và tối ưu hóa (Planning &amp; Optimization)</div>
+          <p>Tự động lập lịch bay, tối ưu hóa tuyến đường giao hàng trong ngành logistics, sắp xếp chuỗi cung ứng toàn cầu.</p>
+
+          <div class="block-title">9.8 Y học và Sinh học</div>
+          <p>Dự đoán cấu trúc protein (AlphaFold), chẩn đoán ung thư sớm qua ảnh chụp MRI, phát triển các công thức thuốc mới.</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="sec-10">
+          <h3>10. Các ngành liên quan mật thiết đến AI</h3>
+          <p>Sự phát triển của AI có mối quan hệ tương hỗ chặt chẽ với các ngành học sau:</p>
+          <ul>
+            <li><strong>Máy học (Machine Learning):</strong> Phương pháp cốt lõi để AI tự học từ dữ liệu.</li>
+            <li><strong>Xác suất thống kê:</strong> Công cụ toán học để mô hình hóa sự không chắc chắn.</li>
+            <li><strong>Lý thuyết điều khiển &amp; Thông tin:</strong> Thiết lập cơ chế phản hồi và tối ưu đường truyền.</li>
+            <li><strong>Tâm lý học nhận thức &amp; Thần kinh học:</strong> Gợi ý các mô hình tư duy và cơ chế hoạt động của não bộ.</li>
+            <li><strong>Triết học:</strong> Tranh luận về các giới hạn đạo đức của AI (AI Ethics) và bản chất của ý thức máy móc.</li>
+          </ul>
+        </div>
+
+        <!-- Section Highlights -->
+        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
+          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
+          <ul>
+            <li><strong>Định nghĩa AI:</strong> Nhớ rõ AI là ngành nghiên cứu giúp máy tính có khả năng suy nghĩ và hành động thông minh.</li>
+            <li><strong>Các nền tảng toán học:</strong> Boolean logic (suy luận mệnh đề), Xác suất thống kê (thư rác, dự báo thời tiết), Logic mờ (các khái niệm không tuyệt đối).</li>
+            <li><strong>Turing Test (1950):</strong> Hiểu rõ sơ đồ 3 phòng (Người thẩm vấn - Con người - AI) và tiêu chí vượt qua bài test.</li>
+            <li><strong>Phân biệt Narrow AI vs AGI:</strong> Narrow AI giải quyết 1 task duy nhất (toàn bộ AI hiện nay); AGI thông minh như con người (chưa có thực tế).</li>
+            <li><strong>Các lĩnh vực ứng dụng:</strong> Nắm chắc ít nhất 5 ứng dụng thực tế (NLP, Computer Vision, Speech, Robotics, Hệ chuyên gia).</li>
+          </ul>
+        </div>
+
+        <!-- Section Review Questions -->
+        <div class="sub-section" id="questions">
+          <h3>❓ Câu hỏi ôn tập tự luận</h3>
+          <ol>
+            <li>Trí tuệ nhân tạo là gì? Phân tích các khả năng cốt lõi cần có của một hệ thống AI.</li>
+            <li>Trình bày mục tiêu khoa học và mục tiêu ứng dụng của ngành Trí tuệ nhân tạo.</li>
+            <li>Vẽ sơ đồ và trình bày nguyên lý hoạt động của mô hình kiểm tra Turing (Turing Test).</li>
+            <li>Tại sao nói AI là ngành khoa học liên ngành? Hãy nêu vai trò của Toán học và Khoa học thần kinh đối với sự phát triển của AI.</li>
+            <li>Phân biệt sự khác nhau giữa AI hẹp (Narrow AI) và AI tổng quát (AGI). Cho ví dụ thực tế.</li>
+            <li>Nêu 5 ứng dụng tiêu biểu của AI mà bạn đang sử dụng hoặc biết đến trong cuộc sống hàng ngày.</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

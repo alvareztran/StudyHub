@@ -996,7 +996,1258 @@
           </table>
         </div>
       </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 7: Quiz -->
+      <section id="sec-quiz">
+        <h2>7. Kiểm tra kiến thức (100 câu trắc nghiệm)</h2>
+        <p>Bộ 100 câu trắc nghiệm bao phủ toàn bộ nội dung bài báo. <strong>Chọn đáp án → kết quả hiện ngay lập tức.</strong> Mỗi câu chỉ chọn được một lần.</p>
+
+        <div id="quiz-controls" style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; margin-bottom:1.5rem;">
+          <button onclick="resetQuiz()" style="background:var(--bg-card);color:var(--text-dark);border:1px solid var(--border-color);padding:0.6rem 1.4rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.95rem;">🔄 Làm lại từ đầu</button>
+          <span id="quiz-score-display" style="font-weight:700;font-size:1rem;color:var(--secondary-color);"></span>
+        </div>
+
+        <div id="quiz-container">
+
+          <!-- Q1 -->
+          <div class="quiz-item" id="q1">
+            <p class="quiz-question"><strong>Câu 1.</strong> LLM là viết tắt của cụm từ nào?</p>
+            <label><input type="radio" name="q1" value="A"> A. Large Language Model</label>
+            <label><input type="radio" name="q1" value="B"> B. Linear Learning Machine</label>
+            <label><input type="radio" name="q1" value="C"> C. Latent Logic Module</label>
+            <label><input type="radio" name="q1" value="D"> D. Learning Latent Model</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="quiz-item" id="q2">
+            <p class="quiz-question"><strong>Câu 2.</strong> RLHF là viết tắt của cụm từ nào?</p>
+            <label><input type="radio" name="q2" value="A"> A. Reinforced Learning for Human Feedback</label>
+            <label><input type="radio" name="q2" value="B"> B. Reinforcement Learning from Human Feedback</label>
+            <label><input type="radio" name="q2" value="C"> C. Recursive Learning Hybrid Framework</label>
+            <label><input type="radio" name="q2" value="D"> D. Recurrent Learning with Human Features</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="quiz-item" id="q3">
+            <p class="quiz-question"><strong>Câu 3.</strong> PPO là viết tắt của thuật toán nào?</p>
+            <label><input type="radio" name="q3" value="A"> A. Pre-trained Policy Optimization</label>
+            <label><input type="radio" name="q3" value="B"> B. Proximal Policy Optimization</label>
+            <label><input type="radio" name="q3" value="C"> C. Partial Preference Optimization</label>
+            <label><input type="radio" name="q3" value="D"> D. Probabilistic Policy Operation</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="quiz-item" id="q4">
+            <p class="quiz-question"><strong>Câu 4.</strong> DPO là viết tắt của thuật toán nào?</p>
+            <label><input type="radio" name="q4" value="A"> A. Deep Policy Optimization</label>
+            <label><input type="radio" name="q4" value="B"> B. Dynamic Preference Ordering</label>
+            <label><input type="radio" name="q4" value="C"> C. Direct Preference Optimization</label>
+            <label><input type="radio" name="q4" value="D"> D. Distributed Policy Operation</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="quiz-item" id="q5">
+            <p class="quiz-question"><strong>Câu 5.</strong> SFT trong bài báo đề cập đến phương pháp nào?</p>
+            <label><input type="radio" name="q5" value="A"> A. Structured Fine-Tuning</label>
+            <label><input type="radio" name="q5" value="B"> B. Supervised Fine-Tuning</label>
+            <label><input type="radio" name="q5" value="C"> C. Semantic Feature Training</label>
+            <label><input type="radio" name="q5" value="D"> D. Scaled Function Training</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="quiz-item" id="q6">
+            <p class="quiz-question"><strong>Câu 6.</strong> Mục tiêu chính của giai đoạn căn chỉnh (alignment) LLM là gì?</p>
+            <label><input type="radio" name="q6" value="A"> A. Tăng tốc độ suy luận của mô hình</label>
+            <label><input type="radio" name="q6" value="B"> B. Giảm kích thước tham số mô hình</label>
+            <label><input type="radio" name="q6" value="C"> C. Điều chỉnh hành vi LLM phù hợp với tùy chọn của con người</label>
+            <label><input type="radio" name="q6" value="D"> D. Tăng số lượng dữ liệu huấn luyện</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="quiz-item" id="q7">
+            <p class="quiz-question"><strong>Câu 7.</strong> ChatGPT và Claude được tạo ra chủ yếu bằng phương pháp nào?</p>
+            <label><input type="radio" name="q7" value="A"> A. DPO</label>
+            <label><input type="radio" name="q7" value="B"> B. PPO</label>
+            <label><input type="radio" name="q7" value="C"> C. RRHF</label>
+            <label><input type="radio" name="q7" value="D"> D. PRO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="quiz-item" id="q8">
+            <p class="quiz-question"><strong>Câu 8.</strong> Kết luận chính của bài báo là gì?</p>
+            <label><input type="radio" name="q8" value="A"> A. DPO vượt trội hơn PPO trong mọi tác vụ</label>
+            <label><input type="radio" name="q8" value="B"> B. PPO và DPO có hiệu suất tương đương nhau</label>
+            <label><input type="radio" name="q8" value="C"> C. PPO liên tục vượt trội hơn DPO trong mọi thực nghiệm</label>
+            <label><input type="radio" name="q8" value="D"> D. DPO tốt hơn PPO trên các tác vụ lập trình</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="quiz-item" id="q9">
+            <p class="quiz-question"><strong>Câu 9.</strong> PPO thuộc nhóm phương pháp RLHF nào?</p>
+            <label><input type="radio" name="q9" value="A"> A. Reward-free (không dựa trên phần thưởng)</label>
+            <label><input type="radio" name="q9" value="B"> B. Reward-based (dựa trên phần thưởng)</label>
+            <label><input type="radio" name="q9" value="C"> C. Semi-supervised</label>
+            <label><input type="radio" name="q9" value="D"> D. Unsupervised</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="quiz-item" id="q10">
+            <p class="quiz-question"><strong>Câu 10.</strong> DPO thuộc nhóm phương pháp RLHF nào?</p>
+            <label><input type="radio" name="q10" value="A"> A. Reward-based (dựa trên phần thưởng)</label>
+            <label><input type="radio" name="q10" value="B"> B. Reward-free (không dựa trên phần thưởng)</label>
+            <label><input type="radio" name="q10" value="C"> C. Supervised</label>
+            <label><input type="radio" name="q10" value="D"> D. Actor-critic</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q11 -->
+          <div class="quiz-item" id="q11">
+            <p class="quiz-question"><strong>Câu 11.</strong> "Advantage normalization" trong PPO có tác dụng gì?</p>
+            <label><input type="radio" name="q11" value="A"> A. Tăng kích thước mô hình phần thưởng</label>
+            <label><input type="radio" name="q11" value="B"> B. Chuẩn hóa tín hiệu lợi thế để làm mịn quá trình huấn luyện</label>
+            <label><input type="radio" name="q11" value="C"> C. Giảm số lượng tham số</label>
+            <label><input type="radio" name="q11" value="D"> D. Tăng tốc độ hội tụ bằng cách bỏ qua outlier</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q12 -->
+          <div class="quiz-item" id="q12">
+            <p class="quiz-question"><strong>Câu 12.</strong> EMA (Exponential Moving Average) trong PPO được dùng để làm gì?</p>
+            <label><input type="radio" name="q12" value="A"> A. Cập nhật từng bước trọng số reference model để ổn định tối ưu</label>
+            <label><input type="radio" name="q12" value="B"> B. Tính toán phần thưởng trung bình</label>
+            <label><input type="radio" name="q12" value="C"> C. Giảm kích thước batch</label>
+            <label><input type="radio" name="q12" value="D"> D. Lọc dữ liệu ngoài phân phối</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q13 -->
+          <div class="quiz-item" id="q13">
+            <p class="quiz-question"><strong>Câu 13.</strong> "Distribution shift" trong bài báo đề cập đến vấn đề gì?</p>
+            <label><input type="radio" name="q13" value="A"> A. Thay đổi kiến trúc mô hình giữa các phiên bản</label>
+            <label><input type="radio" name="q13" value="B"> B. Sự dịch chuyển phân phối giữa tập dữ liệu tĩnh và đầu ra mô hình thực tế</label>
+            <label><input type="radio" name="q13" value="C"> C. Sự phân bổ không đều của dữ liệu huấn luyện</label>
+            <label><input type="radio" name="q13" value="D"> D. Sự khác biệt về phần cứng giữa các máy chủ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q14 -->
+          <div class="quiz-item" id="q14">
+            <p class="quiz-question"><strong>Câu 14.</strong> "Out-of-distribution (OOD)" responses trong bài báo là gì?</p>
+            <label><input type="radio" name="q14" value="A"> A. Phản hồi vượt quá giới hạn token</label>
+            <label><input type="radio" name="q14" value="B"> B. Phản hồi nằm ngoài phân phối dữ liệu huấn luyện thông thường</label>
+            <label><input type="radio" name="q14" value="C"> C. Phản hồi do con người viết tay</label>
+            <label><input type="radio" name="q14" value="D"> D. Phản hồi được tạo bởi các mô hình khác ngoài hệ thống</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q15 -->
+          <div class="quiz-item" id="q15">
+            <p class="quiz-question"><strong>Câu 15.</strong> Bài báo được thực hiện bởi các tác giả đến từ trường đại học nào là chính?</p>
+            <label><input type="radio" name="q15" value="A"> A. Đại học Bắc Kinh</label>
+            <label><input type="radio" name="q15" value="B"> B. MIT</label>
+            <label><input type="radio" name="q15" value="C"> C. Đại học Thanh Hoa (Tsinghua University)</label>
+            <label><input type="radio" name="q15" value="D"> D. Stanford University</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q16 -->
+          <div class="quiz-item" id="q16">
+            <p class="quiz-question"><strong>Câu 16.</strong> Chỉ số pass@1k trong bài báo đo lường điều gì?</p>
+            <label><input type="radio" name="q16" value="A"> A. Tỉ lệ 1000 lần thử nghiệm thành công liên tiếp</label>
+            <label><input type="radio" name="q16" value="B"> B. Tỉ lệ sinh 1000 mẫu mã nguồn có ít nhất 1 mẫu vượt qua test cases</label>
+            <label><input type="radio" name="q16" value="C"> C. Số lần mô hình được hỏi cùng một câu</label>
+            <label><input type="radio" name="q16" value="D"> D. Điểm benchmark tối đa đạt được sau 1000 epoch</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q17 -->
+          <div class="quiz-item" id="q17">
+            <p class="quiz-question"><strong>Câu 17.</strong> Trên tập dữ liệu CodeContest, mô hình PPO 34B của bài báo cải thiện pass@1k từ bao nhiêu lên bao nhiêu so với AlphaCode-41B?</p>
+            <label><input type="radio" name="q17" value="A"> A. Từ 10.2% lên 15.6%</label>
+            <label><input type="radio" name="q17" value="B"> B. Từ 16.4% lên 22.4%</label>
+            <label><input type="radio" name="q17" value="C"> C. Từ 20.1% lên 31.5%</label>
+            <label><input type="radio" name="q17" value="D"> D. Từ 5.0% lên 18.0%</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q18 -->
+          <div class="quiz-item" id="q18">
+            <p class="quiz-question"><strong>Câu 18.</strong> "Reference model" trong PPO/DPO đóng vai trò gì?</p>
+            <label><input type="radio" name="q18" value="A"> A. Mô hình được dùng để đánh giá câu hỏi của người dùng</label>
+            <label><input type="radio" name="q18" value="B"> B. Mô hình SFT gốc dùng làm neo để giới hạn KL divergence</label>
+            <label><input type="radio" name="q18" value="C"> C. Mô hình phần thưởng phụ bổ sung</label>
+            <label><input type="radio" name="q18" value="D"> D. Mô hình dùng để khởi tạo tham số ban đầu</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q19 -->
+          <div class="quiz-item" id="q19">
+            <p class="quiz-question"><strong>Câu 19.</strong> Nghiên cứu lý thuyết của bài báo chỉ ra rằng DPO có thể tìm ra loại nghiệm nào?</p>
+            <label><input type="radio" name="q19" value="A"> A. Nghiệm tối ưu toàn cục</label>
+            <label><input type="radio" name="q19" value="B"> B. Nghiệm lệch (biased solutions) khai thác OOD responses</label>
+            <label><input type="radio" name="q19" value="C"> C. Nghiệm hội tụ nhanh nhưng kém ổn định</label>
+            <label><input type="radio" name="q19" value="D"> D. Nghiệm giống hệt mô hình SFT ban đầu</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q20 -->
+          <div class="quiz-item" id="q20">
+            <p class="quiz-question"><strong>Câu 20.</strong> Trong bài báo, ba yếu tố cốt lõi nào giúp PPO đạt hiệu suất tốt nhất?</p>
+            <label><input type="radio" name="q20" value="A"> A. Learning rate lớn, dropout cao, weight decay thấp</label>
+            <label><input type="radio" name="q20" value="B"> B. Advantage normalization, batch size lớn, EMA cho reference model</label>
+            <label><input type="radio" name="q20" value="C"> C. Số lớp transformer nhiều, số đầu attention lớn, dữ liệu nhiều hơn</label>
+            <label><input type="radio" name="q20" value="D"> D. Clip ratio thấp, entropy regularization, giảm KL penalty</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q21 -->
+          <div class="quiz-item" id="q21">
+            <p class="quiz-question"><strong>Câu 21.</strong> Trong RLHF, "reward model" được xây dựng từ dữ liệu gì?</p>
+            <label><input type="radio" name="q21" value="A"> A. Dữ liệu văn bản không nhãn</label>
+            <label><input type="radio" name="q21" value="B"> B. Dữ liệu ưu tiên (preference data) của con người</label>
+            <label><input type="radio" name="q21" value="C"> C. Dữ liệu mã nguồn chất lượng cao</label>
+            <label><input type="radio" name="q21" value="D"> D. Dữ liệu từ Wikipedia</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q22 -->
+          <div class="quiz-item" id="q22">
+            <p class="quiz-question"><strong>Câu 22.</strong> DPO biểu diễn hàm phần thưởng dưới dạng gì?</p>
+            <label><input type="radio" name="q22" value="A"> A. Hàm mũ của policy</label>
+            <label><input type="radio" name="q22" value="B"> B. Logarit của policy</label>
+            <label><input type="radio" name="q22" value="C"> C. Tích phân của policy</label>
+            <label><input type="radio" name="q22" value="D"> D. Đạo hàm của policy</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q23 -->
+          <div class="quiz-item" id="q23">
+            <p class="quiz-question"><strong>Câu 23.</strong> Tại sao DPO thất bại nghiêm trọng trong tác vụ tạo mã nguồn?</p>
+            <label><input type="radio" name="q23" value="A"> A. DPO không hỗ trợ ngôn ngữ lập trình</label>
+            <label><input type="radio" name="q23" value="B"> B. DPO bị distribution shift tĩnh dẫn đến sinh mã vô nghĩa</label>
+            <label><input type="radio" name="q23" value="C"> C. DPO cần dữ liệu lập trình quá nhiều</label>
+            <label><input type="radio" name="q23" value="D"> D. DPO không tương thích với Python</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q24 -->
+          <div class="quiz-item" id="q24">
+            <p class="quiz-question"><strong>Câu 24.</strong> PPO xử lý tác vụ lập trình như thế nào để tránh distribution shift?</p>
+            <label><input type="radio" name="q24" value="A"> A. Sử dụng dữ liệu tĩnh đã được lọc sẵn</label>
+            <label><input type="radio" name="q24" value="B"> B. Tương tác trực tuyến, sinh mã và nhận phần thưởng ngay từ test cases</label>
+            <label><input type="radio" name="q24" value="C"> C. Tăng kích thước mô hình lên 100B tham số</label>
+            <label><input type="radio" name="q24" value="D"> D. Dùng thêm mô hình ngôn ngữ phụ trợ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q25 -->
+          <div class="quiz-item" id="q25">
+            <p class="quiz-question"><strong>Câu 25.</strong> "Epoch" trong huấn luyện mô hình là gì?</p>
+            <label><input type="radio" name="q25" value="A"> A. Một mini-batch dữ liệu</label>
+            <label><input type="radio" name="q25" value="B"> B. Một chu kỳ trọn vẹn duyệt qua toàn bộ tập dữ liệu huấn luyện</label>
+            <label><input type="radio" name="q25" value="C"> C. Số lượng tham số trong một lớp</label>
+            <label><input type="radio" name="q25" value="D"> D. Thời gian cần để hội tụ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q26 -->
+          <div class="quiz-item" id="q26">
+            <p class="quiz-question"><strong>Câu 26.</strong> Phương pháp "pre-training" của LLM sử dụng dữ liệu gì?</p>
+            <label><input type="radio" name="q26" value="A"> A. Chỉ dữ liệu hội thoại</label>
+            <label><input type="radio" name="q26" value="B"> B. Tập dữ liệu văn bản khổng lồ không nhãn</label>
+            <label><input type="radio" name="q26" value="C"> C. Dữ liệu ưu tiên của con người</label>
+            <label><input type="radio" name="q26" value="D"> D. Dữ liệu được gán nhãn bởi chuyên gia</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q27 -->
+          <div class="quiz-item" id="q27">
+            <p class="quiz-question"><strong>Câu 27.</strong> "Actor-critic" là kiến trúc thuộc thuật toán nào?</p>
+            <label><input type="radio" name="q27" value="A"> A. SFT</label>
+            <label><input type="radio" name="q27" value="B"> B. DPO</label>
+            <label><input type="radio" name="q27" value="C"> C. PPO</label>
+            <label><input type="radio" name="q27" value="D"> D. RRHF</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q28 -->
+          <div class="quiz-item" id="q28">
+            <p class="quiz-question"><strong>Câu 28.</strong> KL divergence trong PPO/DPO được sử dụng để làm gì?</p>
+            <label><input type="radio" name="q28" value="A"> A. Đo khoảng cách giữa policy mới và reference model</label>
+            <label><input type="radio" name="q28" value="B"> B. Đo độ chính xác của reward model</label>
+            <label><input type="radio" name="q28" value="C"> C. Tính loss function của SFT</label>
+            <label><input type="radio" name="q28" value="D"> D. Giới hạn tốc độ học</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q29 -->
+          <div class="quiz-item" id="q29">
+            <p class="quiz-question"><strong>Câu 29.</strong> Tác vụ "description-to-code" yêu cầu gì?</p>
+            <label><input type="radio" name="q29" value="A"> A. Mô tả lại mã nguồn bằng ngôn ngữ tự nhiên</label>
+            <label><input type="radio" name="q29" value="B"> B. Hiểu đề bài tự nhiên và tự động viết mã nguồn thực thi</label>
+            <label><input type="radio" name="q29" value="C"> C. Dịch thuật mã nguồn giữa các ngôn ngữ lập trình</label>
+            <label><input type="radio" name="q29" value="D"> D. Tạo documentation cho mã nguồn có sẵn</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q30 -->
+          <div class="quiz-item" id="q30">
+            <p class="quiz-question"><strong>Câu 30.</strong> Ablation studies là phương pháp nghiên cứu gì?</p>
+            <label><input type="radio" name="q30" value="A"> A. Nghiên cứu ảnh hưởng của nhiệt độ lên mô hình</label>
+            <label><input type="radio" name="q30" value="B"> B. Cô lập từng thành phần để đánh giá tác động riêng biệt đến hiệu suất</label>
+            <label><input type="radio" name="q30" value="C"> C. Nghiên cứu quá trình phẫu thuật loại bỏ neuron</label>
+            <label><input type="radio" name="q30" value="D"> D. Thử nghiệm mô hình trên nhiều ngôn ngữ khác nhau</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q31 -->
+          <div class="quiz-item" id="q31">
+            <p class="quiz-question"><strong>Câu 31.</strong> Trong bài báo, "preference data" (dữ liệu ưu tiên) là gì?</p>
+            <label><input type="radio" name="q31" value="A"> A. Dữ liệu ưu tiên theo độ phức tạp câu hỏi</label>
+            <label><input type="radio" name="q31" value="B"> B. Cặp phản hồi được con người xếp hạng ưu tiên hơn kém</label>
+            <label><input type="radio" name="q31" value="C"> C. Dữ liệu được lọc theo từ khóa ưu tiên</label>
+            <label><input type="radio" name="q31" value="D"> D. Dữ liệu từ người dùng trả phí</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q32 -->
+          <div class="quiz-item" id="q32">
+            <p class="quiz-question"><strong>Câu 32.</strong> Tập dữ liệu CodeContest được giới thiệu bởi nhóm nghiên cứu nào?</p>
+            <label><input type="radio" name="q32" value="A"> A. OpenAI (Ouyang và cộng sự)</label>
+            <label><input type="radio" name="q32" value="B"> B. Li và cộng sự (2022)</label>
+            <label><input type="radio" name="q32" value="C"> C. Rafailov và cộng sự (2023)</label>
+            <label><input type="radio" name="q32" value="D"> D. Anthropic</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q33 -->
+          <div class="quiz-item" id="q33">
+            <p class="quiz-question"><strong>Câu 33.</strong> AlphaCode là mô hình lập trình của tổ chức nào?</p>
+            <label><input type="radio" name="q33" value="A"> A. OpenAI</label>
+            <label><input type="radio" name="q33" value="B"> B. DeepMind (Li và cộng sự, 2022)</label>
+            <label><input type="radio" name="q33" value="C"> C. Anthropic</label>
+            <label><input type="radio" name="q33" value="D"> D. Meta AI</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q34 -->
+          <div class="quiz-item" id="q34">
+            <p class="quiz-question"><strong>Câu 34.</strong> "Cost model" trong Safe RLHF có nhiệm vụ gì?</p>
+            <label><input type="radio" name="q34" value="A"> A. Đo lường chi phí tính toán của mô hình</label>
+            <label><input type="radio" name="q34" value="B"> B. Đo lường mức độ độc hại/nguy hiểm để phạt mô hình</label>
+            <label><input type="radio" name="q34" value="C"> C. Tính chi phí dữ liệu huấn luyện</label>
+            <label><input type="radio" name="q34" value="D"> D. Đánh giá độ sáng tạo của phản hồi</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q35 -->
+          <div class="quiz-item" id="q35">
+            <p class="quiz-question"><strong>Câu 35.</strong> Tại sao batch size lớn lại quan trọng với PPO trong bài báo?</p>
+            <label><input type="radio" name="q35" value="A"> A. Giúp giảm chi phí lưu trữ</label>
+            <label><input type="radio" name="q35" value="B"> B. Cung cấp ước lượng gradient ổn định hơn, giảm variance</label>
+            <label><input type="radio" name="q35" value="C"> C. Tăng tốc độ inference</label>
+            <label><input type="radio" name="q35" value="D"> D. Cho phép huấn luyện song song trên nhiều máy hơn</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q36 -->
+          <div class="quiz-item" id="q36">
+            <p class="quiz-question"><strong>Câu 36.</strong> Trong quá trình RLHF, giai đoạn SFT có vai trò gì?</p>
+            <label><input type="radio" name="q36" value="A"> A. Xây dựng reward model</label>
+            <label><input type="radio" name="q36" value="B"> B. Thiết lập mô hình cơ sở (base model) từ dữ liệu mẫu chất lượng cao</label>
+            <label><input type="radio" name="q36" value="C"> C. Huấn luyện policy bằng RL</label>
+            <label><input type="radio" name="q36" value="D"> D. Đánh giá mô hình bằng benchmark</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q37 -->
+          <div class="quiz-item" id="q37">
+            <p class="quiz-question"><strong>Câu 37.</strong> Trong bài báo, "policy" (chính sách) trong RL tương đương với gì trong ngữ cảnh LLM?</p>
+            <label><input type="radio" name="q37" value="A"> A. Tập dữ liệu ưu tiên</label>
+            <label><input type="radio" name="q37" value="B"> B. Mô hình ngôn ngữ đang được huấn luyện</label>
+            <label><input type="radio" name="q37" value="C"> C. Reward model</label>
+            <label><input type="radio" name="q37" value="D"> D. Bộ tokenizer</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q38 -->
+          <div class="quiz-item" id="q38">
+            <p class="quiz-question"><strong>Câu 38.</strong> Bài báo nghiên cứu loại tác vụ nào ngoài hội thoại?</p>
+            <label><input type="radio" name="q38" value="A"> A. Dịch thuật</label>
+            <label><input type="radio" name="q38" value="B"> B. Tạo mã nguồn (code generation)</label>
+            <label><input type="radio" name="q38" value="C"> C. Nhận dạng ảnh</label>
+            <label><input type="radio" name="q38" value="D"> D. Phân tích cảm xúc</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q39 -->
+          <div class="quiz-item" id="q39">
+            <p class="quiz-question"><strong>Câu 39.</strong> "Biased solution" mà DPO có thể tìm ra có đặc điểm gì?</p>
+            <label><input type="radio" name="q39" value="A"> A. Phản hồi quá ngắn</label>
+            <label><input type="radio" name="q39" value="B"> B. Khai thác phản hồi ngoài phân phối để đạt điểm cao giả tạo</label>
+            <label><input type="radio" name="q39" value="C"> C. Chỉ học từ một loại câu hỏi</label>
+            <label><input type="radio" name="q39" value="D"> D. Bỏ qua dữ liệu ưu tiên thấp</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q40 -->
+          <div class="quiz-item" id="q40">
+            <p class="quiz-question"><strong>Câu 40.</strong> So sánh với AlphaCode-41B, kích thước mô hình PPO trong bài báo là bao nhiêu?</p>
+            <label><input type="radio" name="q40" value="A"> A. 7B tham số</label>
+            <label><input type="radio" name="q40" value="B"> B. 13B tham số</label>
+            <label><input type="radio" name="q40" value="C"> C. 34B tham số</label>
+            <label><input type="radio" name="q40" value="D"> D. 70B tham số</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q41 -->
+          <div class="quiz-item" id="q41">
+            <p class="quiz-question"><strong>Câu 41.</strong> Theo bài báo, kết quả của PPO trên tác vụ lập trình thi đấu đạt mức gì?</p>
+            <label><input type="radio" name="q41" value="A"> A. Dưới mức trung bình</label>
+            <label><input type="radio" name="q41" value="B"> B. State-of-the-art (tốt nhất tại thời điểm đó)</label>
+            <label><input type="radio" name="q41" value="C"> C. Tương đương với DPO</label>
+            <label><input type="radio" name="q41" value="D"> D. Kém hơn AlphaCode</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q42 -->
+          <div class="quiz-item" id="q42">
+            <p class="quiz-question"><strong>Câu 42.</strong> Mistral AI đã sử dụng phương pháp nào để đạt hiệu suất cao trên các bộ chuẩn học thuật?</p>
+            <label><input type="radio" name="q42" value="A"> A. PPO</label>
+            <label><input type="radio" name="q42" value="B"> B. RRHF</label>
+            <label><input type="radio" name="q42" value="C"> C. DPO</label>
+            <label><input type="radio" name="q42" value="D"> D. PRO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q43 -->
+          <div class="quiz-item" id="q43">
+            <p class="quiz-question"><strong>Câu 43.</strong> "RRHF" là phương pháp thuộc nhóm nào theo phân loại của bài báo?</p>
+            <label><input type="radio" name="q43" value="A"> A. Reward-based</label>
+            <label><input type="radio" name="q43" value="B"> B. Reward-free</label>
+            <label><input type="radio" name="q43" value="C"> C. Unsupervised</label>
+            <label><input type="radio" name="q43" value="D"> D. Semi-supervised</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q44 -->
+          <div class="quiz-item" id="q44">
+            <p class="quiz-question"><strong>Câu 44.</strong> Trong thực nghiệm hội thoại, PPO có kết quả như thế nào so với DPO?</p>
+            <label><input type="radio" name="q44" value="A"> A. DPO tốt hơn PPO</label>
+            <label><input type="radio" name="q44" value="B"> B. PPO vượt trội hơn DPO</label>
+            <label><input type="radio" name="q44" value="C"> C. Hai phương pháp ngang nhau</label>
+            <label><input type="radio" name="q44" value="D"> D. Kết quả không ổn định, không kết luận được</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q45 -->
+          <div class="quiz-item" id="q45">
+            <p class="quiz-question"><strong>Câu 45.</strong> Hạn chế nào của <code>Future.get()</code> liên quan đến khái niệm "blocking" trong RLHF là tương đồng về tư duy với?</p>
+            <label><input type="radio" name="q45" value="A"> A. KL divergence</label>
+            <label><input type="radio" name="q45" value="B"> B. Hạn chế của DPO dùng dữ liệu tĩnh, không tương tác online với môi trường</label>
+            <label><input type="radio" name="q45" value="C"> C. Batch size lớn trong PPO</label>
+            <label><input type="radio" name="q45" value="D"> D. EMA của reference model</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q46 -->
+          <div class="quiz-item" id="q46">
+            <p class="quiz-question"><strong>Câu 46.</strong> Trong bài báo, khái niệm "alignment" có nghĩa là gì?</p>
+            <label><input type="radio" name="q46" value="A"> A. Căn chỉnh văn bản trong giao diện</label>
+            <label><input type="radio" name="q46" value="B"> B. Điều chỉnh hành vi LLM theo tùy chọn và giá trị của con người</label>
+            <label><input type="radio" name="q46" value="C"> C. Căn chỉnh tham số giữa các mô hình</label>
+            <label><input type="radio" name="q46" value="D"> D. Đồng bộ dữ liệu giữa các máy chủ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q47 -->
+          <div class="quiz-item" id="q47">
+            <p class="quiz-question"><strong>Câu 47.</strong> Bài báo thực hiện thực nghiệm trên bao nhiêu loại tác vụ chính?</p>
+            <label><input type="radio" name="q47" value="A"> A. 1 tác vụ</label>
+            <label><input type="radio" name="q47" value="B"> B. 2 tác vụ (hội thoại và tạo mã nguồn)</label>
+            <label><input type="radio" name="q47" value="C"> C. 3 tác vụ</label>
+            <label><input type="radio" name="q47" value="D"> D. 5 tác vụ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q48 -->
+          <div class="quiz-item" id="q48">
+            <p class="quiz-question"><strong>Câu 48.</strong> DPO được đề xuất bởi nhóm nghiên cứu nào?</p>
+            <label><input type="radio" name="q48" value="A"> A. OpenAI</label>
+            <label><input type="radio" name="q48" value="B"> B. Rafailov và cộng sự (2023)</label>
+            <label><input type="radio" name="q48" value="C"> C. Li và cộng sự (2022)</label>
+            <label><input type="radio" name="q48" value="D"> D. Ouyang và cộng sự (2022)</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q49 -->
+          <div class="quiz-item" id="q49">
+            <p class="quiz-question"><strong>Câu 49.</strong> Trong RL, "reward signal" (tín hiệu phần thưởng) dùng để làm gì?</p>
+            <label><input type="radio" name="q49" value="A"> A. Đánh giá độ phức tạp của câu hỏi</label>
+            <label><input type="radio" name="q49" value="B"> B. Hướng dẫn agent tối ưu hóa policy theo hướng mong muốn</label>
+            <label><input type="radio" name="q49" value="C"> C. Giới hạn số token đầu ra</label>
+            <label><input type="radio" name="q49" value="D"> D. Tính điểm BLEU cho văn bản</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q50 -->
+          <div class="quiz-item" id="q50">
+            <p class="quiz-question"><strong>Câu 50.</strong> "Gibberish" trong bài báo đề cập đến vấn đề gì của DPO?</p>
+            <label><input type="radio" name="q50" value="A"> A. Mô hình nói quá nhiều</label>
+            <label><input type="radio" name="q50" value="B"> B. DPO sinh ra ký tự hoặc cấu trúc mã vô nghĩa do distribution shift</label>
+            <label><input type="radio" name="q50" value="C"> C. Phản hồi bằng ngôn ngữ sai</label>
+            <label><input type="radio" name="q50" value="D"> D. Lỗi tokenization</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q51 -->
+          <div class="quiz-item" id="q51">
+            <p class="quiz-question"><strong>Câu 51.</strong> Tham chiếu (reference model) trong DPO được sử dụng như thế nào?</p>
+            <label><input type="radio" name="q51" value="A"> A. Là mô hình final output sau DPO</label>
+            <label><input type="radio" name="q51" value="B"> B. Tạo ra dữ liệu ưu tiên để huấn luyện</label>
+            <label><input type="radio" name="q51" value="C"> C. Là điểm neo (anchor) trong hàm loss của DPO qua log-ratio</label>
+            <label><input type="radio" name="q51" value="D"> D. Chỉ dùng cho inference không dùng cho training</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q52 -->
+          <div class="quiz-item" id="q52">
+            <p class="quiz-question"><strong>Câu 52.</strong> "Fine-tuning" LLM là gì?</p>
+            <label><input type="radio" name="q52" value="A"> A. Tái cấu trúc kiến trúc mô hình</label>
+            <label><input type="radio" name="q52" value="B"> B. Tinh chỉnh mô hình đã pre-train trên dữ liệu chuyên biệt</label>
+            <label><input type="radio" name="q52" value="C"> C. Tăng số lượng tham số mô hình</label>
+            <label><input type="radio" name="q52" value="D"> D. Chuyển đổi định dạng mô hình</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q53 -->
+          <div class="quiz-item" id="q53">
+            <p class="quiz-question"><strong>Câu 53.</strong> Bài báo đề cập đến nguy cơ nào khi DPO gặp phân phối dữ liệu bị dịch chuyển?</p>
+            <label><input type="radio" name="q53" value="A"> A. Mô hình bị quên catastrophically</label>
+            <label><input type="radio" name="q53" value="B"> B. Hiệu suất bị ảnh hưởng đáng kể, dễ dẫn đến thất bại hoàn toàn</label>
+            <label><input type="radio" name="q53" value="C"> C. Tốc độ học tập giảm nhẹ</label>
+            <label><input type="radio" name="q53" value="D"> D. Tăng chi phí tính toán</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q54 -->
+          <div class="quiz-item" id="q54">
+            <p class="quiz-question"><strong>Câu 54.</strong> Trong ký hiệu k@n, "k" và "n" đại diện cho gì theo bài báo?</p>
+            <label><input type="radio" name="q54" value="A"> A. k là kích thước mô hình, n là số bước huấn luyện</label>
+            <label><input type="radio" name="q54" value="B"> B. k là số mẫu nộp bài, n là số mẫu sinh ra trước khi lọc</label>
+            <label><input type="radio" name="q54" value="C"> C. k là số epoch, n là số layer</label>
+            <label><input type="radio" name="q54" value="D"> D. k là learning rate, n là batch size</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q55 -->
+          <div class="quiz-item" id="q55">
+            <p class="quiz-question"><strong>Câu 55.</strong> Theo bài báo, phương pháp nào phù hợp hơn cho môi trường học tăng cường trực tuyến (online RL)?</p>
+            <label><input type="radio" name="q55" value="A"> A. DPO</label>
+            <label><input type="radio" name="q55" value="B"> B. PRO</label>
+            <label><input type="radio" name="q55" value="C"> C. RRHF</label>
+            <label><input type="radio" name="q55" value="D"> D. PPO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q56 -->
+          <div class="quiz-item" id="q56">
+            <p class="quiz-question"><strong>Câu 56.</strong> Llama là dòng mô hình LLM của tổ chức nào?</p>
+            <label><input type="radio" name="q56" value="A"> A. Google</label>
+            <label><input type="radio" name="q56" value="B"> B. Meta AI (Touvron và cộng sự, 2023)</label>
+            <label><input type="radio" name="q56" value="C"> C. OpenAI</label>
+            <label><input type="radio" name="q56" value="D"> D. Anthropic</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q57 -->
+          <div class="quiz-item" id="q57">
+            <p class="quiz-question"><strong>Câu 57.</strong> "PRO" (Preference Ranking Optimization) thuộc nhóm phương pháp nào?</p>
+            <label><input type="radio" name="q57" value="A"> A. Reward-based</label>
+            <label><input type="radio" name="q57" value="B"> B. Reward-free</label>
+            <label><input type="radio" name="q57" value="C"> C. Active learning</label>
+            <label><input type="radio" name="q57" value="D"> D. Meta-learning</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q58 -->
+          <div class="quiz-item" id="q58">
+            <p class="quiz-question"><strong>Câu 58.</strong> Bài báo đặt ra hai câu hỏi nghiên cứu chính. Câu hỏi thứ nhất là gì?</p>
+            <label><input type="radio" name="q58" value="A"> A. Làm thế nào để giảm chi phí huấn luyện LLM?</label>
+            <label><input type="radio" name="q58" value="B"> B. Liệu DPO có thực sự vượt trội hơn PPO trong RLHF?</label>
+            <label><input type="radio" name="q58" value="C"> C. Mô hình nào cần ít dữ liệu huấn luyện hơn?</label>
+            <label><input type="radio" name="q58" value="D"> D. Liệu có thể kết hợp PPO và DPO không?</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q59 -->
+          <div class="quiz-item" id="q59">
+            <p class="quiz-question"><strong>Câu 59.</strong> Câu hỏi nghiên cứu thứ hai của bài báo là gì?</p>
+            <label><input type="radio" name="q59" value="A"> A. Làm thế nào để giảm số tham số của LLM?</label>
+            <label><input type="radio" name="q59" value="B"> B. Liệu hiệu suất của PPO có thể cải thiện đáng kể trên các bộ chuẩn RLHF?</label>
+            <label><input type="radio" name="q59" value="C"> C. Phương pháp nào phù hợp với dữ liệu tiếng Việt?</label>
+            <label><input type="radio" name="q59" value="D"> D. Khi nào nên dùng DPO thay PPO?</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q60 -->
+          <div class="quiz-item" id="q60">
+            <p class="quiz-question"><strong>Câu 60.</strong> Trong bài báo, "token" là đơn vị gì?</p>
+            <label><input type="radio" name="q60" value="A"> A. Đơn vị lưu trữ bộ nhớ</label>
+            <label><input type="radio" name="q60" value="B"> B. Đơn vị xử lý văn bản của LLM (từ, subword hoặc ký tự)</label>
+            <label><input type="radio" name="q60" value="C"> C. Đơn vị đánh giá mô hình</label>
+            <label><input type="radio" name="q60" value="D"> D. Đơn vị tiền tệ trong hệ thống thanh toán API</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q61 -->
+          <div class="quiz-item" id="q61">
+            <p class="quiz-question"><strong>Câu 61.</strong> Bài báo sử dụng mô hình phần thưởng để làm gì trong PPO?</p>
+            <label><input type="radio" name="q61" value="A"> A. Chấm điểm câu hỏi đầu vào</label>
+            <label><input type="radio" name="q61" value="B"> B. Cung cấp tín hiệu phần thưởng để tối ưu hóa policy của LLM</label>
+            <label><input type="radio" name="q61" value="C"> C. Lọc dữ liệu ưu tiên</label>
+            <label><input type="radio" name="q61" value="D"> D. Tạo dữ liệu ưu tiên mới</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q62 -->
+          <div class="quiz-item" id="q62">
+            <p class="quiz-question"><strong>Câu 62.</strong> Phương pháp nào dưới đây KHÔNG được đề cập trong bài báo như một phương pháp reward-free?</p>
+            <label><input type="radio" name="q62" value="A"> A. DPO</label>
+            <label><input type="radio" name="q62" value="B"> B. RRHF</label>
+            <label><input type="radio" name="q62" value="C"> C. PRO</label>
+            <label><input type="radio" name="q62" value="D"> D. PPO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q63 -->
+          <div class="quiz-item" id="q63">
+            <p class="quiz-question"><strong>Câu 63.</strong> Khoảng cách KL (KL divergence) đo lường điều gì?</p>
+            <label><input type="radio" name="q63" value="A"> A. Độ chính xác của phân loại</label>
+            <label><input type="radio" name="q63" value="B"> B. Khoảng cách thống kê giữa hai phân phối xác suất</label>
+            <label><input type="radio" name="q63" value="C"> C. Độ phức tạp của mô hình</label>
+            <label><input type="radio" name="q63" value="D"> D. Số lượng tham số cần cập nhật</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q64 -->
+          <div class="quiz-item" id="q64">
+            <p class="quiz-question"><strong>Câu 64.</strong> Kỹ thuật "clip ratio" trong PPO có tác dụng gì?</p>
+            <label><input type="radio" name="q64" value="A"> A. Giới hạn kích thước dữ liệu đầu vào</label>
+            <label><input type="radio" name="q64" value="B"> B. Giới hạn mức độ cập nhật policy để tránh thay đổi quá lớn</label>
+            <label><input type="radio" name="q64" value="C"> C. Cắt bớt phần thưởng âm</label>
+            <label><input type="radio" name="q64" value="D"> D. Giảm số layer transformer</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q65 -->
+          <div class="quiz-item" id="q65">
+            <p class="quiz-question"><strong>Câu 65.</strong> "State-of-the-art" trong bài báo có nghĩa là gì?</p>
+            <label><input type="radio" name="q65" value="A"> A. Phương pháp cũ và được kiểm chứng lâu dài</label>
+            <label><input type="radio" name="q65" value="B"> B. Kết quả tốt nhất đạt được tại thời điểm nghiên cứu</label>
+            <label><input type="radio" name="q65" value="C"> C. Mô hình tiêu chuẩn của ngành</label>
+            <label><input type="radio" name="q65" value="D"> D. Kiến trúc hiện đại nhất</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q66 -->
+          <div class="quiz-item" id="q66">
+            <p class="quiz-question"><strong>Câu 66.</strong> Bài báo tiến hành thực nghiệm trên tác vụ hội thoại nào?</p>
+            <label><input type="radio" name="q66" value="A"> A. Chỉ Q&amp;A thực tế</label>
+            <label><input type="radio" name="q66" value="B"> B. Tác vụ tạo hội thoại (dialogue/chat generation)</label>
+            <label><input type="radio" name="q66" value="C"> C. Chỉ hội thoại y tế</label>
+            <label><input type="radio" name="q66" value="D"> D. Hội thoại kinh doanh</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q67 -->
+          <div class="quiz-item" id="q67">
+            <p class="quiz-question"><strong>Câu 67.</strong> Trong bài báo, "safe RLHF" là biến thể nào của RLHF?</p>
+            <label><input type="radio" name="q67" value="A"> A. RLHF dùng dữ liệu an toàn nhất</label>
+            <label><input type="radio" name="q67" value="B"> B. RLHF có thêm cost model để đo mức độ độc hại và phạt mô hình</label>
+            <label><input type="radio" name="q67" value="C"> C. RLHF không dùng reward model</label>
+            <label><input type="radio" name="q67" value="D"> D. RLHF dành cho trẻ em</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q68 -->
+          <div class="quiz-item" id="q68">
+            <p class="quiz-question"><strong>Câu 68.</strong> PPO ban đầu được thiết kế cho lĩnh vực nào trước khi áp dụng cho LLM?</p>
+            <label><input type="radio" name="q68" value="A"> A. Xử lý ngôn ngữ tự nhiên</label>
+            <label><input type="radio" name="q68" value="B"> B. Học tăng cường (Reinforcement Learning) tổng quát</label>
+            <label><input type="radio" name="q68" value="C"> C. Computer Vision</label>
+            <label><input type="radio" name="q68" value="D"> D. Tối ưu hóa toán học</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q69 -->
+          <div class="quiz-item" id="q69">
+            <p class="quiz-question"><strong>Câu 69.</strong> Trong bài báo, tập dữ liệu nào được sử dụng cho tác vụ lập trình thi đấu?</p>
+            <label><input type="radio" name="q69" value="A"> A. HumanEval</label>
+            <label><input type="radio" name="q69" value="B"> B. CodeContest</label>
+            <label><input type="radio" name="q69" value="C"> C. LeetCode</label>
+            <label><input type="radio" name="q69" value="D"> D. MBPP</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q70 -->
+          <div class="quiz-item" id="q70">
+            <p class="quiz-question"><strong>Câu 70.</strong> Ưu điểm chính của PPO so với DPO theo bài báo là gì?</p>
+            <label><input type="radio" name="q70" value="A"> A. Đơn giản hơn và cần ít dữ liệu hơn</label>
+            <label><input type="radio" name="q70" value="B"> B. Học trực tuyến từ môi trường thực tế, tránh được distribution shift</label>
+            <label><input type="radio" name="q70" value="C"> C. Không cần reward model</label>
+            <label><input type="radio" name="q70" value="D"> D. Tốc độ huấn luyện nhanh hơn</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q71 -->
+          <div class="quiz-item" id="q71">
+            <p class="quiz-question"><strong>Câu 71.</strong> "Comprehensive study" trong tiêu đề bài báo có nghĩa là gì?</p>
+            <label><input type="radio" name="q71" value="A"> A. Nghiên cứu tóm tắt ngắn gọn</label>
+            <label><input type="radio" name="q71" value="B"> B. Nghiên cứu toàn diện, bao phủ cả lý thuyết lẫn thực nghiệm đa chiều</label>
+            <label><input type="radio" name="q71" value="C"> C. Nghiên cứu lý thuyết thuần túy</label>
+            <label><input type="radio" name="q71" value="D"> D. Nghiên cứu chỉ dựa trên bộ test duy nhất</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q72 -->
+          <div class="quiz-item" id="q72">
+            <p class="quiz-question"><strong>Câu 72.</strong> Vấn đề chính của DPO trong tác vụ lập trình khi pass rate giảm về 0% là do nguyên nhân gì?</p>
+            <label><input type="radio" name="q72" value="A"> A. Dữ liệu lập trình quá phức tạp cho DPO</label>
+            <label><input type="radio" name="q72" value="B"> B. DPO bị distribution shift tĩnh, sinh ra gibberish code</label>
+            <label><input type="radio" name="q72" value="C"> C. DPO không hỗ trợ task code generation</label>
+            <label><input type="radio" name="q72" value="D"> D. Dữ liệu preference không có mã nguồn</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q73 -->
+          <div class="quiz-item" id="q73">
+            <p class="quiz-question"><strong>Câu 73.</strong> Trong PPO, "critic" (người phê bình) có nhiệm vụ gì?</p>
+            <label><input type="radio" name="q73" value="A"> A. Tạo ra câu hỏi đầu vào</label>
+            <label><input type="radio" name="q73" value="B"> B. Ước lượng value function (giá trị kỳ vọng phần thưởng tương lai)</label>
+            <label><input type="radio" name="q73" value="C"> C. Tạo ra dữ liệu preference</label>
+            <label><input type="radio" name="q73" value="D"> D. Đánh giá chất lượng văn bản đầu ra</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q74 -->
+          <div class="quiz-item" id="q74">
+            <p class="quiz-question"><strong>Câu 74.</strong> Trong ký hiệu "34B", chữ "B" đại diện cho đơn vị gì?</p>
+            <label><input type="radio" name="q74" value="A"> A. Bytes</label>
+            <label><input type="radio" name="q74" value="B"> B. Billion (tỷ) tham số</label>
+            <label><input type="radio" name="q74" value="C"> C. Batches</label>
+            <label><input type="radio" name="q74" value="D"> D. Blocks (khối transformer)</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q75 -->
+          <div class="quiz-item" id="q75">
+            <p class="quiz-question"><strong>Câu 75.</strong> Theo bài báo, "actor" trong PPO đại diện cho gì?</p>
+            <label><input type="radio" name="q75" value="A"> A. Mô hình phần thưởng</label>
+            <label><input type="radio" name="q75" value="B"> B. Policy model - mô hình chính sách được cập nhật</label>
+            <label><input type="radio" name="q75" value="C"> C. Tập dữ liệu ưu tiên</label>
+            <label><input type="radio" name="q75" value="D"> D. Reference model</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q76 -->
+          <div class="quiz-item" id="q76">
+            <p class="quiz-question"><strong>Câu 76.</strong> Bài báo được đăng bởi nhóm tác giả đến từ tổng cộng bao nhiêu tổ chức?</p>
+            <label><input type="radio" name="q76" value="A"> A. 1 tổ chức</label>
+            <label><input type="radio" name="q76" value="B"> B. 2 tổ chức</label>
+            <label><input type="radio" name="q76" value="C"> C. 3 tổ chức (Tsinghua, Shanghai Qi Zhi, Shanghai Jiao Tong)</label>
+            <label><input type="radio" name="q76" value="D"> D. 4 tổ chức</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q77 -->
+          <div class="quiz-item" id="q77">
+            <p class="quiz-question"><strong>Câu 77.</strong> Điểm khác biệt cơ bản nhất giữa online learning (PPO) và offline learning (DPO)?</p>
+            <label><input type="radio" name="q77" value="A"> A. PPO cần nhiều GPU hơn DPO</label>
+            <label><input type="radio" name="q77" value="B"> B. PPO học từ dữ liệu được sinh ra trực tiếp bởi policy hiện tại; DPO học từ tập dữ liệu tĩnh cố định</label>
+            <label><input type="radio" name="q77" value="C"> C. DPO nhanh hơn PPO trong mọi trường hợp</label>
+            <label><input type="radio" name="q77" value="D"> D. PPO không cần dữ liệu ưu tiên còn DPO thì cần</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q78 -->
+          <div class="quiz-item" id="q78">
+            <p class="quiz-question"><strong>Câu 78.</strong> Yếu tố nào KHÔNG phải là ưu điểm của DPO so với PPO?</p>
+            <label><input type="radio" name="q78" value="A"> A. Không cần xây dựng reward model riêng biệt</label>
+            <label><input type="radio" name="q78" value="B"> B. Đơn giản hơn về mặt thuật toán</label>
+            <label><input type="radio" name="q78" value="C"> C. Hoạt động tốt trong tác vụ lập trình thi đấu</label>
+            <label><input type="radio" name="q78" value="D"> D. Hiệu quả tốt trên các bộ chuẩn học thuật nhất định</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q79 -->
+          <div class="quiz-item" id="q79">
+            <p class="quiz-question"><strong>Câu 79.</strong> Phương trình tối ưu RLHF cơ bản bao gồm mục tiêu gì kết hợp với phạt KL?</p>
+            <label><input type="radio" name="q79" value="A"> A. Tối đa hóa entropy - phạt KL</label>
+            <label><input type="radio" name="q79" value="B"> B. Tối đa hóa kỳ vọng phần thưởng - phạt KL so với reference model</label>
+            <label><input type="radio" name="q79" value="C"> C. Tối thiểu hóa cross-entropy loss + phạt KL</label>
+            <label><input type="radio" name="q79" value="D"> D. Tối đa hóa log-likelihood + phạt L2</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q80 -->
+          <div class="quiz-item" id="q80">
+            <p class="quiz-question"><strong>Câu 80.</strong> "Test cases" trong lập trình thi đấu có vai trò gì trong thực nghiệm của bài báo?</p>
+            <label><input type="radio" name="q80" value="A"> A. Dữ liệu huấn luyện cho DPO</label>
+            <label><input type="radio" name="q80" value="B"> B. Nguồn tín hiệu phần thưởng thực tế để đánh giá tính đúng đắn của mã nguồn</label>
+            <label><input type="radio" name="q80" value="C"> C. Bộ câu hỏi dùng để đánh giá người dùng</label>
+            <label><input type="radio" name="q80" value="D"> D. Dữ liệu validation cho reward model</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q81 -->
+          <div class="quiz-item" id="q81">
+            <p class="quiz-question"><strong>Câu 81.</strong> Trong bài báo, sự mâu thuẫn nào thúc đẩy nghiên cứu này?</p>
+            <label><input type="radio" name="q81" value="A"> A. PPO tốt trên benchmark học thuật, DPO tốt hơn trong ứng dụng thực tế</label>
+            <label><input type="radio" name="q81" value="B"> B. Ứng dụng thực tế thành công nhất dùng PPO, nhưng điểm benchmark cao hơn lại thường đến từ DPO</label>
+            <label><input type="radio" name="q81" value="C"> C. DPO nhanh hơn PPO nhưng tốn bộ nhớ hơn</label>
+            <label><input type="radio" name="q81" value="D"> D. Không có mâu thuẫn, bài báo chỉ muốn xác nhận DPO tốt hơn</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q82 -->
+          <div class="quiz-item" id="q82">
+            <p class="quiz-question"><strong>Câu 82.</strong> Trong bối cảnh RLHF, "hallucination" (ảo giác) của LLM là gì?</p>
+            <label><input type="radio" name="q82" value="A"> A. Mô hình trả lời quá chậm</label>
+            <label><input type="radio" name="q82" value="B"> B. Mô hình sinh ra thông tin nghe có vẻ hợp lý nhưng hoàn toàn sai sự thật</label>
+            <label><input type="radio" name="q82" value="C"> C. Mô hình từ chối trả lời</label>
+            <label><input type="radio" name="q82" value="D"> D. Mô hình trả lời bằng ngôn ngữ sai</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q83 -->
+          <div class="quiz-item" id="q83">
+            <p class="quiz-question"><strong>Câu 83.</strong> Trong ký hiệu "41B" của AlphaCode-41B, con số 41 chỉ điều gì?</p>
+            <label><input type="radio" name="q83" value="A"> A. 41 năm phát triển</label>
+            <label><input type="radio" name="q83" value="B"> B. 41 tỷ tham số</label>
+            <label><input type="radio" name="q83" value="C"> C. 41 lớp transformer</label>
+            <label><input type="radio" name="q83" value="D"> D. 41% hiệu suất baseline</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q84 -->
+          <div class="quiz-item" id="q84">
+            <p class="quiz-question"><strong>Câu 84.</strong> Theo bài báo, DPO đạt hiệu suất tốt trên bộ chuẩn nào?</p>
+            <label><input type="radio" name="q84" value="A"> A. Bộ chuẩn lập trình thi đấu như CodeContest</label>
+            <label><input type="radio" name="q84" value="B"> B. Các bộ chuẩn học thuật (academic benchmarks)</label>
+            <label><input type="radio" name="q84" value="C"> C. Bộ chuẩn hội thoại thực tế</label>
+            <label><input type="radio" name="q84" value="D"> D. Bộ chuẩn dịch thuật đa ngữ</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q85 -->
+          <div class="quiz-item" id="q85">
+            <p class="quiz-question"><strong>Câu 85.</strong> "Ziegler và cộng sự (2019)" được trích dẫn như là nghiên cứu tiên phong của phương pháp nào?</p>
+            <label><input type="radio" name="q85" value="A"> A. DPO</label>
+            <label><input type="radio" name="q85" value="B"> B. RLHF dựa trên phần thưởng (PPO)</label>
+            <label><input type="radio" name="q85" value="C"> C. SFT</label>
+            <label><input type="radio" name="q85" value="D"> D. PRO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q86 -->
+          <div class="quiz-item" id="q86">
+            <p class="quiz-question"><strong>Câu 86.</strong> Điều gì xảy ra khi mô hình DPO gặp OOD responses trong quá trình tối ưu?</p>
+            <label><input type="radio" name="q86" value="A"> A. DPO bỏ qua và tiếp tục tối ưu bình thường</label>
+            <label><input type="radio" name="q86" value="B"> B. DPO có thể tìm nghiệm lệch bằng cách khai thác những phản hồi OOD đó</label>
+            <label><input type="radio" name="q86" value="C"> C. DPO tự động điều chỉnh tham số để tránh OOD</label>
+            <label><input type="radio" name="q86" value="D"> D. DPO chuyển sang dùng reward model</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q87 -->
+          <div class="quiz-item" id="q87">
+            <p class="quiz-question"><strong>Câu 87.</strong> Tại sao PPO điều hòa policy bằng KL với reference model?</p>
+            <label><input type="radio" name="q87" value="A"> A. Để giảm chi phí tính toán</label>
+            <label><input type="radio" name="q87" value="B"> B. Để giữ policy không đi quá xa khỏi phân phối ngôn ngữ tự nhiên ban đầu</label>
+            <label><input type="radio" name="q87" value="C"> C. Để tăng tốc độ hội tụ</label>
+            <label><input type="radio" name="q87" value="D"> D. Để tránh sử dụng dữ liệu ưu tiên</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q88 -->
+          <div class="quiz-item" id="q88">
+            <p class="quiz-question"><strong>Câu 88.</strong> Trong bài báo, "tác vụ thi đấu lập trình thử thách nhất" đề cập đến loại bài toán nào?</p>
+            <label><input type="radio" name="q88" value="A"> A. Bài toán học thuật cơ bản (hello world)</label>
+            <label><input type="radio" name="q88" value="B"> B. Bài toán competitive programming như CodeContest</label>
+            <label><input type="radio" name="q88" value="C"> C. Bài tập về nhà của sinh viên</label>
+            <label><input type="radio" name="q88" value="D"> D. Bài toán SQL database</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q89 -->
+          <div class="quiz-item" id="q89">
+            <p class="quiz-question"><strong>Câu 89.</strong> Trong so sánh của bài báo, "mô hình 34B của chúng tôi" chỉ mô hình được huấn luyện bằng phương pháp nào?</p>
+            <label><input type="radio" name="q89" value="A"> A. DPO</label>
+            <label><input type="radio" name="q89" value="B"> B. SFT thuần túy</label>
+            <label><input type="radio" name="q89" value="C"> C. PPO</label>
+            <label><input type="radio" name="q89" value="D"> D. RRHF</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q90 -->
+          <div class="quiz-item" id="q90">
+            <p class="quiz-question"><strong>Câu 90.</strong> Trong RLHF, "human feedback" được thu thập như thế nào?</p>
+            <label><input type="radio" name="q90" value="A"> A. Từ điểm số tự động của benchmark</label>
+            <label><input type="radio" name="q90" value="B"> B. Từ việc con người xếp hạng các cặp phản hồi của mô hình</label>
+            <label><input type="radio" name="q90" value="C"> C. Từ kết quả test cases lập trình</label>
+            <label><input type="radio" name="q90" value="D"> D. Từ mô hình khác tự chấm điểm</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q91 -->
+          <div class="quiz-item" id="q91">
+            <p class="quiz-question"><strong>Câu 91.</strong> Nghiên cứu của Ouyang và cộng sự (2022) liên quan đến sản phẩm nào?</p>
+            <label><input type="radio" name="q91" value="A"> A. Claude</label>
+            <label><input type="radio" name="q91" value="B"> B. Llama</label>
+            <label><input type="radio" name="q91" value="C"> C. InstructGPT (tiền thân của ChatGPT)</label>
+            <label><input type="radio" name="q91" value="D"> D. Gemini</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q92 -->
+          <div class="quiz-item" id="q92">
+            <p class="quiz-question"><strong>Câu 92.</strong> Phương trình mục tiêu của DPO tối ưu hóa theo hướng nào?</p>
+            <label><input type="radio" name="q92" value="A"> A. Tối thiểu hóa xác suất phản hồi được ưa thích</label>
+            <label><input type="radio" name="q92" value="B"> B. Tối đa hóa tỉ lệ log-probability của phản hồi được ưa thích so với phản hồi bị từ chối</label>
+            <label><input type="radio" name="q92" value="C"> C. Tối đa hóa entropy của phân phối đầu ra</label>
+            <label><input type="radio" name="q92" value="D"> D. Tối thiểu hóa cross-entropy với nhãn tốt</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q93 -->
+          <div class="quiz-item" id="q93">
+            <p class="quiz-question"><strong>Câu 93.</strong> Đặc điểm chính phân biệt tác vụ lập trình với tác vụ hội thoại trong ngữ cảnh đánh giá phần thưởng là gì?</p>
+            <label><input type="radio" name="q93" value="A"> A. Lập trình cần ít dữ liệu hơn</label>
+            <label><input type="radio" name="q93" value="B"> B. Lập trình có phần thưởng nhị phân tuyệt đối (đúng/sai từ test case), không có vùng xám</label>
+            <label><input type="radio" name="q93" value="C"> C. Hội thoại khó đánh giá hơn lập trình</label>
+            <label><input type="radio" name="q93" value="D"> D. Lập trình chỉ dùng được PPO</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q94 -->
+          <div class="quiz-item" id="q94">
+            <p class="quiz-question"><strong>Câu 94.</strong> Bài báo đã xác thực phát hiện thông qua thực nghiệm có quy mô như thế nào?</p>
+            <label><input type="radio" name="q94" value="A"> A. Chỉ thực nghiệm nhỏ trên mô hình 7B</label>
+            <label><input type="radio" name="q94" value="B"> B. Thực nghiệm quy mô lớn bao gồm nhiều tác vụ và mức độ khó khác nhau</label>
+            <label><input type="radio" name="q94" value="C"> C. Thực nghiệm chỉ trên dữ liệu tiếng Anh</label>
+            <label><input type="radio" name="q94" value="D"> D. Thực nghiệm lý thuyết không có thực nghiệm thực tế</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q95 -->
+          <div class="quiz-item" id="q95">
+            <p class="quiz-question"><strong>Câu 95.</strong> Trong bài báo, tập dữ liệu ưu tiên trong DPO là loại dữ liệu gì?</p>
+            <label><input type="radio" name="q95" value="A"> A. Dữ liệu động được sinh ra theo thời gian thực</label>
+            <label><input type="radio" name="q95" value="B"> B. Dữ liệu tĩnh (static dataset) đã thu thập và cố định trước</label>
+            <label><input type="radio" name="q95" value="C"> C. Dữ liệu được cập nhật liên tục từ người dùng</label>
+            <label><input type="radio" name="q95" value="D"> D. Dữ liệu tổng hợp bởi AI</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q96 -->
+          <div class="quiz-item" id="q96">
+            <p class="quiz-question"><strong>Câu 96.</strong> Kết quả thực nghiệm nào trong bài báo chứng minh mạnh mẽ nhất PPO vượt trội hơn DPO?</p>
+            <label><input type="radio" name="q96" value="A"> A. PPO đạt điểm cao hơn một chút trên tập hội thoại</label>
+            <label><input type="radio" name="q96" value="B"> B. PPO vượt qua AlphaCode-41B trên CodeContest, trong khi DPO thất bại hoàn toàn với pass@0%</label>
+            <label><input type="radio" name="q96" value="C"> C. PPO huấn luyện nhanh hơn DPO</label>
+            <label><input type="radio" name="q96" value="D"> D. PPO cần ít dữ liệu hơn để đạt cùng mức hiệu suất</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q97 -->
+          <div class="quiz-item" id="q97">
+            <p class="quiz-question"><strong>Câu 97.</strong> Điều gì xảy ra khi DPO bị distribution shift trong tác vụ lập trình theo bài báo?</p>
+            <label><input type="radio" name="q97" value="A"> A. DPO tự điều chỉnh và vẫn hoạt động tốt</label>
+            <label><input type="radio" name="q97" value="B"> B. Pass rate giảm về 0% do sinh ra mã nguồn vô nghĩa</label>
+            <label><input type="radio" name="q97" value="C"> C. Chỉ giảm nhẹ, từ 80% xuống còn 60%</label>
+            <label><input type="radio" name="q97" value="D"> D. DPO chuyển sang chế độ hội thoại thay vì lập trình</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q98 -->
+          <div class="quiz-item" id="q98">
+            <p class="quiz-question"><strong>Câu 98.</strong> Đâu là ứng dụng thực tế quan trọng nhất của RLHF trong bài báo?</p>
+            <label><input type="radio" name="q98" value="A"> A. Giảm chi phí inference của LLM</label>
+            <label><input type="radio" name="q98" value="B"> B. Căn chỉnh LLM phù hợp với tùy chọn và giá trị của con người trong ứng dụng thực tế</label>
+            <label><input type="radio" name="q98" value="C"> C. Tăng tốc độ huấn luyện</label>
+            <label><input type="radio" name="q98" value="D"> D. Giảm kích thước mô hình để triển khai trên thiết bị di động</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q99 -->
+          <div class="quiz-item" id="q99">
+            <p class="quiz-question"><strong>Câu 99.</strong> Theo phân tích của bài báo, nguyên nhân cốt lõi khiến PPO ổn định hơn trong tác vụ lập trình là gì?</p>
+            <label><input type="radio" name="q99" value="A"> A. PPO dùng kiến trúc transformer lớn hơn DPO</label>
+            <label><input type="radio" name="q99" value="B"> B. PPO học online, tự điều chỉnh và có ràng buộc KL với reference model giữ cú pháp đúng</label>
+            <label><input type="radio" name="q99" value="C"> C. PPO dùng tokenizer chuyên biệt cho mã nguồn</label>
+            <label><input type="radio" name="q99" value="D"> D. PPO có thêm bộ lọc ngôn ngữ lập trình</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <!-- Q100 -->
+          <div class="quiz-item" id="q100">
+            <p class="quiz-question"><strong>Câu 100.</strong> Đóng góp tổng thể lớn nhất của bài báo "Is DPO Superior to PPO for LLM Alignment?" cho cộng đồng nghiên cứu là gì?</p>
+            <label><input type="radio" name="q100" value="A"> A. Giới thiệu kiến trúc mô hình mới hoàn toàn</label>
+            <label><input type="radio" name="q100" value="B"> B. Chứng minh bằng lý thuyết và thực nghiệm quy mô lớn rằng PPO vượt DPO, và xác định các yếu tố cốt lõi để PPO đạt tối ưu</label>
+            <label><input type="radio" name="q100" value="C"> C. Phát minh ra phương pháp RLHF mới thay thế cả PPO và DPO</label>
+            <label><input type="radio" name="q100" value="D"> D. Thu thập tập dữ liệu ưu tiên mới cho cộng đồng</label>
+            <div class="quiz-feedback"></div>
+          </div>
+
+        </div><!-- end #quiz-container -->
+
+
+        <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+          <button onclick="resetQuiz()" style="background:var(--bg-card);color:var(--text-dark);border:1px solid var(--border-color);padding:0.6rem 1.4rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.95rem;">🔄 Làm lại từ đầu</button>
+          <span id="quiz-score-display-bottom" style="font-weight:700;font-size:1rem;color:var(--secondary-color);"></span>
+        </div>
+
+
+      </section>
+
+      <style>
+        .quiz-item {
+          background: var(--bg-card);
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          padding: 1rem 1.25rem;
+          margin-bottom: 1rem;
+        }
+        .quiz-question { margin: 0 0 0.6rem 0; font-size: 0.95rem; }
+        .quiz-item label {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+          padding: 0.35rem 0.5rem;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          margin-bottom: 0.2rem;
+          transition: background 0.15s;
+        }
+        .quiz-item label:hover { background: var(--highlight-bg); }
+        .quiz-item label.correct { background: rgba(34,197,94,0.15); color: #16a34a; font-weight: 600; }
+        .quiz-item label.incorrect { background: rgba(239,68,68,0.12); color: #dc2626; }
+        .quiz-feedback { font-size: 0.83rem; margin-top: 0.4rem; padding: 0.4rem 0.6rem; border-radius: 5px; display: none; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.feedback-correct { background: rgba(34,197,94,0.1); color: #15803d; border-left: 3px solid #22c55e; }
+        .quiz-feedback.feedback-incorrect { background: rgba(239,68,68,0.08); color: #b91c1c; border-left: 3px solid #ef4444; }
+      </style>
+
+      <script>
+        const answers = {
+          q1:'A', q2:'B', q3:'B', q4:'C', q5:'B', q6:'C', q7:'B', q8:'C', q9:'B', q10:'B',
+          q11:'B', q12:'A', q13:'B', q14:'B', q15:'C', q16:'B', q17:'B', q18:'B', q19:'B', q20:'B',
+          q21:'B', q22:'B', q23:'B', q24:'B', q25:'B', q26:'B', q27:'C', q28:'A', q29:'B', q30:'B',
+          q31:'B', q32:'B', q33:'B', q34:'B', q35:'B', q36:'B', q37:'B', q38:'B', q39:'B', q40:'C',
+          q41:'B', q42:'C', q43:'B', q44:'B', q45:'B', q46:'B', q47:'B', q48:'B', q49:'B', q50:'B',
+          q51:'C', q52:'B', q53:'B', q54:'B', q55:'D', q56:'B', q57:'B', q58:'B', q59:'B', q60:'B',
+          q61:'B', q62:'D', q63:'B', q64:'B', q65:'B', q66:'B', q67:'B', q68:'B', q69:'B', q70:'B',
+          q71:'B', q72:'B', q73:'B', q74:'B', q75:'B', q76:'C', q77:'B', q78:'C', q79:'B', q80:'B',
+          q81:'B', q82:'B', q83:'B', q84:'B', q85:'B', q86:'B', q87:'B', q88:'B', q89:'C', q90:'B',
+          q91:'C', q92:'B', q93:'B', q94:'B', q95:'B', q96:'B', q97:'B', q98:'B', q99:'B', q100:'B'
+        };
+
+        const explanations = {
+          q1:'LLM = Large Language Model - Mô hình ngôn ngữ lớn.',
+          q2:'RLHF = Reinforcement Learning from Human Feedback.',
+          q3:'PPO = Proximal Policy Optimization - Tối ưu hóa chính sách cận biên.',
+          q4:'DPO = Direct Preference Optimization - Tối ưu hóa ưu tiên trực tiếp.',
+          q5:'SFT = Supervised Fine-Tuning - Tinh chỉnh có giám sát.',
+          q6:'Mục tiêu alignment là điều chỉnh hành vi LLM phù hợp với tùy chọn của con người.',
+          q7:'ChatGPT và Claude được tạo bởi PPO - phương pháp RLHF dựa trên phần thưởng.',
+          q8:'Kết luận chính: PPO liên tục vượt trội hơn DPO trong tất cả mọi thực nghiệm.',
+          q9:'PPO dùng reward model → thuộc nhóm reward-based.',
+          q10:'DPO không dùng reward model tường minh → thuộc nhóm reward-free.',
+          q11:'Advantage normalization chuẩn hóa tín hiệu lợi thế để ổn định huấn luyện.',
+          q12:'EMA cập nhật từng bước reference model giúp ổn định quá trình tối ưu PPO.',
+          q13:'Distribution shift là sự dịch chuyển phân phối giữa tập dữ liệu tĩnh và đầu ra thực tế.',
+          q14:'OOD = phản hồi nằm ngoài phân phối dữ liệu huấn luyện thông thường.',
+          q15:'Tsinghua University (Đại học Thanh Hoa) là đơn vị chính của nhóm tác giả.',
+          q16:'pass@1k: sinh 1000 mẫu mã nguồn, có ít nhất 1 mẫu vượt qua test cases.',
+          q17:'PPO 34B cải thiện pass@1k từ 16.4% lên 22.4% so với AlphaCode-41B.',
+          q18:'Reference model là mô hình SFT gốc dùng để tính KL và giữ policy không đi quá xa.',
+          q19:'DPO có thể tìm nghiệm lệch (biased solutions) khai thác OOD responses.',
+          q20:'Ba yếu tố: advantage normalization, batch size lớn, EMA cho reference model.',
+          q21:'Reward model được xây dựng từ dữ liệu ưu tiên (preference data) của con người.',
+          q22:'DPO biểu diễn hàm phần thưởng dưới dạng logarit của policy.',
+          q23:'DPO bị distribution shift tĩnh → sinh ra gibberish code → pass rate về 0%.',
+          q24:'PPO tương tác trực tuyến, sinh mã và nhận phần thưởng từ test cases ngay lập tức.',
+          q25:'Epoch = 1 chu kỳ trọn vẹn duyệt qua toàn bộ tập dữ liệu huấn luyện.',
+          q26:'Pre-training dùng tập dữ liệu văn bản khổng lồ không nhãn để học tri thức chung.',
+          q27:'PPO sử dụng kiến trúc actor-critic của Reinforcement Learning.',
+          q28:'KL divergence đo khoảng cách giữa policy mới và reference model, dùng để phạt nếu đi quá xa.',
+          q29:'Description-to-code: hiểu đề bài tự nhiên và tự động viết mã nguồn thực thi.',
+          q30:'Ablation studies: cô lập từng thành phần để đánh giá tác động riêng biệt.',
+          q31:'Preference data: cặp phản hồi được con người xếp hạng ưa thích/không ưa thích.',
+          q32:'CodeContest được giới thiệu bởi Li và cộng sự (2022).',
+          q33:'AlphaCode là mô hình của DeepMind (Li và cộng sự, 2022).',
+          q34:'Cost model đo mức độ độc hại/nguy hiểm để phạt mô hình trong Safe RLHF.',
+          q35:'Batch size lớn cung cấp ước lượng gradient ổn định, giảm variance trong PPO.',
+          q36:'SFT thiết lập mô hình cơ sở từ dữ liệu mẫu chất lượng cao.',
+          q37:'Policy trong RL tương đương với mô hình ngôn ngữ đang được huấn luyện.',
+          q38:'Bài báo nghiên cứu cả tác vụ hội thoại lẫn tạo mã nguồn (code generation).',
+          q39:'Biased solution khai thác OOD responses để đạt điểm reward cao giả tạo.',
+          q40:'Mô hình PPO trong bài báo có 34B tham số, vượt qua AlphaCode-41B.',
+          q41:'PPO đạt state-of-the-art (tốt nhất) trên tác vụ lập trình thi đấu.',
+          q42:'Mistral AI sử dụng DPO để đạt hiệu suất cao trên benchmark học thuật.',
+          q43:'RRHF thuộc nhóm reward-free, không dùng reward model tường minh.',
+          q44:'Trong mọi thực nghiệm hội thoại, PPO đều vượt trội hơn DPO.',
+          q45:'DPO học từ tập dữ liệu tĩnh - tương đồng với blocking get() không tương tác với môi trường.',
+          q46:'Alignment: điều chỉnh hành vi LLM theo tùy chọn và giá trị của con người.',
+          q47:'Bài báo thực nghiệm trên 2 tác vụ: hội thoại và tạo mã nguồn.',
+          q48:'DPO được đề xuất bởi Rafailov và cộng sự (2023).',
+          q49:'Reward signal hướng dẫn agent (policy) tối ưu hóa theo hướng mong muốn.',
+          q50:'Gibberish: DPO bị distribution shift → sinh ra ký tự/cấu trúc mã vô nghĩa.',
+          q51:'Reference model trong DPO là điểm neo trong hàm loss thông qua log-ratio.',
+          q52:'Fine-tuning: tinh chỉnh mô hình đã pre-train trên dữ liệu chuyên biệt hơn.',
+          q53:'DPO bị ảnh hưởng đáng kể bởi distribution shift, dễ dẫn đến thất bại hoàn toàn.',
+          q54:'Trong k@n: k = số mẫu nộp bài chọn từ n mẫu sinh ra sau khi lọc bởi test công khai.',
+          q55:'PPO phù hợp cho online RL vì học trực tiếp từ policy hiện tại, tương tác môi trường.',
+          q56:'Llama là dòng mô hình của Meta AI (Touvron và cộng sự, 2023).',
+          q57:'PRO (Preference Ranking Optimization) thuộc nhóm reward-free.',
+          q58:'Câu hỏi 1: Liệu DPO có thực sự vượt trội hơn PPO trong RLHF?',
+          q59:'Câu hỏi 2: Liệu hiệu suất của PPO có thể cải thiện đáng kể trên các bộ chuẩn RLHF?',
+          q60:'Token là đơn vị xử lý văn bản của LLM (từ, subword hoặc ký tự).',
+          q61:'Reward model trong PPO cung cấp tín hiệu phần thưởng để tối ưu hóa policy.',
+          q62:'PPO KHÔNG phải reward-free. PPO dùng reward model → là reward-based.',
+          q63:'KL divergence đo khoảng cách thống kê giữa hai phân phối xác suất.',
+          q64:'Clip ratio giới hạn mức độ cập nhật policy để tránh thay đổi quá lớn trong PPO.',
+          q65:'State-of-the-art = kết quả tốt nhất đạt được tại thời điểm nghiên cứu.',
+          q66:'Bài báo thực nghiệm trên tác vụ tạo hội thoại (dialogue/chat generation).',
+          q67:'Safe RLHF bổ sung cost model đo độc hại bên cạnh reward model đo hữu ích.',
+          q68:'PPO ban đầu được thiết kế cho Reinforcement Learning tổng quát, sau áp dụng cho LLM.',
+          q69:'Tập dữ liệu CodeContest được dùng cho tác vụ lập trình thi đấu trong bài báo.',
+          q70:'PPO học trực tuyến từ môi trường thực tế, tránh được distribution shift tĩnh.',
+          q71:'Comprehensive study = nghiên cứu toàn diện cả lý thuyết lẫn thực nghiệm đa chiều.',
+          q72:'DPO bị distribution shift tĩnh → sinh ra gibberish code → pass rate 0%.',
+          q73:'Critic ước lượng value function (kỳ vọng phần thưởng tương lai) trong PPO actor-critic.',
+          q74:'B = Billion (tỷ) tham số - ký hiệu quy ước trong cộng đồng AI.',
+          q75:'Actor trong PPO là policy model - mô hình chính sách được cập nhật theo reward.',
+          q76:'3 tổ chức: Tsinghua University, Shanghai Qi Zhi Institute, Shanghai Jiao Tong University.',
+          q77:'PPO (online): học từ dữ liệu sinh ra bởi policy hiện tại; DPO (offline): học từ dataset tĩnh.',
+          q78:'DPO thất bại hoàn toàn trong tác vụ lập trình thi đấu → đây là nhược điểm của DPO.',
+          q79:'Mục tiêu RLHF = tối đa hóa kỳ vọng phần thưởng - hệ số β × KL(policy || reference).',
+          q80:'Test cases cung cấp tín hiệu phần thưởng thực tế (pass/fail) để đánh giá mã nguồn.',
+          q81:'Mâu thuẫn: Ứng dụng thực tế (ChatGPT/Claude) dùng PPO; benchmark học thuật cao hơn từ DPO.',
+          q82:'Hallucination: mô hình sinh ra thông tin nghe hợp lý nhưng hoàn toàn sai sự thật.',
+          q83:'41B = 41 billion (tỷ) tham số của AlphaCode.',
+          q84:'Theo bài báo, DPO đạt hiệu suất tốt trên các bộ chuẩn học thuật (academic benchmarks).',
+          q85:'Ziegler và cộng sự (2019) là nghiên cứu tiên phong của RLHF dựa trên phần thưởng (PPO).',
+          q86:'Khi gặp OOD responses, DPO có thể tìm nghiệm lệch bằng cách khai thác chúng.',
+          q87:'KL với reference model giữ policy không đi quá xa khỏi phân phối ngôn ngữ ban đầu.',
+          q88:'Tác vụ lập trình thử thách nhất = competitive programming như CodeContest.',
+          q89:'Mô hình 34B trong bài báo được huấn luyện bằng PPO.',
+          q90:'Human feedback thu thập bằng cách con người xếp hạng cặp phản hồi của mô hình.',
+          q91:'Ouyang và cộng sự (2022) liên quan đến InstructGPT - tiền thân của ChatGPT từ OpenAI.',
+          q92:'DPO tối đa hóa tỉ lệ log-probability của phản hồi được ưa thích so với phản hồi bị từ chối.',
+          q93:'Lập trình có phần thưởng nhị phân tuyệt đối (đúng/sai), khắt khe hơn nhiều hội thoại.',
+          q94:'Bài báo xác thực bằng thực nghiệm quy mô lớn với nhiều tác vụ và mức độ khó khác nhau.',
+          q95:'Dữ liệu preference trong DPO là dataset tĩnh đã thu thập và cố định trước quá trình huấn luyện.',
+          q96:'Bằng chứng mạnh nhất: PPO 34B vượt AlphaCode-41B; DPO thất bại với pass@0% trên CodeContest.',
+          q97:'Distribution shift trong DPO → mã nguồn gibberish → pass rate về 0%.',
+          q98:'Ứng dụng quan trọng nhất của RLHF: căn chỉnh LLM phù hợp với tùy chọn của con người.',
+          q99:'PPO ổn định vì học online + ràng buộc KL với reference model giữ cú pháp mã đúng.',
+          q100:'Đóng góp lớn nhất: chứng minh PPO vượt DPO bằng lý thuyết + thực nghiệm quy mô lớn, và xác định 3 yếu tố cốt lõi.'
+        };
+
+        let scoreCount = 0;
+        let answeredCount = 0;
+        const total = 100;
+
+        function updateScoreDisplay() {
+          const pct = answeredCount > 0 ? Math.round(scoreCount / answeredCount * 100) : 0;
+          const remaining = total - answeredCount;
+          let badge = '';
+          if (answeredCount === total) {
+            const finalPct = Math.round(scoreCount / total * 100);
+            badge = finalPct >= 80 ? ' 🏆 Xuất sắc!' : finalPct >= 60 ? ' 👍 Khá tốt!' : ' 📖 Cần ôn thêm.';
+          }
+          const msg = answeredCount === 0
+            ? ''
+            : '🎯 ' + scoreCount + '/' + answeredCount + ' câu đúng (' + pct + '%)'
+              + (remaining > 0 ? ' — còn ' + remaining + ' câu' : badge);
+          document.getElementById('quiz-score-display').textContent = msg;
+          document.getElementById('quiz-score-display-bottom').textContent = msg;
+        }
+
+        function handleAnswer(radio) {
+          const qKey = radio.name;
+          const item = document.getElementById(qKey);
+          const feedback = item.querySelector('.quiz-feedback');
+          const labels = item.querySelectorAll('label');
+          const correct = answers[qKey];
+          const selected = radio.value;
+
+          // Khoá tất cả radio trong câu này
+          item.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
+
+          // Highlight đáp án
+          labels.forEach(label => {
+            const val = label.querySelector('input').value;
+            if (val === correct) label.classList.add('correct');
+            else if (val === selected) label.classList.add('incorrect');
+          });
+
+          // Hiển thị feedback
+          if (selected === correct) {
+            scoreCount++;
+            feedback.textContent = '✅ Đúng! ' + explanations[qKey];
+            feedback.className = 'quiz-feedback show feedback-correct';
+          } else {
+            feedback.textContent = '❌ Sai. Đáp án đúng: ' + correct + '. ' + explanations[qKey];
+            feedback.className = 'quiz-feedback show feedback-incorrect';
+          }
+
+          answeredCount++;
+          updateScoreDisplay();
+        }
+
+        function resetQuiz() {
+          scoreCount = 0;
+          answeredCount = 0;
+          for (let i = 1; i <= total; i++) {
+            const qKey = 'q' + i;
+            const item = document.getElementById(qKey);
+            item.querySelectorAll('input[type=radio]').forEach(r => { r.checked = false; r.disabled = false; });
+            item.querySelectorAll('label').forEach(l => l.classList.remove('correct','incorrect'));
+            const fb = item.querySelector('.quiz-feedback');
+            fb.className = 'quiz-feedback';
+            fb.textContent = '';
+          }
+          document.getElementById('quiz-score-display').textContent = '';
+          document.getElementById('quiz-score-display-bottom').textContent = '';
+        }
+
+        // Gắn event cho tất cả radio khi trang load xong
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('#quiz-container input[type=radio]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+              handleAnswer(this);
+            });
+          });
+        });
+      </script>
+
     </main>
+
 
     <footer>
       <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>

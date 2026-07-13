@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Giải quyết vấn đề bằng tìm kiếm - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .comparison-table th {
+      background-color: var(--highlight-bg);
+      color: var(--text-dark);
+      font-weight: bold;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Chương 2
+      </div>
+      <h1>CHƯƠNG 2: GIẢI QUYẾT VẤN ĐỀ BẰNG TÌM KIẾM</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Cơ chế mô hình hóa bài toán tìm kiếm, phân biệt Trạng thái và Nút, phân tích các giải thuật tìm kiếm mù (BFS, DFS, DLS, IDDFS, UCS, Bidirectional Search).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="giai-quyet-van-de-bang-tim-kiem.html" class="active">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
+          <li><a href="thu-tuc-hop-giai.html">5. Thủ tục hợp giải</a></li>
+          <li><a href="suy-dien-tien-lui.html">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="giai-thuat-di-truyen.html">7. Giải thuật di truyền</a></li>
+        </ul>
+        <h3>Luyện tập</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html">📝 Trắc nghiệm Chương 1</a></li>
+          <li><a href="trac-nghiem-chuong-2.html">📝 Trắc nghiệm Chương 2</a></li>
+          <li><a href="trac-nghiem-chuong-3.html">📝 Trắc nghiệm Chương 3</a></li>
+          <li><a href="trac-nghiem-chuong-4.html">📝 Trắc nghiệm Chương 4</a></li>
+          <li><a href="trac-nghiem-chuong-5.html">📝 Trắc nghiệm Chương 5</a></li>
+          <li><a href="trac-nghiem-chuong-6.html">📝 Trắc nghiệm Chương 6</a></li>
+          <li><a href="trac-nghiem-chuong-7.html">📝 Trắc nghiệm Chương 7</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <div class="sub-section" id="sec-1">
+          <h3>1. Giải quyết vấn đề trong AI</h3>
+          <p>Một trong những mục tiêu sơ khởi và cốt lõi nhất của các thực thể thông minh (Agent) trong AI là:</p>
+          <blockquote>
+            Tìm ra một chuỗi các hành động hợp lệ giúp dịch chuyển thực thể từ trạng thái ban đầu để đạt tới trạng thái mong muốn (trạng thái mục tiêu).
+          </blockquote>
+          
+          <div class="block-title">Ý tưởng chung của quá trình tìm kiếm</div>
+          <ul>
+            <li>Hệ thống AI sẽ bắt đầu tại một <strong>trạng thái ban đầu</strong> xác định.</li>
+            <li>Có một tập hợp các <strong>hành động/phép toán hợp lệ</strong> có thể thực hiện được.</li>
+            <li>Thực hiện mỗi hành động sẽ làm biến đổi môi trường và tạo ra một <strong>trạng thái mới</strong>.</li>
+            <li>Nhiệm vụ của AI là tìm kiếm và phát hiện ra một đường đi hoặc chuỗi hành động dẫn tới mục tiêu với <strong>chi phí tối ưu nhất</strong>.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="sec-2">
+          <h3>2. Các thành phần của một bài toán tìm kiếm</h3>
+          <p>Một bài toán tìm kiếm chuẩn tắc trong AI thường được định nghĩa chính xác bằng bộ 5 thành phần sau:</p>
+          <div style="text-align: center; margin: 1rem 0; font-size: 1.1rem; font-weight: bold;">
+            \(P = \langle St, I, O, G, C \rangle\)
+          </div>
+
+          <div class="block-title">2.1 Tập trạng thái (States - St)</div>
+          <p>Là toàn bộ các cấu hình, tình huống hay hoàn cảnh khác nhau mà bài toán có thể đạt tới trong không gian tìm kiếm. Ví dụ: Trong trò chơi 8-Puzzle, mỗi cách sắp xếp vị trí các ô số trên bàn cờ là một trạng thái \(s \in St\).</p>
+
+          <div class="block-title">2.2 Trạng thái ban đầu (Initial State - I)</div>
+          <p>Là trạng thái xuất phát ban đầu mà tiến trình tìm kiếm được khởi động. Ví dụ: Cấu hình ban đầu của bàn cờ 8-Puzzle, hoặc lượng nước ban đầu trong bài toán đong nước là \((0,0)\).</p>
+
+          <div class="block-title">2.3 Các phép toán hay hành động (Operators - O)</div>
+          <p>Là tập các quy tắc, hành động hợp lệ cho phép biến đổi trạng thái hiện tại thành trạng thái kế tiếp. Ví dụ: Trong 8-Puzzle, các phép toán bao gồm: di chuyển ô trống sang trái, sang phải, lên trên, hoặc xuống dưới.</p>
+
+          <div class="block-title">2.4 Hàm kiểm tra mục tiêu (Goal Test - G)</div>
+          <p>Hàm logic nhận đầu vào là một trạng thái và trả về Đúng/Sai để xác nhận xem trạng thái hiện thời đã thỏa mãn mục tiêu hay chưa. Ví dụ: Trạng thái đích của 8-Puzzle là các ô số xếp đúng thứ tự \(1, 2, 3, 4, 5, 6, 7, 8\) và ô trống ở cuối.</p>
+
+          <div class="block-title">2.5 Chi phí đường đi (Cost - C)</div>
+          <p>Là hàm số gán một giá trị số cho mỗi đường đi, phản ánh hao tổn hay công sức để thực hiện chuỗi hành động đó (năng lượng, khoảng cách vật lý, số bước đi, thời gian). Chi phí của cả đường đi bằng tổng chi phí của từng hành động đơn lẻ cấu thành:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(\text{Cost}(\text{path}) = \sum \text{Cost}(\text{action})\)
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="sec-3">
+          <h3>3. Thuật ngữ quan trọng</h3>
+          <ul>
+            <li><strong>State (Trạng thái):</strong> Bản chụp (snapshot) tình trạng thực tế của bài toán tại một thời điểm.</li>
+            <li><strong>Search Space (Không gian trạng thái):</strong> Tập hợp toàn bộ các trạng thái khả dĩ có thể sinh ra từ trạng thái đầu bằng cách áp dụng các hành động hợp lệ.</li>
+            <li><strong>Path (Đường đi):</strong> Một chuỗi liên tiếp các trạng thái dẫn từ trạng thái ban đầu đến trạng thái hiện tại.</li>
+            <li><strong>Solution (Lời giải):</strong> Một đường đi hoàn chỉnh xuất phát từ trạng thái đầu và kết thúc tại trạng thái thỏa mãn hàm kiểm tra mục tiêu.</li>
+            <li><strong>Strategy (Chiến lược tìm kiếm):</strong> Giải thuật quyết định nút nào trong số các nút đang chờ sẽ được ưu tiên mở rộng (expand) tiếp theo.</li>
+            <li><strong>Optimal Solution (Lời giải tối ưu):</strong> Lời giải có chi phí đường đi thấp nhất trong số tất cả các lời giải hợp lệ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="sec-4">
+          <h3>4. Ví dụ kinh điển: Bài toán đong nước</h3>
+          <p><strong>Đề bài:</strong> Cho một bình A dung tích tối đa 9 lít và bình B dung tích tối đa 4 lít. Bình không có vạch chia. Hãy đong được đúng 6 lít nước ở bình A.</p>
+
+          <div class="block-title">Mô hình hóa bài toán</div>
+          <ul>
+            <li><strong>Trạng thái:</strong> Cặp số \((a, b)\), với \(a \in [0, 9]\) (lượng nước ở bình A) và \(b \in [0, 4]\) (lượng nước ở bình B). Ví dụ: Trạng thái \((5, 4)\) chỉ bình A có 5 lít, bình B chứa 4 lít nước.</li>
+            <li><strong>Trạng thái ban đầu:</strong> \((0, 0)\) (hai bình đều rỗng).</li>
+            <li><strong>Trạng thái đích:</strong> \((6, x)\) (bình A chứa chính xác 6 lít nước, bình B chứa bao nhiêu cũng được).</li>
+            <li><strong>Các hành động hợp lệ (Operators):</strong>
+              <ul>
+                <li>Đổ đầy nước vào bình A từ vòi: \((a, b) \rightarrow (9, b)\).</li>
+                <li>Đổ đầy nước vào bình B từ vòi: \((a, b) \rightarrow (a, 4)\).</li>
+                <li>Đổ hết nước trong bình A ra ngoài: \((a, b) \rightarrow (0, b)\).</li>
+                <li>Đổ hết nước trong bình B ra ngoài: \((a, b) \rightarrow (a, 0)\).</li>
+                <li>Trút nước từ bình A sang bình B cho đến khi bình B đầy hoặc bình A hết nước: \((a, b) \rightarrow (a - \min(a, 4 - b), b + \min(a, 4 - b))\).</li>
+                <li>Trút nước từ bình B sang bình A cho đến khi bình A đầy hoặc bình B hết nước: \((a, b) \rightarrow (a + \min(b, 9 - a), b - \min(b, 9 - a))\).</li>
+              </ul>
+            </li>
+            <li><strong>Chi phí:</strong> Mỗi bước thao tác đong/chuyển nước có chi phí cố định bằng \(1\). Lời giải tối ưu là chuỗi các bước ít nhất.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="sec-5">
+          <h3>5. Không gian trạng thái (State Space)</h3>
+          <p>Không gian trạng thái chứa tất cả các trạng thái có thể có cùng các cung nối phản ánh hành động di chuyển. Để tìm kiếm lời giải, không gian này thường được tổ chức dưới hai dạng cấu trúc:</p>
+          
+          <div class="block-title">Cây tìm kiếm (Search Tree)</div>
+          <p>Nút gốc là trạng thái bắt đầu. Từ nút gốc, áp dụng các hành động hợp lệ để sinh ra các nút con. Cây tìm kiếm có thể sinh ra các nút trùng lặp đại diện cho cùng một trạng thái nếu ta đi theo các đường đi khác nhau. Ví dụ: Bài toán 8-Puzzle, cờ vua.</p>
+
+          <div class="block-title">Đồ thị trạng thái (State Graph)</div>
+          <p>Các trạng thái là các đỉnh (vertices), hành động là các cạnh (edges) có hướng nối giữa chúng. Đồ thị tránh được các cấu trúc lặp vô hạn nếu ta triển khai cơ chế kiểm tra nút đã duyệt (visited set). Ví dụ: Bài toán tìm đường trên bản đồ, Bài toán người bán hàng (TSP).</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="sec-6">
+          <h3>6. Cấu trúc Cây tìm kiếm</h3>
+          <p>Một cây tìm kiếm chứa các thành phần cấu trúc cơ bản:</p>
+          <ul>
+            <li><strong>Nút gốc (Root Node):</strong> Nút khởi đầu chứa trạng thái ban đầu của bài toán.</li>
+            <li><strong>Nút lá (Leaf Node):</strong> Nút nằm ở rìa cây tìm kiếm, chưa được mở rộng hoặc không thể mở rộng tiếp.</li>
+            <li><strong>Mở rộng nút (Expand):</strong> Quá trình áp dụng tất cả các phép toán hợp lệ lên trạng thái của nút hiện tại để sinh ra các nút con tương ứng.</li>
+            <li><strong>Độ sâu (Depth):</strong> Số cạnh tối thiểu nối từ nút gốc đến nút hiện hành. Nút gốc có độ sâu bằng \(0\).</li>
+          </ul>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="sec-7">
+          <h3>7. Phân biệt Trạng thái (State) và Nút (Node)</h3>
+          <p>Đây là hai khái niệm dễ bị nhầm lẫn trong lý thuyết tìm kiếm:</p>
+          
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Trạng thái (State)</th>
+                <th>Nút (Node)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bản chất</strong></td>
+                <td>Biểu diễn cấu hình thực tế của bài toán.</td>
+                <td>Thành phần lưu trữ thông tin trong cây tìm kiếm.</td>
+              </tr>
+              <tr>
+                <td><strong>Quan hệ</strong></td>
+                <td>Không có thông tin về nút cha hay con.</td>
+                <td>Có liên kết trỏ tới nút cha và danh sách nút con.</td>
+              </tr>
+              <tr>
+                <td><strong>Độ sâu &amp; Chi phí</strong></td>
+                <td>Không có thuộc tính độ sâu hay chi phí đường đi.</td>
+                <td>Lưu trữ độ sâu và chi phí đường đi \(g(n)\) từ gốc.</td>
+              </tr>
+              <tr>
+                <td><strong>Sự trùng lặp</strong></td>
+                <td>Mỗi trạng thái là duy nhất trong không gian bài toán.</td>
+                <td>Nhiều nút khác nhau có thể chứa cùng một trạng thái.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="sec-8">
+          <h3>8. Tiêu chí đánh giá thuật toán tìm kiếm</h3>
+          <p>Hiệu năng của một thuật toán tìm kiếm được đo lường bằng bộ 4 chỉ số cơ bản:</p>
+          <ul>
+            <li><strong>Tính đầy đủ (Completeness):</strong> Thuật toán có chắc chắn tìm thấy lời giải hay không nếu lời giải thực sự tồn tại?</li>
+            <li><strong>Độ phức tạp thời gian (Time Complexity):</strong> Số lượng nút được sinh ra hoặc số bước kiểm tra trước khi tìm được lời giải.</li>
+            <li><strong>Độ phức tạp không gian (Space Complexity):</strong> Dung lượng bộ nhớ lớn nhất (RAM) cần thiết để lưu trữ các nút trong suốt quá trình chạy giải thuật.</li>
+            <li><strong>Tính tối ưu (Optimality):</strong> Lời giải tìm được có phải là lời giải tốt nhất (chi phí thấp nhất) hay không?</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="sec-9">
+          <h3>9. Tìm kiếm mù (Blind Search / Uninformed Search)</h3>
+          <p>Là nhóm giải thuật tìm kiếm <strong>không sử dụng thêm bất kỳ tri thức bổ trợ</strong> nào của bài toán ngoại trừ bộ mô tả bài toán \(\langle St, I, O, G, C \rangle\). Thuật toán chỉ duyệt theo quy luật cấu trúc có sẵn và kiểm tra xem nút hiện hành có phải là đích hay không. Nhóm này bao gồm các thuật toán: BFS, DFS, DLS, IDDFS, UCS và Bidirectional Search.</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="sec-10">
+          <h3>10. Tìm kiếm theo chiều rộng (Breadth-First Search - BFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Duyệt cây tìm kiếm theo từng tầng (level-by-level). Thuật toán sẽ mở rộng toàn bộ các nút ở độ sâu \(d\) trước khi chuyển sang mở rộng các nút ở độ sâu \(d+1\).</p>
+
+          <div class="block-title">Cấu trúc dữ liệu hỗ trợ</div>
+          <p>Sử dụng hàng đợi <strong>Queue (FIFO - First In, First Out)</strong> để lưu trữ tập các nút biên (fringe/frontier) đang chờ mở rộng. Nút nào được sinh ra trước sẽ được lấy ra mở rộng trước.</p>
+
+          <div class="block-title">Đánh giá BFS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Có (nếu hệ số phân nhánh \(b\) hữu hạn).</li>
+            <li><strong>Tính tối ưu:</strong> Có (chỉ khi chi phí của mọi hành động đều bằng nhau).</li>
+            <li><strong>Độ phức tạp thời gian:</strong> \(O(b^d)\), trong đó \(b\) là hệ số phân nhánh, \(d\) là độ sâu của lời giải.</li>
+            <li><strong>Độ phức tạp không gian:</strong> \(O(b^d)\) (Nhược điểm chí mạng vì phải lưu trữ toàn bộ các nút trong bộ nhớ).</li>
+          </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="sec-11">
+          <h3>11. Tìm kiếm theo chiều sâu (Depth-First Search - DFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Luôn chọn mở rộng nút con ở mức sâu nhất có thể trên nhánh hiện tại. Chỉ khi nhánh đó đi vào ngõ cụt (nút lá không phải mục tiêu), thuật toán mới quay lui (backtrack) để mở rộng các nhánh rẽ khác.</p>
+
+          <div class="block-title">Cấu trúc dữ liệu hỗ trợ</div>
+          <p>Sử dụng cấu trúc ngăn xếp <strong>Stack (LIFO - Last In, First Out)</strong> hoặc đệ quy hệ thống để quản lý danh sách các nút biên.</p>
+
+          <div class="block-title">Đánh giá DFS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Không (nếu không gian trạng thái vô hạn hoặc có vòng lặp, DFS có thể kẹt mãi mãi).</li>
+            <li><strong>Tính tối ưu:</strong> Không (DFS có thể tìm thấy một lời giải ở nhánh nông bên phải nhưng trước đó đã chọn đi sâu ở nhánh bên trái).</li>
+            <li><strong>Độ phức tạp thời gian:</strong> \(O(b^m)\), với \(m\) là độ sâu lớn nhất của cây tìm kiếm (thường \(m \gg d\)).</li>
+            <li><strong>Độ phức tạp không gian:</strong> \(O(b \times m)\) (Ưu điểm lớn nhất vì chỉ cần lưu các nút trên đường đi hiện hành).</li>
+          </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="sec-12">
+          <h3>12. Bảng so sánh BFS và DFS</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>BFS (Chiều rộng)</th>
+                <th>DFS (Chiều sâu)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cấu trúc lưu trữ</strong></td>
+                <td>Queue (FIFO)</td>
+                <td>Stack (LIFO)</td>
+              </tr>
+              <tr>
+                <td><strong>Tính đầy đủ</strong></td>
+                <td>Có</td>
+                <td>Không (dễ kẹt vòng lặp vô hạn)</td>
+              </tr>
+              <tr>
+                <td><strong>Tính tối ưu</strong></td>
+                <td>Có (nếu chi phí các cạnh bằng nhau)</td>
+                <td>Không</td>
+              </tr>
+              <tr>
+                <td><strong>Bộ nhớ (RAM)</strong></td>
+                <td>Rất lớn (\(O(b^d)\))</td>
+                <td>Nhỏ (\(O(b \times m)\))</td>
+              </tr>
+              <tr>
+                <td><strong>Ứng dụng phù hợp</strong></td>
+                <td>Lời giải nằm ở tầng nông, bộ nhớ dư dả.</td>
+                <td>Lời giải nằm ở tầng rất sâu, bộ nhớ hạn chế.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="sub-section" id="sec-13">
+          <h3>13. Tìm kiếm giới hạn độ sâu (Depth-Limited Search - DLS)</h3>
+          <p>DLS là một biến thể của DFS được bổ sung thêm một tham số <strong>giới hạn độ sâu \(L\)</strong>. Các nút ở độ sâu lớn hơn \(L\) sẽ bị coi như nút lá và không được mở rộng tiếp.</p>
+          <ul>
+            <li><strong>Mục đích:</strong> Khắc phục nhược điểm rơi vào vòng lặp vô hạn của DFS truyền thống trong không gian vô hạn.</li>
+            <li><strong>Hạn chế:</strong> Nếu lời giải nằm ở độ sâu \(d > L\), DLS sẽ không bao giờ tìm thấy lời giải (mất tính đầy đủ).</li>
+          </ul>
+        </div>
+
+        <!-- Section 14 -->
+        <div class="sub-section" id="sec-14">
+          <h3>14. Tìm kiếm sâu dần (Iterative Deepening DFS - IDDFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>IDDFS giải quyết triệt để nhược điểm của DLS bằng cách chạy DLS lặp đi lặp lại với giới hạn độ sâu \(L\) tăng dần từ \(0, 1, 2, \dots\) cho đến khi phát hiện được lời giải.</p>
+          
+          <div class="block-title">Đánh giá IDDFS</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Kết hợp hoàn hảo ưu điểm của cả hai thuật toán: Tiết kiệm bộ nhớ tối đa của DFS (\(O(b \times d)\)) và đảm bảo tính đầy đủ, tối ưu của BFS (\(O(b^d)\)).</li>
+            <li><strong>Nhược điểm:</strong> Phải tính toán lặp lại các nút ở tầng trên qua mỗi lượt lặp. Tuy nhiên, chi phí lặp lại này là chấp nhận được vì số lượng nút tập trung chủ yếu ở tầng đáy.</li>
+          </ul>
+        </div>
+
+        <!-- Section 15 -->
+        <div class="sub-section" id="sec-15">
+          <h3>15. Tìm kiếm hai chiều (Bidirectional Search)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Chạy song song hai tiến trình tìm kiếm độc lập: một tiến trình tìm kiếm xuôi từ trạng thái ban đầu và một tiến trình tìm kiếm ngược từ trạng thái đích. Thuật toán dừng lại khi biên của hai phía gặp nhau.</p>
+          
+          <div class="block-title">Đánh giá</div>
+          <ul>
+            <li><strong>Hiệu năng:</strong> Giảm độ phức tạp thời gian từ \(O(b^d)\) xuống còn \(O(b^{d/2})\).</li>
+            <li><strong>Ràng buộc:</strong> Chỉ áp dụng được khi xác định rõ ràng trạng thái đích duy nhất và các phép toán có thể thực hiện theo chiều ngược lại.</li>
+          </ul>
+        </div>
+
+        <!-- Section 16 -->
+        <div class="sub-section" id="sec-16">
+          <h3>16. Tìm kiếm chi phí đồng nhất (Uniform Cost Search - UCS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Luôn ưu tiên mở rộng nút có tổng chi phí đường đi từ gốc nhỏ nhất. UCS mở rộng các nút theo thứ tự chi phí tăng dần mà không quan tâm đến độ sâu của nút đó trên cây.</p>
+
+          <div class="block-title">Cấu trúc dữ liệu &amp; Hàm đánh giá</div>
+          <ul>
+            <li>Sử dụng hàng đợi ưu tiên <strong>Priority Queue</strong> sắp xếp các nút theo giá trị tăng dần của hàm chi phí \(g(n)\) (tổng chi phí từ gốc đến nút \(n\)).</li>
+            <li>Chọn nút có \(g(n)\) nhỏ nhất để mở rộng.</li>
+          </ul>
+
+          <div class="block-title">Đặc tính toán học của UCS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Có (nếu chi phí của mỗi bước đi lớn hơn một hằng số dương \(\epsilon > 0\)).</li>
+            <li><strong>Tính tối ưu:</strong> Có (luôn tìm thấy đường đi có tổng chi phí nhỏ nhất). Giải thuật tương tự thuật toán Dijkstra tìm đường đi ngắn nhất trên đồ thị.</li>
+          </ul>
+        </div>
+
+        <!-- Section 17 -->
+        <div class="sub-section" id="sec-17">
+          <h3>17. Tóm tắt chiến lược chọn giải thuật</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Giải thuật</th>
+                <th>Khi nào nên ưu tiên chọn sử dụng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>BFS</strong></td>
+                <td>Khi chi phí các bước như nhau và lời giải nằm ở tầng nông.</td>
+              </tr>
+              <tr>
+                <td><strong>DFS</strong></td>
+                <td>Khi không gian trạng thái hữu hạn và bộ nhớ hệ thống cực kỳ hạn chế.</td>
+              </tr>
+              <tr>
+                <td><strong>DLS</strong></td>
+                <td>Khi biết chắc chắn giới hạn độ sâu tối đa của lời giải.</td>
+              </tr>
+              <tr>
+                <td><strong>IDDFS</strong></td>
+                <td>Khi cần tính đầy đủ của BFS nhưng muốn tiết kiệm bộ nhớ như DFS.</td>
+              </tr>
+              <tr>
+                <td><strong>UCS</strong></td>
+                <td>Khi chi phí thực hiện các hành động khác nhau và cần lời giải tối ưu.</td>
+              </tr>
+              <tr>
+                <td><strong>Bidirectional</strong></td>
+                <td>Khi xác định rõ trạng thái đích và các phép toán có khả năng quay lui.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section Highlights -->
+        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
+          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
+          <ul>
+            <li><strong>Bộ 5 thành phần \(P = \langle St, I, O, G, C \rangle\):</strong> Phải viết được bộ này cho bài toán đong nước hoặc 8-Puzzle khi thi tự luận.</li>
+            <li><strong>Trạng thái vs Nút:</strong> Nhớ kỹ trạng thái mô tả bài toán (không có cha/độ sâu); nút thuộc cấu trúc cây (có cha/độ sâu/chi phí).</li>
+            <li><strong>Queue vs Stack:</strong> BFS dùng Queue (FIFO), DFS dùng Stack (LIFO), UCS dùng Priority Queue (sắp theo \(g(n)\)).</li>
+            <li><strong>Độ phức tạp của BFS:</strong> Cả thời gian và bộ nhớ đều là \(O(b^d)\).</li>
+            <li><strong>Đặc điểm IDDFS:</strong> Thuật toán lặp sâu dần kết hợp ưu điểm của BFS và DFS.</li>
+            <li><strong>Đặc điểm UCS:</strong> Đảm bảo tính tối ưu ngay cả khi chi phí các bước không bằng nhau.</li>
+          </ul>
+        </div>
+
+        <!-- Section Review Questions -->
+        <div class="sub-section" id="questions">
+          <h3>❓ Câu hỏi ôn tập tự luận</h3>
+          <ol>
+            <li>Trình bày các thành phần mô tả bài toán tìm kiếm. Áp dụng viết bộ mô tả cho bài toán 8-Puzzle.</li>
+            <li>So sánh chi tiết sự khác nhau giữa Trạng thái (State) và Nút (Node) trên cây tìm kiếm.</li>
+            <li>Nêu ý tưởng và vẽ bảng so sánh BFS và DFS theo 4 tiêu chí đánh giá giải thuật.</li>
+            <li>Tại sao giải thuật DFS không đảm bảo tính đầy đủ và tính tối ưu? Giải thích chi tiết.</li>
+            <li>Trình bày thuật toán Tìm kiếm sâu dần (IDDFS) và giải thích tại sao nó khắc phục được hạn chế của cả BFS và DFS.</li>
+            <li>Thuật toán Uniform Cost Search (UCS) hoạt động như thế nào? Cấu trúc dữ liệu nào được sử dụng để lập trình UCS?</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

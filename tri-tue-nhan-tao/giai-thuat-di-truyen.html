@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 7: Giải thuật di truyền (Genetic Algorithm) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .comparison-table th {
+      background-color: var(--highlight-bg);
+      color: var(--text-dark);
+      font-weight: bold;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Chương 7
+      </div>
+      <h1>CHƯƠNG 7: GIẢI THUẬT DI TRUYỀN (GENETIC ALGORITHM - GA)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Giải thuật tối ưu hóa tiến hóa. Tìm hiểu các bước biểu diễn kiểu gen/kiểu hình, phương thức mã hóa, chiến lược chọn lọc tự nhiên (Selection), lai ghép (Crossover) và đột biến (Mutation).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="giai-quyet-van-de-bang-tim-kiem.html">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
+          <li><a href="thu-tuc-hop-giai.html">5. Thủ tục hợp giải</a></li>
+          <li><a href="suy-dien-tien-lui.html">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="giai-thuat-di-truyen.html" class="active">7. Giải thuật di truyền</a></li>
+        </ul>
+        <h3>Luyện tập</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html">📝 Trắc nghiệm Chương 1</a></li>
+          <li><a href="trac-nghiem-chuong-2.html">📝 Trắc nghiệm Chương 2</a></li>
+          <li><a href="trac-nghiem-chuong-3.html">📝 Trắc nghiệm Chương 3</a></li>
+          <li><a href="trac-nghiem-chuong-4.html">📝 Trắc nghiệm Chương 4</a></li>
+          <li><a href="trac-nghiem-chuong-5.html">📝 Trắc nghiệm Chương 5</a></li>
+          <li><a href="trac-nghiem-chuong-6.html">📝 Trắc nghiệm Chương 6</a></li>
+          <li><a href="trac-nghiem-chuong-7.html">📝 Trắc nghiệm Chương 7</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <div class="sub-section" id="sec-1">
+          <h3>1. Giải thuật di truyền (GA) là gì?</h3>
+          <p><strong>Giải thuật di truyền (Genetic Algorithm - GA)</strong> là thuật toán tìm kiếm tối ưu hóa ngẫu nhiên mô phỏng theo tiến trình chọn lọc tự nhiên và di truyền sinh học.</p>
+          <blockquote>
+            <strong>Ý tưởng nền tảng:</strong> Coi mỗi nghiệm khả dĩ của bài toán tối ưu như một cá thể trong quần thể. Những cá thể tốt nhất (thích nghi cao nhất) sẽ có cơ hội được lựa chọn để lai ghép sinh sản và truyền lại mã gen tốt cho thế hệ con cháu. Qua nhiều thế hệ, quần thể sẽ dần hội tụ về các nghiệm tối ưu.
+          </blockquote>
+          <p>GA được John Holland đề xuất vào những năm 1970 và hiện nay là một nhánh nghiên cứu quan trọng trong nhóm thuật toán tiến hóa (Evolutionary Algorithms).</p>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="sec-2">
+          <h3>2. Cơ sở sinh học của giải thuật di truyền</h3>
+          <p>GA mô phỏng ba cơ chế tiến hóa cốt lõi của sinh học tự nhiên:</p>
+          <ul>
+            <li><strong>2.1 Inheritance (Di truyền):</strong> Thế hệ con cái thừa hưởng một phần bộ gen và các đặc điểm vật lý từ bố mẹ.</li>
+            <li><strong>2.2 Mutation (Đột biến):</strong> Sự thay đổi ngẫu nhiên trong cấu trúc gen của cá thể con qua các thế hệ do tác động môi trường hoặc lỗi sao chép gen.</li>
+            <li><strong>2.3 Natural Selection (Chọn lọc tự nhiên):</strong> Học thuyết Darwin chỉ ra các cá thể thích nghi tốt với môi trường (fitness cao) có nhiều cơ hội sống sót, kết đôi và truyền lại mã gen tốt hơn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="sec-3">
+          <h3>3. Các khái niệm thuật ngữ cơ bản trong GA</h3>
+          <ul>
+            <li><strong>Individual (Cá thể):</strong> Một nghiệm tiềm năng hay một phương án giải quyết bài toán tối ưu.</li>
+            <li><strong>Population (Quần thể):</strong> Tập hợp gồm nhiều cá thể tại một thời điểm (thế hệ) cụ thể. Mục tiêu là nâng chất lượng trung bình của quần thể lên theo thời gian.</li>
+            <li><strong>Generation (Thế hệ):</strong> Một chu kỳ tiến hóa đầy đủ của quần thể (từ thế hệ \(t\) qua chọn lọc, lai ghép, đột biến để sinh ra thế hệ \(t+1\)).</li>
+            <li><strong>Genotype (Kiểu gen):</strong> Cách biểu diễn cấu trúc dữ liệu của nghiệm trong máy tính (ví dụ: chuỗi bit nhị phân <code>101101</code>).</li>
+            <li><strong>Phenotype (Kiểu hình):</strong> Giá trị thực tế hay ý nghĩa vật lý của nghiệm trong miền bài toán thực tế.</li>
+            <li><strong>Chromosome (Nhiễm sắc thể):</strong> Cấu trúc dữ liệu chứa bộ gen mã hóa cho cá thể (thường là chuỗi bit, hoán vị, mảng số thực).</li>
+            <li><strong>Gene:</strong> Đơn vị mã hóa nhỏ nhất trên nhiễm sắc thể (ví dụ: một bit đơn lẻ trong chuỗi bit).</li>
+            <li><strong>Allele:</strong> Giá trị cụ thể của một Gene (ví dụ: đối với mã hóa nhị phân, Allele chỉ nhận giá trị \(0\) hoặc \(1\)).</li>
+            <li><strong>Fitness (Độ thích nghi):</strong> Hàm đánh giá chất lượng của cá thể (chính là hàm mục tiêu cần tối ưu hóa). Fitness càng cao biểu thị cá thể càng khỏe mạnh và dễ được chọn sinh sản.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="sec-4">
+          <h3>4. Chu trình hoạt động tổng quát của GA</h3>
+          <p>Thuật toán di truyền lặp đi lặp lại chu trình hoạt động sau:</p>
+          <div class="flowchart" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1.5rem 0;">
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; font-weight: bold;">Khởi tạo quần thể ban đầu</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Đánh giá độ thích nghi (Fitness)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Chọn lọc bố mẹ (Selection)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Lai ghép tạo con cái (Crossover)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Đột biến gen ngẫu nhiên (Mutation)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; font-weight: bold;">Kiểm tra điều kiện dừng</div>
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="sec-5">
+          <h3>5. Phương pháp mã hóa nghiệm (Encoding)</h3>
+          <p>Cách biểu diễn nghiệm thành nhiễm sắc thể là yếu tố mấu chốt cấu thành sự thành công của GA:</p>
+          <ul>
+            <li><strong>Mã hóa nhị phân (Binary Encoding):</strong> Nghiệm được mã hóa thành một chuỗi bit nhị phân. Dễ lập trình, phổ biến nhất. Ví dụ: <code>10110110</code>.</li>
+            <li><strong>Mã hóa số thực (Real-valued Encoding):</strong> Nhiễm sắc thể là một danh sách các số thực. Thích hợp cho bài toán tối ưu liên tục trong không gian thực. Ví dụ: <code>[0.25, 1.37, -4.82]</code>.</li>
+            <li><strong>Mã hóa hoán vị (Permutation Encoding):</strong> Nhiễm sắc thể là một chuỗi hoán vị của các con số. Rất phù hợp cho bài toán tìm đường tối ưu (TSP) hoặc lập lịch (Scheduling). Ví dụ: danh sách thành phố <code>[4, 2, 1, 5, 3]</code>.</li>
+            <li><strong>Mã hóa dạng cây (Tree Encoding):</strong> Cá thể được biểu diễn dưới dạng cây cú pháp. Đây là nền tảng của Lập trình di truyền (Genetic Programming).</li>
+          </ul>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="sec-6">
+          <h3>6. Chọn lọc tự nhiên (Selection)</h3>
+          <p>Lựa chọn các cá thể có Fitness cao trong quần thể hiện tại làm cha mẹ để nhân bản hoặc thực hiện lai ghép.</p>
+          
+          <div class="block-title">6.1 Chọn lọc bánh xe roulette (Roulette Wheel Selection)</div>
+          <p>Xác suất chọn một cá thể tỉ lệ thuận với độ thích nghi Fitness của chính nó. Tưởng tượng vòng quay roulette chia các ô có kích thước góc lớn nhỏ khác nhau tương ứng với giá trị Fitness:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(P(i) = \frac{\text{Fitness}(i)}{\sum_{j=1}^{N} \text{Fitness}(j)}\)
+          </div>
+
+          <div class="block-title">6.2 Chọn lọc đấu giải (Tournament Selection)</div>
+          <p>Chọn ngẫu nhiên \(k\) cá thể từ quần thể, sau đó lấy cá thể có Fitness tốt nhất trong nhóm \(k\) này làm bố/mẹ. Phương pháp này rất phổ biến vì dễ lập trình song song.</p>
+
+          <div class="block-title">6.3 Chọn lọc theo thứ hạng (Rank Selection)</div>
+          <p>Sắp xếp quần thể theo thứ tự Fitness. Xác suất chọn dựa trên thứ hạng (Rank) thay vì giá trị Fitness tuyệt đối. Kỹ thuật này giúp tránh hiện tượng một cá thể siêu trội chiếm quyền sinh sản quá nhanh ở đầu chu kỳ tiến hóa.</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="sec-7">
+          <h3>7. Các kỹ thuật lai ghép (Crossover)</h3>
+          <p>Lai ghép kết hợp các đoạn gen tốt của bố và mẹ với hy vọng tạo ra cá thể con vượt trội. Xác suất lai ghép thường rất cao (\(P_c \approx 0.6 - 0.95\)).</p>
+
+          <div class="block-title">7.1 Lai ghép một điểm cắt (One-point Crossover)</div>
+          <p>Chọn ngẫu nhiên một điểm cắt trên nhiễm sắc thể, hoán đổi đoạn gen phía sau điểm cắt của cha mẹ để sinh con:</p>
+          <blockquote style="font-family: monospace; font-size: 0.95rem;">
+            Parent 1: 110 | 011 &rarr; Child 1: 110101<br>
+            Parent 2: 001 | 101 &rarr; Child 2: 001011
+          </blockquote>
+
+          <div class="block-title">7.2 Lai ghép hai điểm cắt (Two-point Crossover)</div>
+          <p>Chọn ngẫu nhiên hai điểm cắt trên nhiễm sắc thể, tráo đoạn gen ở giữa hai điểm cắt đó.</p>
+
+          <div class="block-title">7.3 Lai ghép đồng nhất (Uniform Crossover)</div>
+          <p>Tại mỗi vị trí gen, con nhận gen từ bố hoặc mẹ một cách ngẫu nhiên với xác suất bằng nhau (\(0.5\)).</p>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="sec-8">
+          <h3>8. Đột biến (Mutation)</h3>
+          
+          <div class="block-title">Ý nghĩa</div>
+          <p>Đột biến thay đổi ngẫu nhiên giá trị của một số gen trên nhiễm sắc thể con. Xác suất đột biến thường được thiết lập rất nhỏ (\(P_m < 0.1\)) để không phá hủy cấu trúc gen tốt sẵn có.</p>
+          <blockquote>
+            <strong>Vai trò cốt lõi:</strong> Đột biến duy trì tính đa dạng sinh học của quần thể, ngăn ngừa hiện tượng quần thể bị hội tụ sớm dẫn đến kẹt tại các <strong>cực trị cục bộ (Local Optima)</strong>, đồng thời giúp khám phá các vùng nghiệm hoàn toàn mới trong không gian tìm kiếm.
+          </blockquote>
+
+          <div class="block-title">Các kiểu đột biến phổ biến</div>
+          <ul>
+            <li><strong>Đảo bit (Bit Flip Mutation):</strong> Cho mã hóa nhị phân, biến đổi \(0 \rightarrow 1\) hoặc \(1 \rightarrow 0\).</li>
+            <li><strong>Hoán đổi vị trí (Swap Mutation):</strong> Đổi chỗ ngẫu nhiên hai gen. Phù hợp cho mã hóa hoán vị (TSP).</li>
+            <li><strong>Đảo ngược đoạn gen (Inversion Mutation):</strong> Đảo chiều thứ tự của một chuỗi gen con liên tiếp.</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="sec-9">
+          <h3>9. Điều kiện dừng thuật toán</h3>
+          <p>GA sẽ dừng lại khi thỏa mãn ít nhất một trong các tiêu chí sau:</p>
+          <ul>
+            <li>Tìm thấy cá thể đạt giá trị độ thích nghi tối ưu hoặc mức tối thiểu yêu cầu.</li>
+            <li>Đạt tới số lượng thế hệ (vòng tiến hóa) tối đa được cấu hình trước.</li>
+            <li>Quần thể rơi vào trạng thái hội tụ (mọi cá thể trong quần thể đều giống nhau hoặc Fitness không cải thiện qua nhiều thế hệ liên tiếp).</li>
+            <li>Vượt quá giới hạn thời gian tính toán cho phép.</li>
+          </ul>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="sec-10">
+          <h3>10. Đánh giá ưu điểm và nhược điểm của GA</h3>
+          
+          <div class="block-title">Ưu điểm</div>
+          <ul>
+            <li>Có khả năng cao thoát khỏi các cực trị cục bộ nhờ đột biến.</li>
+            <li>Không yêu cầu tính đạo hàm của hàm mục tiêu (thích hợp với các hàm số không liên tục, phi tuyến tính phức tạp).</li>
+            <li>Có tính song song hóa tự nhiên, dễ dàng chạy đồng thời trên nhiều CPU/GPU.</li>
+          </ul>
+
+          <div class="block-title">Nhược điểm</div>
+          <ul>
+            <li>Tốc độ hội tụ chậm hơn so với các giải thuật dựa trên gradient nếu bài toán đơn giản.</li>
+            <li>Khó thiết kế một hàm Fitness phản ánh đúng chất lượng nghiệm.</li>
+            <li>Nhạy cảm với việc tinh chỉnh các siêu tham số (kích thước quần thể, xác suất lai ghép, xác suất đột biến).</li>
+            <li>Không đảm bảo chắc chắn tìm thấy nghiệm tối ưu toàn cục tuyệt đối mà thường dừng ở nghiệm gần tối ưu.</li>
+          </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="sec-11">
+          <h3>11. Một số ứng dụng tiêu biểu của GA</h3>
+          <ul>
+            <li><strong>Machine Learning:</strong> Lựa chọn đặc trưng (Feature Selection), Tinh chỉnh siêu tham số (Hyperparameter Tuning), Tìm kiếm kiến trúc mạng nơ-ron tự động (NAS).</li>
+            <li><strong>Mạng nơ-ron nhân tạo:</strong> GA có thể huấn luyện trọng số của mạng thay thế cho lan truyền ngược (Backpropagation) trong môi trường phi đạo hàm (Neuroevolution).</li>
+            <li><strong>Bài toán Người bán hàng (TSP):</strong> Tìm chu trình đi qua tất cả các thành phố sao cho tổng quãng đường ngắn nhất. Hàm Fitness thường được cài đặt bằng công thức nghịch đảo khoảng cách:
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \(\text{Fitness} = \frac{1}{\text{Tổng khoảng cách}}\)
+              </div>
+            </li>
+            <li><strong>Bài toán One-Max:</strong> Bài toán kinh điển nhất của GA. Mục tiêu là tạo ra một chuỗi nhị phân có số lượng bit \(1\) nhiều nhất. Hàm Fitness đơn giản bằng số lượng bit \(1\) có trong chuỗi.</li>
+          </ul>
+        </div>
+
+        <!-- Section Summary Tables -->
+        <div class="sub-section" id="summary-tables">
+          <h3>📊 Bảng tóm tắt quy trình GA</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Thành phần GA</th>
+                <th>Mục tiêu &amp; Chức năng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Selection (Chọn lọc)</strong></td>
+                <td>Ưu tiên chọn các cá thể tốt làm cha mẹ. Giữ lại đặc tính tốt.</td>
+              </tr>
+              <tr>
+                <td><strong>Crossover (Lai ghép)</strong></td>
+                <td>Kết hợp các đoạn gen để tạo ra cá thể con mang đặc tính mới tốt hơn.</td>
+              </tr>
+              <tr>
+                <td><strong>Mutation (Đột biến)</strong></td>
+                <td>Tạo ra các gen mới hoàn toàn ngẫu nhiên để tăng độ đa dạng, tránh hội tụ sớm.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section Highlights -->
+        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
+          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
+          <ul>
+            <li><strong>Thuật ngữ GA:</strong> Nhớ rõ phân biệt Cá thể (nghiệm), Quần thể (tập nghiệm), Kiểu gen (genotype) và Kiểu hình (phenotype).</li>
+            <li><strong>Hàm Fitness:</strong> Là thước đo độ thích nghi, đóng vai trò hàm mục tiêu cần tối ưu hóa.</li>
+            <li><strong>Quy trình hoạt động:</strong> Khởi tạo &rarr; Đánh giá &rarr; Chọn lọc &rarr; Lai ghép &rarr; Đột biến &rarr; Điều kiện dừng.</li>
+            <li><strong>Các kiểu chọn lọc:</strong> Roulette (tỉ lệ fitness), Tournament (đấu giải theo nhóm), Rank (theo thứ hạng).</li>
+            <li><strong>Vai trò của Đột biến:</strong> Tránh hội tụ sớm, thoát khỏi Local Optima bằng cách duy trì tính đa dạng.</li>
+          </ul>
+        </div>
+
+        <!-- Section Review Questions -->
+        <div class="sub-section" id="questions">
+          <h3>❓ Câu hỏi ôn tập tự luận</h3>
+          <ol>
+            <li>Trình bày khái niệm Giải thuật di truyền (GA). Nêu cơ sở sinh học và các bước thực hiện tổng quát của thuật toán.</li>
+            <li>Phân biệt sự khác nhau giữa Kiểu gen (Genotype) và Kiểu hình (Phenotype) của một cá thể trong GA. Cho ví dụ.</li>
+            <li>Nêu các phương pháp chọn lọc tự nhiên (Selection) thường dùng. Giải thích cơ chế chọn lọc bánh xe roulette.</li>
+            <li>Trình bày các kỹ thuật lai ghép (Crossover) một điểm cắt và hai điểm cắt. Cho ví dụ minh họa bằng hai chuỗi bit nhị phân tự chọn.</li>
+            <li>Đột biến (Mutation) là gì? Tại sao xác suất đột biến thường được thiết lập rất nhỏ nhưng lại đóng vai trò tối quan trọng trong việc tìm kiếm nghiệm tối ưu toàn cục?</li>
+            <li>Áp dụng thuật toán di truyền thiết lập mô hình giải quyết bài toán người bán hàng (TSP). Nêu rõ cách mã hóa nghiệm và hàm Fitness.</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

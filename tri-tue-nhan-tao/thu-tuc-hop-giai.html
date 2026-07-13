@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 5: Thủ tục hợp giải (Resolution) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .comparison-table th {
+      background-color: var(--highlight-bg);
+      color: var(--text-dark);
+      font-weight: bold;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Chương 5
+      </div>
+      <h1>CHƯƠNG 5: THỦ TỤC HỢP GIẢI (RESOLUTION)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Cơ chế suy diễn logic toán. Chuyển đổi công thức sang dạng chuẩn hội CNF, Logic vị từ bậc nhất, Phép hợp nhất (Unification) và Chứng minh phản chứng bằng Thủ tục hợp giải.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="giai-quyet-van-de-bang-tim-kiem.html">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
+          <li><a href="thu-tuc-hop-giai.html" class="active">5. Thủ tục hợp giải</a></li>
+          <li><a href="suy-dien-tien-lui.html">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="giai-thuat-di-truyen.html">7. Giải thuật di truyền</a></li>
+        </ul>
+        <h3>Luyện tập</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html">📝 Trắc nghiệm Chương 1</a></li>
+          <li><a href="trac-nghiem-chuong-2.html">📝 Trắc nghiệm Chương 2</a></li>
+          <li><a href="trac-nghiem-chuong-3.html">📝 Trắc nghiệm Chương 3</a></li>
+          <li><a href="trac-nghiem-chuong-4.html">📝 Trắc nghiệm Chương 4</a></li>
+          <li><a href="trac-nghiem-chuong-5.html">📝 Trắc nghiệm Chương 5</a></li>
+          <li><a href="trac-nghiem-chuong-6.html">📝 Trắc nghiệm Chương 6</a></li>
+          <li><a href="trac-nghiem-chuong-7.html">📝 Trắc nghiệm Chương 7</a></li>
+        </ul>
+</aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Section 1 -->
+        <div class="sub-section" id="sec-1">
+          <h3>1. Mệnh đề là gì?</h3>
+          <p><strong>Mệnh đề (Proposition)</strong> là một phát biểu, câu khẳng định chỉ có thể nhận duy nhất một trong hai giá trị chân trị:</p>
+          <ul>
+            <li><strong>Đúng (True - T - 1)</strong></li>
+            <li><strong>Sai (False - F - 0)</strong></li>
+          </ul>
+          <p>Một phát biểu không thể vừa đúng vừa sai cùng lúc và không thể không mang chân trị.</p>
+          
+          <div class="block-title">Ví dụ minh họa</div>
+          <ul>
+            <li>"Hà Nội là thủ đô của Việt Nam." &rarr; <em>Mệnh đề Đúng (True)</em></li>
+            <li>"122 chia hết cho 3." &rarr; <em>Mệnh đề Sai (False)</em></li>
+            <li>"Hôm nay trời đẹp quá!" &rarr; <em>Không phải mệnh đề</em> (đây là câu cảm thán, chân trị phụ thuộc cảm xúc người nói).</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="sec-2">
+          <h3>2. Các phép toán logic mệnh đề</h3>
+          <p>Các mệnh đề phức hợp được xây dựng từ mệnh đề đơn thông qua các liên kết logic:</p>
+
+          <div class="block-title">2.1 Phủ định (Negation - \(\neg\))</div>
+          <p>Ký hiệu: \(\neg P\). Đọc là "Không phải P". Giá trị chân trị của \(\neg P\) luôn ngược lại với \(P\).</p>
+
+          <div class="block-title">2.2 Phép hội (Conjunction - \(\land\))</div>
+          <p>Ký hiệu: \(P \land Q\). Đọc là "P và Q". Đúng khi và chỉ khi <strong>cả P và Q đều đúng</strong>.</p>
+
+          <div class="block-title">2.3 Phép tuyển (Disjunction - \(\lor\))</div>
+          <p>Ký hiệu: \(P \lor Q\). Đọc là "P hoặc Q". Đúng khi <strong>có ít nhất một mệnh đề đúng</strong>.</p>
+
+          <div class="block-title">2.4 Phép kéo theo (Implication - \(\rightarrow\))</div>
+          <p>Ký hiệu: \(P \rightarrow Q\). Đọc là "Nếu P thì Q". Phép toán này chỉ sai khi giả thiết \(P\) Đúng mà kết luận \(Q\) lại Sai.</p>
+          <ul>
+            <li>\(P\) là điều kiện đủ để có \(Q\).</li>
+            <li>\(Q\) là điều kiện cần để có \(P\).</li>
+          </ul>
+
+          <div class="block-title">2.5 Phép tương đương (Equivalence - \(\leftrightarrow\))</div>
+          <p>Ký hiệu: \(P \leftrightarrow Q\). Đọc là "P khi và chỉ khi Q". Đúng khi \(P\) và \(Q\) có cùng giá trị chân trị.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="sec-3">
+          <h3>3. Dạng chuẩn hội CNF và Dạng chuẩn tuyển DNF</h3>
+          <p>Để máy tính thực hiện các thuật toán suy luận tự động, các công thức logic cần được quy chuẩn về các dạng chuẩn tắc:</p>
+
+          <div class="block-title">3.1 Dạng chuẩn hội (Conjunctive Normal Form - CNF)</div>
+          <p>CNF là <strong>Hội (AND - \(\land\)) của một hoặc nhiều mệnh đề tuyển (OR - \(\lor\))</strong>.</p>
+          <ul>
+            <li>Dạng tổng quát: \((A \lor B) \land (\neg C \lor D) \land (E \lor F)\)</li>
+            <li>Ví dụ CNF hợp lệ: \((P \lor Q) \land (\neg Q \lor R \lor \neg S)\)</li>
+            <li>Ví dụ KHÔNG phải CNF: \((P \land Q) \lor R\) (do phép OR nằm bên ngoài phép AND).</li>
+          </ul>
+
+          <div class="block-title">3.2 Dạng chuẩn tuyển (Disjunctive Normal Form - DNF)</div>
+          <p>DNF là <strong>Tuyển (OR - \(\lor\)) của một hoặc nhiều mệnh đề hội (AND - \(\land\))</strong>.</p>
+          <ul>
+            <li>Dạng tổng quát: \((A \land B) \lor (C \land \neg D)\)</li>
+          </ul>
+
+          <div class="block-title">Bảng so sánh cấu trúc</div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Dạng chuẩn</th>
+                <th>Phép toán ngoài cùng</th>
+                <th>Phép toán bên trong ngoặc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CNF (Chuẩn hội)</strong></td>
+                <td>Hội (AND - \(\land\))</td>
+                <td>Tuyển (OR - \(\lor\))</td>
+              </tr>
+              <tr>
+                <td><strong>DNF (Chuẩn tuyển)</strong></td>
+                <td>Tuyển (OR - \(\lor\))</td>
+                <td>Hội (AND - \(\land\))</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="sec-4">
+          <h3>4. Các bước chuyển đổi công thức sang dạng chuẩn CNF</h3>
+          <p>Mọi công thức logic bất kỳ đều có thể đưa về dạng CNF tương đương thông qua 3 bước biến đổi cơ bản:</p>
+
+          <div class="block-title">Bước 1: Loại bỏ phép kéo theo (\(\rightarrow\)) và tương đương (\(\leftrightarrow\))</div>
+          <p>Sử dụng các tương đương logic:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(A \rightarrow B \equiv \neg A \lor B\)<br>
+            \(A \leftrightarrow B \equiv (A \rightarrow B) \land (B \rightarrow A) \equiv (\neg A \lor B) \land (\neg B \lor A)\)
+          </div>
+
+          <div class="block-title">Bước 2: Di chuyển phủ định (\(\neg\)) vào sát biến vị từ</div>
+          <p>Sử dụng luật phủ định kép và luật De Morgan:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(\neg(\neg A) \equiv A\)<br>
+            \(\neg(A \land B) \equiv \neg A \lor \neg B\)<br>
+            \(\neg(A \lor B) \equiv \neg A \land \neg B\)
+          </div>
+
+          <div class="block-title">Bước 3: Áp dụng luật phân phối đối với phép \(\lor\) trên phép \(\land\)</div>
+          <p>Quy tắc đưa phép toán tuyển (\(\lor\)) vào trong dấu hội (\(\land\)):</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(A \lor (B \land C) \equiv (A \lor B) \land (A \lor C)\)
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="sec-5">
+          <h3>5. Ví dụ cụ thể chuyển đổi sang CNF</h3>
+          <p>Hãy chuyển đổi công thức sau về dạng chuẩn CNF:</p>
+          <div style="text-align: center; margin: 1rem 0; font-weight: bold;">
+            \((P \lor Q) \rightarrow (R \rightarrow S)\)
+          </div>
+
+          <div class="block-title">Giải chi tiết</div>
+          <ol>
+            <li><strong>Khử các dấu kéo theo (\(\rightarrow\)):</strong>
+              <p>Khử kéo theo ở vế phải trước:</p>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((P \lor Q) \rightarrow (\neg R \lor S)\)
+              </div>
+              <p>Khử kéo theo ngoài cùng:</p>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \(\neg(P \lor Q) \lor (\neg R \lor S)\)
+              </div>
+            </li>
+            <li><strong>Áp dụng luật De Morgan để đưa dấu phủ định vào trong:</strong>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((\neg P \land \neg Q) \lor (\neg R \lor S)\)
+              </div>
+            </li>
+            <li><strong>Áp dụng luật phân phối (coi cụm \((\neg R \lor S)\) là một phần tử để phân phối):</strong>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((\neg P \lor \neg R \lor S) \land (\neg Q \lor \neg R \lor S)\)
+              </div>
+            </li>
+          </ol>
+          <p>Đây là dạng chuẩn hội CNF hoàn chỉnh (Hội của hai mệnh đề tuyển).</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="sec-6">
+          <h3>6. Logic vị từ (Predicate Logic)</h3>
+          <p>Logic mệnh đề bị giới hạn vì không thể đi sâu mô tả các thuộc tính bên trong của đối tượng. <strong>Logic vị từ bậc nhất (First-Order Predicate Logic)</strong> ra đời để mở rộng bằng cách định nghĩa cấu trúc:</p>
+          <ul>
+            <li><strong>Đối tượng (Objects):</strong> Các thực thể trong thế giới (ví dụ: con người, số học, quả táo).</li>
+            <li><strong>Thuộc tính (Properties):</strong> Đặc điểm riêng của đối tượng (ví dụ: thông minh, màu đỏ).</li>
+            <li><strong>Quan hệ (Relations):</strong> Liên kết giữa các đối tượng (ví dụ: là cha của, lớn hơn).</li>
+          </ul>
+          
+          <div class="block-title">Ví dụ minh họa</div>
+          <p>Câu: <em>"Lan là sinh viên trường Đại học Cần Thơ"</em></p>
+          <p>Biểu diễn vị từ: \(sv\_dhct(Lan)\)</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="sec-7">
+          <h3>7. Các thành phần cấu thành biểu thức vị từ</h3>
+          <ul>
+            <li><strong>7.1 Hằng (Constant):</strong> Chỉ ra các đối tượng cụ thể duy nhất. Viết bằng chữ thường. Ví dụ: <code>lan</code>, <code>caesar</code>, <code>vietnam</code>.</li>
+            <li><strong>7.2 Biến (Variable):</strong> Đại diện cho một tập hợp đối tượng không xác định cụ thể. Thường bắt đầu bằng chữ in hoa hoặc ký tự cuối. Ví dụ: <code>X</code>, <code>Y</code>, <code>Person</code>.</li>
+            <li><strong>7.3 Hàm (Function):</strong> Biểu diễn phép ánh xạ từ đối tượng này sang một đối tượng khác duy nhất. Ví dụ: \(father(X)\) (cha của X), \(mother(lan)\) (mẹ của Lan).</li>
+            <li><strong>7.4 Vị từ (Predicate):</strong> Biểu diễn một thuộc tính hoặc mối quan hệ giữa các thực thể, trả về chân trị Đúng/Sai. Ví dụ: \(likes(tom, football)\) (Tom thích bóng đá).</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="sec-8">
+          <h3>8. Các lượng từ (Quantifiers)</h3>
+          <p>Logic vị từ sử dụng hai lượng từ toán học để chỉ định phạm vi đối tượng:</p>
+
+          <div class="block-title">8.1 Lượng từ tồn tại (\(\exists\))</div>
+          <p>Ký hiệu: \(\exists X\). Đọc là "Tồn tại ít nhất một X" hoặc "Có một số X".</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\exists X (student(X) \land smart(X))\) &rarr; Có ít nhất một sinh viên thông minh (hoặc một số sinh viên thông minh).</li>
+          </ul>
+
+          <div class="block-title">8.2 Lượng từ với mọi (\(\forall\))</div>
+          <p>Ký hiệu: \(\forall X\). Đọc là "Với mọi X" hoặc "Tất cả X".</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\forall X (student(X) \rightarrow smart(X))\) &rarr; Tất cả sinh viên đều thông minh.</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="sec-9">
+          <h3>9. Phép hợp nhất (Unification)</h3>
+          
+          <div class="block-title">Ý nghĩa</div>
+          <p>Phép hợp nhất là quá trình tìm ra một <strong>phép thế các biến (substitution)</strong> sao cho hai biểu thức vị từ khác nhau trở nên giống hệt nhau về mặt cú pháp.</p>
+
+          <div class="block-title">Ví dụ hợp nhất thành công</div>
+          <p>Cho hai vị từ: \(P(X, Y)\) và \(P(a, Z)\).</p>
+          <p>Phép thế thích hợp là: \(\theta = \{a/X, Y/Z\}\) (thế hằng \(a\) cho biến \(X\), thế biến \(Y\) cho biến \(Z\)). Sau khi áp dụng phép thế, cả hai vị từ đều trở thành \(P(a, Y)\).</p>
+
+          <div class="block-title">Ví dụ KHÔNG thể hợp nhất</div>
+          <p>Cho hai vị từ: \(P(X, X)\) và \(P(a, b)\).</p>
+          <p>Hợp nhất thất bại vì bắt buộc \(X\) phải thế bằng \(a\) và đồng thời thế bằng \(b\). Điều này mâu thuẫn do hằng \(a \neq b\).</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="sec-10">
+          <h3>10. Khái niệm Thủ tục hợp giải (Resolution)</h3>
+          <p>Hợp giải là phương pháp chứng minh tự động dựa trên **phép phản chứng (proof by contradiction)**. Để chứng minh một mục tiêu \(G\) từ cơ sở tri thức \(KB\) (tức là chứng minh \(KB \vdash G\)):</p>
+          <ol>
+            <li>Lấy phủ định của mục tiêu cần chứng minh: \(\neg G\).</li>
+            <li>Thêm \(\neg G\) vào cơ sở tri thức hiện hành \(KB\).</li>
+            <li>Thực hiện phép hợp giải liên tục để sinh ra các mệnh đề mới.</li>
+            <li>Nếu quá trình hợp giải dẫn đến <strong>mệnh đề rỗng (empty clause - \(\Box\))</strong>, chứng tỏ xuất hiện mâu thuẫn. Do đó giả thuyết \(\neg G\) sai, nghĩa là mục tiêu \(G\) ban đầu được chứng minh là Đúng.</li>
+          </ol>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="sec-11">
+          <h3>11. Quy tắc hợp giải trong logic mệnh đề</h3>
+          <p>Quy tắc hợp giải cơ bản phát biểu rằng: nếu ta có hai tuyển chứa hai mệnh đề đối ngẫu nhau, ta có thể triệt tiêu chúng để tạo ra một mệnh đề mới:</p>
+          <div style="text-align: center; margin: 1.5rem 0; font-size: 1.2rem; font-weight: bold;">
+            \(\frac{P \lor Q, \quad \neg P \lor R}{Q \lor R}\)
+          </div>
+          
+          <div class="block-title">Ví dụ</div>
+          <p>Mệnh đề 1: \(winter \lor summer\) (Trời là mùa đông hoặc mùa hè)</p>
+          <p>Mệnh đề 2: \(\neg winter \lor cold\) (Trời không phải mùa đông hoặc trời lạnh)</p>
+          <p>Hợp giải hai mệnh đề trên bằng cách triệt tiêu \(winter\) và \(\neg winter\), thu được mệnh đề mới: \(summer \lor cold\) (Trời là mùa hè hoặc trời lạnh).</p>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="sec-12">
+          <h3>12. Skolemization (Khử lượng từ tồn tại)</h3>
+          <p>Trong quá trình chuyển đổi logic vị từ bậc nhất sang CNF, ta cần khử các lượng từ tồn tại (\(\exists\)) bằng phương pháp Skolem:</p>
+
+          <div class="block-title">Trường hợp 1: Lượng từ \(\exists\) không nằm dưới phạm vi của lượng từ \(\forall\)</div>
+          <p>Thế biến đó bằng một hằng số mới hoàn toàn (Hằng Skolem - Skolem Constant).</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\exists X (student(X))\) biến đổi thành \(student(A)\) (với \(A\) là một sinh viên cụ thể nào đó).</li>
+          </ul>
+
+          <div class="block-title">Trường hợp 2: Lượng từ \(\exists\) nằm dưới phạm vi ảnh hưởng của lượng từ \(\forall\)</div>
+          <p>Thế biến đó bằng một hàm số phụ thuộc vào biến của lượng từ \(\forall\) (Hàm Skolem - Skolem Function).</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\forall X \exists Y (father(Y, X))\) (Mọi người \(X\) đều có một người cha \(Y\)). Vì người cha \(Y\) phụ thuộc vào mỗi người \(X\), ta thế \(Y\) bằng hàm \(f(X)\): \(\forall X (father(f(X), X))\).</li>
+          </ul>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="sub-section" id="sec-13">
+          <h3>13. Các bước chuyển logic vị từ sang CNF hoàn chỉnh</h3>
+          <p>Để đưa một hệ logic vị từ bậc nhất về dạng CNF, ta thực hiện theo 10 bước chuẩn tắc sau:</p>
+          <ol>
+            <li>Khử các phép toán tương đương (\(\leftrightarrow\)).</li>
+            <li>Khử các phép toán kéo theo (\(\rightarrow\)).</li>
+            <li>Đưa dấu phủ định (\(\neg\)) vào sát các vị từ (sử dụng De Morgan và phủ định của lượng từ).</li>
+            <li>Chuẩn hóa biến (đổi tên biến để mỗi lượng từ quản lý một biến duy nhất).</li>
+            <li>Di chuyển tất cả lượng từ ra phía đầu công thức (Prenex Normal Form).</li>
+            <li>Khử lượng từ tồn tại (\(\exists\)) bằng phương pháp **Skolemization**.</li>
+            <li>Loại bỏ hoàn toàn các lượng từ với mọi (\(\forall\)) vì mọi biến còn lại mặc định đều mang tính phổ quát.</li>
+            <li>Phân phối phép tuyển (\(\lor\)) trên phép hội (\(\land\)) để đưa về hội của các tuyển.</li>
+            <li>Tách công thức thành các mệnh đề (clauses) riêng biệt bằng cách bỏ dấu hội (\(\land\)).</li>
+            <li>Đổi tên biến giữa các mệnh đề khác nhau để tránh xung đột biến khi thực hiện hợp giải.</li>
+          </ol>
+        </div>
+
+        <!-- Section Highlights -->
+        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
+          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
+          <ul>
+            <li><strong>Khái niệm CNF:</strong> Nhớ rõ CNF là dạng chuẩn hội (AND bên ngoài, OR bên trong).</li>
+            <li><strong>Các lượng từ:</strong> \(\forall\) đi liền với phép kéo theo (\(\rightarrow\)), \(\exists\) đi liền với phép hội (\(\land\)) khi dịch câu tiếng Việt.</li>
+            <li><strong>Phép hợp nhất (Unification):</strong> Phải tìm được bộ thế \(\theta\) phù hợp để khớp hai vị từ.</li>
+            <li><strong>Quy tắc hợp giải:</strong> Từ hai mệnh đề chứa \(P\) và \(\neg P\), ta triệt tiêu và nối các thành phần còn lại bằng dấu \(\lor\).</li>
+            <li><strong>Skolemization:</strong> Hiểu rõ khi nào dùng hằng Skolem (không nằm dưới \(\forall\)) và khi nào dùng hàm Skolem (nằm dưới \(\forall\)).</li>
+            <li><strong>Mệnh đề rỗng (\(\Box\)):</strong> Là đích đến của chứng minh phản chứng, biểu thị mâu thuẫn toán học.</li>
+          </ul>
+        </div>
+
+        <!-- Section Review Questions -->
+        <div class="sub-section" id="questions">
+          <h3>❓ Câu hỏi ôn tập tự luận</h3>
+          <ol>
+            <li>Mệnh đề là gì? Hãy chuyển công thức sau về dạng chuẩn CNF: \(\neg (P \rightarrow Q) \lor (R \leftrightarrow S)\).</li>
+            <li>Phân biệt sự khác nhau giữa dạng chuẩn hội CNF và dạng chuẩn tuyển DNF. Cho ví dụ mỗi loại.</li>
+            <li>Logic vị từ bậc nhất dùng những thành phần nào để khắc phục giới hạn của logic mệnh đề? Giải thích rõ vai trò của Hằng, Biến, Hàm và Vị từ.</li>
+            <li>Dịch các câu sau sang ngôn ngữ logic vị từ bậc nhất:
+              <ul>
+                <li>"Tất cả sinh viên công nghệ thông tin đều phải học lập trình."</li>
+                <li>"Có ít nhất một sinh viên khoa học máy tính đạt điểm tối đa môn Trí tuệ nhân tạo."</li>
+              </ul>
+            </li>
+            <li>Trình bày nguyên lý chứng minh của Thủ tục hợp giải (Resolution). Mệnh đề rỗng được sinh ra khi nào và mang ý nghĩa gì?</li>
+            <li>Giải thích kỹ thuật Skolemization. Khử lượng từ tồn tại cho biểu thức sau: \(\forall X \exists Y (likes(X, Y) \land student(Y))\).</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
