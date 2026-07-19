@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Các thời kỳ Tổng Bí thư Đảng - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    .leaders-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .leaders-table th {
+      background-color: var(--primary-color, #0284c7);
+      color: white;
+      text-align: left;
+      padding: 0.8rem 1rem;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+    }
+    .leaders-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+      line-height: 1.6;
+    }
+    .leaders-table tr:hover {
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .dark-theme .leaders-table tr:hover {
+      background-color: rgba(2, 132, 199, 0.05);
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary-color, #0284c7);
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-light, #6b7280);
+      font-weight: 600;
+    }
+    .note-box {
+      font-size: 0.85rem;
+      color: var(--text-light, #6b7280);
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Các thời kỳ Tổng Bí thư
+      </div>
+      <h1>Các Thời Kỳ Tổng Bí Thư Đảng Cộng Sản Việt Nam</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Bảng tra cứu niên biểu và những dấu ấn lịch sử nổi bật của các đồng chí Tổng Bí thư qua các thời kỳ cách mạng.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Giới thiệu chung</a></li>
+        </ul>
+        <h3>Chuyên đề tra cứu</h3>
+        <ul>
+          <li><a href="danh-sach-tong-bi-thu.html" class="active">👥 Các Tổng Bí thư</a></li>
+          <li><a href="dai-hoi-dang.html">🚩 Các kỳ Đại hội Đảng</a></li>
+        </ul>
+        <h3>Luyện tập Đề cương</h3>
+        <ul>
+          <li><a href="trac-nghiem-de-co-xuyen.html">📝 Đề cô Xuyến <span id="sidebar-score-badge" class="score-badge">0/32</span></a></li>
+          <li><a href="trac-nghiem-de-cuong.html">📝 Đề cương - Trang 1 <span id="sidebar-score-badge-2" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-2.html">📝 Đề cương - Trang 2 <span id="sidebar-score-badge-3" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-3.html">📝 Đề cương - Trang 3 <span id="sidebar-score-badge-4" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-4.html">📝 Đề cương - Trang 4 <span id="sidebar-score-badge-5" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-5.html">📝 Đề cương - Trang 5 <span id="sidebar-score-badge-6" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-6.html">📝 Đề cương - Trang 6 <span id="sidebar-score-badge-7" class="score-badge">0/50</span></a></li>
+        </ul>
+        <h3>🌟 Section VIP (Chương III)</h3>
+        <ul>
+          <li><a href="trac-nghiem-vip-1.html">👑 VIP 1: Giai đoạn 1975 - 1986 <span id="sidebar-score-badge-vip1" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-2.html">👑 VIP 2: Giai đoạn 1986 - 1996 <span id="sidebar-score-badge-vip2" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-3.html">👑 VIP 3: Giai đoạn 1996 - 2006 <span id="sidebar-score-badge-vip3" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-4.html">👑 VIP 4: Giai đoạn 2006 - Nay <span id="sidebar-score-badge-vip4" class="score-badge">0/50</span></a></li>
+        </ul>
+        <h3>Nội dung bài học</h3>
+        <ul>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 1 (Đang cập nhật)</a></li>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 2 (Đang cập nhật)</a></li>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 3 (Đang cập nhật)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- Thống kê nhanh số liệu -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-number">13</div>
+            <div class="stat-label">Tổng Bí thư</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">26 tuổi</div>
+            <div class="stat-label">Trẻ nhất (Trần Phú, Nguyễn Văn Cừ)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">26 năm</div>
+            <div class="stat-label">Nhiệm kỳ dài nhất (Lê Duẩn)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">74 tuổi</div>
+            <div class="stat-label">Lớn tuổi nhất khi nhậm (Đỗ Mười)</div>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="leaders-table">
+            <thead>
+              <tr>
+                <th style="width: 50px; text-align: center;">STT</th>
+                <th style="width: 160px;">Tổng Bí thư</th>
+                <th style="width: 180px;">Nhiệm kỳ</th>
+                <th style="width: 90px; text-align: center;">Tuổi nhậm</th>
+                <th>Dấu ấn nổi bật</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">1</td>
+                <td style="font-weight: 700;">Trần Phú</td>
+                <td>10/1930 – 4/1931</td>
+                <td style="text-align: center;">26</td>
+                <td>Tổng Bí thư đầu tiên; soạn thảo Luận cương chính trị 1930.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">2</td>
+                <td style="font-weight: 700;">Lê Hồng Phong</td>
+                <td>3/1935 – 10/1936</td>
+                <td style="text-align: center;">33</td>
+                <td>Khôi phục hệ thống tổ chức Đảng sau thời kỳ bị thực dân Pháp đàn áp.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">3</td>
+                <td style="font-weight: 700;">Hà Huy Tập</td>
+                <td>10/1936 – 3/1938</td>
+                <td style="text-align: center;">30</td>
+                <td>Lãnh đạo phong trào dân chủ 1936–1939.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">4</td>
+                <td style="font-weight: 700;">Nguyễn Văn Cừ</td>
+                <td>3/1938 – 1/1940</td>
+                <td style="text-align: center;">26</td>
+                <td>Tổng Bí thư trẻ nhất (cùng Trần Phú); tác giả tác phẩm Tự chỉ trích.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">5</td>
+                <td style="font-weight: 700;">Trường Chinh</td>
+                <td>5/1941 – 10/1956;<br>7/1986 – 12/1986</td>
+                <td style="text-align: center;">34</td>
+                <td>Hai lần giữ chức Tổng Bí thư; lãnh đạo Cách mạng Tháng Tám và đặt nền móng cho công cuộc Đổi mới.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">6</td>
+                <td style="font-weight: 700;">Hồ Chí Minh*</td>
+                <td>10/1956 – 9/1960</td>
+                <td style="text-align: center;">66</td>
+                <td>Đồng thời là Chủ tịch Đảng; lãnh đạo giai đoạn chuyển tiếp trước khi bầu Bí thư thứ nhất.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">7</td>
+                <td style="font-weight: 700;">Lê Duẩn</td>
+                <td>9/1960 – 7/1986</td>
+                <td style="text-align: center;">53</td>
+                <td>Giữ chức lâu nhất (gần 26 năm); lãnh đạo thời kỳ kháng chiến chống Mỹ, thống nhất đất nước và những năm đầu sau thống nhất.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">8</td>
+                <td style="font-weight: 700;">Nguyễn Văn Linh</td>
+                <td>12/1986 – 6/1991</td>
+                <td style="text-align: center;">71</td>
+                <td>Khởi xướng và thúc đẩy công cuộc Đổi mới sau Đại hội VI.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">9</td>
+                <td style="font-weight: 700;">Đỗ Mười</td>
+                <td>6/1991 – 12/1997</td>
+                <td style="text-align: center;">74</td>
+                <td>Tiếp tục phát triển nền kinh tế thị trường định hướng XHCN và mở rộng hội nhập quốc tế.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">10</td>
+                <td style="font-weight: 700;">Lê Khả Phiêu</td>
+                <td>12/1997 – 4/2001</td>
+                <td style="text-align: center;">66</td>
+                <td>Chú trọng xây dựng, chỉnh đốn Đảng và cải cách tổ chức.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">11</td>
+                <td style="font-weight: 700;">Nông Đức Mạnh</td>
+                <td>4/2001 – 1/2011</td>
+                <td style="text-align: center;">61</td>
+                <td>Hai nhiệm kỳ liên tiếp; Việt Nam gia nhập WTO (2007), thúc đẩy hội nhập kinh tế.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">12</td>
+                <td style="font-weight: 700;">Nguyễn Phú Trọng</td>
+                <td>1/2011 – 7/2024</td>
+                <td style="text-align: center;">66</td>
+                <td>Lãnh đạo nhiều nhiệm kỳ; nổi bật với công tác xây dựng Đảng và phòng, chống tham nhũng.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: 700;">13</td>
+                <td style="font-weight: 700;">Tô Lâm</td>
+                <td>8/2024 – nay (2026)</td>
+                <td style="text-align: center;">67</td>
+                <td>Được bầu sau khi đồng chí Nguyễn Phú Trọng từ trần; tiếp tục được Ban Chấp hành Trung ương khóa XIV bầu giữ chức Tổng Bí thư năm 2026.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note-box">
+          <p><strong>* Chú thích:</strong></p>
+          <p>- Đồng chí Hồ Chí Minh giữ chức Chủ tịch Đảng từ năm 1951 đến 1969. Giai đoạn từ tháng 10/1956 đến tháng 9/1960, Người trực tiếp chỉ đạo công việc của Ban Bí thư và kiêm nhiệm Tổng Bí thư sau khi đồng chí Trường Chinh từ nhiệm.</p>
+          <p>- Tuổi khi nhậm chức được tính theo năm dương lịch tính đến thời điểm bắt đầu nhiệm kỳ.</p>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

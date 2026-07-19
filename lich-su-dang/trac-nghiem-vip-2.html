@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm VIP 2 - Chương III (1986-1996) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: #f59e0b;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+    .vip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Section VIP (Chương III)
+      </div>
+      <h1>🌟 VIP Phần 2: Đổi mới toàn diện & Ra khỏi khủng hoảng (1986 - 1996) <span class="vip-badge">VIP</span></h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Bộ 200 câu hỏi trắc nghiệm chuyên sâu Chương III: Đảng lãnh đạo cả nước quá độ lên CNXH và tiến hành công cuộc Đổi mới (1975 - Nay).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <main>
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả phần VIP</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: #d97706; font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_vip_2';
+    const quizData = [
+  {
+    "q": "Câu 1: Đại hội Đại biểu toàn quốc lần thứ VI của Đảng diễn ra trong thời gian nào?",
+    "o": [
+      "Từ 15/12 đến 18/12/1986",
+      "Từ 24/6 đến 3/7/1976",
+      "Từ 24/6 đến 27/6/1991",
+      "Từ 28/6 đến 1/7/1996"
+    ],
+    "c": 0,
+    "e": "Đại hội VI của Đảng họp từ ngày 15 đến ngày 18/12/1986 tại Hà Nội."
+  },
+  {
+    "q": "Câu 2: Bối cảnh quốc tế khi diễn ra Đại hội VI (12/1986) có đặc điểm nổi bật là gì?",
+    "o": [
+      "Cuộc cách mạng khoa học - kỹ thuật đang phát triển mạnh mẽ",
+      "Chủ nghĩa xã hội ở Liên Xô đã sụp đổ hoàn toàn",
+      "Việt Nam đã gia nhập WTO",
+      "Chiến tranh lạnh bùng nổ dữ dội"
+    ],
+    "c": 0,
+    "e": "Đại hội VI diễn ra trong bối cảnh cuộc cách mạng khoa học - kỹ thuật đang phát triển mạnh."
+  },
+  {
+    "q": "Câu 3: Bối cảnh trong nước khi diễn ra Đại hội VI (12/1986) là gì?",
+    "o": [
+      "Việt Nam bị bao vây, cấm vận và đất nước lâm vào khủng hoảng kinh tế - xã hội nghiêm trọng",
+      "Kinh tế phát triển ổn định",
+      "Đất nước đã ra khỏi khủng hoảng",
+      "Nông nghiệp đạt sản lượng xuất khẩu cao nhất thế giới"
+    ],
+    "c": 0,
+    "e": "Đất nước lâm vào khủng hoảng KT-XH nghiêm trọng và bị bao vây cấm vận."
+  },
+  {
+    "q": "Câu 4: Ai được bầu làm Tổng Bí thư Ban Chấp hành Trung ương Đảng tại Đại hội VI (12/1986)?",
+    "o": [
+      "Nguyễn Văn Linh",
+      "Trường Chinh",
+      "Đỗ Mười",
+      "Lê Khả Phiêu"
+    ],
+    "c": 0,
+    "e": "Đại hội VI bầu đồng chí Nguyễn Văn Linh làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 5: Chủ trương nổi bật về kinh tế được Đại hội VI (12/1986) xác định là gì?",
+    "o": [
+      "Thực hiện nhất quán chính sách phát triển nền kinh tế nhiều thành phần, xóa bỏ bao cấp chuyển sang kinh tế thị trường",
+      "Tiếp tục ưu tiên phát triển công nghiệp nặng",
+      "Duy trì tập trung quan liêu bao cấp",
+      "Chỉ phát triển kinh tế tập thể"
+    ],
+    "c": 0,
+    "e": "Đại hội VI quyết định đổi mới toàn diện, phát triển kinh tế nhiều thành phần."
+  },
+  {
+    "q": "Câu 6: Đại hội VI (12/1986) đề ra bao nhiêu phương hướng lớn phát triển kinh tế?",
+    "o": [
+      "5 phương hướng lớn phát triển kinh tế",
+      "3 phương hướng",
+      "7 phương hướng",
+      "10 phương hướng"
+    ],
+    "c": 0,
+    "e": "Đại hội VI đề ra 5 phương hướng lớn phát triển kinh tế."
+  },
+  {
+    "q": "Câu 7: Đại hội VI (12/1986) đề ra bao nhiêu nhóm chính sách xã hội?",
+    "o": [
+      "4 nhóm chính sách xã hội",
+      "2 nhóm chính sách",
+      "6 nhóm chính sách",
+      "8 nhóm chính sách"
+    ],
+    "c": 0,
+    "e": "Đại hội VI đề ra 4 nhóm chính sách xã hội."
+  },
+  {
+    "q": "Câu 8: Khẩu hiệu dân chủ nổi tiếng được khẳng định tại Đại hội VI (12/1986) là gì?",
+    "o": [
+      "Dân biết, dân bàn, dân làm, dân kiểm tra",
+      "Dân giàu, nước mạnh, xã hội công bằng, văn minh",
+      "Dân biết, dân làm, dân thụ hưởng",
+      "Đoàn kết, đoàn kết, đại đoàn kết"
+    ],
+    "c": 0,
+    "e": "Đại hội VI nêu cao phương châm: 'Dân biết, dân bàn, dân làm, dân kiểm tra'."
+  },
+  {
+    "q": "Câu 9: Trong nông nghiệp, Nghị quyết số 10-NQ/TW của Bộ Chính trị (5/4/1988) thường được gọi là gì?",
+    "o": [
+      "Khoán 10",
+      "Khoán 100",
+      "Chính sách cải cách ruộng đất",
+      "Nghị quyết Tam nông"
+    ],
+    "c": 0,
+    "e": "Nghị quyết 10-NQ/TW (5/4/1988) của Bộ Chính trị được gọi là 'Khoán 10' về đổi mới quản lý kinh tế nông nghiệp."
+  },
+  {
+    "q": "Câu 10: Tác động lớn nhất của Nghị quyết Khoán 10 (5/4/1988) đến nông nghiệp Việt Nam là gì?",
+    "o": [
+      "Giải phóng sức sản xuất nông nghiệp, đưa Việt Nam từ nước thiếu ăn trở thành nước xuất khẩu gạo",
+      "Thực hiện tập thể hóa toàn bộ ruộng đất",
+      "Xóa bỏ kinh tế hộ gia đình",
+      "Biến nông nghiệp thành ngành công nghiệp nặng"
+    ],
+    "c": 0,
+    "e": "Khoán 10 giao quyền sử dụng đất lâu dài cho hộ nông dân, giải phóng sức sản xuất đưa VN xuất khẩu gạo."
+  },
+  {
+    "q": "Câu 11: Chủ trương cải tạo XHCN thực hiện sau Đại hội VI công nhận điều gì?",
+    "o": [
+      "Công nhận sự tồn tại lâu dài của nhiều thành phần kinh tế",
+      "Xóa bỏ ngay lập tức thành phần tư nhân",
+      "Tập trung toàn bộ vốn vào kinh tế nhà nước",
+      "Cấm kinh tế cá thể buôn bán"
+    ],
+    "c": 0,
+    "e": "Công nhận sự tồn tại lâu dài và tác dụng tích cực của nhiều thành phần kinh tế."
+  },
+  {
+    "q": "Câu 12: Hội nghị Trung ương 6 khóa VI (3/1989) đã chính thức đưa ra khái niệm quan trọng nào trong tổ chức bộ máy?",
+    "o": [
+      "Khái niệm Hệ thống chính trị",
+      "Khái niệm Kinh tế tri thức",
+      "Khái niệm Công nghiệp hóa hiện đại hóa",
+      "Khái niệm Nền kinh tế thị trường định hướng XHCN"
+    ],
+    "c": 0,
+    "e": "Hội nghị Trung ương 6 khóa VI (3/1989) đưa ra khái niệm Hệ thống chính trị."
+  },
+  {
+    "q": "Câu 13: Theo Hội nghị Trung ương 6 khóa VI (3/1989), Hệ thống chính trị ở nước ta bao gồm các thành tố nào?",
+    "o": [
+      "Nhà nước CHXHCNVN, ĐCSVN, UBMTTQVN, Các tổ chức CT-XH",
+      "ĐCSVN và Quốc hội",
+      "Chính phủ và Các Doanh nghiệp Nhà nước",
+      "Nhà nước và Kinh tế tư nhân"
+    ],
+    "c": 0,
+    "e": "Hệ thống chính trị bao gồm: Nhà nước CHXHCNVN, ĐCSVN, UBMTTQVN và các tổ chức CT-XH."
+  },
+  {
+    "q": "Câu 14: Các tổ chức chính trị - xã hội trong Hệ thống chính trị được xác định tại HN TW 6 khóa VI gồm mấy tổ chức chính?",
+    "o": [
+      "5 tổ chức (Hội Nông dân, Hội LHPN, Đoàn TNCSHCM, Hội Cựu chiến binh, Tổng Liên đoàn LĐVN)",
+      "3 tổ chức",
+      "4 tổ chức",
+      "6 tổ chức"
+    ],
+    "c": 0,
+    "e": "Gồm 5 tổ chức: Hội Nông dân VN, Hội LH Phụ nữ VN, Đoàn TNCSHCM, Hội Cựu chiến binh VN, Tổng Liên đoàn LĐVN."
+  },
+  {
+    "q": "Câu 15: Nền tảng tư tưởng của Đảng được Hội nghị Trung ương 6 khóa VI (3/1989) khẳng định là gì?",
+    "o": [
+      "Chủ nghĩa Mác - Lênin",
+      "Tư tưởng Hồ Chí Minh",
+      "Chủ nghĩa Tam dân",
+      "Nho giáo truyền thống"
+    ],
+    "c": 0,
+    "e": "Hội nghị TW 6 khóa VI (3/1989) khẳng định Chủ nghĩa Mác - Lênin là nền tảng tư tưởng của Đảng (đến Đại hội VII mới bổ sung Tư tưởng HCM)."
+  },
+  {
+    "q": "Câu 16: Phương châm đối ngoại mới được đưa ra từ năm 1990 là gì?",
+    "o": [
+      "Tiếp tục mở rộng quan hệ đối ngoại theo phương châm thêm bạn, bớt thù, giữ vững hòa bình, để xây dựng và BVTQ",
+      "Liên minh chiến lược toàn diện với các nước XHCN",
+      "Khép kín kinh tế tự lực cánh sinh",
+      "Chỉ mở rộng quan hệ với các nước Đông Nam Á"
+    ],
+    "c": 0,
+    "e": "Phương châm từ năm 1990: 'Tiếp tục mở rộng quan hệ đối ngoại theo phương châm thêm bạn, bớt thù, giữ vững hòa bình, để xây dựng và BVTQ.'"
+  },
+  {
+    "q": "Câu 17: Đại hội Đại biểu toàn quốc lần thứ VII của Đảng họp vào thời gian nào?",
+    "o": [
+      "Từ 24/6 đến 27/6/1991",
+      "Từ 15/12 đến 18/12/1986",
+      "Từ 28/6 đến 1/7/1996",
+      "Từ 19/4 đến 22/4/2001"
+    ],
+    "c": 0,
+    "e": "Đại hội VII của Đảng họp từ ngày 24 đến ngày 27/6/1991 tại Hà Nội."
+  },
+  {
+    "q": "Câu 18: Hai văn kiện quan trọng nhất được thông qua tại Đại hội VII (6/1991) là gì?",
+    "o": [
+      "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên CNXH (Cương lĩnh 1991) và Chiến lược ổn định và phát triển KT – XH đến năm 2000",
+      "Hiến pháp 1992 và Luật Đất đai 1993",
+      "Nghị quyết Khoán 10 và Cương lĩnh 1991",
+      "Chiến lược biển và Nghị quyết Trung ương 6"
+    ],
+    "c": 0,
+    "e": "Đại hội VII thông qua Cương lĩnh 1991 và Chiến lược ổn định phát triển KT-XH đến 2000."
+  },
+  {
+    "q": "Câu 19: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên CNXH được thông qua tại Đại hội VII (1991) là bản Cương lĩnh thứ mấy của Đảng?",
+    "o": [
+      "Bản Cương lĩnh thứ 4 (trong 5 bản Cương lĩnh)",
+      "Bản Cương lĩnh thứ 3",
+      "Bản Cương lĩnh thứ 5",
+      "Bản Cương lĩnh đầu tiên"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 1991 là bản Cương lĩnh thứ 4 của Đảng (sau Cương lĩnh 2/1930, 10/1930, 2/1951)."
+  },
+  {
+    "q": "Câu 20: Ai được bầu làm Tổng Bí thư Ban Chấp hành Trung ương Đảng tại Đại hội VII (6/1991)?",
+    "o": [
+      "Đỗ Mười",
+      "Nguyễn Văn Linh",
+      "Lê Khả Phiêu",
+      "Nông Đức Mạnh"
+    ],
+    "c": 0,
+    "e": "Đại hội VII bầu đồng chí Đỗ Mười làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 21: Đại hội VII (6/1991) đã chính thức bổ sung thành tố nào vào nền tảng tư tưởng và kim chỉ nam hành động của Đảng?",
+    "o": [
+      "Tư tưởng Hồ Chí Minh",
+      "Chủ nghĩa Mác - Lênin",
+      "Kinh tế thị trường",
+      "Truyền thống văn hóa dân tộc"
+    ],
+    "c": 0,
+    "e": "Đại hội VII khẳng định Đảng lấy Chủ nghĩa Mác - Lênin và Tư tưởng Hồ Chí Minh làm nền tảng tư tưởng, kim chỉ nam cho hành động."
+  },
+  {
+    "q": "Câu 22: Chủ đề nổi bật của Đại hội VII (6/1991) là gì?",
+    "o": [
+      "Đại hội của trí tuệ - đổi mới, dân chủ - kỷ cương – đoàn kết",
+      "Đại hội Đổi mới toàn diện",
+      "Đại hội công nghiệp hóa hiện đại hóa",
+      "Đại hội hội nhập quốc tế"
+    ],
+    "c": 0,
+    "e": "Chủ đề Đại hội VII: 'Đại hội của trí tuệ - đổi mới, dân chủ - kỷ cương – đoàn kết'."
+  },
+  {
+    "q": "Câu 23: Tuyên bố đối ngoại nổi tiếng tại Đại hội VII (6/1991) thể hiện đường lối đối ngoại nào?",
+    "o": [
+      "'Việt Nam muốn là bạn với tất cả các nước trong cộng đồng thế giới, phấn đấu vì hòa bình, độc lập và phát triển.'",
+      "'Việt Nam sẵn sàng là đối tác tin cậy của các nước tư bản.'",
+      "'Việt Nam chỉ làm bạn với các nước láng giềng.'",
+      "'Việt Nam ưu tiên liên minh quân sự với các nước thuộc địa.'"
+    ],
+    "c": 0,
+    "e": "Đại hội VII tuyên bố: 'Việt Nam muốn là bạn với tất cả các nước trong cộng đồng thế giới...'"
+  },
+  {
+    "q": "Câu 24: Cương lĩnh 1991 chỉ ra bao nhiêu bài học lớn của cách mạng Việt Nam?",
+    "o": [
+      "5 bài học lớn",
+      "3 bài học",
+      "6 bài học",
+      "4 bài học"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 1991 đúc kết 5 bài học lớn."
+  },
+  {
+    "q": "Câu 25: Theo Cương lĩnh 1991, bài học thứ 5 khẳng định nhân tố hàng đầu bảo đảm thắng lợi của cách mạng VN là gì?",
+    "o": [
+      "Sự lãnh đạo đúng đắn của Đảng",
+      "Khối đại đoàn kết toàn dân tộc",
+      "Sự giúp đỡ của quốc tế",
+      "Sức mạnh quân sự"
+    ],
+    "c": 0,
+    "e": "Bài học 5: Sự lãnh đạo đúng đắn của Đảng là nhân tố hàng đầu bảo đảm thắng lợi của cách mạng VN."
+  },
+  {
+    "q": "Câu 26: Cương lĩnh 1991 xác định mô hình xã hội XHCN mà nhân dân ta xây dựng gồm bao nhiêu đặc trưng?",
+    "o": [
+      "6 đặc trưng",
+      "8 đặc trưng",
+      "5 đặc trưng",
+      "7 đặc trưng"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 1991 chỉ ra 6 đặc trưng của xã hội XHCN ở Việt Nam."
+  },
+  {
+    "q": "Câu 27: Cương lĩnh 1991 đề ra bao nhiêu phương hướng lớn để xây dựng CNXH ở nước ta?",
+    "o": [
+      "7 phương hướng",
+      "5 phương hướng",
+      "6 phương hướng",
+      "8 phương hướng"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 1991 xác định 7 phương hướng xây dựng CNXH."
+  },
+  {
+    "q": "Câu 28: Hội nghị Trung ương 7 Khóa VII (7/1994) đề ra chủ trương phát triển lĩnh vực nào với mục tiêu lâu dài CNH – HĐH?",
+    "o": [
+      "Phát triển công nghiệp, công nghệ và xây dựng giai cấp công nhân trong giai đoạn mới",
+      "Phát triển du lịch sinh thái",
+      "Ưu tiên thương mại biên giới",
+      "Tập trung xây dựng nông thôn mới"
+    ],
+    "c": 0,
+    "e": "Hội nghị TW 7 Khóa VII (7/1994) phát triển công nghiệp, công nghệ và xây dựng GCCN phục vụ CNH-HĐH."
+  },
+  {
+    "q": "Câu 29: Hội nghị Trung ương 3 Khóa VII (6/1992) đề ra chủ trương quan trọng nào về đối ngoại và xây dựng Đảng?",
+    "o": [
+      "Mở rộng đa dạng hóa, đa phương hóa quan hệ đối ngoại và lần đầu tiên đưa ra chủ trương tự đổi mới, chỉnh đốn Đảng",
+      "Đơn phương đóng cửa biên giới",
+      "Chỉ hợp tác với các nước XHCN",
+      "Bắt buộc tư nhân hóa toàn bộ doanh nghiệp nhà nước"
+    ],
+    "c": 0,
+    "e": "HN TW 3 Khóa VII (6/1992) chủ trương đa dạng hóa, đa phương hóa và tự đổi mới chỉnh đốn Đảng."
+  },
+  {
+    "q": "Câu 30: Khái niệm 'Nhà nước pháp quyền' (quản lý Nhà nước và xã hội bằng Hiến pháp và Pháp luật) lần đầu được đề ra tại sự kiện nào?",
+    "o": [
+      "Hội nghị đại biểu toàn quốc giữa nhiệm kỳ của Đảng (Khóa VII)",
+      "Đại hội VI (12/1986)",
+      "Hội nghị Trung ương 6 khóa VI (1989)",
+      "Đại hội VIII (1996)"
+    ],
+    "c": 0,
+    "e": "Hội nghị đại biểu toàn quốc giữa nhiệm kỳ (khóa VII) đưa ra khái niệm Nhà nước pháp quyền."
+  },
+  {
+    "q": "Câu 31: 3 chương trình kinh tế lớn do Đại hội VI (12/1986) đề ra bao gồm những chương trình nào?",
+    "o": [
+      "Lương thực - thực phẩm, Hàng tiêu dùng, Hàng xuất khẩu",
+      "Công nghiệp nặng, Giao thông, Bưu chính",
+      "Giáo dục, Y tế, Văn hóa",
+      "Nông nghiệp, Thủy sản, Năng lượng"
+    ],
+    "c": 0,
+    "e": "Đại hội VI tập trung thực hiện 3 chương trình kinh tế lớn: Lương thực - thực phẩm, Hàng tiêu dùng, Hàng xuất khẩu."
+  },
+  {
+    "q": "Câu 32: Nghị quyết 10-NQ/TW (Khoán 10) ngày 5/4/1988 do cơ quan nào ban hành?",
+    "o": [
+      "Bộ Chính trị",
+      "Ban Chấp hành Trung ương",
+      "Quốc hội",
+      "Chính phủ"
+    ],
+    "c": 0,
+    "e": "Khoán 10 là Nghị quyết của Bộ Chính trị khóa VI."
+  },
+  {
+    "q": "Câu 33: Tên gọi tổ chức công đoàn đại diện cho người lao động được xác định tại HN TW 6 khóa VI (1989) là gì?",
+    "o": [
+      "Tổng Liên đoàn Lao động Việt Nam (Tổng Công đoàn VN)",
+      "Hội Công nhân Việt Nam",
+      "Nông đoàn Việt Nam",
+      "Liên đoàn Lao động tự do"
+    ],
+    "c": 0,
+    "e": "Tổng Liên đoàn Lao động Việt Nam (trước đây là Tổng Công đoàn Việt Nam)."
+  },
+  {
+    "q": "Câu 34: Năm 1990 đánh dấu chủ trương đối ngoại của Việt Nam chuyển sang phương châm nào?",
+    "o": [
+      "'Thêm bạn, bớt thù, giữ vững hòa bình, để xây dựng và BVTQ'",
+      "'Đóng cửa tự lực cánh sinh'",
+      "'Liên minh quân sự'",
+      "'Ưu tiên thương mại đơn phương'"
+    ],
+    "c": 0,
+    "e": "Phương châm: 'Thêm bạn, bớt thù, giữ vững hòa bình, để xây dựng và BVTQ.'"
+  },
+  {
+    "q": "Câu 35: Đại hội VII (6/1991) được tổ chức trong bối cảnh quốc tế như thế nào?",
+    "o": [
+      "Chủ nghĩa xã hội ở Đông Âu và Liên Xô lâm vào khủng hoảng trầm trọng và sụp đổ",
+      "Mỹ viện trợ toàn diện cho Việt Nam",
+      "ASEAN kết nạp Việt Nam ngay lập tức",
+      "Kinh tế thế giới tăng trưởng kỷ lục"
+    ],
+    "c": 0,
+    "e": "Đại hội VII diễn ra khi hệ thống XHCN ở Đông Âu và Liên Xô khủng hoảng nghiêm trọng dẫn tới sụp đổ."
+  },
+  {
+    "q": "Câu 36: Bản Cương lĩnh 1991 thông qua tại Đại hội VII có tên đầy đủ là gì?",
+    "o": [
+      "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội",
+      "Cương lĩnh chính trị đầu tiên",
+      "Chính cương của Đảng Lao động Việt Nam",
+      "Luận cương chính trị 1991"
+    ],
+    "c": 0,
+    "e": "Tên đầy đủ: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội."
+  },
+  {
+    "q": "Câu 37: Chiến lược phát triển kinh tế - xã hội được thông qua cùng Cương lĩnh 1991 tại Đại hội VII kéo dài đến năm nào?",
+    "o": [
+      "Đến năm 2000 (Chiến lược ổn định và phát triển KT – XH đến năm 2000)",
+      "Đến năm 2010",
+      "Đến năm 2020",
+      "Đến năm 1995"
+    ],
+    "c": 0,
+    "e": "Chiến lược ổn định và phát triển KT – XH đến năm 2000."
+  },
+  {
+    "q": "Câu 38: Văn kiện nào khẳng định lần đầu tiên 'Đảng lấy chủ nghĩa Mác - Lênin và tư tưởng Hồ Chí Minh làm nền tảng tư tưởng'?",
+    "o": [
+      "Cương lĩnh 1991 (Đại hội VII)",
+      "Đại hội VI (1986)",
+      "Hiến pháp 1980",
+      "Cương lĩnh 2011"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 1991 khẳng định Tư tưởng Hồ Chí Minh cùng CN Mác-Lênin là nền tảng tư tưởng của Đảng."
+  },
+  {
+    "q": "Câu 39: Nhiệm kỳ Tổng Bí thư của đồng chí Nguyễn Văn Linh diễn ra trong giai đoạn nào?",
+    "o": [
+      "1986 – 1991",
+      "1982 – 1986",
+      "1991 – 1996",
+      "1976 – 1986"
+    ],
+    "c": 0,
+    "e": "Đồng chí Nguyễn Văn Linh làm TBT nhiệm kỳ Đại hội VI (1986 – 1991)."
+  },
+  {
+    "q": "Câu 40: Nhiệm kỳ Tổng Bí thư của đồng chí Đỗ Mười bắt đầu từ Đại hội nào?",
+    "o": [
+      "Đại hội VII (6/1991)",
+      "Đại hội VI (12/1986)",
+      "Đại hội VIII (6/1996)",
+      "Đại hội V (3/1982)"
+    ],
+    "c": 0,
+    "e": "Đồng chí Đỗ Mười được bầu làm TBT tại Đại hội VII (1991) và tiếp tục tại Đại hội VIII (1996)."
+  },
+  {
+    "q": "Câu 41: Khái niệm 'Nhà nước quản lý và xã hội bằng Hiến pháp và Pháp luật' thể hiện bản chất của mô hình nào?",
+    "o": [
+      "Nhà nước pháp quyền XHCN",
+      "Nhà nước phong kiến",
+      "Nhà nước tư bản chủ nghĩa",
+      "Bộ máy quan liêu bao cấp"
+    ],
+    "c": 0,
+    "e": "Đây là nội hàm của mô hình Nhà nước pháp quyền."
+  },
+  {
+    "q": "Câu 42: Mục tiêu lâu dài của chủ trương phát triển công nghiệp tại Hội nghị TW 7 Khóa VII (1994) là gì?",
+    "o": [
+      "Công nghiệp hóa – Hiện đại hóa (CNH – HĐH)",
+      "Công nghiệp hóa nặng",
+      "Hiện đại hóa nông thôn",
+      "Tự do hóa thương mại"
+    ],
+    "c": 0,
+    "e": "Mục tiêu lâu dài là Công nghiệp hóa – Hiện đại hóa đất nước."
+  },
+  {
+    "q": "Câu 43: Việc đổi mới quản lý kinh tế nông nghiệp theo NQ Khoán 10 (1988) coi hộ gia đình nông dân là gì?",
+    "o": [
+      "Đơn vị kinh tế tự chủ",
+      "Đơn vị làm thuê cho hợp tác xã",
+      "Tập thể lao động công ích",
+      "Cơ sở thương nghiệp nhà nước"
+    ],
+    "c": 0,
+    "e": "Khoán 10 công nhận hộ gia đình nông dân là đơn vị kinh tế tự chủ."
+  },
+  {
+    "q": "Câu 44: Điểm khác biệt cơ bản về kinh tế giữa Đại hội VI (1986) và giai đoạn bao cấp trước đó là gì?",
+    "o": [
+      "Chuyển từ kinh tế tập trung quan liêu bao cấp sang kinh tế thị trường nhiều thành phần",
+      "Từ bỏ mục tiêu tiến lên CNXH",
+      "Quốc hữu hóa toàn bộ đất đai",
+      "Cấm xuất nhập khẩu"
+    ],
+    "c": 0,
+    "e": "Xóa bỏ cơ chế bao cấp, phát triển kinh tế thị trường nhiều thành phần theo định hướng XHCN."
+  },
+  {
+    "q": "Câu 45: Từ năm 1986 đến 1996, thành tựu lớn nhất của công cuộc Đổi mới là gì?",
+    "o": [
+      "Đưa đất nước ra khỏi khủng hoảng kinh tế - xã hội, kiềm chế lạm phát, ổn định đời sống nhân dân",
+      "Đưa Việt Nam trở thành nước phát triển có thu nhập cao",
+      "Hoàn thành toàn bộ sự nghiệp CNH-HĐH",
+      "Gia nhập làm thành viên Hội đồng Bảo an LHQ"
+    ],
+    "c": 0,
+    "e": "Đưa đất nước ra khỏi khủng hoảng KT-XH, tạo tiền đề chuyển sang thời kỳ đẩy mạnh CNH-HĐH."
+  },
+  {
+    "q": "Câu 46: 5 phương hướng lớn phát triển kinh tế tại Đại hội VI (1986) tập trung ưu tiên cho nội dung nào?",
+    "o": [
+      "Thực hiện 3 chương trình kinh tế lớn: Lương thực - thực phẩm, Hàng tiêu dùng, Hàng xuất khẩu",
+      "Phát triển công nghiệp vũ trụ",
+      "Tập trung xây dựng đô thị thông minh",
+      "Mở rộng ngân hàng tư nhân"
+    ],
+    "c": 0,
+    "e": "Tập trung sức người sức của thực hiện bằng được 3 chương trình kinh tế lớn."
+  },
+  {
+    "q": "Câu 47: Khẩu hiệu 'Việt Nam muốn là bạn với tất cả các nước...' thể hiện nguyên tắc đối ngoại nào?",
+    "o": [
+      "Độc lập, tự chủ, đa dạng hóa, đa phương hóa quan hệ quốc tế",
+      "Đơn phương phụ thuộc nước lớn",
+      "Đóng cửa đối ngoại",
+      "Liên minh quân sự chống lại các nước tư bản"
+    ],
+    "c": 0,
+    "e": "Thể hiện nguyên tắc đường lối đối ngoại độc lập, tự chủ, đa phương hóa, đa dạng hóa."
+  },
+  {
+    "q": "Câu 48: Trong Hệ thống chính trị ở Việt Nam, cơ quan nào đóng vai trò là lực lượng lãnh đạo?",
+    "o": [
+      "Đảng Cộng sản Việt Nam",
+      "Nhà nước CHXHCN Việt Nam",
+      "Ủy ban Mặt trận Tổ quốc Việt Nam",
+      "Tổng Liên đoàn Lao động Việt Nam"
+    ],
+    "c": 0,
+    "e": "Đảng Cộng sản Việt Nam là đội tiên phong, lực lượng lãnh đạo Hệ thống chính trị và toàn xã hội."
+  },
+  {
+    "q": "Câu 49: Hội nghị Trung ương 3 Khóa VII (6/1992) đề ra chủ trương tự đổi mới, chỉnh đốn Đảng nhằm mục đích gì?",
+    "o": [
+      "Nâng cao năng lực lãnh đạo và sức chiến đấu của Đảng trong tình hình mới",
+      "Thay đổi mục tiêu cách mạng",
+      "Giải tán các chi bộ cơ sở",
+      "Chuyển Đảng thành tổ chức phi chính phủ"
+    ],
+    "c": 0,
+    "e": "Nâng cao năng lực lãnh đạo và sức chiến đấu của Đảng trước yêu cầu đổi mới."
+  },
+  {
+    "q": "Câu 50: Giai đoạn 1986 – 1996 được tổng kết là thời kỳ nào trong lịch sử Đổi mới?",
+    "o": [
+      "Đổi mới toàn diện, đưa đất nước ra khỏi khủng hoảng kinh tế - xã hội",
+      "Đẩy mạnh CNH, HĐH và hội nhập WTO",
+      "Xây dựng Nhà nước pháp quyền hiện đại",
+      "Hoàn thành quá độ lên CNXH"
+    ],
+    "c": 0,
+    "e": "Giai đoạn 1986-1996 là thời kỳ Đổi mới toàn diện, đưa đất nước thoát khỏi khủng hoảng KT-XH."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu VIP. Đúng ${correct} câu. Tiếp tục ôn luyện!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã làm chủ 100% nội dung Chương III.";
+        else if (rating >= 8) ratingStr = "Giỏi! Kết quả đạt mức an toàn cao để đạt điểm 10.";
+        else if (rating >= 6.5) ratingStr = "Khá. Hãy đọc lại các câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ phần giải thích chi tiết.";
+        else ratingStr = "Cần cố gắng. Bấm làm lại để học lại kiến thức.";
+        
+        fbText.innerText = `Hoàn thành phần VIP! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ phần trắc nghiệm VIP này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

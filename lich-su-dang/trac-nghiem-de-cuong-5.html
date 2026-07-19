@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm Lịch sử Đảng - Đề cương Trang 5 - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Layout cột đơn full-width */
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: var(--primary-color, #0284c7);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Luyện tập trắc nghiệm
+      </div>
+      <h1>Luyện tập trắc nghiệm: Đề cương ôn tập - Trang 5 (Ngân hàng câu hỏi)</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống câu hỏi luyện tập thông minh giúp ghi nhớ kiến thức lý thuyết Lịch sử Đảng sâu sắc.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <!-- Layout 1 cột rộng rãi -->
+    <main>
+      <!-- Horizontal Panel kết quả -->
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả của bạn</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- questions-container -->
+      <div id="questions-container">
+        <!-- Quiz cards dynamic render -->
+      </div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_decuong_5';
+    const quizData = [
+  {
+    "q": "Câu 1: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 2: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 3: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 4: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 5: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 6: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 7: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 8: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 9: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 10: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 11: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 12: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 13: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 14: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 15: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 16: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 17: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 18: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 19: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 20: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 21: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 22: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 23: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 24: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 25: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 26: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 27: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 28: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 29: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 30: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 31: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 32: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 33: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 34: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 35: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 36: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 37: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 38: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 39: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 40: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 41: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 42: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 43: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 44: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 45: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  },
+  {
+    "q": "Câu 46: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) được thông qua tại Đại hội mấy?",
+    "o": [
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh xây dựng đất nước thời kỳ quá độ (Cương lĩnh 1991) được thông qua tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991)."
+  },
+  {
+    "q": "Câu 47: Bản Cương lĩnh bổ sung, phát triển năm 2011 được Đảng ta thông qua tại Đại hội lần thứ mấy?",
+    "o": [
+      "Đại hội X (2006)",
+      "Đại hội XI (2011)",
+      "Đại hội XII (2016)",
+      "Đại hội XIII (2021)"
+    ],
+    "c": 1,
+    "e": "Cương lĩnh bổ sung, phát triển năm 2011 được thông qua tại Đại hội lần thứ XI của Đảng họp vào tháng 1 năm 2011."
+  },
+  {
+    "q": "Câu 48: Đại hội đại biểu toàn quốc lần thứ XIII (2021) đề ra mục tiêu phấn đấu đến năm 2030 Việt Nam trở thành nước như thế nào?",
+    "o": [
+      "Nước đang phát triển có thu nhập trung bình thấp",
+      "Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao",
+      "Nước phát triển có thu nhập cao",
+      "Nước có công nghiệp hiện đại theo hướng xã hội chủ nghĩa"
+    ],
+    "c": 1,
+    "e": "Đại hội XIII đề ra lộ trình phấn đấu đến năm 2030 (kỷ niệm 100 năm thành lập Đảng) đưa nước ta trở thành nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao."
+  },
+  {
+    "q": "Câu 49: Quyết định đổi tên nước thành Cộng hòa Xã hội Chủ nghĩa Việt Nam được đưa ra tại kỳ họp Quốc hội năm nào?",
+    "o": [
+      "Năm 1975",
+      "Năm 1976",
+      "Năm 1980",
+      "Năm 1986"
+    ],
+    "c": 1,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI (6-7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 50: Đại hội đại biểu toàn quốc lần thứ mấy của Đảng đã khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước?",
+    "o": [
+      "Đại hội lần thứ V (1982)",
+      "Đại hội lần thứ VI (1986)",
+      "Đại hội lần thứ VII (1991)",
+      "Đại hội lần thứ VIII (1996)"
+    ],
+    "c": 1,
+    "e": "Đại hội lần thứ VI của Đảng (12/1986) do đồng chí Trường Chinh chỉ đạo soạn thảo văn kiện đã khởi xướng công cuộc Đổi mới toàn diện đất nước."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã nắm vững toàn bộ kiến thức ôn thi.";
+        else if (rating >= 8) ratingStr = "Giỏi! Bạn đã đạt mức an toàn cao để đi thi.";
+        else if (rating >= 6.5) ratingStr = "Khá. Bạn cần xem lại vài câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ các lời giải thích để ghi nhớ sâu hơn.";
+        else ratingStr = "Yếu. Hãy bấm làm lại để cải thiện điểm số.";
+        
+        fbText.innerText = `Hoàn thành bài thi! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ bài trắc nghiệm này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

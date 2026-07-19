@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm VIP 4 - Chương III (2006-Nay) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: #f59e0b;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+    .vip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Section VIP (Chương III)
+      </div>
+      <h1>🌟 VIP Phần 4: Hoàn thiện thể chế KTTT & Hội nhập sâu rộng (2006 - Nay) <span class="vip-badge">VIP</span></h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Bộ 200 câu hỏi trắc nghiệm chuyên sâu Chương III: Đảng lãnh đạo cả nước quá độ lên CNXH và tiến hành công cuộc Đổi mới (1975 - Nay).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <main>
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả phần VIP</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: #d97706; font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_vip_4';
+    const quizData = [
+  {
+    "q": "Câu 1: Đại hội Đại biểu toàn quốc lần thứ X của Đảng diễn ra trong thời gian nào?",
+    "o": [
+      "Từ 18/4 đến 25/4/2006",
+      "Từ 19/4 đến 22/4/2001",
+      "Từ 12/1 đến 19/1/2011",
+      "Từ 28/6 đến 1/7/1996"
+    ],
+    "c": 0,
+    "e": "Đại hội X của Đảng họp từ ngày 18 đến ngày 25/4/2006 tại Hà Nội."
+  },
+  {
+    "q": "Câu 2: Bối cảnh diễn ra Đại hội X (4/2006) có ý nghĩa lịch sử gì đối với công cuộc Đổi mới?",
+    "o": [
+      "Đất nước đã trải qua 20 năm đổi mới (1986 - 2006) và đạt được những thành tựu to lớn có ý nghĩa lịch sử",
+      "Vừa kết thúc chiến tranh biên giới",
+      "Vừa hoàn thành 10 năm đổi mới",
+      "Đã trở thành nước phát triển thu nhập cao"
+    ],
+    "c": 0,
+    "e": "Đại hội X diễn ra vào thời điểm đất nước trải qua 20 năm đổi mới."
+  },
+  {
+    "q": "Câu 3: Ai tiếp tục được bầu làm Tổng Bí thư tại Đại hội X (4/2006)?",
+    "o": [
+      "Nông Đức Mạnh",
+      "Nguyễn Phú Trọng",
+      "Lê Khả Phiêu",
+      "Đỗ Mười"
+    ],
+    "c": 0,
+    "e": "Đồng chí Nông Đức Mạnh tiếp tục được bầu làm Tổng Bí thư tại Đại hội X."
+  },
+  {
+    "q": "Câu 4: So với Cương lĩnh 1991, Đại hội X (2006) đã bổ sung 2 đặc trưng mới nào vào mô hình xã hội XHCN ở nước ta?",
+    "o": [
+      "'Dân giàu, nước mạnh, công bằng, dân chủ, văn minh'",
+      "'Dân giàu, nước mạnh, xã hội công bằng, văn minh'",
+      "'Nước công nghiệp hiện đại'",
+      "'Hội nhập quốc tế toàn diện'"
+    ],
+    "c": 0,
+    "e": "Đại hội X bổ sung 2 đặc trưng mới, đúc kết mục tiêu tổng quát: 'Dân giàu, nước mạnh, công bằng, dân chủ, văn minh'."
+  },
+  {
+    "q": "Câu 5: Chủ đề Đại hội X (4/2006) gồm bao nhiêu thành tố chính?",
+    "o": [
+      "3 thành tố (Xây dựng chỉnh đốn Đảng; Phát huy sức mạnh toàn dân tộc; Đẩy mạnh toàn diện công cuộc đổi mới)",
+      "2 thành tố",
+      "4 thành tố",
+      "5 thành tố"
+    ],
+    "c": 0,
+    "e": "Gồm 3 thành tố: 1. Xây dựng, chỉnh đốn Đảng; 2. Phát huy sức mạnh toàn dân tộc; 3. Đẩy mạnh toàn diện công cuộc đổi mới."
+  },
+  {
+    "q": "Câu 6: Nghị quyết số 04-NQ/TW (21/8/2006) của Hội nghị Trung ương 3 Khóa X quy định về công tác nào?",
+    "o": [
+      "Tăng cường sự lãnh đạo của Đảng đối với công tác đấu tranh, phòng chống tham nhũng",
+      "Chiến lược biển Việt Nam",
+      "Đổi mới giáo dục đào tạo",
+      "Cải cách hành chính"
+    ],
+    "c": 0,
+    "e": "HN TW 3 Khóa X ban hành NQ 04 về công tác đấu tranh phòng, chống tham nhũng."
+  },
+  {
+    "q": "Câu 7: Nghị quyết số 09-NQ/TW (9/2/2007) của Hội nghị Trung ương 4 Khóa X thông qua nội dung chiến lược nào?",
+    "o": [
+      "Chiến lược biển Việt Nam đến năm 2020",
+      "Chiến lược Bảo vệ Tổ quốc",
+      "Chiến lược phát triển khoa học công nghệ",
+      "Chiến lược dân số"
+    ],
+    "c": 0,
+    "e": "HN TW 4 Khóa X ban hành NQ 09 về Chiến lược biển Việt Nam đến năm 2020."
+  },
+  {
+    "q": "Câu 8: Nghị quyết số 15-NQ/TW (30/7/2007) của Hội nghị Trung ương 5 Khóa X về nội dung gì?",
+    "o": [
+      "Tiếp tục đổi mới phương thức lãnh đạo của Đảng đối với hoạt động của hệ thống chính trị",
+      "Công tác tư tưởng, lý luận và báo chí",
+      "Cải cách hành chính",
+      "Xây dựng giai cấp công nhân"
+    ],
+    "c": 0,
+    "e": "HN TW 5 Khóa X ban hành NQ 15 về đổi mới phương thức lãnh đạo của Đảng."
+  },
+  {
+    "q": "Câu 9: Nghị quyết số 16-NQ/TW (1/8/2007) của Hội nghị Trung ương 5 Khóa X bàn về công tác nào?",
+    "o": [
+      "Công tác tư tưởng, lý luận và báo chí trước yêu cầu mới",
+      "Cải cách hành chính",
+      "Phòng chống tham nhũng",
+      "Đổi mới doanh nghiệp nhà nước"
+    ],
+    "c": 0,
+    "e": "HN TW 5 Khóa X ban hành NQ 16 về công tác tư tưởng, lý luận và báo chí."
+  },
+  {
+    "q": "Câu 10: Nghị quyết số 17-NQ/TW (1/8/2007) của Hội nghị Trung ương 5 Khóa X đề ra chủ trương gì?",
+    "o": [
+      "Đẩy mạnh cải cách hành chính, nâng cao hiệu lực, hiệu quả quản lý của bộ máy Nhà nước",
+      "Đổi mới phương thức lãnh đạo",
+      "Chiến lược biển",
+      "Phát triển công nghiệp nặng"
+    ],
+    "c": 0,
+    "e": "HN TW 5 Khóa X ban hành NQ 17 về đẩy mạnh cải cách hành chính."
+  },
+  {
+    "q": "Câu 11: Nghị quyết số 20-NQ/TW (28/1/2008) của Hội nghị Trung ương 6 Khóa X quy định về giai cấp nào?",
+    "o": [
+      "Giai cấp công nhân Việt Nam trong thời kỳ đẩy mạnh CNH – HĐH đất nước",
+      "Giai cấp nông dân",
+      "Đội ngũ trí thức",
+      "Đội ngũ doanh nhân"
+    ],
+    "c": 0,
+    "e": "HN TW 6 Khóa X ban hành NQ 20 về tiếp tục xây dựng giai cấp công nhân Việt Nam."
+  },
+  {
+    "q": "Câu 12: Nghị quyết số 21-NQ/TW (30/1/2008) của Hội nghị Trung ương 6 Khóa X bàn về vấn đề kinh tế nào?",
+    "o": [
+      "Tiếp tục hoàn thiện thể chế kinh tế thị trường định hướng XHCN",
+      "Đổi mới doanh nghiệp nhà nước",
+      "Phát triển kinh tế tập thể",
+      "Cải cách tiền lương"
+    ],
+    "c": 0,
+    "e": "HN TW 6 Khóa X ban hành NQ 21 về hoàn thiện thể chế kinh tế thị trường định hướng XHCN."
+  },
+  {
+    "q": "Câu 13: Nghị quyết số 22-NQ/TW (2/2/2008) của Hội nghị Trung ương 6 Khóa X bàn về công tác tổ chức Đảng nào?",
+    "o": [
+      "Nâng cao năng lực lãnh đạo, sức chiến đấu của tổ chức cơ sở Đảng và chất lượng đội ngũ cán bộ, Đảng viên",
+      "Tự phê bình và phê bình",
+      "Đổi mới phương thức lãnh đạo",
+      "Quy hoạch cán bộ cấp chiến lược"
+    ],
+    "c": 0,
+    "e": "HN TW 6 Khóa X ban hành NQ 22 về nâng cao năng lực lãnh đạo TCCS Đảng và chất lượng đảng viên."
+  },
+  {
+    "q": "Câu 14: Nghị quyết số 25-NQ/TW (25/7/2008) của Hội nghị Trung ương 7 Khóa X quy định về công tác đối với đối tượng nào?",
+    "o": [
+      "Công tác thanh niên thời kỳ đẩy mạnh CNH – HĐH",
+      "Đội ngũ trí thức",
+      "Văn học nghệ thuật",
+      "Phụ nữ"
+    ],
+    "c": 0,
+    "e": "HN TW 7 Khóa X ban hành NQ 25 về tăng cường sự lãnh đạo của Đảng đối với công tác thanh niên."
+  },
+  {
+    "q": "Câu 15: Nghị quyết số 27-NQ/TW của Hội nghị Trung ương 7 Khóa X quy định về xây dựng đội ngũ nào?",
+    "o": [
+      "Xây dựng đội ngũ trí thức trong thời kỳ đẩy mạnh CNH – HĐH",
+      "Đội ngũ công nhân",
+      "Đội ngũ doanh nhân",
+      "Đội ngũ cán bộ cơ sở"
+    ],
+    "c": 0,
+    "e": "HN TW 7 Khóa X ban hành NQ 27 về xây dựng đội ngũ trí thức."
+  },
+  {
+    "q": "Câu 16: Nghị quyết số 23-NQ/TW của Bộ Chính trị (Khóa X) đề cập đến việc phát triển lĩnh vực nào?",
+    "o": [
+      "Tiếp tục xây dựng và phát triển Văn học – Nghệ thuật trong thời kỳ mới",
+      "Phát triển thể dục thể thao",
+      "Phát triển công nghệ thông tin",
+      "Chiến lược biển"
+    ],
+    "c": 0,
+    "e": "Bộ Chính trị khóa X ban hành NQ 23 về tiếp tục xây dựng và phát triển Văn học – Nghệ thuật."
+  },
+  {
+    "q": "Câu 17: Vào tháng 11/2006, Việt Nam chính thức trở thành thành viên thứ bao nhiêu của Tổ chức Thương mại Thế giới (WTO)?",
+    "o": [
+      "Thành viên thứ 150",
+      "Thành viên thứ 140",
+      "Thành viên thứ 160",
+      "Thành viên thứ 100"
+    ],
+    "c": 0,
+    "e": "Tháng 11/2006, Việt Nam chính thức kết nạp trở thành thành viên thứ 150 của WTO."
+  },
+  {
+    "q": "Câu 18: Tháng 11/2006, Việt Nam đã đăng cai và tổ chức thành công sự kiện ngoại giao quốc tế lớn nào?",
+    "o": [
+      "Tuần lễ cao cấp APEC (Diễn đàn KT Châu Á – TBD) lần thứ 14",
+      "Hội nghị thượng đỉnh ASEAN lần thứ 20",
+      "Đại hội thể thao SEA Games 22",
+      "Hội nghị ASEM 5"
+    ],
+    "c": 0,
+    "e": "Tháng 11/2006, Việt Nam đăng cai thành công Tuần lễ cao cấp APEC lần thứ 14 tại Hà Nội."
+  },
+  {
+    "q": "Câu 19: Tính đến năm 2010, Việt Nam đã có quan hệ thương mại đầu tư với bao nhiêu nước và vùng lãnh thổ?",
+    "o": [
+      "Hơn 230 nước và vùng lãnh thổ",
+      "Hơn 150 nước",
+      "Hơn 180 nước",
+      "Hơn 300 nước"
+    ],
+    "c": 0,
+    "e": "Đến năm 2010, Việt Nam có quan hệ thương mại đầu tư với hơn 230 nước và vùng lãnh thổ."
+  },
+  {
+    "q": "Câu 20: Hai đối tác thương mại lớn nhất của Việt Nam được ghi nhận đến năm 2010 là những quốc gia nào?",
+    "o": [
+      "Trung Quốc và Mỹ",
+      "Nhật Bản và Hàn Quốc",
+      "Nga và Pháp",
+      "Anh và Đức"
+    ],
+    "c": 0,
+    "e": "Hai đối tác thương mại lớn nhất của Việt Nam là Trung Quốc và Mỹ."
+  },
+  {
+    "q": "Câu 21: Đại hội Đại biểu toàn quốc lần thứ XI của Đảng họp vào khoảng thời gian nào?",
+    "o": [
+      "Từ 12/1 đến 19/1/2011",
+      "Từ 18/4 đến 25/4/2006",
+      "Từ 19/4 đến 22/4/2001",
+      "Từ 20/1 đến 28/1/2016"
+    ],
+    "c": 0,
+    "e": "Đại hội XI của Đảng họp từ ngày 12 đến ngày 19/1/2011 tại Hà Nội."
+  },
+  {
+    "q": "Câu 22: Văn kiện chính trị quan trọng bậc nhất được thông qua tại Đại hội XI (1/2011) là gì?",
+    "o": [
+      "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên CNXH (Cương lĩnh bổ sung, phát triển năm 2011)",
+      "Cương lĩnh 1991",
+      "Chính cương Đảng Lao động VN",
+      "Luận cương chính trị 1930"
+    ],
+    "c": 0,
+    "e": "Đại hội XI thông qua Cương lĩnh bổ sung, phát triển năm 2011 (Cương lĩnh 2011 - bản Cương lĩnh thứ 5)."
+  },
+  {
+    "q": "Câu 23: Ai được bầu làm Tổng Bí thư Ban Chấp hành Trung ương Đảng tại Đại hội XI (1/2011)?",
+    "o": [
+      "Nguyễn Phú Trọng",
+      "Nông Đức Mạnh",
+      "Trương Tấn Sang",
+      "Nguyen Tan Dung"
+    ],
+    "c": 0,
+    "e": "Đại hội XI bầu đồng chí Nguyễn Phú Trọng làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 24: Chuỗi cụm từ mục tiêu tổng quát được Cương lĩnh 2011 (Đại hội XI) xác định là gì?",
+    "o": [
+      "'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh'",
+      "'Dân giàu, nước mạnh, xã hội công bằng, văn minh'",
+      "'Dân giàu, nước mạnh, công bằng, dân chủ, văn minh'",
+      "'Độc lập, tự do, hạnh phúc'"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 2011 xác định mục tiêu: 'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh...'"
+  },
+  {
+    "q": "Câu 25: Cương lĩnh 2011 xác định mục tiêu đến giữa thế kỷ XXI nước ta trở thành nước như thế nào?",
+    "o": [
+      "Xây dựng nước ta trở thành một nước công nghiệp hiện đại, theo định hướng XHCN",
+      "Nước nông nghiệp tiên tiến",
+      "Nước phát triển đứng đầu châu Á",
+      "Nước có thu nhập trung bình thấp"
+    ],
+    "c": 0,
+    "e": "Mục tiêu đến giữa TK XXI là xây dựng nước ta trở thành một nước công nghiệp hiện đại, theo định hướng XHCN."
+  },
+  {
+    "q": "Câu 26: Về vị trí của kinh tế tư nhân, Đại hội XI (2011) đã đưa ra khẳng định quan trọng nào?",
+    "o": [
+      "Kinh tế tư nhân là một trong những động lực của nền kinh tế",
+      "Kinh tế tư nhân là thành phần chủ đạo",
+      "Kinh tế tư nhân là thành phần kinh tế phụ thuộc",
+      "Kinh tế tư nhân cần bị hạn chế mở rộng"
+    ],
+    "c": 0,
+    "e": "Đại hội XI khẳng định kinh tế tư nhân là một trong những động lực của nền kinh tế."
+  },
+  {
+    "q": "Câu 27: Cương lĩnh 2011 là bản Cương lĩnh thứ mấy trong lịch sử các bản Cương lĩnh của Đảng?",
+    "o": [
+      "Bản Cương lĩnh thứ 5 (sau 2/1930, 10/1930, 2/1951, 6/1991)",
+      "Bản Cương lĩnh thứ 4",
+      "Bản Cương lĩnh thứ 6",
+      "Bản Cương lĩnh thứ 3"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 2011 là bản Cương lĩnh thứ 5 của Đảng."
+  },
+  {
+    "q": "Câu 28: Sự kiện Việt Nam gia nhập WTO (11/2006) thể hiện kết quả của đường lối nào?",
+    "o": [
+      "Chủ động và tích cực hội nhập kinh tế quốc tế",
+      "Đóng cửa kinh tế tự lực",
+      "Bảo hộ hàng nội địa tuyệt đối",
+      "Đa phương hóa quân sự"
+    ],
+    "c": 0,
+    "e": "Là mốc đánh dấu bước phát triển hội nhập kinh tế quốc tế sâu rộng của nước ta."
+  },
+  {
+    "q": "Câu 29: Bộ ba Nghị quyết của HN TW 5 Khóa X (2007) ban hành tập trung vào những mảng nào trong hệ thống chính trị?",
+    "o": [
+      "Đổi mới phương thức lãnh đạo (NQ 15), Công tác tư tưởng lý luận báo chí (NQ 16), Cải cách hành chính (NQ 17)",
+      "Nông nghiệp, Nông thôn, Nông dân",
+      "Công nhân, Trí thức, Thanh niên",
+      "Giáo dục, Y tế, Văn hóa"
+    ],
+    "c": 0,
+    "e": "Gồm NQ 15 (phương thức lãnh đạo), NQ 16 (tư tưởng lý luận báo chí), NQ 17 (cải cách hành chính)."
+  },
+  {
+    "q": "Câu 30: Bộ ba Nghị quyết của HN TW 6 Khóa X (2008) tập trung vào các vấn đề chiến lược nào?",
+    "o": [
+      "Giai cấp công nhân (NQ 20), Thể chế KTTT định hướng XHCN (NQ 21), Năng lực TCCS Đảng & đảng viên (NQ 22)",
+      "Thanh niên, Trí thức, Văn nghệ sĩ",
+      "Kinh tế biển, Phòng chống tham nhũng, Quốc phòng",
+      "Nông nghiệp, Doanh nghiệp nhà nước, Kinh tế tư nhân"
+    ],
+    "c": 0,
+    "e": "Gồm NQ 20 (GCCN), NQ 21 (Thể chế KTTT định hướng XHCN), NQ 22 (TCCS Đảng & đảng viên)."
+  },
+  {
+    "q": "Câu 31: Nghị quyết 04-NQ/TW của HN TW 3 Khóa X (2006) có ý nghĩa đặc biệt nào trong công tác xây dựng Đảng?",
+    "o": [
+      "Mở đầu bước đấu tranh quyết liệt, tăng cường sự lãnh đạo của Đảng đối với công tác phòng, chống tham nhũng",
+      "Ban hành Điều lệ Đảng mới",
+      "Quy định về sinh hoạt chi bộ",
+      "Thành lập ban cố vấn"
+    ],
+    "c": 0,
+    "e": "Là Nghị quyết chuyên đề về tăng cường sự lãnh đạo đối với công tác phòng chống tham nhũng."
+  },
+  {
+    "q": "Câu 32: Nghị quyết 09-NQ/TW về Chiến lược biển Việt Nam đến năm 2020 đặt ra mục tiêu gì?",
+    "o": [
+      "Phát triển Việt Nam trở thành quốc gia mạnh về biển, giàu lên từ biển, bảo vệ vững chắc chủ quyền biển đảo",
+      "Cấm khai thác hải sản xa bờ",
+      "Chỉ tập trung phát triển du lịch bờ biển",
+      "Nhượng quyền khai thác biển"
+    ],
+    "c": 0,
+    "e": "Phấn đấu đưa nước ta trở thành quốc gia mạnh về biển, giàu lên từ biển."
+  },
+  {
+    "q": "Câu 33: Tầm quan trọng của Nghị quyết 27-NQ/TW (2008) về đội ngũ trí thức là gì?",
+    "o": [
+      "Xác định trí thức là lực lượng lao động sáng tạo đặc biệt quan trọng trong sự nghiệp CNH – HĐH",
+      "Coi trí thức là lực lượng phụ trợ",
+      "Chỉ ưu tiên trí thức khoa học tự nhiên",
+      "Giảm đào tạo tiến sĩ"
+    ],
+    "c": 0,
+    "e": "Khẳng định đội ngũ trí thức là lực lượng lao động sáng tạo đặc biệt quan trọng."
+  },
+  {
+    "q": "Câu 34: Việc Việt Nam tổ chức thành công APEC 2006 khẳng định vị thế quốc tế nào?",
+    "o": [
+      "Khẳng định Việt Nam là điểm đến an toàn, đối tác tin cậy, có khả năng tổ chức các sự kiện đa phương tầm vóc toàn cầu",
+      "Việt Nam là nước giàu nhất châu Á",
+      "Việt Nam đứng đầu APEC",
+      "Việt Nam mở rộng liên minh quân sự"
+    ],
+    "c": 0,
+    "e": "Nâng cao uy tín và vị thế quốc tế của Việt Nam trên trường quốc tế."
+  },
+  {
+    "q": "Câu 35: Cương lĩnh 2011 xác định phương hướng xây dựng CNXH ở nước ta có mấy phương hướng cơ bản?",
+    "o": [
+      "8 phương hướng cơ bản",
+      "7 phương hướng",
+      "6 phương hướng",
+      "5 phương hướng"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 2011 phát triển và bổ sung thành 8 phương hướng cơ bản xây dựng CNXH."
+  },
+  {
+    "q": "Câu 36: Cương lĩnh 2011 bổ sung mô hình xã hội XHCN ở Việt Nam gồm bao nhiêu đặc trưng?",
+    "o": [
+      "8 đặc trưng (bổ sung từ 6 đặc trưng của Cương lĩnh 1991)",
+      "6 đặc trưng",
+      "7 đặc trưng",
+      "10 đặc trưng"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 2011 phát triển mô hình XHCN ở nước ta thành 8 đặc trưng."
+  },
+  {
+    "q": "Câu 37: Thành tố 'dân chủ' được đưa lên vị trí trang trọng trong mục tiêu 'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh' tại Cương lĩnh 2011 nhằm khẳng định điều gì?",
+    "o": [
+      "Bản chất của chế độ ta là nước ta là nước dân chủ, dân chủ XHCN là mục tiêu và động lực của sự phát triển",
+      "Thay đổi thể chế chính trị",
+      "Chấp nhận đa đảng",
+      "Bỏ qua vai trò lãnh đạo của Đảng"
+    ],
+    "c": 0,
+    "e": "Khẳng định dân chủ XHCN vừa là mục tiêu vừa là động lực của công cuộc đổi mới."
+  },
+  {
+    "q": "Câu 38: Nhiệm kỳ Tổng Bí thư của đồng chí Nguyễn Phú Trọng bắt đầu từ Đại hội nào?",
+    "o": [
+      "Đại hội XI (1/2011)",
+      "Đại hội X (4/2006)",
+      "Đại hội IX (4/2001)",
+      "Đại hội XII (1/2016)"
+    ],
+    "c": 0,
+    "e": "Đồng chí Nguyễn Phú Trọng được bầu làm Tổng Bí thư tại Đại hội XI (tháng 1/2011)."
+  },
+  {
+    "q": "Câu 39: Vai trò của kinh tế tư nhân được Cương lĩnh 2011 và các Nghị quyết Đại hội XI đánh giá như thế nào?",
+    "o": [
+      "Là một trong những động lực quan trọng của nền kinh tế",
+      "Là thành phần bị hạn chế",
+      "Là thành phần không chính thức",
+      "Là thành phần kinh tế nước ngoài"
+    ],
+    "c": 0,
+    "e": "Kinh tế tư nhân được xác định là một trong những động lực quan trọng của nền kinh tế."
+  },
+  {
+    "q": "Câu 40: Nghị quyết 25-NQ/TW (2008) về công tác thanh niên nhấn mạnh nhiệm vụ gì?",
+    "o": [
+      "Thanh niên là rường cột của nước nhà, là lực lượng xung kích trong sự nghiệp CNH - HĐH",
+      "Thanh niên chỉ cần học tập không cần làm kinh tế",
+      "Thanh niên là lực lượng dự bị thụ động",
+      "Giảm bớt các phong trào thanh niên"
+    ],
+    "c": 0,
+    "e": "Xác định thanh niên là rường cột của nước nhà, lực lượng xung kích trong CNH-HĐH."
+  },
+  {
+    "q": "Câu 41: Nghị quyết 16-NQ/TW (2007) về tư tưởng, lý luận và báo chí nhằm đáp ứng yêu cầu nào?",
+    "o": [
+      "Nâng cao tính chiến đấu, tính thuyết phục, định hướng dư luận xã hội trước yêu cầu mới của hội nhập",
+      "Hạn chế sự phát triển của báo chí",
+      "Tư nhân hóa báo chí",
+      "Cấm xuất bản sách lý luận"
+    ],
+    "c": 0,
+    "e": "Đổi mới và nâng cao chất lượng công tác tư tưởng, lý luận và báo chí."
+  },
+  {
+    "q": "Câu 42: Việc tiếp tục hoàn thiện thể chế KTTT định hướng XHCN theo NQ 21-NQ/TW (2008) nhằm tạo môi trường gì?",
+    "o": [
+      "Môi trường đầu tư kinh doanh bình đẳng, minh bạch, cạnh tranh lành mạnh giữa các thành phần kinh tế",
+      "Ưu tiên tuyệt đối cho doanh nghiệp nhà nước độc quyền",
+      "Xóa bỏ quản lý của nhà nước",
+      "Định giá bắt buộc cho mọi hàng hóa"
+    ],
+    "c": 0,
+    "e": "Tạo thể chế đồng bộ cho nền kinh tế thị trường định hướng XHCN vận hành hiệu quả."
+  },
+  {
+    "q": "Câu 43: Yêu cầu nâng cao chất lượng TCCS Đảng và đảng viên tại NQ 22-NQ/TW (2008) hướng tới mục tiêu gì?",
+    "o": [
+      "Nâng cao năng lực lãnh đạo và sức chiến đấu của tổ chức cơ sở Đảng ở rễ cỏ",
+      "Tăng số lượng đảng viên bằng mọi giá",
+      "Giảm bớt sinh hoạt chi bộ",
+      "Chuyển giao quyền quản lý cho tư nhân"
+    ],
+    "c": 0,
+    "e": "Nâng cao năng lực lãnh đạo, sức chiến đấu của TCCS Đảng và chất lượng đội ngũ cán bộ, đảng viên."
+  },
+  {
+    "q": "Câu 44: Điểm nổi bật nhất trong đường lối kinh tế từ Đại hội VI đến Đại hội XI là gì?",
+    "o": [
+      "Nhất quán phát triển nền kinh tế thị trường định hướng XHCN với nhiều thành phần kinh tế",
+      "Quay lại mô hình bao cấp",
+      "Ưu tiên duy nhất công nghiệp nặng",
+      "Tập thể hóa nông nghiệp"
+    ],
+    "c": 0,
+    "e": "Kiên trì và không ngừng hoàn thiện đường lối phát triển KTTT định hướng XHCN."
+  },
+  {
+    "q": "Câu 45: Quyền làm chủ của nhân dân trong Hệ thống chính trị được bảo đảm thông qua cơ chế nào?",
+    "o": [
+      "Đảng lãnh đạo, Nhà nước quản lý, Nhân dân làm chủ",
+      "Nhà nước lãnh đạo, Đảng làm chủ",
+      "Tư nhân quản lý, Nhân dân làm chủ",
+      "Các tổ chức nước ngoài điều hành"
+    ],
+    "c": 0,
+    "e": "Cơ chế tổng quát: Đảng lãnh đạo, Nhà nước quản lý, Nhân dân làm chủ."
+  },
+  {
+    "q": "Câu 46: Ý nghĩa của việc gia nhập WTO năm 2006 đối với nền kinh tế Việt Nam là gì?",
+    "o": [
+      "Mở ra không gian thị trường rộng lớn, thu hút mạnh mẽ nguồn vốn đầu tư nước ngoài (FDI)",
+      "Giúp Việt Nam xóa bỏ hết nợ công",
+      "Khiến kinh tế trong nước ngừng sản xuất",
+      "Biến Việt Nam thành nước phát triển ngay trong năm 2006"
+    ],
+    "c": 0,
+    "e": "Mở rộng thị trường xuất khẩu và nâng cao vị thế kinh tế quốc tế của Việt Nam."
+  },
+  {
+    "q": "Câu 47: Đặc điểm của Cương lĩnh 2011 so với Cương lĩnh 1991 là gì?",
+    "o": [
+      "Là Cương lĩnh bổ sung, phát triển trên cơ sở tổng kết 20 năm thực hiện Cương lĩnh 1991 và 25 năm Đổi mới",
+      "Là bản Cương lĩnh hoàn toàn mới phủ định Cương lĩnh 1991",
+      "Là bản Luận cương ngắn hạn 5 năm",
+      "Là văn kiện của Chính phủ"
+    ],
+    "c": 0,
+    "e": "Cương lĩnh 2011 vận dụng, bổ sung và phát triển Cương lĩnh 1991 phù hợp thực tiễn mới."
+  },
+  {
+    "q": "Câu 48: Tổng số bản Cương lĩnh chính trị chính thức mà Đảng ta đã ban hành tính đến nay là bao nhiêu?",
+    "o": [
+      "5 bản Cương lĩnh (2/1930, 10/1930, 2/1951, 6/1991, 1/2011)",
+      "4 bản Cương lĩnh",
+      "6 bản Cương lĩnh",
+      "3 bản Cương lĩnh"
+    ],
+    "c": 0,
+    "e": "Tính đến nay Đảng có 5 bản Cương lĩnh chính trị lịch sử."
+  },
+  {
+    "q": "Câu 49: Thành tựu to lớn có ý nghĩa lịch sử sau 20-25 năm Đổi mới (1986 - 2011) là gì?",
+    "o": [
+      "Thoát khỏi tình trạng nước nghèo kém phát triển, bước vào nhóm nước đang phát triển có thu nhập trung bình",
+      "Trở thành cường quốc công nghiệp số 1 thế giới",
+      "Hoàn thành toàn bộ công nghiệp hóa hiện đại hóa",
+      "Xóa bỏ hoàn toàn khoảng cách giàu nghèo"
+    ],
+    "c": 0,
+    "e": "Đất nước ra khỏi tình trạng kém phát triển, bước vào nhóm nước đang phát triển có thu nhập trung bình."
+  },
+  {
+    "q": "Câu 50: Khai quát nội dung Chương III (từ năm 1975 đến Nay) thể hiện bài học lịch sử cốt lõi nào của Đảng?",
+    "o": [
+      "Đảng lãnh đạo cả nước quá độ lên CNXH và tiến hành công công cuộc Đổi mới toàn diện, kiên định mục tiêu Độc lập dân tộc gắn liền với CNXH",
+      "Đảng chỉ tập trung nhiệm vụ quân sự",
+      "Đảng từ bỏ mô hình XHCN",
+      "Đảng ưu tiên phát triển kinh tế tư nhân hơn kinh tế nhà nước"
+    ],
+    "c": 0,
+    "e": "Giữ vững sự lãnh đạo của Đảng, kiên định mục tiêu độc lập dân tộc và CNXH trong công cuộc Đổi mới."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu VIP. Đúng ${correct} câu. Tiếp tục ôn luyện!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã làm chủ 100% nội dung Chương III.";
+        else if (rating >= 8) ratingStr = "Giỏi! Kết quả đạt mức an toàn cao để đạt điểm 10.";
+        else if (rating >= 6.5) ratingStr = "Khá. Hãy đọc lại các câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ phần giải thích chi tiết.";
+        else ratingStr = "Cần cố gắng. Bấm làm lại để học lại kiến thức.";
+        
+        fbText.innerText = `Hoàn thành phần VIP! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ phần trắc nghiệm VIP này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

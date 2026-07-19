@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Đại hội đại biểu toàn quốc của Đảng - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    .diagram-container {
+      background-color: #fafafa;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .dark-theme .diagram-container {
+      background-color: #1f2937;
+    }
+    .diagram-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      color: var(--primary-color, #0284c7);
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .leaders-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.92rem;
+    }
+    .leaders-table th {
+      background-color: var(--primary-color, #0284c7);
+      color: white;
+      text-align: left;
+      padding: 0.8rem 1rem;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+    }
+    .leaders-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .leaders-table tr:hover {
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .dark-theme .leaders-table tr:hover {
+      background-color: rgba(2, 132, 199, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Các kỳ Đại hội Đảng
+      </div>
+      <h1>Đại Hội Đại Biểu Toàn Quốc Của Đảng Cộng Sản Việt Nam</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Tìm hiểu khái quát lý thuyết, cơ cấu tổ chức, sơ đồ bầu cử lãnh đạo và bảng niên biểu chi tiết 14 kỳ Đại hội Đảng.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Giới thiệu chung</a></li>
+        </ul>
+        <h3>Chuyên đề tra cứu</h3>
+        <ul>
+          <li><a href="danh-sach-tong-bi-thu.html">👥 Các Tổng Bí thư</a></li>
+          <li><a href="dai-hoi-dang.html" class="active">🚩 Các kỳ Đại hội Đảng</a></li>
+        </ul>
+        <h3>Luyện tập Đề cương</h3>
+        <ul>
+          <li><a href="trac-nghiem-de-co-xuyen.html">📝 Đề cô Xuyến <span id="sidebar-score-badge" class="score-badge">0/32</span></a></li>
+          <li><a href="trac-nghiem-de-cuong.html">📝 Đề cương - Trang 1 <span id="sidebar-score-badge-2" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-2.html">📝 Đề cương - Trang 2 <span id="sidebar-score-badge-3" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-3.html">📝 Đề cương - Trang 3 <span id="sidebar-score-badge-4" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-4.html">📝 Đề cương - Trang 4 <span id="sidebar-score-badge-5" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-5.html">📝 Đề cương - Trang 5 <span id="sidebar-score-badge-6" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-de-cuong-6.html">📝 Đề cương - Trang 6 <span id="sidebar-score-badge-7" class="score-badge">0/50</span></a></li>
+        </ul>
+        <h3>🌟 Section VIP (Chương III)</h3>
+        <ul>
+          <li><a href="trac-nghiem-vip-1.html">👑 VIP 1: Giai đoạn 1975 - 1986 <span id="sidebar-score-badge-vip1" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-2.html">👑 VIP 2: Giai đoạn 1986 - 1996 <span id="sidebar-score-badge-vip2" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-3.html">👑 VIP 3: Giai đoạn 1996 - 2006 <span id="sidebar-score-badge-vip3" class="score-badge">0/50</span></a></li>
+          <li><a href="trac-nghiem-vip-4.html">👑 VIP 4: Giai đoạn 2006 - Nay <span id="sidebar-score-badge-vip4" class="score-badge">0/50</span></a></li>
+        </ul>
+        <h3>Nội dung bài học</h3>
+        <ul>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 1 (Đang cập nhật)</a></li>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 2 (Đang cập nhật)</a></li>
+          <li><a href="#" style="opacity: 0.5; pointer-events: none;">Chương 3 (Đang cập nhật)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main content -->
+      <main>
+        <!-- I. KHÁI QUÁT & NGUYÊN TẮC -->
+        <section>
+          <h2>I. Khái quát chung &amp; Nguyên tắc tổ chức</h2>
+          <p><strong>Đại hội đại biểu toàn quốc</strong> là cơ quan lãnh đạo cao nhất của Đảng Cộng sản Việt Nam. Đại hội đại biểu toàn quốc có nhiệm vụ:</p>
+          <div class="callout" style="border-left-color: var(--primary-color); background-color: var(--highlight-bg);">
+            <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.6;">
+              <li>Tổng kết việc thực hiện Nghị quyết Đại hội nhiệm kỳ trước.</li>
+              <li>Đánh giá tình hình trong nước, quốc tế và đề ra đường lối, chủ trương cho nhiệm kỳ mới.</li>
+              <li>Bầu Ban Chấp hành Trung ương khóa mới.</li>
+              <li>Thông qua các văn kiện của Đảng; sửa đổi Điều lệ Đảng (nếu cần).</li>
+            </ul>
+          </div>
+          
+          <h3 style="margin-top: 1.5rem;">Nguyên tắc tổ chức (Theo Điều lệ Đảng):</h3>
+          <ul>
+            <li>Đại hội họp thường lệ <strong>5 năm một lần</strong>. Có thể triệu tập sớm hoặc muộn hơn khi có lý do đặc biệt.</li>
+            <li>Đại biểu tham dự gồm: <strong>Đại biểu đương nhiên</strong> (Ủy viên Trung ương Đảng khóa đương nhiệm), <strong>Đại biểu bầu từ cấp dưới</strong> và <strong>Đại biểu chỉ định</strong> (nếu có, với tỷ lệ khống chế rất nhỏ).</li>
+          </ul>
+        </section>
+
+        <!-- II. SƠ ĐỒ MỐI QUAN HỆ BẦU CỬ -->
+        <section style="margin-top: 2.5rem;">
+          <h2>II. Cơ cấu tổ chức &amp; Cơ chế bầu cử Lãnh đạo Đảng</h2>
+          <p>Mối quan hệ phân cấp bầu cử giữa Đại hội toàn quốc và các cơ quan lãnh đạo Trung ương được trực quan hóa qua sơ đồ dưới đây:</p>
+          
+          <div class="diagram-container">
+            <div class="diagram-title">Sơ đồ cơ chế bầu cử các cơ quan lãnh đạo Đảng</div>
+            <svg viewBox="0 0 750 300" width="100%" height="auto" style="max-width: 750px;">
+              <defs>
+                <marker id="arrow-black" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+                </marker>
+              </defs>
+
+              <!-- 1. Đại hội toàn quốc -->
+              <rect x="235" y="15" width="280" height="45" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+              <text x="375" y="42" fill="#0369a1" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Đại hội Đại biểu Toàn quốc (5 năm/lần)</text>
+
+              <!-- Arrow 1 -> 2 -->
+              <line x1="375" y1="60" x2="375" y2="95" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-black)" />
+              <text x="382" y="82" fill="#000000" font-family="Inter" font-size="9" font-weight="600">Bầu ra</text>
+
+              <!-- 2. BCH Trung ương -->
+              <rect x="235" y="105" width="280" height="45" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+              <text x="375" y="132" fill="#0f172a" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Ban Chấp hành Trung ương khóa mới</text>
+
+              <!-- Arrow 2 -> 3 -->
+              <line x1="375" y1="150" x2="375" y2="185" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-black)" />
+              <text x="390" y="178" fill="#000000" font-family="Inter" font-size="9" font-weight="600" text-anchor="start">Hội nghị lần thứ nhất bầu</text>
+
+              <!-- 3. Bốn hộp lãnh đạo cấp dưới -->
+              <!-- 3.1 Bộ Chính trị -->
+              <rect x="20" y="200" width="155" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+              <text x="97" y="225" fill="#0f172a" font-family="Outfit" font-size="11" font-weight="700" text-anchor="middle">Bộ Chính trị</text>
+              <text x="97" y="240" fill="#000000" font-family="Inter" font-size="8" text-anchor="middle">Cơ quan lãnh đạo thường trực</text>
+
+              <!-- 3.2 Tổng Bí thư -->
+              <rect x="195" y="200" width="165" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+              <text x="277" y="225" fill="#0369a1" font-family="Outfit" font-size="11" font-weight="700" text-anchor="middle">Tổng Bí thư</text>
+              <text x="277" y="240" fill="#0369a1" font-family="Inter" font-size="8" text-anchor="middle">Đứng đầu BCH Trung ương</text>
+
+              <!-- 3.3 Ban Bí thư -->
+              <rect x="380" y="200" width="165" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+              <text x="462" y="225" fill="#0f172a" font-family="Outfit" font-size="11" font-weight="700" text-anchor="middle">Ban Bí thư</text>
+              <text x="462" y="240" fill="#000000" font-family="Inter" font-size="8" text-anchor="middle">Giải quyết công việc hàng ngày</text>
+
+              <!-- 3.4 UBKT Trung ương -->
+              <rect x="565" y="200" width="165" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+              <text x="647" y="225" fill="#0f172a" font-family="Outfit" font-size="11" font-weight="700" text-anchor="middle">Ủy ban Kiểm tra TW</text>
+              <text x="647" y="240" fill="#000000" font-family="Inter" font-size="8" text-anchor="middle">Giám sát &amp; Kỷ luật Đảng</text>
+
+              <!-- Connection lines from Center to items -->
+              <path d="M 375 165 L 97 165 L 97 200" fill="none" stroke="#000000" stroke-width="1.2" stroke-dasharray="3" />
+              <path d="M 375 165 L 277 165 L 277 200" fill="none" stroke="#000000" stroke-width="1.2" stroke-dasharray="3" />
+              <path d="M 375 165 L 462 165 L 462 200" fill="none" stroke="#000000" stroke-width="1.2" stroke-dasharray="3" />
+              <path d="M 375 165 L 647 165 L 647 200" fill="none" stroke="#000000" stroke-width="1.2" stroke-dasharray="3" />
+            </svg>
+          </div>
+        </section>
+
+        <!-- III. CÁCH ĐÁNH SỐ ĐẠI HỘI -->
+        <section style="margin-top: 2.5rem;">
+          <h2>III. Nguyên tắc đánh số thứ tự Đại hội Đảng</h2>
+          <p>Thứ tự Đại hội được tính bắt đầu từ <strong>Đại hội thành lập đầu tiên (Đại hội I năm 1935)</strong>, không tính từ năm thành lập Đảng (1930). Dưới đây là trục thời gian trực quan minh họa cách đánh số:</p>
+          
+          <div class="diagram-container">
+            <div class="diagram-title">Trục thời gian cách đánh số các kỳ Đại hội</div>
+            <svg viewBox="0 0 800 120" width="100%" height="auto" style="max-width: 800px;">
+              <defs>
+                <marker id="arrow-black-small" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+                </marker>
+              </defs>
+
+              <!-- Trục ngang chính -->
+              <line x1="20" y1="50" x2="770" y2="50" stroke="#000000" stroke-width="2" marker-end="url(#arrow-black-small)" />
+
+              <!-- Các mốc thời gian -->
+              <!-- 1930 -->
+              <circle cx="50" cy="50" r="5" fill="#000000" />
+              <text x="50" y="32" fill="#000000" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1930</text>
+              <text x="50" y="78" fill="#000000" font-family="Inter" font-size="9" text-anchor="middle">Thành lập Đảng</text>
+
+              <!-- Arrow down from 1930 to 1935 indicating no Congress -->
+              <path d="M 50 85 L 50 100 L 150 100 L 150 85" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="3" />
+              <text x="100" y="112" fill="#000000" font-family="Inter" font-size="8.5" font-weight="600" text-anchor="middle">Khoảng thời gian khôi phục</text>
+
+              <!-- 1935 -->
+              <circle cx="150" cy="50" r="5" fill="#0284c7" />
+              <text x="150" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1935</text>
+              <text x="150" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội I</text>
+
+              <!-- 1951 -->
+              <circle cx="270" cy="50" r="5" fill="#0284c7" />
+              <text x="270" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1951</text>
+              <text x="270" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội II</text>
+
+              <!-- 1960 -->
+              <circle cx="390" cy="50" r="5" fill="#0284c7" />
+              <text x="390" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1960</text>
+              <text x="390" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội III</text>
+
+              <!-- 1976 -->
+              <circle cx="510" cy="50" r="5" fill="#0284c7" />
+              <text x="510" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1976</text>
+              <text x="510" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội IV</text>
+
+              <!-- 1986 -->
+              <circle cx="630" cy="50" r="5" fill="#0284c7" />
+              <text x="630" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">1986</text>
+              <text x="630" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội VI</text>
+
+              <!-- 2026 -->
+              <circle cx="730" cy="50" r="5" fill="#0284c7" />
+              <text x="730" y="32" fill="#0284c7" font-family="Outfit" font-size="11.5" font-weight="700" text-anchor="middle">2026</text>
+              <text x="730" y="78" fill="#0284c7" font-family="Inter" font-size="9" font-weight="700" text-anchor="middle">Đại hội XIV</text>
+            </svg>
+          </div>
+        </section>
+
+        <!-- IV. BẢNG NIÊN BIỂU CHI TIẾT 14 KỲ ĐẠI HỘI -->
+        <section style="margin-top: 2.5rem;">
+          <h2>IV. Bảng niên biểu chi tiết 14 kỳ Đại hội Đảng</h2>
+          <p>Dưới đây là bảng tổng hợp chi tiết bối cảnh lịch sử, địa điểm, nội dung nghị quyết và cơ cấu nhân sự chính thức của 14 kỳ Đại hội đại biểu toàn quốc:</p>
+          
+          <div style="overflow-x: auto;">
+            <table class="leaders-table">
+              <thead>
+                <tr>
+                  <th style="width: 100px;">Đại hội</th>
+                  <th style="width: 140px;">Thời gian &amp; Địa điểm</th>
+                  <th style="width: 190px;">Bối cảnh lịch sử</th>
+                  <th>Nội dung chính &amp; Nhân sự</th>
+                  <th style="width: 170px;">Ý nghĩa lịch sử</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Đại hội I -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ I<br>(1935)</td>
+                  <td>27–31/3/1935<br>Ma Cao, Trung Quốc</td>
+                  <td>Sau phong trào Xô viết Nghệ Tĩnh, Đảng bị thực dân Pháp khủng bố nặng nề, hệ thống cơ sở Đảng bị tổn thất lớn.</td>
+                  <td>Tập trung khôi phục hệ thống tổ chức Đảng từ Trung ương đến địa phương; củng cố các cấp ủy; chuẩn bị phong trào cách mạng mới.</td>
+                  <td>Đánh dấu Đảng đã khôi phục tổ chức, chuẩn bị bước vào giai đoạn cách mạng mới.</td>
+                </tr>
+                <!-- Đại hội II -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ II<br>(1951)</td>
+                  <td>2/1951<br>Chiêm Hóa, Tuyên Quang</td>
+                  <td>Cuộc kháng chiến chống thực dân Pháp đang diễn ra gay go, quyết liệt trên phạm vi cả nước.</td>
+                  <td>Đảng chính thức hoạt động công khai lấy tên mới là <strong>Đảng Lao động Việt Nam</strong>. Đề ra đường lối kháng chiến. Bầu đồng chí Hồ Chí Minh làm Chủ tịch Đảng, đồng chí Trường Chinh làm Tổng Bí thư.</td>
+                  <td>"Đại hội kháng chiến", thúc đẩy cuộc kháng chiến chống Pháp đi đến thắng lợi.</td>
+                </tr>
+                <!-- Đại hội III -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ III<br>(1960)</td>
+                  <td>9/1960<br>Hà Nội</td>
+                  <td>Đất nước tạm thời bị chia cắt làm hai miền sau Hiệp định Genève 1954.</td>
+                  <td>Xác định <strong>hai nhiệm vụ chiến lược</strong>: Xây dựng CNXH ở miền Bắc (vai trò quyết định nhất) và giải phóng miền Nam (vai trò quyết định trực tiếp). Bầu đồng chí Lê Duẩn làm Bí thư thứ nhất.</td>
+                  <td>Vạch ra con đường chiến lược đưa cuộc kháng chiến chống Mỹ đến thống nhất.</td>
+                </tr>
+                <!-- Đại hội IV -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ IV<br>(1976)</td>
+                  <td>12/1976<br>Hà Nội</td>
+                  <td>Đất nước hoàn toàn thống nhất, cả nước đi lên Chủ nghĩa Xã hội (sau ngày 30/4/1975).</td>
+                  <td>Quyết định đổi tên Đảng thành <strong>Đảng Cộng sản Việt Nam</strong>. Đề ra đường lối xây dựng CNXH trên phạm vi cả nước. Bầu đồng chí Lê Duẩn làm Tổng Bí thư.</td>
+                  <td>Đại hội thống nhất Tổ quốc, thiết lập tên gọi lịch sử của Đảng Cộng sản Việt Nam.</td>
+                </tr>
+                <!-- Đại hội V -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ V<br>(1982)</td>
+                  <td>3/1982<br>Hà Nội</td>
+                  <td>Đất nước gặp khủng hoảng kinh tế, thiếu lương thực gay gắt, mô hình bao cấp bộc lộ nhiều hạn chế.</td>
+                  <td>Tiếp tục phát triển kinh tế theo cơ chế kế hoạch hóa tập trung, quan liêu, bao cấp. Bầu đồng chí Lê Duẩn làm Tổng Bí thư.</td>
+                  <td>Rút ra những bài học kinh nghiệm ban đầu về quản lý kinh tế.</td>
+                </tr>
+                <!-- Đại hội VI -->
+                <tr style="background-color: rgba(6, 182, 212, 0.03);">
+                  <td style="font-weight: 700; color: var(--secondary-color);">Lần thứ VI<br>(1986)</td>
+                  <td style="font-weight: 700; color: var(--secondary-color);">12/1986<br>Hà Nội</td>
+                  <td>Khủng hoảng kinh tế - xã hội trầm trọng, lạm phát phi mã, đất nước bị bao vây cấm vận.</td>
+                  <td><strong>Khởi xướng công cuộc ĐỔI MỚI toàn diện</strong> (đổi mới tư duy kinh tế, phát triển nền kinh tế nhiều thành phần). Bầu đồng chí Nguyễn Văn Linh làm Tổng Bí thư.</td>
+                  <td style="font-weight: 600;">Bước ngoặt lịch sử mở ra con đường đổi mới và phát triển của Việt Nam.</td>
+                </tr>
+                <!-- Đại hội VII -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ VII<br>(1991)</td>
+                  <td>6/1991<br>Hà Nội</td>
+                  <td>Liên Xô sụp đổ, các nước XHCN Đông Âu thay đổi chế độ, tình hình thế giới đầy biến động.</td>
+                  <td>Thông qua <strong>Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991)</strong>. Bầu đồng chí Đỗ Mười làm Tổng Bí thư.</td>
+                  <td>Định hướng tư tưởng lâu dài cho Đảng và nhà nước xã hội chủ nghĩa.</td>
+                </tr>
+                <!-- Đại hội VIII -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ VIII<br>(1996)</td>
+                  <td>6/1996<br>Hà Nội</td>
+                  <td>Công cuộc Đổi mới đạt được nhiều kết quả tích cực, Việt Nam thoát khỏi khủng hoảng ban đầu.</td>
+                  <td>Chủ trương đẩy mạnh công cuộc <strong>Công nghiệp hóa - Hiện đại hóa</strong> đất nước, tăng cường thu hút dòng vốn nước ngoài. Bầu đồng chí Đỗ Mười làm Tổng Bí thư.</td>
+                  <td>Đánh dấu chuyển tiếp đưa đất nước vào thời kỳ phát triển công nghiệp hóa.</td>
+                </tr>
+                <!-- Đại hội IX -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ IX<br>(2001)</td>
+                  <td>4/2001<br>Hà Nội</td>
+                  <td>Bước sang thế kỷ XXI, xu hướng toàn cầu hóa kinh tế diễn ra mạnh mẽ.</td>
+                  <td>Thông qua Chiến lược phát triển kinh tế 2001–2010. Khẳng định mô hình phát triển là <strong>nền kinh tế thị trường định hướng XHCN</strong>. Bầu đồng chí Nông Đức Mạnh làm Tổng Bí thư.</td>
+                  <td>Hoàn thiện lý luận về nền kinh tế thị trường định hướng XHCN.</td>
+                </tr>
+                <!-- Đại hội X -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ X<br>(2006)</td>
+                  <td>4/2006<br>Hà Nội</td>
+                  <td>Việt Nam chuẩn bị đàm phán thành công và chính thức gia nhập WTO.</td>
+                  <td>Đề ra mục tiêu tăng trưởng nhanh, chủ động hội nhập kinh tế thế giới sâu rộng và toàn diện hơn. Bầu đồng chí Nông Đức Mạnh làm Tổng Bí thư.</td>
+                  <td>Đưa kinh tế Việt Nam hội nhập sâu sắc vào kinh tế thế giới.</td>
+                </tr>
+                <!-- Đại hội XI -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ XI<br>(2011)</td>
+                  <td>1/2011<br>Hà Nội</td>
+                  <td>Đất nước đạt được nhiều thành tựu sau 25 năm Đổi mới, nhưng đối mặt với lạm phát và suy thoái kinh tế toàn cầu.</td>
+                  <td>Thông qua <strong>Cương lĩnh bổ sung, phát triển năm 2011</strong> (kế thừa và phát triển Cương lĩnh 1991). Bầu đồng chí Nguyễn Phú Trọng làm Tổng Bí thư.</td>
+                  <td>Tiếp tục bổ sung hệ thống lý luận định hướng xây dựng CNXH.</td>
+                </tr>
+                <!-- Đại hội XII -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ XII<br>(2016)</td>
+                  <td>1/2016<br>Hà Nội</td>
+                  <td>Kinh tế vĩ mô ổn định nhưng đối mặt nhiều thách thức về nợ công và tham nhũng.</td>
+                  <td>Tập trung xây dựng, chỉnh đốn Đảng; nâng cao hiệu lực bộ máy nhà nước và đẩy mạnh <strong>phòng, chống tham nhũng, lãng phí</strong>. Bầu đồng chí Nguyễn Phú Trọng làm Tổng Bí thư.</td>
+                  <td>Đóng góp to lớn vào việc củng cố lòng tin của nhân dân và chỉnh đốn Đảng.</td>
+                </tr>
+                <!-- Đại hội XIII -->
+                <tr style="background-color: rgba(6, 182, 212, 0.03);">
+                  <td style="font-weight: 700; color: var(--secondary-color);">Lần thứ XIII<br>(2021)</td>
+                  <td style="font-weight: 700; color: var(--secondary-color);">1/2021<br>Hà Nội</td>
+                  <td>Thế giới đối mặt đại dịch COVID-19, kinh tế toàn cầu chịu ảnh hưởng nặng nề.</td>
+                  <td>Đề ra các mốc mục tiêu phát triển:<br>- <strong>Đến 2025:</strong> Nước đang phát triển có công nghiệp theo hướng hiện đại, vượt qua mức thu nhập trung bình thấp.<br>- <strong>Đến 2030:</strong> Nước đang phát triển có công nghiệp hiện đại, thu nhập trung bình cao.<br>- <strong>Đến 2045:</strong> Trở thành nước phát triển, thu nhập cao. Bầu đồng chí Nguyễn Phú Trọng làm Tổng Bí thư.</td>
+                  <td style="font-weight: 600;">Xác định tầm nhìn dài hạn đưa quốc gia phát triển vượt bậc.</td>
+                </tr>
+                <!-- Đại hội XIV -->
+                <tr>
+                  <td style="font-weight: 700;">Lần thứ XIV<br>(2026)</td>
+                  <td>2026<br>Hà Nội</td>
+                  <td>Tổng kết dấu mốc lịch sử 40 năm Đổi mới (1986–2026), bước vào giai đoạn phát triển mới.</td>
+                  <td>Đánh giá việc thực hiện Nghị quyết Đại hội XIII; đề ra phương hướng phát triển kinh tế - xã hội giai đoạn 2026–2030; bầu Ban Chấp hành Trung ương khóa XIV. Bầu đồng chí Tô Lâm làm Tổng Bí thư.</td>
+                  <td>Định hình con đường phát triển kinh tế - xã hội giai đoạn 2026–2030.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- V. BẢNG MỐC BẮT BUỘC PHẢI NHỚ -->
+        <section style="margin-top: 2.5rem;">
+          <h2>V. Những mốc sự kiện Đại hội bắt buộc phải nhớ</h2>
+          <p>Để phục vụ tốt nhất cho việc ôn tập và củng cố kiến thức thi cử, bạn học cần ghi nhớ cốt lõi ý nghĩa lịch sử của các kỳ Đại hội sau:</p>
+          
+          <table class="leaders-table">
+            <thead>
+              <tr>
+                <th style="width: 140px;">Đại hội</th>
+                <th style="width: 120px;">Năm diễn ra</th>
+                <th>Ý nghĩa lịch sử nổi bật</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 700;">Đại hội I</td>
+                <td>1935</td>
+                <td>Khôi phục tổ chức Đảng sau thời kỳ bị thực dân Pháp đàn áp dã man.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội II</td>
+                <td>1951</td>
+                <td>Đảng hoạt động công khai lấy tên là <strong>Đảng Lao động Việt Nam</strong>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội III</td>
+                <td>1960</td>
+                <td>Xác định <strong>hai nhiệm vụ chiến lược</strong> cách mạng đồng thời ở hai miền Nam - Bắc.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội IV</td>
+                <td>1976</td>
+                <td>Đại hội đầu tiên sau thống nhất; đổi tên Đảng thành <strong>Đảng Cộng sản Việt Nam</strong>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--secondary-color);">Đại hội VI</td>
+                <td style="color: var(--secondary-color); font-weight: 700;">1986</td>
+                <td><strong>Khởi xướng công cuộc ĐỔI MỚI toàn diện đất nước</strong>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội VII</td>
+                <td>1991</td>
+                <td>Thông qua <strong>Cương lĩnh xây dựng đất nước (Cương lĩnh 1991)</strong>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội X</td>
+                <td>2006</td>
+                <td>Chủ trương hội nhập sâu rộng, chuẩn bị chính thức gia nhập WTO.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội XI</td>
+                <td>2011</td>
+                <td>Thông qua Cương lĩnh bổ sung, phát triển năm 2011.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội XIII</td>
+                <td>2021</td>
+                <td>Đề ra lộ trình phát triển đất nước các mốc 2025, 2030 và tầm nhìn 2045.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Đại hội XIV</td>
+                <td>2026</td>
+                <td>Tổng kết 40 năm Đổi mới và xác lập chiến lược phát triển 2026–2030.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

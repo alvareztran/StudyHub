@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm VIP 1 - Chương III (1975-1986) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: #f59e0b;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+    .vip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Section VIP (Chương III)
+      </div>
+      <h1>🌟 VIP Phần 1: Xây dựng CNXH & BVTQ (1975 - 1986) <span class="vip-badge">VIP</span></h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Bộ 200 câu hỏi trắc nghiệm chuyên sâu Chương III: Đảng lãnh đạo cả nước quá độ lên CNXH và tiến hành công cuộc Đổi mới (1975 - Nay).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <main>
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả phần VIP</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: #d97706; font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_vip_1';
+    const quizData = [
+  {
+    "q": "Câu 1: Kỳ họp thứ nhất Quốc hội khóa VI nước Việt Nam thống nhất diễn ra trong khoảng thời gian nào và tại đâu?",
+    "o": [
+      "Từ 24/6 đến 3/7/1976 tại Hà Nội",
+      "Từ 15/12 đến 20/12/1976 tại TP.HCM",
+      "Từ 3/2 đến 10/2/1976 tại Đà Nẵng",
+      "Từ 30/4 đến 5/5/1976 tại Hà Nội"
+    ],
+    "c": 0,
+    "e": "Kỳ họp thứ nhất Quốc hội nước Việt Nam thống nhất (Quốc hội khóa VI) họp tại Hà Nội từ ngày 24/6 đến ngày 3/7/1976."
+  },
+  {
+    "q": "Câu 2: Kỳ họp thứ nhất Quốc hội khóa VI (1976) đã quyết định đặt tên nước Việt Nam thống nhất là gì?",
+    "o": [
+      "Cộng hòa Xã hội Chủ nghĩa Việt Nam",
+      "Việt Nam Dân chủ Cộng hòa",
+      "Cộng hòa Miền Nam Việt Nam",
+      "Liên bang Việt Nam Xã hội Chủ nghĩa"
+    ],
+    "c": 0,
+    "e": "Quốc hội khóa VI đã quyết định đặt tên nước là Cộng hòa Xã hội Chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 3: Bài hát nào được Quốc hội khóa VI (1976) chính thức chọn làm Quốc ca của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam?",
+    "o": [
+      "Tiến quân ca",
+      "Giải phóng miền Nam",
+      "Lên đàng",
+      "Cùng nhau đi hồng binh"
+    ],
+    "c": 0,
+    "e": "Quốc hội khóa VI quyết định chọn bài 'Tiến quân ca' làm Quốc ca chính thức."
+  },
+  {
+    "q": "Câu 4: Kỳ họp thứ nhất Quốc hội khóa VI (1976) đã quyết định đổi tên thành phố Sài Gòn - Gia Định thành tên gì?",
+    "o": [
+      "Thành phố Hồ Chí Minh",
+      "Thành phố Nam Bộ",
+      "Thành phố Sài Gòn",
+      "Thành phố Bến Thành"
+    ],
+    "c": 0,
+    "e": "Thành phố Sài Gòn - Gia Định chính thức được đổi tên thành Thành phố Hồ Chí Minh."
+  },
+  {
+    "q": "Câu 5: Vị Chủ tịch nước đầu tiên của nước Việt Nam thống nhất được Quốc hội khóa VI bầu năm 1976 là ai?",
+    "o": [
+      "Tôn Đức Thắng",
+      "Hồ Chí Minh",
+      "Trường Chinh",
+      "Nguyễn Hữu Thọ"
+    ],
+    "c": 0,
+    "e": "Quốc hội bầu đồng chí Tôn Đức Thắng làm Chủ tịch nước Cộng hòa Xã hội Chủ nghĩa Việt Nam."
+  },
+  {
+    "q": "Câu 6: Ai được Quốc hội khóa VI (1976) bầu làm Thủ tướng Chính phủ của nước Việt Nam thống nhất?",
+    "o": [
+      "Phạm Văn Đồng",
+      "Võ Văn Kiệt",
+      "Đỗ Mười",
+      "Phạm Hùng"
+    ],
+    "c": 0,
+    "e": "Quốc hội bầu đồng chí Phạm Văn Đồng làm Thủ tướng Chính phủ."
+  },
+  {
+    "q": "Câu 7: Đại hội Đại biểu toàn quốc lần thứ IV của Đảng họp trong khoảng thời gian nào?",
+    "o": [
+      "Từ 14/12 đến 20/12/1976",
+      "Từ 24/6 đến 3/7/1976",
+      "Từ 27/3 đến 31/3/1982",
+      "Từ 15/12 đến 18/12/1986"
+    ],
+    "c": 0,
+    "e": "Đại hội IV của Đảng diễn ra từ ngày 14 đến ngày 20/12/1976 tại Hà Nội."
+  },
+  {
+    "q": "Câu 8: Ai được bầu làm Tổng Bí thư Ban Chấp hành Trung ương Đảng tại Đại hội IV (12/1976)?",
+    "o": [
+      "Lê Duẩn",
+      "Trường Chinh",
+      "Nguyễn Văn Linh",
+      "Đỗ Mười"
+    ],
+    "c": 0,
+    "e": "Tại Đại hội IV, đồng chí Lê Duẩn được bầu làm Tổng Bí thư của Đảng."
+  },
+  {
+    "q": "Câu 9: Đại hội IV của Đảng (12/1976) đã quyết định đổi tên Đảng Lao động Việt Nam thành tên gì?",
+    "o": [
+      "Đảng Cộng sản Việt Nam",
+      "Đảng Cộng sản Đông Dương",
+      "Đảng Lao động Xã hội Chủ nghĩa",
+      "Hội Việt Nam Cách mạng Thanh niên"
+    ],
+    "c": 0,
+    "e": "Đại hội IV quyết định khôi phục lại tên gọi ban đầu là Đảng Cộng sản Việt Nam."
+  },
+  {
+    "q": "Câu 10: Trọng tâm đường lối phát triển kinh tế được Đại hội IV (12/1976) đề ra là gì?",
+    "o": [
+      "Ưu tiên phát triển công nghiệp nặng một cách hợp lý trên cơ sở phát triển nông nghiệp và công nghiệp nhẹ",
+      "Phát triển kinh tế thị trường nhiều thành phần",
+      "Tập trung tối đa cho nông nghiệp làm mặt trận hàng đầu",
+      "Đẩy mạnh phát triển công nghiệp nhẹ và hàng xuất khẩu"
+    ],
+    "c": 0,
+    "e": "Đại hội IV đề ra đường lối: Ưu tiên phát triển công nghiệp nặng một cách hợp lý trên cơ sở phát triển nông nghiệp và công nghiệp nhẹ."
+  },
+  {
+    "q": "Câu 11: Hội nghị Trung ương nào khóa IV (tháng 8/1979) được coi là 'Bước đột phá đầu tiên' đổi mới kinh tế của Đảng?",
+    "o": [
+      "Hội nghị Trung ương 6 (8/1979)",
+      "Hội nghị Trung ương 8 (6/1985)",
+      "Hội nghị Bộ Chính trị (8/1986)",
+      "Hội nghị Trung ương 4 (12/1976)"
+    ],
+    "c": 0,
+    "e": "Hội nghị Trung ương 6 khóa IV (8/1979) được đánh giá là bước đột phá đầu tiên trong đổi mới kinh tế của Đảng."
+  },
+  {
+    "q": "Câu 12: Chủ trương nổi bật nhất của Hội nghị Trung ương 6 khóa IV (8/1979) là gì?",
+    "o": [
+      "Khắc phục khuyết điểm trong quản lý kinh tế, cải tạo XHCN, cho sản xuất 'bung ra'",
+      "Xóa bỏ bao cấp, lấy giá - lương - tiền làm khâu đột phá",
+      "Xác định nông nghiệp là mặt trận hàng đầu",
+      "Thực hiện Khoán 10 trong nông nghiệp"
+    ],
+    "c": 0,
+    "e": "Hội nghị TW 6 khóa IV đưa ra chủ trương khắc phục sai lầm quản lý kinh tế, cho sản xuất 'bung ra'."
+  },
+  {
+    "q": "Câu 13: Đại hội Đại biểu toàn quốc lần thứ V của Đảng diễn ra vào thời gian nào?",
+    "o": [
+      "Từ 27/3 đến 31/3/1982",
+      "Từ 14/12 đến 20/12/1976",
+      "Từ 15/12 đến 18/12/1986",
+      "Từ 24/6 đến 3/7/1976"
+    ],
+    "c": 0,
+    "e": "Đại hội V họp từ ngày 27 đến ngày 31/3/1982 tại Hà Nội."
+  },
+  {
+    "q": "Câu 14: Đại hội V của Đảng (3/1982) xác định nước ta đang ở giai đoạn nào của thời kỳ quá độ lên CNXH?",
+    "o": [
+      "Chặng đường đầu tiên của thời kỳ quá độ lên CNXH",
+      "Đã hoàn thành thời kỳ quá độ lên CNXH",
+      "Đang ở giai đoạn phát triển cao của CNXH",
+      "Hoàn thành công nghiệp hóa XHCN"
+    ],
+    "c": 0,
+    "e": "Đại hội V xác định nước ta đang ở chặng đường đầu tiên của thời kỳ quá độ lên CNXH."
+  },
+  {
+    "q": "Câu 15: Hội nghị Trung ương nào khóa V (tháng 6/1985) được coi là 'Bước đột phá thứ hai' về đổi mới kinh tế?",
+    "o": [
+      "Hội nghị Trung ương 8 (6/1985)",
+      "Hội nghị Trung ương 6 (8/1979)",
+      "Hội nghị Bộ Chính trị (8/1986)",
+      "Hội nghị Trung ương 5 (3/1982)"
+    ],
+    "c": 0,
+    "e": "Hội nghị Trung ương 8 khóa V (6/1985) được coi là bước đột phá thứ hai về đổi mới kinh tế."
+  },
+  {
+    "q": "Câu 16: Khâu đột phá được Hội nghị Trung ương 8 khóa V (6/1985) lựa chọn để xóa bỏ cơ chế tập trung quan liêu bao cấp là gì?",
+    "o": [
+      "Lấy 'giá – lương – tiền' làm khâu đột phá chuyển sang hạch toán, kinh doanh XHCN",
+      "Lấy 'nông nghiệp' làm khâu đột phá",
+      "Lấy 'khoán sản phẩm' làm khâu đột phá",
+      "Lấy 'xuất nhập khẩu' làm khâu đột phá"
+    ],
+    "c": 0,
+    "e": "Hội nghị TW 8 khóa V lấy 'giá – lương – tiền' làm khâu đột phá để chuyển sang hạch toán, kinh doanh XHCN."
+  },
+  {
+    "q": "Câu 17: Bước đột phá thứ ba về quan điểm kinh tế của Đảng trước Đại hội VI được đưa ra tại hội nghị nào?",
+    "o": [
+      "Hội nghị Bộ Chính trị Khóa V (8/1986)",
+      "Hội nghị Trung ương 8 khóa V (6/1985)",
+      "Hội nghị Trung ương 6 khóa IV (8/1979)",
+      "Hội nghị bất thường Trung ương (7/1986)"
+    ],
+    "c": 0,
+    "e": "Hội nghị Bộ Chính trị khóa V (tháng 8/1986) đưa ra kết luận một số vấn đề quan điểm kinh tế, là bước đột phá thứ ba."
+  },
+  {
+    "q": "Câu 18: Về cơ cấu sản xuất, Hội nghị Bộ Chính trị khóa V (8/1986) xác định ngành nào là mặt trận hàng đầu?",
+    "o": [
+      "Nông nghiệp",
+      "Công nghiệp nặng",
+      "Thương mại dịch vụ",
+      "Giao thông vận tải"
+    ],
+    "c": 0,
+    "e": "Bộ Chính trị kết luận: Lấy nông nghiệp làm mặt trận hàng đầu, ra sức phát triển công nghiệp nhẹ, phát triển công nghiệp nặng có lựa chọn về quy mô và nhịp độ."
+  },
+  {
+    "q": "Câu 19: Hội nghị Bộ Chính trị khóa V (8/1986) khẳng định đặc trưng của thời kỳ quá độ lên CNXH ở nước ta về cơ cấu kinh tế là gì?",
+    "o": [
+      "Nền kinh tế cơ cấu nhiều thành phần",
+      "Nền kinh tế chỉ có hai thành phần quốc doanh và tập thể",
+      "Nền kinh tế tập trung bao cấp",
+      "Nền kinh tế thuần nhất công cộng"
+    ],
+    "c": 0,
+    "e": "Bộ Chính trị khẳng định đặc trưng thời kỳ quá độ ở nước ta là nền kinh tế cơ cấu nhiều thành phần."
+  },
+  {
+    "q": "Câu 20: Ngày 14/7/1986, Ban Chấp hành Trung ương Đảng họp Hội nghị bất thường đã bầu ai làm Tổng Bí thư của Đảng?",
+    "o": [
+      "Trường Chinh",
+      "Lê Duẩn",
+      "Nguyễn Văn Linh",
+      "Đỗ Mười"
+    ],
+    "c": 0,
+    "e": "Sau khi Tổng Bí thư Lê Duẩn từ trần, ngày 14/7/1986 BCH TW họp bất thường bầu đồng chí Trường Chinh làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 21: Ý nghĩa lịch sử của 3 bước đột phá kinh tế (1979, 1985, 1986) là gì?",
+    "o": [
+      "Từng bước nhận thức lại và xóa bỏ cơ chế tập trung quan liêu bao cấp, chuẩn bị trực tiếp cho đường lối Đổi mới tại Đại hội VI",
+      "Hoàn thành công nghiệp hóa hiện đại hóa đất nước",
+      "Duy trì mô hình kinh tế bao cấp đến thế kỷ XXI",
+      "Đóng cửa nền kinh tế chống bao vây cấm vận"
+    ],
+    "c": 0,
+    "e": "Ba bước đột phá kinh tế là quá trình tìm tòi, thể hiện sự phát triển tư duy kinh tế chuẩn bị cho Đại hội VI."
+  },
+  {
+    "q": "Câu 22: Ai là Tổng Bí thư lãnh đạo Đảng từ tháng 9/1960 đến tháng 7/1986?",
+    "o": [
+      "Lê Duẩn",
+      "Trường Chinh",
+      "Hồ Chí Minh",
+      "Nguyễn Văn Linh"
+    ],
+    "c": 0,
+    "e": "Đồng chí Lê Duẩn làm Bí thư thứ nhất/Tổng Bí thư từ tháng 9/1960 đến khi từ trần tháng 7/1986."
+  },
+  {
+    "q": "Câu 23: Tên nước Cộng hòa Xã hội Chủ nghĩa Việt Nam được Quốc hội quyết định chính thức từ năm nào?",
+    "o": [
+      "Năm 1976",
+      "Năm 1975",
+      "Năm 1986",
+      "Năm 1945"
+    ],
+    "c": 0,
+    "e": "Tên nước CHXHCN Việt Nam được quyết định chính thức tại Kỳ họp thứ nhất Quốc hội khóa VI năm 1976."
+  },
+  {
+    "q": "Câu 24: Quốc hội khóa VI (1976) mang ý nghĩa lịch sử gì?",
+    "o": [
+      "Là Quốc hội chung của nước Việt Nam thống nhất",
+      "Là Quốc hội đầu tiên của nước VNDCCH",
+      "Là Quốc hội đổi mới hoàn toàn bộ máy nhà nước",
+      "Là Quốc hội lập hiến 1946"
+    ],
+    "c": 0,
+    "e": "Quốc hội khóa VI đánh dấu hoàn thành thống nhất đất nước về mặt nhà nước."
+  },
+  {
+    "q": "Câu 25: Tinh thần 'cho sản xuất bung ra' tại Hội nghị Trung ương 6 khóa IV (8/1979) tác động tích cực nhất đến mảng nào?",
+    "o": [
+      "Khắc phục sai lầm trong quản lý kinh tế và cải tạo XHCN, khuyến khích sản xuất",
+      "Thực hiện công nghiệp hóa nặng",
+      "Cố định định mức phân phối tem phiếu",
+      "Cấm tiểu thương buôn bán tự do"
+    ],
+    "c": 0,
+    "e": "Khắc phục các hạn chế duy ý chí, cho phép sản xuất ngoài kế hoạch được bung ra."
+  },
+  {
+    "q": "Câu 26: Bước đột phá thứ hai (HN TW 8 khóa V, 6/1985) đã chọn nội dung nào làm khâu đột phá?",
+    "o": [
+      "Giá – lương – tiền",
+      "Khoán 10",
+      "Phát triển công nghiệp nặng",
+      "Đẩy mạnh xuất khẩu"
+    ],
+    "c": 0,
+    "e": "TW 8 khóa V lấy giá – lương – tiền làm khâu đột phá xóa bỏ bao cấp."
+  },
+  {
+    "q": "Câu 27: Hướng điều chỉnh về phát triển công nghiệp nặng tại Hội nghị BCT tháng 8/1986 là gì?",
+    "o": [
+      "Phát triển công nghiệp nặng phải có lựa chọn về quy mô và nhịp độ",
+      "Ưu tiên tuyệt đối công nghiệp nặng trên hết",
+      "Hủy bỏ toàn bộ công nghiệp nặng",
+      "Chỉ phát triển công nghiệp nặng tại miền Bắc"
+    ],
+    "c": 0,
+    "e": "Bộ Chính trị quyết định phát triển công nghiệp nặng có lựa chọn về quy mô và nhịp độ."
+  },
+  {
+    "q": "Câu 28: Thứ tự diễn ra của 3 bước đột phá kinh tế giai đoạn 1979 - 1986 là gì?",
+    "o": [
+      "HN TW 6 khóa IV (8/1979) -> HN TW 8 khóa V (6/1985) -> HN BCT khóa V (8/1986)",
+      "HN TW 8 khóa V -> HN TW 6 khóa IV -> HN BCT khóa V",
+      "HN BCT khóa V -> HN TW 6 khóa IV -> HN TW 8 khóa V",
+      "HN TW 6 khóa IV -> HN BCT khóa V -> HN TW 8 khóa V"
+    ],
+    "c": 0,
+    "e": "Lần lượt: 8/1979 (Đột phá 1), 6/1985 (Đột phá 2), 8/1986 (Đột phá 3)."
+  },
+  {
+    "q": "Câu 29: Ai là Tổng Bí thư Đảng được bầu tại Hội nghị bất thường BCH TW ngày 14/7/1986?",
+    "o": [
+      "Trường Chinh",
+      "Nguyễn Văn Linh",
+      "Lê Duẩn",
+      "Đỗ Mười"
+    ],
+    "c": 0,
+    "e": "Đồng chí Trường Chinh được bầu làm TBT tại Hội nghị bất thường ngày 14/7/1986."
+  },
+  {
+    "q": "Câu 30: Địa điểm họp Kỳ họp thứ nhất Quốc hội khóa VI (1976) là ở đâu?",
+    "o": [
+      "Hà Nội",
+      "TP. Hồ Chí Minh",
+      "Đà Nẵng",
+      "Huế"
+    ],
+    "c": 0,
+    "e": "Kỳ họp thứ nhất Quốc hội khóa VI họp tại Hà Nội."
+  },
+  {
+    "q": "Câu 31: Đồng chí Tôn Đức Thắng được bầu làm Chủ tịch nước Cộng hòa Xã hội Chủ nghĩa Việt Nam tại kỳ họp nào?",
+    "o": [
+      "Kỳ họp thứ nhất Quốc hội khóa VI (1976)",
+      "Đại hội IV của Đảng (1976)",
+      "Kỳ họp thứ nhất Quốc hội khóa I (1946)",
+      "Đại hội V của Đảng (1982)"
+    ],
+    "c": 0,
+    "e": "Quốc hội khóa VI bầu đồng chí Tôn Đức Thắng làm Chủ tịch nước."
+  },
+  {
+    "q": "Câu 32: Bối cảnh kinh tế - xã hội nước ta giai đoạn 1975 - 1985 có đặc điểm gì?",
+    "o": [
+      "Lâm vào khủng hoảng kinh tế - xã hội nghiêm trọng do hậu quả chiến tranh và cơ chế tập trung quan liêu bao cấp",
+      "Kinh tế tăng trưởng bùng nổ",
+      "Đã trở thành nước công nghiệp phát triển",
+      "Hội nhập quốc tế toàn diện"
+    ],
+    "c": 0,
+    "e": "Đất nước gặp khủng hoảng KT-XH nghiêm trọng do cơ chế bao cấp và bị bao vây cấm vận."
+  },
+  {
+    "q": "Câu 33: Đảng Lao động Việt Nam chính thức đổi lại tên thành Đảng Cộng sản Việt Nam tại sự kiện nào?",
+    "o": [
+      "Đại hội Đại biểu toàn quốc lần thứ IV (12/1976)",
+      "Đại hội V (3/1982)",
+      "Kỳ họp Quốc hội khóa VI (6/1976)",
+      "Đại hội VI (12/1986)"
+    ],
+    "c": 0,
+    "e": "Đại hội IV (12/1976) quyết định đổi tên Đảng Lao động Việt Nam thành Đảng Cộng sản Việt Nam."
+  },
+  {
+    "q": "Câu 34: Đường lối công nghiệp hóa tại Đại hội IV (12/1976) ưu tiên phát triển công nghiệp nặng dựa trên cơ sở nào?",
+    "o": [
+      "Phát triển nông nghiệp và công nghiệp nhẹ",
+      "Nhập khẩu công nghệ từ các nước tư bản",
+      "Kinh tế tư nhân",
+      "Phát triển thương mại và dịch vụ"
+    ],
+    "c": 0,
+    "e": "Ưu tiên phát triển công nghiệp nặng một cách hợp lý trên cơ sở phát triển nông nghiệp và công nghiệp nhẹ."
+  },
+  {
+    "q": "Câu 35: Thuật ngữ 'bung ra' trong sản xuất kinh tế gắn liền với hội nghị nào?",
+    "o": [
+      "Hội nghị Trung ương 6 khóa IV (8/1979)",
+      "Hội nghị Trung ương 8 khóa V (6/1985)",
+      "Hội nghị BCT khóa V (8/1986)",
+      "Đại hội V (3/1982)"
+    ],
+    "c": 0,
+    "e": "Hội nghị Trung ương 6 khóa IV (8/1979) đề ra chủ trương cho sản xuất 'bung ra'."
+  },
+  {
+    "q": "Câu 36: Đại hội V của Đảng diễn ra trong nhiệm kỳ giai đoạn nào?",
+    "o": [
+      "1982 – 1986",
+      "1976 – 1981",
+      "1986 – 1991",
+      "1991 – 1996"
+    ],
+    "c": 0,
+    "e": "Đại hội V họp tháng 3/1982 mở đầu nhiệm kỳ 1982 – 1986."
+  },
+  {
+    "q": "Câu 37: Khái niệm 'chặng đường đầu tiên của thời kỳ quá độ lên CNXH' lần đầu tiên được đưa ra tại Đại hội mấy?",
+    "o": [
+      "Đại hội V (3/1982)",
+      "Đại hội IV (12/1976)",
+      "Đại hội VI (12/1986)",
+      "Đại hội VII (6/1991)"
+    ],
+    "c": 0,
+    "e": "Đại hội V (3/1982) đưa ra nhận thức mới về chặng đường đầu tiên của thời kỳ quá độ."
+  },
+  {
+    "q": "Câu 38: Cơ chế quản lý kinh tế nào đã kìm hãm sản xuất ở nước ta giai đoạn 1975-1985?",
+    "o": [
+      "Cơ chế tập trung quan liêu hành chính bao cấp",
+      "Cơ chế kinh tế thị trường định hướng XHCN",
+      "Cơ chế tự do cạnh tranh",
+      "Cơ chế khoán sản phẩm"
+    ],
+    "c": 0,
+    "e": "Cơ chế tập trung quan liêu hành chính bao cấp làm triệt tiêu động lực sản xuất."
+  },
+  {
+    "q": "Câu 39: Tinh thần Hội nghị BCT tháng 8/1986 thừa nhận sự tồn tại của nền kinh tế nào trong thời kỳ quá độ?",
+    "o": [
+      "Nền kinh tế cơ cấu nhiều thành phần",
+      "Nền kinh tế chỉ gồm 1 thành phần duy nhất",
+      "Nền kinh tế tư bản tư nhân thuần túy",
+      "Nền kinh tế tập thể hóa hoàn toàn"
+    ],
+    "c": 0,
+    "e": "Bộ Chính trị tháng 8/1986 khẳng định nền kinh tế nhiều thành phần là đặc trưng thời kỳ quá độ."
+  },
+  {
+    "q": "Câu 40: Nhiệm kỳ Tổng Bí thư thứ hai của đồng chí Trường Chinh kéo dài trong khoảng thời gian nào?",
+    "o": [
+      "Từ 14/7/1986 đến 12/1986",
+      "Từ 1941 đến 1956",
+      "Từ 1976 đến 1982",
+      "Từ 1982 đến 1986"
+    ],
+    "c": 0,
+    "e": "Đồng chí Trường Chinh làm TBT lần hai từ 14/7/1986 đến tháng 12/1986 tại Đại hội VI."
+  },
+  {
+    "q": "Câu 41: Quyết định bầu đồng chí Trường Chinh làm TBT ngày 14/7/1986 do cơ quan nào đưa ra?",
+    "o": [
+      "Hội nghị bất thường Ban Chấp hành Trung ương Đảng",
+      "Quốc hội",
+      "Bộ Chính trị",
+      "Đại hội đại biểu toàn quốc"
+    ],
+    "c": 0,
+    "e": "Hội nghị bất thường Ban Chấp hành Trung ương Đảng quyết định bầu đồng chí Trường Chinh."
+  },
+  {
+    "q": "Câu 42: Chủ trương đặt nông nghiệp làm mặt trận hàng đầu tại Hội nghị BCT tháng 8/1986 tiền đề cho nội dung nào ở Đại hội VI?",
+    "o": [
+      "3 chương trình kinh tế lớn (Lương thực - thực phẩm, Hàng tiêu dùng, Hàng xuất khẩu)",
+      "Ưu tiên phát triển công nghiệp nặng",
+      "Xóa bỏ kinh tế thị trường",
+      "Quốc hữu hóa tư nhân"
+    ],
+    "c": 0,
+    "e": "Đây là tiền đề quan trọng hình thành 3 chương trình kinh tế lớn tại Đại hội VI."
+  },
+  {
+    "q": "Câu 43: Việc hoàn thành thống nhất đất nước về mặt nhà nước (1976) có vai trò gì với sự nghiệp xây dựng đất nước?",
+    "o": [
+      "Tạo tiền đề chính trị cơ bản để phát huy sức mạnh tổng hợp của toàn dân tộc tiến lên CNXH",
+      "Giúp đất nước hết khủng hoảng lập tức",
+      "Đưa Việt Nam thành nước phát triển ngay lập tức",
+      "Bỏ qua toàn bộ thời kỳ quá độ"
+    ],
+    "c": 0,
+    "e": "Tạo điều kiện chính trị cơ bản phát huy sức mạnh tổng hợp của cả nước."
+  },
+  {
+    "q": "Câu 44: Ai giữ chức vụ Thủ tướng Chính phủ nước Việt Nam thống nhất sau kỳ họp thứ nhất Quốc hội khóa VI?",
+    "o": [
+      "Phạm Văn Đồng",
+      "Võ Văn Kiệt",
+      "Đỗ Mười",
+      "Trường Chinh"
+    ],
+    "c": 0,
+    "e": "Đồng chí Phạm Văn Đồng làm Thủ tướng Chính phủ."
+  },
+  {
+    "q": "Câu 45: Đại hội IV (12/1976) xác định đất nước bước vào kỷ nguyên nào sau 1975?",
+    "o": [
+      "Kỷ nguyên độc lập, tự do và cả nước quá độ lên CNXH",
+      "Kỷ nguyên Đổi mới toàn diện",
+      "Kỷ nguyên công nghiệp hóa hiện đại hóa",
+      "Kỷ nguyên hội nhập WTO"
+    ],
+    "c": 0,
+    "e": "Kỷ nguyên độc lập, thống nhất và cả nước tiến lên CNXH."
+  },
+  {
+    "q": "Câu 46: Nguyên nhân chủ quan dẫn đến khủng hoảng kinh tế giai đoạn 1975 - 1985 là gì?",
+    "o": [
+      "Chủ quan, nóng vội, duy ý chí, duy trì quá lâu cơ chế tập trung quan liêu bao cấp",
+      "Do không vay nợ nước ngoài",
+      "Do không phát triển nông nghiệp",
+      "Do phát triển kinh tế tư nhân quá mạnh"
+    ],
+    "c": 0,
+    "e": "Nguyên nhân chủ quan là sai lầm duy ý chí, duy trì cơ chế bao cấp kéo dài."
+  },
+  {
+    "q": "Câu 47: Khâu 'lương' trong cải cách giá-lương-tiền (1985) có mục tiêu gì?",
+    "o": [
+      "Trả lương bằng tiền mặt theo giá trị lao động, từng bước xóa bỏ tem phiếu",
+      "Cung cấp tem phiếu rộng rãi hơn",
+      "Tăng thuế lương",
+      "Trả lương bằng lúa gạo"
+    ],
+    "c": 0,
+    "e": "Thực hiện trả lương bằng tiền thay cho phân phối tem phiếu bao cấp."
+  },
+  {
+    "q": "Câu 48: Nghị quyết nào của Đảng giai đoạn 1975 - 1986 được coi là tiền đề trực tiếp quan trọng nhất chuẩn bị cho Đại hội VI?",
+    "o": [
+      "Kết luận của Hội nghị Bộ Chính trị khóa V (8/1986)",
+      "Nghị quyết Trung ương 6 khóa IV",
+      "Nghị quyết Trung ương 8 khóa V",
+      "Nghị quyết Đại hội IV"
+    ],
+    "c": 0,
+    "e": "Kết luận của BCT tháng 8/1986 là bước đột phá thứ 3."
+  },
+  {
+    "q": "Câu 49: Bộ máy nhà nước cấp cao được bầu tại Kỳ họp 1 Quốc hội khóa VI gồm có:",
+    "o": [
+      "Chủ tịch nước Tôn Đức Thắng, Thủ tướng Phạm Văn Đồng",
+      "Chủ tịch nước Hồ Chí Minh, Thủ tướng Phạm Văn Đồng",
+      "Chủ tịch nước Trường Chinh, Thủ tướng Võ Văn Kiệt",
+      "Chủ tịch nước Nguyễn Hữu Thọ, Thủ tướng Đỗ Mười"
+    ],
+    "c": 0,
+    "e": "Chủ tịch nước Tôn Đức Thắng và Thủ tướng Phạm Văn Đồng."
+  },
+  {
+    "q": "Câu 50: Nội dung tổng quát của Section I trong chương III bao gồm giai đoạn lịch sử nào?",
+    "o": [
+      "Từ năm 1975 đến năm 1986",
+      "Từ năm 1986 đến năm 1996",
+      "Từ năm 1996 đến nay",
+      "Từ năm 1945 đến năm 1954"
+    ],
+    "c": 0,
+    "e": "Section I bao quát giai đoạn 1975 – 1986 (Lãnh đạo cả nước xây dựng CNXH và BVTQ)."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu VIP. Đúng ${correct} câu. Tiếp tục ôn luyện!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã làm chủ 100% nội dung Chương III.";
+        else if (rating >= 8) ratingStr = "Giỏi! Kết quả đạt mức an toàn cao để đạt điểm 10.";
+        else if (rating >= 6.5) ratingStr = "Khá. Hãy đọc lại các câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ phần giải thích chi tiết.";
+        else ratingStr = "Cần cố gắng. Bấm làm lại để học lại kiến thức.";
+        
+        fbText.innerText = `Hoàn thành phần VIP! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ phần trắc nghiệm VIP này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

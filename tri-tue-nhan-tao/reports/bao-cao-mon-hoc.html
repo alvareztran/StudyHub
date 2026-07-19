@@ -19,6 +19,44 @@
     });"></script>
   <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
   <script src="../../js/theme.js"></script>
+  <style>
+    .diagram-container {
+      background-color: #fafafa;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .dark-theme .diagram-container {
+      background-color: #1f2937;
+    }
+    .diagram-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      color: var(--primary-color, #06b6d4);
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .svg-text-primary {
+      fill: #1f2937;
+    }
+    .dark-theme .svg-text-primary {
+      fill: #f3f4f6;
+    }
+    .svg-text-muted {
+      fill: #4b5563;
+    }
+    .dark-theme .svg-text-muted {
+      fill: #9ca3af;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -46,6 +84,9 @@
         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
+      <a href="cong-thuc-so-do-ppo-dpo.html" class="btn-pdf" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; background-color: var(--primary-color); border-color: var(--primary-color); color: white;">
+        📐 Sơ đồ &amp; Công thức
+      </a>
       <button onclick="window.print()" class="btn-pdf">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
         Xuất file PDF
@@ -59,14 +100,52 @@
         <p>Các mô hình ngôn ngữ lớn (LLM) có được các tri thức và cấu trúc ngôn ngữ sâu rộng thông qua quá trình tiền huấn luyện (pre-training) trên các tập dữ liệu văn bản khổng lồ (Brown và cộng sự, 2020; OpenAI, 2023; Touvron và cộng sự, 2023; Chowdhery và cộng sự, 2023; Anil và cộng sự, 2023). Để khai thác các khả năng mạnh mẽ của LLM vào các ứng dụng thực tế, ngày càng có nhiều nghiên cứu nhấn mạnh tầm quan trọng của việc căn chỉnh (aligning) các mô hình này theo tùy chọn của con người (Agrawal và cộng sự, 2023; Kadavath và cộng sự, 2022; Shi và cộng sự, 2023; Liang và cộng sự, 2021; Sheng và cộng sự, 2019).</p>
 
         <p>Nhiều phương pháp khác nhau đã được phát triển để tinh chỉnh (fine-tuning) các LLM, trong đó các hướng tiếp cận phổ biến bao gồm Tinh chỉnh có giám sát (SFT) (Peng và cộng sự, 2023) và Học tăng cường từ phản hồi của con người (RLHF) (Ziegler và cộng sự, 2019; Stiennon và cộng sự, 2020; Ouyang và cộng sự, 2022). Thông thường, quá trình tinh chỉnh gồm hai giai đoạn:</p>
-        <div class="flowchart">
-          <div class="flow-node">Mô hình thô (Raw LLM)</div>
-          <span class="flow-arrow">&rarr;</span>
-          <div class="flow-node">Giai đoạn 1: SFT<br><small>(Thiết lập mô hình cơ sở - Base model)</small></div>
-          <span class="flow-arrow">&rarr;</span>
-          <div class="flow-node">Giai đoạn 2: RLHF<br><small>(Nâng cao hiệu suất theo phản hồi)</small></div>
-          <span class="flow-arrow">&rarr;</span>
-          <div class="flow-node">LLM đã căn chỉnh (Aligned LLM)</div>
+        <div class="diagram-container">
+          <div class="diagram-title">Quy trình 3 Bước Căn Chỉnh LLM (Alignment Pipeline)</div>
+          <svg viewBox="0 0 850 280" width="100%" height="auto" style="max-width: 850px;">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+              </marker>
+              <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7" />
+              </marker>
+            </defs>
+
+            <!-- Phase 1: Pre-training -->
+            <rect x="20" y="50" width="180" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <text x="110" y="80" fill="#0f172a" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">1. Pre-training</text>
+            <text x="110" y="100" fill="#000000" font-family="Inter" font-size="10" text-anchor="middle">Học tự giám sát trên kho dữ liệu</text>
+            <foreignObject x="20" y="138" width="180" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Base Model ($\pi_0$)</div></foreignObject>
+
+            <!-- Connection 1 -> 2 -->
+            <line x1="200" y1="85" x2="250" y2="85" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow)" />
+
+            <!-- Phase 2: SFT -->
+            <rect x="260" y="50" width="180" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <text x="350" y="80" fill="#0f172a" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">2. Supervised Fine-Tuning</text>
+            <text x="350" y="100" fill="#000000" font-family="Inter" font-size="10" text-anchor="middle">Tinh chỉnh theo mẫu hội thoại</text>
+            <foreignObject x="260" y="138" width="180" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">SFT Model ($\pi_{\text{SFT}}$)</div></foreignObject>
+
+            <!-- Branching connection 2 -> 3 (PPO & DPO) -->
+            <path d="M 440 85 L 485 85 L 485 45 L 530 45" fill="none" stroke="#0284c7" stroke-width="1.5" marker-end="url(#arrow-blue)" />
+            <text x="480" y="32" fill="#0284c7" font-family="Inter" font-size="10" font-weight="600" text-anchor="end">PPO</text>
+
+            <path d="M 440 85 L 485 85 L 485 175 L 530 175" fill="none" stroke="#0284c7" stroke-width="1.5" marker-end="url(#arrow-blue)" />
+            <text x="480" y="195" fill="#0284c7" font-family="Inter" font-size="10" font-weight="600" text-anchor="end">DPO</text>
+
+            <!-- Phase 3a: PPO (RLHF) -->
+            <rect x="540" y="10" width="220" height="70" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+            <text x="650" y="40" fill="#0369a1" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">3a. PPO (Reward-based)</text>
+            <foreignObject x="540" y="52" width="220" height="20"><div style="font-family: Inter, sans-serif; font-size: 9px; text-align: center; color: #0369a1;">Học tăng cường trực tuyến với $r_\phi$</div></foreignObject>
+            <foreignObject x="540" y="93" width="220" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Aligned Model ($\pi_{\text{PPO}}$)</div></foreignObject>
+
+            <!-- Phase 3b: DPO (Direct Optimization) -->
+            <rect x="540" y="140" width="220" height="70" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+            <text x="650" y="170" fill="#0369a1" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">3b. DPO (Reward-free)</text>
+            <foreignObject x="540" y="182" width="220" height="20"><div style="font-family: Inter, sans-serif; font-size: 9px; text-align: center; color: #0369a1;">Tối ưu trực tiếp qua $\mathcal{L}_{\text{DPO}}$</div></foreignObject>
+            <foreignObject x="540" y="223" width="220" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Aligned Model ($\pi_{\text{DPO}}$)</div></foreignObject>
+          </svg>
         </div>
         <p>SFT cốt ở việc bắt chước dữ liệu mẫu chất lượng cao, trong khi RLHF cải tiến các LLM thông qua các phản hồi về mức độ ưu tiên (preference feedback).</p>
 
@@ -183,7 +262,7 @@
         </div>
 
         <!-- Points 3 & 4 -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
             <h4 style="margin-top: 0; color: var(--secondary-color);">📚 3. Pretraining (Tiền huấn luyện) là gì?</h4>
             <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Là giai đoạn nạp hàng nghìn tỷ từ ngữ (tokens) từ Internet để AI học dự đoán từ tiếp theo (<strong>Next Token Prediction</strong>).</p>
@@ -228,7 +307,7 @@
         </div>
 
         <!-- Points 5 & 6 -->
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
             <h4 style="margin-top: 0; color: var(--secondary-color);">👥 5. RLHF là gì? (Reinforcement Learning from Human Feedback)</h4>
             <p style="font-size: 0.9rem;">Sau khi qua SFT, mô hình vẫn có thể trả lời dài dòng, chứa thông tin sai lệch hoặc không thân thiện. RLHF căn chỉnh mô hình dựa trên sự so sánh ưu tiên của con người.</p>
@@ -269,7 +348,7 @@
         <!-- Point 7 -->
         <div class="callout" style="background-color: var(--bg-card); border-left: 4px solid var(--primary-color); margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
           <h3 style="margin-top: 0; color: var(--primary-color);">📋 7. Policy (Chính sách) trong LLM là gì?</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
             <div>
               <strong>Trong học tăng cường (RL) truyền thống:</strong>
               <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-light);">Policy $\pi(a \mid s)$ biểu thị xác suất tác nhân thực hiện hành động $a$ khi đang ở trạng thái $s$.</p>
@@ -294,7 +373,7 @@
           <p style="text-align: center; font-size: 1.25rem; margin: 1.5rem 0; font-weight: bold; color: var(--accent-cyan);">
             $\mathcal{J}_r(\pi_\theta) = \mathbb{E}_{(x,y) \sim \pi_\theta} \left[ r(x,y) - \beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} \right]$
           </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; text-align: center;">
+          <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; font-size: 0.85rem;">
             <div style="background: rgba(255, 255, 255, 0.02); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
               <span style="color: var(--accent-cyan); font-weight: bold; font-size: 1.1rem;">$r(x,y)$</span><br>
               <strong>Reward (Phần thưởng)</strong><br>
@@ -314,7 +393,7 @@
         </div>
 
         <!-- Points 9 & 10 -->
-        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
             <h4 style="margin-top: 0; color: var(--secondary-color);">📊 9. KL Divergence (Khoảng cách Kullback-Leibler)</h4>
             <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Công thức đo lường mức độ khác biệt giữa hai phân phối xác suất $P$ và $Q$:</p>
@@ -350,7 +429,7 @@
         </div>
 
         <!-- Points 11 & 12 -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
             <h4 style="margin-top: 0; color: var(--secondary-color);">📈 11. Advantage (Hàm lợi thế) trong PPO</h4>
             <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Hàm lợi thế đo lường mức độ tốt hơn của một hành động cụ thể so với trung bình các hành động khác tại trạng thái đó:</p>
@@ -395,7 +474,7 @@
         </div>
 
         <!-- Points 14 & 15 -->
-        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
             <h4 style="margin-top: 0; color: var(--secondary-color);">📉 14. Hàm mất mát (Loss function) của DPO</h4>
             <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Sử dụng biểu thức phần thưởng ngầm định ở trên để đưa vào hàm mục tiêu so sánh cặp:</p>
@@ -577,6 +656,96 @@
         <p>\[\mathcal{L}_{\text{DPO}}(\pi_\theta) = -\mathbb{E}_{(x,y_w,y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w | x)}{\pi_{\text{ref}}(y_w | x)} - \beta \log \frac{\pi_\theta(y_l | x)}{\pi_{\text{ref}}(y_l | x)} \right) \right]. \quad (7)\]</p>
         <p>Chúng tôi lưu ý rằng mặc dù nghiên cứu gốc thực hiện DPO đơn vòng (single-round) trên tập dữ liệu ưu tiên tĩnh, một số nghiên cứu gần đây cũng đã điều chỉnh DPO thành một biến thể lặp (iterative variant) kết hợp với một mô hình phần thưởng đã được học. Chúng tôi cũng tiến hành khảo sát hiệu suất của phương pháp DPO lặp này.</p>
 
+        <h4 style="margin-top: 1.5rem; font-family: var(--font-heading); color: var(--primary-color);">Kiến trúc luồng dữ liệu & tối ưu hóa trong PPO và DPO</h4>
+        <p>Để so sánh trực quan và khoa học cơ chế hoạt động của hai phương pháp, dưới đây là chi tiết luồng xử lý và cập nhật trọng số của từng thuật toán được biểu diễn tuần tự theo chiều ngang:</p>
+
+        <!-- PPO Flowchart (Full Width) -->
+        <div class="diagram-container">
+          <div class="diagram-title">Luồng Hoạt Động PPO (Học Tăng Cường Trực Tuyến)</div>
+          <svg viewBox="0 0 800 200" width="100%" height="auto" style="max-width: 800px;">
+            <defs>
+              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+              </marker>
+            </defs>
+            
+            <!-- Prompt Input -->
+            <rect x="15" y="55" width="140" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <text x="85" y="80" fill="#0f172a" font-family="Inter" font-size="11" text-anchor="middle" font-weight="600">Prompt (x)</text>
+            <text x="85" y="93" fill="#000000" font-family="Inter" font-size="8.5" text-anchor="middle">Câu lệnh đầu vào</text>
+
+            <!-- Arrow to Policy -->
+            <line x1="155" y1="80" x2="195" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+
+            <!-- Policy Model (Actor) -->
+            <rect x="205" y="55" width="160" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+            <foreignObject x="205" y="58" width="160" height="44"><div style="font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; text-align: center; color: #0369a1;">Chính Sách $\pi_\theta$ (Actor)</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #0369a1; margin-top: 1px;">Sinh câu trả lời $y$</div></foreignObject>
+
+            <!-- Arrow to Reward -->
+            <line x1="365" y1="80" x2="405" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+
+            <!-- Reward Model -->
+            <rect x="415" y="55" width="160" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <foreignObject x="415" y="58" width="160" height="44"><div style="font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; text-align: center; color: #0f172a;">Reward Model $r_\phi$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #475569; margin-top: 1px;">Đánh giá điểm số</div></foreignObject>
+
+            <!-- Arrow to Objective -->
+            <line x1="575" y1="80" x2="615" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+
+            <!-- Objective & KL Constraints -->
+            <rect x="625" y="45" width="160" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <text x="705" y="66" fill="#0f172a" font-family="Outfit" font-size="11" font-weight="600" text-anchor="middle">Hàm Mục Tiêu PPO</text>
+            <foreignObject x="625" y="72" width="160" height="40"><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #475569; line-height: 1.45;">Tối đa $r_\phi(x,y)$<br>Phạt $D_{\text{KL}}(\pi_\theta \parallel \pi_{\text{ref}})$</div></foreignObject>
+
+            <!-- Feedback Arrow (Y-level changed to 150 to keep it inside the viewBox and prevent cutting text) -->
+            <path d="M 705 115 L 705 150 L 285 150 L 285 105" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrow-gray)" />
+            <text x="495" y="142" fill="#0284c7" font-family="Inter" font-size="9" font-weight="600" text-anchor="middle">Cập nhật chính sách (Policy Update Loop)</text>
+          </svg>
+        </div>
+        
+        
+        <!-- DPO Flowchart (Full Width) -->
+        <div class="diagram-container">
+          <div class="diagram-title">Luồng Hoạt Động DPO (Tối Ưu Hóa Ưu Tiên Trực Tiếp)</div>
+          <svg viewBox="0 0 800 240" width="100%" height="auto" style="max-width: 800px;">
+            <defs>
+              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+              </marker>
+            </defs>
+            
+            <!-- Dataset input (Y shifted from 65 to 105) -->
+            <rect x="15" y="105" width="170" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <text x="100" y="128" fill="#0f172a" font-family="Inter" font-size="11" text-anchor="middle" font-weight="600">Tập Dữ Liệu Tĩnh D</text>
+            <text x="100" y="141" fill="#000000" font-family="Inter" font-size="8.5" text-anchor="middle">Cặp ưu tiên: (x, yw, yl)</text>
+
+            <!-- Arrow from Dataset to Policies (Y shifted to 130) -->
+            <path d="M 185 130 L 235 130" fill="none" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+
+            <!-- Policy & Reference Policy logprob computations (Y shifted down by 40px) -->
+            <g>
+              <!-- Active Policy (Y shifted from 30 to 70) -->
+              <rect x="245" y="70" width="150" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
+              <foreignObject x="245" y="73" width="150" height="45"><div style="font-family: Outfit, sans-serif; font-size: 10.5px; font-weight: 700; text-align: center; color: #0369a1;">Policy Đang Học $\pi_\theta$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #0369a1; margin-top: 1px;">Tính $\log \pi_\theta(y \mid x)$</div></foreignObject>
+
+              <!-- Reference Policy (Y shifted from 100 to 140) -->
+              <rect x="245" y="140" width="150" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+              <foreignObject x="245" y="143" width="150" height="45"><div style="font-family: Outfit, sans-serif; font-size: 10.5px; font-weight: 700; text-align: center; color: #334155;">Ref Policy $\pi_{\text{ref}}$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #64748b; margin-top: 1px;">Tính $\log \pi_{\text{ref}}(y \mid x)$</div></foreignObject>
+            </g>
+
+            <!-- Paths from models to DPO Loss (Y-centers shifted: 55->95, 125->165, output->130) -->
+            <path d="M 395 95 L 445 95 L 445 130 L 485 130" fill="none" stroke="#000000" stroke-width="1.5" />
+            <path d="M 395 165 L 445 165 L 445 130 L 485 130" fill="none" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+
+            <!-- DPO Loss Core Calculation (Y shifted from 60 to 100) -->
+            <rect x="495" y="100" width="280" height="60" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
+            <foreignObject x="495" y="104" width="280" height="52"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 700; text-align: center; color: #0f172a;">Tính Toán $\mathcal{L}_{\text{DPO}}$ trực tiếp</div><div style="font-family: Inter, sans-serif; font-size: 8px; text-align: center; color: #475569; margin-top: 2px;">$\log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right)$</div></foreignObject>
+
+            <!-- Feedback Loop Arrow to Active Policy (Y shifted: start at top of DPO Loss Y=100, go up to Y=20, go left to X=320, go down to Active Policy Y=70) -->
+            <path d="M 635 100 L 635 20 L 320 20 L 320 70" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrow-gray)" />
+            <text x="477" y="14" fill="#0284c7" font-family="Inter" font-size="9" font-weight="600" text-anchor="middle">Tối ưu trực tiếp qua Gradient Descent (Feedback Loop)</text>
+          </svg>
+        </div>
+        
         <!-- Terminology glossary callout for Section 3 -->
         <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
           <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 3)</div>
@@ -637,6 +806,42 @@
           <div class="callout-title">Định lý 4.1 (Quan hệ tập hợp giữa PPO và DPO)</div>
           <p>Cho trước một hàm phần thưởng thực tế khách quan (ground-truth reward) $r$ và một tập dữ liệu ưu tiên $\mathcal{D}$. Gọi $\Pi_{\text{PPO}}$ là lớp các chính sách được tạo ra bằng cách huấn luyện mô hình phần thưởng $r_\phi$ trên $\mathcal{D}$ và chạy PPO để tối ưu hóa $J_{r_\phi}(\theta)$. Gọi $\Pi_{\text{DPO}}$ là lớp các chính sách được tạo ra bằng cách tối thiểu hóa hàm mục tiêu DPO. Ta có:</p>
           <p style="text-align: center; font-weight: bold; font-size: 1.1rem;">$\Pi_{\text{PPO}}$ là một tập con thực sự (proper subset) của $\Pi_{\text{DPO}}$ ($\Pi_{\text{PPO}} \subsetneq  \Pi_{\text{DPO}}$)</p>
+        </div>
+
+        <div class="diagram-container">
+          <div class="diagram-title">Trực quan hóa Định lý 4.1: Quan hệ tập hợp nghiệm PPO và DPO</div>
+          <svg viewBox="0 0 450 280" width="100%" height="auto" style="max-width: 450px;">
+            <defs>
+              <radialGradient id="venn-dpo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.08" />
+                <stop offset="100%" stop-color="#0284c7" stop-opacity="0.01" />
+              </radialGradient>
+              <radialGradient id="venn-ppo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.15" />
+                <stop offset="100%" stop-color="#0284c7" stop-opacity="0.03" />
+              </radialGradient>
+            </defs>
+            
+            <!-- Background representing All Policies -->
+            <rect x="10" y="10" width="430" height="260" rx="8" fill="rgba(17,24,39,0.01)" stroke="var(--border-color)" stroke-width="1.5" />
+            <text x="25" y="32" class="svg-text-primary" font-family="Inter" font-size="10" font-weight="600">Không Gian Mọi Chính Sách (All Policies)</text>
+            
+            <!-- DPO circle -->
+            <circle cx="225" cy="145" r="100" fill="url(#venn-dpo)" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" />
+            <foreignObject x="100" y="48" width="250" height="20"><div style="font-family: Outfit, sans-serif; font-size: 12px; font-weight: 700; text-align: center; color: #0284c7;">Lớp Nghiệm DPO ($\Pi_{\text{DPO}}$)</div></foreignObject>
+            
+            <!-- PPO circle (inside DPO circle) -->
+            <circle cx="200" cy="160" r="65" fill="url(#venn-ppo)" stroke="#0284c7" stroke-width="2" />
+            <foreignObject x="120" y="140" width="160" height="35"><div style="font-family: Outfit, sans-serif; font-size: 12px; font-weight: 700; text-align: center; color: #0284c7; line-height: 1.35;">Lớp Nghiệm PPO<br>($\Pi_{\text{PPO}}$)</div></foreignObject>
+            
+            <!-- OOD Outlier point in DPO but not PPO -->
+            <circle cx="295" cy="135" r="5" fill="#ef4444" />
+            <foreignObject x="305" y="122" width="140" height="35"><div style="font-family: Inter, sans-serif; font-size: 9.5px; font-weight: 700; color: #ef4444; line-height: 1.3;">Nghiệm Dị Biệt OOD<br><span style="font-size: 8px; font-weight: normal; color: #64748b;">(Ví dụ: $y_3$ trong Bảng 1)</span></div></foreignObject>
+
+            <!-- Arrow pointing to subset relationship -->
+            <path d="M 315 205 L 290 185" fill="none" stroke="#000000" stroke-width="1" />
+            <foreignObject x="270" y="208" width="100" height="20"><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #64748b;">$\Pi_{\text{PPO}} \subset \Pi_{\text{DPO}}$</div></foreignObject>
+          </svg>
         </div>
 
         <div style="background-color: #fafafa; border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; margin: 1.5rem 0;">

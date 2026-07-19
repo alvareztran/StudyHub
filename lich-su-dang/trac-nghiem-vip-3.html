@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm VIP 3 - Chương III (1996-2006) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: #f59e0b;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+    .vip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Section VIP (Chương III)
+      </div>
+      <h1>🌟 VIP Phần 3: Đẩy mạnh CNH, HĐH & Hội nhập (1996 - 2006) <span class="vip-badge">VIP</span></h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Bộ 200 câu hỏi trắc nghiệm chuyên sâu Chương III: Đảng lãnh đạo cả nước quá độ lên CNXH và tiến hành công cuộc Đổi mới (1975 - Nay).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <main>
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả phần VIP</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: #d97706; font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="questions-container"></div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_vip_3';
+    const quizData = [
+  {
+    "q": "Câu 1: Đại hội Đại biểu toàn quốc lần thứ VIII của Đảng diễn ra trong thời gian nào?",
+    "o": [
+      "Từ 28/6 đến 1/7/1996",
+      "Từ 24/6 đến 27/6/1991",
+      "Từ 19/4 đến 22/4/2001",
+      "Từ 18/4 đến 25/4/2006"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII của Đảng họp từ ngày 28/6 đến ngày 1/7/1996 tại Hà Nội."
+  },
+  {
+    "q": "Câu 2: Bối cảnh quốc tế khi diễn ra Đại hội VIII (6/1996) có đặc điểm gì?",
+    "o": [
+      "Cách mạng KHCN phát triển với trình độ cao hơn, chủ nghĩa xã hội hiện thực lâm vào thoái trào",
+      "Cách mạng công nghiệp 4.0 đã hoàn thành",
+      "Chiến tranh lạnh bùng nổ trở lại",
+      "Việt Nam bị cấm vận hoàn toàn"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII diễn ra trong bối cảnh cách mạng KHCN phát triển trình độ cao và CNXH hiện thực lâm vào thoái trào."
+  },
+  {
+    "q": "Câu 3: Ai tiếp tục được bầu làm Tổng Bí thư tại Đại hội VIII (6/1996)?",
+    "o": [
+      "Đỗ Mười",
+      "Lê Khả Phiêu",
+      "Nông Đức Mạnh",
+      "Nguyễn Văn Linh"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII bầu đồng chí Đỗ Mười tiếp tục làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 4: Mục tiêu tổng quát về xây dựng CNXH được Đại hội VIII (1996) xác định là gì?",
+    "o": [
+      "'Dân giàu, nước mạnh, xã hội công bằng, văn minh'",
+      "'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh'",
+      "'Hoàn thành ngay công nghiệp hóa'",
+      "'Trở thành nước phát triển thu nhập cao'"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII nêu mục tiêu tổng quát: 'Dân giàu, nước mạnh, xã hội công bằng, văn minh.'"
+  },
+  {
+    "q": "Câu 5: Đại hội VIII (6/1996) đã tổng kết bao nhiêu bài học kinh nghiệm qua 10 năm đổi mới?",
+    "o": [
+      "6 bài học",
+      "5 bài học",
+      "4 bài học",
+      "7 bài học"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII đúc kết 6 bài học qua 10 năm đổi mới (1986 - 1996)."
+  },
+  {
+    "q": "Câu 6: Đại hội VIII (6/1996) đề ra bao nhiêu quan điểm chỉ đạo Công nghiệp hóa trong thời đại mới?",
+    "o": [
+      "6 quan điểm về CNH",
+      "5 quan điểm",
+      "4 quan điểm",
+      "7 quan điểm"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII đề ra 6 quan điểm chỉ đạo CNH, HĐH đất nước."
+  },
+  {
+    "q": "Câu 7: Tại Hội nghị Trung ương 4 Khóa VIII (12/1997), ai được bầu làm Tổng Bí thư của Đảng?",
+    "o": [
+      "Lê Khả Phiêu",
+      "Đỗ Mười",
+      "Nông Đức Mạnh",
+      "Nguyễn Phú Trọng"
+    ],
+    "c": 0,
+    "e": "HN TW 4 Khóa VIII (12/1997) bầu đồng chí Lê Khả Phiêu làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 8: Nghị quyết số 10-NQ/TW (2/2/1999) của Hội nghị Trung ương 6 (Lần 2) Khóa VIII tập trung vào nội dung gì?",
+    "o": [
+      "Thực hiện tự phê bình và phê bình, một số vấn đề cơ bản và cấp bách trong công tác xây dựng Đảng hiện nay",
+      "Phát triển kinh tế biển",
+      "Cải cách giáo dục phổ thông",
+      "Hội nhập kinh tế quốc tế"
+    ],
+    "c": 0,
+    "e": "HN TW 6 (Lần 2) Khóa VIII ban hành NQ 10 về xây dựng Đảng, tự phê bình và phê bình."
+  },
+  {
+    "q": "Câu 9: Nghị quyết số 02-NQ/HNTW (24/12/1996) của Hội nghị Trung ương 2 Khóa VIII thông qua nội dung định hướng chiến lược nào?",
+    "o": [
+      "Định hướng chiến lược phát triển giáo dục, đào tạo trong thời kỳ CNH – HĐH",
+      "Phát triển văn hóa nghệ thuật",
+      "Xây dựng giai cấp công nhân",
+      "Chiến lược bảo vệ Tổ quốc"
+    ],
+    "c": 0,
+    "e": "HN TW 2 Khóa VIII ban hành NQ 02 về định hướng chiến lược phát triển giáo dục, đào tạo."
+  },
+  {
+    "q": "Câu 10: Nghị quyết số 03-NQ/TW (16/7/1998) của Hội nghị Trung ương 5 Khóa VIII có chủ đề về lĩnh vực nào?",
+    "o": [
+      "Xây dựng và phát triển nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc",
+      "Phát triển khoa học công nghệ",
+      "Cải cách bộ máy nhà nước",
+      "Đổi mới quản lý doanh nghiệp nhà nước"
+    ],
+    "c": 0,
+    "e": "HN TW 5 Khóa VIII ban hành Nghị quyết 03 về xây dựng nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc."
+  },
+  {
+    "q": "Câu 11: Vấn đề phát triển văn hóa được đề cập lần đầu tiên trong văn kiện Đại hội nào của Đảng?",
+    "o": [
+      "Đại hội VII (1991)",
+      "Đại hội VI (1986)",
+      "Đại hội VIII (1996)",
+      "Đại hội IX (2001)"
+    ],
+    "c": 0,
+    "e": "Theo nội dung đề cương, vấn đề văn hóa lần đầu tiên được nhắc đến trực tiếp ở Đại hội VII (1991)."
+  },
+  {
+    "q": "Câu 12: Đại hội Đại biểu toàn quốc lần thứ IX của Đảng diễn ra trong khoảng thời gian nào?",
+    "o": [
+      "Từ 19 đến 22/4/2001",
+      "Từ 28/6 đến 1/7/1996",
+      "Từ 18 đến 25/4/2006",
+      "Từ 12 đến 19/1/2011"
+    ],
+    "c": 0,
+    "e": "Đại hội IX của Đảng họp từ ngày 19 đến ngày 22/4/2001 tại Hà Nội."
+  },
+  {
+    "q": "Câu 13: Bối cảnh quốc tế khi diễn ra Đại hội IX (4/2001) có đặc điểm gì?",
+    "o": [
+      "Cách mạng KHCN, kinh tế tri thức và toàn cầu hóa diễn ra mạnh mẽ",
+      "Khủng hoảng tài chính toàn cầu 2008",
+      "Việt Nam gia nhập WTO",
+      "Chủ nghĩa phát xít xuất hiện"
+    ],
+    "c": 0,
+    "e": "Đại hội IX diễn ra khi cách mạng KHCN, kinh tế tri thức và toàn cầu hóa diễn ra mạnh mẽ."
+  },
+  {
+    "q": "Câu 14: Ai được bầu làm Tổng Bí thư tại Đại hội IX (4/2001)?",
+    "o": [
+      "Nông Đức Mạnh",
+      "Lê Khả Phiêu",
+      "Đỗ Mười",
+      "Nguyễn Phú Trọng"
+    ],
+    "c": 0,
+    "e": "Đại hội IX bầu đồng chí Nông Đức Mạnh làm Tổng Bí thư."
+  },
+  {
+    "q": "Câu 15: Đại hội IX (4/2001) làm rõ bản chất quá độ lên CNXH bỏ qua chế độ TBCN ở nước ta là gì?",
+    "o": [
+      "Bỏ qua việc xác lập vị trí thống trị của QHSX và KTTT TBCN",
+      "Bỏ qua toàn bộ lực lượng sản xuất tư bản",
+      "Bỏ qua phát triển kinh tế hàng hóa",
+      "Bỏ qua giao thương với các nước tư bản"
+    ],
+    "c": 0,
+    "e": "Bỏ qua chế độ TBCN là bỏ qua việc xác lập vị trí thống trị của quan hệ sản xuất và kiến trúc thượng tầng TBCN."
+  },
+  {
+    "q": "Câu 16: Mô hình kinh tế tổng quát trong thời kỳ quá độ lên CNXH được Đại hội IX (4/2001) chính thức xác định là gì?",
+    "o": [
+      "Nền kinh tế thị trường định hướng XHCN",
+      "Nền kinh tế kế hoạch hóa tập trung",
+      "Nền kinh tế tự do cạnh tranh",
+      "Nền kinh tế tư bản nhà nước"
+    ],
+    "c": 0,
+    "e": "Đại hội IX chính thức xác định mô hình kinh tế tổng quát là nền kinh tế thị trường định hướng XHCN."
+  },
+  {
+    "q": "Câu 17: Theo mô hình được Đại hội IX đưa ra, dự kiến nền kinh tế thị trường định hướng XHCN ở nước ta sẽ hoàn thành vào năm nào?",
+    "o": [
+      "Dự kiến năm 2045",
+      "Dự kiến năm 2020",
+      "Dự kiến năm 2030",
+      "Dự kiến năm 2050"
+    ],
+    "c": 0,
+    "e": "Văn kiện dự kiến hoàn thành xây dựng mô hình vào mốc giữa thế kỷ XXI (năm 2045)."
+  },
+  {
+    "q": "Câu 18: Đại hội IX (4/2001) xác định các hình thức sở hữu chính trong nền kinh tế gồm có:",
+    "o": [
+      "Sở hữu nhà nước, sở hữu tư nhân, sở hữu tập thể",
+      "Sở hữu toàn dân và sở hữu hợp tác xã",
+      "Sở hữu tư bản và sở hữu địa chủ",
+      "Sở hữu nước ngoài và sở hữu cá thể"
+    ],
+    "c": 0,
+    "e": "Đại hội IX xác định các hình thức sở hữu chính: nhà nước, tư nhân, tập thể."
+  },
+  {
+    "q": "Câu 19: Tuyên bố đối ngoại được phát triển tại Đại hội IX (4/2001) có nội dung là gì?",
+    "o": [
+      "'Việt Nam sẵn sàng là bạn, là đối tác tin cậy của các nước trong cộng đồng quốc tế, phấn đấu vì hòa bình, độc lập và phát triển.'",
+      "'Việt Nam muốn là bạn với tất cả các nước...'",
+      "'Việt Nam mở cửa đơn phương với các nước phát triển'",
+      "'Việt Nam chỉ hợp tác KT với ASEAN'"
+    ],
+    "c": 0,
+    "e": "Đại hội IX bổ sung cụm từ: 'Việt Nam sẵn sàng là bạn, là đối tác tin cậy của các nước trong cộng đồng quốc tế...'"
+  },
+  {
+    "q": "Câu 20: Nghị quyết số 05-NQ/TW (24/9/2001) của Hội nghị Trung ương 3 Khóa IX đề ra chủ trương về lĩnh vực nào?",
+    "o": [
+      "Tiếp tục sắp xếp, đổi mới, phát triển và nâng cao hiệu quả doanh nghiệp nhà nước",
+      "Đổi mới quản lý nông nghiệp",
+      "Cải cách hành chính nhà nước",
+      "Đẩy mạnh giáo dục đại học"
+    ],
+    "c": 0,
+    "e": "HN TW 3 Khóa IX ban hành NQ 05 về đổi mới, phát triển doanh nghiệp nhà nước (DNNN)."
+  },
+  {
+    "q": "Câu 21: Nghị quyết số 23-NQ/TW (13/3/2003) của Hội nghị Trung ương 7 Khóa IX có chủ đề chính là gì?",
+    "o": [
+      "Phát huy sức mạnh đại đoàn kết toàn dân tộc vì 'Dân giàu, nước mạnh, xã hội công bằng, dân chủ, văn minh'",
+      "Công tác thanh niên",
+      "Đấu tranh phòng chống tham nhũng",
+      "Chiến lược bảo vệ Tổ quốc"
+    ],
+    "c": 0,
+    "e": "NQ 23-NQ/TW của HN TW 7 Khóa IX về phát huy sức mạnh đại đoàn kết toàn dân tộc."
+  },
+  {
+    "q": "Câu 22: Nghị quyết số 24-NQ/TW (2/3/2003) của Hội nghị Trung ương 7 Khóa IX quy định về công tác nào?",
+    "o": [
+      "Công tác dân tộc",
+      "Công tác tôn giáo",
+      "Công tác đối ngoại",
+      "Công tác thanh niên"
+    ],
+    "c": 0,
+    "e": "NQ 24-NQ/TW của HN TW 7 Khóa IX bàn về công tác dân tộc."
+  },
+  {
+    "q": "Câu 23: Nghị quyết số 25-NQ/TW (12/3/2003) của Hội nghị Trung ương 7 Khóa IX quy định về công tác nào?",
+    "o": [
+      "Công tác tôn giáo",
+      "Công tác dân tộc",
+      "Công tác trí thức",
+      "Công tác phụ nữ"
+    ],
+    "c": 0,
+    "e": "NQ 25-NQ/TW của HN TW 7 Khóa IX bàn về công tác tôn giáo."
+  },
+  {
+    "q": "Câu 24: Hội nghị Trung ương 8 Khóa IX (tháng 7/2003) đã ban hành chiến lược quan trọng nào?",
+    "o": [
+      "Chiến lược Bảo vệ Tổ quốc trong tình hình mới",
+      "Chiến lược biển Việt Nam",
+      "Chiến lược phát triển kinh tế 10 năm",
+      "Chiến lược cải cách tư pháp"
+    ],
+    "c": 0,
+    "e": "HN TW 8 Khóa IX (7/2003) ban hành Chiến lược BVTQ trong tình hình mới."
+  },
+  {
+    "q": "Câu 25: Điểm mới về cụm từ mục tiêu tại Nghị quyết 23-NQ/TW (2003) so với Đại hội VIII là gì?",
+    "o": [
+      "Bổ sung chữ 'dân chủ' thành 'Dân giàu, nước mạnh, xã hội công bằng, dân chủ, văn minh'",
+      "Bỏ chữ 'công bằng'",
+      "Thêm chữ 'hiện đại'",
+      "Đổi thành 'Dân giàu, nước mạnh, văn minh'"
+    ],
+    "c": 0,
+    "e": "Bổ sung chữ 'dân chủ' vào chuỗi mục tiêu chung."
+  },
+  {
+    "q": "Câu 26: Giai đoạn 1996 – 2006 là giai đoạn đất nước ta tập trung thực hiện nhiệm vụ chiến lược nào?",
+    "o": [
+      "Tiếp tục công cuộc đổi mới, đẩy mạnh công nghiệp hóa, hiện đại hóa và hội nhập quốc tế",
+      "Đưa đất nước thoát khỏi khủng hoảng KT-XH",
+      "Hoàn thành xóa bỏ cơ chế bao cấp",
+      "Khôi phục kinh tế sau chiến tranh"
+    ],
+    "c": 0,
+    "e": "Giai đoạn 1996 - 2006 là thời kỳ đẩy mạnh CNH, HĐH và hội nhập quốc tế."
+  },
+  {
+    "q": "Câu 27: 6 quan điểm về CNH trong thời đại mới được đề ra tại Đại hội mấy?",
+    "o": [
+      "Đại hội VIII (1996)",
+      "Đại hội VII (1991)",
+      "Đại hội IX (2001)",
+      "Đại hội X (2006)"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII (1996) đề ra 6 quan điểm chỉ đạo CNH."
+  },
+  {
+    "q": "Câu 28: Nghị quyết số 03-NQ/TW về văn hóa (7/1998) nhấn mạnh xây dựng nền văn hóa Việt Nam có đặc trưng gì?",
+    "o": [
+      "Tiên tiến, đậm đà bản sắc dân tộc",
+      "Hiện đại, hội nhập toàn diện",
+      "Thuần túy dân gian",
+      "Tập trung theo mô hình phương Tây"
+    ],
+    "c": 0,
+    "e": "Nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc."
+  },
+  {
+    "q": "Câu 29: Ai làm Tổng Bí thư Đảng trong giai đoạn 1997 – 2001?",
+    "o": [
+      "Lê Khả Phiêu",
+      "Đỗ Mười",
+      "Nông Đức Mạnh",
+      "Nguyễn Phú Trọng"
+    ],
+    "c": 0,
+    "e": "Đồng chí Lê Khả Phiêu giữ chức TBT từ 12/1997 đến 4/2001."
+  },
+  {
+    "q": "Câu 30: Ai làm Tổng Bí thư Đảng được bầu tại Đại hội IX (2001) và tái cử tại Đại hội X (2006)?",
+    "o": [
+      "Nông Đức Mạnh",
+      "Lê Khả Phiêu",
+      "Đỗ Mười",
+      "Nguyễn Văn Linh"
+    ],
+    "c": 0,
+    "e": "Đồng chí Nông Đức Mạnh làm TBT hai khóa IX và X (2001 - 2011)."
+  },
+  {
+    "q": "Câu 31: Nền kinh tế thị trường định hướng XHCN ở Việt Nam chịu sự quản lý của cơ quan nào?",
+    "o": [
+      "Nhà nước CHXHCN Việt Nam do Đảng Cộng sản Việt Nam lãnh đạo",
+      "Các tập đoàn tư nhân nước ngoài",
+      "Ngân hàng Thế giới (WB)",
+      "Quỹ Tiền tệ Quốc tế (IMF)"
+    ],
+    "c": 0,
+    "e": "Nền kinh tế thị trường vận hành theo quy luật thị trường, có sự quản lý của Nhà nước XHCN do Đảng lãnh đạo."
+  },
+  {
+    "q": "Câu 32: Bỏ qua chế độ TBCN trong thời kỳ quá độ ở Việt Nam được hiểu chính xác là gì?",
+    "o": [
+      "Bỏ qua việc xác lập vị trí thống trị của quan hệ sản xuất và kiến trúc thượng tầng TBCN",
+      "Không sử dụng máy móc công nghệ của tư bản",
+      "Không phát triển kinh tế tư nhân",
+      "Không giao thương với các nước tư bản"
+    ],
+    "c": 0,
+    "e": "Đại hội IX làm rõ: Bỏ qua vị trí thống trị của QHSX và KTTT TBCN."
+  },
+  {
+    "q": "Câu 33: Tự phê bình và phê bình trong Đảng được nhấn mạnh tại Nghị quyết Trung ương 6 Lần 2 Khóa VIII (1999) nhằm giải quyết vấn đề gì?",
+    "o": [
+      "Một số vấn đề cơ bản và cấp bách trong công tác xây dựng Đảng hiện nay",
+      "Phát triển công nghiệp nặng",
+      "Cải cách thủ tục xuất nhập khẩu",
+      "Mở rộng đất nông nghiệp"
+    ],
+    "c": 0,
+    "e": "NQ 10-NQ/TW (1999) về một số vấn đề cấp bách trong công tác xây dựng Đảng."
+  },
+  {
+    "q": "Câu 34: Lĩnh vực Giáo dục và Đào tạo được HN TW 2 Khóa VIII (12/1996) xác định có vị trí gì trong chính sách phát triển?",
+    "o": [
+      "Cùng với Khoa học Công nghệ là quốc sách hàng đầu",
+      "Là ngành dịch vụ thu phí",
+      "Là nhiệm vụ phụ thuộc kinh tế",
+      "Là lĩnh vực ưu tiên sau công nghiệp"
+    ],
+    "c": 0,
+    "e": "Giáo dục - Đào tạo cùng với KH-CN là quốc sách hàng đầu."
+  },
+  {
+    "q": "Câu 35: Các hình thức sở hữu chính được Đại hội IX (2001) công nhận phản ánh điều gì trong nền kinh tế?",
+    "o": [
+      "Tính đa dạng thành phần kinh tế trong thời kỳ quá độ",
+      "Sự quay lại nền kinh tế bao cấp",
+      "Sự biến mất của kinh tế nhà nước",
+      "Sự tập trung tuyệt đối vào tư nhân"
+    ],
+    "c": 0,
+    "e": "Phản ánh nền kinh tế nhiều thành phần với đa dạng hình thức sở hữu."
+  },
+  {
+    "q": "Câu 36: Nghị quyết số 05-NQ/TW (2001) hướng tới nâng cao hiệu quả của khu vực kinh tế nào?",
+    "o": [
+      "Doanh nghiệp nhà nước",
+      "Kinh tế hộ gia đình",
+      "Doanh nghiệp có vốn đầu tư nước ngoài (FDI)",
+      "Kinh tế cá thể"
+    ],
+    "c": 0,
+    "e": "NQ 05-NQ/TW tập trung đổi mới và phát triển nâng cao hiệu quả DNNN."
+  },
+  {
+    "q": "Câu 37: Khẩu hiệu đối ngoại 'Việt Nam sẵn sàng là bạn, là đối tác tin cậy...' tại Đại hội IX thể hiện bước tiến gì?",
+    "o": [
+      "Nâng tầm từ 'muốn là bạn' lên 'sẵn sàng là bạn, là đối tác tin cậy' của cộng đồng quốc tế",
+      "Thu hẹp quan hệ quốc tế",
+      "Chỉ làm bạn với các nước phát triển",
+      "Từ bỏ đối ngoại đa phương"
+    ],
+    "c": 0,
+    "e": "Thể hiện sự chủ động, tự tin trong hội nhập quốc tế của Việt Nam."
+  },
+  {
+    "q": "Câu 38: Bộ ba Nghị quyết Trung ương 7 Khóa IX (3/2003) ban hành đồng bộ về các vấn đề xã hội nào?",
+    "o": [
+      "Đại đoàn kết toàn dân tộc, Công tác dân tộc, Công tác tôn giáo",
+      "Giáo dục, Y tế, Văn hóa",
+      "Công nghiệp, Nông nghiệp, Dịch vụ",
+      "Biển đảo, Biên giới, An ninh"
+    ],
+    "c": 0,
+    "e": "Gồm 3 NQ: NQ 23 (Đại đoàn kết), NQ 24 (Dân tộc), NQ 25 (Tôn giáo)."
+  },
+  {
+    "q": "Câu 39: Nội dung Chiến lược Bảo vệ Tổ quốc trong tình hình mới (HN TW 8 Khóa IX, 7/2003) kết hợp chặt hai nhiệm vụ chiến lược nào?",
+    "o": [
+      "Xây dựng chủ nghĩa xã hội và Bảo vệ vững chắc Tổ quốc XHCN",
+      "Kinh tế và Du lịch",
+      "Công nghiệp và Nông nghiệp",
+      "Cải cách hành chính và Đổi mới giáo dục"
+    ],
+    "c": 0,
+    "e": "Kết hợp chặt chẽ hai nhiệm vụ chiến lược: Xây dựng CNXH và BVTQ XHCN."
+  },
+  {
+    "q": "Câu 40: 6 bài học qua 10 năm đổi mới (1986 - 1996) được tổng kết tại Đại hội VIII bao gồm bài học quan trọng nào về mục tiêu?",
+    "o": [
+      "Giữ vững mục tiêu độc lập dân tộc và chủ nghĩa xã hội trong quá trình đổi mới",
+      "Tập trung đổi mới chính trị trước đổi mới kinh tế",
+      "Tự do hóa hoàn toàn không cần quản lý",
+      "Ưu tiên vay nợ nước ngoài"
+    ],
+    "c": 0,
+    "e": "Bài học hàng đầu: Kiên định mục tiêu độc lập dân tộc và CNXH."
+  },
+  {
+    "q": "Câu 41: Bối cảnh toàn cầu hóa tại thời điểm Đại hội IX (2001) đòi hỏi Việt Nam phải có chiến lược gì?",
+    "o": [
+      "Chủ động hội nhập kinh tế quốc tế",
+      "Đóng cửa kinh tế nội địa",
+      "Rút khỏi các tổ chức khu vực",
+      "Ngừng thu hút vốn đầu tư nước ngoài"
+    ],
+    "c": 0,
+    "e": "Đòi hỏi chủ động hội nhập kinh tế quốc tế để phát triển đất nước."
+  },
+  {
+    "q": "Câu 42: Khái niệm 'Kinh tế tri thức' bắt đầu được nhấn mạnh trong văn kiện Đại hội nào?",
+    "o": [
+      "Đại hội IX (2001)",
+      "Đại hội VI (1986)",
+      "Đại hội VII (1991)",
+      "Đại hội IV (1976)"
+    ],
+    "c": 0,
+    "e": "Bối cảnh Đại hội IX nhấn mạnh kinh tế tri thức và cách mạng KHCN."
+  },
+  {
+    "q": "Câu 43: Sự khác biệt về vai trò kinh tế nhà nước trong mô hình KTTT định hướng XHCN là gì?",
+    "o": [
+      "Kinh tế nhà nước giữ vai trò chủ đạo",
+      "Kinh tế tư nhân giữ vai trò chủ đạo",
+      "Kinh tế tập thể giữ vai trò duy nhất",
+      "Kinh tế FDI nắm quyền điều hành"
+    ],
+    "c": 0,
+    "e": "Kinh tế nhà nước giữ vai trò chủ đạo, là công cụ định hướng điều tiết vĩ mô."
+  },
+  {
+    "q": "Câu 44: Việc ban hành Nghị quyết về xây dựng Đảng năm 1999 (NQ 10 khóa VIII) phản ánh bài học nào?",
+    "o": [
+      "Xây dựng Đảng là nhiệm vụ thiên chốt",
+      "Kinh tế là nhiệm vụ duy nhất",
+      "Văn hóa là động lực duy nhất",
+      "Đối ngoại quyết định tất cả"
+    ],
+    "c": 0,
+    "e": "Phản ánh quan điểm: Phát triển kinh tế là trung tâm, xây dựng Đảng là thèm chốt."
+  },
+  {
+    "q": "Câu 45: Đại hội VIII (1996) đánh giá nước ta đã bước sang thời kỳ mới nào?",
+    "o": [
+      "Thời kỳ đẩy mạnh công nghiệp hóa, hiện đại hóa đất nước",
+      "Thời kỳ hoàn thành xây dựng CNXH",
+      "Thời kỳ kinh tế tri thức toàn diện",
+      "Thời kỳ gia nhập WTO"
+    ],
+    "c": 0,
+    "e": "Đại hội VIII khẳng định nước ta bước sang thời kỳ đẩy mạnh CNH, HĐH."
+  },
+  {
+    "q": "Câu 46: Ý nghĩa của Nghị quyết 03-NQ/TW (1998) về văn hóa là gì?",
+    "o": [
+      "Xác định văn hóa vừa là mục tiêu vừa là động lực phát triển kinh tế - xã hội",
+      "Coi văn hóa là lĩnh vực tiêu tốn ngân sách",
+      "Tách rời văn hóa khỏi đời sống kinh tế",
+      "Chỉ bảo tồn văn hóa cổ truyền"
+    ],
+    "c": 0,
+    "e": "Văn hóa là nền tảng tinh thần của xã hội, vừa là mục tiêu vừa là động lực phát triển KT-XH."
+  },
+  {
+    "q": "Câu 47: Nội dung Nghị quyết 24-NQ/TW về công tác dân tộc (2003) khẳng định điều gì?",
+    "o": [
+      "Vấn đề dân tộc và đoàn kết các dân tộc có vị trí chiến lược lâu dài trong sự nghiệp cách mạng",
+      "Vấn đề dân tộc chỉ là giải pháp tạm thời",
+      "Không cần chính sách ưu tiên vùng đồng bào dân tộc",
+      "Đồng hóa các dân tộc thiểu số"
+    ],
+    "c": 0,
+    "e": "Khẳng định công tác dân tộc có vị trí chiến lược lâu dài."
+  },
+  {
+    "q": "Câu 48: Nội dung Nghị quyết 25-NQ/TW về công tác tôn giáo (2003) xác định tôn giáo là gì?",
+    "o": [
+      "Tín ngưỡng, tôn giáo là nhu cầu tinh thần của một bộ phận nhân dân, tồn tại cùng dân tộc trong quá trình xây dựng CNXH",
+      "Là hiện tượng cần xóa bỏ ngay",
+      "Là tổ chức hành chính nhà nước",
+      "Không liên quan đến khối đại đoàn kết"
+    ],
+    "c": 0,
+    "e": "Khẳng định tín ngưỡng, tôn giáo là nhu cầu tinh thần của một bộ phận nhân dân."
+  },
+  {
+    "q": "Câu 49: Trong các hình thức sở hữu được Đại hội IX (2001) nêu ra, thành phần kinh tế tư nhân được nhìn nhận như thế nào?",
+    "o": [
+      "Là một bộ phận cấu thành quan trọng của nền kinh tế thị trường định hướng XHCN",
+      "Là đối tượng cần cải tạo xóa bỏ ngay",
+      "Là thành phần kinh tế tạm thời",
+      "Là thành phần kinh tế nắm vai trò chủ đạo"
+    ],
+    "c": 0,
+    "e": "Kinh tế tư nhân được xác định là bộ phận cấu thành quan trọng của nền kinh tế."
+  },
+  {
+    "q": "Câu 50: Tổng kết nội dung Section II.2 (1996 - 2006) làm nổi bật thành tựu nào của Đảng?",
+    "o": [
+      "Đẩy mạnh CNH, HĐH, phát triển kinh tế thị trường định hướng XHCN và chủ động hội nhập quốc tế",
+      "Khôi phục kinh tế sau chiến tranh chống Pháp",
+      "Đánh bại chiến lược Chiến tranh cục bộ",
+      "Thực hiện thành công cải cách ruộng đất"
+    ],
+    "c": 0,
+    "e": "Phản ánh thời kỳ đẩy mạnh CNH, HĐH và phát triển KTTT định hướng XHCN."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để đánh giá mức độ ghi nhớ kiến thức Chương III.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu VIP. Đúng ${correct} câu. Tiếp tục ôn luyện!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã làm chủ 100% nội dung Chương III.";
+        else if (rating >= 8) ratingStr = "Giỏi! Kết quả đạt mức an toàn cao để đạt điểm 10.";
+        else if (rating >= 6.5) ratingStr = "Khá. Hãy đọc lại các câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ phần giải thích chi tiết.";
+        else ratingStr = "Cần cố gắng. Bấm làm lại để học lại kiến thức.";
+        
+        fbText.innerText = `Hoàn thành phần VIP! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ phần trắc nghiệm VIP này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luyện tập: Trắc nghiệm Lịch sử Đảng - Đề cương ôn tập - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Layout cột đơn full-width */
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: var(--primary-color, #0284c7);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Luyện tập trắc nghiệm
+      </div>
+      <h1>Luyện tập trắc nghiệm: Đề cương ôn tập tổng hợp (Đại học Cần Thơ)</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống trắc nghiệm bao quát 50 câu hỏi lý thuyết cốt lõi trong đề cương tóm tắt môn Lịch sử Đảng.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <!-- Layout 1 cột rộng rãi -->
+    <main>
+      <!-- Horizontal Panel kết quả (Full-Width) -->
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả của bạn</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- questions-container chiếm trọn vẹn chiều rộng 100% -->
+      <div id="questions-container">
+        <!-- Quiz cards dynamic render -->
+      </div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // DỮ LIỆU 50 CÂU HỎI TRẮC NGHIỆM ĐỀ CƯƠNG ÔN TẬP
+    const quizData = [
+      {
+        q: "Câu 1: Ngày thành lập chính thức của Đảng Cộng sản Việt Nam là ngày nào?",
+        o: [
+          "Ngày 3 tháng 2 năm 1930",
+          "Ngày 19 tháng 8 năm 1945",
+          "Ngày 2 tháng 9 năm 1945",
+          "Ngày 23 tháng 9 năm 1945"
+        ],
+        c: 0,
+        e: "Đại hội đại biểu toàn quốc lần thứ III của Đảng (9/1960) đã quyết định lấy ngày 3 tháng 2 dương lịch hàng năm làm ngày kỷ niệm thành lập Đảng."
+      },
+      {
+        q: "Câu 2: Tên gọi của Đảng ta từ tháng 10/1930 đến trước tháng 2/1951 là gì?",
+        o: [
+          "Đánh tên ban đầu: Đảng Cộng sản Việt Nam",
+          "Đảng Cộng sản Đông Dương",
+          "Đảng Lao động Việt Nam",
+          "Hội Việt Nam Cách mạng Thanh niên"
+        ],
+        c: 1,
+        e: "Tháng 10/1930, Hội nghị Ban Chấp hành Trung ương lâm thời họp tại Hương Cảng đã quyết định đổi tên Đảng thành Đảng Cộng sản Đông Dương."
+      },
+      {
+        q: "Câu 3: Ai là vị Tổng Bí thư đầu tiên của Đảng Cộng sản Việt Nam?",
+        o: [
+          "Đồng chí Hồ Chí Minh",
+          "Đồng chí Trần Phú",
+          "Đồng chí Lê Hồng Phong",
+          "Đồng chí Hà Huy Tập"
+        ],
+        c: 1,
+        e: "Đồng chí Trần Phú được bầu làm Tổng Bí thư đầu tiên của Đảng tại Hội nghị Ban Chấp hành Trung ương lần thứ nhất họp tại Hương Cảng (Trung Quốc) vào tháng 10 năm 1930."
+      },
+      {
+        q: "Câu 4: Đồng chí Lê Hồng Phong giữ chức vụ Tổng Bí thư thứ mấy của Đảng Cộng sản Việt Nam?",
+        o: [
+          "Tổng Bí thư đầu tiên",
+          "Tổng Bí thư thứ 2",
+          "Tổng Bí thư thứ 3",
+          "Tổng Bí thư thứ 4"
+        ],
+        c: 1,
+        e: "Đồng chí Lê Hồng Phong là Tổng Bí thư thứ 2 của Đảng, nhiệm kỳ từ năm 1935 đến 1936."
+      },
+      {
+        q: "Câu 5: Vị Tổng Bí thư thứ 3 của Đảng Cộng sản Việt Nam nhiệm kỳ 1936-1938 là ai?",
+        o: [
+          "Đồng chí Trần Phú",
+          "Đồng chí Lê Hồng Phong",
+          "Đồng chí Hà Huy Tập",
+          "Đồng chí Nguyễn Văn Cừ"
+        ],
+        c: 2,
+        e: "Đồng chí Hà Huy Tập giữ chức vụ Tổng Bí thư thứ 3 của Đảng Cộng sản Việt Nam trong nhiệm kỳ 1936-1938."
+      },
+      {
+        q: "Câu 6: Ai là vị Tổng Bí thư trẻ tuổi nhất của Đảng Cộng sản Việt Nam lúc nhậm chức, tác giả của tác phẩm nổi tiếng 'Tự chỉ trích'?",
+        o: [
+          "Đồng chí Hà Huy Tập",
+          "Đồng chí Trần Phú",
+          "Đồng chí Nguyễn Văn Cừ",
+          "Đồng chí Trường Chinh"
+        ],
+        c: 2,
+        e: "Đồng chí Nguyễn Văn Cừ giữ chức Tổng Bí thư thứ 4 của Đảng nhiệm kỳ 1938-1940. Ông nhậm chức khi mới 26 tuổi (cùng tuổi khi nhậm chức của Trần Phú)."
+      },
+      {
+        q: "Câu 7: Đồng chí Tổng Bí thư nào của Đảng từng giữ chức vụ này trong hai nhiệm kỳ không liên tiếp (1941-1956 và năm 1986)?",
+        o: [
+          "Đồng chí Lê Duẩn",
+          "Đồng chí Nguyễn Văn Cừ",
+          "Đồng chí Trường Chinh",
+          "Đồng chí Nguyễn Văn Linh"
+        ],
+        c: 2,
+        e: "Đồng chí Trường Chinh giữ chức Tổng Bí thư lần thứ nhất từ 1941 đến 1956, và lần thứ hai vào năm 1986 khi đất nước bước vào công cuộc Đổi mới."
+      },
+      {
+        q: "Câu 8: Cho đến nay, Đảng Cộng sản Việt Nam đã thông qua bao nhiêu bản Cương lĩnh chính trị?",
+        o: [
+          "3 bản Cương lĩnh",
+          "4 bản Cương lĩnh",
+          "5 bản Cương lĩnh",
+          "6 bản Cương lĩnh"
+        ],
+        c: 2,
+        e: "Đảng ta đã có 5 bản Cương lĩnh chính trị thông qua vào các năm: 2/1930 (Cương lĩnh đầu tiên), 10/1930 (Luận cương), 2/1951 (Chính cương), 6/1991 (Cương lĩnh 1991) và Cương lĩnh bổ sung, phát triển năm 2011."
+      },
+      {
+        q: "Câu 9: Theo lý luận xây dựng Đảng, văn kiện nào định hướng mục tiêu, nhiệm vụ và giải pháp chiến lược của Đảng trong một thời gian dài?",
+        o: [
+          "Cương lĩnh chính trị",
+          "Đường lối phát triển",
+          "Nghị quyết Trung ương",
+          "Chủ trương ngắn hạn"
+        ],
+        c: 0,
+        e: "Cương lĩnh chính trị là văn kiện quan trọng nhất xác định mục tiêu và phương hướng lâu dài của cách mạng trong một thời kỳ lịch sử dài hạn."
+      },
+      {
+        q: "Câu 10: Theo đề cương học phần, chức năng của môn học Lịch sử Đảng Cộng sản Việt Nam bao gồm những chức năng nào?",
+        o: [
+          "Nhận thức, giáo dục, dự báo và phê phán",
+          "Nhận thức, giáo dục, thẩm mỹ và phê phán",
+          "Nhận thức, giáo dục, dự báo và thực tiễn",
+          "Giáo dục, dự báo, phê phán và thực tiễn"
+        ],
+        c: 0,
+        e: "Môn học Lịch sử Đảng Cộng sản Việt Nam có 4 chức năng cốt lõi là: Nhận thức, giáo dục, dự báo và phê phán."
+      },
+      {
+        q: "Câu 11: Mâu thuẫn chủ yếu nhất trong xã hội Việt Nam cuối thế kỷ XIX - đầu thế kỷ XX là mâu thuẫn nào?",
+        o: [
+          "Mâu thuẫn giữa giai cấp nông dân với địa chủ phong kiến",
+          "Mâu thuẫn giữa giai cấp công nhân với giai cấp tư sản",
+          "Mâu thuẫn giữa toàn thể dân tộc Việt Nam với chủ nghĩa đế quốc Pháp xâm lược",
+          "Mâu thuẫn giữa nhân dân lao động với giai cấp địa chủ phong kiến"
+        ],
+        c: 2,
+        e: "Dưới ách cai trị của thực dân Pháp, mâu thuẫn bao trùm và gay gắt nhất là mâu thuẫn dân tộc: giữa toàn thể dân tộc Việt Nam với đế quốc xâm lược."
+      },
+      {
+        q: "Câu 12: Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày tháng năm nào?",
+        o: [
+          "Ngày 5 tháng 6 năm 1911",
+          "Ngày 19 tháng 5 năm 1911",
+          "Ngày 19 tháng 6 năm 1919",
+          "Ngày 17 tháng 7 năm 1920"
+        ],
+        c: 0,
+        e: "Nguyễn Tất Thành ra đi tìm đường cứu nước từ bến cảng Nhà Rồng vào ngày 5/6/1911 trên con tàu mang tên Đô đốc Latouche-Tréville."
+      },
+      {
+        q: "Câu 13: Nguyễn Ái Quốc gửi bản Yêu sách của nhân dân An Nam (Yêu sách 8 điểm) tới Hội nghị Versailles vào năm nào?",
+        o: [
+          "Năm 1911",
+          "Năm 1917",
+          "Năm 1919",
+          "Năm 1920"
+        ],
+        c: 2,
+        e: "Thay mặt những người yêu nước An Nam, Nguyễn Ái Quốc gửi bản Yêu sách 8 điểm tới Hội nghị Versailles vào năm 1919 đòi quyền lợi cho nhân dân Việt Nam."
+      },
+      {
+        q: "Câu 14: Nguyễn Ái Quốc đọc bản Sơ thảo lần thứ nhất Luận cương về vấn đề dân tộc và thuộc địa của Lênin vào thời gian nào?",
+        o: [
+          "Tháng 6 năm 1919",
+          "Tháng 7 năm 1920",
+          "Tháng 12 năm 1920",
+          "Tháng 6 năm 1925"
+        ],
+        c: 1,
+        e: "Tháng 7/1920, Người đọc bản Luận cương của Lênin đăng trên báo Nhân đạo (L'Humanité), tìm ra con đường cứu nước giải phóng dân tộc theo con đường cách mạng vô sản."
+      },
+      {
+        q: "Câu 15: Tại Đại hội Tours (tháng 12/1920), Nguyễn Ái Quốc đã bỏ phiếu tán thành gia nhập tổ chức quốc tế nào?",
+        o: [
+          "Quốc tế thứ nhất",
+          "Quốc tế thứ hai",
+          "Quốc tế thứ ba (Quốc tế Cộng sản)",
+          "Hội Liên hiệp các dân tộc thuộc địa"
+        ],
+        c: 2,
+        e: "Tháng 12/1920, Nguyễn Ái Quốc tham gia bỏ phiếu tán thành gia nhập Quốc tế thứ ba và đồng sáng lập Đảng Cộng sản Pháp."
+      },
+      {
+        q: "Câu 16: Tổ chức cách mạng nào do Nguyễn Ái Quốc thành lập vào tháng 6 năm 1925 tại Quảng Châu (Trung Quốc)?",
+        o: [
+          "Đông Dương Cộng sản đảng",
+          "An Nam Cộng sản đảng",
+          "Hội Việt Nam Cách mạng Thanh niên",
+          "Đông Dương Cộng sản liên đoàn"
+        ],
+        c: 2,
+        e: "Tháng 6/1925, Nguyễn Ái Quốc thành lập Hội Việt Nam Cách mạng Thanh niên nhằm truyền bá chủ nghĩa Mác-Lênin vào trong nước và chuẩn bị tổ chức để thành lập Đảng."
+      },
+      {
+        q: "Câu 17: Tác phẩm nào của Nguyễn Ái Quốc xuất bản năm 1927 đóng vai trò chuẩn bị lý luận cơ bản cho việc thành lập Đảng?",
+        o: [
+          "Bản án chế độ thực dân Pháp",
+          "Đường Kách mệnh",
+          "Lịch sử nước ta",
+          "Sơ thảo Luận cương về vấn đề dân tộc và thuộc địa"
+        ],
+        c: 1,
+        e: "Tác phẩm Đường Kách mệnh (1927) tập hợp các bài giảng của Nguyễn Ái Quốc tại lớp huấn luyện chính trị ở Quảng Châu, chuẩn bị trực tiếp về tư tưởng, chính trị cho việc thành lập Đảng."
+      },
+      {
+        q: "Câu 18: Tổ chức cộng sản Đông Dương Cộng sản đảng được thành lập vào thời gian nào?",
+        o: [
+          "Tháng 6 năm 1929",
+          "Mùa thu năm 1929",
+          "Tháng 9 năm 1929",
+          "Tháng 2 năm 1930"
+        ],
+        c: 0,
+        e: "Đông Dương Cộng sản đảng được thành lập vào tháng 6 năm 1929 từ đại biểu của chi bộ cộng sản đầu tiên ở Bắc Kỳ."
+      },
+      {
+        q: "Câu 19: An Nam Cộng sản đảng được chính thức thành lập vào thời gian nào?",
+        o: [
+          "Tháng 6 năm 1929",
+          "Mùa thu năm 1929",
+          "Tháng 9 năm 1929",
+          "Tháng 2 năm 1930"
+        ],
+        c: 1,
+        e: "An Nam Cộng sản đảng được thành lập vào Mùa thu năm 1929 tại Nam Kỳ từ các hội viên tiên phong của Hội Việt Nam Cách mạng Thanh niên."
+      },
+      {
+        q: "Câu 20: Tổ chức cộng sản Đông Dương Cộng sản liên đoàn ra đời vào thời gian nào từ sự phân hóa của Tân Việt Cách mạng Đảng?",
+        o: [
+          "Tháng 6 năm 1929",
+          "Mùa thu năm 1929",
+          "Tháng 9 năm 1929",
+          "Tháng 2 năm 1930"
+        ],
+        c: 2,
+        e: "Đông Dương Cộng sản liên đoàn được thành lập vào tháng 9 năm 1929 từ các đảng viên cấp tiến của Tân Việt Cách mạng Đảng ở Trung Kỳ."
+      },
+      {
+        q: "Câu 21: Hội nghị thành lập Đảng Cộng sản Việt Nam (đầu năm 1930) đã hợp nhất những tổ chức cộng sản nào?",
+        o: [
+          "Đông Dương Cộng sản đảng và An Nam Cộng sản đảng",
+          "Đông Dương Cộng sản đảng và Đông Dương Cộng sản liên đoàn",
+          "An Nam Cộng sản đảng và Đông Dương Cộng sản liên đoàn",
+          "Đông Dương Cộng sản đảng, An Nam Cộng sản đảng và Đông Dương Cộng sản liên đoàn"
+        ],
+        c: 0,
+        e: "Hội nghị thành lập Đảng (6/1-7/2/1930) đã hợp nhất Đông Dương Cộng sản đảng và An Nam Cộng sản đảng. Ngày 24/2/1930, Đông Dương Cộng sản liên đoàn mới chính thức được gia nhập."
+      },
+      {
+        q: "Câu 22: Lực lượng cách mạng được xác định trong Cương lĩnh chính trị đầu tiên của Đảng (tháng 2/1930) gồm những giai cấp nào?",
+        o: [
+          "Chỉ có giai cấp công nhân và giai cấp nông dân",
+          "Lấy công-nông làm nòng cốt + đoàn kết tất cả các giai cấp, lực lượng tiến bộ, yêu nước",
+          "Công nhân, nông dân, tiểu tư sản và địa chủ yêu nước",
+          "Toàn thể nhân dân thuộc địa trừ giai cấp địa chủ phong kiến"
+        ],
+        c: 1,
+        e: "Cương lĩnh đầu tiên do Nguyễn Ái Quốc soạn thảo xác định: Công nông là lực lượng gốc, đồng thời phải đoàn kết tất cả các giai cấp tiểu tư sản, trí thức, trung nông và lôi kéo phú nông, trung tiểu địa chủ, tư sản yêu nước."
+      },
+      {
+        q: "Câu 23: Điểm khác biệt căn bản nhất giữa Cương lĩnh chính trị đầu tiên (2/1930) và Luận cương chính trị (10/1930) là:",
+        o: [
+          "Định hướng mục tiêu chiến lược cách mạng đi lên xã hội cộng sản",
+          "Khẳng định vai trò lãnh đạo độc quyền của giai cấp công nhân",
+          "Vị trí và mối quan hệ giữa hai nhiệm vụ chiến lược giải phóng dân tộc và cách mạng ruộng đất",
+          "Phương pháp khởi nghĩa vũ trang để cướp chính quyền"
+        ],
+        c: 2,
+        e: "Cương lĩnh (2/1930) đặt giải phóng dân tộc lên hàng đầu; Luận cương (10/1930) đặt cách mạng ruộng đất làm cốt lõi và nặng về đấu tranh giai cấp, chưa đánh giá đúng nhiệm vụ giải phóng dân tộc."
+      },
+      {
+        q: "Câu 24: Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương được thành lập vào đầu năm 1934 dưới sự lãnh đạo của ai nhằm chỉ đạo phong trào trong nước?",
+        o: [
+          "Đồng chí Hà Huy Tập",
+          "Đồng chí Lê Hồng Phong",
+          "Đồng chí Nguyễn Văn Cừ",
+          "Đồng chí Trần Phú"
+        ],
+        c: 1,
+        e: "Đầu năm 1934, Ban Chỉ huy ở ngoài của Đảng được thành lập tại Quảng Châu (Trung Quốc) do đồng chí Lê Hồng Phong làm Thư ký để chỉ đạo khôi phục phong trào trong nước."
+      },
+      {
+        q: "Câu 25: Đại hội đại biểu lần thứ I của Đảng Cộng sản Đông Dương (tháng 3 năm 1935) diễn ra tại địa điểm nào?",
+        o: [
+          "Chiêm Hóa, Tuyên Quang",
+          "Ma Cao, Trung Quốc",
+          "Hương Cảng, Trung Quốc",
+          "Cao Bằng, Việt Nam"
+        ],
+        c: 1,
+        e: "Đại hội đại biểu lần thứ I của Đảng họp từ 27 đến 31/3/1935 tại Ma Cao, Trung Quốc, đánh dấu sự khôi phục hệ thống tổ chức của Đảng sau thời kỳ bị Pháp khủng bố trắng."
+      },
+      {
+        q: "Câu 26: Kẻ thù nguy hiểm trước mắt của cách mạng Đông Dương giai đoạn 1936-1939 được Đảng xác định là ai?",
+        o: [
+          "Thực dân Pháp nói chung và phát xít Nhật",
+          "Bọn phản động thuộc địa Pháp và tay sai của chúng ở Đông Dương",
+          "Địa chủ phong kiến và tư sản mại bản Việt Nam",
+          "Liên minh quân sự phát xít Đức - Ý - Nhật"
+        ],
+        c: 1,
+        e: "Dưới ánh sáng của Đại hội VII Quốc tế Cộng sản, Đảng xác định kẻ thù nguy hiểm trước mắt là bọn phản động thuộc địa Pháp và tay sai không chịu thi hành cải cách dân chủ ở Đông Dương."
+      },
+      {
+        q: "Câu 27: Văn kiện 'Chung quanh vấn đề chiến sách mới' (10/1936) của Đảng đã bước đầu khắc phục hạn chế trong Luận cương chính trị bằng nhận thức mới nào?",
+        o: [
+          "Đặt cách mạng ruộng đất lên trên giải phóng dân tộc",
+          "Khẳng định cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+          "Chỉ liên kết lực lượng giai cấp vô sản và nông dân lao khổ ở đô thị",
+          "Đoàn kết rộng rãi với tư sản mại bản để chống thực dân Pháp"
+        ],
+        c: 1,
+        e: "Trong văn kiện này, Đảng nêu quan điểm thực tiễn mới: 'Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa', cho thấy sự linh hoạt chiến lược phù hợp với Cương lĩnh đầu tiên."
+      },
+      {
+        q: "Câu 28: Sự kiện lịch sử nào đánh dấu bước ngoặt Nguyễn Ái Quốc trở về nước trực tiếp lãnh đạo cách mạng Việt Nam sau 30 năm hoạt động ở nước ngoài?",
+        o: [
+          "Ngày 5 tháng 6 năm 1911",
+          "Ngày 28 tháng 1 năm 1941",
+          "Ngày 19 tháng 5 năm 1941",
+          "Ngày 22 tháng 12 năm 1944"
+        ],
+        c: 1,
+        e: "Ngày 28/1/1941, Nguyễn Ái Quốc vượt qua biên giới Việt - Trung trở về nước và chọn Pác Bó (Cao Bằng) làm căn cứ địa để xây dựng phong trào cách mạng."
+      },
+      {
+        q: "Câu 29: Hội nghị Ban Chấp hành Trung ương lần thứ 8 của Đảng (tháng 5 năm 1941) họp tại đâu và do ai chủ trì?",
+        o: [
+          "Hương Cảng (Trung Quốc) do Trần Phú chủ trì",
+          "Ma Cao (Trung Quốc) do Lê Hồng Phong chủ trì",
+          "Pác Bó (Cao Bằng) do Nguyễn Ái Quốc chủ trì",
+          "Chiêm Hóa (Tuyên Quang) do Trường Chinh chủ trì"
+        ],
+        c: 2,
+        e: "Hội nghị Trung ương 8 (5/1941) diễn ra tại Pác Bó, Cao Bằng do lãnh tụ Nguyễn Ái Quốc chủ trì, hoàn chỉnh chủ trương chuyển hướng chỉ đạo chiến lược cách mạng."
+      },
+      {
+        q: "Câu 30: Mặt trận Việt Nam Độc lập Đồng minh (gọi tắt là Việt Minh) được thành lập vào ngày tháng năm nào theo quyết định của Hội nghị Trung ương 8?",
+        o: [
+          "Ngày 3 tháng 2 năm 1930",
+          "Ngày 19 tháng 5 năm 1941",
+          "Ngày 22 tháng 12 năm 1944",
+          "Ngày 19 tháng 8 năm 1945"
+        ],
+        c: 1,
+        e: "Mặt trận Việt Minh chính thức được thành lập vào ngày 19/5/1941 theo chủ trương của Hội nghị Trung ương 8 để đoàn kết mọi tầng lớp nhân dân chống Pháp - Nhật cứu quốc."
+      },
+      {
+        q: "Câu 31: Tác phẩm văn hóa nào do đồng chí Trường Chinh soạn thảo được Đảng công bố năm 1943, khẳng định văn hóa là một trận địa cách mạng quan trọng?",
+        o: [
+          "Tác phẩm Đường Kách mệnh",
+          "Đề cương về văn hóa Việt Nam",
+          "Bản án chế độ thực dân Pháp",
+          "Lời kêu gọi toàn quốc kháng chiến"
+        ],
+        c: 1,
+        e: "Đề cương về văn hóa Việt Nam (1943) do Tổng Bí thư Trường Chinh soạn thảo xác định 3 nguyên tắc lớn của cuộc vận động văn hóa mới: Dân tộc, Khoa học và Đại chúng."
+      },
+      {
+        q: "Câu 32: Đội Việt Nam Tuyên truyền Giải phóng quân (tiền thân của Quân đội Nhân dân Việt Nam) được thành lập vào ngày tháng năm nào?",
+        o: [
+          "Ngày 19 tháng 5 năm 1941",
+          "Ngày 22 tháng 12 năm 1944",
+          "Ngày 9 tháng 3 năm 1945",
+          "Ngày 19 tháng 8 năm 1945"
+        ],
+        c: 1,
+        e: "Đội Việt Nam Tuyên truyền Giải phóng quân được thành lập ngày 22/12/1944 tại khu rừng Trần Hưng Đạo (Cao Bằng) gồm 34 chiến sĩ, do đồng chí Võ Nguyên Giáp trực tiếp chỉ huy."
+      },
+      {
+        q: "Câu 33: Chỉ thị 'Nhật - Pháp bắn nhau và hành động của chúng ta' (12/3/1945) xác định kẻ thù duy nhất và trước mắt của nhân dân Đông Dương là:",
+        o: [
+          "Thực dân Pháp xâm lược",
+          "Phát xít Nhật",
+          "Quân đội Tưởng Giới Thạch",
+          "Quân đội Anh - Ấn"
+        ],
+        c: 1,
+        e: "Ngay sau khi Nhật đảo chính Pháp ngày 9/3/1945, Đảng ra Chỉ thị ngày 12/3/1945 xác định kẻ thù cụ thể trước mắt là phát xít Nhật."
+      },
+      {
+        q: "Câu 34: Sự kiện lịch sử nào đánh dấu nước Việt Nam Dân chủ Cộng hòa chính thức ra đời, chấm dứt ách nô lệ của thực dân Pháp và lật đổ chế độ phong kiến?",
+        o: [
+          "Khởi nghĩa giành chính quyền thắng lợi ở Hà Nội ngày 19/8/1945",
+          "Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập ngày 2/9/1945",
+          "Chỉ thị Nhật - Pháp bắn nhau ngày 12/3/1945",
+          "Kỳ họp thứ nhất của Quốc hội khóa I ngày 6/1/1946"
+        ],
+        c: 1,
+        e: "Ngày 2/9/1945, tại Quảng trường Ba Đình lịch sử, Chủ tịch Hồ Chí Minh thay mặt Chính phủ lâm thời đọc bản Tuyên ngôn Độc lập khai sinh ra nước Việt Nam Dân chủ Cộng hòa."
+      },
+      {
+        q: "Câu 35: Tính chất nổi bật của phong trào giải phóng dân tộc (1939-1945) và Cách mạng Tháng Tám năm 1945 ở nước ta là gì?",
+        o: [
+          "Là cuộc cách mạng tư sản dân quyền kiểu cũ",
+          "Là cuộc cách mạng giải phóng dân tộc điển hình",
+          "Là cuộc cách mạng ruộng đất triệt để nhất",
+          "Là cuộc cách mạng dân tộc dân chủ nhân dân tự phát"
+        ],
+        c: 1,
+        e: "Cách mạng Tháng Tám năm 1945 là cuộc cách mạng giải phóng dân tộc điển hình, tập trung hoàn thành nhiệm vụ hàng đầu là đánh đuổi đế quốc, lập chính quyền của toàn dân."
+      },
+      {
+        q: "Câu 36: Ba thứ giặc lớn mà Chính phủ lâm thời nước Việt Nam Dân chủ Cộng hòa phải đối phó ngay sau Cách mạng Tháng Tám năm 1945 là gì?",
+        o: [
+          "Giặc đói, giặc dốt và giặc ngoại xâm",
+          "Giặc đói, lạm phát và tệ nạn xã hội",
+          "Giặc dốt, mù chữ và địa chủ phong kiến",
+          "Giặc ngoại xâm, thổ phỉ và lạm phát phi mã"
+        ],
+        c: 0,
+        e: "Chính phủ lâm thời họp phiên đầu tiên ngày 3/9/1945 xác định 3 nhiệm vụ cấp bách nhất cần giải quyết ngay: diệt giặc đói, diệt giặc dốt và diệt giặc ngoại xâm."
+      },
+      {
+        q: "Câu 37: Khẩu hiệu chiến lược được nêu trong Chỉ thị 'Kháng chiến kiến quốc' (25/11/1945) của Ban Chấp hành Trung ương Đảng là gì?",
+        o: [
+          "Tổ quốc trên hết, Ruộng đất cho dân cày",
+          "Dân tộc trên hết, Tổ quốc trên hết",
+          "Đánh đổ thực dân Pháp, Phản đối can thiệp Mỹ",
+          "Củng cố chính quyền cách mạng, diệt giặc ngoại xâm"
+        ],
+        c: 1,
+        e: "Để tập hợp mọi lực lượng yêu nước, Chỉ thị Kháng chiến kiến quốc xác định khẩu hiệu chiến lược cao nhất: 'Dân tộc trên hết, Tổ quốc trên hết'."
+      },
+      {
+        q: "Câu 38: Ngày bầu cử Quốc hội khóa I đầu tiên của nước Việt Nam Dân chủ Cộng hòa là ngày nào?",
+        o: [
+          "Ngày 2 tháng 9 năm 1945",
+          "Ngày 25 tháng 11 năm 1945",
+          "Ngày 6 tháng 1 năm 1946",
+          "Mất ngày 2 tháng 3 năm 1946"
+        ],
+        c: 2,
+        e: "Ngày 6/1/1946, vượt qua sự chống phá điên cuồng của kẻ thù, cuộc tổng tuyển cử bầu Quốc hội khóa I đầu tiên của Việt Nam đã diễn ra thắng lợi rực rỡ."
+      },
+      {
+        q: "Câu 39: Phong trào nào được phát động rộng rãi để giải quyết nạn dốt, mù chữ cho toàn dân sau năm 1945?",
+        o: [
+          "Phong trào Bình dân học vụ",
+          "Phong trào Tuần lễ vàng",
+          "Phong trào Hũ gạo tiết kiệm",
+          "Phong trào Đời sống văn hóa mới"
+        ],
+        c: 0,
+        e: "Nha Bình dân học vụ được thành lập ngày 8/9/1945 phát động phong trào toàn dân học chữ quốc ngữ, giúp xóa mù chữ cho 2.5 triệu người trong năm đầu tiên."
+      },
+      {
+        q: "Câu 40: Từ tháng 9/1945 đến tháng 3/1946, Đảng ta thực hiện sách lược ngoại giao nhân nhượng nào với quân Tưởng ở miền Bắc?",
+        o: [
+          "Hòa hoãn với Pháp để đánh quân Tưởng",
+          "Hòa hoãn với quân Tưởng để tập trung đánh thực dân Pháp ở Nam Bộ",
+          "Đồng thời nổ súng kháng chiến chống cả quân Tưởng và quân Pháp",
+          "Ký hiệp ước quốc tế hợp tác kinh tế toàn diện với quân Tưởng"
+        ],
+        c: 1,
+        e: "Sách lược của Đảng giai đoạn 9/1945-3/1946 là tạm hòa hoãn với quân Tưởng ở miền Bắc để tập trung lực lượng đánh Pháp xâm lược ở Nam Bộ."
+      },
+      {
+        q: "Câu 41: Hiệp định Sơ bộ 6/3/1946 được ký kết giữa đại diện Chính phủ ta là Hồ Chí Minh và đại diện Chính phủ Pháp là ai?",
+        o: [
+          "Sainteny",
+          "D'Argenlieu",
+          "Valluy",
+          "Bao Dai"
+        ],
+        c: 0,
+        e: "Hiệp định Sơ bộ được ký kết tại Hà Nội ngày 6/3/1946 giữa Chủ tịch Hồ Chí Minh và Sainteny (đại diện Chính phủ Pháp)."
+      },
+      {
+        q: "Câu 42: Tạm ước ngày 14/9/1946 được Chủ tịch Hồ Chí Minh ký kết với đại diện Chính phủ Pháp tại Paris nhằm mục đích chính là gì?",
+        o: [
+          "Nhượng bộ chủ quyền quốc gia cho thực dân Pháp",
+          "Nhân nhượng thêm một số quyền lợi kinh tế, văn hóa để kéo dài thời gian hòa hoãn chuẩn bị kháng chiến lâu dài",
+          "Liên minh quân sự chống lại sự can thiệp của Mỹ ở Đông Dương",
+          "Tuyên bố chấm dứt hoàn toàn tình trạng chiến tranh Đông Dương"
+        ],
+        c: 1,
+        e: "Tạm ước 14/9/1946 tiếp tục thể hiện sự nhân nhượng có nguyên tắc của ta để kéo dài thời gian hòa bình quý báu, tích cực chuẩn bị lực lượng cho cuộc kháng chiến toàn quốc tất yếu xảy ra."
+      },
+      {
+        q: "Câu 43: Bản 'Lời kêu gọi toàn quốc kháng chiến' của Chủ tịch Hồ Chí Minh được phát đi vào thời gian nào?",
+        o: [
+          "Đêm ngày 23 tháng 9 năm 1945",
+          "Ngày 25 tháng 11 năm 1945",
+          "Đêm ngày 19 tháng 12 năm 1946",
+          "Ngày 15 tháng 7 năm 1947"
+        ],
+        c: 2,
+        e: "Khi không thể nhân nhượng được nữa, đêm 19/12/1946, Chủ tịch Hồ Chí Minh đã viết Lời kêu gọi toàn quốc kháng chiến, phát động cuộc chiến tranh nhân dân chống thực dân Pháp."
+      },
+      {
+        q: "Câu 44: Thắng lợi của chiến dịch nào đã làm phá sản hoàn toàn chiến lược 'đánh nhanh, thắng nhanh' lần thứ hai của thực dân Pháp?",
+        o: [
+          "Chiến dịch Việt Bắc - Thu Đông (1947)",
+          "Chiến dịch Biên giới - Thu Đông (1950)",
+          "Chiến dịch Hòa Bình (1951-1952)",
+          "Chiến dịch Điện Biên Phủ (1954)"
+        ],
+        c: 0,
+        e: "Thắng lợi của chiến dịch Việt Bắc - Thu Đông 1947 đã đập tan mưu đồ tiêu diệt cơ quan đầu não kháng chiến của Pháp, buộc Pháp phải chuyển sang đánh lâu dài với ta."
+      },
+      {
+        q: "Câu 45: Lực lượng 3 thứ quân của quân đội cách mạng nhân dân ta bao gồm những lực lượng nào?",
+        o: [
+          "Bộ đội chủ lực, bộ đội địa phương và tự vệ thành thị",
+          "Bộ đội chủ lực, bộ đội địa phương và dân quân du kích",
+          "Bộ đội chủ lực, cảnh vệ và thanh niên xung phong",
+          "Bộ đội chủ lực, bộ đội phòng không và dân quân tự vệ"
+        ],
+        c: 1,
+        e: "Sắc lệnh nghĩa vụ quân sự cuối năm 1949 quy định lực lượng vũ trang cách mạng bao gồm: Bộ đội chủ lực, bộ đội địa phương và dân quân du kích ở cơ sở."
+      },
+      {
+        q: "Câu 46: Chiến dịch chủ động tiến công lớn đầu tiên của bộ đội chủ lực ta giành thắng lợi vang dội trong kháng chiến chống Pháp là chiến dịch nào?",
+        o: [
+          "Chiến dịch Việt Bắc - Thu Đông 1947",
+          "Chiến dịch Biên giới - Thu Đông 1950",
+          "Chiến dịch Hòa Bình năm 1951",
+          "Chiến dịch Điện Biên Phủ 1954"
+        ],
+        c: 1,
+        e: "Chiến dịch Biên giới - Thu Đông 1950 là chiến dịch đầu tiên ta chủ động tiến công quân Pháp, khai thông biên giới Việt - Trung và giành quyền chủ động chiến lược trên chiến trường chính Bắc Bộ."
+      },
+      {
+        q: "Câu 47: Đại hội đại biểu lần thứ II của Đảng (tháng 2 năm 1951) quyết định đổi tên Đảng thành gì?",
+        o: [
+          "Đung tên ban đầu: Đảng Cộng sản Việt Nam",
+          "Đảng Cộng sản Đông Dương",
+          "Đảng Lao động Việt Nam",
+          "Đảng Dân chủ Việt Nam"
+        ],
+        c: 2,
+        e: "Tại Đại hội II (2/1951) họp tại Tuyên Quang, Đảng chính thức hoạt động công khai và đổi tên thành Đảng Lao động Việt Nam để phù hợp với tình hình thực tế kháng chiến."
+      },
+      {
+        q: "Câu 48: Thắng lợi quân sự nào của ta đã đập tan kế hoạch Nava của thực dân Pháp và can thiệp Mỹ, kết thúc oanh liệt cuộc kháng chiến chống Pháp?",
+        o: [
+          "Chiến dịch Tây Bắc năm 1952",
+          "Chiến dịch Hòa Bình đông xuân 1951-1952",
+          "Chiến dịch Điện Biên Phủ lịch sử năm 1954",
+          "Chiến dịch Biên Giới thu đông năm 1950"
+        ],
+        c: 2,
+        e: "Thắng lợi vang dội của chiến dịch lịch sử Điện Biên Phủ (7/5/1954) đã giáng đòn quyết định đập tan hoàn toàn kế hoạch quân sự Nava của thực dân Pháp."
+      },
+      {
+        q: "Câu 49: Hiệp định Giơnevơ về chấm dứt chiến tranh, lập lại hòa bình ở Đông Dương được ký kết vào ngày tháng năm nào?",
+        o: [
+          "Ngày 2 tháng 9 năm 1945",
+          "Chính xác ngày 6 tháng 3 năm 1946",
+          "Ngày 21 tháng 7 năm 1954",
+          "Ngày 27 tháng 1 năm 1973"
+        ],
+        c: 2,
+        e: "Hiệp định Giơnevơ được ký kết chính thức vào ngày 21 tháng 7 năm 1954, thừa nhận các quyền dân tộc cơ bản của ba nước Việt Nam, Lào, Campuchia."
+      },
+      {
+        q: "Câu 50: Tại Đại hội lần thứ III của Đảng (9/1960), Đảng xác định nhiệm vụ cách mạng xã hội chủ nghĩa ở miền Bắc có vai trò như thế nào?",
+        o: [
+          "Giữ vai trò quyết định trực tiếp đối với sự nghiệp giải phóng miền Nam",
+          "Giữ vai trò quyết định nhất đối với sự phát triển của toàn bộ cách mạng Việt Nam",
+          "Giữ vai trò nòng cốt, tiên phong đối với phong trào cách mạng thế giới",
+          "Giữ vai trò hậu thuẫn tinh thần đối với tiền tuyến miền Nam"
+        ],
+        c: 1,
+        e: "Đại hội III xác định: Cách mạng XHCN ở miền Bắc giữ vai trò quyết định nhất; Cách mạng dân tộc dân chủ nhân dân ở miền Nam giữ vai trò quyết định trực tiếp đối với sự nghiệp giải phóng miền Nam."
+      }
+    ];
+
+    let userProgress = {};
+    const STORAGE_KEY = 'studyhub_progress_lsd_decuong';
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      // Update scoreboard elements
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      // Update feedback text
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã nắm vững toàn bộ kiến thức ôn thi.";
+        else if (rating >= 8) ratingStr = "Giỏi! Bạn đã đạt mức an toàn cao để đi thi.";
+        else if (rating >= 6.5) ratingStr = "Khá. Bạn cần xem lại vài câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ các lời giải thích để ghi nhớ sâu hơn.";
+        else ratingStr = "Yếu. Hãy bấm làm lại để cải thiện điểm số.";
+        
+        fbText.innerText = `Hoàn thành bài thi! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ bài trắc nghiệm đề cương từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

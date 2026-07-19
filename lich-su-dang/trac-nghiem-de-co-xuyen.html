@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luyện tập: Trắc nghiệm Lịch sử Đảng - Đề cô Xuyến - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Layout cột đơn full-width */
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: var(--primary-color, #0284c7);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Luyện tập trắc nghiệm
+      </div>
+      <h1>Luyện tập trắc nghiệm: Đề cô Xuyến (Dữ liệu Đại học Cần Thơ)</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống trắc nghiệm tự chấm điểm trực quan giúp ôn tập và ghi nhớ các mốc sự kiện, lý thuyết lịch sử Đảng hiệu quả.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <!-- Layout 1 cột rộng rãi -->
+    <main>
+      <!-- Horizontal Panel kết quả (Full-Width) -->
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả của bạn</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 32 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- questions-container chiếm trọn vẹn chiều rộng 100% -->
+      <div id="questions-container">
+        <!-- Quiz cards dynamic render -->
+      </div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // DỮ LIỆU 32 CÂU HỎI TRẮC NGHIỆM ĐỀ CÔ XUYẾN
+    const quizData = [
+      {
+        q: "Câu 1: Xã hội Việt Nam dưới tác động chính sách thống trị của thực dân Pháp đã ra đời những giai cấp mới nào?",
+        o: [
+          "Công nhân và tư sản",
+          "Công nhân, tư sản và tiểu tư sản",
+          "Công nhân, nông dân và tiểu tư sản",
+          "Công nhân, nông dân, tiểu tư sản và tư sản dân tộc"
+        ],
+        c: 1,
+        e: "Chính sách khai thác thuộc địa của thực dân Pháp làm biến đổi cơ cấu giai cấp Việt Nam, dẫn đến sự ra đời của ba giai cấp và tầng lớp mới là: Công nhân, tư sản và tiểu tư sản."
+      },
+      {
+        q: "Câu 2: Bước đột phá thứ ba của Đảng ta về đổi mới cơ chế quản lý kinh tế thời kỳ trước đổi mới là?",
+        o: [
+          "Hội nghị Trung ương 6 khoá IV (8/1979)",
+          "Chỉ thị 100 (1981) của Ban Bí thư Trung ương về Khoán sản phẩm đến nhóm người lao động",
+          "Hội nghị Trung ương 8 khoá V (6/1985) với cuộc cái cách giá - lương - tiền",
+          "Kết luận của Hội nghị Bộ Chính trị về một số quan điểm thuộc về kinh tế (8/1986)"
+        ],
+        c: 3,
+        e: "Đột phá 1: Hội nghị TW 6 khóa IV (8/1979). Đột phá 2: Hội nghị TW 8 khóa V (6/1985). Đột phá 3: Kết luận của Hội nghị Bộ Chính trị khóa V (8/1986) về ba quan điểm kinh tế lớn."
+      },
+      {
+        q: "Câu 3: Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội mấy của Đảng?",
+        o: [
+          "Đại hội I (3/1935)",
+          "Đại hội II (2/1951)",
+          "Đại hội lần thứ III (9/1960)",
+          "Đại hội lần thứ IV (12/1976)"
+        ],
+        c: 1,
+        e: "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội đại biểu toàn quốc lần thứ II (2/1951) tại Chiêm Hóa, Tuyên Quang."
+      },
+      {
+        q: "Câu 4: Phương châm đối ngoại Việt Nam là bạn, đối tác tin cậy và là thành viên có trách nhiệm trong cộng đồng quốc tế được xác định tại Đại hội mấy của Đảng?",
+        o: [
+          "Đại hội lần thứ VII (6/1991)",
+          "Đại hội lần thứ IX (4/2001)",
+          "Đại hội lần thứ XI (01/2011)",
+          "Đại hội lần thứ XIII (01/2021)"
+        ],
+        c: 2,
+        e: "Đại hội XI (1/2011) bổ sung cụm từ 'và là thành viên có trách nhiệm trong cộng đồng quốc tế' vào phương châm đối ngoại."
+      },
+      {
+        q: "Câu 5: Trong giai đoạn đấu tranh giành chính quyền (1939-1945), Hội nghị Trung ương nào là Hội nghị Trung ương đầu tiên đề ra chủ trương chiến lược mới của Đảng?",
+        o: [
+          "Hội nghị Ban Chấp hành Trung ương lần thứ 6 (11/1939)",
+          "Hội nghị Ban Chấp hành Trung ương lần thứ 7 (11/1940)",
+          "Hội nghị Ban Chấp hành Trung ương lần thứ 8 (5/1941)",
+          "Hội nghị Ban Thường vụ Trung ương mở rộng (12/3/1945)"
+        ],
+        c: 0,
+        e: "Hội nghị Ban Chấp hành Trung ương lần thứ 6 (11/1939) do Tổng Bí thư Nguyễn Văn Cừ chủ trì là hội nghị đầu tiên chuyển hướng chỉ đạo chiến lược, đặt nhiệm vụ giải phóng dân tộc lên hàng đầu."
+      },
+      {
+        q: "Câu 6: Từ kỳ họp nào sau đây, nước ta có tên gọi là nước Cộng hòa xã hội chủ nghĩa Việt Nam?",
+        o: [
+          "Kỳ họp thứ nhất của Quốc hội nước Việt Nam thống nhất (6-7/1976)",
+          "Đại hội đại biểu toàn quốc lần thứ IV (12/1976)",
+          "Hội nghị Ban chấp hành trung ương Đảng lần thứ 2, khóa IV (7/1977)",
+          "Hội nghị Ban chấp hành trung ương Đảng lần thứ 3, khóa IV (12/1977)"
+        ],
+        c: 0,
+        e: "Kỳ họp thứ nhất của Quốc hội khóa VI (Quốc hội nước Việt Nam thống nhất họp từ 24/6 đến 3/7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+      },
+      {
+        q: "Câu 7: Tại Đại hội III (9/1960), Đảng xác định cách mạng miền Nam có vai trò như thế nào đối với sự nghiệp giải phóng miền Nam, thực hiện hoà bình, thống nhất nước nhà?",
+        o: [
+          "Quan trọng nhất",
+          "Quyết định nhất",
+          "Quyết định trực tiếp",
+          "Giữ vai trò nòng cốt"
+        ],
+        c: 2,
+        e: "Đại hội III xác định: Cách mạng XHCN ở miền Bắc giữ vai trò quyết định nhất đối với sự nghiệp cách mạng cả nước; Cách mạng dân tộc dân chủ nhân dân ở miền Nam giữ vai trò quyết định trực tiếp đối với sự nghiệp giải phóng miền Nam."
+      },
+      {
+        q: "Câu 8: Nghị quyết Hội nghị Trung ương 04 khoá XII (10/2016) về tăng cường xây dựng, chỉnh đốn Đảng; ngăn chặn, đẩy lùi sự suy thoái về tư tưởng chính trị, đạo đức, lối sống, những biểu hiện 'tự diễn biến', 'tự chuyển hoá' trong nội bộ đã nêu mấy biểu hiện suy thoái về tư tưởng chính trị?",
+        o: [
+          "7",
+          "9",
+          "27",
+          "29"
+        ],
+        c: 1,
+        e: "Nghị quyết Trung ương 4 khóa XII nêu ra 27 biểu hiện tự diễn biến, tự chuyển hóa (gồm 9 biểu hiện suy thoái về tư tưởng chính trị, 9 biểu hiện suy thoái về đạo đức lối sống và 9 biểu hiện về tự diễn biến, tự chuyển hóa)."
+      },
+      {
+        q: "Câu 9: Đảng Cộng sản Việt Nam là sự kết hợp các yếu tố nào?",
+        o: [
+          "Chủ nghĩa Mác và phong trào công nhân",
+          "Chủ nghĩa Mác - Lênin, phong trào công nhân, phong trào trí thức",
+          "Chủ nghĩa Mác - Lênin, phong trào công nhân, phong trào yêu nước",
+          "Chủ nghĩa Mác - Lênin, phong trào công nhân, phong trào nông dân"
+        ],
+        c: 2,
+        e: "Quy luật ra đời của Đảng Cộng sản Việt Nam là sự kết hợp giữa Chủ nghĩa Mác-Lênin, phong trào công nhân và phong trào yêu nước Việt Nam."
+      },
+      {
+        q: "Câu 10: Tổ chức nào đóng vai trò trụ cột trong hệ thống chính trị ở nước ta hiện nay?",
+        o: [
+          "Đảng Cộng sản Việt Nam",
+          "Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam",
+          "Mặt trận Tổ quốc Việt Nam",
+          "Các đoàn thể nhân dân"
+        ],
+        c: 1,
+        e: "Trong hệ thống chính trị Việt Nam: Đảng lãnh đạo; Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam đóng vai trò trụ cột quản lý toàn bộ đời sống kinh tế - xã hội."
+      },
+      {
+        q: "Câu 11: Trong các nguồn lực để tiến hành công nghiệp hóa, hiện đại hóa ở nước ta, Đại hội VIII của Đảng (6/1996) đã xác định nguồn lực nào là yếu tố cơ bản cho sự phát triển nhanh và bền vững?",
+        o: [
+          "Vốn",
+          "Con người",
+          "Cơ cấu kinh tế",
+          "Khoa học - công nghệ"
+        ],
+        c: 1,
+        e: "Đại hội VIII xác định lấy nguồn lực con người làm yếu tố cơ bản cho sự phát triển nhanh và bền vững."
+      },
+      {
+        q: "Câu 12: Cách diễn đạt nào sau đây là đúng về mục tiêu phấn đấu của Việt Nam hiện nay?",
+        o: [
+          "Dân giàu, nước mạnh, dân chủ, công bằng, văn minh",
+          "Dân giàu, nước mạnh, công bằng, dân chủ, văn minh",
+          "Dân giàu, nước mạnh, xã hội tiến bộ, công bằng và văn minh",
+          "Dân giàu, nước mạnh, xã hội công bằng, dân chủ và văn minh"
+        ],
+        c: 0,
+        e: "Cương lĩnh bổ sung, phát triển năm 2011 (Đại hội XI) xác định mục tiêu tổng quát là: 'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh' (đưa chữ 'dân chủ' lên trước)."
+      },
+      {
+        q: "Câu 13: Đại hội lần thứ mấy của Đảng ta đã đưa ra khái niệm chặng đường đầu tiên của thời kì quá độ lên xã hội chủ nghĩa?",
+        o: [
+          "Đại hội III (9/1960)",
+          "Đại hội IV (12/1976)",
+          "Đại hội V (3/1982)",
+          "Đại hội VI (12/1986)"
+        ],
+        c: 2,
+        e: "Đại hội V (3/1982) xác định thời kỳ quá độ nước ta gồm nhiều chặng đường và vạch ra mục tiêu cho chặng đường đầu tiên."
+      },
+      {
+        q: "Câu 14: Lần đầu tiên Đảng ta xác định mô hình lên CNXH là nền kinh tế thị trường định hướng kinh tế tổng quát của nước ta trong thời kỳ quá độ xã hội chủ nghĩa tại Đại hội lần thứ mấy?",
+        o: [
+          "Đại hội VIII (6/1996)",
+          "Đại hội IX (4/2001)",
+          "Đại hội X (4/2006)",
+          "Đại hội XI (01/2011)"
+        ],
+        c: 1,
+        e: "Đại hội IX (4/2001) chính thức đưa ra khái niệm 'Nền kinh tế thị trường định hướng xã hội chủ nghĩa' là mô hình kinh tế tổng quát trong thời kỳ quá độ."
+      },
+      {
+        q: "Câu 15: Trong chủ trương hội nhập quốc tế, Đảng ta xác định hội nhập trên lĩnh vực nào là trọng tâm?",
+        o: [
+          "Chính trị",
+          "Kinh tế",
+          "Văn hóa",
+          "Quốc phòng - an ninh"
+        ],
+        c: 1,
+        e: "Đường lối đối ngoại của Đảng xác định: Hội nhập kinh tế quốc tế là trọng tâm, hội nhập các lĩnh vực khác từng bước mở rộng."
+      },
+      {
+        q: "Câu 16: Đại hội lần thứ mấy của Đảng đã quyết định lấy ngày 03/02 là ngày kỷ niệm thành lập Đảng?",
+        o: [
+          "Đại hội III (9/1960)",
+          "Đại hội IV (12/1976)",
+          "Đại hội V (3/1982)",
+          "Đại hội VI (12/1986)"
+        ],
+        c: 0,
+        e: "Đại hội đại biểu toàn quốc lần thứ III của Đảng (9/1960) đã quyết định lấy ngày 3 tháng 2 dương lịch hàng năm làm ngày kỷ niệm thành lập Đảng."
+      },
+      {
+        q: "Câu 17: Mục tiêu phát triển được Đảng ta xác định tại Đại hội đại biểu toàn quốc lần thứ XIII (01/2021) nào sau đây là đúng?",
+        o: [
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển, theo định hướng XHCN",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước hiện đại, theo định hướng XHCN",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước đang phát triển, theo định hướng XHCN",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển và hiện đại, theo định hướng XHCN"
+        ],
+        c: 0,
+        e: "Văn kiện Đại hội XIII xác định: 'Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển, theo định hướng xã hội chủ nghĩa'."
+      },
+      {
+        q: "Câu 25: Điểm khác nhau căn bản giữa Cương lĩnh chính trị đầu tiên của Đảng và Luận cương chính trị tháng 10/1930 là:",
+        o: [
+          "Vai trò lãnh đạo cách mạng",
+          "Phương pháp cách mạng",
+          "Vị trí của hai nhiệm vụ chiến lược",
+          "Phương hướng chiến lược của cách mạng"
+        ],
+        c: 2,
+        e: "Cương lĩnh đầu tiên (2/1930) đặt giải phóng dân tộc lên hàng đầu; Luận cương (10/1930) đặt cách mạng ruộng đất và đấu tranh giai cấp lên hàng đầu. Đó là sự khác biệt lớn về vị trí của hai nhiệm vụ chiến lược."
+      },
+      {
+        q: "Câu 26: Đại hội đại biểu nào của Đảng chủ trương: 'chủ động hội nhập kinh tế quốc tế'?",
+        o: [
+          "Đại hội VIII (6/1996)",
+          "Đại hội IX (4/2001)",
+          "Đại hội X (4/2006)",
+          "Đại hội XI (01/2011)"
+        ],
+        c: 1,
+        e: "Đại hội IX (4/2001) đề ra chủ trương: 'Chủ động hội nhập kinh tế quốc tế và khu vực theo tinh thần phát huy tối đa nội lực'."
+      },
+      {
+        q: "Câu 27: Mâu thuẫn chủ yếu nhất ở Việt Nam đầu thế kỷ XX là mâu thuẫn nào?",
+        o: [
+          "Mâu thuẫn giữa giai cấp công nhân với giai cấp tư sản",
+          "Mâu thuẫn giữa giai cấp nông dân với địa chủ phong kiến",
+          "Mâu thuẫn giữa dân tộc Việt Nam với thực dân Pháp xâm lược",
+          "Mâu thuẫn giữa công nhân và nông dân với đế quốc và phong kiến"
+        ],
+        c: 2,
+        e: "Do Việt Nam là một nước thuộc địa nửa phong kiến, mâu thuẫn bao trùm và chủ yếu nhất là mâu thuẫn giữa toàn thể dân tộc Việt Nam với thực dân Pháp xâm lược."
+      },
+      {
+        q: "Câu 28: Việt Nam đã bắt đầu đặt quan hệ ngoại giao với Liên Xô vào năm nào?",
+        o: [
+          "1945",
+          "1946",
+          "1950",
+          "1954"
+        ],
+        c: 2,
+        e: "Liên Xô chính thức đặt quan hệ ngoại giao với nước Việt Nam Dân chủ Cộng hòa vào ngày 30 tháng 1 năm 1950."
+      },
+      {
+        q: "Câu 29: Chỉ thị 'Kháng chiến, kiến quốc' (25/11/1945) đã nêu ra nhiệm vụ chủ yếu, trước mắt của cách mạng nước ta là:",
+        o: [
+          "Củng cố chính quyền, cải thiện đời sống nhân dân",
+          "Chống thực dân Pháp xâm lược và bài trừ nội phản",
+          "Chống thực dân Pháp xâm lược, bài trừ nội phản, cải thiện đời sống nhân dân",
+          "Củng cố chính quyền, chống thực dân Pháp xâm lược, bài trừ nội phản, cải thiện đời sống nhân dân"
+        ],
+        c: 3,
+        e: "Chỉ thị xác định 4 nhiệm vụ trước mắt: củng cố chính quyền cách mạng, chống thực dân Pháp xâm lược, bài trừ nội phản và cải thiện đời sống nhân dân."
+      },
+      {
+        q: "Câu 30: Thắng lợi của cuộc kháng chiến chống Mỹ cứu nước đã cho ta nhiều bài học kinh nghiệm có giá trị, trong đó bài học nào có giá trị hàng đầu?",
+        o: [
+          "Giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội",
+          "Thực hiện chiến tranh nhân dân linh hoạt, sáng tạo",
+          "Coi trọng công tác tổ chức, công tác xây dựng Đảng",
+          "Kiên định tư tưởng chiến lược tiến công, quyết đánh và quyết thắng đế quốc Mỹ xâm lược"
+        ],
+        c: 0,
+        e: "Bài học hàng đầu là giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội để kết hợp sức mạnh dân tộc và sức mạnh thời đại."
+      },
+      {
+        q: "Câu 31: Đại hội đại biểu toàn quốc lần thứ X (4/2006) đã xác định xã hội xã hội chủ nghĩa mà chúng ta đang xây dựng có mấy đặc trưng?",
+        o: [
+          "4 đặc trưng",
+          "6 đặc trưng",
+          "8 đặc trưng",
+          "10 đặc trưng"
+        ],
+        c: 2,
+        e: "Đại hội X bổ sung và phát triển các đặc trưng xây dựng CNXH tại Việt Nam từ 6 đặc trưng lên thành 8 đặc trưng."
+      },
+      {
+        q: "Câu 32: Điền vào chỗ trống sau đây: 'Kết hợp chặt chẽ ngay từ đầu đổi mới kinh tế với đổi mới chính trị, lấy đổi mới ... làm trọng tâm, đồng thời từng bước đổi mới...'.",
+        o: [
+          "Chính trị, xã hội",
+          "Kinh tế, xã hội",
+          "Chính trị, kinh tế",
+          "Kinh tế, chính trị"
+        ],
+        c: 3,
+        e: "Quan điểm đổi mới của Đảng xác định: kết hợp chặt chẽ giữa đổi mới kinh tế với đổi mới chính trị, lấy đổi mới **kinh tế** làm trọng tâm, từng bước đổi mới **chính trị**."
+      },
+      {
+        q: "Câu 33: Mốc lịch sử đánh dấu việc thất bại của thực dân Pháp trong chiến lược 'đánh nhanh, thắng nhanh' lần thứ 2 là:",
+        o: [
+          "Chiến thắng Việt Bắc-Thu đông (1947)",
+          "Chiến thắng Biên Giới-Thu đông (1950)",
+          "Chiến thắng đường 18 (1951)",
+          "Chiến thắng Hòa Bình (1952)"
+        ],
+        c: 0,
+        e: "Thắng lợi của chiến dịch Việt Bắc - Thu Đông năm 1947 đã đập tan hoàn toàn chiến lược 'đánh nhanh thắng nhanh' của thực dân Pháp, buộc chúng phải chuyển sang đánh lâu dài."
+      },
+      {
+        q: "Câu 34: Từ 9/1945 - 3/1946, Đảng ta thực hiện sách lược ngoại giao:",
+        o: [
+          "Đánh quân Tưởng và thực dân Pháp",
+          "Hòa hoãn với quân Tưởng và thực dân Pháp",
+          "Hòa hoãn với Tưởng, tập trung đánh Pháp ở Nam Bộ",
+          "Hòa hoãn với thực dân Pháp, đuổi quân Tưởng về nước"
+        ],
+        c: 2,
+        e: "Giai đoạn từ 9/1945 đến trước 6/3/1946, Đảng thực hiện sách lược: 'Hòa hoãn với quân Tưởng ở miền Bắc, tập trung kháng chiến chống Pháp xâm lược ở Nam Bộ'."
+      },
+      {
+        q: "Câu 35: Để gạt mũi nhọn tấn công của kẻ thù, Đảng Cộng sản Đông Dương tuyên bố 'tự giải tán' vào thời gian nào?",
+        o: [
+          "19/8/1945",
+          "02/9/1945",
+          "11/11/1945",
+          "19/12/1946"
+        ],
+        c: 2,
+        e: "Ngày 11/11/1945, để tránh sự khiêu khích phá hoại của quân Tưởng và tay sai, Đảng tuyên bố tự giải tán, thực chất là rút vào hoạt động bí mật."
+      },
+      {
+        q: "Câu 36: Tại Đại hội nào, lần đầu tiên Đảng giương cao ngọn cờ tư tưởng Hồ Chí Minh và khẳng định: 'Đảng Cộng sản Việt Nam lấy chủ nghĩa Mác - Lênin và tư tưởng Hồ Chí Minh làm nền tảng tư tưởng và kim chỉ nam cho hành động.'?",
+        o: [
+          "Đại hội VI (12/1986)",
+          "Đại hội VII (6/1991)",
+          "Đại hội VIII (6/1996)",
+          "Đại hội IX (4/2001)"
+        ],
+        c: 1,
+        e: "Tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991), Đảng lần đầu tiên khẳng định lấy chủ nghĩa Mác-Lênin và tư tưởng Hồ Chí Minh làm kim chỉ nam."
+      },
+      {
+        q: "Câu 37: Trong giai đoạn 1969 - 1975, đế quốc Mỹ đã thực hiện chiến lược chiến tranh nào ở miền Nam Việt Nam?",
+        o: [
+          "Chiến tranh đặc biệt",
+          "Chiến tranh cục bộ",
+          "Chiến tranh đơn phương",
+          "Việt Nam hóa chiến tranh"
+        ],
+        c: 3,
+        e: "Từ 1969 đến 1975, đế quốc Mỹ thực hiện chiến lược 'Việt Nam hóa chiến tranh' ở miền Nam và 'Đông Dương hóa chiến tranh' trên bán đảo Đông Dương."
+      },
+      {
+        q: "Câu 38: Nhằm tiếp tục phát triển kinh tế tư nhân, Hội nghị Trung ương 5 khóa XII (5/2017) chủ trương:",
+        o: [
+          "Phát triển kinh tế tư nhân đủ sức thay thế kinh tế nhà nước",
+          "Phát triển kinh tế tư nhân kết hợp với kinh tế tập thể",
+          "Phát triển kinh tế tư nhân trở thành nguồn lực của nền kinh tế thị trường định hướng XHCN",
+          "Phát triển kinh tế tư nhân trở thành một động lực quan trọng của nền kinh tế thị trường định hướng XHCN"
+        ],
+        c: 3,
+        e: "Nghị quyết TW 5 khóa XII xác định: 'Phát triển kinh tế tư nhân trở thành một động lực quan trọng của nền kinh tế thị trường định hướng xã hội chủ nghĩa'."
+      },
+      {
+        q: "Câu 39: Trong phong trào yêu nước theo khuynh hướng dân chủ tư sản cuối thế kỷ XIX đầu thế kỷ XX, nhà yêu nước nào đại diện cho xu hướng bạo động để đánh đuổi thực dân Pháp và bọn tay sai?",
+        o: [
+          "Huỳnh Thúc Kháng",
+          "Nguyễn Thái Học",
+          "Phan Bội Châu",
+          "Phan Châu Trinh"
+        ],
+        c: 2,
+        e: "Phan Bội Châu đại diện cho xu hướng cách mạng bạo động (thành lập Duy Tân Hội, phong trào Đông Du), còn Phan Châu Trinh đại diện cho xu hướng cải cách ôn hòa."
+      },
+      {
+        q: "Câu 40: Nòng cốt để phát triển nền kinh tế Việt Nam độc lập, tự chủ hiện nay là các thành phần kinh tế:",
+        o: [
+          "Kinh tế nhà nước, kinh tế tập thể",
+          "Kinh tế nhà nước, kinh tế tập thể, kinh tế tư nhân",
+          "Kinh tế nhà nước, kinh tế tập thể, kinh tế có vốn đầu tư nước ngoài",
+          "Kinh tế nhà nước, kinh tế tư nhân, kinh tế có vốn đầu tư nước ngoài"
+        ],
+        c: 1,
+        e: "Nghị quyết Đại hội XIII của Đảng xác định: Kinh tế nhà nước giữ vai trò chủ đạo; Kinh tế tập thể không ngừng củng cố; Kinh tế tư nhân là động lực quan trọng; Ba thành phần kinh tế trong nước này giữ vai trò nòng cốt để phát triển kinh tế tự chủ."
+      }
+    ];
+
+    let userProgress = {};
+    const STORAGE_KEY = 'studyhub_progress_lsd_coxuyen';
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      // Update scoreboard elements
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      // Update feedback text
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/32 câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã nắm vững toàn bộ kiến thức ôn thi.";
+        else if (rating >= 8) ratingStr = "Giỏi! Bạn đã đạt mức an toàn cao để đi thi.";
+        else if (rating >= 6.5) ratingStr = "Khá. Bạn cần xem lại vài câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ các lời giải thích để ghi nhớ sâu hơn.";
+        else ratingStr = "Yếu. Hãy bấm làm lại để cải thiện điểm số.";
+        
+        fbText.innerText = `Hoàn thành bài thi! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ bài trắc nghiệm đề cô Xuyến từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

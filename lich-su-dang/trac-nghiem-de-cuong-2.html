@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm Lịch sử Đảng - Đề cương Trang 2 - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Layout cột đơn full-width */
+    main {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .quiz-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .quiz-options label:hover:not(.disabled) {
+      border-color: var(--primary-color, #0284c7);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+    .quiz-options label.correct {
+      border-color: #22c55e;
+      background-color: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+    }
+    .quiz-options label.incorrect {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .dark-theme .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.15rem;
+      cursor: pointer;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22c55e;
+      color: #16a34a;
+    }
+    .dark-theme .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.06);
+      border-left: 3px solid #ef4444;
+      color: #dc2626;
+    }
+    .dark-theme .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+    .score-summary-bar {
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .score-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #0f172a);
+      margin-bottom: 0.25rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .score-progress-container {
+      background-color: var(--border-color, #e5e7eb);
+      border-radius: 9999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      background-color: var(--primary-color, #0284c7);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .quiz-control-btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-color, #e5e7eb);
+      background-color: var(--bg-card, #ffffff);
+      color: var(--text-color, #0f172a);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-control-btn:hover {
+      background-color: var(--border-color, #e5e7eb);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Luyện tập trắc nghiệm
+      </div>
+      <h1>Luyện tập trắc nghiệm: Đề cương ôn tập - Trang 2 (Ngân hàng câu hỏi)</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống câu hỏi luyện tập thông minh giúp ghi nhớ kiến thức lý thuyết Lịch sử Đảng sâu sắc.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a href="index.html" class="btn-pdf" style="text-decoration: none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Quay lại học bài
+      </a>
+    </div>
+
+    <!-- Layout 1 cột rộng rãi -->
+    <main>
+      <!-- Horizontal Panel kết quả -->
+      <div class="score-summary-bar no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 200px;">
+            <div class="score-text">Kết quả của bạn</div>
+            <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 50 câu đúng</span>
+            </div>
+          </div>
+          
+          <div style="flex: 2; min-width: 250px; max-width: 500px;">
+            <div class="score-progress-container" style="margin-bottom: 0.4rem;">
+              <div id="score-progress-bar" class="score-progress-fill"></div>
+            </div>
+            <p id="score-feedback-text" style="font-size: 0.8rem; color: var(--text-light); line-height: 1.4; margin: 0;">Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.</p>
+          </div>
+          
+          <div>
+            <button onclick="confirmResetQuiz()" class="quiz-control-btn">🔄 Làm lại tất cả</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- questions-container -->
+      <div id="questions-container">
+        <!-- Quiz cards dynamic render -->
+      </div>
+    </main>
+
+    <footer style="margin-top: 3rem;">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'studyhub_progress_lsd_decuong_2';
+    const quizData = [
+  {
+    "q": "Câu 1: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 2: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 3: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 4: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 5: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 6: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 7: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 8: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 9: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 10: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 11: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 12: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 13: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 14: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 15: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 16: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 17: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 18: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 19: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 20: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 21: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 22: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 23: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 24: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 25: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 26: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 27: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 28: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 29: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 30: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 31: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 32: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 33: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 34: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 35: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 36: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 37: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 38: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 39: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 40: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 41: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 42: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 43: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 44: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 45: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  },
+  {
+    "q": "Câu 46: Ai là Thư ký của Ban Chỉ huy ở ngoài của Đảng Cộng sản Đông Dương thành lập đầu năm 1934?",
+    "o": [
+      "Đồng chí Hà Huy Tập",
+      "Đồng chí Lê Hồng Phong",
+      "Đồng chí Nguyễn Văn Cừ",
+      "Đồng chí Trần Phú"
+    ],
+    "c": 1,
+    "e": "Ban Chỉ huy ở ngoài của Đảng được thành lập năm 1934 do đồng chí Lê Hồng Phong làm Thư ký nhằm lãnh đạo khôi phục phong trào cách mạng trong nước."
+  },
+  {
+    "q": "Câu 47: Tên viết tắt của Mặt trận được Đảng ta chủ trương thành lập tại Hội nghị Trung ương 8 (tháng 5/1941) là gì?",
+    "o": [
+      "Mặt trận Liên Việt",
+      "Mặt trận Việt Minh",
+      "Mặt trận Dân chủ Đông Dương",
+      "Mặt trận Tổ quốc Việt Nam"
+    ],
+    "c": 1,
+    "e": "Hội nghị TW 8 (5/1941) đã quyết định thành lập Việt Nam Độc lập Đồng minh, gọi tắt là Mặt trận Việt Minh."
+  },
+  {
+    "q": "Câu 48: Tác phẩm 'Chung quanh vấn đề chiến sách mới' (10/1936) đã chỉ ra quan điểm mới nào của Đảng?",
+    "o": [
+      "Cách mạng ruộng đất phải được tiến hành đồng thời và gắn chặt với giải phóng dân tộc",
+      "Cuộc dân tộc giải phóng không nhất định phải kết chặt với cuộc cách mạng điền địa",
+      "Chỉ liên kết giai cấp vô sản và nông dân lao khổ",
+      "Cách mạng ruộng đất là nhiệm vụ hàng đầu của giai cấp vô sản"
+    ],
+    "c": 1,
+    "e": "Bản Chỉ thị Chung quanh vấn đề chiến sách mới (10/1936) nêu rõ cuộc dân tộc giải phóng không nhất định phải gắn chặt với cuộc cách mạng ruộng đất, thể hiện sự linh hoạt tư duy."
+  },
+  {
+    "q": "Câu 49: Nguyễn Tất Thành ra đi tìm đường cứu nước tại Bến cảng Nhà Rồng vào năm nào?",
+    "o": [
+      "Năm 1908",
+      "Năm 1911",
+      "Năm 1919",
+      "Năm 1920"
+    ],
+    "c": 1,
+    "e": "Nguyễn Tất Thành ra đi tìm đường cứu nước vào ngày 5/6/1911 trên con tàu Amiral Latouche-Tréville."
+  },
+  {
+    "q": "Câu 50: Hội nghị lần thứ mấy của Ban Chấp hành Trung ương Đảng (khóa cũ) đã chuẩn bị điều kiện chuyển hướng chỉ đạo chiến lược năm 1939?",
+    "o": [
+      "Hội nghị lần thứ 5",
+      "Hội nghị lần thứ 6",
+      "Hội nghị lần thứ 7",
+      "Hội nghị lần thứ 8"
+    ],
+    "c": 1,
+    "e": "Hội nghị Trung ương lần thứ 6 (11/1939) họp tại Bà Điểm (Gia Định) do Tổng Bí thư Nguyễn Văn Cừ chủ trì đã quyết định chuyển hướng chỉ đạo chiến lược cách mạng Đông Dương."
+  }
+];
+
+    let userProgress = {};
+
+    function initProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch(e) {
+          userProgress = {};
+        }
+      } else {
+        userProgress = {};
+      }
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let answeredCount = 0;
+
+      quizData.forEach((q, idx) => {
+        if (userProgress[idx] !== undefined) {
+          answeredCount++;
+          if (userProgress[idx].isCorrect) {
+            correct++;
+          }
+        }
+      });
+
+      document.getElementById('score-correct-count').innerText = correct;
+      const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
+      document.getElementById('score-progress-bar').style.width = percent + '%';
+
+      const fbText = document.getElementById('score-feedback-text');
+      if (answeredCount === 0) {
+        fbText.innerText = "Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.";
+      } else if (answeredCount < quizData.length) {
+        fbText.innerText = `Đã làm ${answeredCount}/50 câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
+      } else {
+        const rating = (correct / quizData.length) * 10;
+        let ratingStr = "";
+        if (rating >= 9) ratingStr = "Xuất sắc! Bạn đã nắm vững toàn bộ kiến thức ôn thi.";
+        else if (rating >= 8) ratingStr = "Giỏi! Bạn đã đạt mức an toàn cao để đi thi.";
+        else if (rating >= 6.5) ratingStr = "Khá. Bạn cần xem lại vài câu trả lời sai.";
+        else if (rating >= 5) ratingStr = "Trung bình. Hãy đọc kỹ các lời giải thích để ghi nhớ sâu hơn.";
+        else ratingStr = "Yếu. Hãy bấm làm lại để cải thiện điểm số.";
+        
+        fbText.innerText = `Hoàn thành bài thi! Điểm số: ${(rating).toFixed(1)}/10. ${ratingStr}`;
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((qObj, index) => {
+        const hasBeenAnswered = userProgress[index] !== undefined;
+        const userAns = userProgress[index];
+
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `q_card_${index}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'quiz-question';
+        questionTitle.innerText = qObj.q;
+        card.appendChild(questionTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        qObj.o.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          label.id = `lbl_${index}_${optIdx}`;
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `q_radio_${index}`;
+          radio.value = optIdx;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${index}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(qIndex, selectedOptIdx) {
+      const qObj = quizData[qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      updateScoreboard();
+      renderQuestions();
+    }
+
+    function confirmResetQuiz() {
+      if (confirm("Bạn có chắc chắn muốn làm lại toàn bộ bài trắc nghiệm này từ đầu?")) {
+        userProgress = {};
+        saveProgress();
+        updateScoreboard();
+        renderQuestions();
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>
