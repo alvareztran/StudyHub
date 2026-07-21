@@ -1661,4 +1661,778 @@ const quizData = {
       e: "GA chỉ cần hai yếu tố cốt lõi: cơ chế mã hóa nghiệm (nhiễm sắc thể) và hàm đánh giá (Fitness) để đo chất lượng nghiệm."
     }
   ]
+,
+  // BÀI TẬP TÍNH TOÁN TỔNG HỢP
+  ch8: [
+    {
+        "q": "Cho không gian trạng thái là một cây nhị phân đều có độ sâu $d = 4$ (gốc ở mức 0). Tìm kiếm theo chiều rộng (BFS) sẽ cần duyệt tối đa bao nhiêu nút trước khi tìm thấy nút mục tiêu nằm ở mức sâu nhất (mức 4), giả sử mục tiêu nằm ở cuối cùng bên phải của mức này?",
+        "a": [
+            "A. 15 nút",
+            "B. 31 nút",
+            "C. 16 nút",
+            "D. 30 nút"
+        ],
+        "c": 1,
+        "e": "Tổng số nút của cây nhị phân đều có độ sâu 4 là $1 + 2 + 4 + 8 + 16 = 31$. Vì nút mục tiêu nằm ở cuối cùng bên phải của mức sâu nhất, BFS phải duyệt qua toàn bộ cây, tương đương với 31 nút."
+    },
+    {
+        "q": "Một robot di chuyển trên lưới ô vuông. Từ ô $(x, y)$, robot có thể đi sang 4 ô lân cận với chi phí mỗi bước là 1. Nếu sử dụng thuật toán Dijkstra (hoặc UCS) tìm đường đi ngắn nhất từ ô $(0,0)$ đến $(3,4)$, chi phí đường đi tối ưu là bao nhiêu?",
+        "a": [
+            "A. 5",
+            "B. 7",
+            "C. 12",
+            "D. 25"
+        ],
+        "c": 1,
+        "e": "Chi phí đường đi ngắn nhất (khoảng cách Manhattan) là $|3-0| + |4-0| = 3 + 4 = 7$ bước, với chi phí mỗi bước là 1, tổng chi phí tối ưu là 7."
+    },
+    {
+        "q": "Cho đồ thị có trạng thái gốc $S$, trạng thái đích $G$. Có đường đi $S \\rightarrow A \\rightarrow G$ với chi phí tương ứng là $c(S,A)=3, c(A,G)=4$, và đường đi $S \\rightarrow B \\rightarrow G$ với $c(S,B)=2, c(B,G)=6$. Thuật toán Tìm kiếm chi phí đồng nhất (UCS) sẽ chọn đường đi nào và tổng chi phí là bao nhiêu?",
+        "a": [
+            "A. Chọn $S \\rightarrow A \\rightarrow G$ với chi phí 7",
+            "B. Chọn $S \\rightarrow B \\rightarrow G$ với chi phí 8",
+            "C. Chọn $S \\rightarrow A \\rightarrow G$ với chi phí 8",
+            "D. Chọn $S \\rightarrow B \\rightarrow G$ với chi phí 7"
+        ],
+        "c": 0,
+        "e": "UCS duyệt các đường đi theo thứ tự chi phí tích lũy tăng dần. Đường đi $S \\rightarrow A \\rightarrow G$ có tổng chi phí $3 + 4 = 7$. Đường đi $S \\rightarrow B \\rightarrow G$ có chi phí $2 + 6 = 8$. UCS sẽ chọn đường đi tối ưu là $S \\rightarrow A \\rightarrow G$ với chi phí 7."
+    },
+    {
+        "q": "Trong thuật toán Tìm kiếm sâu giới hạn (DLS) với giới hạn độ sâu $L = 2$ áp dụng trên cây tìm kiếm có hệ số rẽ nhánh $b = 3$. Số lượng trạng thái tối đa được sinh ra (không tính nút gốc) là bao nhiêu?",
+        "a": [
+            "A. 9 trạng thái",
+            "B. 12 trạng thái",
+            "C. 13 trạng thái",
+            "D. 15 trạng thái"
+        ],
+        "c": 1,
+        "e": "Với gốc ở mức 0, mức 1 sinh ra $b = 3$ nút. Mỗi nút ở mức 1 sinh tiếp $b = 3$ nút ở mức 2, tổng cộng ở mức 2 có $3 \\times 3 = 9$ nút. Số trạng thái tối đa được sinh ra không tính gốc là $3 + 9 = 12$ trạng thái."
+    },
+    {
+        "q": "Thuật toán Tìm kiếm sâu lặp (IDDFS) duyệt đến độ sâu mục tiêu là $d = 3$. Giả sử cây tìm kiếm có hệ số rẽ nhánh $b = 2$. Nút gốc (mức 0) được mở bao nhiêu lần trong suốt quá trình chạy thuật toán?",
+        "a": [
+            "A. 1 lần",
+            "B. 2 lần",
+            "C. 3 lần",
+            "D. 4 lần"
+        ],
+        "c": 3,
+        "e": "IDDFS chạy lặp DFS với các giới hạn độ sâu từ $L = 0$ đến $L = d$. Tại mỗi lần lặp, thuật toán bắt đầu lại từ gốc. Với $d=3$, các vòng lặp là $L=0, 1, 2, 3$. Do đó nút gốc được mở đúng $3 - 0 + 1 = 4$ lần."
+    },
+    {
+        "q": "Một bài toán Tám quân hậu (8-Queens) có số lượng cấu hình bàn cờ tối đa có thể có (nếu xếp ngẫu nhiên 8 quân hậu vào 64 ô mà không có ràng buộc nào trước) là bao nhiêu?",
+        "a": [
+            "A. $64^8$",
+            "B. $C_{64}^{8} \\approx 4.426 \\times 10^9$",
+            "C. $8! = 40,320$",
+            "D. $8^8 \\approx 16.77 \\times 10^6$"
+        ],
+        "c": 1,
+        "e": "Xếp 8 quân hậu vào 64 ô không trùng nhau tương đương chọn tổ hợp chập 8 của 64, ký hiệu là $C_{64}^8$ (khoảng 4.4 tỷ cấu hình)."
+    },
+    {
+        "q": "Với bài toán 8-puzzle (khung lưới $3 \\times 3$), số lượng trạng thái phân biệt trong không gian tìm kiếm đầy đủ là bao nhiêu?",
+        "a": [
+            "A. $9^9$",
+            "B. $9! = 362,880$",
+            "C. $9! / 2 = 181,440$",
+            "D. $3^9 = 19,683$"
+        ],
+        "c": 1,
+        "e": "Không gian tìm kiếm chứa tất cả các hoán vị xếp 9 ô (8 ô số + 1 ô trống) vào 9 vị trí, bằng $9! = 362,880$ trạng thái (chú ý chỉ có một nửa trong số này là giải được, nhưng tổng số trạng thái hình thức là $9!$)."
+    },
+    {
+        "q": "Trong tìm kiếm Heuristic $A^*$, tại nút hiện tại $n$, ta có chi phí đi từ gốc $g(n) = 12$ và hàm đánh giá Heuristic đến đích $h(n) = 8$. Giá trị hàm đánh giá $f(n)$ của nút này là bao nhiêu?",
+        "a": [
+            "A. 4",
+            "B. 20",
+            "C. 96",
+            "D. 1.5"
+        ],
+        "c": 1,
+        "e": "Công thức của thuật toán $A^*$ là $f(n) = g(n) + h(n) = 12 + 8 = 20$."
+    },
+    {
+        "q": "Hàm Heuristic $h(n)$ được gọi là chấp nhận được (admissible) khi nào? Biết $h^*(n)$ là chi phí thực tế tối ưu từ $n$ đến đích.",
+        "a": [
+            "A. $h(n) \\ge h^*(n)$ với mọi nút $n$",
+            "B. $h(n) \\le h^*(n)$ với mọi nút $n$",
+            "C. $h(n) = g(n) + h^*(n)$",
+            "D. $h(n) = 0$ với mọi nút $n$"
+        ],
+        "c": 1,
+        "e": "Hàm heuristic chấp nhận được khi nó không bao giờ đánh giá cao hơn chi phí thực tế để đến đích, tức là $h(n) \\le h^*(n)$."
+    },
+    {
+        "q": "Cho hàm Heuristic $h(n)$ nhất quán (consistent). Nếu chi phí bước đi từ nút $n$ sang nút kế tiếp $n'$ là $c(n, a, n') = 4$ và Heuristic tại $n'$ là $h(n') = 7$. Giá trị của $h(n)$ tối đa có thể đạt được là bao nhiêu?",
+        "a": [
+            "A. 3",
+            "B. 7",
+            "C. 11",
+            "D. 28"
+        ],
+        "c": 2,
+        "e": "Tính nhất quán đòi hỏi Heuristic thỏa mãn bất đẳng thức tam giác: $h(n) \\le c(n, a, n') + h(n')$. Do đó $h(n) \\le 4 + 7 = 11$. Vậy giá trị tối đa của $h(n)$ là 11."
+    },
+    {
+        "q": "Cho ba nút $A, B, C$ trong hàng đợi ưu tiên của thuật toán Greedy Best-First Search với giá trị Heuristic tương ứng là $h(A) = 15, h(B) = 8, h(C) = 12$. Chi phí thực tế tích lũy là $g(A) = 2, g(B) = 10, g(C) = 5$. Thuật toán sẽ chọn nút nào để mở tiếp theo?",
+        "a": [
+            "A. Nút A",
+            "B. Nút B",
+            "C. Nút C",
+            "D. Cả B và C"
+        ],
+        "c": 1,
+        "e": "Greedy Best-First Search chỉ chọn nút có Heuristic nhỏ nhất để phát triển, bất chấp chi phí thực tế $g(n)$. Vì $h(B) = 8$ là nhỏ nhất nên nút B sẽ được chọn."
+    },
+    {
+        "q": "Một cây trò chơi Minimax có gốc là nút MAX. Mức tiếp theo chứa hai nút MIN là A và B. Nút A có các con có giá trị lần lượt là 3, 5. Nút B có các con có giá trị lần lượt là 2, 9. Giá trị tối ưu tại nút gốc là bao nhiêu?",
+        "a": [
+            "A. 2",
+            "B. 3",
+            "C. 5",
+            "D. 9"
+        ],
+        "c": 1,
+        "e": "Tại mức MIN: Giá trị nút A là $\\min(3, 5) = 3$. Giá trị nút B là $\\min(2, 9) = 2$. Tại gốc MAX: Chọn $\\max(V(A), V(B)) = \\max(3, 2) = 3$."
+    },
+    {
+        "q": "Cho cây trò chơi có gốc MAX. Nhánh trái của gốc dẫn đến nút MIN A, có các lá con là 8 và 6. Nhánh phải dẫn đến nút MIN B. Lá con đầu tiên bên trái của B có giá trị là 4. Thuật toán cắt tỉa Alpha-Beta sẽ làm gì tiếp theo?",
+        "a": [
+            "A. Duyệt tiếp các lá tiếp theo của B",
+            "B. Cắt tỉa tất cả các lá còn lại của B vì giá trị tại B chắc chắn $\\le 4 < 6$",
+            "C. Gán giá trị gốc bằng 8",
+            "D. Cắt tỉa nhánh trái A"
+        ],
+        "c": 1,
+        "e": "Giá trị của A là $\\min(8, 6) = 6$. Gốc MAX có giá trị ít nhất là 6. Khi duyệt sang B, ta gặp lá đầu tiên là 4. Vì B là nút MIN, giá trị của B sẽ $\\le 4$. Mà $4 < 6$, nên gốc MAX chắc chắn không chọn B. Ta cắt tỉa tất cả các con còn lại của B."
+    },
+    {
+        "q": "Trong bài toán thỏa mãn ràng buộc (CSP) có 3 biến $X_1, X_2, X_3$ với miền giá trị ban đầu tương ứng là $D_1 = {1, 2, 3}, D_2 = {2, 4}, D_3 = {3}$. Ràng buộc là $X_i \\ne X_j$. Sau khi thực hiện kiểm tra phía trước (Forward Checking) dựa trên phép gán $X_3 = 3$, miền giá trị của các biến còn lại thay đổi thế nào?",
+        "a": [
+            "A. $D_1 = {1, 2}, D_2 = {2, 4}$",
+            "B. $D_1 = {1, 2, 3}, D_2 = {2}$",
+            "C. $D_1 = {1, 2}, D_2 = {4}$",
+            "D. $D_1 = {1, 3}, D_2 = {4}$"
+        ],
+        "c": 0,
+        "e": "Gán $X_3 = 3$ yêu cầu loại bỏ giá trị 3 khỏi miền giá trị của các biến có liên kết ràng buộc với $X_3$. Do đó loại bỏ 3 khỏi $D_1$, miền giá trị còn lại là $D_1 = {1, 2}$. Biến $X_2$ không có 3 trong miền giá trị nên $D_2$ giữ nguyên là ${2, 4}$."
+    },
+    {
+        "q": "Độ đo Entropy của một tập dữ liệu $S$ gồm 8 mẫu tích cực (positive) và 8 mẫu tiêu cực (negative) là bao nhiêu?",
+        "a": [
+            "A. 0",
+            "B. 0.5",
+            "C. 1.0",
+            "D. 8.0"
+        ],
+        "c": 2,
+        "e": "Tỷ lệ mẫu tích cực là $p_+ = 8/16 = 0.5$, tỷ lệ mẫu tiêu cực là $p_- = 0.5$. Entropy $H(S) = -0.5 \\log_2(0.5) - 0.5 \\log_2(0.5) = 0.5 + 0.5 = 1.0$."
+    },
+    {
+        "q": "Cho tập dữ liệu ban đầu có Entropy $H(S) = 1.0$. Khi phân hoạch tập dữ liệu theo thuộc tính $A$, thu được hai tập con $S_1$ (chiếm 60% dữ liệu) có Entropy $H(S_1) = 0.8$ và $S_2$ (chiếm 40% dữ liệu) có Entropy $H(S_2) = 0.5$. Tính độ tăng thông tin (Information Gain) của thuộc tính A.",
+        "a": [
+            "A. 0.32",
+            "B. 0.68",
+            "C. 0.35",
+            "D. 0.45"
+        ],
+        "c": 0,
+        "e": "$Gain(S, A) = H(S) - (0.6 \\times H(S_1) + 0.4 \\times H(S_2)) = 1.0 - (0.6 \\times 0.8 + 0.4 \\times 0.5) = 1.0 - (0.48 + 0.20) = 1.0 - 0.68 = 0.32$."
+    },
+    {
+        "q": "Một perceptron có vector trọng số ban đầu $W = [0.3, -0.2]^T$ và bias $b = 0.1$. Với input đầu vào $X = [1.0, 2.0]^T$, tính đầu ra của perceptron trước khi qua hàm kích hoạt dạng bước nhảy (tức là tổng trọng số tích lũy $z = W^T X + b$).",
+        "a": [
+            "A. 0.2",
+            "B. 0.0",
+            "C. -0.2",
+            "D. 0.1"
+        ],
+        "c": 1,
+        "e": "$z = W^T X + b = (0.3 \\times 1.0) + (-0.2 \\times 2.0) + 0.1 = 0.3 - 0.4 + 0.1 = 0.0$."
+    },
+    {
+        "q": "Cho mạng perceptron một lớp đang học với tốc độ học $\\eta = 0.1$. Vector trọng số hiện tại $W = [0.5, 0.5]^T$. Tại bước này, input là $X = [2.0, 1.0]^T$, nhãn thực tế $y = 1$, nhãn dự báo $\\hat{y} = 0$. Cập nhật vector trọng số mới $W'$ theo quy tắc Delta.",
+        "a": [
+            "A. $W' = [0.7, 0.6]^T$",
+            "B. $W' = [0.3, 0.4]^T$",
+            "C. $W' = [0.6, 0.55]^T$",
+            "D. $W' = [0.5, 0.5]^T$"
+        ],
+        "c": 0,
+        "e": "Công thức cập nhật: $W' = W + \\eta (y - \\hat{y}) X = [0.5, 0.5]^T + 0.1 \\times (1 - 0) \\times [2.0, 1.0]^T = [0.5, 0.5]^T + [0.2, 0.1]^T = [0.7, 0.6]^T$."
+    },
+    {
+        "q": "Hệ thống lập luận dựa trên mạng ngữ nghĩa có quan hệ kế thừa phân cấp. Nút 'Chim' có thuộc tính 'bay = True'. Nút 'Chim cánh cụt' là con của nút 'Chim' và có thuộc tính 'bay = False'. Nếu truy vấn thuộc tính 'bay' của 'Chim cánh cụt', giá trị trả về là gì?",
+        "a": [
+            "A. True (Do kế thừa từ lớp cha)",
+            "B. False (Do thuộc tính ghi đè tại nút con)",
+            "C. Không xác định được",
+            "D. Cả True và False"
+        ],
+        "c": 1,
+        "e": "Trong mạng ngữ nghĩa có kế thừa phân cấp, thuộc tính được định nghĩa trực tiếp tại lớp con sẽ ghi đè (override) thuộc tính kế thừa từ lớp cha."
+    },
+    {
+        "q": "Cho biểu thức logic mệnh đề sau: $P \\rightarrow (Q \\lor R)$. Chuyển biểu thức này sang dạng chuẩn hội (CNF).",
+        "a": [
+            "A. $\\neg P \\lor Q \\lor R$",
+            "B. $P \\lor \\neg Q \\lor \\neg R$",
+            "C. $\\neg P \\land (Q \\lor R)$",
+            "D. $(\\neg P \\lor Q) \\land (\\neg P \\lor R)$"
+        ],
+        "c": 0,
+        "e": "Áp dụng tương đương logic của phép kéo theo: $A \\rightarrow B \\equiv \\neg A \\lor B$. Ta được: $P \\rightarrow (Q \\lor R) \\equiv \\neg P \\lor (Q \\lor R) \\equiv \\neg P \\lor Q \\lor R$."
+    },
+    {
+        "q": "Chuyển biểu thức mệnh đề sau sang dạng chuẩn hội CNF: $\\neg (P \\land Q) \\rightarrow R$.",
+        "a": [
+            "A. $(\\neg P \\lor \\neg Q) \\lor R$",
+            "B. $P \\lor Q \\lor R$",
+            "C. $(P \\land Q) \\lor R$",
+            "D. $\\neg P \\land \\neg Q \\land R$"
+        ],
+        "c": 2,
+        "e": "$\\neg (P \\land Q) \\rightarrow R \\equiv \\neg (\\neg (P \\land Q)) \\lor R \\equiv (P \\land Q) \\lor R \\equiv (P \\lor R) \\land (Q \\lor R)$. (Dạng CNF là hội của các mệnh đề tuyển)."
+    },
+    {
+        "q": "Phép hợp nhất (Unification) hai biểu thức mệnh đề $P(x, g(y))$ và $P(f(a), z)$ sử dụng phép thế nào dưới đây để thu được biểu thức giống nhau?",
+        "a": [
+            "A. $\\theta = \\{x/f(a), z/g(y)\\}$",
+            "B. $\\theta = \\{x/a, y/z\\}$",
+            "C. $\\theta = \\{f(a)/x, g(y)/z\\}$",
+            "D. Không thể hợp nhất"
+        ],
+        "c": 0,
+        "e": "Thế biến $x$ bằng $f(a)$ và thế biến $z$ bằng $g(y)$. Khi đó cả hai biểu thức cùng trở thành $P(f(a), g(y))$. Phép thế hợp lệ ghi dưới dạng $\\{x/f(a), z/g(y)\\}$."
+    },
+    {
+        "q": "Cho hai mệnh đề $C_1 = P(x) \\lor Q(a)$ và $C_2 = \\neg P(b) \\lor R(y)$. Kết quả của phép hợp giải (Resolution) giữa $C_1$ và $C_2$ là mệnh đề nào?",
+        "a": [
+            "A. $Q(a) \\lor R(y)$",
+            "B. $P(b) \\lor \\neg P(b)$",
+            "C. $Q(a) \\lor R(b)$",
+            "D. $Q(b) \\lor R(y)$"
+        ],
+        "c": 0,
+        "e": "Hợp nhất $P(x)$ và $P(b)$ bằng phép thế $\\{x/b\\}$. Khi đó $C_1$ thành $P(b) \\lor Q(a)$, $C_2$ là $\\neg P(b) \\lor R(y)$. Hợp giải loại bỏ $P(b)$ và $\\neg P(b)$, thu được mệnh đề kết quả là $Q(a) \\lor R(y)$."
+    },
+    {
+        "q": "Để chứng minh một mục tiêu $G$ từ tập tri thức KB bằng thủ tục hợp giải phản chứng (Resolution by Refutation), ta đưa thêm mệnh đề nào vào KB?",
+        "a": [
+            "A. $G$",
+            "B. $\\neg G$",
+            "C. $KB \\rightarrow G$",
+            "D. Mệnh đề rỗng $\\square$"
+        ],
+        "c": 1,
+        "e": "Nguyên lý phản chứng trong thủ tục hợp giải là thêm phủ định của kết luận cần chứng minh ($\\neg G$) vào tập tri thức ban đầu và thực hiện hợp giải cho đến khi thu được mệnh đề rỗng $\\square$."
+    },
+    {
+        "q": "Trong quá trình chuẩn hóa công thức First-Order Logic (FOL) sang dạng CNF, bước loại bỏ lượng từ tồn tại ($\\exists x$) bằng cách thay thế biến $x$ bằng một hàm Skolem được gọi là gì?",
+        "a": [
+            "A. Unification",
+            "B. Skolemization",
+            "C. Resolution",
+            "D. Subsumption"
+        ],
+        "c": 1,
+        "e": "Skolemization là quá trình loại bỏ các lượng từ tồn tại bằng cách thay thế chúng bằng các hằng Skolem hoặc hàm Skolem phụ thuộc vào lượng từ phổ dụng bao ngoài."
+    },
+    {
+        "q": "Cho hai mệnh đề Horn: $C_1 = \\neg P \\lor \\neg Q \\lor R$ và $C_2 = P$. Phép hợp giải giữa $C_1$ và $C_2$ cho ra mệnh đề nào?",
+        "a": [
+            "A. $\\neg Q \\lor R$",
+            "B. $Q \\rightarrow R$",
+            "C. Cả A và B đều đúng",
+            "D. $\\square$"
+        ],
+        "c": 2,
+        "e": "Hợp giải loại bỏ $P$ và $\\neg P$, còn lại $\\neg Q \\lor R$. Biểu thức $\\neg Q \\lor R$ tương đương với $Q \\rightarrow R$ (dạng luật sinh)."
+    },
+    {
+        "q": "Cho cơ sở tri thức KB chứa các luật sau:\n- Luật 1: $A \\land B \\rightarrow C$\n- Luật 2: $C \\land D \\rightarrow E$\n- Giả thiết ban đầu trong Working Memory: $WM = \\{A, B, D\\}$.\nThực hiện suy diễn tiến (Forward Chaining). Sau bước lặp đầu tiên, phần tử nào được thêm vào WM?",
+        "a": [
+            "A. E",
+            "B. C",
+            "C. C và E",
+            "D. Không có phần tử nào"
+        ],
+        "c": 1,
+        "e": "Trong bước lặp 1, các điều kiện của Luật 1 ($A$ và $B$) đều có trong WM. Luật 1 được kích hoạt và suy ra $C$. $C$ được thêm vào WM. Luật 2 chưa kích hoạt ở bước 1 vì lúc bắt đầu $C$ chưa có trong WM."
+    },
+    {
+        "q": "Tiếp tục bài toán suy diễn tiến ở câu trước, sau khi kết thúc hoàn toàn quá trình suy diễn tiến, tập Working Memory cuối cùng chứa những phần tử nào?",
+        "a": [
+            "A. $\\{A, B, D, C\\}$",
+            "B. $\\{A, B, D, E\\}$",
+            "C. $\\{A, B, D, C, E\\}$",
+            "D. $\\{C, E\\}$"
+        ],
+        "c": 2,
+        "e": "Bước 1 suy ra $C$ thêm vào WM thành $\\{A, B, D, C\\}$. Bước 2, điều kiện của Luật 2 ($C$ và $D$) đã thỏa mãn, kích hoạt Luật 2 suy ra $E$ thêm vào WM. Tập WM cuối cùng là $\\{A, B, D, C, E\\}$."
+    },
+    {
+        "q": "Cho cơ sở tri thức KB:\n- Luật 1: $P \\rightarrow Q$\n- Luật 2: $R \\rightarrow P$\n- Giả thiết ban đầu: $WM = \\{R\\}$.\nNếu áp dụng suy diễn lùi (Backward Chaining) với mục tiêu cần chứng minh là $Q$, thứ tự các mục tiêu phụ (subgoals) cần kiểm tra là gì?",
+        "a": [
+            "A. Kiểm tra P, sau đó kiểm tra R",
+            "B. Kiểm tra R, sau đó kiểm tra P",
+            "C. Chỉ kiểm tra R",
+            "D. Không cần kiểm tra mục tiêu phụ"
+        ],
+        "c": 0,
+        "e": "Để chứng minh $Q$ (từ Luật 1), ta cần chứng minh mục tiêu phụ $P$. Để chứng minh $P$ (từ Luật 2), ta cần chứng minh mục tiêu phụ $R$. $R$ đã có sẵn trong giả thiết ban đầu nên chứng minh thành công."
+    },
+    {
+        "q": "Một cá thể trong Giải thuật di truyền (GA) được mã hóa dưới dạng chuỗi nhị phân độ dài $L = 5$ bit để biểu diễn số nguyên không âm $x$. Chuỗi nhị phân là $10101_2$. Giá trị thập phân của cá thể này là bao nhiêu?",
+        "a": [
+            "A. 15",
+            "B. 21",
+            "C. 25",
+            "D. 31"
+        ],
+        "c": 1,
+        "e": "Đổi chuỗi nhị phân $10101_2$ sang thập phân: $1 \\times 2^4 + 0 \\times 2^3 + 1 \\times 2^2 + 0 \\times 2^1 + 1 \\times 2^0 = 16 + 0 + 4 + 0 + 1 = 21$."
+    },
+    {
+        "q": "Một giải thuật di truyền mã hóa số thực trong đoạn $[1, 5]$ sử dụng chuỗi nhị phân độ dài $L = 10$. Tính độ phân giải (bước nhảy tối thiểu giữa hai giá trị số thực liên tiếp được biểu diễn)?",
+        "a": [
+            "A. $4 / 1024 \\approx 0.0039$",
+            "B. $4 / 1023 \\approx 0.00391$",
+            "C. $5 / 1023 \\approx 0.00489$",
+            "D. $1 / 1024 = 0.00097$"
+        ],
+        "c": 1,
+        "e": "Số lượng khoảng chia của chuỗi 10 bit là $2^{10} - 1 = 1023$. Độ phân giải là khoảng cách của đoạn chia cho số khoảng chia: $\\Delta x = (5 - 1) / (2^{10} - 1) = 4 / 1023 \\approx 0.00391$."
+    },
+    {
+        "q": "Trong giải thuật di truyền, một quần thể gồm 4 cá thể có giá trị độ thích nghi (fitness) tương ứng là: $f(A) = 10, f(B) = 20, f(C) = 30, f(D) = 40$. Nếu sử dụng phương pháp chọn lọc bánh xe Roulette, xác suất cá thể C được chọn vào thế hệ tiếp theo là bao nhiêu?",
+        "a": [
+            "A. 10%",
+            "B. 20%",
+            "C. 30%",
+            "D. 40%"
+        ],
+        "c": 2,
+        "e": "Tổng độ thích nghi của cả quần thể là $\\sum f = 10 + 20 + 30 + 40 = 100$. Xác suất chọn cá thể C là $p(C) = f(C) / \\sum f = 30 / 100 = 30\\%$."
+    },
+    {
+        "q": "Cho hai nhiễm sắc thể cha mẹ dạng chuỗi ký tự: Cha = $AAAAAA$, Mẹ = $BBBBBB$. Thực hiện phép lai ghép một điểm (single-point crossover) tại vị trí điểm cắt sau ký tự thứ 2. Hai con sinh ra sẽ có cấu trúc nhiễm sắc thể như thế nào?",
+        "a": [
+            "A. Con 1 = $AABBBB$, Con 2 = $BBAAAA$",
+            "B. Con 1 = $AAAABB$, Con 2 = $BBBBAA$",
+            "C. Con 1 = $ABABAB$, Con 2 = $BABABA$",
+            "D. Con 1 = $AAAAAB$, Con 2 = $BBBBBA$"
+        ],
+        "c": 0,
+        "e": "Điểm cắt sau vị trí 2 chia nhiễm sắc thể thành 2 phần: Cha = $AA | AAAA$, Mẹ = $BB | BBBB$. Ghép chéo phần đuôi thu được: Con 1 = $AA + BBBB = AABBBB$; Con 2 = $BB + AAAA = BBAAAA$."
+    },
+    {
+        "q": "Cho nhiễm sắc thể ban đầu dạng nhị phân là $110011$. Áp dụng phép đột biến nghịch đảo bit (bit-flip mutation) tại vị trí bit thứ 3 và thứ 5 (tính từ trái qua, bắt đầu từ 1). Nhiễm sắc thể sau đột biến là gì?",
+        "a": [
+            "A. $111001$",
+            "B. $111011$",
+            "C. $110011$",
+            "D. $111010$"
+        ],
+        "c": 0,
+        "e": "Nhiễm sắc thể gốc: $110011$. Bit thứ 3 (đang là 0) nghịch đảo thành 1. Bit thứ 5 (đang là 1) nghịch đảo thành 0. Chuỗi sau đột biến là $111001$."
+    },
+    {
+        "q": "Cho xác suất tiền nghiệm của bệnh cúm là $P(Flu) = 0.05$. Xác suất bị sốt khi mắc bệnh cúm là $P(Fever \\mid Flu) = 0.8$. Xác suất bị sốt chung trong dân số là $P(Fever) = 0.1$. Nếu một bệnh nhân bị sốt, xác suất người đó thực sự mắc bệnh cúm theo công thức Bayes là bao nhiêu?",
+        "a": [
+            "A. 0.04",
+            "B. 0.40",
+            "C. 0.05",
+            "D. 0.80"
+        ],
+        "c": 1,
+        "e": "Theo công thức Bayes: $P(Flu \\mid Fever) = \\frac{P(Fever \\mid Flu) \\times P(Flu)}{P(Fever)} = \\frac{0.8 \\times 0.05}{0.1} = \\frac{0.04}{0.1} = 0.40$ (hay 40%)."
+    },
+    {
+        "q": "Trong mạng Bayes gồm 3 nút xếp tuyến tính: $A \\rightarrow B \\rightarrow C$. Cho các bảng xác suất có trị số: $P(A) = 0.2$; $P(B=1 \\mid A=1) = 0.9, P(B=1 \\mid A=0) = 0.1$; $P(C=1 \\mid B=1) = 0.8, P(C=1 \\mid B=0) = 0.2$. Tính xác suất đồng thời $P(A=1, B=1, C=1)$.",
+        "a": [
+            "A. 0.144",
+            "B. 0.016",
+            "C. 0.72",
+            "D. 0.18"
+        ],
+        "c": 0,
+        "e": "Theo công thức phân tích của mạng Bayes: $P(A=1, B=1, C=1) = P(A=1) \\times P(B=1 \\mid A=1) \\times P(C=1 \\mid B=1) = 0.2 \\times 0.9 \\times 0.8 = 0.144$."
+    },
+    {
+        "q": "Trong giải thuật tìm kiếm A*, giả sử tại nút $n$ ta có $g(n) = 5$ và Heuristic $h(n) = 4$. Nút đích $G$ có $g(G) = 10$. Giải thuật đã tìm thấy một đường đi tạm thời tới đích với tổng chi phí là 10. Tại sao giải thuật chưa dừng lại ngay khi phát hiện ra nút đích mà vẫn tiếp tục duyệt nút $n$?",
+        "a": [
+            "A. Vì $f(n) = 9 < g(G) = 10$, nghĩa là vẫn có khả năng tồn tại đường đi tốt hơn đi qua $n$",
+            "B. Vì thuật toán A* luôn chạy hết toàn bộ đồ thị",
+            "C. Vì Heuristic tại nút đích chưa bằng 0",
+            "D. Vì chi phí thực tế $g(n)$ lớn hơn Heuristic $h(n)$"
+        ],
+        "c": 0,
+        "e": "Thuật toán A* chỉ dừng lại khi nút đích được lấy ra khỏi tập mở (Open list). Nếu trong tập mở còn nút $n$ có $f(n) < f(G)$ (ở đây $f(n) = 5 + 4 = 9 < 10$), ta chưa thể chắc chắn đường đi hiện tại tới đích là tối ưu nhất. Ta phải duyệt tiếp nút $n$."
+    },
+    {
+        "q": "Một cây trò chơi mức MAX có hai con là MIN A và MIN B. Thuật toán Alpha-Beta đang duyệt nhánh của A và ghi nhận giá trị tạm thời của A là 5. Khi chuyển sang nhánh B, giá trị Alpha hiện tại được truyền xuống B là bao nhiêu?",
+        "a": [
+            "A. $\\alpha = 5$",
+            "B. $\\beta = 5$",
+            "C. $\\alpha = -\\infty$",
+            "D. $\\beta = +\\infty$"
+        ],
+        "c": 0,
+        "e": "Nút MAX giữ giá trị Alpha đại diện cho lựa chọn tốt nhất hiện tại của nó. Vì nhánh A trả về giá trị 5, giá trị Alpha của nút MAX tăng lên thành 5 và được truyền xuống nhánh B làm giới hạn dưới."
+    },
+    {
+        "q": "Cho cơ sở tri thức gồm các mệnh đề đã chuẩn hóa CNF:\n1. $\\neg A \\lor B$\n2. $\\neg B \\lor C$\n3. $\\neg C$\n4. $A$\nThực hiện các bước hợp giải liên tiếp. Số bước hợp giải tối thiểu để chứng minh hệ thống này mâu thuẫn (suy ra mệnh đề rỗng $\\square$) là bao nhiêu?",
+        "a": [
+            "A. 1 bước",
+            "B. 2 bước",
+            "C. 3 bước",
+            "D. 4 bước"
+        ],
+        "c": 2,
+        "e": "Bước 1: Hợp giải (1) và (4) loại bỏ A, được mệnh đề mới (5): $B$. Bước 2: Hợp giải (2) và (5) loại bỏ B, được mệnh đề mới (6): $C$. Bước 3: Hợp giải (3) và (6) loại bỏ C, thu được mệnh đề rỗng $\\square$. Tổng cộng cần 3 bước."
+    },
+    {
+        "q": "Một chuỗi gen nhị phân độ dài 8 bit có cấu trúc dạng $11010011$. Tính toán tỷ lệ phần trăm số lượng bit 1 xuất hiện trong nhiễm sắc thể này.",
+        "a": [
+            "A. 50%",
+            "B. 62.5%",
+            "C. 37.5%",
+            "D. 75%"
+        ],
+        "c": 1,
+        "e": "Số lượng bit 1 trong chuỗi là 5 (các vị trí 1, 2, 4, 7, 8). Tỷ lệ phần trăm là $5/8 = 0.625 = 62.5\\%$."
+    },
+    {
+        "q": "Cho một nơ-ron nhân tạo với 3 đầu vào $x_1 = 1, x_2 = 0, x_3 = -1$. Trọng số tương ứng là $w_1 = 0.5, w_2 = 0.8, w_3 = 0.2$. Hệ số bias $b = -0.1$. Sử dụng hàm kích hoạt Sigmoid $\\sigma(z) = \\frac{1}{1 + e^{-z}}$. Tính đầu ra của nơ-ron này (lấy xấp xỉ 2 chữ số thập phân).",
+        "a": [
+            "A. 0.55",
+            "B. 0.50",
+            "C. 0.57",
+            "D. 0.62"
+        ],
+        "c": 0,
+        "e": "Tính tổng trọng số: $z = (1.0 \\times 0.5) + (0 \\times 0.8) + (-1.0 \\times 0.2) - 0.1 = 0.5 + 0 - 0.2 - 0.1 = 0.2$. Đầu ra: $\\sigma(0.2) = 1 / (1 + e^{-0.2}) \\approx 1 / (1 + 0.8187) \\approx 0.5498 \\approx 0.55$."
+    },
+    {
+        "q": "Trong thuật toán cắt tỉa Alpha-Beta, tại nút MIN, ta cập nhật tham số nào và điều kiện để xảy ra cắt tỉa (pruning) là gì?",
+        "a": [
+            "A. Cập nhật $\\alpha$, cắt tỉa khi $\\alpha \\ge \\beta$",
+            "B. Cập nhật $\\beta$, cắt tỉa khi $\\alpha \\ge \\beta$",
+            "C. Cập nhật $\\alpha$, cắt tỉa khi $\\alpha \\le \\beta$",
+            "D. Cập nhật $\\beta$, cắt tỉa khi $\\alpha \\le \\beta$"
+        ],
+        "c": 1,
+        "e": "Tại nút MIN, ta cập nhật giá trị $\\beta$ (đại diện cho giới hạn trên tốt nhất của MIN). Cắt tỉa xảy ra ngay khi $\\alpha \\ge \\beta$, nghĩa là người chơi MAX ở trên có một lựa chọn khác tốt hơn rồi."
+    },
+    {
+        "q": "Cho hàm Heuristic $h(n)$ của thuật toán A*. Nếu ta thiết lập $h(n) = 0$ với mọi nút $n$, thuật toán A* sẽ hoạt động tương đương với thuật toán tìm kiếm nào?",
+        "a": [
+            "A. Tìm kiếm theo chiều rộng (BFS)",
+            "B. Tìm kiếm chi phí đồng nhất (UCS / Dijkstra)",
+            "C. Tìm kiếm theo chiều sâu (DFS)",
+            "D. Tìm kiếm sâu lặp (IDDFS)"
+        ],
+        "c": 1,
+        "e": "Khi $h(n) = 0$, hàm đánh giá $f(n) = g(n) + h(n)$ trở thành $f(n) = g(n)$ (chỉ tính chi phí tích lũy từ gốc). Thuật toán A* khi đó trở thành tìm kiếm chi phí đồng nhất UCS."
+    },
+    {
+        "q": "Cho hàm Heuristic $h(n)$ của thuật toán A*. Nếu ta luôn thiết lập Heuristic $h(n) > h^*(n)$ (đánh giá vượt quá chi phí thực tế tối ưu), thuật toán A* có còn đảm bảo luôn tìm thấy đường đi ngắn nhất tối ưu hay không?",
+        "a": [
+            "A. Có, vẫn đảm bảo 100%",
+            "B. Không, thuật toán có thể trả về một đường đi dưới tối ưu",
+            "C. Có, nhưng bộ nhớ sẽ bị quá tải",
+            "D. Không, thuật toán sẽ bị lặp vô hạn"
+        ],
+        "c": 1,
+        "e": "Điều kiện cần và đủ để thuật toán A* đảm bảo tính tối ưu trên đồ thị dạng cây là hàm Heuristic phải chấp nhận được ($h(n) \\le h^*(n)$). Nếu $h(n) > h^*(n)$, tính tối ưu không còn được bảo đảm."
+    },
+    {
+        "q": "Trong giải thuật di truyền, một quần thể gồm 2 cá thể có nhiễm sắc thể lần lượt là $X_1 = 111111$ và $X_2 = 000000$. Thực hiện phép lai hai điểm (two-point crossover) tại các điểm cắt sau vị trí 2 và sau vị trí 4. Một trong hai cá thể con tạo ra có chuỗi gen là gì?",
+        "a": [
+            "A. $110011$",
+            "B. $111100$",
+            "C. $001100$",
+            "D. $110000$"
+        ],
+        "c": 0,
+        "e": "Các điểm cắt chia chuỗi thành 3 đoạn: sau vị trí 2 và sau vị trí 4. Cá thể 1: $11 | 11 | 11$, Cá thể 2: $00 | 00 | 00$. Lai ghép chéo đoạn giữa thu được: Con 1 = $11 + 00 + 11 = 110011$; Con 2 = $00 + 11 + 00 = 001100$."
+    },
+    {
+        "q": "Trong mạng nơ-ron nhân tạo MLP, giá trị lan truyền ngược (Backpropagation) được tính toán dựa trên quy tắc toán học cốt lõi nào?",
+        "a": [
+            "A. Quy tắc nhân ma trận nghịch đảo",
+            "B. Quy tắc chuỗi đạo hàm (Chain Rule)",
+            "C. Quy tắc cộng vector Euler",
+            "D. Quy tắc chia Euclid"
+        ],
+        "c": 1,
+        "e": "Lan truyền ngược sử dụng quy tắc chuỗi đạo hàm (Chain Rule) để tính toán độ dốc sai số (gradients) đối với từng trọng số ở các lớp từ sau ra trước."
+    },
+    {
+        "q": "Cho bảng phân phối xác suất đồng thời của hai biến ngẫu nhiên $X$ và $Y$:\n- $P(X=0, Y=0) = 0.1$\n- $P(X=0, Y=1) = 0.2$\n- $P(X=1, Y=0) = 0.3$\n- $P(X=1, Y=1) = 0.4$\nTính xác suất điều kiện $P(X=1 \\mid Y=0)$.",
+        "a": [
+            "A. 0.75",
+            "B. 0.30",
+            "C. 0.43",
+            "D. 0.70"
+        ],
+        "c": 0,
+        "e": "$P(Y=0) = P(X=0, Y=0) + P(X=1, Y=0) = 0.1 + 0.3 = 0.4$. Xác suất điều kiện: $P(X=1 \\mid Y=0) = P(X=1, Y=0) / P(Y=0) = 0.3 / 0.4 = 0.75$."
+    },
+    {
+        "q": "Trong cây quyết định (Decision Tree), một nút lá chỉ chứa các mẫu thuộc về duy nhất một lớp (thuần khiết hoàn toàn) sẽ có Entropy bằng bao nhiêu?",
+        "a": [
+            "A. 0",
+            "B. 1.0",
+            "C. Vô hạn",
+            "D. -1.0"
+        ],
+        "c": 0,
+        "e": "Nút thuần khiết có xác suất của lớp đó là $p = 1.0$. Entropy $H = -1.0 \\log_2(1.0) = 0$. Không còn độ không chắc chắn nào tại nút này."
+    },
+    {
+        "q": "Cho cơ sở tri thức KB chứa các sự kiện ban đầu: $A$, $B$. Các luật sinh gồm:\n- L1: $A \\land C \\rightarrow D$\n- L2: $B \\rightarrow C$\n- L3: $D \\rightarrow E$\nÁp dụng suy diễn tiến để chứng minh sự kiện $E$. Cần tối thiểu bao nhiêu bước kích hoạt luật (mỗi bước kích hoạt 1 luật)?",
+        "a": [
+            "A. 1 bước",
+            "B. 2 bước",
+            "C. 3 bước",
+            "D. 4 bước"
+        ],
+        "c": 2,
+        "e": "Bước 1: Kích hoạt L2 vì $B$ có sẵn trong KB, suy ra $C$. KB lúc này là $\\{A, B, C\\}$. Bước 2: Kích hoạt L1 vì đã có $A$ và $C$, suy ra $D$. KB lúc này là $\\{A, B, C, D\\}$. Bước 3: Kích hoạt L3 vì đã có $D$, suy ra $E$ (thành công). Vậy cần 3 bước kích hoạt luật."
+    },
+    {
+        "q": "Cho hai mệnh đề logic FOL: $P(x, f(y))$ và $P(a, f(b))$. Phép thế nào dưới đây là MGU (Most General Unifier) của hai mệnh đề này?",
+        "a": [
+            "A. $\\theta = \\{x/a, y/b\\}$",
+            "B. $\\theta = \\{a/x, b/y\\}$",
+            "C. $\\theta = \\{x/a, y/f(b)\\}$",
+            "D. Không thể hợp nhất"
+        ],
+        "c": 0,
+        "e": "Để $P(x, f(y))$ trùng khớp hoàn toàn với $P(a, f(b))$, ta thế biến $x$ bằng hằng $a$ và biến $y$ bằng hằng $b$. Phép thế MGU là $\\{x/a, y/b\\}$."
+    },
+    {
+        "q": "Một cây tìm kiếm có hệ số rẽ nhánh cố định $b = 10$, chiều sâu của lời giải tối ưu là $d = 5$. Thuật toán Tìm kiếm theo chiều rộng (BFS) sẽ cần lưu trữ tối đa khoảng bao nhiêu nút trong bộ nhớ?",
+        "a": [
+            "A. $10^5 = 100,000$ nút",
+            "B. $10^6 = 1,000,000$ nút",
+            "C. 50 nút",
+            "D. $10^2 = 100$ nút"
+        ],
+        "c": 0,
+        "e": "BFS lưu trữ tất cả các nút được sinh ra trong bộ nhớ. Độ phức tạp bộ nhớ của BFS là $O(b^d)$. Với $b=10, d=5$, số nút tối đa cần lưu trữ ở mức sâu nhất là $10^5 = 100,000$ nút."
+    },
+    {
+        "q": "Cho một đồ thị tìm kiếm có dạng cây. Nếu hàm Heuristic thỏa mãn tính nhất quán (consistency), thì giá trị của hàm đánh giá $f(n) = g(n) + h(n)$ dọc theo bất kỳ đường đi nào từ gốc sẽ thay đổi thế nào?",
+        "a": [
+            "A. Luôn giảm dần",
+            "B. Không bao giờ giảm (luôn đơn điệu tăng hoặc giữ nguyên)",
+            "C. Thay đổi ngẫu nhiên tăng giảm",
+            "D. Luôn bằng hằng số"
+        ],
+        "c": 1,
+        "e": "Tính nhất quán của Heuristic đảm bảo rằng hàm $f(n)$ là đơn điệu không giảm dọc theo bất kỳ đường đi nào trong cây tìm kiếm, tức là $f(n) \\le f(n')$. Kỹ thuật này giúp thuật toán $A^*$ tìm kiếm hiệu quả và ổn định hơn."
+    },
+    {
+        "q": "Một quần thể trong GA gồm 5 nhiễm sắc thể có điểm thích nghi lần lượt là $1, 2, 3, 4, 5$. Tính giá trị độ thích nghi trung bình của quần thể.",
+        "a": [
+            "A. 3.0",
+            "B. 2.5",
+            "C. 15.0",
+            "D. 5.0"
+        ],
+        "c": 0,
+        "e": "Độ thích nghi trung bình là tổng điểm chia cho số lượng cá thể: $(1 + 2 + 3 + 4 + 5) / 5 = 15 / 5 = 3.0$."
+    },
+    {
+        "q": "Thuật toán tìm kiếm Leo đồi (Hill Climbing) thường gặp phải nhược điểm lớn nào dưới đây do tính chất tìm kiếm tối ưu cục bộ của nó?",
+        "a": [
+            "A. Bị kẹt tại cực trị cục bộ (Local maxima)",
+            "B. Bị kẹt tại các cao nguyên phẳng (Plateaus)",
+            "C. Bị kẹt tại các sườn đồi răng cưa (Ridges)",
+            "D. Tất cả các nhược điểm trên"
+        ],
+        "c": 3,
+        "e": "Leo đồi là thuật toán tìm kiếm cục bộ đơn giản nên dễ bị kẹt tại các cực trị cục bộ, cao nguyên phẳng hoặc các đường răng cưa nơi không có hướng đi nào làm tăng giá trị hàm đánh giá."
+    },
+    {
+        "q": "Trong CSP (Constraint Satisfaction Problem), kỹ thuật lọc miền giá trị dựa trên tính nhất quán của cung (Arc Consistency - AC-3) kiểm tra tính nhất quán giữa cặp biến nào?",
+        "a": [
+            "A. Mọi bộ ba biến bất kỳ",
+            "B. Cặp biến có ràng buộc trực tiếp (cung kết nối)",
+            "C. Chỉ giữa biến hiện tại và nút gốc",
+            "D. Toàn bộ các biến trên đồ thị cùng lúc"
+        ],
+        "c": 1,
+        "e": "Tính nhất quán cung (Arc Consistency) thiết lập tính nhất quán trên từng cung định hướng nối hai biến liên kết trực tiếp bằng ràng buộc nhị phân."
+    },
+    {
+        "q": "Một hệ chuyên gia sử dụng cơ chế suy diễn lùi để chẩn đoán lỗi. Nếu cơ sở tri thức có dạng cây ngược (nhiều tiền đề dẫn đến một kết luận chung), suy diễn lùi sẽ hoạt động hiệu quả hơn suy diễn tiến vì lý do gì?",
+        "a": [
+            "A. Chỉ tập trung duyệt các nhánh trực tiếp dẫn đến mục tiêu cần chẩn đoán, tránh suy diễn dư thừa",
+            "B. Không cần sử dụng bộ nhớ Working Memory",
+            "C. Luôn tìm ra tất cả các luật trong cơ sở dữ liệu cùng lúc",
+            "D. Không cần kiểm tra các sự kiện ban đầu"
+        ],
+        "c": 0,
+        "e": "Suy diễn lùi xuất phát từ kết luận mục tiêu để tìm kiếm ngược lại các sự kiện hỗ trợ. Đối với cơ sở tri thức hướng mục tiêu, nó giúp tránh việc sinh ra các dữ liệu trung gian không liên quan như suy diễn tiến."
+    },
+    {
+        "q": "Cho hai mệnh đề CNF: $P \\lor Q$ và $\\neg P \\lor Q$. Kết quả hợp giải của hai mệnh đề này là gì?",
+        "a": [
+            "A. $Q$",
+            "B. $P \\lor \\neg P$",
+            "C. Mệnh đề rỗng $\\square$",
+            "D. Không hợp giải được"
+        ],
+        "c": 0,
+        "e": "Hợp giải loại bỏ $P$ và $\\neg P$. Kết quả phép tuyển còn lại là $Q \\lor Q \\equiv Q$."
+    },
+    {
+        "q": "Một bài toán CSP có 5 biến số, mỗi biến có miền giá trị chứa đúng 3 phần tử. Kích thước không gian tìm kiếm trạng thái đầy đủ (chưa xét ràng buộc) của bài toán này là bao nhiêu?",
+        "a": [
+            "A. $3^5 = 243$",
+            "B. $5^3 = 125$",
+            "C. $5 \\times 3 = 15$",
+            "D. $5! = 120$"
+        ],
+        "c": 0,
+        "e": "Mỗi biến có 3 lựa chọn độc lập. Với 5 biến, số tổ hợp gán nhãn trạng thái đầy đủ có thể có là $3 \\times 3 \\times 3 \\times 3 \\times 3 = 3^5 = 243$."
+    },
+    {
+        "q": "Cho một nhiễm sắc thể nhị phân có chiều dài 4 bit. Xác suất để một đột biến đảo bit ngẫu nhiên duy nhất (chỉ có đúng 1 bit bị lật) xảy ra trên nhiễm sắc thể này là bao nhiêu, biết xác suất đột biến tại mỗi locus (bit) độc lập là $p_m = 0.1$?",
+        "a": [
+            "A. $0.4$",
+            "B. $4 \\times 0.1 \\times 0.9^3 \\approx 0.2916$",
+            "C. $0.1^4 = 0.0001$",
+            "D. $1 - 0.9^4 \\approx 0.3439$"
+        ],
+        "c": 1,
+        "e": "Xác suất để có đúng 1 bit bị đột biến và 3 bit còn lại giữ nguyên theo phân phối nhị thức là: $C_4^1 \\times p_m^1 \\times (1-p_m)^3 = 4 \\times 0.1 \\times 0.9^3 = 4 \\times 0.1 \\times 0.729 = 0.2916$."
+    },
+    {
+        "q": "Trong giải thuật di truyền, nếu đặt xác suất lai ghép (crossover rate) $p_c = 0.0$ và xác suất đột biến (mutation rate) $p_m = 0.02$, quần thể sẽ tiến hóa thế nào?",
+        "a": [
+            "A. Tiến hóa rất nhanh do chỉ đột biến",
+            "B. Không có sự trao đổi chéo thông tin gen giữa các cá thể, sự đa dạng mới chỉ được sinh ra từ các đột biến nhỏ ngẫu nhiên",
+            "C. Quần thể hoàn toàn không thay đổi qua các thế hệ",
+            "D. Các cá thể con sinh ra sẽ luôn giống hệt cha mẹ mà không có bất kỳ sai khác nào"
+        ],
+        "c": 1,
+        "e": "Khi không lai ghép ($p_c=0$), các thế hệ sau chỉ sao chép nhiễm sắc thể từ cha mẹ. Tuy nhiên vì $p_m=0.02 > 0$, đột biến vẫn diễn ra ngẫu nhiên trên các cá thể con, tạo ra sự đa dạng di truyền mới nhưng với tốc độ rất chậm."
+    },
+    {
+        "q": "Trong mạng Bayes, hai nút độc lập điều kiện (conditionally independent) với nhau khi nào?",
+        "a": [
+            "A. Khi chúng không có đường đi nối trực tiếp",
+            "B. Khi biết giá trị của các nút cha chung hoặc nút trung gian ngăn cách chúng",
+            "C. Khi tổng xác suất của chúng bằng 1",
+            "D. Khi chúng nằm ở hai cấp độ khác nhau của đồ thị"
+        ],
+        "c": 1,
+        "e": "Hai nút độc lập điều kiện khi biết thông tin của nút trung gian hoặc cha chung ngăn cách (khái niệm d-separation trong mạng Bayes)."
+    },
+    {
+        "q": "Cho luật sinh: $P(x) \\rightarrow Q(x)$. Working Memory chứa $P(a)$ và $P(b)$. Bộ suy diễn tiến sẽ sinh ra các sự kiện nào mới?",
+        "a": [
+            "A. $Q(a)$ và $Q(b)$",
+            "B. Chỉ $Q(a)$",
+            "C. Chỉ $Q(b)$",
+            "D. Không sinh ra gì"
+        ],
+        "c": 0,
+        "e": "Bộ suy diễn tiến áp dụng luật phổ dụng cho mọi phép gán giá trị hợp lệ. Thế $x/a$ được $Q(a)$, thế $x/b$ được $Q(b)$, cả hai đều được suy ra và thêm vào WM."
+    },
+    {
+        "q": "Để chuyển công thức FOL $\\neg (\\forall x P(x))$ sang dạng chuẩn CNF, bước đầu tiên đưa phủ định vào trong lượng từ sẽ biến công thức thành gì?",
+        "a": [
+            "A. $\\exists x \\neg P(x)$",
+            "B. $\\forall x \\neg P(x)$",
+            "C. $\\neg P(x)$",
+            "D. $\\exists x P(x)$"
+        ],
+        "c": 0,
+        "e": "Luật phủ định lượng từ phổ dụng: $\\neg (\\forall x P(x)) \\equiv \\exists x \\neg P(x)$."
+    },
+    {
+        "q": "Cho hai mệnh đề CNF: $\\neg P(x) \\lor Q(x)$ và $P(a)$. Kết quả phép hợp giải giữa hai mệnh đề này là gì?",
+        "a": [
+            "A. $Q(a)$",
+            "B. $Q(x)$",
+            "C. $\\neg P(a)$",
+            "D. Mệnh đề rỗng $\\square$"
+        ],
+        "c": 0,
+        "e": "Hợp nhất $\\neg P(x)$ và $P(a)$ bằng phép thế $\\{x/a\\}$. Kết quả hợp giải thu được mệnh đề đơn $Q(a)$."
+    },
+    {
+        "q": "Trong mạng thần kinh nhân tạo MLP, nếu ta sử dụng hàm kích hoạt tuyến tính $f(z) = c \\times z$ cho tất cả các lớp ẩn, mạng thần kinh sâu nhiều lớp sẽ tương đương với mô hình nào dưới đây?",
+        "a": [
+            "A. Một bộ phân loại phi tuyến tính phức tạp",
+            "B. Một mạng thần kinh một lớp tuyến tính đơn giản",
+            "C. Một cây quyết định phân cấp",
+            "D. Một hệ chuyên gia dựa trên luật"
+        ],
+        "c": 1,
+        "e": "Tích của các phép biến đổi tuyến tính liên tiếp vẫn là một phép biến đổi tuyến tính. Do đó, nếu dùng hàm kích hoạt tuyến tính ở các lớp ẩn, mạng sâu nhiều lớp sẽ bị sụp đổ cấu trúc và chỉ tương đương với mạng 1 lớp tuyến tính đơn giản."
+    },
+    {
+        "q": "Trong giải thuật di truyền, hiện tượng các cá thể có độ thích nghi vượt trội chiếm lĩnh nhanh chóng quần thể trong vài thế hệ đầu tiên dẫn đến mất tính đa dạng và kẹt ở cực trị cục bộ gọi là gì?",
+        "a": [
+            "A. Sự hội tụ sớm (Premature convergence)",
+            "B. Đột biến hàng loạt (Mass mutation)",
+            "C. Sự trôi dạt di truyền (Genetic drift)",
+            "D. Hiện tượng lai xa (Outbreeding depression)"
+        ],
+        "c": 0,
+        "e": "Hội tụ sớm xảy ra khi một vài cá thể tốt cục bộ nhân bản quá nhanh, khiến toàn bộ quần thể đồng nhất trước khi thuật toán có cơ hội khám phá các khu vực không gian trạng thái khác tối ưu hơn."
+    },
+    {
+        "q": "Một cây trò chơi có độ sâu tìm kiếm tối đa $d = 4$ và hệ số rẽ nhánh $b = 5$. Thuật toán Minimax duyệt đầy đủ không cắt tỉa sẽ cần đánh giá tổng cộng bao nhiêu nút lá?",
+        "a": [
+            "A. $4^5 = 1024$ nút lá",
+            "B. $5^4 = 625$ nút lá",
+            "C. $5 \\times 4 = 20$ nút lá",
+            "D. $5 + 4 = 9$ nút lá"
+        ],
+        "c": 1,
+        "e": "Số nút lá ở mức sâu nhất $d$ của cây đều có hệ số rẽ nhánh $b$ là $b^d = 5^4 = 625$ nút lá."
+    },
+    {
+        "q": "Trong lập trình logic (Prolog) hoặc các hệ thống luật sinh, cơ chế suy diễn lùi duyệt cây tìm kiếm các luật theo thứ tự mặc định nào?",
+        "a": [
+            "A. Tìm kiếm theo chiều rộng (BFS)",
+            "B. Tìm kiếm theo chiều sâu (DFS) kết hợp quay lui (Backtracking)",
+            "C. Tìm kiếm chi phí đồng nhất (UCS)",
+            "D. Tìm kiếm Heuristic tham lam"
+        ],
+        "c": 1,
+        "e": "Suy diễn lùi mặc định duyệt cây mục tiêu theo cơ chế tìm kiếm chiều sâu (DFS) từ trên xuống dưới, từ trái qua phải và sử dụng kỹ thuật quay lui khi gặp nhánh cụt."
+    },
+    {
+        "q": "Cho cơ sở tri thức KB chứa mệnh đề hội: $P \\land Q$. Ta có thể suy ra $P$ dựa trên luật suy diễn nào?",
+        "a": [
+            "A. Phép hợp giải (Resolution)",
+            "B. Phép đơn giản hóa hội (Simplification / Conjunction elimination)",
+            "C. Phép kéo theo Modus Ponens",
+            "D. Phép kéo theo Modus Tollens"
+        ],
+        "c": 1,
+        "e": "Luật đơn giản hóa hội (Simplification) cho phép suy ra một mệnh đề thành phần từ một phép hội đã biết là đúng, tức là từ $P \\land Q$ suy ra được $P$ (và cũng suy ra được $Q$)."
+    },
+    {
+        "q": "Một thuật toán tối ưu hóa bầy đàn (PSO) hoặc giải thuật di truyền (GA) đều thuộc nhóm phương pháp tìm kiếm nào?",
+        "a": [
+            "A. Tìm kiếm leo đồi đơn giản",
+            "B. Tìm kiếm ngẫu nhiên có định hướng sử dụng quần thể (Population-based metaheuristics)",
+            "C. Tìm kiếm mù hệ thống",
+            "D. Tìm kiếm chứng minh định lý phản chứng"
+        ],
+        "c": 1,
+        "e": "GA và PSO đều là các giải thuật tối ưu hóa metaheuristic dựa trên quần thể, kết hợp các phép toán ngẫu nhiên có định hướng để thăm dò không gian tìm kiếm hiệu quả."
+    }
+]
 };

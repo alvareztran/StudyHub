@@ -252,7 +252,7 @@
     <div class="layout-wrapper">
       <!-- Left side: Navigation sidebar -->
       <aside class="sidebar no-print">
-        <h3>Mục lục trắc nghiệm</h3>
+                <h3>Mục lục trắc nghiệm</h3>
         <ul>
           <li><a href="trac-nghiem-chuong-1.html" id="menu-ch1">1. Trí tuệ nhân tạo là gì? <span class="score-badge" id="badge-ch1">0/50</span></a></li>
           <li><a href="trac-nghiem-chuong-2.html" id="menu-ch2">2. Giải quyết vấn đề bằng tìm kiếm <span class="score-badge" id="badge-ch2">0/50</span></a></li>
@@ -261,6 +261,7 @@
           <li><a href="trac-nghiem-chuong-5.html" id="menu-ch5">5. Thủ tục hợp giải <span class="score-badge" id="badge-ch5">0/50</span></a></li>
           <li><a href="trac-nghiem-chuong-6.html" id="menu-ch6">6. Suy diễn tiến - lùi <span class="score-badge" id="badge-ch6">0/50</span></a></li>
           <li><a href="trac-nghiem-chuong-7.html" id="menu-ch7">7. Giải thuật di truyền <span class="score-badge" id="badge-ch7">0/50</span></a></li>
+          <li><a href="trac-nghiem-bai-tap-tinh-toan.html" id="menu-ch8">Bài tập tính toán tổng hợp <span class="score-badge" id="badge-ch8">0/50</span></a></li>
         </ul>
       </aside>
 
@@ -298,7 +299,7 @@
     let userProgress = {};
 
     function initProgress() {
-      for(let i=1; i<=7; i++) {
+      for(let i=1; i<=8; i++) {
         userProgress['ch' + i] = {};
       }
       loadProgressFromLocalStorage();
@@ -324,7 +325,7 @@
     }
 
     function updateAllSidebarBadges() {
-      for(let i=1; i<=7; i++) {
+      for(let i=1; i<=8; i++) {
         const chKey = 'ch' + i;
         const answers = userProgress[chKey] || {};
         const answeredCount = Object.keys(answers).length;
@@ -359,7 +360,8 @@
         "Biểu diễn tri thức",
         "Thủ tục hợp giải",
         "Suy diễn tiến - lùi",
-        "Giải thuật di truyền"
+        "Giải thuật di truyền",
+        "Bài tập tính toán tổng hợp"
       ];
       document.getElementById('chapter-title').textContent = `Chương ${chapterNum}: ${chNames[chapterNum-1]}`;
 

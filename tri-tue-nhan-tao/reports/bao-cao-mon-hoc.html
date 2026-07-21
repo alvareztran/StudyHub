@@ -100,64 +100,164 @@
         <p>Các mô hình ngôn ngữ lớn (LLM) có được các tri thức và cấu trúc ngôn ngữ sâu rộng thông qua quá trình tiền huấn luyện (pre-training) trên các tập dữ liệu văn bản khổng lồ (Brown và cộng sự, 2020; OpenAI, 2023; Touvron và cộng sự, 2023; Chowdhery và cộng sự, 2023; Anil và cộng sự, 2023). Để khai thác các khả năng mạnh mẽ của LLM vào các ứng dụng thực tế, ngày càng có nhiều nghiên cứu nhấn mạnh tầm quan trọng của việc căn chỉnh (aligning) các mô hình này theo tùy chọn của con người (Agrawal và cộng sự, 2023; Kadavath và cộng sự, 2022; Shi và cộng sự, 2023; Liang và cộng sự, 2021; Sheng và cộng sự, 2019).</p>
 
         <p>Nhiều phương pháp khác nhau đã được phát triển để tinh chỉnh (fine-tuning) các LLM, trong đó các hướng tiếp cận phổ biến bao gồm Tinh chỉnh có giám sát (SFT) (Peng và cộng sự, 2023) và Học tăng cường từ phản hồi của con người (RLHF) (Ziegler và cộng sự, 2019; Stiennon và cộng sự, 2020; Ouyang và cộng sự, 2022). Thông thường, quá trình tinh chỉnh gồm hai giai đoạn:</p>
-        <div class="diagram-container">
-          <div class="diagram-title">Quy trình 3 Bước Căn Chỉnh LLM (Alignment Pipeline)</div>
-          <svg viewBox="0 0 850 280" width="100%" height="auto" style="max-width: 850px;">
+
+        <!-- ILLUSTRATED 3-STEP ALIGNMENT PIPELINE (WITH ROBOT ICONS) -->
+        <div class="diagram-container" style="margin-top: 1.5rem;">
+          <div class="diagram-title">Quy Trình 3 Bước Căn Chỉnh LLM (Alignment Pipeline)</div>
+          <svg viewBox="0 0 850 210" width="100%" height="auto" style="max-width: 850px;">
             <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+              <marker id="arrow-blue-main" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0062b8" />
               </marker>
-              <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7" />
+              <linearGradient id="grad-corpus" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#e0f2fe" />
+                <stop offset="100%" stop-color="#bae6fd" />
+              </linearGradient>
+            </defs>
+
+            <!-- STEP 1: LARGE CORPUS -->
+            <g transform="translate(45, 15)">
+              <rect x="0" y="0" width="200" height="175" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+              <!-- Illustration: Globe + Books -->
+              <g transform="translate(100, 52)">
+                <circle cx="0" cy="-6" r="30" fill="url(#grad-corpus)" stroke="#0284c7" stroke-width="2" />
+                <path d="M -18 -15 Q -10 -25 5 -20 Q 15 -15 22 -6 Q 10 5 -5 0 Q -15 10 -22 -6 Z" fill="#22c55e" opacity="0.85" />
+                <path d="M -10 12 Q 0 8 10 16 Q -2 25 -18 18 Z" fill="#22c55e" opacity="0.85" />
+                <ellipse cx="0" cy="-6" rx="30" ry="12" fill="none" stroke="#0284c7" stroke-width="1" opacity="0.4" />
+                <line x1="0" y1="-36" x2="0" y2="24" stroke="#0284c7" stroke-width="1" opacity="0.4" />
+
+                <!-- Book 1 (Blue) -->
+                <rect x="-28" y="10" width="56" height="11" rx="2" fill="#0062b8" stroke="#0f172a" stroke-width="1.2" />
+                <line x1="-20" y1="15" x2="20" y2="15" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 2" />
+                <!-- Book 2 (Red) -->
+                <rect x="-24" y="21" width="52" height="11" rx="2" fill="#ef4444" stroke="#0f172a" stroke-width="1.2" />
+                <line x1="-16" y1="26" x2="18" y2="26" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 2" />
+              </g>
+              <text x="100" y="138" fill="#0062b8" font-family="Outfit" font-size="13.5" font-weight="700" text-anchor="middle">1. Large Corpus</text>
+              <text x="100" y="156" fill="#64748b" font-family="Inter" font-size="10" text-anchor="middle">Dữ liệu thô từ Web, Sách (TB)</text>
+            </g>
+
+            <!-- ARROW 1: PRETRAINING -->
+            <g transform="translate(255, 95)">
+              <path d="M 0 0 L 75 0" fill="none" stroke="#0062b8" stroke-width="2.5" marker-end="url(#arrow-blue-main)" />
+              <rect x="8" y="-22" width="60" height="18" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+              <text x="38" y="-9" fill="#0062b8" font-family="Outfit" font-size="9.5" font-weight="700" text-anchor="middle">Pretraining</text>
+            </g>
+
+            <!-- STEP 2: PRETRAINED LLM (RED-EYED ROBOT) -->
+            <g transform="translate(340, 15)">
+              <rect x="0" y="0" width="200" height="175" rx="12" fill="#ffffff" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 2" />
+              <!-- Illustration: Robot with Red Mischievous Eyes -->
+              <g transform="translate(100, 52)">
+                <line x1="0" y1="-28" x2="0" y2="-40" stroke="#475569" stroke-width="2.5" />
+                <circle cx="0" cy="-42" r="5" fill="#ef4444" />
+                <rect x="-36" y="-10" width="8" height="16" rx="3" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+                <rect x="28" y="-10" width="8" height="16" rx="3" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+                <rect x="-30" y="-28" width="60" height="52" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="2" />
+                <rect x="-22" y="-18" width="44" height="24" rx="6" fill="#0f172a" />
+                <circle cx="-10" cy="-6" r="5" fill="#ef4444" />
+                <circle cx="10" cy="-6" r="5" fill="#ef4444" />
+                <path d="M -12 12 Q 0 4 12 12" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <text x="100" y="138" fill="#ef4444" font-family="Outfit" font-size="13.5" font-weight="700" text-anchor="middle">2. Pretrained LLM</text>
+              <text x="100" y="156" fill="#64748b" font-family="Inter" font-size="10" text-anchor="middle">Mô hình thô (Chưa căn chỉnh)</text>
+            </g>
+
+            <!-- ARROW 2: ALIGNMENT -->
+            <g transform="translate(550, 95)">
+              <path d="M 0 0 L 75 0" fill="none" stroke="#00aee6" stroke-width="2.5" marker-end="url(#arrow-blue-main)" />
+              <rect x="5" y="-22" width="66" height="18" rx="4" fill="#e0f2fe" stroke="#00aee6" stroke-width="1" />
+              <text x="38" y="-9" fill="#0062b8" font-family="Outfit" font-size="9.5" font-weight="700" text-anchor="middle">3. RLHF Step</text>
+            </g>
+
+            <!-- STEP 3: ALIGNED LLM (FRIENDLY ROBOT WITH HALO) -->
+            <g transform="translate(635, 15)">
+              <rect x="0" y="0" width="190" height="175" rx="12" fill="#ffffff" stroke="#00aee6" stroke-width="2" />
+              <!-- Illustration: Friendly Robot with Halo -->
+              <g transform="translate(95, 52)">
+                <ellipse cx="0" cy="-38" rx="22" ry="6" fill="none" stroke="#fbbf24" stroke-width="3" />
+                <line x1="0" y1="-28" x2="0" y2="-34" stroke="#475569" stroke-width="2" />
+                <circle cx="0" cy="-34" r="4" fill="#00aee6" />
+                <rect x="-34" y="-10" width="6" height="14" rx="2" fill="#00aee6" />
+                <rect x="28" y="-10" width="6" height="14" rx="2" fill="#00aee6" />
+                <rect x="-28" y="-26" width="56" height="48" rx="10" fill="#f0fdf4" stroke="#0062b8" stroke-width="2" />
+                <rect x="-20" y="-16" width="40" height="22" rx="5" fill="#0f172a" />
+                <path d="M -13 -4 Q -9 -10 -5 -4" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M 5 -4 Q 9 -10 13 -4" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M -10 10 Q 0 18 10 10" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" />
+                <circle cx="20" cy="16" r="9" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" />
+                <path d="M 16 16 L 19 19 L 24 13" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+              <text x="95" y="138" fill="#0062b8" font-family="Outfit" font-size="13.5" font-weight="700" text-anchor="middle">3. Aligned LLM</text>
+              <text x="95" y="156" fill="#16a34a" font-family="Inter" font-size="10" font-weight="600" text-anchor="middle">An toàn &amp; Thân thiện</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- HORIZONTAL ACADEMIC RLHF DIAGRAM (PPO vs DPO) -->
+        <div class="diagram-container" style="margin-top: 1.5rem;">
+          <div class="diagram-title">Sơ Đồ Tóm Tắt RLHF: PPO vs DPO</div>
+          <svg viewBox="0 0 850 250" width="100%" height="auto" style="max-width: 850px;">
+            <defs>
+              <marker id="arrow-sci-horiz" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#00aee6" />
               </marker>
             </defs>
 
-            <!-- Phase 1: Pre-training -->
-            <rect x="20" y="50" width="180" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <text x="110" y="80" fill="#0f172a" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">1. Pre-training</text>
-            <text x="110" y="100" fill="#000000" font-family="Inter" font-size="10" text-anchor="middle">Học tự giám sát trên kho dữ liệu</text>
-            <foreignObject x="20" y="138" width="180" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Base Model ($\pi_0$)</div></foreignObject>
+            <!-- Top Core Node: RLHF Stage (Xanh Sáng #00aee6) -->
+            <rect x="260" y="6" width="330" height="42" rx="5" fill="#00aee6" stroke="#0096c7" stroke-width="1.5" />
+            <text x="425" y="23" fill="#ffffff" font-family="Outfit" font-size="13.5" font-weight="700" text-anchor="middle">GIAI ĐOẠN RLHF</text>
+            <text x="425" y="38" fill="#ffffff" font-family="Inter" font-size="9.5" font-weight="500" text-anchor="middle">Căn chỉnh hành vi LLM theo phản hồi con người</text>
 
-            <!-- Connection 1 -> 2 -->
-            <line x1="200" y1="85" x2="250" y2="85" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow)" />
+            <!-- Branching Lines (Xanh Sáng #00aee6) -->
+            <path d="M 375 48 L 217.5 48 L 217.5 66" fill="none" stroke="#00aee6" stroke-width="1.5" marker-end="url(#arrow-sci-horiz)" />
+            <path d="M 475 48 L 632.5 48 L 632.5 66" fill="none" stroke="#00aee6" stroke-width="1.5" marker-end="url(#arrow-sci-horiz)" />
 
-            <!-- Phase 2: SFT -->
-            <rect x="260" y="50" width="180" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <text x="350" y="80" fill="#0f172a" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">2. Supervised Fine-Tuning</text>
-            <text x="350" y="100" fill="#000000" font-family="Inter" font-size="10" text-anchor="middle">Tinh chỉnh theo mẫu hội thoại</text>
-            <foreignObject x="260" y="138" width="180" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">SFT Model ($\pi_{\text{SFT}}$)</div></foreignObject>
+            <!-- Card 1: PPO (Xanh Tối #0062b8) -->
+            <rect x="20" y="68" width="395" height="168" rx="6" fill="#f8fafc" stroke="#0062b8" stroke-width="1.5" />
+            <rect x="20" y="68" width="395" height="32" rx="6" fill="#0062b8" />
+            <text x="217.5" y="89" fill="#ffffff" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Reward-Based (PPO)</text>
 
-            <!-- Branching connection 2 -> 3 (PPO & DPO) -->
-            <path d="M 440 85 L 485 85 L 485 45 L 530 45" fill="none" stroke="#0284c7" stroke-width="1.5" marker-end="url(#arrow-blue)" />
-            <text x="480" y="32" fill="#0284c7" font-family="Inter" font-size="10" font-weight="600" text-anchor="end">PPO</text>
+            <foreignObject x="28" y="105" width="379" height="125">
+              <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: #000000;">
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Bản chất:</span> Học tăng cường trực tuyến qua mô hình phần thưởng trung gian
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Kiến trúc:</span> 4 mô hình (Chính sách, Đánh giá, Phần thưởng, Tham chiếu)
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Luồng xử lý:</span> Sinh phản hồi thời gian thực $\rightarrow$ Chấm điểm $r_\phi$ $\rightarrow$ Cập nhật PPO
+                </div>
+                <div>
+                  <span style="font-weight: 700; color: #0062b8;">Đặc điểm:</span> Linh hoạt, tương tác động, kiểm soát tốt OOD nhưng tốn GPU.
+                </div>
+              </div>
+            </foreignObject>
 
-            <path d="M 440 85 L 485 85 L 485 175 L 530 175" fill="none" stroke="#0284c7" stroke-width="1.5" marker-end="url(#arrow-blue)" />
-            <text x="480" y="195" fill="#0284c7" font-family="Inter" font-size="10" font-weight="600" text-anchor="end">DPO</text>
+            <!-- Card 2: DPO (Xanh Tối #0062b8) -->
+            <rect x="435" y="68" width="395" height="168" rx="6" fill="#f8fafc" stroke="#0062b8" stroke-width="1.5" />
+            <rect x="435" y="68" width="395" height="32" rx="6" fill="#0062b8" />
+            <text x="632.5" y="89" fill="#ffffff" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Reward-Free (DPO)</text>
 
-            <!-- Phase 3a: PPO (RLHF) -->
-            <rect x="540" y="10" width="220" height="70" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
-            <text x="650" y="40" fill="#0369a1" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">3a. PPO (Reward-based)</text>
-            <foreignObject x="540" y="52" width="220" height="20"><div style="font-family: Inter, sans-serif; font-size: 9px; text-align: center; color: #0369a1;">Học tăng cường trực tuyến với $r_\phi$</div></foreignObject>
-            <foreignObject x="540" y="93" width="220" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Aligned Model ($\pi_{\text{PPO}}$)</div></foreignObject>
-
-            <!-- Phase 3b: DPO (Direct Optimization) -->
-            <rect x="540" y="140" width="220" height="70" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
-            <text x="650" y="170" fill="#0369a1" font-family="Outfit" font-size="13" font-weight="700" text-anchor="middle">3b. DPO (Reward-free)</text>
-            <foreignObject x="540" y="182" width="220" height="20"><div style="font-family: Inter, sans-serif; font-size: 9px; text-align: center; color: #0369a1;">Tối ưu trực tiếp qua $\mathcal{L}_{\text{DPO}}$</div></foreignObject>
-            <foreignObject x="540" y="223" width="220" height="25"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 600; text-align: center; color: var(--text-color);">Aligned Model ($\pi_{\text{DPO}}$)</div></foreignObject>
+            <foreignObject x="443" y="105" width="379" height="125">
+              <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: #000000;">
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Bản chất:</span> Tối ưu hóa ưu tiên trực tiếp ngoại tuyến không qua hàm thưởng
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Kiến trúc:</span> 2 mô hình (Chính sách hiện tại &amp; Chính sách tham chiếu)
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Luồng xử lý:</span> Học trực tiếp từ tập dữ liệu tĩnh giữa câu trả lời Thích / Ghét
+                </div>
+                <div>
+                  <span style="font-weight: 700; color: #0062b8;">Đặc điểm:</span> Đơn giản, hội tụ nhanh, tiết kiệm VRAM nhưng nhạy cảm dữ liệu tĩnh.
+                </div>
+              </div>
+            </foreignObject>
           </svg>
         </div>
-        <p>SFT cốt ở việc bắt chước dữ liệu mẫu chất lượng cao, trong khi RLHF cải tiến các LLM thông qua các phản hồi về mức độ ưu tiên (preference feedback).</p>
-
-        <p>Trong phạm vi RLHF, hai hướng tiếp cận nổi bật là các phương pháp dựa trên phần thưởng (reward-based) và không dựa trên phần thưởng (reward-free):</p>
-        <ul>
-          <li>
-            <strong>Các phương pháp dựa trên phần thưởng:</strong> Được tiên phong bởi OpenAI (Ouyang và cộng sự, 2022; Ziegler và cộng sự, 2019; Stiennon và cộng sự, 2020), xây dựng một mô hình phần thưởng (reward model) bằng cách sử dụng dữ liệu ưu tiên, sau đó áp dụng các thuật toán actor-critic như Tối ưu hóa chính sách cận biên (PPO) để tối ưu hóa tín hiệu phần thưởng.
-          </li>
-          <li>
-            <strong>Các phương pháp không dựa trên phần thưởng:</strong> Bao gồm Tối ưu hóa ưu tiên trực tiếp (DPO) (Rafailov và cộng sự, 2023), RRHF (Yuan và cộng sự, 2023), và PRO (Song và cộng sự, 2023), đã loại bỏ việc sử dụng tường minh một hàm phần thưởng. Là một phương pháp không dựa trên phần thưởng mang tính đại diện, DPO biểu diễn hàm phần thưởng dưới dạng logarit của chính sách (policy) và chỉ tập trung duy nhất vào việc tối ưu hóa chính sách đó.
-          </li>
-        </ul>
 
         <p>Đáng chú ý là các ứng dụng thành công nhất như ChatGPT (OpenAI, 2022) và Claude (Anthropic, 2023) đều được tạo ra bởi PPO—một phương pháp RLHF dựa trên phần thưởng; trong khi đó, hiệu suất mạnh mẽ trên các bộ chuẩn đánh giá học thuật thường là kết quả của DPO—một phương pháp RLHF không dựa trên phần thưởng (Rafailov và cộng sự, 2023; MistralAI, 2023). Sự mâu thuẫn này đặt ra hai câu hỏi nền tảng:</p>
         <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
@@ -660,460 +760,70 @@
         <p>Để so sánh trực quan và khoa học cơ chế hoạt động của hai phương pháp, dưới đây là chi tiết luồng xử lý và cập nhật trọng số của từng thuật toán được biểu diễn tuần tự theo chiều ngang:</p>
 
         <!-- PPO Flowchart (Full Width) -->
-        <div class="diagram-container">
-          <div class="diagram-title">Luồng Hoạt Động PPO (Học Tăng Cường Trực Tuyến)</div>
-          <svg viewBox="0 0 800 200" width="100%" height="auto" style="max-width: 800px;">
+                <!-- HORIZONTAL ACADEMIC RLHF DIAGRAM (PPO vs DPO) -->
+        <div class="diagram-container" style="margin-top: 1.5rem;">
+          <div class="diagram-title">Sơ Đồ Tóm Tắt RLHF: PPO vs DPO</div>
+          <svg viewBox="0 0 850 250" width="100%" height="auto" style="max-width: 850px;">
             <defs>
-              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+              <marker id="arrow-sci-horiz" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#00aee6" />
               </marker>
             </defs>
-            
-            <!-- Prompt Input -->
-            <rect x="15" y="55" width="140" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <text x="85" y="80" fill="#0f172a" font-family="Inter" font-size="11" text-anchor="middle" font-weight="600">Prompt (x)</text>
-            <text x="85" y="93" fill="#000000" font-family="Inter" font-size="8.5" text-anchor="middle">Câu lệnh đầu vào</text>
 
-            <!-- Arrow to Policy -->
-            <line x1="155" y1="80" x2="195" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+            <!-- Top Core Node: RLHF Stage (Xanh Sáng #00aee6) -->
+            <rect x="260" y="6" width="330" height="42" rx="5" fill="#00aee6" stroke="#0096c7" stroke-width="1.5" />
+            <text x="425" y="23" fill="#ffffff" font-family="Outfit" font-size="13.5" font-weight="700" text-anchor="middle">GIAI ĐOẠN RLHF</text>
+            <text x="425" y="38" fill="#ffffff" font-family="Inter" font-size="9.5" font-weight="500" text-anchor="middle">Căn chỉnh hành vi LLM theo phản hồi con người</text>
 
-            <!-- Policy Model (Actor) -->
-            <rect x="205" y="55" width="160" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
-            <foreignObject x="205" y="58" width="160" height="44"><div style="font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; text-align: center; color: #0369a1;">Chính Sách $\pi_\theta$ (Actor)</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #0369a1; margin-top: 1px;">Sinh câu trả lời $y$</div></foreignObject>
+            <!-- Branching Lines (Xanh Sáng #00aee6) -->
+            <path d="M 375 48 L 217.5 48 L 217.5 66" fill="none" stroke="#00aee6" stroke-width="1.5" marker-end="url(#arrow-sci-horiz)" />
+            <path d="M 475 48 L 632.5 48 L 632.5 66" fill="none" stroke="#00aee6" stroke-width="1.5" marker-end="url(#arrow-sci-horiz)" />
 
-            <!-- Arrow to Reward -->
-            <line x1="365" y1="80" x2="405" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+            <!-- Card 1: PPO (Xanh Tối #0062b8) -->
+            <rect x="20" y="68" width="395" height="168" rx="6" fill="#f8fafc" stroke="#0062b8" stroke-width="1.5" />
+            <rect x="20" y="68" width="395" height="32" rx="6" fill="#0062b8" />
+            <text x="217.5" y="89" fill="#ffffff" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Reward-Based (PPO)</text>
 
-            <!-- Reward Model -->
-            <rect x="415" y="55" width="160" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <foreignObject x="415" y="58" width="160" height="44"><div style="font-family: Outfit, sans-serif; font-size: 11px; font-weight: 700; text-align: center; color: #0f172a;">Reward Model $r_\phi$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #475569; margin-top: 1px;">Đánh giá điểm số</div></foreignObject>
+            <foreignObject x="28" y="105" width="379" height="125">
+              <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: #000000;">
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Bản chất:</span> Học tăng cường trực tuyến qua mô hình phần thưởng trung gian
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Kiến trúc:</span> 4 mô hình (Chính sách, Đánh giá, Phần thưởng, Tham chiếu)
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Luồng xử lý:</span> Sinh phản hồi thời gian thực $\rightarrow$ Chấm điểm $r_\phi$ $\rightarrow$ Cập nhật PPO
+                </div>
+                <div>
+                  <span style="font-weight: 700; color: #0062b8;">Đặc điểm:</span> Linh hoạt, tương tác động, kiểm soát tốt OOD nhưng tốn GPU.
+                </div>
+              </div>
+            </foreignObject>
 
-            <!-- Arrow to Objective -->
-            <line x1="575" y1="80" x2="615" y2="80" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+            <!-- Card 2: DPO (Xanh Tối #0062b8) -->
+            <rect x="435" y="68" width="395" height="168" rx="6" fill="#f8fafc" stroke="#0062b8" stroke-width="1.5" />
+            <rect x="435" y="68" width="395" height="32" rx="6" fill="#0062b8" />
+            <text x="632.5" y="89" fill="#ffffff" font-family="Outfit" font-size="12.5" font-weight="700" text-anchor="middle">Reward-Free (DPO)</text>
 
-            <!-- Objective & KL Constraints -->
-            <rect x="625" y="45" width="160" height="70" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <text x="705" y="66" fill="#0f172a" font-family="Outfit" font-size="11" font-weight="600" text-anchor="middle">Hàm Mục Tiêu PPO</text>
-            <foreignObject x="625" y="72" width="160" height="40"><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #475569; line-height: 1.45;">Tối đa $r_\phi(x,y)$<br>Phạt $D_{\text{KL}}(\pi_\theta \parallel \pi_{\text{ref}})$</div></foreignObject>
-
-            <!-- Feedback Arrow (Y-level changed to 150 to keep it inside the viewBox and prevent cutting text) -->
-            <path d="M 705 115 L 705 150 L 285 150 L 285 105" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrow-gray)" />
-            <text x="495" y="142" fill="#0284c7" font-family="Inter" font-size="9" font-weight="600" text-anchor="middle">Cập nhật chính sách (Policy Update Loop)</text>
+            <foreignObject x="443" y="105" width="379" height="125">
+              <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: #000000;">
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Bản chất:</span> Tối ưu hóa ưu tiên trực tiếp ngoại tuyến không qua hàm thưởng
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Kiến trúc:</span> 2 mô hình (Chính sách hiện tại &amp; Chính sách tham chiếu)
+                </div>
+                <div style="margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #cbd5e1;">
+                  <span style="font-weight: 700; color: #0062b8;">Luồng xử lý:</span> Học trực tiếp từ tập dữ liệu tĩnh giữa câu trả lời Thích / Ghét
+                </div>
+                <div>
+                  <span style="font-weight: 700; color: #0062b8;">Đặc điểm:</span> Đơn giản, hội tụ nhanh, tiết kiệm VRAM nhưng nhạy cảm dữ liệu tĩnh.
+                </div>
+              </div>
+            </foreignObject>
           </svg>
         </div>
-        
-        
-        <!-- DPO Flowchart (Full Width) -->
-        <div class="diagram-container">
-          <div class="diagram-title">Luồng Hoạt Động DPO (Tối Ưu Hóa Ưu Tiên Trực Tiếp)</div>
-          <svg viewBox="0 0 800 240" width="100%" height="auto" style="max-width: 800px;">
-            <defs>
-              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
-              </marker>
-            </defs>
-            
-            <!-- Dataset input (Y shifted from 65 to 105) -->
-            <rect x="15" y="105" width="170" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <text x="100" y="128" fill="#0f172a" font-family="Inter" font-size="11" text-anchor="middle" font-weight="600">Tập Dữ Liệu Tĩnh D</text>
-            <text x="100" y="141" fill="#000000" font-family="Inter" font-size="8.5" text-anchor="middle">Cặp ưu tiên: (x, yw, yl)</text>
-
-            <!-- Arrow from Dataset to Policies (Y shifted to 130) -->
-            <path d="M 185 130 L 235 130" fill="none" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
-
-            <!-- Policy & Reference Policy logprob computations (Y shifted down by 40px) -->
-            <g>
-              <!-- Active Policy (Y shifted from 30 to 70) -->
-              <rect x="245" y="70" width="150" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" />
-              <foreignObject x="245" y="73" width="150" height="45"><div style="font-family: Outfit, sans-serif; font-size: 10.5px; font-weight: 700; text-align: center; color: #0369a1;">Policy Đang Học $\pi_\theta$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #0369a1; margin-top: 1px;">Tính $\log \pi_\theta(y \mid x)$</div></foreignObject>
-
-              <!-- Reference Policy (Y shifted from 100 to 140) -->
-              <rect x="245" y="140" width="150" height="50" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-              <foreignObject x="245" y="143" width="150" height="45"><div style="font-family: Outfit, sans-serif; font-size: 10.5px; font-weight: 700; text-align: center; color: #334155;">Ref Policy $\pi_{\text{ref}}$</div><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #64748b; margin-top: 1px;">Tính $\log \pi_{\text{ref}}(y \mid x)$</div></foreignObject>
-            </g>
-
-            <!-- Paths from models to DPO Loss (Y-centers shifted: 55->95, 125->165, output->130) -->
-            <path d="M 395 95 L 445 95 L 445 130 L 485 130" fill="none" stroke="#000000" stroke-width="1.5" />
-            <path d="M 395 165 L 445 165 L 445 130 L 485 130" fill="none" stroke="#000000" stroke-width="1.5" marker-end="url(#arrow-gray)" />
-
-            <!-- DPO Loss Core Calculation (Y shifted from 60 to 100) -->
-            <rect x="495" y="100" width="280" height="60" rx="6" fill="#f8fafc" stroke="#000000" stroke-width="1.5" />
-            <foreignObject x="495" y="104" width="280" height="52"><div style="font-family: Outfit, sans-serif; font-size: 11.5px; font-weight: 700; text-align: center; color: #0f172a;">Tính Toán $\mathcal{L}_{\text{DPO}}$ trực tiếp</div><div style="font-family: Inter, sans-serif; font-size: 8px; text-align: center; color: #475569; margin-top: 2px;">$\log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right)$</div></foreignObject>
-
-            <!-- Feedback Loop Arrow to Active Policy (Y shifted: start at top of DPO Loss Y=100, go up to Y=20, go left to X=320, go down to Active Policy Y=70) -->
-            <path d="M 635 100 L 635 20 L 320 20 L 320 70" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrow-gray)" />
-            <text x="477" y="14" fill="#0284c7" font-family="Inter" font-size="9" font-weight="600" text-anchor="middle">Tối ưu trực tiếp qua Gradient Descent (Feedback Loop)</text>
-          </svg>
-        </div>
-        
-        <!-- Terminology glossary callout for Section 3 -->
-        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
-          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 3)</div>
-          <table style="margin: 0.5rem 0 0 0; background: transparent;">
-            <thead>
-              <tr style="background: transparent;">
-                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
-                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Policy ($\pi$)</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Chính sách. Trong học tăng cường và sinh văn bản, đây là phân phối xác suất quyết định hành động (hoặc từ ngữ tiếp theo) dựa trên trạng thái (hoặc ngữ cảnh câu lệnh hiện tại).</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Auto-regressive</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tự hồi quy. Cơ chế sinh dữ liệu tuần tự, trong đó từ/token được tạo ra ở bước tiếp theo phụ thuộc vào toàn bộ các từ đã được tạo ra trước đó.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Regularization / Regularizing</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Điều hòa / Làm mượt. Các kỹ thuật áp đặt hình phạt toán học (như phạt khoảng cách KL) để giữ mô hình học tập không bị thay đổi quá xa, tránh quá khớp (overfitting).</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">KL Divergence</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Độ đo Kullback–Leibler. Công cụ toán học đo lường mức độ khác biệt giữa hai phân phối xác suất (ở đây là giữa chính sách mới và chính sách tham chiếu SFT gốc).</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Closed-form solution</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Nghiệm dạng đóng / Nghiệm giải tích. Nghiệm có thể biểu diễn tường minh dưới dạng biểu thức toán học và tính trực tiếp, thay vì phải chạy giải thuật lặp xấp xỉ số.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Partition function</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Hàm phân hoạch (ký hiệu là Z(x)). Đại lượng chuẩn hóa trong các mô hình xác suất nhằm đưa tổng các giá trị xác suất về bằng 1.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Reparameterization</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tái tham số hóa. Biểu diễn lại các tham số của một mô hình thông qua các biến số khác nhằm thuận tiện hơn cho việc đạo hàm và tối ưu hóa toán học.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
-
-      <!-- Section 4 -->
-      <section id="sec-4">
-        <h2>4. Hiểu về những hạn chế của DPO</h2>
-        <p>Trong phần này, chúng tôi chứng minh rằng DPO chưa chắc đã vượt trội hơn PPO. Đầu tiên, chúng tôi chỉ ra các vấn đề mang tính lý thuyết đối với hàm mục tiêu huấn luyện của DPO. Thứ hai, thông qua một ví dụ mô phỏng, chúng tôi minh họa rằng DPO dễ bị tổn thương hơn trước dữ liệu nằm ngoài phân phối (out-of-distribution - OOD). Cuối cùng, thông qua các thực nghiệm trên một tập dữ liệu ưu tiên thực tế, chúng tôi xác thực rằng hiệu suất của DPO có thể được cải thiện bằng cách giảm thiểu sự dịch chuyển phân phối (distribution shift) giữa đầu ra của mô hình và tập dữ liệu ưu tiên.</p>
-
-        <h3>4.1. Phân tích lý thuyết</h3>
-        <p>Một điều đã được biết đến rộng rãi là PPO có thể khai thác các lỗi của mô hình phần thưởng đã học để đạt được phần thưởng cao mà không thực sự đáp ứng đúng tùy chọn của con người; điều này thường biểu hiện qua các đầu ra sai lệch (Lewis và cộng sự, 2017) hoặc phức tạp quá mức (Singhal và cộng sự, 2023). Chúng tôi lập luận rằng, mặc dù DPO né được việc xây dựng mô hình phần thưởng, nó vẫn gặp phải một vấn đề tương tự về khả năng tổng quát hóa (generalization issue).</p>
-        
-        <p>Trong định lý dưới đây, chúng tôi sẽ chỉ ra rằng bất kỳ nghiệm nào tìm được bởi PPO cũng làm tối thiểu hóa hàm mục tiêu DPO; do đó, bất kỳ nghiệm nào tìm được bởi PPO khai thác lỗi với mô hình phần thưởng thì cũng có thể bị tìm thấy bởi DPO. Hơn nữa, DPO có khả năng tìm ra các nghiệm khai thác dữ liệu nằm ngoài phân phối, dẫn đến nguy cơ lệch quá mức khỏi chính sách tham chiếu, ngay cả khi chính sách tham chiếu đó vốn đã căn chỉnh rất tốt với tùy chọn của con người.</p>
-
-        <div class="callout" style="background-color: #f8fafc; border-left-color: var(--primary-color);">
-          <div class="callout-title">Định lý 4.1 (Quan hệ tập hợp giữa PPO và DPO)</div>
-          <p>Cho trước một hàm phần thưởng thực tế khách quan (ground-truth reward) $r$ và một tập dữ liệu ưu tiên $\mathcal{D}$. Gọi $\Pi_{\text{PPO}}$ là lớp các chính sách được tạo ra bằng cách huấn luyện mô hình phần thưởng $r_\phi$ trên $\mathcal{D}$ và chạy PPO để tối ưu hóa $J_{r_\phi}(\theta)$. Gọi $\Pi_{\text{DPO}}$ là lớp các chính sách được tạo ra bằng cách tối thiểu hóa hàm mục tiêu DPO. Ta có:</p>
-          <p style="text-align: center; font-weight: bold; font-size: 1.1rem;">$\Pi_{\text{PPO}}$ là một tập con thực sự (proper subset) của $\Pi_{\text{DPO}}$ ($\Pi_{\text{PPO}} \subsetneq  \Pi_{\text{DPO}}$)</p>
-        </div>
-
-        <div class="diagram-container">
-          <div class="diagram-title">Trực quan hóa Định lý 4.1: Quan hệ tập hợp nghiệm PPO và DPO</div>
-          <svg viewBox="0 0 450 280" width="100%" height="auto" style="max-width: 450px;">
-            <defs>
-              <radialGradient id="venn-dpo" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.08" />
-                <stop offset="100%" stop-color="#0284c7" stop-opacity="0.01" />
-              </radialGradient>
-              <radialGradient id="venn-ppo" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.15" />
-                <stop offset="100%" stop-color="#0284c7" stop-opacity="0.03" />
-              </radialGradient>
-            </defs>
-            
-            <!-- Background representing All Policies -->
-            <rect x="10" y="10" width="430" height="260" rx="8" fill="rgba(17,24,39,0.01)" stroke="var(--border-color)" stroke-width="1.5" />
-            <text x="25" y="32" class="svg-text-primary" font-family="Inter" font-size="10" font-weight="600">Không Gian Mọi Chính Sách (All Policies)</text>
-            
-            <!-- DPO circle -->
-            <circle cx="225" cy="145" r="100" fill="url(#venn-dpo)" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4" />
-            <foreignObject x="100" y="48" width="250" height="20"><div style="font-family: Outfit, sans-serif; font-size: 12px; font-weight: 700; text-align: center; color: #0284c7;">Lớp Nghiệm DPO ($\Pi_{\text{DPO}}$)</div></foreignObject>
-            
-            <!-- PPO circle (inside DPO circle) -->
-            <circle cx="200" cy="160" r="65" fill="url(#venn-ppo)" stroke="#0284c7" stroke-width="2" />
-            <foreignObject x="120" y="140" width="160" height="35"><div style="font-family: Outfit, sans-serif; font-size: 12px; font-weight: 700; text-align: center; color: #0284c7; line-height: 1.35;">Lớp Nghiệm PPO<br>($\Pi_{\text{PPO}}$)</div></foreignObject>
-            
-            <!-- OOD Outlier point in DPO but not PPO -->
-            <circle cx="295" cy="135" r="5" fill="#ef4444" />
-            <foreignObject x="305" y="122" width="140" height="35"><div style="font-family: Inter, sans-serif; font-size: 9.5px; font-weight: 700; color: #ef4444; line-height: 1.3;">Nghiệm Dị Biệt OOD<br><span style="font-size: 8px; font-weight: normal; color: #64748b;">(Ví dụ: $y_3$ trong Bảng 1)</span></div></foreignObject>
-
-            <!-- Arrow pointing to subset relationship -->
-            <path d="M 315 205 L 290 185" fill="none" stroke="#000000" stroke-width="1" />
-            <foreignObject x="270" y="208" width="100" height="20"><div style="font-family: Inter, sans-serif; font-size: 8.5px; text-align: center; color: #64748b;">$\Pi_{\text{PPO}} \subset \Pi_{\text{DPO}}$</div></foreignObject>
-          </svg>
-        </div>
-
-        <div style="background-color: #fafafa; border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; margin: 1.5rem 0;">
-          <h4 style="margin-top: 0;">Chứng minh Định lý 4.1</h4>
-          <p><strong>Bước 1: Chứng minh $\Pi_{\text{PPO}} \subseteq \Pi_{\text{DPO}}$.</strong></p>
-          <p>Gọi $\mathcal{R}$ là lớp các mô hình phần thưởng làm tối thiểu hóa hàm mất mát khi học phần thưởng trong Phương trình (4). Có một ánh xạ một-nhiều giữa $\Pi_{\text{PPO}}$ và $\mathcal{R}$ theo Phương trình (6). Không làm mất tính tổng quát, chúng tôi bỏ qua hệ số vô hướng $C(x)$ và định nghĩa $f$ là một ánh xạ một-một từ một chính sách sang một hàm phần thưởng:</p>
-          <p>\[f(\pi)(x,y) = \beta \log \frac{\pi(y|x)}{\pi_{\text{ref}}(y|x)}\]</p>
-          <p>Chúng tôi chỉ ra rằng hàm mất mát DPO tối thiểu cũng chính là hàm mất mát học phần thưởng tối thiểu, nghĩa là $\min_{\pi} \mathcal{L}_{\text{DPO}}(\pi) = \min_{\pi} \mathcal{L}_R(f(\pi)) \geq \min_{r} \mathcal{L}_R(r)$. Đối với một nghiệm tối thiểu $r^*$ của $\mathcal{L}_R(r)$, chúng tôi cấu trúc chính sách $\pi^*$ từ $r^*$ bằng Phương trình (5), từ đó suy ra $\min_{\pi} \mathcal{L}_{\text{DPO}}(\pi) \leq \mathcal{L}_{\text{DPO}}(\pi^*) = \min_{r} \mathcal{L}_R(r)$. Do đó, hàm mất mát học phần thưởng và hàm mất mát DPO là như nhau:</p>
-          <p>\[\forall r_\phi \in \mathcal{R}, \pi_{\text{DPO}} \in \Pi_{\text{DPO}}, \quad \min_{r} \mathcal{L}_R(r) = \mathcal{L}_R(r_\phi) = \mathcal{L}_{\text{DPO}}(\pi_{\text{DPO}}) = \min_{\pi} \mathcal{L}_{\text{DPO}}(\pi)\]</p>
-          <p>Đối với bất kỳ nghiệm nào tìm được bởi PPO, $\pi_{\text{PPO}} \in \Pi_{\text{PPO}}$, hàm phần thưởng $r^* = f(\pi_{\text{PPO}})$ thỏa mãn điều kiện $\pi_{\text{PPO}}$ là một nghiệm tối đa của $J_{r^*}(\pi)$ và $\pi_{\text{PPO}}$ có thể được biểu diễn qua $r^*$ bằng:</p>
-          <p>\[\pi_{\text{PPO}}(y | x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y | x) \exp \left( \frac{1}{\beta} r^*(x,y) \right) \quad (8)\]</p>
-          <p>Thay $\pi_{\text{PPO}}$ bằng Phương trình (8) vào $\mathcal{L}_{\text{DPO}}(\pi_{\text{PPO}})$, ta thu được $\mathcal{L}_{\text{DPO}}(\pi_{\text{PPO}}) = \mathcal{L}_R(r_\phi)$. Do đó, $\pi_{\text{PPO}}$ cũng làm tối thiểu hóa hàm mất mát DPO, tức là $\pi_{\text{PPO}} \in \Pi_{\text{DPO}}$.</p>
-          
-          <p><strong>Bước 2: Chứng minh $\Pi_{\text{PPO}} \subsetneq \Pi_{\text{DPO}}$.</strong></p>
-          <p>Chứng minh bằng phản ví dụ trong Bảng 1. Ở đây tồn tại nghiệm DPO, $\pi_{\text{DPO}} \in \Pi_{\text{DPO}}$, mà không làm tối đa hóa hàm mục tiêu RL của PPO trong Phương trình (2).</p>
-          <p>Xét trường hợp phi trạng thái đơn giản với ba hành động, tập dữ liệu ưu tiên chỉ chứa một cặp so sánh duy nhất giữa $y_1$ và $y_2$. Gọi xác suất chính sách DPO $\pi_{\text{DPO}}$ xuất ra hai hành động đầu tiên lần lượt là $a$ và $b$. Hàm mất mát DPO được tính bằng $\mathcal{L}_{\text{DPO}} = \log(1 + (b/a)^\beta)$, hàm này tối thiểu hóa khi $b = 0$.</p>
-          <p>Một chính sách tối ưu khả dĩ của DPO (như hàng 3 Bảng 1) có xác suất $0.1$ xuất ra $y_1$ và $0.9$ xuất ra $y_3$. Chính sách này không thể được tạo ra bởi PPO vì $\pi_{\text{ref}}$ buộc $\pi_{\text{PPO}}$ phải gán xác suất bằng $0$ cho $y_3$ theo Phương trình (8).</p>
-        </div>
-
-        <p>Nguyên nhân gốc rễ của việc <strong>xác định sai lệch phần thưởng (reward misspecification)</strong> là do độ bao phủ phân phối hạn hẹp của tập dữ liệu ưu tiên. Mặc dù DPO tránh việc huấn luyện mô hình phần thưởng, nó vẫn phải chịu vấn đề xác định sai lệch này trên các mẫu nằm ngoài phân phối (OOD). DPO có thể phát triển một phân phối thiên lệch (biased distribution) thiên vị các phản hồi chưa từng thấy. Ngược lại, PPO có thể tận dụng dữ liệu chỉ chứa câu lệnh (prompt-only data) để tạo ra các phản hồi mới trực tuyến, và khoảng cách KL với $\pi_{\text{ref}}$ sẽ cung cấp thêm cơ chế điều hòa bổ sung giúp PPO tránh bị chệch hướng trên các mẫu OOD này.</p>
-
-        <h3>4.2. Xác thực thực nghiệm trong một kịch bản mô phỏng</h3>
-        <p>Chúng tôi thiết kế một kịch bản mô phỏng để xác thực Định lý 4.1. Không gian câu lệnh và phản hồi rời rạc có kích thước là 8. Chính sách $\pi_\theta$ và mô hình phần thưởng $r_\phi$ được mô hình hóa bằng các mạng MLP (Perceptron đa tầng), nhận vào một vectơ một nóng (one-hot vector) và xuất ra một phân phối phân loại cho toàn bộ các phản hồi. Chúng tôi áp đặt thủ công để phản hồi tối ưu nằm ở các chỉ số đường chéo. Tập dữ liệu ưu tiên được tạo ngẫu nhiên dưới ràng buộc này và chỉ bao phủ các cặp ưu tiên hạn chế cho mỗi đầu vào.</p>
-        
-        <p>Kết quả mô phỏng chỉ ra rằng:</p>
-        <ul>
-          <li><strong>Đối với DPO:</strong> Mô hình cuối cùng có thể gán xác suất cho các phản hồi nằm ngoài phân phối (OOD) cao hơn cả mô hình tham chiếu. Ví dụ, tại một số phản hồi OOD, DPO làm tăng xác suất từ $0.11$ lên $0.23$. Đây là hành vi không mong muốn vì không thể đảm bảo chất lượng trên các vùng dữ liệu OOD này.</li>
-          <li><strong>Đối với PPO:</strong> Nhờ cơ chế điều hòa KL tường minh trực tiếp đối với mô hình tham chiếu ($\pi_{\text{ref}}$) trong suốt quá trình tương tác trực tuyến, PPO kiểm soát chặt chẽ xác suất của các hành động OOD, ngăn chặn hiện tượng rò rỉ phân phối và lệch chính sách.</li>
-        </ul>
-
-        <h3>4.3. Thực nghiệm trên các tập dữ liệu ưu tiên thực tế</h3>
-        <p>Chúng tôi tiến hành thực nghiệm trên tập dữ liệu SafeRLHF (Dai và cộng sự, 2023) nhằm huấn luyện một LLM ưu tiên tính an toàn (safety) hơn tính hữu ích (helpfulness). Các phản hồi được gán nhãn an toàn nhị phân và nhãn ưu tiên.</p>
-        <p>Mô hình cơ sở ban đầu là <strong>SFT (Alpaca)</strong> được huấn luyện trên tập dữ liệu Alpaca (Taori và cộng sự, 2023). Chúng tôi sử dụng các mô hình đánh giá độc lập chính thức để đo lường mức độ hữu ích và mức độ độc hại sau khi huấn luyện.</p>
-
-        <div class="callout" style="background-color: #fcfcfc; border-left-color: var(--secondary-color);">
-          <div class="callout-title">Bảng 2: Kết quả thực nghiệm DPO trên tập dữ liệu SafeRLHF</div>
-          <p>Bảng dưới đây thống kê tác động của sự dịch chuyển phân phối (distribution shift) và phương pháp thu thập dữ liệu lặp đối với hiệu suất của DPO:</p>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
-            <thead>
-              <tr>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Thuật toán &amp; Cấu hình</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Mô hình cơ sở / tham chiếu</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Tỷ lệ an toàn (Safety Rate)</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Phần thưởng hữu ích (Helpfulness)</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Phân tích hiện tượng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO tiêu chuẩn</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">SFT (Alpaca)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">55.4%</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">-4.19</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Hiệu suất kém do sự dịch chuyển phân phối lớn giữa tập dữ liệu Alpaca và SafeRLHF.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO (Giảm dịch chuyển)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">SFT (Safe)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">71.8% (+16.4%)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; font-weight: bold;">-1.62</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Tinh chỉnh trước SFT trên SafeRLHF giúp căn chỉnh phân phối ban đầu, tăng vọt cả độ an toàn lẫn hữu ích.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">DPO-Iter (DPO lặp)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem;">Cập nhật lặp qua các vòng</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Tương đương PPO</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">Thấp hơn nhiều so với PPO</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Giảm dịch chuyển bằng dữ liệu tự sinh lặp lại, tuy nhiên điểm phần thưởng hữu ích vẫn bị kéo thấp.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p>Các thực nghiệm trên chỉ ra hai yếu tố tác động mạnh mẽ đến DPO:</p>
-        <ul>
-          <li><strong>Ảnh hưởng của mô hình cơ sở:</strong> Việc dịch chuyển phân phối giữa dữ liệu tiền huấn luyện của mô hình cơ sở và dữ liệu ưu tiên làm suy giảm nặng nề DPO. Giải quyết dịch chuyển này (bằng cách tinh chỉnh SFT trên cùng tập dữ liệu ưu tiên trước) giúp DPO cải thiện rõ rệt.</li>
-          <li><strong>Độ nhạy đối với dữ liệu ưu tiên:</strong> Lọc bỏ các cặp dữ liệu gây tranh cãi (cùng-an-toàn, cùng-không-an-toàn) giúp tăng độ an toàn của DPO, nhưng việc lọc bỏ quá mức các cặp dữ liệu chất lượng cao sẽ làm tổn hại nghiêm trọng đến độ hữu ích của mô hình.</li>
-        </ul>
-
-        <div class="callout" style="background-color: #fffbeb; border-left-color: #d97706;">
-          <div class="callout-title">📌 Lưu ý thực tế về cải tiến DPO</div>
-          <p>Để cải thiện DPO, chúng tôi khuyến nghị áp dụng phương pháp <strong>DPO lặp (Iterative DPO)</strong>: Tạo phản hồi mới từ mô hình cơ sở ở mỗi vòng, gán nhãn ưu tiên bằng mô hình phần thưởng, rồi huấn luyện DPO vòng tiếp theo. Tuy nhiên, hiệu suất DPO lặp vẫn sẽ gặp giới hạn lớn trong các tác vụ tạo mã nguồn phức tạp (xem chi tiết ở Mục 6).</p>
-        </div>
-
-        <!-- Terminology glossary callout for Section 4 -->
-        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
-          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 4)</div>
-          <table style="margin: 0.5rem 0 0 0; background: transparent;">
-            <thead>
-              <tr style="background: transparent;">
-                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
-                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Proper subset</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Tập con thực sự (toán học). Tập hợp $A$ là tập con thực sự của $B$ ký hiệu là $A \subsetneq B$, nghĩa là mọi phần tử của $A$ đều nằm trong $B$, nhưng tồn tại phần tử của $B$ không thuộc $A$.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">One-to-one mapping</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Ánh xạ một-một (đơn ánh). Ánh xạ mà mỗi phần tử ở tập nguồn được liên kết với duy nhất một phần tử ở tập đích.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">State-less</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phi trạng thái. Trong học tăng cường, mô hình phi trạng thái không lưu trữ thông tin về các bước đi trước đó mà chỉ tối ưu hóa dựa trên phần thưởng tức thời của hành động hiện tại.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Reward misspecification</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Xác định sai lệch phần thưởng. Hiện tượng hàm phần thưởng toán học học được bị lỗi hoặc có lỗ hổng (loophole), khiến tác nhân tối đa hóa điểm số phần thưởng nhưng lại hành động sai lệch hoặc tạo ra kết quả vô nghĩa.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Dual-unsafe / Dual-safe</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Cùng-không-an-toàn / Cùng-an-toàn. Các cặp phản hồi so sánh trong dữ liệu ưu tiên mà cả hai phương án đều vi phạm an toàn hoặc đều an toàn, gây khó khăn cho việc huấn luyện so sánh biên độ của DPO.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">DPO-Iter (Iterative DPO)</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">DPO lặp. Phương pháp huấn luyện DPO qua nhiều vòng, ở mỗi vòng sử dụng chính mô hình của vòng trước để tự sinh dữ liệu mới và gắn nhãn, nhằm giảm thiểu sự lệch phân phối tĩnh.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
-
-      <!-- Section 5 -->
-      <section id="sec-5">
-        <h2>5. Các yếu tố then chốt đối với PPO trong RLHF</h2>
-        <p>Trong phần này, chúng tôi nghiên cứu các yếu tố then chốt quyết định hiệu suất RLHF của PPO. Chúng tôi tìm ra ba kỹ thuật cốt lõi: (1) chuẩn hóa hàm lợi thế (advantage normalization) (Raffin và cộng sự, 2021), (2) huấn luyện với kích thước lô lớn (large batch-size training) (Yu và cộng sự, 2022), và (3) cập nhật các tham số của mô hình tham chiếu bằng trung bình trượt lũy thừa (exponential moving average - EMA) (Ouyang và cộng sự, 2022).</p>
-        <p>Hai kỹ thuật đầu tiên đã được áp dụng rộng rãi trong cộng đồng Học tăng cường (RL) nhưng chưa được nghiên cứu kỹ lưỡng trong lĩnh vực RLHF. Kỹ thuật thứ ba là một phương pháp còn ít được thảo luận trong các tài liệu nghiên cứu trước đây, liên quan đến việc cập nhật dần dần mô hình tham chiếu thông qua trung bình trượt lũy thừa (Ouyang và cộng sự, 2022). Hướng tiếp cận đặc biệt này có tiềm năng mang lại những cải tiến hiệu suất bổ sung.</p>
-
-        <h3>Chi tiết triển khai</h3>
-        <p>Hệ thống triển khai PPO của chúng tôi được xây dựng dựa trên DeepSpeed-Chat (Yao và cộng sự, 2023), ngoại trừ hai thay đổi quan trọng:</p>
-        <ol>
-          <li>Chúng tôi sử dụng một phần thưởng dạng vô hướng (scalar reward) cho mỗi phản hồi thay vì các phần thưởng dày đặc (dense rewards) được gán trên từng token.</li>
-          <li>Chúng tôi bỏ qua hàm mất mát SFT bổ trợ (auxiliary SFT loss) trong quá trình huấn luyện PPO do lượng dữ liệu có hạn.</li>
-        </ol>
-        <p>Việc triển khai này bao gồm các kỹ thuật PPO phổ biến như giới hạn hàm mất mát giá trị (value loss clip) và ước lượng lợi thế tổng quát (Generalized Advantage Estimation - GAE) (Schulman và cộng sự, 2016).</p>
-
-        <h3>Thiết lập thực nghiệm</h3>
-        <p>Các thực nghiệm loại trừ (ablation experiments) của chúng tôi đối với PPO được thực hiện trên một tác vụ hội thoại HH-RLHF (Bai và cộng sự, 2022) cùng hai tác vụ tạo mã nguồn: APPS (Hendrycks và cộng sự, 2021) và CodeContest (Li và cộng sự, 2022).</p>
-        <ul>
-          <li><strong>Tác vụ HH-RLHF:</strong> Tập dữ liệu ưu tiên để huấn luyện một LLM hữu ích và vô hại thông qua phản hồi ưu tiên (preference feedback).</li>
-          <li><strong>Tác vụ APPS &amp; CodeContest:</strong> Tập dữ liệu lập trình thi đấu. Cho trước một bài toán, LLM phải xuất ra đoạn mã nguồn. Tính chính xác được xác thực trực tiếp bằng các bài kiểm thử tự động (test cases), tạo ra phản hồi phần thưởng trực tiếp (direct reward feedback) cho PPO và DPO.</li>
-        </ul>
-        <p>Trong kết quả thực nghiệm, chúng tôi ký hiệu:</p>
-        <ul>
-          <li>Kỹ thuật chuẩn hóa hàm lợi thế là <strong>Adv. Norm.</strong></li>
-          <li>Huấn luyện với kích thước lô lớn là <strong>Large Batch</strong>.</li>
-          <li>Cập nhật mô hình tham chiếu bằng trung bình trượt lũy thừa là <strong>Ref. EMA</strong>.</li>
-        </ul>
-
-        <h3>Phân tích kết quả thực nghiệm</h3>
-        <div class="callout" style="background-color: #fcfcfc; border-left-color: var(--primary-color);">
-          <div class="callout-title">Bảng 3: Nghiên cứu loại trừ (Ablation Study) về các thành phần cốt lõi của PPO</div>
-          <p>Bảng dưới đây tóm tắt định tính tác động của từng thành phần kỹ thuật lên hiệu suất của PPO trên các tập dữ liệu khác nhau:</p>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
-            <thead>
-              <tr>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Cấu hình PPO</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">HH-RLHF (Hội thoại)</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">APPS (Mã nguồn)</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">CodeContest (Mã nguồn)</th>
-                <th style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;">Nhận xét thực nghiệm</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">SFT Baseline (Gốc)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center;">Mốc so sánh</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Điểm cơ sở ban đầu trước khi căn chỉnh RLHF.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">Baseline PPO (Lô nhỏ)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện (&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #dc2626;">Giảm mạnh (&darr;&darr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện nhẹ (&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Lô nhỏ (như 64) làm giảm mạnh hiệu suất trên APPS xuống 33.7% ở cấp độ nhập môn.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm.</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Cải thiện tốt (&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Ổn định lại (&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a;">Ổn định (&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Chuẩn hóa hàm lợi thế giúp làm mượt và ổn định quá trình tối ưu hóa.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm. + Large Batch</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng mạnh (&uarr;&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng vượt bậc (&uarr;&uarr;&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #16a34a; font-weight: bold;">Tăng tốt (&uarr;&uarr;)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Kích thước lô lớn đem lại bước đột phá lớn nhất, đặc biệt đối với các tác vụ viết code.</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-weight: 600;">PPO + Adv. Norm. + Large Batch + Ref. EMA</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; color: #2563eb; font-weight: bold;">Tốt nhất (SOTA)</td>
-                <td style="border: 1px solid var(--border-color); padding: 0.5rem; font-size: 0.9rem;">Cập nhật trượt mô hình tham chiếu đem lại các cải tiến hiệu suất bổ sung cuối cùng.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p><strong>Phân tích logic của Ref. EMA:</strong> Trong khi mô hình chính sách LLM chính của PPO đang thay đổi nhanh chóng, mô hình tham chiếu cũng nên được cập nhật một cách mượt mà tương ứng qua trung bình trượt lũy thừa. Nếu giữ nguyên mô hình tham chiếu tĩnh SFT gốc, mô hình chính sách đang học sẽ bị ràng buộc điều hòa KL quá mạnh để buộc phải giống hệt mô hình cũ, làm cản trở việc học các tri thức tối ưu mới trong các tác vụ viết code đầy thử thách.</p>
-        
-        <p>Hình 2 của nghiên cứu chứng minh việc tăng kích thước lô của PPO liên tục cải thiện hiệu suất trên tất cả các cấp độ khó của tập dữ liệu APPS (Introductory, Interview, Competition). Phát hiện này hoàn toàn nhất quán với kết luận chung trong cộng đồng học tăng cường (RL).</p>
-
-        <!-- Terminology glossary callout for Section 5 -->
-        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
-          <div class="callout-title">💡 Giải thích thuật ngữ chuyên ngành (Section 5)</div>
-          <table style="margin: 0.5rem 0 0 0; background: transparent;">
-            <thead>
-              <tr style="background: transparent;">
-                <th style="width: 30%; border: none; background: transparent; padding: 0.5rem 0.75rem 0.5rem 0;">Thuật ngữ</th>
-                <th style="border: none; background: transparent; padding: 0.5rem 0;">Ý nghĩa &amp; Vai trò</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Dense rewards</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phần thưởng dày đặc. Cơ chế gán điểm thưởng trên từng token sinh ra, trái ngược với phần thưởng vô hướng (scalar reward) chỉ chấm một điểm chung cho cả câu trả lời.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Value loss clip</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Giới hạn hàm mất mát giá trị. Kỹ thuật cắt bớt (clip) phần chênh lệch quá lớn trong hàm mất mát của Value Network trong thuật toán PPO nhằm ổn định cập nhật.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">GAE (Generalized Advantage Estimation)</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Ước lượng lợi thế tổng quát. Một thuật toán tối ưu hóa trong RL giúp cân bằng giữa phương sai (variance) và độ chệch (bias) khi tính toán tín hiệu lợi thế của hành động.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Direct reward feedback</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Phản hồi phần thưởng trực tiếp. Tín hiệu phần thưởng thu được từ việc đánh giá tự động (ví dụ: chạy code qua bộ test cases để biết đúng/sai) thay vì phải dựa trên so sánh mức độ ưu tiên tương đối của con người.</td>
-              </tr>
-              <tr>
-                <td style="font-weight: 600; border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0.75rem 0.5rem 0; background: transparent;">Introductory scale</td>
-                <td style="border-top: 1px solid var(--highlight-border); border-bottom: 1px solid var(--highlight-border); border-left: none; border-right: none; padding: 0.5rem 0; background: transparent;">Cấp độ nhập môn. Phân khúc bài toán dễ nhất trong bộ benchmark lập trình APPS (bên cạnh cấp Interview và Competition).</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
-
-      <!-- Section 6 -->
-      <section id="sec-6">
-        <h2>6. Kết quả đánh giá đối sánh</h2>
-        <p>Trong phần này, chúng tôi tiến hành các xác thực thực nghiệm để đánh giá hiệu suất của cả DPO và PPO. Ban đầu, các thực nghiệm của chúng tôi tập trung vào các tác vụ hội thoại tổng quát, cụ thể là HH-RLHF và SafeRLHF. Mục tiêu chính là nâng cao hiệu quả của LLM thông qua việc thúc đẩy các tương tác mang tính xây dựng và giảm thiểu các thành phần độc hại bên trong mô hình. Thêm vào đó, nghiên cứu của chúng tôi cũng mở rộng sang các tác vụ tạo mã nguồn đòi hỏi khắt khe, cụ thể là APPS và CodeContest.</p>
-
-        <!-- Comparative Dashboard Grid -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin: 2rem 0;">
-          <!-- Card 1: HH-RLHF -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-            <h4 style="margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
-              <span>💬</span> Tập dữ liệu HH-RLHF (170K cặp hội thoại)
-            </h4>
-            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Mục tiêu:</strong> Căn chỉnh LLM (Llama2-7B) trở nên hữu ích và vô hại thông qua các phản hồi ưu tiên từ con người.</p>
-            <p style="font-size: 0.95rem; margin-bottom: 0.75rem;"><strong>Phương pháp đánh giá:</strong> Sử dụng mô hình phần thưởng OpenAssistant độc lập và dùng GPT-4 để đánh giá tỷ lệ thắng (win rates) so sánh cặp.</p>
-            <div style="background-color: #f8fafc; border-left: 3px solid var(--secondary-color); padding: 0.75rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;">
-              <strong>Kết quả chính:</strong>
-              <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem;">
-                <li>Xếp hạng hiệu năng: <strong style="color: var(--secondary-color);">PPO &gt; DPO-Iter &gt; DPO</strong> &gt; RRHF / PRO / SFT.</li>
-                <li>PPO đạt được phần thưởng cao nhất và tỷ lệ thắng lớn nhất.</li>
-                <li>Đánh giá trực tiếp bằng GPT-4 cho thấy mô hình ưu ái phản hồi từ PPO hơn hẳn DPO.</li>
-              </ul>
-            </div>
-          </div>
 
           <!-- Card 2: SafeRLHF -->
           <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
