@@ -33,9 +33,18 @@ Học liệu tóm tắt lý thuyết cốt lõi qua 5 chương học chi tiết:
 * **Chương 5: Xử lý hình thái nhị phân** (Structuring Element - SE, phép co Dilation, phép giãn Erosion, Open/Close...)
 
 ### 2. CT332 - Trí tuệ nhân tạo
-Bài báo cáo môn học tham khảo từ:
-* **Đề tài:** *Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study (NeurIPS 2024)*
-* **Tác giả bài báo gốc:** Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu, Yi Wu (Tsinghua University, Shanghai Qi Zhi Institute, Shanghai Jiao Tong University)
+Học liệu lý thuyết cốt lõi qua 7 chương học chi tiết và hệ thống trắc nghiệm tương tác:
+* **Chương 1: Trí tuệ nhân tạo là gì?** (Lịch sử phát triển, Turing Test, phân loại AGI/Narrow AI, nền tảng học thuật)
+* **Chương 2: Giải quyết vấn đề bằng tìm kiếm** (BFS, DFS, DLS, IDDFS, UCS, trạng thái vs nút)
+* **Chương 3: Các kỹ thuật tìm kiếm Heuristic** (Leo đồi Hill Climbing, Greedy Best-First, A*, bài toán thỏa mãn ràng buộc CSP, cắt tỉa Alpha-Beta)
+* **Chương 4: Biểu diễn tri thức** (Mô hình logic, hệ luật sinh, mạng ngữ nghĩa, cấu trúc Frame)
+* **Chương 5: Thủ tục hợp giải** (Chứng minh phản chứng, Unification, Skolemization, dạng CNF)
+* **Chương 6: Suy diễn tiến - lùi** (Hệ thống luật IF-THEN, bộ suy diễn hướng dữ liệu và hướng mục tiêu)
+* **Chương 7: Giải thuật di truyền** (Mã hóa, hàm thích nghi, Roulette Wheel, lai ghép, đột biến, lược đồ Schema)
+* **Hệ thống trắc nghiệm tương tác:** Gồm 7 chương lý thuyết (50 câu/chương) và 1 phần **Bài tập tính toán tổng hợp (50 câu)** có lời giải chi tiết và hỗ trợ định dạng $\LaTeX$ trực quan.
+* **Báo cáo chuyên đề nghiên cứu khoa học:**
+  - *Đề tài:* Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study (NeurIPS 2024)
+  - *Tài liệu trực quan:* Sơ đồ căn chỉnh 3 bước (Alignment Pipeline) & So sánh chi tiết kiến trúc toán học PPO vs DPO.
 
 ### 3. Machine Learning cơ bản
 Kho học liệu lý thuyết và bài tập thực hành học máy cơ bản:
@@ -75,9 +84,21 @@ Kho học liệu lý thuyết và bộ câu hỏi trắc nghiệm tương tác:
 │       ├── chuong-4-phan-vung-anh.html
 │       └── chuong-5-xu-ly-hinh-thai-nhi-phan.html
 ├── tri-tue-nhan-tao/
-│   ├── index.html               # Mục lục môn CT332 - Trí tuệ nhân tạo
+│   ├── index.html                   # Mục lục môn CT332 - Trí tuệ nhân tạo
+│   ├── tri-tue-nhan-tao-la-gi.html  # Lý thuyết Chương 1
+│   ├── giai-quyet-van-de-bang-tim-kiem.html # Lý thuyết Chương 2
+│   ├── cac-ky-thuat-tim-kiem-heuristic.html # Lý thuyết Chương 3
+│   ├── bieu-dien-tri-thuc.html      # Lý thuyết Chương 4
+│   ├── thu-tuc-hop-giai.html        # Lý thuyết Chương 5
+│   ├── suy-dien-tien-lui.html       # Lý thuyết Chương 6
+│   ├── giai-thuat-di-truyen.html    # Lý thuyết Chương 7
+│   ├── trac-nghiem-chuong-1.html    # Trắc nghiệm tương tác Chương 1 (đến Chương 7)
+│   ├── trac-nghiem-bai-tap-tinh-toan.html # Trắc nghiệm Bài tập tính toán (50 câu)
+│   ├── js/
+│   │   └── quiz-data.js             # Cơ sở dữ liệu 400 câu hỏi trắc nghiệm
 │   └── reports/
-│       └── bao-cao-mon-hoc.html             # Báo cáo môn học
+│       ├── bao-cao-mon-hoc.html     # Báo cáo chuyên đề PPO vs DPO
+│       └── cong-thuc-so-do-ppo-dpo.html # Đồ họa trực quan & công thức toán học
 ├── machine-learning/
 │   ├── index.html               # Mục lục môn Machine Learning cơ bản
 │   └── chapters/                # Các chương học chi tiết
