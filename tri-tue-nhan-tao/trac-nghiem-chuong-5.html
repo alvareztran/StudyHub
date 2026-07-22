@@ -299,10 +299,12 @@
     let userProgress = {};
 
     function initProgress() {
-      for(let i=1; i<=8; i++) {
-        userProgress['ch' + i] = {};
-      }
       loadProgressFromLocalStorage();
+      for(let i=1; i<=8; i++) {
+        if (!userProgress['ch' + i]) {
+          userProgress['ch' + i] = {};
+        }
+      }
       // Tự động gán active class
       document.getElementById('menu-ch' + currentChapter).classList.add('active');
       updateAllSidebarBadges();
