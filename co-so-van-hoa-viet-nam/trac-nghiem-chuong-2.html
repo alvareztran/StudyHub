@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc nghiệm Chương 2 - Cơ sở văn hóa Việt Nam - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .score-badge {
+      font-size: 0.75rem;
+      background: var(--border-color);
+      color: var(--text-light);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      font-weight: normal;
+    }
+    .score-badge.completed {
+      background: rgba(34, 197, 94, 0.2);
+      color: #16a34a;
+      font-weight: bold;
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 4px solid #ef4444;
+    }
+    .quiz-question {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      transition: all 0.2s;
+      color: var(--text-dark);
+    }
+    .quiz-options label:hover {
+      background-color: var(--highlight-bg);
+      border-color: var(--text-light);
+    }
+    .quiz-options label.correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #22c55e;
+      color: #15803d;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .feedback-correct {
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      color: var(--text-dark);
+    }
+    .feedback-incorrect {
+      background-color: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      color: var(--text-dark);
+    }
+    .progress-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 150px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--secondary-color);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .reset-btn {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover {
+      background: var(--highlight-bg);
+      border-color: var(--text-light);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Cơ sở văn hóa Việt Nam</a> &raquo; Trắc nghiệm Chương 2
+      </div>
+      <h1>HỆ THỐNG TRẮC NGHIỆM CƠ SỞ VĂN HÓA VIỆT NAM</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Học liệu trắc nghiệm tương tác thông minh với tính năng chấm điểm và phản hồi tức thời.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục trắc nghiệm</h3>
+        <ul>
+          <li><a href="trac-nghiem-chuong-1.html" id="menu-ch1">Chương 1: Tổng quan &amp; Định vị <span class="score-badge" id="badge-ch1">0/52</span></a></li>
+          <li><a href="trac-nghiem-chuong-2.html" id="menu-ch2">Chương 2: Triết lý Vũ trụ &amp; Con người <span class="score-badge" id="badge-ch2">0/31</span></a></li>
+          <li><a href="trac-nghiem-chuong-3.html" id="menu-ch3">Chương 3: Tổ chức Cộng đồng <span class="score-badge" id="badge-ch3">0/34</span></a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Quiz Content Area -->
+      <main>
+        <div class="progress-container">
+          <div style="font-weight: 600; font-size: 0.9rem;" id="progress-text">Tiến độ chương: 0/0 câu</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+          <button class="reset-btn" onclick="confirmResetCurrentChapter()">🔄 Làm lại chương này</button>
+        </div>
+
+        <div class="chapter-header">
+          <h2 id="chapter-title">Chương 2</h2>
+          <span style="font-weight: 700; color: var(--secondary-color);" id="chapter-score-display">Đúng: 0/0 câu</span>
+        </div>
+
+        <div id="questions-container">
+          <!-- Questions will be dynamically rendered here via JS -->
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script src="js/quiz-data.js"></script>
+  <script>
+    const currentChapter = 2;
+    let userProgress = {};
+    const chTotalCounts = { ch1: 52, ch2: 31, ch3: 34 };
+
+    function initProgress() {
+      loadProgressFromLocalStorage();
+      for(let i=1; i<=3; i++) {
+        if (!userProgress['ch' + i]) {
+          userProgress['ch' + i] = {};
+        }
+      }
+      // Tự động gán active class
+      document.getElementById('menu-ch' + currentChapter).classList.add('active');
+      updateAllSidebarBadges();
+      renderQuestions(currentChapter);
+    }
+
+    function saveProgressToLocalStorage() {
+      localStorage.setItem('studyhub_csvh_quiz_progress', JSON.stringify(userProgress));
+    }
+
+    function loadProgressFromLocalStorage() {
+      const saved = localStorage.getItem('studyhub_csvh_quiz_progress');
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch (e) {
+          console.error("Lỗi parse dữ liệu tiến độ cũ", e);
+        }
+      }
+    }
+
+    function updateAllSidebarBadges() {
+      for(let i=1; i<=3; i++) {
+        const chKey = 'ch' + i;
+        const answers = userProgress[chKey] || {};
+        const answeredCount = Object.keys(answers).length;
+        const correctCount = Object.values(answers).filter(a => a.isCorrect).length;
+        const badge = document.getElementById('badge-' + chKey);
+        if (badge) {
+          badge.textContent = `${correctCount}/${chTotalCounts[chKey]}`;
+          if (answeredCount === chTotalCounts[chKey]) {
+            badge.classList.add('completed');
+          } else {
+            badge.classList.remove('completed');
+          }
+        }
+      }
+    }
+
+    function renderQuestions(chapterNum) {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+      
+      const chKey = 'ch' + chapterNum;
+      const questionsList = quizData[chKey];
+      if (!questionsList) {
+        container.innerHTML = '<p>Dữ liệu trắc nghiệm đang được tải hoặc bị lỗi...</p>';
+        return;
+      }
+
+      const chNames = [
+        "Tổng quan &amp; Định vị văn hóa Việt Nam",
+        "Triết lý vũ trụ và con người",
+        "Tổ chức cộng đồng và thành tố văn hóa"
+      ];
+      document.getElementById('chapter-title').innerHTML = `Chương ${chapterNum}: ${chNames[chapterNum-1]}`;
+
+      const answeredList = userProgress[chKey] || {};
+      const totalQuestions = questionsList.length;
+      const answeredCount = Object.keys(answeredList).length;
+      const correctCount = Object.values(answeredList).filter(a => a.isCorrect).length;
+
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      document.getElementById('progress-text').textContent = `Tiến độ chương: ${answeredCount}/${totalQuestions} câu`;
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('chapter-score-display').textContent = `Đúng: ${correctCount}/${answeredCount}`;
+
+      questionsList.forEach((qObj, index) => {
+        const qId = `ch${chapterNum}_q${index}`;
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `card_${qId}`;
+
+        const questionText = document.createElement('div');
+        questionText.className = 'quiz-question';
+        questionText.innerHTML = `<strong>Câu ${index + 1}.</strong> ${qObj.q}`;
+        card.appendChild(questionText);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'quiz-options';
+
+        const userAns = answeredList[index];
+        const hasBeenAnswered = userAns !== undefined;
+
+        qObj.a.forEach((optionText, optIdx) => {
+          const label = document.createElement('label');
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = qId;
+          radio.value = optIdx;
+          radio.style.marginRight = '0.5rem';
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(optionText));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add('correct');
+            }
+            if (optIdx === userAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add('incorrect');
+              }
+            }
+            label.classList.add('disabled');
+          } else {
+            radio.addEventListener('change', () => {
+              handleOptionSelect(chapterNum, index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'quiz-feedback';
+        feedbackDiv.id = `fb_${qId}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (userAns.isCorrect) {
+            card.classList.add('correct-card');
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-correct';
+          } else {
+            card.classList.add('incorrect-card');
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = 'quiz-feedback show feedback-incorrect';
+          }
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(chapterNum, qIndex, selectedOptIdx) {
+      const chKey = 'ch' + chapterNum;
+      const qObj = quizData[chKey][qIndex];
+      const isCorrect = selectedOptIdx === qObj.c;
+
+      userProgress[chKey][qIndex] = {
+        selectedAnswerIndex: selectedOptIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgressToLocalStorage();
+      updateAllSidebarBadges();
+      renderQuestions(chapterNum);
+    }
+
+    function confirmResetCurrentChapter() {
+      if (confirm(`Bạn có chắc chắn muốn làm lại tất cả các câu hỏi của Chương ${currentChapter}?`)) {
+        userProgress['ch' + currentChapter] = {};
+        saveProgressToLocalStorage();
+        updateAllSidebarBadges();
+        renderQuestions(currentChapter);
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>

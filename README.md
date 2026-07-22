@@ -65,6 +65,13 @@ Kho học liệu lý thuyết và bộ câu hỏi trắc nghiệm tương tác:
 * **Chương 6: Khóa chết** (Định nghĩa Deadlock, 4 điều kiện cần, đồ thị RAG, Wait-for Graph, giải thuật Banker, phát hiện và khôi phục hệ thống)
 * **Chương 7: Quản lý bộ nhớ** (Cơ chế Base/Limit, địa chỉ Logic vs Physical, MMU, Hoán đổi bộ nhớ Swapping, giải thuật cấp phát kề nhau First/Best/Worst-fit, Phân trang Paging, bộ đệm TLB và Phân đoạn Segmentation)
 
+### 5. Cơ sở văn hóa Việt Nam
+Học liệu trắc nghiệm tương tác đang phát triển:
+* **Chủ đề 1: Khái luận về văn hóa và văn hóa học** (Định nghĩa, cấu trúc văn hóa, chức năng văn hóa)
+* **Chủ đề 2: Định vị văn hóa Việt Nam** (Chủ thể, không gian, thời gian lịch sử)
+* **Chủ đề 3: Tiến trình lịch sử văn hóa Việt Nam** (Các lớp văn hóa bản địa, giao lưu tiếp xúc)
+* **Chủ đề 4: Các thành tố văn hóa Việt Nam** (Văn hóa nhận thức, tổ chức cộng đồng, ứng xử môi trường tự nhiên & xã hội)
+
 ---
 
 ## 📂 Cấu Trúc Thư Mục Dự Án
@@ -99,6 +106,13 @@ Kho học liệu lý thuyết và bộ câu hỏi trắc nghiệm tương tác:
 │   └── reports/
 │       ├── bao-cao-mon-hoc.html     # Báo cáo chuyên đề PPO vs DPO
 │       └── cong-thuc-so-do-ppo-dpo.html # Đồ họa trực quan & công thức toán học
+├── co-so-van-hoa-viet-nam/
+│   ├── index.html                   # Mục lục môn Cơ sở văn hóa Việt Nam
+│   ├── trac-nghiem-chuong-1.html    # Trắc nghiệm Chương 1 (52 câu)
+│   ├── trac-nghiem-chuong-2.html    # Trắc nghiệm Chương 2 (31 câu)
+│   ├── trac-nghiem-chuong-3.html    # Trắc nghiệm Chương 3 (34 câu)
+│   └── js/
+│       └── quiz-data.js             # Cơ sở dữ liệu câu hỏi trắc nghiệm
 ├── machine-learning/
 │   ├── index.html               # Mục lục môn Machine Learning cơ bản
 │   └── chapters/                # Các chương học chi tiết
