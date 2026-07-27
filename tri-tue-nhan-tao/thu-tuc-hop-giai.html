@@ -6,7 +6,7 @@
   <title>Chương 5: Thủ tục hợp giải (Resolution) - StudyHub</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
-  <script src="../js/theme.js"></script>
+  <script src="../js/theme.js?v=2"></script>
   <!-- KaTeX for rendering mathematical formulas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -147,6 +147,9 @@
         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
       <button onclick="window.print()" class="btn-pdf">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
         Xuất file PDF
@@ -158,8 +161,10 @@
       <aside class="sidebar no-print">
         <h3>Mục lục môn học</h3>
         <ul>
+          <li><a href="tong-hop-ly-thuyet.html" style="font-weight: 600; color: var(--secondary-color);">📚 Tổng hợp lý thuyết (All-in-one)</a></li>
           <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
           <li><a href="giai-quyet-van-de-bang-tim-kiem.html">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="lap-ke-hoach-planning.html">2 (Bổ sung). Lập kế hoạch (Planning)</a></li>
           <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
           <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
           <li><a href="thu-tuc-hop-giai.html" class="active">5. Thủ tục hợp giải</a></li>
@@ -449,36 +454,7 @@
           </ol>
         </div>
 
-        <!-- Section Highlights -->
-        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
-          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
-          <ul>
-            <li><strong>Khái niệm CNF:</strong> Nhớ rõ CNF là dạng chuẩn hội (AND bên ngoài, OR bên trong).</li>
-            <li><strong>Các lượng từ:</strong> \(\forall\) đi liền với phép kéo theo (\(\rightarrow\)), \(\exists\) đi liền với phép hội (\(\land\)) khi dịch câu tiếng Việt.</li>
-            <li><strong>Phép hợp nhất (Unification):</strong> Phải tìm được bộ thế \(\theta\) phù hợp để khớp hai vị từ.</li>
-            <li><strong>Quy tắc hợp giải:</strong> Từ hai mệnh đề chứa \(P\) và \(\neg P\), ta triệt tiêu và nối các thành phần còn lại bằng dấu \(\lor\).</li>
-            <li><strong>Skolemization:</strong> Hiểu rõ khi nào dùng hằng Skolem (không nằm dưới \(\forall\)) và khi nào dùng hàm Skolem (nằm dưới \(\forall\)).</li>
-            <li><strong>Mệnh đề rỗng (\(\Box\)):</strong> Là đích đến của chứng minh phản chứng, biểu thị mâu thuẫn toán học.</li>
-          </ul>
-        </div>
 
-        <!-- Section Review Questions -->
-        <div class="sub-section" id="questions">
-          <h3>❓ Câu hỏi ôn tập tự luận</h3>
-          <ol>
-            <li>Mệnh đề là gì? Hãy chuyển công thức sau về dạng chuẩn CNF: \(\neg (P \rightarrow Q) \lor (R \leftrightarrow S)\).</li>
-            <li>Phân biệt sự khác nhau giữa dạng chuẩn hội CNF và dạng chuẩn tuyển DNF. Cho ví dụ mỗi loại.</li>
-            <li>Logic vị từ bậc nhất dùng những thành phần nào để khắc phục giới hạn của logic mệnh đề? Giải thích rõ vai trò của Hằng, Biến, Hàm và Vị từ.</li>
-            <li>Dịch các câu sau sang ngôn ngữ logic vị từ bậc nhất:
-              <ul>
-                <li>"Tất cả sinh viên công nghệ thông tin đều phải học lập trình."</li>
-                <li>"Có ít nhất một sinh viên khoa học máy tính đạt điểm tối đa môn Trí tuệ nhân tạo."</li>
-              </ul>
-            </li>
-            <li>Trình bày nguyên lý chứng minh của Thủ tục hợp giải (Resolution). Mệnh đề rỗng được sinh ra khi nào và mang ý nghĩa gì?</li>
-            <li>Giải thích kỹ thuật Skolemization. Khử lượng từ tồn tại cho biểu thức sau: \(\forall X \exists Y (likes(X, Y) \land student(Y))\).</li>
-          </ol>
-        </div>
       </main>
     </div>
 

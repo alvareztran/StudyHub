@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng hợp Lý thuyết CT332 - Trí tuệ nhân tạo - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for divided sections */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    .sub-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .sub-section h3 {
+      margin-top: 0;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .block-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .block-title::before {
+      content: "•";
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+
+    
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1300px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT332 - Trí tuệ nhân tạo</a> &raquo; Tổng hợp lý thuyết
+      </div>
+      <h1>TỔNG HỢP TOÀN BỘ LÝ THUYẾT CT332</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Bản tổng hợp đầy đủ và chi tiết nhất tất cả các chương lý thuyết của môn học CT332 - Trí tuệ nhân tạo.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Mục lục tổng hợp</h3>
+        <ul>
+          <li><a href="#chuong-1" class="active">1. Trí tuệ nhân tạo là gì?</a></li>
+          <li><a href="#chuong-2">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="#chuong-2-bis">2 (Bổ sung). Lập kế hoạch (Planning)</a></li>
+          <li><a href="#chuong-3">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
+          <li><a href="#chuong-4">4. Biểu diễn tri thức</a></li>
+          <li><a href="#chuong-5">5. Thủ tục hợp giải</a></li>
+          <li><a href="#chuong-6">6. Suy diễn tiến - lùi</a></li>
+          <li><a href="#chuong-7">7. Giải thuật di truyền</a></li>
+        </ul>
+        
+        <h3>Quay lại môn học</h3>
+        <ul>
+          <li><a href="index.html">👈 Quay lại trang chủ môn học</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Compiled Content -->
+      <main>
+<section id="chuong-1" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 1: Trí tuệ nhân tạo là gì?</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-1-sec-1">
+          <h3>1. Khái niệm Trí tuệ (Intelligence)</h3>
+          <p>Trí tuệ là khả năng của một thực thể trong việc:</p>
+          <ul>
+            <li>Học hỏi từ kinh nghiệm đã qua.</li>
+            <li>Nhận thức và hiểu rõ môi trường xung quanh.</li>
+            <li>Suy luận logic và đưa ra quyết định tối ưu.</li>
+            <li>Giải quyết các vấn đề phức tạp.</li>
+            <li>Thích nghi linh hoạt với các tình huống mới phát sinh.</li>
+          </ul>
+          
+          <div class="block-title">Đặc điểm hệ thống có trí tuệ</div>
+          <ol>
+            <li>Giải quyết được các tình huống mới, chưa từng gặp trước đây trong dữ liệu huấn luyện.</li>
+            <li>Hành động dựa trên lý trí (rationality) thay vì phản ứng ngẫu nhiên hoặc rập khuôn.</li>
+            <li>Có khả năng hành xử và tư duy tương tự con người trong một số nhiệm vụ cụ thể.</li>
+          </ol>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-1-sec-2">
+          <h3>2. Trí tuệ nhân tạo là gì?</h3>
+          <p><strong>Trí tuệ nhân tạo (Artificial Intelligence - AI)</strong> là ngành khoa học và kỹ thuật nghiên cứu việc thiết kế, xây dựng các hệ thống máy tính có khả năng thực hiện các công việc đòi hỏi trí thông minh của con người.</p>
+          
+          <div class="block-title">Các khả năng cốt lõi của AI</div>
+          <ul>
+            <li><strong>Học tập (Learning):</strong> Tự cải thiện hiệu năng dựa trên dữ liệu.</li>
+            <li><strong>Suy luận (Reasoning):</strong> Sử dụng các quy tắc logic để rút ra kết luận.</li>
+            <li><strong>Lập kế hoạch (Planning):</strong> Thiết lập các bước hành động hướng tới mục tiêu.</li>
+            <li><strong>Nhận dạng (Perception):</strong> Xử lý hình ảnh, âm thanh từ môi trường.</li>
+            <li><strong>Giao tiếp:</strong> Hiểu và tương tác bằng ngôn ngữ tự nhiên.</li>
+            <li><strong>Ra quyết định (Decision Making):</strong> Chọn phương án hành động tối ưu nhất.</li>
+          </ul>
+
+          <blockquote>
+            <strong>Nói cách ngắn gọn:</strong> AI là lĩnh vực nghiên cứu giúp máy tính có khả năng "suy nghĩ" và "hành động thông minh" tương đương hoặc vượt trội con người.
+          </blockquote>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-1-sec-3">
+          <h3>3. Mục tiêu của Trí tuệ nhân tạo</h3>
+          
+          <div class="block-title">3.1 Xây dựng lý thuyết về sự thông minh</div>
+          <p>AI không chỉ tạo ra máy thông minh mà còn cố gắng làm sáng tỏ các câu hỏi khoa học:</p>
+          <ul>
+            <li>Con người suy nghĩ và xử lý thông tin như thế nào?</li>
+            <li>Con người học tập từ thực tế ra sao?</li>
+            <li>Tri thức được biểu diễn, lưu trữ và tái sử dụng như thế nào trong bộ não?</li>
+          </ul>
+
+          <div class="block-title">3.2 Hiểu cơ chế hoạt động của trí thông minh con người</div>
+          <p>Nghiên cứu các cơ chế nhận thức sinh học để mô hình hóa lại trên máy tính:</p>
+          <ul>
+            <li>Cách bộ não liên kết và ghi nhớ thông tin dài hạn/ngắn hạn.</li>
+            <li>Cách con người thực hiện các suy luận bắc cầu, suy luận quy nạp.</li>
+            <li>Cách con người giải quyết các bài toán mập mờ, thiếu thông tin.</li>
+          </ul>
+
+          <div class="block-title">3.3 Xây dựng cơ chế thực hiện trí thông minh trên máy tính</div>
+          <p>Hiện thực hóa các mô hình toán học thành các thuật toán phần mềm thực tế:</p>
+          <ul>
+            <li>Hệ thống nhận diện khuôn mặt, vật thể từ ảnh/video.</li>
+            <li>Chatbot thông minh và hệ thống trả lời câu hỏi tự động.</li>
+            <li>Hệ thống điều khiển xe tự lái.</li>
+            <li>Hệ thống chuyên gia hỗ trợ chẩn đoán bệnh lý trong y tế.</li>
+          </ul>
+
+          <div class="block-title">3.4 Ứng dụng AI phục vụ cuộc sống</div>
+          <p>Giải phóng sức lao động và tối ưu năng suất:</p>
+          <ul>
+            <li>Tự động hóa các quy trình sản xuất, công việc lặp đi lặp lại.</li>
+            <li>Thực hiện các nhiệm vụ nguy hiểm (như robot dò bom mìn, robot hoạt động trong lò phản ứng hạt nhân).</li>
+            <li>Nâng cao hiệu quả kinh tế và hỗ trợ đưa ra quyết định chính xác hơn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-1-sec-4">
+          <h3>4. Các nền tảng của Trí tuệ nhân tạo</h3>
+          <p>AI là một ngành liên ngành (interdisciplinary), được xây dựng trên nền tảng vững chắc của nhiều môn khoa học:</p>
+
+          <div class="block-title">4.1 Toán học</div>
+          <ul>
+            <li><strong>Đại số Boolean (Logic Toán):</strong> Nền tảng cho logic số, biểu diễn tri thức bằng các mệnh đề và thực hiện suy luận tự động.</li>
+            <li><strong>Lý thuyết xác suất &amp; Thống kê:</strong> Giúp AI xử lý thông tin không chắc chắn, dự đoán xu hướng và ra quyết định tối ưu. Ví dụ: Thuật toán lọc thư rác (Spam email), dự báo thời tiết.</li>
+            <li><strong>Logic mờ (Fuzzy Logic):</strong> Cho phép máy tính xử lý các khái niệm định tính, không có ranh giới tuyệt đối (ví dụ: "nóng", "lạnh", "cao", "thấp") thay vì chỉ có hai giá trị nhị phân Đúng/Sai.</li>
+          </ul>
+
+          <div class="block-title">4.2 Khoa học thần kinh và não bộ (Neuroscience)</div>
+          <p>Mô phỏng cấu trúc sinh học của não người (nơ-ron và khớp thần kinh) để phát triển:</p>
+          <ul>
+            <li>Mạng nơ-ron nhân tạo (Artificial Neural Networks - ANN).</li>
+            <li>Học sâu (Deep Learning) - cốt lõi của các mô hình AI hiện đại ngày nay.</li>
+          </ul>
+
+          <div class="block-title">4.3 Giải thuật di truyền (Genetic Algorithms)</div>
+          <p>Mô phỏng quá trình tiến hóa và chọn lọc tự nhiên sinh học (chọn lọc, lai ghép, đột biến) nhằm tìm kiếm lời giải tối ưu hoặc gần tối ưu cho các bài toán phức tạp.</p>
+
+          <div class="block-title">4.4 Lý thuyết điều khiển (Control Theory)</div>
+          <p>Ứng dụng trực tiếp vào robot, máy bay không người lái (drone), xe tự hành để duy trì trạng thái cân bằng và định hướng di chuyển chính xác trong không gian thực tế.</p>
+
+          <div class="block-title">4.5 Ngôn ngữ học (Linguistics)</div>
+          <p>Là nền tảng của Xử lý ngôn ngữ tự nhiên (NLP), dịch máy, nhận dạng tiếng nói, giúp máy tính hiểu được cú pháp và ngữ nghĩa ngôn ngữ loài người. Ví dụ: Google Translate, ChatGPT, Siri.</p>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-1-sec-5">
+          <h3>5. Mô hình kiểm tra Turing (Turing Test)</h3>
+          
+          <div class="block-title">5.1 Khái niệm</div>
+          <p>Được đề xuất bởi nhà toán học vĩ đại <strong>Alan Turing năm 1950</strong> nhằm đưa ra câu trả lời thực nghiệm cho câu hỏi: <em>"Liệu máy móc có thể suy nghĩ được không?"</em></p>
+
+          <div class="block-title">5.2 Cách thức hoạt động</div>
+          <p>Trò chơi bắt chước (Imitation Game) gồm ba đối tượng ở các phòng cách biệt:</p>
+          <ul>
+            <li><strong>A:</strong> Người thẩm vấn (Interrogator).</li>
+            <li><strong>B:</strong> Một con người thật (Human).</li>
+            <li><strong>C:</strong> Hệ thống AI cần kiểm tra (Machine).</li>
+          </ul>
+          <p>Người thẩm vấn đặt câu hỏi và nhận câu trả lời hoàn toàn dưới dạng văn bản (text-only). Nếu sau một khoảng thời gian trò chuyện, người thẩm vấn không thể phân biệt được đâu là máy, đâu là người, thì <strong>hệ thống AI được xem là đã vượt qua bài kiểm tra Turing</strong> và có trí thông minh.</p>
+
+          <div class="block-title">5.3 Ý nghĩa</div>
+          <p>Turing Test đặt nền móng và tiêu chuẩn hành vi (behavioral standard) để đánh giá khả năng mô phỏng trí thông minh của AI mà không cần đi sâu tranh cãi về mặt triết học của nhận thức.</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-1-sec-6">
+          <h3>6. Tiêu chuẩn đánh giá sự thành công của AI</h3>
+          <p>Để đánh giá mức độ thành công của một ứng dụng hay giải pháp AI, chúng ta thường kiểm tra các tiêu chí sau:</p>
+          <ol>
+            <li><strong>Mô tả bài toán:</strong> Bài toán thực tế có được mô hình hóa và mô tả toán học rõ ràng không?</li>
+            <li><strong>Hệ luật và ràng buộc:</strong> Có các quy tắc hoặc điều kiện biên rõ ràng để giải quyết bài toán không?</li>
+            <li><strong>Khả năng giải quyết:</strong> Thuật toán AI có tìm ra lời giải chính xác trong giới hạn tài nguyên tính toán cho phép không?</li>
+            <li><strong>Kiểm tra Turing:</strong> Đối với các tác vụ giao tiếp hoặc tương tác xã hội, hệ thống có đạt được mức độ tự nhiên tương tự con người không?</li>
+          </ol>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-1-sec-7">
+          <h3>7. Phân loại AI</h3>
+          <p>Dựa trên khả năng hoạt động, AI được phân làm hai nhóm chính:</p>
+
+          <div class="block-title">7.1 AI hẹp (Narrow AI / Weak AI)</div>
+          <p>Là tất cả các hệ thống AI đang tồn tại trong thực tế hiện nay.</p>
+          <ul>
+            <li><strong>Đặc điểm:</strong> Chỉ được thiết kế và huấn luyện để thực hiện cực kỳ xuất sắc một nhiệm vụ cụ thể. Không có khả năng tự nhận thức hay áp dụng tri thức sang lĩnh vực khác.</li>
+            <li><strong>Ví dụ:</strong> Google Translate (dịch thuật), AlphaGo (chơi cờ vây), hệ thống gợi ý của Netflix, hệ thống nhận diện FaceID trên điện thoại, ChatGPT (tạo sinh văn bản).</li>
+          </ul>
+
+          <div class="block-title">7.2 AI tổng quát (General AI - AGI / Strong AI)</div>
+          <p>Là mục tiêu tối thượng mang tính giả thuyết của ngành khoa học máy tính.</p>
+          <ul>
+            <li><strong>Đặc điểm:</strong> Sở hữu trí thông minh toàn diện như con người. Có khả năng tự học tập, suy luận logic, giải quyết bất kỳ công việc trí tuệ nào trong bất kỳ lĩnh vực nào mà không cần lập trình lại.</li>
+            <li><strong>Hiện trạng:</strong> Chưa được tạo ra hoàn chỉnh, vẫn đang là chủ đề nghiên cứu và tranh biện công nghệ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-1-sec-8">
+          <h3>8. Lịch sử phát triển AI</h3>
+          <p>Lịch sử AI trải qua nhiều thăng trầm với các cột mốc quan trọng:</p>
+          <ul>
+            <li><strong>1950:</strong> Alan Turing đề xuất Turing Test.</li>
+            <li><strong>1956:</strong> Hội thảo Dartmouth - Thuật ngữ <em>"Artificial Intelligence"</em> chính thức ra đời do John McCarthy đề xuất.</li>
+            <li><strong>1997:</strong> Siêu máy tính Deep Blue của IBM đánh bại nhà vô địch cờ vua thế giới Garry Kasparov.</li>
+            <li><strong>2012:</strong> Sự bùng nổ của mạng nơ-ron sâu (Deep Learning) nhờ mô hình AlexNet giành chiến thắng vang dội tại cuộc thi ImageNet.</li>
+            <li><strong>2016:</strong> AlphaGo của Google DeepMind đánh bại kỳ thủ cờ vây 9 đẳng Lee Sedol.</li>
+            <li><strong>2022:</strong> OpenAI ra mắt ChatGPT, mở đầu kỷ nguyên bùng nổ của AI tạo sinh (Generative AI) trên quy mô toàn cầu.</li>
+            <li><strong>2024:</strong> AI tiếp tục tiến sâu vào nghiên cứu khoa học, tối ưu hóa thuật toán Reinforcement Learning và các mô hình đa phương thức (Multimodal models).</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-1-sec-9">
+          <h3>9. Ứng dụng thực tế của AI</h3>
+          
+          <div class="block-title">9.1 Kỹ thuật tiếng nói (Speech Engineering)</div>
+          <p>Nhận dạng giọng nói (Speech-to-Text) và tổng hợp giọng nói (Text-to-Speech). Ví dụ: Google Voice Assistant, Siri, trợ lý ảo thông minh.</p>
+
+          <div class="block-title">9.2 Xử lý ngôn ngữ tự nhiên (NLP)</div>
+          <p>Dịch thuật tự động, phân tích cảm xúc văn bản, tóm tắt tài liệu, chatbot trả lời tự động. Ví dụ: Google Translate, ChatGPT.</p>
+
+          <div class="block-title">9.3 Thị giác máy tính (Computer Vision)</div>
+          <p>Nhận dạng khuôn mặt, phát hiện vật thể lạ trên camera an ninh, kiểm tra chất lượng sản phẩm tự động trong nhà máy, phân tích ảnh X-quang. Ví dụ: Face ID trên iPhone.</p>
+
+          <div class="block-title">9.4 Robotics</div>
+          <p>Robot tự động di chuyển trong nhà kho (Amazon Kiva), cánh tay robot lắp ráp ô tô, robot y tế hỗ trợ phẫu thuật nội soi.</p>
+
+          <div class="block-title">9.5 Hệ chuyên gia (Expert Systems)</div>
+          <p>Hệ thống mô phỏng tri thức của chuyên gia để giải quyết vấn đề. Ví dụ: Hệ thống hỗ trợ ra quyết định tài chính, hệ thống chẩn đoán lỗi phần cứng máy bay.</p>
+
+          <div class="block-title">9.6 Trò chơi (Gaming)</div>
+          <p>Huấn luyện bot tự chơi cờ, chơi game đối kháng trực tuyến ở cấp độ chuyên nghiệp. Ví dụ: AlphaStar (StarCraft II), OpenAI Five (Dota 2).</p>
+
+          <div class="block-title">9.7 Lập kế hoạch và tối ưu hóa (Planning &amp; Optimization)</div>
+          <p>Tự động lập lịch bay, tối ưu hóa tuyến đường giao hàng trong ngành logistics, sắp xếp chuỗi cung ứng toàn cầu.</p>
+
+          <div class="block-title">9.8 Y học và Sinh học</div>
+          <p>Dự đoán cấu trúc protein (AlphaFold), chẩn đoán ung thư sớm qua ảnh chụp MRI, phát triển các công thức thuốc mới.</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-1-sec-10">
+          <h3>10. Các ngành liên quan mật thiết đến AI</h3>
+          <p>Sự phát triển của AI có mối quan hệ tương hỗ chặt chẽ với các ngành học sau:</p>
+          <ul>
+            <li><strong>Máy học (Machine Learning):</strong> Phương pháp cốt lõi để AI tự học từ dữ liệu.</li>
+            <li><strong>Xác suất thống kê:</strong> Công cụ toán học để mô hình hóa sự không chắc chắn.</li>
+            <li><strong>Lý thuyết điều khiển &amp; Thông tin:</strong> Thiết lập cơ chế phản hồi và tối ưu đường truyền.</li>
+            <li><strong>Tâm lý học nhận thức &amp; Thần kinh học:</strong> Gợi ý các mô hình tư duy và cơ chế hoạt động của não bộ.</li>
+            <li><strong>Triết học:</strong> Tranh luận về các giới hạn đạo đức của AI (AI Ethics) và bản chất của ý thức máy móc.</li>
+          </ul>
+        </div>
+</section>
+
+<section id="chuong-2" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 2: Giải quyết vấn đề bằng tìm kiếm</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-2-sec-1">
+          <h3>1. Giải quyết vấn đề trong AI</h3>
+          <p>Một trong những mục tiêu sơ khởi và cốt lõi nhất của các thực thể thông minh (Agent) trong AI là:</p>
+          <blockquote>
+            Tìm ra một chuỗi các hành động hợp lệ giúp dịch chuyển thực thể từ trạng thái ban đầu để đạt tới trạng thái mong muốn (trạng thái mục tiêu).
+          </blockquote>
+          
+          <div class="block-title">Ý tưởng chung của quá trình tìm kiếm</div>
+          <ul>
+            <li>Hệ thống AI sẽ bắt đầu tại một <strong>trạng thái ban đầu</strong> xác định.</li>
+            <li>Có một tập hợp các <strong>hành động/phép toán hợp lệ</strong> có thể thực hiện được.</li>
+            <li>Thực hiện mỗi hành động sẽ làm biến đổi môi trường và tạo ra một <strong>trạng thái mới</strong>.</li>
+            <li>Nhiệm vụ của AI là tìm kiếm và phát hiện ra một đường đi hoặc chuỗi hành động dẫn tới mục tiêu với <strong>chi phí tối ưu nhất</strong>.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-2-sec-2">
+          <h3>2. Các thành phần của một bài toán tìm kiếm</h3>
+          <p>Một bài toán tìm kiếm chuẩn tắc trong AI thường được định nghĩa chính xác bằng bộ 5 thành phần sau:</p>
+          <div style="text-align: center; margin: 1rem 0; font-size: 1.1rem; font-weight: bold;">
+            \(P = \langle St, I, O, G, C \rangle\)
+          </div>
+
+          <div class="block-title">2.1 Tập trạng thái (States - St)</div>
+          <p>Là toàn bộ các cấu hình, tình huống hay hoàn cảnh khác nhau mà bài toán có thể đạt tới trong không gian tìm kiếm. Ví dụ: Trong trò chơi 8-Puzzle, mỗi cách sắp xếp vị trí các ô số trên bàn cờ là một trạng thái \(s \in St\).</p>
+
+          <div class="block-title">2.2 Trạng thái ban đầu (Initial State - I)</div>
+          <p>Là trạng thái xuất phát ban đầu mà tiến trình tìm kiếm được khởi động. Ví dụ: Cấu hình ban đầu của bàn cờ 8-Puzzle, hoặc lượng nước ban đầu trong bài toán đong nước là \((0,0)\).</p>
+
+          <div class="block-title">2.3 Các phép toán hay hành động (Operators - O)</div>
+          <p>Là tập các quy tắc, hành động hợp lệ cho phép biến đổi trạng thái hiện tại thành trạng thái kế tiếp. Ví dụ: Trong 8-Puzzle, các phép toán bao gồm: di chuyển ô trống sang trái, sang phải, lên trên, hoặc xuống dưới.</p>
+
+          <div class="block-title">2.4 Hàm kiểm tra mục tiêu (Goal Test - G)</div>
+          <p>Hàm logic nhận đầu vào là một trạng thái và trả về Đúng/Sai để xác nhận xem trạng thái hiện thời đã thỏa mãn mục tiêu hay chưa. Ví dụ: Trạng thái đích của 8-Puzzle là các ô số xếp đúng thứ tự \(1, 2, 3, 4, 5, 6, 7, 8\) và ô trống ở cuối.</p>
+
+          <div class="block-title">2.5 Chi phí đường đi (Cost - C)</div>
+          <p>Là hàm số gán một giá trị số cho mỗi đường đi, phản ánh hao tổn hay công sức để thực hiện chuỗi hành động đó (năng lượng, khoảng cách vật lý, số bước đi, thời gian). Chi phí của cả đường đi bằng tổng chi phí của từng hành động đơn lẻ cấu thành:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(\text{Cost}(\text{path}) = \sum \text{Cost}(\text{action})\)
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-2-sec-3">
+          <h3>3. Thuật ngữ quan trọng</h3>
+          <ul>
+            <li><strong>State (Trạng thái):</strong> Bản chụp (snapshot) tình trạng thực tế của bài toán tại một thời điểm.</li>
+            <li><strong>Search Space (Không gian trạng thái):</strong> Tập hợp toàn bộ các trạng thái khả dĩ có thể sinh ra từ trạng thái đầu bằng cách áp dụng các hành động hợp lệ.</li>
+            <li><strong>Path (Đường đi):</strong> Một chuỗi liên tiếp các trạng thái dẫn từ trạng thái ban đầu đến trạng thái hiện tại.</li>
+            <li><strong>Solution (Lời giải):</strong> Một đường đi hoàn chỉnh xuất phát từ trạng thái đầu và kết thúc tại trạng thái thỏa mãn hàm kiểm tra mục tiêu.</li>
+            <li><strong>Strategy (Chiến lược tìm kiếm):</strong> Giải thuật quyết định nút nào trong số các nút đang chờ sẽ được ưu tiên mở rộng (expand) tiếp theo.</li>
+            <li><strong>Optimal Solution (Lời giải tối ưu):</strong> Lời giải có chi phí đường đi thấp nhất trong số tất cả các lời giải hợp lệ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-2-sec-4">
+          <h3>4. Ví dụ kinh điển: Bài toán đong nước</h3>
+          <p><strong>Đề bài:</strong> Cho một bình A dung tích tối đa 9 lít và bình B dung tích tối đa 4 lít. Bình không có vạch chia. Hãy đong được đúng 6 lít nước ở bình A.</p>
+
+          <div class="block-title">Mô hình hóa bài toán</div>
+          <ul>
+            <li><strong>Trạng thái:</strong> Cặp số \((a, b)\), với \(a \in [0, 9]\) (lượng nước ở bình A) và \(b \in [0, 4]\) (lượng nước ở bình B). Ví dụ: Trạng thái \((5, 4)\) chỉ bình A có 5 lít, bình B chứa 4 lít nước.</li>
+            <li><strong>Trạng thái ban đầu:</strong> \((0, 0)\) (hai bình đều rỗng).</li>
+            <li><strong>Trạng thái đích:</strong> \((6, x)\) (bình A chứa chính xác 6 lít nước, bình B chứa bao nhiêu cũng được).</li>
+            <li><strong>Các hành động hợp lệ (Operators):</strong>
+              <ul>
+                <li>Đổ đầy nước vào bình A từ vòi: \((a, b) \rightarrow (9, b)\).</li>
+                <li>Đổ đầy nước vào bình B từ vòi: \((a, b) \rightarrow (a, 4)\).</li>
+                <li>Đổ hết nước trong bình A ra ngoài: \((a, b) \rightarrow (0, b)\).</li>
+                <li>Đổ hết nước trong bình B ra ngoài: \((a, b) \rightarrow (a, 0)\).</li>
+                <li>Trút nước từ bình A sang bình B cho đến khi bình B đầy hoặc bình A hết nước: \((a, b) \rightarrow (a - \min(a, 4 - b), b + \min(a, 4 - b))\).</li>
+                <li>Trút nước từ bình B sang bình A cho đến khi bình A đầy hoặc bình B hết nước: \((a, b) \rightarrow (a + \min(b, 9 - a), b - \min(b, 9 - a))\).</li>
+              </ul>
+            </li>
+            <li><strong>Chi phí:</strong> Mỗi bước thao tác đong/chuyển nước có chi phí cố định bằng \(1\). Lời giải tối ưu là chuỗi các bước ít nhất.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-2-sec-5">
+          <h3>5. Không gian trạng thái (State Space)</h3>
+          <p>Không gian trạng thái chứa tất cả các trạng thái có thể có cùng các cung nối phản ánh hành động di chuyển. Để tìm kiếm lời giải, không gian này thường được tổ chức dưới hai dạng cấu trúc:</p>
+          
+          <div class="block-title">Cây tìm kiếm (Search Tree)</div>
+          <p>Nút gốc là trạng thái bắt đầu. Từ nút gốc, áp dụng các hành động hợp lệ để sinh ra các nút con. Cây tìm kiếm có thể sinh ra các nút trùng lặp đại diện cho cùng một trạng thái nếu ta đi theo các đường đi khác nhau. Ví dụ: Bài toán 8-Puzzle, cờ vua.</p>
+
+          <div class="block-title">Đồ thị trạng thái (State Graph)</div>
+          <p>Các trạng thái là các đỉnh (vertices), hành động là các cạnh (edges) có hướng nối giữa chúng. Đồ thị tránh được các cấu trúc lặp vô hạn nếu ta triển khai cơ chế kiểm tra nút đã duyệt (visited set). Ví dụ: Bài toán tìm đường trên bản đồ, Bài toán người bán hàng (TSP).</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-2-sec-6">
+          <h3>6. Cấu trúc Cây tìm kiếm</h3>
+          <p>Một cây tìm kiếm chứa các thành phần cấu trúc cơ bản:</p>
+          <ul>
+            <li><strong>Nút gốc (Root Node):</strong> Nút khởi đầu chứa trạng thái ban đầu của bài toán.</li>
+            <li><strong>Nút lá (Leaf Node):</strong> Nút nằm ở rìa cây tìm kiếm, chưa được mở rộng hoặc không thể mở rộng tiếp.</li>
+            <li><strong>Mở rộng nút (Expand):</strong> Quá trình áp dụng tất cả các phép toán hợp lệ lên trạng thái của nút hiện tại để sinh ra các nút con tương ứng.</li>
+            <li><strong>Độ sâu (Depth):</strong> Số cạnh tối thiểu nối từ nút gốc đến nút hiện hành. Nút gốc có độ sâu bằng \(0\).</li>
+          </ul>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-2-sec-7">
+          <h3>7. Phân biệt Trạng thái (State) và Nút (Node)</h3>
+          <p>Đây là hai khái niệm dễ bị nhầm lẫn trong lý thuyết tìm kiếm:</p>
+          
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Trạng thái (State)</th>
+                <th>Nút (Node)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bản chất</strong></td>
+                <td>Biểu diễn cấu hình thực tế của bài toán.</td>
+                <td>Thành phần lưu trữ thông tin trong cây tìm kiếm.</td>
+              </tr>
+              <tr>
+                <td><strong>Quan hệ</strong></td>
+                <td>Không có thông tin về nút cha hay con.</td>
+                <td>Có liên kết trỏ tới nút cha và danh sách nút con.</td>
+              </tr>
+              <tr>
+                <td><strong>Độ sâu &amp; Chi phí</strong></td>
+                <td>Không có thuộc tính độ sâu hay chi phí đường đi.</td>
+                <td>Lưu trữ độ sâu và chi phí đường đi \(g(n)\) từ gốc.</td>
+              </tr>
+              <tr>
+                <td><strong>Sự trùng lặp</strong></td>
+                <td>Mỗi trạng thái là duy nhất trong không gian bài toán.</td>
+                <td>Nhiều nút khác nhau có thể chứa cùng một trạng thái.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-2-sec-8">
+          <h3>8. Tiêu chí đánh giá thuật toán tìm kiếm</h3>
+          <p>Hiệu năng của một thuật toán tìm kiếm được đo lường bằng bộ 4 chỉ số cơ bản:</p>
+          <ul>
+            <li><strong>Tính đầy đủ (Completeness):</strong> Thuật toán có chắc chắn tìm thấy lời giải hay không nếu lời giải thực sự tồn tại?</li>
+            <li><strong>Độ phức tạp thời gian (Time Complexity):</strong> Số lượng nút được sinh ra hoặc số bước kiểm tra trước khi tìm được lời giải.</li>
+            <li><strong>Độ phức tạp không gian (Space Complexity):</strong> Dung lượng bộ nhớ lớn nhất (RAM) cần thiết để lưu trữ các nút trong suốt quá trình chạy giải thuật.</li>
+            <li><strong>Tính tối ưu (Optimality):</strong> Lời giải tìm được có phải là lời giải tốt nhất (chi phí thấp nhất) hay không?</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-2-sec-9">
+          <h3>9. Tìm kiếm mù (Blind Search / Uninformed Search)</h3>
+          <p>Là nhóm giải thuật tìm kiếm <strong>không sử dụng thêm bất kỳ tri thức bổ trợ</strong> nào của bài toán ngoại trừ bộ mô tả bài toán \(\langle St, I, O, G, C \rangle\). Thuật toán chỉ duyệt theo quy luật cấu trúc có sẵn và kiểm tra xem nút hiện hành có phải là đích hay không. Nhóm này bao gồm các thuật toán: BFS, DFS, DLS, IDDFS, UCS và Bidirectional Search.</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-2-sec-10">
+          <h3>10. Tìm kiếm theo chiều rộng (Breadth-First Search - BFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Duyệt cây tìm kiếm theo từng tầng (level-by-level). Thuật toán sẽ mở rộng toàn bộ các nút ở độ sâu \(d\) trước khi chuyển sang mở rộng các nút ở độ sâu \(d+1\).</p>
+
+          <div class="block-title">Cấu trúc dữ liệu hỗ trợ</div>
+          <p>Sử dụng hàng đợi <strong>Queue (FIFO - First In, First Out)</strong> để lưu trữ tập các nút biên (fringe/frontier) đang chờ mở rộng. Nút nào được sinh ra trước sẽ được lấy ra mở rộng trước.</p>
+
+          <div class="block-title">Đánh giá BFS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Có (nếu hệ số phân nhánh \(b\) hữu hạn).</li>
+            <li><strong>Tính tối ưu:</strong> Có (chỉ khi chi phí của mọi hành động đều bằng nhau).</li>
+            <li><strong>Độ phức tạp thời gian:</strong> \(O(b^d)\), trong đó \(b\) là hệ số phân nhánh, \(d\) là độ sâu của lời giải.</li>
+            <li><strong>Độ phức tạp không gian:</strong> \(O(b^d)\) (Nhược điểm chí mạng vì phải lưu trữ toàn bộ các nút trong bộ nhớ).</li>
+          </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-2-sec-11">
+          <h3>11. Tìm kiếm theo chiều sâu (Depth-First Search - DFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Luôn chọn mở rộng nút con ở mức sâu nhất có thể trên nhánh hiện tại. Chỉ khi nhánh đó đi vào ngõ cụt (nút lá không phải mục tiêu), thuật toán mới quay lui (backtrack) để mở rộng các nhánh rẽ khác.</p>
+
+          <div class="block-title">Cấu trúc dữ liệu hỗ trợ</div>
+          <p>Sử dụng cấu trúc ngăn xếp <strong>Stack (LIFO - Last In, First Out)</strong> hoặc đệ quy hệ thống để quản lý danh sách các nút biên.</p>
+
+          <div class="block-title">Đánh giá DFS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Không (nếu không gian trạng thái vô hạn hoặc có vòng lặp, DFS có thể kẹt mãi mãi).</li>
+            <li><strong>Tính tối ưu:</strong> Không (DFS có thể tìm thấy một lời giải ở nhánh nông bên phải nhưng trước đó đã chọn đi sâu ở nhánh bên trái).</li>
+            <li><strong>Độ phức tạp thời gian:</strong> \(O(b^m)\), với \(m\) là độ sâu lớn nhất của cây tìm kiếm (thường \(m \gg d\)).</li>
+            <li><strong>Độ phức tạp không gian:</strong> \(O(b \times m)\) (Ưu điểm lớn nhất vì chỉ cần lưu các nút trên đường đi hiện hành).</li>
+          </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="chuong-2-sec-12">
+          <h3>12. Bảng so sánh BFS và DFS</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>BFS (Chiều rộng)</th>
+                <th>DFS (Chiều sâu)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cấu trúc lưu trữ</strong></td>
+                <td>Queue (FIFO)</td>
+                <td>Stack (LIFO)</td>
+              </tr>
+              <tr>
+                <td><strong>Tính đầy đủ</strong></td>
+                <td>Có</td>
+                <td>Không (dễ kẹt vòng lặp vô hạn)</td>
+              </tr>
+              <tr>
+                <td><strong>Tính tối ưu</strong></td>
+                <td>Có (nếu chi phí các cạnh bằng nhau)</td>
+                <td>Không</td>
+              </tr>
+              <tr>
+                <td><strong>Bộ nhớ (RAM)</strong></td>
+                <td>Rất lớn (\(O(b^d)\))</td>
+                <td>Nhỏ (\(O(b \times m)\))</td>
+              </tr>
+              <tr>
+                <td><strong>Ứng dụng phù hợp</strong></td>
+                <td>Lời giải nằm ở tầng nông, bộ nhớ dư dả.</td>
+                <td>Lời giải nằm ở tầng rất sâu, bộ nhớ hạn chế.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="sub-section" id="chuong-2-sec-13">
+          <h3>13. Tìm kiếm giới hạn độ sâu (Depth-Limited Search - DLS)</h3>
+          <p>DLS là một biến thể của DFS được bổ sung thêm một tham số <strong>giới hạn độ sâu \(L\)</strong>. Các nút ở độ sâu lớn hơn \(L\) sẽ bị coi như nút lá và không được mở rộng tiếp.</p>
+          <ul>
+            <li><strong>Mục đích:</strong> Khắc phục nhược điểm rơi vào vòng lặp vô hạn của DFS truyền thống trong không gian vô hạn.</li>
+            <li><strong>Hạn chế:</strong> Nếu lời giải nằm ở độ sâu \(d > L\), DLS sẽ không bao giờ tìm thấy lời giải (mất tính đầy đủ).</li>
+          </ul>
+        </div>
+
+        <!-- Section 14 -->
+        <div class="sub-section" id="chuong-2-sec-14">
+          <h3>14. Tìm kiếm sâu dần (Iterative Deepening DFS - IDDFS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>IDDFS giải quyết triệt để nhược điểm của DLS bằng cách chạy DLS lặp đi lặp lại với giới hạn độ sâu \(L\) tăng dần từ \(0, 1, 2, \dots\) cho đến khi phát hiện được lời giải.</p>
+          
+          <div class="block-title">Đánh giá IDDFS</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Kết hợp hoàn hảo ưu điểm của cả hai thuật toán: Tiết kiệm bộ nhớ tối đa của DFS (\(O(b \times d)\)) và đảm bảo tính đầy đủ, tối ưu của BFS (\(O(b^d)\)).</li>
+            <li><strong>Nhược điểm:</strong> Phải tính toán lặp lại các nút ở tầng trên qua mỗi lượt lặp. Tuy nhiên, chi phí lặp lại này là chấp nhận được vì số lượng nút tập trung chủ yếu ở tầng đáy.</li>
+          </ul>
+        </div>
+
+        <!-- Section 15 -->
+        <div class="sub-section" id="chuong-2-sec-15">
+          <h3>15. Tìm kiếm hai chiều (Bidirectional Search)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Chạy song song hai tiến trình tìm kiếm độc lập: một tiến trình tìm kiếm xuôi từ trạng thái ban đầu và một tiến trình tìm kiếm ngược từ trạng thái đích. Thuật toán dừng lại khi biên của hai phía gặp nhau.</p>
+          
+          <div class="block-title">Đánh giá</div>
+          <ul>
+            <li><strong>Hiệu năng:</strong> Giảm độ phức tạp thời gian từ \(O(b^d)\) xuống còn \(O(b^{d/2})\).</li>
+            <li><strong>Ràng buộc:</strong> Chỉ áp dụng được khi xác định rõ ràng trạng thái đích duy nhất và các phép toán có thể thực hiện theo chiều ngược lại.</li>
+          </ul>
+        </div>
+
+        <!-- Section 16 -->
+        <div class="sub-section" id="chuong-2-sec-16">
+          <h3>16. Tìm kiếm chi phí đồng nhất (Uniform Cost Search - UCS)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Luôn ưu tiên mở rộng nút có tổng chi phí đường đi từ gốc nhỏ nhất. UCS mở rộng các nút theo thứ tự chi phí tăng dần mà không quan tâm đến độ sâu của nút đó trên cây.</p>
+
+          <div class="block-title">Cấu trúc dữ liệu &amp; Hàm đánh giá</div>
+          <ul>
+            <li>Sử dụng hàng đợi ưu tiên <strong>Priority Queue</strong> sắp xếp các nút theo giá trị tăng dần của hàm chi phí \(g(n)\) (tổng chi phí từ gốc đến nút \(n\)).</li>
+            <li>Chọn nút có \(g(n)\) nhỏ nhất để mở rộng.</li>
+          </ul>
+
+          <div class="block-title">Đặc tính toán học của UCS</div>
+          <ul>
+            <li><strong>Tính đầy đủ:</strong> Có (nếu chi phí của mỗi bước đi lớn hơn một hằng số dương \(\epsilon > 0\)).</li>
+            <li><strong>Tính tối ưu:</strong> Có (luôn tìm thấy đường đi có tổng chi phí nhỏ nhất). Giải thuật tương tự thuật toán Dijkstra tìm đường đi ngắn nhất trên đồ thị.</li>
+          </ul>
+        </div>
+
+        <!-- Section 17 -->
+        <div class="sub-section" id="chuong-2-sec-17">
+          <h3>17. Tóm tắt chiến lược chọn giải thuật</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Giải thuật</th>
+                <th>Khi nào nên ưu tiên chọn sử dụng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>BFS</strong></td>
+                <td>Khi chi phí các bước như nhau và lời giải nằm ở tầng nông.</td>
+              </tr>
+              <tr>
+                <td><strong>DFS</strong></td>
+                <td>Khi không gian trạng thái hữu hạn và bộ nhớ hệ thống cực kỳ hạn chế.</td>
+              </tr>
+              <tr>
+                <td><strong>DLS</strong></td>
+                <td>Khi biết chắc chắn giới hạn độ sâu tối đa của lời giải.</td>
+              </tr>
+              <tr>
+                <td><strong>IDDFS</strong></td>
+                <td>Khi cần tính đầy đủ của BFS nhưng muốn tiết kiệm bộ nhớ như DFS.</td>
+              </tr>
+              <tr>
+                <td><strong>UCS</strong></td>
+                <td>Khi chi phí thực hiện các hành động khác nhau và cần lời giải tối ưu.</td>
+              </tr>
+              <tr>
+                <td><strong>Bidirectional</strong></td>
+                <td>Khi xác định rõ trạng thái đích và các phép toán có khả năng quay lui.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+</section>
+
+<section id="chuong-2-bis" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 2 (Bổ sung): Lập kế hoạch (Planning)</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-2-bis-sec-1">
+          <h3>1. Lập kế hoạch (Planning) là gì?</h3>
+          <p>Trong Trí tuệ nhân tạo, <strong>lập kế hoạch (Planning)</strong> là quá trình:</p>
+          <div class="callout">
+            <p>Tìm ra <strong>một chuỗi hành động hợp lý</strong> để đưa hệ thống từ <strong>trạng thái ban đầu (Initial State)</strong> đến <strong>trạng thái mục tiêu (Goal State)</strong>.</p>
+          </div>
+          
+          <div class="block-title">Khác biệt giữa Tìm kiếm (Search) thông thường và Lập kế hoạch (Planning)</div>
+          <ul>
+            <li><strong>Search:</strong> Tìm đường đi hoặc phương án tối ưu trên một đồ thị các trạng thái cấu trúc sẵn (ví dụ: tìm đường đi ngắn nhất).</li>
+            <li><strong>Planning:</strong> Tìm ra một <strong>chuỗi hành động hợp lệ</strong> dựa trên việc phân tích các điều kiện logic và hiệu ứng của các hành động đó để đạt được mục tiêu mong muốn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-2-bis-sec-2">
+          <h3>2. Các thành phần của bài toán lập kế hoạch</h3>
+          <p>Một bài toán lập kế hoạch tiêu chuẩn bao gồm 4 thành phần chính:</p>
+          
+          <div class="block-title">2.1 Trạng thái ban đầu (Initial State)</div>
+          <p>Mô tả tình trạng hiện tại của thế giới một cách chi tiết bằng các phát biểu logic. Ví dụ:</p>
+          <pre><code>On(A, Table)
+On(B, A)
+On(C, Table)</code></pre>
+
+          <div class="block-title">2.2 Mục tiêu (Goal State)</div>
+          <p>Mô tả trạng thái mong muốn cần đạt được trong tương lai. Ví dụ:</p>
+          <pre><code>On(A, B)
+On(B, C)</code></pre>
+
+          <div class="block-title">2.3 Hành động (Action)</div>
+          <p>Các phép biến đổi trạng thái được định nghĩa rõ ràng. Ví dụ:</p>
+          <pre><code>Move(A, Table, B)</code></pre>
+
+          <div class="block-title">2.4 Kế hoạch (Plan)</div>
+          <p>Là một chuỗi tuần tự các hành động đưa hệ thống từ trạng thái ban đầu đạt đến mục tiêu mong muốn. Ví dụ:</p>
+          <pre><code>Move(C, A, Table)
+Move(B, Table, C)
+Move(A, Table, B)</code></pre>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-2-bis-sec-3">
+          <h3>3. Mô hình Space-State Planning</h3>
+          <p>Ý tưởng cốt lõi của Space-State Planning là mô hình hóa toàn bộ thế giới lập kế hoạch dưới dạng một đồ thị:</p>
+          <ul>
+            <li><strong>Nút (Node):</strong> Mỗi nút đại diện cho một trạng thái cụ thể của thế giới.</li>
+            <li><strong>Cạnh (Edge):</strong> Mỗi hành động hợp lệ đóng vai trò là một cạnh kết nối giữa hai trạng thái.</li>
+            <li><strong>Planning:</strong> Trở thành bài toán tìm kiếm đường đi từ nút <em>Initial State</em> đến nút <em>Goal State</em>.</li>
+          </ul>
+          <p>Có thể áp dụng các giải thuật tìm kiếm kinh điển trên đồ thị này như:</p>
+          <ul>
+            <li>Tìm kiếm theo chiều rộng (BFS) hoặc chiều sâu (DFS).</li>
+            <li>Tìm kiếm A* hoặc các kỹ thuật tìm kiếm Heuristic để tối ưu hóa quá trình tìm đường.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-2-bis-sec-4">
+          <h3>4. Forward Planning và Backward Planning</h3>
+          <p>Có hai hướng lập kế hoạch chính dựa trên hướng duyệt đồ thị:</p>
+
+          <div class="block-title">Forward Planning (Lập kế hoạch tiến)</div>
+          <p>Duyệt tiến từ trạng thái ban đầu, thử áp dụng các hành động hợp lệ để sinh các trạng thái mới cho đến khi gặp mục tiêu.</p>
+          <div class="flowchart">
+            <div class="flow-node">Initial State</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Action 1</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Action 2</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Goal State</div>
+          </div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Dễ cài đặt, trực quan, luôn làm việc với các trạng thái cụ thể đầy đủ.</li>
+            <li><strong>Nhược điểm:</strong> Không gian trạng thái sinh ra có thể cực kỳ lớn nếu có nhiều hành động không liên quan đến mục tiêu.</li>
+          </ul>
+
+          <div class="block-title">Backward Planning (Lập kế hoạch lùi)</div>
+          <p>Duyệt lùi từ mục tiêu, tìm các hành động có hiệu ứng đáp ứng được mục tiêu đó và tiếp tục coi tiền điều kiện của hành động đó là mục tiêu phụ (sub-goal) cần đạt tiếp theo cho đến khi khớp với trạng thái ban đầu.</p>
+          <div class="flowchart">
+            <div class="flow-node">Goal State</div>
+            <div class="flow-arrow">&larr;</div>
+            <div class="flow-node">Action 2</div>
+            <div class="flow-arrow">&larr;</div>
+            <div class="flow-node">Action 1</div>
+            <div class="flow-arrow">&larr;</div>
+            <div class="flow-node">Initial State</div>
+          </div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Rút ngắn không gian tìm kiếm vì chỉ xem xét các hành động thực sự đóng góp trực tiếp hoặc gián tiếp để đạt được mục tiêu.</li>
+            <li><strong>Nhược điểm:</strong> Phức tạp và khó cài đặt hơn khi phải xử lý cùng lúc nhiều mục tiêu phụ hoặc trạng thái chưa được định nghĩa hoàn chỉnh.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-2-bis-sec-5">
+          <h3>5. Ngôn ngữ STRIPS</h3>
+          
+          <div class="block-title">STRIPS là gì?</div>
+          <p><strong>STRIPS (Stanford Research Institute Problem Solver)</strong> là ngôn ngữ và mô hình kinh điển ra đời năm 1971 dùng để đặc tả và giải quyết bài toán lập kế hoạch trong AI.</p>
+          <p>Trong mô hình STRIPS, mỗi hành động (Action) được đặc tả bằng ba thành phần chính:</p>
+          <ol>
+            <li><strong>Preconditions (Điều kiện trước):</strong> Các điều kiện logic bắt buộc phải đúng để có thể thực thi hành động.</li>
+            <li><strong>Add List (Những điều được thêm):</strong> Các sự kiện/vị từ mới trở thành Đúng sau khi hành động được thực hiện.</li>
+            <li><strong>Delete List (Những điều bị xóa):</strong> Các sự kiện/vị từ không còn Đúng nữa và bị loại bỏ sau hành động.</li>
+          </ol>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-2-bis-sec-6">
+          <h3>6. Preconditions (Điều kiện trước) trong STRIPS</h3>
+          <p>Là tập hợp các vế logic phải thỏa mãn (True) tại trạng thái hiện tại thì hành động mới có thể diễn ra. Nếu thiếu bất kỳ một điều kiện nào, hành động đó không thể được kích hoạt.</p>
+          <p>Ví dụ, để di chuyển khối \(A\) từ bàn lên khối \(B\) bằng hành động <code>Move(A, Table, B)</code>, ta cần thỏa mãn các điều kiện:</p>
+          <pre><code>On(A, Table)   /* A phải đang ở trên bàn */
+Clear(A)        /* Không có khối nào đè lên A */
+Clear(B)        /* Không có khối nào đè lên B */</code></pre>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-2-bis-sec-7">
+          <h3>7. Add List (Tập thêm) trong STRIPS</h3>
+          <p>Chứa các thông tin mới được sinh ra và trở thành đúng đắn trong thế giới sau khi hành động hoàn tất. Đây chính là các hiệu ứng tích cực của hành động.</p>
+          <p>Ví dụ, sau hành động <code>Move(A, Table, B)</code>, kết quả thêm vào thế giới sẽ là:</p>
+          <pre><code>On(A, B)        /* A đã nằm trên B */</code></pre>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-2-bis-sec-8">
+          <h3>8. Delete List (Tập xóa) trong STRIPS</h3>
+          <p>Chứa các trạng thái cũ không còn đúng đắn nữa sau khi hành động thực thi. Việc duy trì delete list giúp tránh lỗi mâu thuẫn thông tin trong thế giới động.</p>
+          <p>Ví dụ, sau khi chuyển \(A\) lên \(B\) bằng <code>Move(A, Table, B)</code>, các trạng thái sau sẽ bị xóa khỏi mô tả thế giới:</p>
+          <pre><code>On(A, Table)   /* A không còn nằm trên bàn nữa */
+Clear(B)        /* B bị A đè lên nên không còn trống nữa */</code></pre>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-2-bis-sec-9">
+          <h3>9. Ví dụ áp dụng STRIPS</h3>
+          <p>Xem xét hành động chi tiết <code>Move(A, Table, B)</code>:</p>
+          <div class="callout" style="border-left-color: var(--primary-color);">
+            <p class="callout-title">Định nghĩa Hành động STRIPS: Move(A, Table, B)</p>
+            <ul>
+              <li><strong>Preconditions:</strong> \(On(A, Table) \land Clear(A) \land Clear(B)\)</li>
+              <li><strong>Add:</strong> \(On(A, B) \land Clear(Table)\)</li>
+              <li><strong>Delete:</strong> \(On(A, Table) \land Clear(B)\)</li>
+            </ul>
+          </div>
+          <p>Sau khi áp dụng hành động này vào trạng thái ban đầu, cơ sở tri thức sẽ được cập nhật tự động bằng cách loại bỏ các vị từ trong Delete List và nạp thêm các vị từ trong Add List.</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-2-bis-sec-10">
+          <h3>10. PDDL là gì?</h3>
+          <p><strong>PDDL (Planning Domain Definition Language)</strong> là ngôn ngữ mô tả bài toán lập kế hoạch chuẩn hóa quốc tế, được phát triển nhằm mục tiêu chuẩn hóa cấu trúc để các bộ giải lập kế hoạch (Planner) có thể dùng chung.</p>
+          <p>Một tài liệu PDDL thường chia làm hai phần chính:</p>
+          <ol>
+            <li><strong>Domain file:</strong> Định nghĩa thế giới tổng quát bao gồm các yêu cầu, các kiểu đối tượng, danh sách các vị từ (predicates) và các hành động (actions) có thể có.</li>
+            <li><strong>Problem file:</strong> Định nghĩa một bài toán cụ thể bao gồm các đối tượng thực tế (objects), trạng thái ban đầu (init) và mục tiêu cần đạt được (goal).</li>
+          </ol>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-2-bis-sec-11">
+          <h3>11. Các thành phần của PDDL</h3>
+          <p>Theo slide bài giảng, PDDL bao gồm 5 thành phần cốt lõi sau:</p>
+
+          <div class="block-title">11.1 Objects (Các đối tượng)</div>
+          <p>Các thực thể xuất hiện trong thế giới của bài toán. Ví dụ:</p>
+          <pre><code>A B C - block
+Table - location</code></pre>
+
+          <div class="block-title">11.2 Predicates (Các vị từ)</div>
+          <p>Dùng để mô tả tính chất hoặc mối quan hệ giữa các đối tượng. Các vị từ chỉ nhận giá trị Boolean (Đúng hoặc Sai). Ví dụ:</p>
+          <pre><code>(on ?x ?y)      /* Khối x nằm trên y */
+(clear ?x)     /* Khối x trống trên đỉnh */
+(holding ?x)   /* Đang cầm khối x */</code></pre>
+
+          <div class="block-title">11.3 Initial State (Trạng thái bắt đầu)</div>
+          <p>Tập hợp các vị từ đúng lúc ban đầu. Những vị từ không được liệt kê mặc định coi là Sai (Close World Assumption). Ví dụ:</p>
+          <pre><code>(:init (on A Table) (on B A) (clear B) (clear C) (on C Table))</code></pre>
+
+          <div class="block-title">11.4 Goal (Mục tiêu)</div>
+          <p>Các điều kiện logic cần thỏa mãn ở trạng thái kết thúc. Ví dụ:</p>
+          <pre><code>(:goal (and (on A B) (on B C)))</code></pre>
+
+          <div class="block-title">11.5 Action (Hành động)</div>
+          <p>Định nghĩa các phép biến đổi. Mỗi Action gồm: <strong>Parameters</strong> (tham số truyền vào), <strong>Preconditions</strong> (điều kiện trước) và <strong>Effects</strong> (hiệu ứng sau khi thực hiện, tương ứng Add/Delete list). Ví dụ:</p>
+          <pre><code>(:action move
+  :parameters (?b ?x ?y)
+  :precondition (and (on ?b ?x) (clear ?b) (clear ?y))
+  :effect (and (on ?b ?y) (clear ?x) (not (on ?b ?x)) (not (clear ?y)))
+)</code></pre>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="chuong-2-bis-sec-12">
+          <h3>12. Ví dụ bài toán thế giới hình khối (Block World)</h3>
+          <p>Thế giới hình khối (Block World) là bài toán kinh điển trong Planning.</p>
+          <p><strong>Vị từ cơ bản:</strong> <code>On(b, x)</code> có ý nghĩa: <em>Khối \(b\) nằm trên \(x\)</em> (trong đó \(x\) có thể là một khối khác hoặc mặt bàn <code>Table</code>).</p>
+          <p><strong>Hành động cơ bản:</strong> <code>Move(b, x, y)</code> có ý nghĩa: <em>Di chuyển khối \(b\) từ vị trí \(x\) sang vị trí \(y\)</em>.</p>
+          <p>Một ví dụ về chuỗi kế hoạch hoàn chỉnh để xếp chồng 3 khối từ ban đầu sang mục tiêu xếp chồng \(A\) trên \(B\), \(B\) trên \(C\):</p>
+          <pre><code>MoveToTable(C, A)   /* Nhấc C ra khỏi A và đặt xuống bàn */
+Move(B, Table, C)   /* Di chuyển B từ bàn lên trên C */
+Move(A, Table, B)   /* Di chuyển A từ bàn lên trên B */</code></pre>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="sub-section" id="chuong-2-bis-sec-13">
+          <h3>13. Hạn chế của STRIPS và PDDL</h3>
+          <p>Mặc dù rất chặt chẽ về mặt logic, STRIPS và PDDL gặp phải một số giới hạn lớn trong thực tế:</p>
+          <ul>
+            <li><strong>Cần chuyên gia xây dựng thủ công:</strong> Việc mô hình hóa thế giới phức tạp thành các vị từ và định nghĩa toàn bộ hành động đòi hỏi chuyên gia có kiến thức sâu rộng, dễ sai sót.</li>
+            <li><strong>Khó mở rộng:</strong> Khi bài toán thay đổi nhỏ (thêm quy tắc, thêm ràng buộc vật lý), toàn bộ hệ thống hành động có thể phải thiết kế lại từ đầu.</li>
+            <li><strong>Độ phức tạp tính toán:</strong> Việc tìm kiếm kế hoạch tối ưu (Optimal Planning) là bài toán NP-hard hoặc thậm chí không thể giải quyết hiệu quả trên quy mô lớn.</li>
+          </ul>
+          <p>Do đó, hướng nghiên cứu <strong>Planning Model Learning</strong> (học tự động mô hình lập kế hoạch từ dữ liệu quan sát) ra đời để giải quyết các hạn chế này.</p>
+        </div>
+
+        <!-- Section 14 -->
+        <div class="sub-section" id="chuong-2-bis-sec-14">
+          <h3>14. Agentic AI và lập kế hoạch</h3>
+          <p>Với sự trỗi dậy của các Mô hình ngôn ngữ lớn (LLM), <strong>Agentic AI</strong> mở ra phương pháp lập kế hoạch linh hoạt bằng cách sử dụng LLM làm bộ não trung tâm để:</p>
+          <ul>
+            <li>Phân tích yêu cầu bằng ngôn ngữ tự nhiên của con người.</li>
+            <li>Tự động phân rã (decompose) mục tiêu lớn thành các nhiệm vụ con (sub-tasks).</li>
+            <li>Lựa chọn và gọi các công cụ (APIs) phù hợp.</li>
+            <li>Quan sát kết quả thực thi của công cụ để tự sửa lỗi và điều chỉnh kế hoạch tiếp theo (Reflection).</li>
+          </ul>
+          <div class="callout">
+            <p><strong>Chu trình ReAct (Reason + Act):</strong> LLM kết hợp suy luận logic và thực hiện hành động liên tục thông qua chu trình:</p>
+            <div class="flowchart" style="margin-top: 1rem;">
+              <div class="flow-node">Reason (Suy luận)</div>
+              <div class="flow-arrow">&rarr;</div>
+              <div class="flow-node">Act (Hành động)</div>
+              <div class="flow-arrow">&rarr;</div>
+              <div class="flow-node">Observe (Quan sát)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 15 -->
+        <div class="sub-section" id="chuong-2-bis-sec-15">
+          <h3>15. Step-wise PDDL Simulation</h3>
+          <p>Đây là phương pháp lai ghép hiện đại giữa học sâu (LLM) và lập luận logic hình thức:</p>
+          <ol>
+            <li>LLM tự động tạo ra một chuỗi kế hoạch bằng ngôn ngữ tự nhiên hoặc mã giả.</li>
+            <li>Chuỗi kế hoạch được chạy mô phỏng từng bước (Step-wise Simulation) trong môi trường PDDL ảo.</li>
+            <li>Hệ thống kiểm tra xem các tiền điều kiện (Preconditions) ở mỗi bước có thực sự thỏa mãn hay không.</li>
+            <li>Nếu phát hiện hành động không hợp lệ, thông tin lỗi sẽ được gửi ngược lại (feedback loop) để LLM sửa đổi và tối ưu lại kế hoạch.</li>
+          </ol>
+          <p>Phương pháp này giúp giảm thiểu tối đa các lỗi "ảo giác" (hallucination) thường gặp ở LLM.</p>
+        </div>
+
+        <!-- Section 16 -->
+        <div class="sub-section" id="chuong-2-bis-sec-16">
+          <h3>16. AI Agent sinh mã PDDL</h3>
+          <p>Một quy trình tự động hóa lập kế hoạch hoàn chỉnh:</p>
+          <div class="flowchart">
+            <div class="flow-node">Mô tả Ngôn ngữ tự nhiên</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">AI Agent sinh Domain & Problem PDDL</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Bộ giải PDDL Solver</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Kế hoạch tối ưu</div>
+          </div>
+          <p>Cách tiếp cận này kết hợp tính linh hoạt trong giao tiếp của LLM với tính chính xác tuyệt đối của các thuật toán tìm kiếm cổ điển.</p>
+        </div>
+
+        <!-- Section 17 -->
+        <div class="sub-section" id="chuong-2-bis-sec-17">
+          <h3>17. Lập kế hoạch bằng Chain of Thought (CoT)</h3>
+          <p><strong>Chain of Thought (CoT - Chuỗi suy nghĩ)</strong> yêu cầu mô hình AI sinh ra các bước suy luận trung gian trước khi đưa ra câu trả lời cuối cùng.</p>
+          <div class="flowchart">
+            <div class="flow-node">Yêu cầu ban đầu</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Bước 1: Phân tích</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Bước 2: Lập kế hoạch phụ</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Bước 3: Giải quyết</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Đáp án cuối cùng</div>
+          </div>
+          <p>CoT giúp cải thiện đáng kể độ chính xác đối với các bài toán đòi hỏi tính toán hoặc suy luận nhiều bước.</p>
+        </div>
+
+        <!-- Section 18 -->
+        <div class="sub-section" id="chuong-2-bis-sec-18">
+          <h3>18. Tree of Thoughts (ToT)</h3>
+          <p>Mở rộng từ CoT, <strong>Tree of Thoughts (ToT - Cây suy nghĩ)</strong> cho phép AI khám phá nhiều nhánh suy nghĩ khác nhau cùng lúc dưới dạng một cấu trúc cây.</p>
+          <ul>
+            <li>Tại mỗi bước suy luận, mô hình sinh ra nhiều phương án lựa chọn (nhánh).</li>
+            <li>Hệ thống tự đánh giá (evaluate) chất lượng của từng nhánh.</li>
+            <li>Áp dụng các giải thuật tìm kiếm trên cây (như BFS hoặc DFS) kết hợp quay lui (backtracking) để chọn ra con đường suy luận tốt nhất đạt tới mục tiêu.</li>
+          </ul>
+        </div>
+
+        <!-- Section 19 -->
+        <div class="sub-section" id="chuong-2-bis-sec-19">
+          <h3>19. Graph of Thoughts (GoT)</h3>
+          <p><strong>Graph of Thoughts (GoT - Đồ thị suy nghĩ)</strong> là mô hình suy luận hiện đại nhất, mở rộng ToT bằng cách cho phép:</p>
+          <ul>
+            <li>Các nhánh suy nghĩ khác nhau có thể liên kết, giao thoa và kết hợp với nhau.</li>
+            <li>Hợp nhất (merge) các ý tưởng tốt từ nhiều luồng suy nghĩ khác nhau thành một giải pháp tối ưu.</li>
+            <li>Hỗ trợ cơ chế vòng lặp và cập nhật thông tin linh hoạt trên mạng lưới suy nghĩ.</li>
+          </ul>
+        </div>
+
+        <!-- Section 20 -->
+        <div class="sub-section" id="chuong-2-bis-sec-20">
+          <h3>20. Framework phát triển AI Agent</h3>
+          <p>Các framework phổ biến hiện nay như <strong>LangChain</strong> và <strong>AutoGen</strong> hỗ trợ xây dựng AI Agent có khả năng lập kế hoạch mạnh mẽ nhờ tích hợp chu trình:</p>
+          <div class="flowchart">
+            <div class="flow-node">Action (Hành động)</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Observation (Quan sát)</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">Reflection (Tự đánh giá)</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-node">New Plan (Kế hoạch mới)</div>
+          </div>
+          <p>Nhờ chu trình khép kín này, AI Agent có khả năng tự sửa sai khi gặp lỗi từ môi trường hoặc từ công cụ được gọi.</p>
+        </div>
+</section>
+
+<section id="chuong-3" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 3: Các kỹ thuật tìm kiếm Heuristic</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-3-sec-1">
+          <h3>1. Heuristic là gì?</h3>
+          <p>Trong các bài toán thực tế, không gian trạng thái thường bùng nổ tổ hợp với kích thước khổng lồ. Việc duyệt toàn bộ trạng thái bằng các giải thuật tìm kiếm mù (BFS, DFS) là bất khả thi về cả thời gian lẫn bộ nhớ.</p>
+          <blockquote>
+            <strong>Ý tưởng Heuristic:</strong> Sử dụng tri thức bổ sung, kinh nghiệm thực tế hoặc quy tắc phán đoán trực quan để dự báo và định hướng xem nhánh nào có khả năng dẫn đến trạng thái mục tiêu nhanh nhất.
+          </blockquote>
+          
+          <div class="block-title">Ví dụ minh họa</div>
+          <p>Khi tìm đường đi bằng ô tô từ Cần Thơ ra Hà Nội:</p>
+          <ul>
+            <li><strong>Tìm kiếm mù (BFS/DFS):</strong> Sẽ thử mọi con đường giao lộ từ Nam ra Bắc không theo hướng xác định, thậm chí rẽ sang các con đường đi ngược hướng.</li>
+            <li><strong>Tìm kiếm Heuristic:</strong> Ưu tiên chọn các giao lộ dẫn đến các tỉnh/thành phố có khoảng cách vật lý đường chim bay ngày càng ngắn lại so với Hà Nội.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-3-sec-2">
+          <h3>2. Khi nào sử dụng Heuristic?</h3>
+          <p>Thuật toán Heuristic thường được áp dụng trong hai nhóm tình huống chính:</p>
+          
+          <div class="block-title">Trường hợp 1: Tồn tại lời giải chính xác nhưng chi phí tính toán quá cao</div>
+          <p>Bài toán NP-khó hoặc có không gian trạng thái siêu lớn. Ví dụ: cờ vua, cờ vây, bài toán người bán hàng đi qua nhiều thành phố (TSP).</p>
+
+          <div class="block-title">Trường hợp 2: Không có định nghĩa lời giải chính xác tuyệt đối</div>
+          <p>Các bài toán phụ thuộc vào thông tin mập mờ, thiếu chắc chắn từ thực tế. Ví dụ: hệ thống chẩn đoán bệnh tự động, dự báo thời tiết, nhận dạng khuôn mặt.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-3-sec-3">
+          <h3>3. Hàm đánh giá Heuristic</h3>
+          <p>Tri thức Heuristic được số hóa thông qua <strong>hàm Heuristic \(h(n)\)</strong>:</p>
+          <div style="text-align: center; margin: 1rem 0; font-size: 1.1rem; font-weight: bold;">
+            \(h(n) = \text{Chi phí ước lượng từ nút hiện tại } n \text{ tới trạng thái đích}\)
+          </div>
+          <p>Ví dụ: Khi tìm đường trên bản đồ, hàm \(h(n)\) đơn giản và phổ biến nhất là <strong>khoảng cách đường thẳng chim bay</strong> từ vị trí hiện tại đến đích.</p>
+
+          <div class="block-title">Yêu cầu đối với một hàm Heuristic tốt</div>
+          <ul>
+            <li><strong>Độ chính xác:</strong> Giá trị ước lượng \(h(n)\) càng sát với chi phí thực tế đi từ \(n\) tới đích càng tốt.</li>
+            <li><strong>Thời gian tính toán:</strong> Việc tính giá trị \(h(n)\) phải cực kỳ nhanh chóng và tốn ít CPU để không làm giảm tốc độ tìm kiếm tổng thể.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-3-sec-4">
+          <h3>4. Heuristic trong bài toán 8-Puzzle</h3>
+          <p>Đối với trò chơi dịch chuyển ô số 8-Puzzle, có hai hàm Heuristic kinh điển:</p>
+
+          <div class="block-title">4.1 Số ô sai vị trí (Misplaced Tiles - \(h_1\))</div>
+          <p>\(h_1(n)\) bằng số lượng các ô số nằm khác vị trí so với cấu hình mục tiêu (không đếm ô trống). Đây là heuristic đơn giản nhưng thô sơ.</p>
+
+          <div class="block-title">4.2 Khoảng cách Manhattan (Manhattan Distance - \(h_2\))</div>
+          <p>\(h_2(n)\) bằng tổng khoảng cách dịch chuyển ngang và dọc tối thiểu để đưa tất cả các ô số từ vị trí hiện tại về vị trí đúng trên lưới:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(h_2(n) = \sum (|x_1 - x_2| + |y_1 - y_2|)\)
+          </div>
+
+          <div class="block-title">So sánh hai Heuristic</div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Heuristic</th>
+                <th>Độ chính xác</th>
+                <th>Hiệu quả tìm kiếm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>\(h_1(n)\) (Misplaced Tiles)</strong></td>
+                <td>Thấp (chỉ đếm xem ô có nằm đúng chỗ không).</td>
+                <td>Sinh ra nhiều nút hơn, tìm kiếm chậm hơn.</td>
+              </tr>
+              <tr>
+                <td><strong>\(h_2(n)\) (Manhattan Distance)</strong></td>
+                <td>Cao hơn (phản ánh lượng dịch chuyển cần thiết).</td>
+                <td>Dẫn đường tốt hơn, mở rộng ít nút hơn.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-3-sec-5">
+          <h3>5. Phương pháp Sinh và Thử (Generate and Test)</h3>
+          <p>Là chiến lược tìm kiếm đơn giản nhất:</p>
+          <ol>
+            <li>Sinh ra một lời giải/đường đi ứng viên một cách ngẫu nhiên hoặc theo thứ tự.</li>
+            <li>Kiểm tra xem ứng viên đó có đạt mục tiêu không.</li>
+            <li>Nếu đúng thì dừng và trả về lời giải; nếu sai, lặp lại bước 1.</li>
+          </ol>
+          <p><strong>Đánh giá:</strong> Cực kỳ dễ lập trình, rất hiệu quả cho các bài toán quy mô siêu nhỏ, nhưng sẽ thất bại hoặc tốn vô hạn thời gian khi không gian trạng thái lớn.</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-3-sec-6">
+          <h3>6. Tìm kiếm leo đồi (Hill Climbing)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Leo đồi là thuật toán tìm kiếm cục bộ (local search). Từ trạng thái hiện tại, thuật toán sinh ra các trạng thái con xung quanh, sau đó chọn trạng thái tốt nhất để di chuyển tiếp theo nếu nó có giá trị tối ưu hơn trạng thái hiện tại.</p>
+          <blockquote>
+            Thuật toán hoạt động theo nguyên tắc tham lam, luôn hướng lên đỉnh cao hơn và <strong>không lưu trữ lại các trạng thái đã đi qua, không quay lui (no backtracking)</strong>.
+          </blockquote>
+
+          <div class="block-title">Nhược điểm của Hill Climbing</div>
+          <ul>
+            <li><strong>Cực đại cục bộ (Local Maximum):</strong> Đỉnh đồi thấp hơn đỉnh núi chính. Mọi hướng đi xung quanh đều dẫn xuống dưới, khiến thuật toán dừng lại dù chưa đạt cực trị toàn cục.</li>
+            <li><strong>Vùng bình nguyên (Plateau):</strong> Một vùng đất bằng phẳng mà mọi trạng thái con xung quanh có giá trị đánh giá bằng nhau, khiến thuật toán mất phương hướng di chuyển.</li>
+            <li><strong>Sườn núi hẹp (Ridge):</strong> Cấu trúc dốc mà để đi lên tiếp, thuật toán phải đi xuống hoặc đi chéo, điều này vi phạm nguyên tắc chỉ đi lên của giải thuật.</li>
+          </ul>
+
+          <div class="block-title">Cách khắc phục</div>
+          <p>Sử dụng kỹ thuật Leo đồi khởi động lại ngẫu nhiên (Random Restart Hill Climbing), cho phép thực hiện quay lui một số bước, hoặc chọn ngẫu nhiên các hướng đi khác nhau.</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-3-sec-7">
+          <h3>7. Tìm kiếm tham lam (Greedy Best-First Search)</h3>
+          
+          <div class="block-title">Nguyên tắc hoạt động</div>
+          <p>Thuật toán chỉ tập trung mở rộng nút được đánh giá là gần đích nhất theo hàm Heuristic:</p>
+          <div style="text-align: center; margin: 1rem 0; font-weight: bold;">
+            \(f(n) = h(n)\)
+          </div>
+          <p>Thuật toán hoàn toàn bỏ qua chi phí thực tế đã đi từ gốc đến nút hiện tại (\(g(n)\)).</p>
+
+          <div class="block-title">Đánh giá</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Tốc độ tìm kiếm rất nhanh vì luôn hướng thẳng về phía mục tiêu.</li>
+            <li><strong>Nhược điểm:</strong> Không đảm bảo tìm thấy lời giải tối ưu. Dễ bị đánh lừa bởi những đường đi có vẻ gần đích nhưng thực tế lại có chi phí cực kỳ đắt đỏ hoặc đi vào ngõ cụt.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-3-sec-8">
+          <h3>8. Tìm kiếm A* (A-Star Search)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>A* là thuật toán tìm kiếm Heuristic hoàn hảo và phổ biến nhất. A* kết hợp ưu điểm của Tìm kiếm chi phí đồng nhất UCS (nhìn về quá khứ qua \(g(n)\)) và Tìm kiếm tham lam Greedy Search (nhìn về tương lai qua \(h(n)\)).</p>
+
+          <div class="block-title">Hàm đánh giá của A*</div>
+          <div style="text-align: center; margin: 1.5rem 0; font-size: 1.2rem; font-weight: bold; color: var(--secondary-color);">
+            \(f(n) = g(n) + h(n)\)
+          </div>
+          <p>Trong đó:</p>
+          <ul>
+            <li>\(g(n)\): Chi phí thực tế tích lũy từ trạng thái bắt đầu đến nút \(n\).</li>
+            <li>\(h(n)\): Chi phí ước lượng còn lại từ nút \(n\) đến đích.</li>
+            <li>\(f(n)\): Tổng chi phí dự kiến tốt nhất của lời giải đi ngang qua nút \(n\).</li>
+          </ul>
+
+          <div class="block-title">Điều kiện tối ưu của A*</div>
+          <p>A* đảm bảo tìm thấy lời giải tối ưu nếu hàm Heuristic \(h(n)\) là <strong>hợp lệ (admissible)</strong>. Hàm Heuristic được gọi là admissible nếu nó không bao giờ đánh giá cao hơn chi phí thực tế tối thiểu để đến đích (tức là \(h(n) \le h^*(n)\), với \(h^*(n)\) là chi phí thực tế).</p>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-3-sec-9">
+          <h3>9. So sánh Greedy Best-First Search và A*</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Greedy Best-First Search</th>
+                <th>A* Search</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hàm đánh giá</strong></td>
+                <td>\(f(n) = h(n)\)</td>
+                <td>\(f(n) = g(n) + h(n)\)</td>
+              </tr>
+              <tr>
+                <td><strong>Đảm bảo tối ưu</strong></td>
+                <td>Không</td>
+                <td>Có (nếu \(h(n)\) admissible)</td>
+              </tr>
+                <td><strong>Tốc độ hội tụ</strong></td>
+                <td>Nhanh hơn (chỉ nhắm thẳng đích)</td>
+                <td>Chậm hơn (phải cân bằng với chi phí đã đi)</td>
+              </tr>
+              <tr>
+                <td><strong>Số lượng nút mở rộng</strong></td>
+                <td>Thường ít hơn</td>
+                <td>Nhiều hơn so với Greedy, nhưng ít hơn UCS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-3-sec-10">
+          <h3>10. Phân rã bài toán và Đồ thị AND-OR</h3>
+          <p>Phương pháp phân rã bài toán (Problem Reduction) chia nhỏ một bài toán phức tạp ban đầu thành các bài toán con độc lập để dễ giải quyết.</p>
+
+          <div class="block-title">Đồ thị AND-OR (AND-OR Graph)</div>
+          <p>Được dùng để biểu diễn các nhánh phân rã bài toán:</p>
+          <ul>
+            <li><strong>Nút OR:</strong> Cho phép lựa chọn một trong các phương án để giải quyết. Chỉ cần giải thành công ít nhất một nút con OR là bài toán cha được giải quyết. (Ví dụ: Để "Sở hữu tivi", ta có thể "Mua tivi" OR "Xin tivi").</li>
+            <li><strong>Nút AND:</strong> Bắt buộc phải hoàn thành tất cả các nhiệm vụ con đi kèm. Tất cả các nút con AND phải được giải quyết đồng thời. (Ví dụ: Để "Mua tivi", ta bắt buộc phải "Kiếm đủ tiền" AND "Có xe vận chuyển").</li>
+          </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-3-sec-11">
+          <h3>11. Bài toán thỏa mãn ràng buộc (Constraint Satisfaction Problem - CSP)</h3>
+          <p>Thay vì tìm kiếm tuần tự, CSP tập trung vào việc tìm các giá trị thỏa mãn một tập hợp các ràng buộc toán học.</p>
+          
+          <div class="block-title">Mô hình CSP</div>
+          <p>CSP được xác định bởi bộ ba tham số: \(\text{CSP} = \langle X, D, C \rangle\)</p>
+          <ul>
+            <li><strong>\(X\):</strong> Tập các biến số cần gán giá trị, \(X = \{X_1, X_2, \dots, X_n\}\).</li>
+            <li><strong>\(D\):</strong> Tập các miền giá trị cho phép tương ứng của từng biến, \(D = \{D_1, D_2, \dots, D_n\}\).</li>
+            <li><strong>\(C\):</strong> Tập các ràng buộc logic hoặc toán học giới hạn các tổ hợp giá trị giữa các biến. Ví dụ: \(X_1 \neq X_2\).</li>
+          </ul>
+
+          <div class="block-title">Các kỹ thuật giải quyết CSP</div>
+          <ul>
+            <li><strong>Lan truyền ràng buộc (Constraint Propagation):</strong> Tự động thu hẹp miền giá trị khả dĩ của các biến chưa gán ngay khi một biến được gán giá trị để giảm sớm nhánh tìm kiếm lỗi.</li>
+            <li><strong>Cryptarithmetic:</strong> Bài toán giải đố chữ số toán học kinh điển (ví dụ: \(\text{SEND} + \text{MORE} = \text{MONEY}\)).</li>
+          </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="chuong-3-sec-12">
+          <h3>12. Tìm kiếm đối kháng (Adversarial Search)</h3>
+          <p>Được áp dụng trong các trò chơi có hai đối thủ chơi luân phiên và có xung đột lợi ích trực tiếp (Zero-sum games) như cờ vua, cờ vây, cờ caro.</p>
+
+          <div class="block-title">12.1 Thuật toán Minimax</div>
+          <p>Hai người chơi đại diện cho hai mục tiêu đối lập:</p>
+          <ul>
+            <li><strong>MAX:</strong> Cố gắng đưa ra các nước đi để tối đa hóa điểm số của mình ở trạng thái đích.</li>
+            <li><strong>MIN:</strong> Luôn chọn nước đi tối thiểu hóa điểm số của MAX (tức là tối ưu hóa cho MIN).</li>
+          </ul>
+          <p>Tại mỗi tầng của cây trò chơi, giá trị của các nút được tính ngược từ các nút lá lên gốc:</p>
+          <ul>
+            <li>Tại nút MAX: Chọn giá trị lớn nhất của các nút con, \(\text{Value}(n) = \max(\text{children})\).</li>
+            <li>Tại nút MIN: Chọn giá trị nhỏ nhất của các nút con, \(\text{Value}(n) = \min(\text{children})\).</li>
+          </ul>
+
+          <div class="block-title">12.2 Cắt tỉa Alpha-Beta (Alpha-Beta Pruning)</div>
+          <p>Là kỹ thuật tối ưu hóa giúp Minimax không cần duyệt các nhánh cây chắc chắn không ảnh hưởng đến quyết định cuối cùng ở gốc.</p>
+          <ul>
+            <li><strong>\(\alpha\) (Alpha):</strong> Giá trị nước đi tốt nhất hiện tại mà người chơi MAX có thể đảm bảo đạt được. Chỉ tăng hoặc giữ nguyên.</li>
+            <li><strong>\(\beta\) (Beta):</strong> Giá trị nước đi tốt nhất hiện tại mà đối thủ MIN có thể ép MAX phải nhận. Chỉ giảm hoặc giữ nguyên.</li>
+            <li><strong>Điều kiện cắt tỉa:</strong>
+              <ul>
+                <li>Tại nút MIN: Thực hiện cắt tỉa các nhánh con còn lại nếu phát hiện \(\beta \le \alpha\).</li>
+                <li>Tại nút MAX: Thực hiện cắt tỉa các nhánh con còn lại nếu phát hiện \(\alpha \ge \beta\).</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Section Summary table -->
+</section>
+
+<section id="chuong-4" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 4: Biểu diễn tri thức</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-4-sec-1">
+          <h3>1. Tại sao cần biểu diễn tri thức?</h3>
+          <p>Con người sử dụng ngôn ngữ tự nhiên và ký hiệu để lưu trữ thông tin, truyền đạt tri thức và thực hiện suy luận giải quyết vấn đề. Tương tự, máy tính trong hệ thống AI cũng cần một cơ chế mô hình hóa tương tự nhằm:</p>
+          <ul>
+            <li>Giúp máy tính hiểu và cấu trúc hóa được bài toán thực tế.</li>
+            <li>Lưu trữ kho kiến thức của một lĩnh vực chuyên biệt dưới dạng cơ sở tri thức (Knowledge Base).</li>
+            <li>Thực hiện các suy luận logic tự động để sinh ra tri thức mới từ các tri thức đã có.</li>
+            <li>Hỗ trợ đưa ra các quyết định hoặc giải pháp tối ưu.</li>
+          </ul>
+          <blockquote>
+            <strong>Biểu diễn tri thức (Knowledge Representation - KR)</strong> là việc mã hóa tri thức từ thế giới thực vào các cấu trúc dữ liệu máy tính để máy tính có thể suy luận một cách logic.
+          </blockquote>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-4-sec-2">
+          <h3>2. Tri thức là gì?</h3>
+          <p><strong>Tri thức (Knowledge)</strong> là toàn bộ những thông tin, sự kiện, quy luật, kinh nghiệm hoặc kỹ năng mà một thực thể thu nhận được thông qua quá trình học tập, nghiên cứu và trải nghiệm thực tế.</p>
+          
+          <div class="block-title">2.1 Phân loại tri thức cơ bản</div>
+          <ul>
+            <li><strong>Tri thức sự kiện (Factual Knowledge):</strong> Mô tả các sự kiện tĩnh, thông tin thực tế về các đối tượng trong thế giới thực.
+              <ul>
+                <li><em>Ví dụ:</em> "Cần Thơ thuộc Việt Nam", "Trái Đất quay quanh Mặt Trời", "Chim yến có 2 cánh".</li>
+              </ul>
+            </li>
+            <li><strong>Tri thức suy diễn (Inferential Knowledge):</strong> Mô tả các quy luật, luật nhân quả hay các mối quan hệ động giữa các sự kiện.
+              <ul>
+                <li><em>Ví dụ:</em> "Nếu trời mưa thì đường trơn", "Nếu một động vật là chim thì nó có cánh".</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-4-sec-3">
+          <h3>3. Phân biệt Dữ liệu (Data), Thông tin (Information) và Tri thức (Knowledge)</h3>
+          <p>Ba khái niệm này đại diện cho các cấp độ nhận thức khác nhau trong AI:</p>
+          
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Định nghĩa</th>
+                <th>Ví dụ thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dữ liệu (Data)</strong></td>
+                <td>Các ký hiệu, số liệu thô, chưa qua xử lý hay phân tích ngữ cảnh.</td>
+                <td><code>30, 32, 34, 36</code></td>
+              </tr>
+              <tr>
+                <td><strong>Thông tin (Information)</strong></td>
+                <td>Dữ liệu đã được xử lý, tổ chức và gán ý nghĩa nhất định.</td>
+                <td>"Nhiệt độ đo được đang tăng dần qua các ngày."</td>
+              </tr>
+              <tr>
+                <td><strong>Tri thức (Knowledge)</strong></td>
+                <td>Quy luật, hiểu biết và kinh nghiệm rút ra từ thông tin để áp dụng giải quyết vấn đề.</td>
+                <td>"Nếu nhiệt độ tiếp tục tăng liên tục, có khả năng cao sẽ xảy ra hiện tượng nắng nóng kéo dài."</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-4-sec-4">
+          <h3>4. Các yêu cầu của một hệ biểu diễn tri thức tốt</h3>
+          <p>Để xây dựng một hệ thống cơ sở tri thức hoạt động hiệu quả trong AI, hệ biểu diễn cần đáp ứng 4 tiêu chí cốt lõi:</p>
+          <ul>
+            <li><strong>4.1 Tính thích hợp biểu diễn (Representational Adequacy):</strong> Có khả năng biểu diễn đầy đủ, chính xác toàn bộ các loại tri thức cần thiết của lĩnh vực ứng dụng.</li>
+            <li><strong>4.2 Tính thích hợp suy diễn (Inferential Adequacy):</strong> Hỗ trợ các cơ chế lập luận để sinh ra các thông tin mới từ các tri thức gốc có sẵn.
+              <ul>
+                <li><em>Ví dụ:</em> Từ luật "Mọi loài chim đều có cánh" và sự kiện "Chim yến là một loài chim" suy ra được "Chim yến có cánh".</li>
+              </ul>
+            </li>
+            <li><strong>4.3 Tính hiệu quả suy diễn (Inferential Efficiency):</strong> Khả năng thực hiện suy luận nhanh chóng, tốn ít thời gian tính toán và tài nguyên bộ nhớ.</li>
+            <li><strong>4.4 Tính hiệu quả thu nhận tri thức (Acquisitional Efficiency):</strong> Cho phép người quản trị dễ dàng chèn thêm tri thức mới, cập nhật hoặc sửa đổi tri thức cũ mà không làm phá vỡ cấu trúc hệ thống.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-4-sec-5">
+          <h3>5. Khái niệm Ánh xạ (Mapping)</h3>
+          <p>Hệ thống AI không thao tác trực tiếp trên các đối tượng vật lý của thế giới thực mà thao tác trên một **mô hình tính toán** đại diện. Quá trình chuyển đổi này được gọi là <strong>Ánh xạ (Mapping)</strong>:</p>
+          
+          <div class="flowchart mapping-flowchart" style="display: flex; justify-content: space-around; align-items: center; margin: 1.5rem 0;">
+            <div style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-align: center;">
+              <strong>Thế giới thực</strong><br>
+              <span style="font-size: 0.9rem; color: var(--text-light);">Đối tượng thực tế (Chim, Cá, Xe)</span>
+            </div>
+            <div style="font-size: 1.5rem; color: var(--secondary-color);">&rarr; Ánh xạ (Mapping) &rarr;</div>
+            <div style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-align: center;">
+              <strong>Thế giới tính toán</strong><br>
+              <span style="font-size: 0.9rem; color: var(--text-light);">Ký hiệu logic: <code>bird(X)</code>, <code>fly(X)</code></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-4-sec-6">
+          <h3>6. Các mô hình biểu diễn tri thức phổ biến</h3>
+          <p>Có 4 hướng tiếp cận chính để xây dựng cơ sở tri thức:</p>
+          <ol>
+            <li><strong>Mô hình Logic:</strong> Sử dụng các hệ logic toán học (Logic mệnh đề, Logic vị từ bậc nhất).</li>
+            <li><strong>Mô hình thủ tục (Procedural Model):</strong> Biểu diễn tri thức dưới dạng các bước thực hiện, luật sản xuất (Production Rules: dạng <code>IF - THEN</code>).</li>
+            <li><strong>Mô hình mạng (Network Model):</strong> Sử dụng cấu trúc đồ thị liên kết. Ví dụ: Mạng ngữ nghĩa (Semantic Network).</li>
+            <li><strong>Mô hình cấu trúc (Structured Model):</strong> Biểu diễn tri thức dạng cấu trúc phân cấp, nhiều thuộc tính. Ví dụ: Hệ thống khung (Frame).</li>
+          </ol>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-4-sec-7">
+          <h3>7. Mô hình Logic</h3>
+          <p>Sử dụng ngôn ngữ logic toán để biểu diễn tri thức một cách chính xác và chặt chẽ.</p>
+          
+          <div class="block-title">Ví dụ biểu diễn</div>
+          <p>Câu tri thức: <em>"Không phải tất cả sinh viên CNTT đều thông minh"</em> (tức là tồn tại ít nhất một sinh viên CNTT không thông minh).</p>
+          <p>Quy ước ký hiệu:</p>
+          <ul>
+            <li>\(sv\_cntt(X)\): \(X\) là sinh viên ngành CNTT.</li>
+            <li>$thong\_minh(X)$: \(X\) thông minh.</li>
+          </ul>
+          <p>Biểu diễn dưới dạng logic vị từ:</p>
+          <div style="text-align: center; margin: 1rem 0; font-size: 1.2rem; font-weight: bold; color: var(--secondary-color);">
+            \(\exists X (sv\_cntt(X) \land \neg thong\_minh(X))\)
+          </div>
+
+          <div class="block-title">Đánh giá mô hình Logic</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Cực kỳ chặt chẽ, chính xác và có các thuật toán chứng minh định lý toán học vững chắc hỗ trợ suy luận.</li>
+            <li><strong>Nhược điểm:</strong> Khó biểu diễn các dạng tri thức mập mờ, mang tính ước lượng hoặc không chắc chắn. Dễ bùng nổ tính toán khi hệ thống lớn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-4-sec-8">
+          <h3>8. Mô hình thủ tục và Hệ luật sinh (Production Rules)</h3>
+          <p>Mô hình thủ tục không tập trung mô tả "cái gì đúng" (declarative) mà tập trung mô tả <strong>"làm việc đó như thế nào"</strong> (procedural) thông qua cấu trúc:</p>
+          <div style="text-align: center; margin: 1rem 0; font-weight: bold;">
+            <code>IF &lt;Điều kiện&gt; THEN &lt;Hành động/Kết luận&gt;</code>
+          </div>
+          <p>Đây là nền tảng cốt lõi của các **Hệ chuyên gia (Expert Systems)** giải quyết vấn đề bằng suy luận tiến (forward chaining) hoặc suy luận lùi (backward chaining).</p>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-4-sec-9">
+          <h3>9. Mạng ngữ nghĩa (Semantic Network)</h3>
+          
+          <div class="block-title">9.1 Định nghĩa</div>
+          <p>Mạng ngữ nghĩa biểu diễn tri thức dưới dạng một <strong>đồ thị có hướng</strong> bao gồm:</p>
+          <ul>
+            <li><strong>Các nút (Nodes):</strong> Đại diện cho các đối tượng, khái niệm hoặc thực thể.</li>
+            <li><strong>Các cung/cạnh (Edges):</strong> Biểu diễn mối quan hệ ngữ nghĩa giữa các đối tượng.</li>
+          </ul>
+
+          <div class="block-title">9.2 Các mối quan hệ kinh điển</div>
+          <ul>
+            <li><strong>Quan hệ Kế thừa (IS-A):</strong> Chỉ ra mối quan hệ phân cấp lớp cha - lớp con.
+              <ul>
+                <li><em>Ví dụ:</em> <code>Chim yến IS-A Chim</code> (Chim yến là một loại chim, kế thừa mọi đặc tính của chim).</li>
+              </ul>
+            </li>
+            <li><strong>Quan hệ Sở hữu (HAS-A / Có):</strong> Chỉ ra mối quan hệ thành phần, bộ phận.
+              <ul>
+                <li><em>Ví dụ:</em> <code>Chim HAS-A Cánh</code> (Chim có cánh).</li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="block-title">9.3 Đặc tính của mạng ngữ nghĩa</div>
+          <ul>
+            <li><strong>Tính kế thừa (Inheritance):</strong> Các nút con tự động thừa hưởng các thuộc tính của các nút cha thông qua quan hệ <code>IS-A</code>. Ví dụ: Nếu <code>Chim có cánh</code> và <code>Chim yến IS-A Chim</code> thì mặc nhiên <code>Chim yến có cánh</code>.</li>
+            <li><strong>Tính ngoại lệ (Exception Handling):</strong> Cho phép ghi đè luật chung cho các trường hợp đặc biệt. Ví dụ: Luật chung <code>Chim biết bay</code>, nhưng ta có thể định nghĩa cung ngoại lệ cho Chim cánh cụt: <code>Chim cánh cụt không biết bay</code>.</li>
+            <li><strong>Tính mở rộng:</strong> Dễ dàng bổ sung thêm đỉnh mới hoặc mối quan hệ mới mà không làm phá vỡ cấu trúc đồ thị hiện hành.</li>
+          </ul>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-4-sec-10">
+          <h3>10. Ví dụ ứng dụng: Bài toán Tam giác thông minh</h3>
+          <p>Mạng ngữ nghĩa là công cụ đắc lực để giải quyết các bài toán hình học bằng cách liên kết các đại lượng thông qua công thức:</p>
+          <ul>
+            <li>Các nút đại diện cho: Các cạnh (\(a, b, c\)), các góc (\(A, B, C\)), chiều cao (\(h\)), diện tích (\(S\)), chu vi (\(P\)).</li>
+            <li>Các cạnh là các công thức toán học kết nối chúng:
+              <ul>
+                <li>\(S = \frac{1}{2} a \cdot h\)</li>
+                <li>\(P = a + b + c\)</li>
+                <li>\(\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}\)</li>
+              </ul>
+            </li>
+          </ul>
+          <p>Khi người dùng cung cấp một số đại lượng đầu vào, hệ thống AI sẽ duyệt mạng để tìm công thức phù hợp, tính toán và suy luận ra giá trị của các đại lượng còn lại.</p>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-4-sec-11">
+          <h3>11. Mô hình cấu trúc Frame (Khung tri thức)</h3>
+          
+          <div class="block-title">11.1 Khái niệm</div>
+          <p>Frame là một cấu trúc dữ liệu được Marvin Minsky đề xuất năm 1974. Nó là sự mở rộng trực tiếp của mạng ngữ nghĩa, trong đó mỗi nút không chỉ là một tên nhãn đơn giản mà là một <strong>khung chứa cấu trúc thông tin phức tạp</strong> (tương tự khái niệm Class/Object trong Lập trình hướng đối tượng).</p>
+
+          <div class="block-title">11.2 Các thành phần của một Frame</div>
+          <ul>
+            <li><strong>Tên Frame (Frame Name):</strong> Xác định duy nhất đối tượng hoặc khái niệm.</li>
+            <li><strong>Quan hệ kế thừa:</strong> Thuộc tính chỉ lớp cha (thường dùng quan hệ <code>IS-A</code>).</li>
+            <li><strong>Slot (Khe cắm):</strong> Các thuộc tính của đối tượng (ví dụ: màu sắc, số chân, kích thước).</li>
+            <li><strong>Facet (Khía cạnh):</strong> Mô tả tính chất của Slot, lưu trữ giá trị mặc định, hoặc định nghĩa các <strong>thủ tục kích hoạt (demons)</strong> để tự động tính toán giá trị cho Slot khi cần thiết (ví dụ: công thức tính diện tích hình tròn khi biết bán kính).</li>
+          </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="chuong-4-sec-12">
+          <h3>12. Ví dụ thực tế về Frame</h3>
+          
+          <div class="block-title">Ví dụ 1: Frame CHIM</div>
+          <table class="comparison-table" style="width: auto; min-width: 400px;">
+            <thead>
+              <tr>
+                <th>Slot (Thuộc tính)</th>
+                <th>Giá trị / Kiểu dữ liệu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>IS-A</strong></td>
+                <td>Động vật</td>
+              </tr>
+              <tr>
+                <td><strong>Số cánh</strong></td>
+                <td>2 (mặc định)</td>
+              </tr>
+              <tr>
+                <td><strong>Biết bay</strong></td>
+                <td>True (mặc định)</td>
+              </tr>
+              <tr>
+                <td><strong>Thức ăn</strong></td>
+                <td>Côn trùng, hạt</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="block-title">Ví dụ 2: Frame Hình tròn (CIRCLE)</div>
+          <table class="comparison-table" style="width: auto; min-width: 500px;">
+            <thead>
+              <tr>
+                <th>Slot (Thuộc tính)</th>
+                <th>Facet (Quy tắc tính toán / Giá trị)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bán kính (r)</strong></td>
+                <td>Nhập từ người dùng</td>
+              </tr>
+              <tr>
+                <td><strong>Đường kính (d)</strong></td>
+                <td>Quy tắc tính: \(d = 2r\)</td>
+              </tr>
+              <tr>
+                <td><strong>Diện tích (S)</strong></td>
+                <td>Quy tắc tính: \(S = \pi r^2\)</td>
+              </tr>
+              <tr>
+                <td><strong>Chu vi (P)</strong></td>
+                <td>Quy tắc tính: \(P = 2\pi r\)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+</section>
+
+<section id="chuong-5" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 5: Thủ tục hợp giải</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-5-sec-1">
+          <h3>1. Mệnh đề là gì?</h3>
+          <p><strong>Mệnh đề (Proposition)</strong> là một phát biểu, câu khẳng định chỉ có thể nhận duy nhất một trong hai giá trị chân trị:</p>
+          <ul>
+            <li><strong>Đúng (True - T - 1)</strong></li>
+            <li><strong>Sai (False - F - 0)</strong></li>
+          </ul>
+          <p>Một phát biểu không thể vừa đúng vừa sai cùng lúc và không thể không mang chân trị.</p>
+          
+          <div class="block-title">Ví dụ minh họa</div>
+          <ul>
+            <li>"Hà Nội là thủ đô của Việt Nam." &rarr; <em>Mệnh đề Đúng (True)</em></li>
+            <li>"122 chia hết cho 3." &rarr; <em>Mệnh đề Sai (False)</em></li>
+            <li>"Hôm nay trời đẹp quá!" &rarr; <em>Không phải mệnh đề</em> (đây là câu cảm thán, chân trị phụ thuộc cảm xúc người nói).</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-5-sec-2">
+          <h3>2. Các phép toán logic mệnh đề</h3>
+          <p>Các mệnh đề phức hợp được xây dựng từ mệnh đề đơn thông qua các liên kết logic:</p>
+
+          <div class="block-title">2.1 Phủ định (Negation - \(\neg\))</div>
+          <p>Ký hiệu: \(\neg P\). Đọc là "Không phải P". Giá trị chân trị của \(\neg P\) luôn ngược lại với \(P\).</p>
+
+          <div class="block-title">2.2 Phép hội (Conjunction - \(\land\))</div>
+          <p>Ký hiệu: \(P \land Q\). Đọc là "P và Q". Đúng khi và chỉ khi <strong>cả P và Q đều đúng</strong>.</p>
+
+          <div class="block-title">2.3 Phép tuyển (Disjunction - \(\lor\))</div>
+          <p>Ký hiệu: \(P \lor Q\). Đọc là "P hoặc Q". Đúng khi <strong>có ít nhất một mệnh đề đúng</strong>.</p>
+
+          <div class="block-title">2.4 Phép kéo theo (Implication - \(\rightarrow\))</div>
+          <p>Ký hiệu: \(P \rightarrow Q\). Đọc là "Nếu P thì Q". Phép toán này chỉ sai khi giả thiết \(P\) Đúng mà kết luận \(Q\) lại Sai.</p>
+          <ul>
+            <li>\(P\) là điều kiện đủ để có \(Q\).</li>
+            <li>\(Q\) là điều kiện cần để có \(P\).</li>
+          </ul>
+
+          <div class="block-title">2.5 Phép tương đương (Equivalence - \(\leftrightarrow\))</div>
+          <p>Ký hiệu: \(P \leftrightarrow Q\). Đọc là "P khi và chỉ khi Q". Đúng khi \(P\) và \(Q\) có cùng giá trị chân trị.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-5-sec-3">
+          <h3>3. Dạng chuẩn hội CNF và Dạng chuẩn tuyển DNF</h3>
+          <p>Để máy tính thực hiện các thuật toán suy luận tự động, các công thức logic cần được quy chuẩn về các dạng chuẩn tắc:</p>
+
+          <div class="block-title">3.1 Dạng chuẩn hội (Conjunctive Normal Form - CNF)</div>
+          <p>CNF là <strong>Hội (AND - \(\land\)) của một hoặc nhiều mệnh đề tuyển (OR - \(\lor\))</strong>.</p>
+          <ul>
+            <li>Dạng tổng quát: \((A \lor B) \land (\neg C \lor D) \land (E \lor F)\)</li>
+            <li>Ví dụ CNF hợp lệ: \((P \lor Q) \land (\neg Q \lor R \lor \neg S)\)</li>
+            <li>Ví dụ KHÔNG phải CNF: \((P \land Q) \lor R\) (do phép OR nằm bên ngoài phép AND).</li>
+          </ul>
+
+          <div class="block-title">3.2 Dạng chuẩn tuyển (Disjunctive Normal Form - DNF)</div>
+          <p>DNF là <strong>Tuyển (OR - \(\lor\)) của một hoặc nhiều mệnh đề hội (AND - \(\land\))</strong>.</p>
+          <ul>
+            <li>Dạng tổng quát: \((A \land B) \lor (C \land \neg D)\)</li>
+          </ul>
+
+          <div class="block-title">Bảng so sánh cấu trúc</div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Dạng chuẩn</th>
+                <th>Phép toán ngoài cùng</th>
+                <th>Phép toán bên trong ngoặc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CNF (Chuẩn hội)</strong></td>
+                <td>Hội (AND - \(\land\))</td>
+                <td>Tuyển (OR - \(\lor\))</td>
+              </tr>
+              <tr>
+                <td><strong>DNF (Chuẩn tuyển)</strong></td>
+                <td>Tuyển (OR - \(\lor\))</td>
+                <td>Hội (AND - \(\land\))</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-5-sec-4">
+          <h3>4. Các bước chuyển đổi công thức sang dạng chuẩn CNF</h3>
+          <p>Mọi công thức logic bất kỳ đều có thể đưa về dạng CNF tương đương thông qua 3 bước biến đổi cơ bản:</p>
+
+          <div class="block-title">Bước 1: Loại bỏ phép kéo theo (\(\rightarrow\)) và tương đương (\(\leftrightarrow\))</div>
+          <p>Sử dụng các tương đương logic:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(A \rightarrow B \equiv \neg A \lor B\)<br>
+            \(A \leftrightarrow B \equiv (A \rightarrow B) \land (B \rightarrow A) \equiv (\neg A \lor B) \land (\neg B \lor A)\)
+          </div>
+
+          <div class="block-title">Bước 2: Di chuyển phủ định (\(\neg\)) vào sát biến vị từ</div>
+          <p>Sử dụng luật phủ định kép và luật De Morgan:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(\neg(\neg A) \equiv A\)<br>
+            \(\neg(A \land B) \equiv \neg A \lor \neg B\)<br>
+            \(\neg(A \lor B) \equiv \neg A \land \neg B\)
+          </div>
+
+          <div class="block-title">Bước 3: Áp dụng luật phân phối đối với phép \(\lor\) trên phép \(\land\)</div>
+          <p>Quy tắc đưa phép toán tuyển (\(\lor\)) vào trong dấu hội (\(\land\)):</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(A \lor (B \land C) \equiv (A \lor B) \land (A \lor C)\)
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-5-sec-5">
+          <h3>5. Ví dụ cụ thể chuyển đổi sang CNF</h3>
+          <p>Hãy chuyển đổi công thức sau về dạng chuẩn CNF:</p>
+          <div style="text-align: center; margin: 1rem 0; font-weight: bold;">
+            \((P \lor Q) \rightarrow (R \rightarrow S)\)
+          </div>
+
+          <div class="block-title">Giải chi tiết</div>
+          <ol>
+            <li><strong>Khử các dấu kéo theo (\(\rightarrow\)):</strong>
+              <p>Khử kéo theo ở vế phải trước:</p>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((P \lor Q) \rightarrow (\neg R \lor S)\)
+              </div>
+              <p>Khử kéo theo ngoài cùng:</p>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \(\neg(P \lor Q) \lor (\neg R \lor S)\)
+              </div>
+            </li>
+            <li><strong>Áp dụng luật De Morgan để đưa dấu phủ định vào trong:</strong>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((\neg P \land \neg Q) \lor (\neg R \lor S)\)
+              </div>
+            </li>
+            <li><strong>Áp dụng luật phân phối (coi cụm \((\neg R \lor S)\) là một phần tử để phân phối):</strong>
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \((\neg P \lor \neg R \lor S) \land (\neg Q \lor \neg R \lor S)\)
+              </div>
+            </li>
+          </ol>
+          <p>Đây là dạng chuẩn hội CNF hoàn chỉnh (Hội của hai mệnh đề tuyển).</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-5-sec-6">
+          <h3>6. Logic vị từ (Predicate Logic)</h3>
+          <p>Logic mệnh đề bị giới hạn vì không thể đi sâu mô tả các thuộc tính bên trong của đối tượng. <strong>Logic vị từ bậc nhất (First-Order Predicate Logic)</strong> ra đời để mở rộng bằng cách định nghĩa cấu trúc:</p>
+          <ul>
+            <li><strong>Đối tượng (Objects):</strong> Các thực thể trong thế giới (ví dụ: con người, số học, quả táo).</li>
+            <li><strong>Thuộc tính (Properties):</strong> Đặc điểm riêng của đối tượng (ví dụ: thông minh, màu đỏ).</li>
+            <li><strong>Quan hệ (Relations):</strong> Liên kết giữa các đối tượng (ví dụ: là cha của, lớn hơn).</li>
+          </ul>
+          
+          <div class="block-title">Ví dụ minh họa</div>
+          <p>Câu: <em>"Lan là sinh viên trường Đại học Cần Thơ"</em></p>
+          <p>Biểu diễn vị từ: \(sv\_dhct(Lan)\)</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-5-sec-7">
+          <h3>7. Các thành phần cấu thành biểu thức vị từ</h3>
+          <ul>
+            <li><strong>7.1 Hằng (Constant):</strong> Chỉ ra các đối tượng cụ thể duy nhất. Viết bằng chữ thường. Ví dụ: <code>lan</code>, <code>caesar</code>, <code>vietnam</code>.</li>
+            <li><strong>7.2 Biến (Variable):</strong> Đại diện cho một tập hợp đối tượng không xác định cụ thể. Thường bắt đầu bằng chữ in hoa hoặc ký tự cuối. Ví dụ: <code>X</code>, <code>Y</code>, <code>Person</code>.</li>
+            <li><strong>7.3 Hàm (Function):</strong> Biểu diễn phép ánh xạ từ đối tượng này sang một đối tượng khác duy nhất. Ví dụ: \(father(X)\) (cha của X), \(mother(lan)\) (mẹ của Lan).</li>
+            <li><strong>7.4 Vị từ (Predicate):</strong> Biểu diễn một thuộc tính hoặc mối quan hệ giữa các thực thể, trả về chân trị Đúng/Sai. Ví dụ: \(likes(tom, football)\) (Tom thích bóng đá).</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-5-sec-8">
+          <h3>8. Các lượng từ (Quantifiers)</h3>
+          <p>Logic vị từ sử dụng hai lượng từ toán học để chỉ định phạm vi đối tượng:</p>
+
+          <div class="block-title">8.1 Lượng từ tồn tại (\(\exists\))</div>
+          <p>Ký hiệu: \(\exists X\). Đọc là "Tồn tại ít nhất một X" hoặc "Có một số X".</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\exists X (student(X) \land smart(X))\) &rarr; Có ít nhất một sinh viên thông minh (hoặc một số sinh viên thông minh).</li>
+          </ul>
+
+          <div class="block-title">8.2 Lượng từ với mọi (\(\forall\))</div>
+          <p>Ký hiệu: \(\forall X\). Đọc là "Với mọi X" hoặc "Tất cả X".</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\forall X (student(X) \rightarrow smart(X))\) &rarr; Tất cả sinh viên đều thông minh.</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-5-sec-9">
+          <h3>9. Phép hợp nhất (Unification)</h3>
+          
+          <div class="block-title">Ý nghĩa</div>
+          <p>Phép hợp nhất là quá trình tìm ra một <strong>phép thế các biến (substitution)</strong> sao cho hai biểu thức vị từ khác nhau trở nên giống hệt nhau về mặt cú pháp.</p>
+
+          <div class="block-title">Ví dụ hợp nhất thành công</div>
+          <p>Cho hai vị từ: \(P(X, Y)\) và \(P(a, Z)\).</p>
+          <p>Phép thế thích hợp là: \(\theta = \{a/X, Y/Z\}\) (thế hằng \(a\) cho biến \(X\), thế biến \(Y\) cho biến \(Z\)). Sau khi áp dụng phép thế, cả hai vị từ đều trở thành \(P(a, Y)\).</p>
+
+          <div class="block-title">Ví dụ KHÔNG thể hợp nhất</div>
+          <p>Cho hai vị từ: \(P(X, X)\) và \(P(a, b)\).</p>
+          <p>Hợp nhất thất bại vì bắt buộc \(X\) phải thế bằng \(a\) và đồng thời thế bằng \(b\). Điều này mâu thuẫn do hằng \(a \neq b\).</p>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-5-sec-10">
+          <h3>10. Khái niệm Thủ tục hợp giải (Resolution)</h3>
+          <p>Hợp giải là phương pháp chứng minh tự động dựa trên **phép phản chứng (proof by contradiction)**. Để chứng minh một mục tiêu \(G\) từ cơ sở tri thức \(KB\) (tức là chứng minh \(KB \vdash G\)):</p>
+          <ol>
+            <li>Lấy phủ định của mục tiêu cần chứng minh: \(\neg G\).</li>
+            <li>Thêm \(\neg G\) vào cơ sở tri thức hiện hành \(KB\).</li>
+            <li>Thực hiện phép hợp giải liên tục để sinh ra các mệnh đề mới.</li>
+            <li>Nếu quá trình hợp giải dẫn đến <strong>mệnh đề rỗng (empty clause - \(\Box\))</strong>, chứng tỏ xuất hiện mâu thuẫn. Do đó giả thuyết \(\neg G\) sai, nghĩa là mục tiêu \(G\) ban đầu được chứng minh là Đúng.</li>
+          </ol>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-5-sec-11">
+          <h3>11. Quy tắc hợp giải trong logic mệnh đề</h3>
+          <p>Quy tắc hợp giải cơ bản phát biểu rằng: nếu ta có hai tuyển chứa hai mệnh đề đối ngẫu nhau, ta có thể triệt tiêu chúng để tạo ra một mệnh đề mới:</p>
+          <div style="text-align: center; margin: 1.5rem 0; font-size: 1.2rem; font-weight: bold;">
+            \(\frac{P \lor Q, \quad \neg P \lor R}{Q \lor R}\)
+          </div>
+          
+          <div class="block-title">Ví dụ</div>
+          <p>Mệnh đề 1: \(winter \lor summer\) (Trời là mùa đông hoặc mùa hè)</p>
+          <p>Mệnh đề 2: \(\neg winter \lor cold\) (Trời không phải mùa đông hoặc trời lạnh)</p>
+          <p>Hợp giải hai mệnh đề trên bằng cách triệt tiêu \(winter\) và \(\neg winter\), thu được mệnh đề mới: \(summer \lor cold\) (Trời là mùa hè hoặc trời lạnh).</p>
+        </div>
+
+        <!-- Section 12 -->
+        <div class="sub-section" id="chuong-5-sec-12">
+          <h3>12. Skolemization (Khử lượng từ tồn tại)</h3>
+          <p>Trong quá trình chuyển đổi logic vị từ bậc nhất sang CNF, ta cần khử các lượng từ tồn tại (\(\exists\)) bằng phương pháp Skolem:</p>
+
+          <div class="block-title">Trường hợp 1: Lượng từ \(\exists\) không nằm dưới phạm vi của lượng từ \(\forall\)</div>
+          <p>Thế biến đó bằng một hằng số mới hoàn toàn (Hằng Skolem - Skolem Constant).</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\exists X (student(X))\) biến đổi thành \(student(A)\) (với \(A\) là một sinh viên cụ thể nào đó).</li>
+          </ul>
+
+          <div class="block-title">Trường hợp 2: Lượng từ \(\exists\) nằm dưới phạm vi ảnh hưởng của lượng từ \(\forall\)</div>
+          <p>Thế biến đó bằng một hàm số phụ thuộc vào biến của lượng từ \(\forall\) (Hàm Skolem - Skolem Function).</p>
+          <ul>
+            <li><em>Ví dụ:</em> \(\forall X \exists Y (father(Y, X))\) (Mọi người \(X\) đều có một người cha \(Y\)). Vì người cha \(Y\) phụ thuộc vào mỗi người \(X\), ta thế \(Y\) bằng hàm \(f(X)\): \(\forall X (father(f(X), X))\).</li>
+          </ul>
+        </div>
+
+        <!-- Section 13 -->
+        <div class="sub-section" id="chuong-5-sec-13">
+          <h3>13. Các bước chuyển logic vị từ sang CNF hoàn chỉnh</h3>
+          <p>Để đưa một hệ logic vị từ bậc nhất về dạng CNF, ta thực hiện theo 10 bước chuẩn tắc sau:</p>
+          <ol>
+            <li>Khử các phép toán tương đương (\(\leftrightarrow\)).</li>
+            <li>Khử các phép toán kéo theo (\(\rightarrow\)).</li>
+            <li>Đưa dấu phủ định (\(\neg\)) vào sát các vị từ (sử dụng De Morgan và phủ định của lượng từ).</li>
+            <li>Chuẩn hóa biến (đổi tên biến để mỗi lượng từ quản lý một biến duy nhất).</li>
+            <li>Di chuyển tất cả lượng từ ra phía đầu công thức (Prenex Normal Form).</li>
+            <li>Khử lượng từ tồn tại (\(\exists\)) bằng phương pháp **Skolemization**.</li>
+            <li>Loại bỏ hoàn toàn các lượng từ với mọi (\(\forall\)) vì mọi biến còn lại mặc định đều mang tính phổ quát.</li>
+            <li>Phân phối phép tuyển (\(\lor\)) trên phép hội (\(\land\)) để đưa về hội của các tuyển.</li>
+            <li>Tách công thức thành các mệnh đề (clauses) riêng biệt bằng cách bỏ dấu hội (\(\land\)).</li>
+            <li>Đổi tên biến giữa các mệnh đề khác nhau để tránh xung đột biến khi thực hiện hợp giải.</li>
+          </ol>
+        </div>
+</section>
+
+<section id="chuong-6" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 6: Suy diễn tiến - lùi</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-6-sec-1">
+          <h3>1. Hệ thống dựa trên luật (Rule-Based Systems)</h3>
+          <p>Hệ thống dựa trên luật là một trong những dạng hệ chuyên gia phổ biến nhất trong AI. Tri thức chuyên gia được mã hóa tường minh dưới dạng một tập hợp các quy tắc có cấu trúc điều kiện:</p>
+          <div style="text-align: center; margin: 1rem 0; font-family: monospace; font-weight: bold; font-size: 1.1rem;">
+            IF &lt;Điều kiện / Tiền đề&gt; THEN &lt;Kết luận / Hành động&gt;
+          </div>
+          
+          <div class="block-title">Ví dụ luật sinh</div>
+          <blockquote style="font-family: monospace; font-size: 0.95rem;">
+            R1: IF troi_mua THEN mang_ao_mua<br>
+            R2: IF sot AND ho THEN nhiem_lanh
+          </blockquote>
+
+          <div class="block-title">Mục tiêu của hệ thống</div>
+          <ul>
+            <li>Tư vấn và đề xuất các hành động cần thực hiện cho người dùng.</li>
+            <li>Đưa ra chẩn đoán hoặc kết luận dựa trên các dữ kiện khảo sát thực tế.</li>
+            <li>Tự động thực thi suy luận logic dựa trên các luật và sự kiện đã biết.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-6-sec-2">
+          <h3>2. Ba thành phần cốt lõi của hệ thống dựa trên luật</h3>
+          <p>Một hệ thống dựa trên luật chuẩn tắc gồm có 3 thành phần chính:</p>
+          
+          <div class="block-title">2.1 Tập luật (Rule Base)</div>
+          <p>Là kho lưu trữ toàn bộ các luật tĩnh dạng <code>IF-THEN</code> của hệ chuyên gia.</p>
+          <ul>
+            <li><em>Ví dụ:</em>
+              <pre>R1: IF sot AND ho THEN cam_cum
+R2: IF cam_cum THEN uong_thuoc</pre>
+            </li>
+          </ul>
+
+          <div class="block-title">2.2 Cơ sở sự kiện (Fact Base)</div>
+          <p>Lưu trữ các thông tin, dữ liệu động thực tế ghi nhận được từ môi trường hoặc do người dùng cung cấp tại thời điểm hiện tại.</p>
+          <ul>
+            <li><em>Ví dụ:</em> <code>Fact = {sot, ho}</code>.</li>
+          </ul>
+
+          <div class="block-title">2.3 Bộ suy diễn (Inference Engine)</div>
+          <p>Là bộ não điều khiển của hệ thống, chịu trách nhiệm:</p>
+          <ul>
+            <li>Kiểm tra xem điều kiện của những luật nào trong Rule Base phù hợp với các sự kiện hiện có trong Fact Base.</li>
+            <li>Giải quyết tranh chấp và kích hoạt luật đã chọn.</li>
+            <li>Sinh thêm sự kiện mới và cập nhật ngược lại vào Fact Base.</li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-6-sec-3">
+          <h3>3. Suy diễn tiến (Forward Chaining)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Suy diễn tiến là tiến trình lập luận xuất phát từ các <strong>sự kiện đã biết (dữ liệu ban đầu)</strong>, áp dụng các luật tương thích để rút ra các kết luận mới, từ đó hướng dần về phía <strong>mục tiêu cần chứng minh</strong>.</p>
+          <blockquote>
+            Phương pháp này còn được gọi là <strong>Tìm kiếm hướng dữ liệu (Data-Driven Search)</strong>.
+          </blockquote>
+
+          <div class="block-title">Quy trình suy diễn tiến</div>
+          <ol>
+            <li>Bắt đầu với tập các sự kiện ban đầu trong Fact Base.</li>
+            <li>Quét tập luật để tìm tất cả các luật có phần điều kiện (vế trái) được thỏa mãn bởi các sự kiện hiện tại.</li>
+            <li>Kích hoạt luật được chọn, lấy kết luận (vế phải) bổ sung vào Fact Base dưới dạng sự kiện mới.</li>
+            <li>Lặp lại các bước trên cho đến khi sự kiện mục tiêu xuất hiện trong Fact Base (chứng minh thành công) hoặc không thể kích hoạt thêm luật nào nữa.</li>
+          </ol>
+
+          <div class="block-title">Ví dụ suy diễn tiến</div>
+          <p>Cho tập luật:</p>
+          <pre>R1: IF A AND B THEN C
+R2: IF C THEN D</pre>
+          <p>Sự kiện ban đầu: <code>Fact = {A, B}</code>. Mục tiêu cần chứng minh: <code>D</code>.</p>
+          <p><strong>Quá trình chạy:</strong></p>
+          <ul>
+            <li>Lượt 1: Luật R1 có điều kiện <code>A AND B</code> thỏa mãn. Kích hoạt R1, thêm <code>C</code> vào Fact Base. Lúc này <code>Fact = {A, B, C}</code>.</li>
+            <li>Lượt 2: Luật R2 có điều kiện <code>C</code> thỏa mãn. Kích hoạt R2, thêm <code>D</code> vào Fact Base. Lúc này <code>Fact = {A, B, C, D}</code>.</li>
+            <li>Kết quả: Mục tiêu <code>D</code> đã có trong Fact Base. Kết luận <code>D</code> Đúng.</li>
+          </ul>
+
+          <div class="block-title">Đánh giá suy diễn tiến</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Tự động rút ra được nhiều kết luận mới hữu ích. Hoạt động rất tốt khi bài toán có lượng dữ liệu đầu vào phong phú và số lượng mục tiêu chưa định hình cụ thể.</li>
+            <li><strong>Nhược điểm:</strong> Có thể chạy lan man, sinh ra quá nhiều sự kiện trung gian không cần thiết, làm lãng phí bộ nhớ và thời gian tính toán.</li>
+            <li><strong>Ứng dụng:</strong> Hệ thống giám sát thời gian thực, hệ thống phân tích tín hiệu cảm biến, hệ thống cảnh báo cháy/sự cố tự động.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-6-sec-4">
+          <h3>4. Suy diễn lùi (Backward Chaining)</h3>
+          
+          <div class="block-title">Ý tưởng thuật toán</div>
+          <p>Suy diễn lùi xuất phát từ một <strong>mục tiêu giả định (Goal)</strong> cần chứng minh. Thuật toán tìm các luật có kết luận (vế phải) khớp với mục tiêu, sau đó biến phần điều kiện (vế trái) của luật đó thành các <strong>mục tiêu con (sub-goals)</strong> mới. Quá trình truy ngược này tiếp tục cho tới khi mọi mục tiêu con đều khớp với sự kiện thực tế trong Fact Base.</p>
+          <blockquote>
+            Phương pháp này còn được gọi là <strong>Tìm kiếm hướng mục tiêu (Goal-Driven Search)</strong>.
+          </blockquote>
+
+          <div class="block-title">Quy trình suy diễn lùi</div>
+          <ol>
+            <li>Đưa mục tiêu cần chứng minh vào hàng đợi mục tiêu.</li>
+            <li>Lấy mục tiêu hiện tại ra:
+              <ul>
+                <li>Nếu mục tiêu này đã có sẵn trong Fact Base, nó được coi là Đúng.</li>
+                <li>Nếu không, tìm các luật có kết luận trùng với mục tiêu này. Lấy phần điều kiện của luật làm các mục tiêu con và lặp lại đệ quy để chứng minh các mục tiêu con đó.</li>
+              </ul>
+            </li>
+            <li>Nếu tất cả các mục tiêu con của một luật được chứng minh là Đúng, thì mục tiêu ban đầu Đúng. Nếu không thể chứng minh, chuyển sang luật thay thế khác.</li>
+          </ol>
+
+          <div class="block-title">Ví dụ suy diễn lùi</div>
+          <p>Tập luật giống ví dụ trước. Mục tiêu: Chứng minh <code>D</code> Đúng.</p>
+          <p><strong>Quá trình chạy:</strong></p>
+          <ul>
+            <li>Để chứng minh <code>D</code>, tìm luật có kết luận là <code>D</code> &rarr; Chọn luật R2. Điều kiện của R2 là <code>C</code> &rarr; Tạo mục tiêu con mới là <code>C</code>.</li>
+            <li>Để chứng minh <code>C</code>, tìm luật có kết luận là <code>C</code> &rarr; Chọn luật R1. Điều kiện của R1 là <code>A AND B</code> &rarr; Tạo mục tiêu con mới là <code>A</code> và <code>B</code>.</li>
+            <li>Kiểm tra Fact Base: Thấy <code>A</code> và <code>B</code> đều có sẵn (Đúng). Suy ra mục tiêu con <code>C</code> Đúng &rarr; Suy ra mục tiêu chính <code>D</code> Đúng.</li>
+          </ul>
+
+          <div class="block-title">Đánh giá suy diễn lùi</div>
+          <ul>
+            <li><strong>Ưu điểm:</strong> Tập trung tối đa vào mục tiêu cụ thể, bỏ qua các nhánh tri thức không liên quan, giúp thu hẹp đáng kể không gian tìm kiếm.</li>
+            <li><strong>Nhược điểm:</strong> Bắt buộc phải biết rõ mục tiêu ban đầu. Gặp khó khăn nếu có quá nhiều mục tiêu giả thuyết cần kiểm chứng.</li>
+            <li><strong>Ứng dụng:</strong> Hệ thống chẩn đoán y khoa, hệ thống chẩn đoán lỗi cơ khí/động cơ ô tô, chứng minh định lý toán học.</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-6-sec-5">
+          <h3>5. Bảng so sánh Suy diễn tiến và Suy diễn lùi</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Suy diễn tiến (Forward Chaining)</th>
+                <th>Suy diễn lùi (Backward Chaining)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hướng lập luận</strong></td>
+                <td>Dữ liệu (Facts) &rarr; Mục tiêu (Goal)</td>
+                <td>Mục tiêu (Goal) &rarr; Dữ liệu (Facts)</td>
+              </tr>
+              <tr>
+                <td><strong>Tên gọi khác</strong></td>
+                <td>Data-driven (Hướng dữ liệu)</td>
+                <td>Goal-driven (Hướng mục tiêu)</td>
+              </tr>
+              <tr>
+                <td><strong>Điểm bắt đầu</strong></td>
+                <td>Các sự kiện đã biết ban đầu</td>
+                <td>Mục tiêu giả định cần chứng minh</td>
+              </tr>
+              <tr>
+                <td><strong>Không gian tìm kiếm</strong></td>
+                <td>Có thể mở rộng rộng và lan man</td>
+                <td>Thu hẹp, tập trung quanh mục tiêu</td>
+              </tr>
+              <tr>
+                <td><strong>Ứng dụng tiêu biểu</strong></td>
+                <td>Giám sát, phân loại, cảnh báo tự động</td>
+                <td>Chẩn đoán lỗi, y khoa, chứng minh định lý</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-6-sec-6">
+          <h3>6. Hệ thống luật sinh (Production System)</h3>
+          <p>Hệ luật sinh là mô hình thực thi của hệ thống dựa trên luật, cấu thành bởi 3 thành phần:</p>
+          
+          <div class="block-title">6.1 Luật sản xuất (Production Rules)</div>
+          <p>Các quy tắc hành động dưới dạng: <code>Condition &rarr; Action</code>. Phần hành động có thể là kết luận mới hoặc một lệnh thay đổi trạng thái hệ thống.</p>
+
+          <div class="block-title">6.2 Bộ nhớ làm việc (Working Memory)</div>
+          <p>Lưu trữ trạng thái hiện tại của bài toán, các biến số và sự kiện ghi nhận được.</p>
+
+          <div class="block-title">6.3 Chu trình Nhận dạng - Hành động (Recognize-Act Cycle)</div>
+          <p>Hệ thống lặp đi lặp lại chu kỳ hoạt động sau:</p>
+          <ol>
+            <li><strong>Nhận dạng (Recognize):</strong> Đối sánh điều kiện của các luật với Working Memory để tìm tất cả các luật khả thi.</li>
+            <li><strong>Giải quyết tranh chấp (Conflict Resolution):</strong> Nếu có nhiều luật cùng khả thi (Tập tranh chấp), chọn ra một luật duy nhất.</li>
+            <li><strong>Hành động (Act):</strong> Thực thi luật đã chọn, cập nhật lại Working Memory. Lặp lại bước 1.</li>
+          </ol>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-6-sec-7">
+          <h3>7. Tập luật tranh chấp (Conflict Set) và Chiến lược giải quyết tranh chấp</h3>
+          
+          <div class="block-title">Khái niệm</div>
+          <ul>
+            <li><strong>Luật khả thi (Enable Rule):</strong> Luật có phần điều kiện hoàn toàn khớp với dữ liệu hiện có trong bộ nhớ làm việc.</li>
+            <li><strong>Tập luật tranh chấp (Conflict Set):</strong> Tập hợp toàn bộ các luật khả thi tại một thời điểm. Bộ suy diễn cần chọn duy nhất một luật để chạy.</li>
+          </ul>
+
+          <div class="block-title">Các chiến lược giải quyết tranh chấp (Conflict Resolution Strategies)</div>
+          <ul>
+            <li><strong>7.1 Khúc xạ (Refraction):</strong> Một luật đã được kích hoạt sẽ không được phép kích hoạt lại trên cùng một tập dữ liệu cũ để tránh rơi vào vòng lặp vô hạn.</li>
+            <li><strong>7.2 Độ mới của dữ liệu (Recency):</strong> Ưu tiên kích hoạt các luật sử dụng những sự kiện mới được bổ sung vào bộ nhớ làm việc gần đây nhất.</li>
+            <li><strong>7.3 Độ chuyên biệt (Specificity):</strong> Ưu tiên kích hoạt luật có phần điều kiện chi tiết hơn (chứa nhiều mệnh đề AND hơn).
+              <ul>
+                <li><em>Ví dụ:</em> Giữa hai luật: R1: <code>IF sot THEN uong_nuoc</code> và R2: <code>IF sot AND ho AND viem_hong THEN uong_khang_sinh</code>. R2 cụ thể hơn nên được ưu tiên kích hoạt trước R1.</li>
+              </ul>
+            </li>
+            <li><strong>7.4 Thứ tự luật (Rule Ordering):</strong> Ưu tiên chọn luật xuất hiện ở vị trí đầu tiên trong danh sách cơ sở luật.</li>
+          </ul>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-6-sec-8">
+          <h3>8. Kiến trúc bảng đen (Blackboard Architecture)</h3>
+          <p>Là mô hình mở rộng cao cấp của hệ luật sinh, giải quyết bài toán phức tạp bằng sự cộng tác của nhiều thực thể tri thức:</p>
+          <ul>
+            <li><strong>Blackboard (Bảng đen):</strong> Cơ sở dữ liệu toàn cục dùng chung, chứa trạng thái hiện tại của bài toán. Mọi mô-đun đều có thể đọc/ghi lên đây.</li>
+            <li><strong>Nguồn tri thức (Knowledge Sources - KS):</strong> Các mô-đun phần mềm độc lập chuyên biệt. Mỗi KS chứa tri thức giải quyết một mảng nhỏ của bài toán.</li>
+            <li><strong>Bộ điều phối (Scheduler):</strong> Giám sát Blackboard, quyết định xem tại mỗi thời điểm nguồn tri thức nào được phép truy cập và thực thi.</li>
+          </ul>
+          <p><strong>Ưu điểm:</strong> Cực kỳ linh hoạt, dễ tích hợp các mô-đun được lập trình bằng nhiều ngôn ngữ khác nhau, rất phù hợp với môi trường tính toán song song, phân tán.</p>
+        </div>
+</section>
+
+<section id="chuong-7" style="margin-top: 3rem; border-top: 3px solid var(--primary-color); padding-top: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-top: 0; color: var(--primary-color);">Chương 7: Giải thuật di truyền</h2>
+<!-- Section 1 -->
+        <div class="sub-section" id="chuong-7-sec-1">
+          <h3>1. Giải thuật di truyền (GA) là gì?</h3>
+          <p><strong>Giải thuật di truyền (Genetic Algorithm - GA)</strong> là thuật toán tìm kiếm tối ưu hóa ngẫu nhiên mô phỏng theo tiến trình chọn lọc tự nhiên và di truyền sinh học.</p>
+          <blockquote>
+            <strong>Ý tưởng nền tảng:</strong> Coi mỗi nghiệm khả dĩ của bài toán tối ưu như một cá thể trong quần thể. Những cá thể tốt nhất (thích nghi cao nhất) sẽ có cơ hội được lựa chọn để lai ghép sinh sản và truyền lại mã gen tốt cho thế hệ con cháu. Qua nhiều thế hệ, quần thể sẽ dần hội tụ về các nghiệm tối ưu.
+          </blockquote>
+          <p>GA được John Holland đề xuất vào những năm 1970 và hiện nay là một nhánh nghiên cứu quan trọng trong nhóm thuật toán tiến hóa (Evolutionary Algorithms).</p>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="sub-section" id="chuong-7-sec-2">
+          <h3>2. Cơ sở sinh học của giải thuật di truyền</h3>
+          <p>GA mô phỏng ba cơ chế tiến hóa cốt lõi của sinh học tự nhiên:</p>
+          <ul>
+            <li><strong>2.1 Inheritance (Di truyền):</strong> Thế hệ con cái thừa hưởng một phần bộ gen và các đặc điểm vật lý từ bố mẹ.</li>
+            <li><strong>2.2 Mutation (Đột biến):</strong> Sự thay đổi ngẫu nhiên trong cấu trúc gen của cá thể con qua các thế hệ do tác động môi trường hoặc lỗi sao chép gen.</li>
+            <li><strong>2.3 Natural Selection (Chọn lọc tự nhiên):</strong> Học thuyết Darwin chỉ ra các cá thể thích nghi tốt với môi trường (fitness cao) có nhiều cơ hội sống sót, kết đôi và truyền lại mã gen tốt hơn.</li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="sub-section" id="chuong-7-sec-3">
+          <h3>3. Các khái niệm thuật ngữ cơ bản trong GA</h3>
+          <ul>
+            <li><strong>Individual (Cá thể):</strong> Một nghiệm tiềm năng hay một phương án giải quyết bài toán tối ưu.</li>
+            <li><strong>Population (Quần thể):</strong> Tập hợp gồm nhiều cá thể tại một thời điểm (thế hệ) cụ thể. Mục tiêu là nâng chất lượng trung bình của quần thể lên theo thời gian.</li>
+            <li><strong>Generation (Thế hệ):</strong> Một chu kỳ tiến hóa đầy đủ của quần thể (từ thế hệ \(t\) qua chọn lọc, lai ghép, đột biến để sinh ra thế hệ \(t+1\)).</li>
+            <li><strong>Genotype (Kiểu gen):</strong> Cách biểu diễn cấu trúc dữ liệu của nghiệm trong máy tính (ví dụ: chuỗi bit nhị phân <code>101101</code>).</li>
+            <li><strong>Phenotype (Kiểu hình):</strong> Giá trị thực tế hay ý nghĩa vật lý của nghiệm trong miền bài toán thực tế.</li>
+            <li><strong>Chromosome (Nhiễm sắc thể):</strong> Cấu trúc dữ liệu chứa bộ gen mã hóa cho cá thể (thường là chuỗi bit, hoán vị, mảng số thực).</li>
+            <li><strong>Gene:</strong> Đơn vị mã hóa nhỏ nhất trên nhiễm sắc thể (ví dụ: một bit đơn lẻ trong chuỗi bit).</li>
+            <li><strong>Allele:</strong> Giá trị cụ thể của một Gene (ví dụ: đối với mã hóa nhị phân, Allele chỉ nhận giá trị \(0\) hoặc \(1\)).</li>
+            <li><strong>Fitness (Độ thích nghi):</strong> Hàm đánh giá chất lượng của cá thể (chính là hàm mục tiêu cần tối ưu hóa). Fitness càng cao biểu thị cá thể càng khỏe mạnh và dễ được chọn sinh sản.</li>
+          </ul>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="sub-section" id="chuong-7-sec-4">
+          <h3>4. Chu trình hoạt động tổng quát của GA</h3>
+          <p>Thuật toán di truyền lặp đi lặp lại chu trình hoạt động sau:</p>
+          <div class="flowchart" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1.5rem 0;">
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; font-weight: bold;">Khởi tạo quần thể ban đầu</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Đánh giá độ thích nghi (Fitness)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Chọn lọc bố mẹ (Selection)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Lai ghép tạo con cái (Crossover)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px;">Đột biến gen ngẫu nhiên (Mutation)</div>
+            <div style="font-size: 1.2rem; color: var(--secondary-color);">&darr;</div>
+            <div style="background: var(--bg-card); padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; font-weight: bold;">Kiểm tra điều kiện dừng</div>
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="sub-section" id="chuong-7-sec-5">
+          <h3>5. Phương pháp mã hóa nghiệm (Encoding)</h3>
+          <p>Cách biểu diễn nghiệm thành nhiễm sắc thể là yếu tố mấu chốt cấu thành sự thành công của GA:</p>
+          <ul>
+            <li><strong>Mã hóa nhị phân (Binary Encoding):</strong> Nghiệm được mã hóa thành một chuỗi bit nhị phân. Dễ lập trình, phổ biến nhất. Ví dụ: <code>10110110</code>.</li>
+            <li><strong>Mã hóa số thực (Real-valued Encoding):</strong> Nhiễm sắc thể là một danh sách các số thực. Thích hợp cho bài toán tối ưu liên tục trong không gian thực. Ví dụ: <code>[0.25, 1.37, -4.82]</code>.</li>
+            <li><strong>Mã hóa hoán vị (Permutation Encoding):</strong> Nhiễm sắc thể là một chuỗi hoán vị của các con số. Rất phù hợp cho bài toán tìm đường tối ưu (TSP) hoặc lập lịch (Scheduling). Ví dụ: danh sách thành phố <code>[4, 2, 1, 5, 3]</code>.</li>
+            <li><strong>Mã hóa dạng cây (Tree Encoding):</strong> Cá thể được biểu diễn dưới dạng cây cú pháp. Đây là nền tảng của Lập trình di truyền (Genetic Programming).</li>
+          </ul>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="sub-section" id="chuong-7-sec-6">
+          <h3>6. Chọn lọc tự nhiên (Selection)</h3>
+          <p>Lựa chọn các cá thể có Fitness cao trong quần thể hiện tại làm cha mẹ để nhân bản hoặc thực hiện lai ghép.</p>
+          
+          <div class="block-title">6.1 Chọn lọc bánh xe roulette (Roulette Wheel Selection)</div>
+          <p>Xác suất chọn một cá thể tỉ lệ thuận với độ thích nghi Fitness của chính nó. Tưởng tượng vòng quay roulette chia các ô có kích thước góc lớn nhỏ khác nhau tương ứng với giá trị Fitness:</p>
+          <div style="text-align: center; margin: 1rem 0;">
+            \(P(i) = \frac{\text{Fitness}(i)}{\sum_{j=1}^{N} \text{Fitness}(j)}\)
+          </div>
+
+          <div class="block-title">6.2 Chọn lọc đấu giải (Tournament Selection)</div>
+          <p>Chọn ngẫu nhiên \(k\) cá thể từ quần thể, sau đó lấy cá thể có Fitness tốt nhất trong nhóm \(k\) này làm bố/mẹ. Phương pháp này rất phổ biến vì dễ lập trình song song.</p>
+
+          <div class="block-title">6.3 Chọn lọc theo thứ hạng (Rank Selection)</div>
+          <p>Sắp xếp quần thể theo thứ tự Fitness. Xác suất chọn dựa trên thứ hạng (Rank) thay vì giá trị Fitness tuyệt đối. Kỹ thuật này giúp tránh hiện tượng một cá thể siêu trội chiếm quyền sinh sản quá nhanh ở đầu chu kỳ tiến hóa.</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="sub-section" id="chuong-7-sec-7">
+          <h3>7. Các kỹ thuật lai ghép (Crossover)</h3>
+          <p>Lai ghép kết hợp các đoạn gen tốt của bố và mẹ với hy vọng tạo ra cá thể con vượt trội. Xác suất lai ghép thường rất cao (\(P_c \approx 0.6 - 0.95\)).</p>
+
+          <div class="block-title">7.1 Lai ghép một điểm cắt (One-point Crossover)</div>
+          <p>Chọn ngẫu nhiên một điểm cắt trên nhiễm sắc thể, hoán đổi đoạn gen phía sau điểm cắt của cha mẹ để sinh con:</p>
+          <blockquote style="font-family: monospace; font-size: 0.95rem;">
+            Parent 1: 110 | 011 &rarr; Child 1: 110101<br>
+            Parent 2: 001 | 101 &rarr; Child 2: 001011
+          </blockquote>
+
+          <div class="block-title">7.2 Lai ghép hai điểm cắt (Two-point Crossover)</div>
+          <p>Chọn ngẫu nhiên hai điểm cắt trên nhiễm sắc thể, tráo đoạn gen ở giữa hai điểm cắt đó.</p>
+
+          <div class="block-title">7.3 Lai ghép đồng nhất (Uniform Crossover)</div>
+          <p>Tại mỗi vị trí gen, con nhận gen từ bố hoặc mẹ một cách ngẫu nhiên với xác suất bằng nhau (\(0.5\)).</p>
+        </div>
+
+        <!-- Section 8 -->
+        <div class="sub-section" id="chuong-7-sec-8">
+          <h3>8. Đột biến (Mutation)</h3>
+          
+          <div class="block-title">Ý nghĩa</div>
+          <p>Đột biến thay đổi ngẫu nhiên giá trị của một số gen trên nhiễm sắc thể con. Xác suất đột biến thường được thiết lập rất nhỏ (\(P_m < 0.1\)) để không phá hủy cấu trúc gen tốt sẵn có.</p>
+          <blockquote>
+            <strong>Vai trò cốt lõi:</strong> Đột biến duy trì tính đa dạng sinh học của quần thể, ngăn ngừa hiện tượng quần thể bị hội tụ sớm dẫn đến kẹt tại các <strong>cực trị cục bộ (Local Optima)</strong>, đồng thời giúp khám phá các vùng nghiệm hoàn toàn mới trong không gian tìm kiếm.
+          </blockquote>
+
+          <div class="block-title">Các kiểu đột biến phổ biến</div>
+          <ul>
+            <li><strong>Đảo bit (Bit Flip Mutation):</strong> Cho mã hóa nhị phân, biến đổi \(0 \rightarrow 1\) hoặc \(1 \rightarrow 0\).</li>
+            <li><strong>Hoán đổi vị trí (Swap Mutation):</strong> Đổi chỗ ngẫu nhiên hai gen. Phù hợp cho mã hóa hoán vị (TSP).</li>
+            <li><strong>Đảo ngược đoạn gen (Inversion Mutation):</strong> Đảo chiều thứ tự của một chuỗi gen con liên tiếp.</li>
+          </ul>
+        </div>
+
+        <!-- Section 9 -->
+        <div class="sub-section" id="chuong-7-sec-9">
+          <h3>9. Điều kiện dừng thuật toán</h3>
+          <p>GA sẽ dừng lại khi thỏa mãn ít nhất một trong các tiêu chí sau:</p>
+          <ul>
+            <li>Tìm thấy cá thể đạt giá trị độ thích nghi tối ưu hoặc mức tối thiểu yêu cầu.</li>
+            <li>Đạt tới số lượng thế hệ (vòng tiến hóa) tối đa được cấu hình trước.</li>
+            <li>Quần thể rơi vào trạng thái hội tụ (mọi cá thể trong quần thể đều giống nhau hoặc Fitness không cải thiện qua nhiều thế hệ liên tiếp).</li>
+            <li>Vượt quá giới hạn thời gian tính toán cho phép.</li>
+          </ul>
+        </div>
+
+        <!-- Section 10 -->
+        <div class="sub-section" id="chuong-7-sec-10">
+          <h3>10. Đánh giá ưu điểm và nhược điểm của GA</h3>
+          
+          <div class="block-title">Ưu điểm</div>
+          <ul>
+            <li>Có khả năng cao thoát khỏi các cực trị cục bộ nhờ đột biến.</li>
+            <li>Không yêu cầu tính đạo hàm của hàm mục tiêu (thích hợp với các hàm số không liên tục, phi tuyến tính phức tạp).</li>
+            <li>Có tính song song hóa tự nhiên, dễ dàng chạy đồng thời trên nhiều CPU/GPU.</li>
+          </ul>
+
+          <div class="block-title">Nhược điểm</div>
+          <ul>
+            <li>Tốc độ hội tụ chậm hơn so với các giải thuật dựa trên gradient nếu bài toán đơn giản.</li>
+            <li>Khó thiết kế một hàm Fitness phản ánh đúng chất lượng nghiệm.</li>
+            <li>Nhạy cảm với việc tinh chỉnh các siêu tham số (kích thước quần thể, xác suất lai ghép, xác suất đột biến).</li>
+            <li>Không đảm bảo chắc chắn tìm thấy nghiệm tối ưu toàn cục tuyệt đối mà thường dừng ở nghiệm gần tối ưu.</li>
+          </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <div class="sub-section" id="chuong-7-sec-11">
+          <h3>11. Một số ứng dụng tiêu biểu của GA</h3>
+          <ul>
+            <li><strong>Machine Learning:</strong> Lựa chọn đặc trưng (Feature Selection), Tinh chỉnh siêu tham số (Hyperparameter Tuning), Tìm kiếm kiến trúc mạng nơ-ron tự động (NAS).</li>
+            <li><strong>Mạng nơ-ron nhân tạo:</strong> GA có thể huấn luyện trọng số của mạng thay thế cho lan truyền ngược (Backpropagation) trong môi trường phi đạo hàm (Neuroevolution).</li>
+            <li><strong>Bài toán Người bán hàng (TSP):</strong> Tìm chu trình đi qua tất cả các thành phố sao cho tổng quãng đường ngắn nhất. Hàm Fitness thường được cài đặt bằng công thức nghịch đảo khoảng cách:
+              <div style="text-align: center; margin: 0.5rem 0;">
+                \(\text{Fitness} = \frac{1}{\text{Tổng khoảng cách}}\)
+              </div>
+            </li>
+            <li><strong>Bài toán One-Max:</strong> Bài toán kinh điển nhất của GA. Mục tiêu là tạo ra một chuỗi nhị phân có số lượng bit \(1\) nhiều nhất. Hàm Fitness đơn giản bằng số lượng bit \(1\) có trong chuỗi.</li>
+          </ul>
+        </div>
+</section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Smooth scroll and active state toggle in sidebar
+    document.addEventListener("DOMContentLoaded", function() {
+      const sidebarLinks = document.querySelectorAll(".sidebar a[href^='#']");
+      const sections = document.querySelectorAll("section[id]");
+      
+      function updateActiveState() {
+        let scrollPos = window.scrollY || document.documentElement.scrollTop;
+        
+        sections.forEach(sec => {
+          let top = sec.offsetTop - 120;
+          let height = sec.offsetHeight;
+          let id = sec.getAttribute("id");
+          
+          if (scrollPos >= top && scrollPos < top + height) {
+            sidebarLinks.forEach(link => {
+              link.classList.remove("active");
+              if (link.getAttribute("href") === "#" + id) {
+                link.classList.add("active");
+              }
+            });
+          }
+        });
+      }
+      
+      window.addEventListener("scroll", updateActiveState);
+      
+      // Smooth scroll
+      sidebarLinks.forEach(link => {
+        link.addEventListener("click", function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href").substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: "smooth"
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

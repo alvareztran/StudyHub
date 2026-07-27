@@ -378,6 +378,17 @@ footer {
   transform: scale(0.97);
 }
 
+.btn-author {
+  background-color: var(--bg-card);
+  color: var(--text-dark) !important;
+  border: 1px solid var(--border-color);
+  margin-right: 0.5rem;
+}
+.btn-author:hover {
+  background-color: var(--bg-code);
+  color: var(--text-dark) !important;
+}
+
 /* Theme Toggle Button for Reading Pages */
 .theme-toggle-btn {
   display: inline-flex;
@@ -469,10 +480,40 @@ body.dark-theme table {
     background-color: var(--bg-card) !important;
   }
 
+  .layout-wrapper {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+
+  /* Prevent mapping flowchart from wrapping in narrow print viewports */
+  .mapping-flowchart {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+  }
+  .mapping-flowchart > div {
+    padding: 0.5rem !important;
+    font-size: 0.8rem !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  .mapping-flowchart > div span {
+    font-size: 0.75rem !important;
+  }
+  .mapping-flowchart > div:nth-child(2) {
+    font-size: 1.1rem !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
   .container {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
+  }
+  
+  body.hide-author-print footer p:not(:last-child) {
+    display: none !important;
   }
   .no-print {
     display: none !important;
@@ -488,6 +529,34 @@ body.dark-theme table {
   }
   h2, h3 {
     page-break-after: avoid;
+  }
+
+  /* Compact print layout overrides to reduce page count */
+  body {
+    line-height: 1.35 !important;
+  }
+  p, li {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  h1, h2, h3, h4 {
+    margin-top: 0.8rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .sub-section {
+    margin-top: 0.8rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+  .flowchart {
+    margin: 0.8rem 0 !important;
+    padding: 0.8rem !important;
+  }
+  .callout {
+    margin: 0.6rem 0 !important;
+    padding: 0.6rem 0.8rem !important;
+  }
+  table, pre {
+    margin: 0.6rem 0 !important;
   }
 }
 

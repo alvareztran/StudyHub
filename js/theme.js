@@ -117,3 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   updateLsdSidebarBadges();
 });
+
+// Author print visibility toggle logic (global)
+document.addEventListener('DOMContentLoaded', () => {
+  const authorToggleBtn = document.getElementById('author-toggle');
+  if (!authorToggleBtn) return;
+
+  const updateAuthorUI = (hide) => {
+    if (hide === 'true') {
+      document.body.classList.add('hide-author-print');
+      authorToggleBtn.innerHTML = '<span>✍️ Hiện tác giả khi in</span>';
+    } else {
+      document.body.classList.remove('hide-author-print');
+      authorToggleBtn.innerHTML = '<span>✍️ Ẩn tác giả khi in</span>';
+    }
+  };
+
+  // Get saved preference (default to showing author)
+  const isHidden = localStorage.getItem('studyhub-hide-author-print') || 'false';
+  updateAuthorUI(isHidden);
+
+  authorToggleBtn.addEventListener('click', () => {
+    const currentlyHidden = localStorage.getItem('studyhub-hide-author-print') || 'false';
+    const newHidden = currentlyHidden === 'true' ? 'false' : 'true';
+    localStorage.setItem('studyhub-hide-author-print', newHidden);
+    updateAuthorUI(newHidden);
+  });
+});

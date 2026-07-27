@@ -6,7 +6,7 @@
   <title>Chương 2: Giải quyết vấn đề bằng tìm kiếm - StudyHub</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
-  <script src="../js/theme.js"></script>
+  <script src="../js/theme.js?v=2"></script>
   <!-- KaTeX for rendering mathematical formulas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -147,6 +147,9 @@
         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
       <button onclick="window.print()" class="btn-pdf">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
         Xuất file PDF
@@ -158,8 +161,10 @@
       <aside class="sidebar no-print">
         <h3>Mục lục môn học</h3>
         <ul>
+          <li><a href="tong-hop-ly-thuyet.html" style="font-weight: 600; color: var(--secondary-color);">📚 Tổng hợp lý thuyết (All-in-one)</a></li>
           <li><a href="tri-tue-nhan-tao-la-gi.html">1. Trí tuệ nhân tạo là gì?</a></li>
           <li><a href="giai-quyet-van-de-bang-tim-kiem.html" class="active">2. Giải quyết vấn đề bằng tìm kiếm</a></li>
+          <li><a href="lap-ke-hoach-planning.html">2 (Bổ sung). Lập kế hoạch (Planning)</a></li>
           <li><a href="cac-ky-thuat-tim-kiem-heuristic.html">3. Các kỹ thuật tìm kiếm Heuristic</a></li>
           <li><a href="bieu-dien-tri-thuc.html">4. Biểu diễn tri thức</a></li>
           <li><a href="thu-tuc-hop-giai.html">5. Thủ tục hợp giải</a></li>
@@ -517,31 +522,7 @@
           </table>
         </div>
 
-        <!-- Section Highlights -->
-        <div class="sub-section" style="border-left: 4px solid var(--secondary-color);" id="highlights">
-          <h3 style="color: var(--secondary-color);">🔑 KIẾN THỨC TRỌNG TÂM DỄ RA THI</h3>
-          <ul>
-            <li><strong>Bộ 5 thành phần \(P = \langle St, I, O, G, C \rangle\):</strong> Phải viết được bộ này cho bài toán đong nước hoặc 8-Puzzle khi thi tự luận.</li>
-            <li><strong>Trạng thái vs Nút:</strong> Nhớ kỹ trạng thái mô tả bài toán (không có cha/độ sâu); nút thuộc cấu trúc cây (có cha/độ sâu/chi phí).</li>
-            <li><strong>Queue vs Stack:</strong> BFS dùng Queue (FIFO), DFS dùng Stack (LIFO), UCS dùng Priority Queue (sắp theo \(g(n)\)).</li>
-            <li><strong>Độ phức tạp của BFS:</strong> Cả thời gian và bộ nhớ đều là \(O(b^d)\).</li>
-            <li><strong>Đặc điểm IDDFS:</strong> Thuật toán lặp sâu dần kết hợp ưu điểm của BFS và DFS.</li>
-            <li><strong>Đặc điểm UCS:</strong> Đảm bảo tính tối ưu ngay cả khi chi phí các bước không bằng nhau.</li>
-          </ul>
-        </div>
 
-        <!-- Section Review Questions -->
-        <div class="sub-section" id="questions">
-          <h3>❓ Câu hỏi ôn tập tự luận</h3>
-          <ol>
-            <li>Trình bày các thành phần mô tả bài toán tìm kiếm. Áp dụng viết bộ mô tả cho bài toán 8-Puzzle.</li>
-            <li>So sánh chi tiết sự khác nhau giữa Trạng thái (State) và Nút (Node) trên cây tìm kiếm.</li>
-            <li>Nêu ý tưởng và vẽ bảng so sánh BFS và DFS theo 4 tiêu chí đánh giá giải thuật.</li>
-            <li>Tại sao giải thuật DFS không đảm bảo tính đầy đủ và tính tối ưu? Giải thích chi tiết.</li>
-            <li>Trình bày thuật toán Tìm kiếm sâu dần (IDDFS) và giải thích tại sao nó khắc phục được hạn chế của cả BFS và DFS.</li>
-            <li>Thuật toán Uniform Cost Search (UCS) hoạt động như thế nào? Cấu trúc dữ liệu nào được sử dụng để lập trình UCS?</li>
-          </ol>
-        </div>
       </main>
     </div>
 
