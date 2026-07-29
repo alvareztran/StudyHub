@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird - Giải trí - StudyHub</title>
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+  <script src="js/theme.js"></script>
+  <style>
+    /* Styling specifically for the Flappy Bird game layout */
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem 0;
+      gap: 1.5rem;
+    }
+    .game-container {
+      display: grid;
+      grid-template-columns: 400px 280px;
+      gap: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      align-items: start;
+    }
+    
+    #game-canvas {
+      border: 3px solid var(--border-color);
+      border-radius: 12px;
+      background-color: #1e1b4b;
+      cursor: pointer;
+      display: block;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .panel-header {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .panel-card {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .panel-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .panel-stat:last-of-type {
+      margin-bottom: 0;
+    }
+    .panel-stat span {
+      color: var(--text-secondary);
+    }
+    .panel-stat strong {
+      font-size: 1.1rem;
+      color: var(--accent-cyan);
+    }
+
+    .diff-btn {
+      flex: 1;
+      padding: 0.45rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .diff-btn:hover {
+      background-color: var(--highlight-bg);
+    }
+    .diff-btn.active {
+      background-color: var(--accent-cyan);
+      color: white;
+      border-color: var(--accent-cyan);
+    }
+
+    .audio-btn {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .audio-btn:hover {
+      background-color: var(--highlight-bg);
+    }
+    
+    @media (max-width: 768px) {
+      .game-container {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 400px;
+        gap: 1rem;
+      }
+      #game-canvas {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body class="landing-page">
+  <div class="landing-container">
+    <!-- Header & Navigation -->
+    <header class="landing-header">
+      <div class="brand-wrapper" style="cursor: pointer;" onclick="window.location.href='index.html'">
+        <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
+        <span class="brand-name">StudyHub</span>
+      </div>
+      <nav class="landing-nav no-print">
+        <a href="index.html" class="nav-item">Trang chủ</a>
+        <a href="tai-lieu-khac.html" class="nav-item">Tài liệu khác</a>
+        <a href="flappy-bird.html" class="nav-item active">Giải trí 🎮</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="meta-info">
+          Trần Vũ Bằng &bull; Alvarez Tran
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="game-wrapper">
+        <h2 style="font-weight: 800; color: var(--text-primary); text-align: center; margin-bottom: 0;">Flappy Bird Cyber-Edition 🐦</h2>
+        <p style="color: var(--text-secondary); text-align: center; margin-top: 0.25rem;">Trò chơi xả stress sau những giờ học tập căng thẳng, tích hợp âm thanh tổng hợp.</p>
+        
+        <div class="game-container">
+          <!-- Game Canvas Column -->
+          <div>
+            <canvas id="game-canvas" width="400" height="500"></canvas>
+          </div>
+
+          <!-- Controls panel Column -->
+          <div>
+            <!-- Stats Panel -->
+            <div class="panel-card">
+              <div class="panel-header">Thống kê</div>
+              <div class="panel-stat">
+                <span>Điểm số:</span>
+                <strong id="live-score">0</strong>
+              </div>
+              <div class="panel-stat">
+                <span>Kỷ lục (High):</span>
+                <strong id="high-score">0</strong>
+              </div>
+            </div>
+
+            <!-- Difficulty Settings -->
+            <div class="panel-card">
+              <div class="panel-header">Độ khó</div>
+              <div style="display: flex; gap: 0.25rem;">
+                <button class="diff-btn" id="diff-easy" onclick="setDifficulty('easy')">Dễ</button>
+                <button class="diff-btn active" id="diff-normal" onclick="setDifficulty('normal')">Vừa</button>
+                <button class="diff-btn" id="diff-hard" onclick="setDifficulty('hard')">Khó</button>
+              </div>
+            </div>
+
+            <!-- Audio Settings -->
+            <div class="panel-card">
+              <div class="panel-header">Âm thanh</div>
+              <button class="audio-btn" id="audio-toggle" onclick="toggleMute()">
+                <span id="audio-icon">🔊</span>
+                <span id="audio-text">Bật âm thanh</span>
+              </button>
+            </div>
+
+            <!-- Keyboard instructions -->
+            <div class="panel-card" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
+              <strong style="color: var(--text-primary);">Hướng dẫn điều khiển:</strong>
+              <ul style="padding-left: 1.25rem; margin-top: 0.25rem;">
+                <li>Phím <strong>Space</strong> (Khoảng trắng) hoặc <strong>Mũi tên lên</strong> để nhảy.</li>
+                <li>Nhấp chuột trái hoặc chạm màn hình điện thoại để nhảy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thiết kế khoa học, responsive &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // WEB AUDIO API SYNTHESIZER
+    // -------------------------------------------------------------------------
+    let audioCtx = null;
+    let isMuted = false;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playJumpSound() {
+      if (isMuted) return;
+      initAudio();
+      if (!audioCtx) return;
+      
+      let osc = audioCtx.createOscillator();
+      let gain = audioCtx.createGain();
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(550, audioCtx.currentTime + 0.08);
+      
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function playScoreSound() {
+      if (isMuted) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      let osc = audioCtx.createOscillator();
+      let gain = audioCtx.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.25);
+    }
+
+    function playCrashSound() {
+      if (isMuted) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      let osc = audioCtx.createOscillator();
+      let gain = audioCtx.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + 0.35);
+
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.4);
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btnIcon = document.getElementById("audio-icon");
+      const btnText = document.getElementById("audio-text");
+      if (isMuted) {
+        btnIcon.innerText = "🔇";
+        btnText.innerText = "Tắt âm thanh";
+      } else {
+        btnIcon.innerText = "🔊";
+        btnText.innerText = "Bật âm thanh";
+        initAudio();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // FLAPPY BIRD CANVAS ENGINE
+    // -------------------------------------------------------------------------
+    const canvas = document.getElementById("game-canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Game states
+    const STATE_START = 0;
+    const STATE_PLAYING = 1;
+    const STATE_GAMEOVER = 2;
+    let gameState = STATE_START;
+
+    // Difficulty settings presets
+    const diffPresets = {
+      easy: { gravity: 0.22, jump: -5.8, pipeGap: 140, pipeSpeed: 1.8, pipeInterval: 120 },
+      normal: { gravity: 0.28, jump: -6.8, pipeGap: 115, pipeSpeed: 2.3, pipeInterval: 95 },
+      hard: { gravity: 0.35, jump: -7.8, pipeGap: 95, pipeSpeed: 2.8, pipeInterval: 80 }
+    };
+    let currentDiff = "normal";
+
+    // Score variables
+    let score = 0;
+    let highScore = parseInt(localStorage.getItem("studyhub-fb-highscore") || "0");
+    document.getElementById("high-score").innerText = highScore;
+
+    // Physics & Entity states
+    let birdY = 200;
+    let birdV = 0;
+    const birdX = 90;
+    const birdRadius = 13;
+
+    let pipes = [];
+    let particles = [];
+    let frameCount = 0;
+    
+    // Parallax scrolling backgrounds offset
+    let cloudOffset = 0;
+    let cityOffset = 0;
+    let groundOffset = 0;
+
+    // Set difficulty handler
+    function setDifficulty(diff) {
+      if (gameState !== STATE_PLAYING) {
+        currentDiff = diff;
+        document.querySelectorAll(".diff-btn").forEach(btn => btn.classList.remove("active"));
+        document.getElementById(`diff-${diff}`).classList.add("active");
+        resetGame();
+      }
+    }
+
+    function resetGame() {
+      birdY = 200;
+      birdV = 0;
+      pipes = [];
+      particles = [];
+      score = 0;
+      document.getElementById("live-score").innerText = score;
+      frameCount = 0;
+    }
+
+    function triggerJump() {
+      if (gameState === STATE_START) {
+        gameState = STATE_PLAYING;
+        playJumpSound();
+        birdV = diffPresets[currentDiff].jump;
+      } else if (gameState === STATE_PLAYING) {
+        playJumpSound();
+        birdV = diffPresets[currentDiff].jump;
+      } else if (gameState === STATE_GAMEOVER) {
+        gameState = STATE_START;
+        resetGame();
+      }
+    }
+
+    // Input listeners
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "ArrowUp") {
+        e.preventDefault();
+        triggerJump();
+      }
+    });
+
+    canvas.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      triggerJump();
+    });
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      triggerJump();
+    }, { passive: false });
+
+
+    // -------------------------------------------------------------------------
+    // GRAPHICS DRAWING HELPERS
+    // -------------------------------------------------------------------------
+    function drawSky() {
+      let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, "#1e1b4b"); // deep space purple
+      grad.addColorStop(0.6, "#2e1065"); // violet
+      grad.addColorStop(1, "#f97316"); // sunset orange
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawClouds() {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
+      cloudOffset = (cloudOffset - 0.2) % canvas.width;
+      
+      // Draw clouds at staggered positions
+      for (let i = 0; i < 2; i++) {
+        let x = cloudOffset + i * 250;
+        if (x < -100) x += canvas.width + 100;
+        
+        ctx.beginPath();
+        ctx.arc(x, 100, 30, 0, Math.PI * 2);
+        ctx.arc(x + 25, 90, 40, 0, Math.PI * 2);
+        ctx.arc(x + 55, 100, 30, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawCitySkyline() {
+      ctx.fillStyle = "rgba(15, 23, 42, 0.4)";
+      cityOffset = (cityOffset - 0.5) % canvas.width;
+
+      // Draw block towers simulating parallax buildings
+      for (let i = 0; i < 10; i++) {
+        let w = 50;
+        let h = 120 + Math.sin(i * 1.5) * 40;
+        let x = cityOffset + i * w;
+        if (x < -w) x += canvas.width + w;
+        
+        ctx.fillRect(x, canvas.height - h - 50, w, h);
+      }
+    }
+
+    function drawGround() {
+      // Ground border
+      groundOffset = (groundOffset - diffPresets[currentDiff].pipeSpeed) % canvas.width;
+      
+      // Draw solid brown bottom block
+      ctx.fillStyle = "#78350f";
+      ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+      // Green grass top layer
+      ctx.fillStyle = "#16a34a";
+      ctx.fillRect(0, canvas.height - 50, canvas.width, 10);
+
+      // Moving grass stripes for depth
+      ctx.fillStyle = "#15803d";
+      for (let i = 0; i < 15; i++) {
+        let x = groundOffset + i * 35;
+        ctx.fillRect(x, canvas.height - 50, 15, 10);
+      }
+    }
+
+    function drawBird() {
+      ctx.save();
+      ctx.translate(birdX, birdY);
+      
+      // Rotate bird based on velocity
+      let angle = Math.min(Math.max(birdV * 0.05, -0.3), 0.7);
+      ctx.rotate(angle);
+
+      // Main body (yellow circle)
+      ctx.fillStyle = "#facc15";
+      ctx.beginPath();
+      ctx.arc(0, 0, birdRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#ca8a04";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Eye (White circle + black pupil)
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.arc(5, -4, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.arc(6, -4, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Beak (Orange/Red triangle)
+      ctx.fillStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.moveTo(11, -2);
+      ctx.lineTo(19, 1);
+      ctx.lineTo(11, 4);
+      ctx.closePath();
+      ctx.fill();
+
+      // Wing (Animated with sine wave)
+      ctx.fillStyle = "#eab308";
+      ctx.save();
+      ctx.translate(-6, 2);
+      let wingWave = Math.sin(frameCount * 0.4) * 0.3;
+      if (gameState === STATE_START) wingWave = Math.sin(frameCount * 0.15) * 0.2;
+      ctx.rotate(wingWave);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 7, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function spawnParticle() {
+      // Spawn sparkling fire trails from the bird tail
+      if (frameCount % 2 === 0) {
+        particles.push({
+          x: birdX - 8,
+          y: birdY + (Math.random() - 0.5) * 6,
+          vx: -1.5 - Math.random() * 1.5,
+          vy: (Math.random() - 0.5) * 1.2,
+          size: 3 + Math.random() * 4,
+          alpha: 1,
+          color: Math.random() > 0.4 ? "#38bdf8" : "#22d3ee" // Cyber blue/cyan sparks
+        });
+      }
+    }
+
+    function updateParticles() {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+        
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    function drawParticles() {
+      particles.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    function spawnPipes() {
+      let preset = diffPresets[currentDiff];
+      if (frameCount % preset.pipeInterval === 0) {
+        let minHeight = 40;
+        let maxHeight = canvas.height - preset.pipeGap - 50 - 40;
+        let topHeight = minHeight + Math.random() * (maxHeight - minHeight);
+        let bottomHeight = canvas.height - topHeight - preset.pipeGap - 50;
+        
+        pipes.push({
+          x: canvas.width,
+          topHeight: topHeight,
+          bottomHeight: bottomHeight,
+          passed: false
+        });
+      }
+    }
+
+    function updatePipes() {
+      let speed = diffPresets[currentDiff].pipeSpeed;
+      for (let i = pipes.length - 1; i >= 0; i--) {
+        let p = pipes[i];
+        p.x -= speed;
+
+        // Score check
+        if (!p.passed && p.x + 55 < birdX) {
+          p.passed = true;
+          score++;
+          document.getElementById("live-score").innerText = score;
+          playScoreSound();
+          
+          if (score > highScore) {
+            highScore = score;
+            document.getElementById("high-score").innerText = highScore;
+            localStorage.setItem("studyhub-fb-highscore", highScore.toString());
+          }
+        }
+
+        // Clean out screen pipes
+        if (p.x < -60) {
+          pipes.splice(i, 1);
+        }
+      }
+    }
+
+    function drawPipes() {
+      pipes.forEach(p => {
+        // Draw neon gradient columns
+        let topGrad = ctx.createLinearGradient(p.x, 0, p.x + 50, 0);
+        topGrad.addColorStop(0, "#0891b2"); // cyan 600
+        topGrad.addColorStop(0.3, "#22d3ee"); // light cyan
+        topGrad.addColorStop(1, "#0e7490"); // dark cyan
+
+        // 1. Top pipe
+        ctx.fillStyle = topGrad;
+        ctx.fillRect(p.x, 0, 50, p.topHeight);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(p.x, 0, 50, p.topHeight);
+
+        // Top pipe rim
+        ctx.fillRect(p.x - 3, p.topHeight - 16, 56, 16);
+        ctx.strokeRect(p.x - 3, p.topHeight - 16, 56, 16);
+
+        // 2. Bottom pipe
+        let bottomY = canvas.height - p.bottomHeight - 50;
+        ctx.fillRect(p.x, bottomY, 50, p.bottomHeight);
+        ctx.strokeRect(p.x, bottomY, 50, p.bottomHeight);
+
+        // Bottom pipe rim
+        ctx.fillRect(p.x - 3, bottomY, 56, 16);
+        ctx.strokeRect(p.x - 3, bottomY, 56, 16);
+      });
+    }
+
+    function checkCollisions() {
+      // 1. Ceiling or floor hit
+      if (birdY - birdRadius < 0 || birdY + birdRadius > canvas.height - 50) {
+        triggerGameOver();
+        return;
+      }
+
+      // 2. Pipe hits
+      let gap = diffPresets[currentDiff].pipeGap;
+      for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        
+        // Horizontal overlap
+        if (birdX + birdRadius > p.x && birdX - birdRadius < p.x + 50) {
+          // Vertical overlap with top pipe
+          if (birdY - birdRadius < p.topHeight) {
+            triggerGameOver();
+            return;
+          }
+          // Vertical overlap with bottom pipe
+          if (birdY + birdRadius > canvas.height - p.bottomHeight - 50) {
+            triggerGameOver();
+            return;
+          }
+        }
+      }
+    }
+
+    function triggerGameOver() {
+      playCrashSound();
+      gameState = STATE_GAMEOVER;
+    }
+
+
+    // -------------------------------------------------------------------------
+    // HUD SCREENS OVERLAY DRAWING
+    // -------------------------------------------------------------------------
+    function drawStartScreen() {
+      ctx.fillStyle = "rgba(15, 23, 42, 0.65)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      // Glassmorphism panel outline
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(50, 130, 300, 220);
+      ctx.fillStyle = "rgba(30, 41, 59, 0.8)";
+      ctx.fillRect(50, 130, 300, 220);
+
+      // Title
+      ctx.fillStyle = "white";
+      ctx.font = "bold 20px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("FLAPPY BIRD", canvas.width / 2, 175);
+      ctx.fillStyle = "var(--accent-cyan)";
+      ctx.fillText("CYBER EDITION", canvas.width / 2, 205);
+
+      // Bird float animation
+      birdY = 260 + Math.sin(frameCount * 0.1) * 8;
+      drawBird();
+
+      // Click to start tip
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.font = "bold 13px sans-serif";
+      ctx.fillText("NHẤP CHUỘT / SPACE ĐỂ CHƠI", canvas.width / 2, 315);
+      ctx.restore();
+    }
+
+    function drawGameOverScreen() {
+      ctx.fillStyle = "rgba(15, 23, 42, 0.7)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(50, 100, 300, 280);
+      ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+      ctx.fillRect(50, 100, 300, 280);
+
+      // Game Over Text
+      ctx.fillStyle = "#ef4444"; // red 500
+      ctx.font = "black 24px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("GAME OVER", canvas.width / 2, 140);
+
+      // Display Final score & high score
+      ctx.fillStyle = "white";
+      ctx.font = "14px sans-serif";
+      ctx.fillText(`Điểm số đạt được: ${score}`, canvas.width / 2, 180);
+      ctx.fillText(`Kỷ lục hiện tại: ${highScore}`, canvas.width / 2, 205);
+
+      // Draw medal reward
+      let medalColor = "";
+      let medalName = "";
+      if (score >= 30) {
+        medalColor = "#fbbf24"; // Gold
+        medalName = "Huy chương Vàng 🥇";
+      } else if (score >= 15) {
+        medalColor = "#cbd5e1"; // Silver
+        medalName = "Huy chương Bạc 🥈";
+      } else if (score >= 5) {
+        medalColor = "#b45309"; // Bronze
+        medalName = "Huy chương Đồng 🥉";
+      }
+
+      if (medalName) {
+        ctx.fillStyle = medalColor;
+        ctx.font = "bold 15px sans-serif";
+        ctx.fillText(medalName, canvas.width / 2, 245);
+      } else {
+        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.font = "12px sans-serif";
+        ctx.fillText("Cố gắng thêm chút để nhận huy chương!", canvas.width / 2, 245);
+      }
+
+      // Re-play instruction
+      ctx.fillStyle = "white";
+      ctx.font = "bold 13px sans-serif";
+      ctx.fillText("NHẤP CHUỘT ĐỂ KHỞI ĐỘNG LẠI", canvas.width / 2, 335);
+
+      ctx.restore();
+    }
+
+
+    // -------------------------------------------------------------------------
+    // MAIN GAME LOOP (60FPS REQUEST ANIMATION FRAME)
+    // -------------------------------------------------------------------------
+    function gameLoop() {
+      frameCount++;
+      
+      // Clear
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw background elements
+      drawSky();
+      drawClouds();
+      drawCitySkyline();
+
+      if (gameState === STATE_START) {
+        // Draw static components & overlay
+        drawBird();
+        drawGround();
+        drawStartScreen();
+      } 
+      else if (gameState === STATE_PLAYING) {
+        // Spawns
+        spawnParticle();
+        spawnPipes();
+
+        // Updates
+        birdV += diffPresets[currentDiff].gravity;
+        birdY += birdV;
+        
+        updateParticles();
+        updatePipes();
+        checkCollisions();
+
+        // Render game entities
+        drawParticles();
+        drawPipes();
+        drawBird();
+        drawGround();
+      } 
+      else if (gameState === STATE_GAMEOVER) {
+        // Keep particles fading and rendering
+        updateParticles();
+        drawParticles();
+        
+        drawPipes();
+        drawBird();
+        drawGround();
+        drawGameOverScreen();
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start engine
+    gameLoop();
+  </script>
+</body>
+</html>

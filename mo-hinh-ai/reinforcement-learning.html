@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 6: Mô hình Học tăng cường (Reinforcement Learning) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Grid world simulator styles */
+    .sim-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .grid-world {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      grid-template-rows: repeat(3, 80px);
+      gap: 4px;
+      background-color: var(--border-color);
+      padding: 4px;
+      border-radius: 6px;
+      width: max-content;
+      margin: 0 auto;
+    }
+    .grid-cell {
+      background-color: var(--bg-card);
+      border-radius: 4px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      user-select: none;
+      transition: background-color 0.2s;
+    }
+    .grid-cell.start-cell {
+      border: 2px solid var(--secondary-color);
+    }
+    .grid-cell.goal-cell {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+    .grid-cell.pit-cell {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+    .grid-cell.obstacle-cell {
+      background-color: var(--border-color);
+    }
+    
+    /* Robot dot agent */
+    .agent-dot {
+      width: 18px;
+      height: 18px;
+      background-color: var(--secondary-color);
+      border: 2px solid white;
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+      transition: all 0.2s ease-out;
+      z-index: 10;
+    }
+
+    /* Q-value direction arrows */
+    .q-arrow {
+      font-size: 1.25rem;
+      color: var(--text-light);
+      opacity: 0.75;
+      position: absolute;
+    }
+    
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .sim-btn {
+      padding: 0.65rem 1rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background-color 0.2s;
+    }
+    .sim-btn-primary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    .sim-btn-primary:hover {
+      background-color: var(--primary-color);
+    }
+    .sim-btn-secondary {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+    }
+    .sim-btn-secondary:hover {
+      background-color: var(--highlight-bg);
+    }
+    .sim-console {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.825rem;
+      line-height: 1.5;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Các mô hình AI &amp; Lĩnh vực con</a> &raquo; Học tăng cường
+      </div>
+      <h1>Mô hình Học tăng cường (Reinforcement Learning)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tìm hiểu cơ chế học thử-sai của tác nhân tương tác môi trường, mô hình toán học MDP, thuật toán Q-Learning, DQN, Actor-Critic, PPO và ứng dụng RLHF căn chỉnh LLMs.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu Môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan môn học</a></li>
+          <li><a href="tong-quan-ai.html">1. Tổng quan AI và lĩnh vực con</a></li>
+          <li><a href="classical-ml.html">2. Các mô hình Học máy kinh điển</a></li>
+          <li><a href="ann-mlp.html">3. Mạng Nơ-ron &amp; Học sâu (ANN &amp; MLP)</a></li>
+          <li><a href="cnn.html">4. Mạng tích chập CNN</a></li>
+          <li><a href="nlp-models.html">5. Các mô hình NLP</a></li>
+          <li><a href="reinforcement-learning.html" class="active">6. Học tăng cường RL</a></li>
+          <li><a href="generative-models.html">7. Mô hình AI tạo sinh</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Khái niệm về Học tăng cường (Reinforcement Learning)</h2>
+          <p>
+            <strong>Reinforcement Learning (RL - Học tăng cường)</strong> là một phân ngành đặc thù của Machine Learning. Trái ngược với học có giám sát cần dữ liệu gán nhãn sẵn, RL tập trung vào việc mô hình hóa cơ chế giúp một <strong>Tác nhân (Agent)</strong> tự động học cách đưa ra các quyết định hành động tối ưu thông qua tương tác trực tiếp với **Môi trường (Environment)** bằng phương pháp thử - sai (Trial and Error) để tối đa hóa tổng điểm thưởng (Cumulative Reward).
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 500 170" width="100%" height="auto" style="max-width: 500px;">
+    <!-- Agent Box -->
+    <rect x="25" y="45" width="130" height="70" rx="8" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="90" y="80" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">TÁC NHÂN (Agent)</text>
+    <text x="90" y="98" fill="var(--text-light)" font-size="9" text-anchor="middle">(Bộ não / Thuật toán)</text>
+
+    <!-- Environment Box -->
+    <rect x="345" y="45" width="130" height="70" rx="8" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="410" y="80" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">MÔI TRƯỜNG</text>
+    <text x="410" y="98" fill="var(--text-light)" font-size="9" text-anchor="middle">(Environment / Game)</text>
+
+    <!-- Top Connection Arrow (Action) -->
+    <path d="M 155 65 L 345 65" fill="none" stroke="var(--primary-color)" stroke-width="2" />
+    <polygon points="345,65 335,59 335,71" fill="var(--primary-color)" />
+    <text x="250" y="55" fill="var(--secondary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">Hành động: Action (A_t)</text>
+
+    <!-- Bottom Connection Arrow (State & Reward) -->
+    <path d="M 345 95 L 155 95" fill="none" stroke="var(--primary-color)" stroke-width="2" />
+    <polygon points="155,95 165,89 165,101" fill="var(--primary-color)" />
+    <text x="250" y="115" fill="var(--text-dark)" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">Trạng thái: State (S_t)</text>
+    <text x="250" y="132" fill="#16a34a" font-family="monospace" font-size="10.5" font-weight="bold" text-anchor="middle">Phần thưởng: Reward (R_t)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Mô hình hóa toán học MDP (Markov Decision Process)</h2>
+          <p>
+            Để giải quyết bài toán ra quyết định tuần tự của RL, ta sử dụng khung toán học <strong>Markov Decision Process (MDP - Tiến trình Quyết định Markov)</strong>. Một MDP được biểu diễn dưới dạng bộ 5 thành phần:
+            $$\mathcal{M} = \langle S, A, P, R, \gamma angle$$
+            Trong đó:
+          </p>
+          <ul>
+            <li>$S$: Tập hợp toàn bộ các trạng thái khả dĩ trong môi trường.</li>
+            <li>$A$: Tập hợp các hành động tác nhân có thể thực hiện.</li>
+            <li>$P$: Xác suất chuyển trạng thái $P(s' | s, a) = \mathbb{P}[S_{t+1}=s' | S_t=s, A_t=a]$.</li>
+            <li>$R$: Hàm phần thưởng $R(s, a, s')$ trả về điểm số tương tác.</li>
+            <li>$\gamma \in [0, 1]$: Hệ số chiết khấu (Discount Factor), điều chỉnh mức độ ưu tiên của phần thưởng tức thời so với tương lai.</li>
+          </ul>
+          <p>
+            <strong>Tính chất Markov:</strong> Trạng thái kế tiếp $S_{t+1}$ chỉ phụ thuộc duy nhất vào trạng thái hiện tại $S_t$ và hành động hiện tại $A_t$ mà không phụ thuộc vào lịch sử đường đi trong quá khứ.
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 500 120" width="100%" height="auto" style="max-width: 500px;">
+    <defs>
+      <marker id="arrow-mdp" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- State S_t -->
+    <circle cx="80" cy="60" r="22" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="80" y="64" fill="var(--primary-color)" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">S_t</text>
+    <text x="80" y="98" fill="var(--text-light)" font-size="9" text-anchor="middle">Hiện tại (State)</text>
+
+    <!-- Action A_t -->
+    <path d="M 102 60 L 220 60" fill="none" stroke="var(--primary-color)" stroke-width="2" marker-end="url(#arrow-mdp)" />
+    <text x="160" y="50" fill="var(--secondary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">Action (A_t)</text>
+
+    <!-- State S_t+1 -->
+    <circle cx="250" cy="60" r="22" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="250" y="64" fill="var(--primary-color)" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">S_t+1</text>
+    <text x="250" y="98" fill="var(--text-light)" font-size="9" text-anchor="middle">Kế tiếp (Next State)</text>
+
+    <!-- Reward R_t+1 feedback link -->
+    <path d="M 250 38 Q 165 -15 80 38" fill="none" stroke="#16a34a" stroke-dasharray="3 3" stroke-width="1.5" marker-end="url(#arrow-mdp)" />
+    <text x="165" y="15" fill="#16a34a" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">Reward (R_t+1)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Hàm giá trị Value Function và Thuật toán Q-Learning</h2>
+          <p>
+            Hàm giá trị hành động <strong>Q-Value: $Q(s, a)$</strong> biểu diễn tổng điểm thưởng kỳ vọng mà tác nhân có thể thu được nếu thực hiện hành động $a$ tại trạng thái $s$ và tuân thủ chiến lược tối ưu sau đó.
+          </p>
+          <p>
+            Trong không gian trạng thái nhỏ, ta sử dụng thuật toán <strong>Q-Learning</strong> để duy trì một **Bảng Q (Q-Table)**. Giá trị $Q(s,a)$ được cập nhật liên tục sau mỗi bước tương tác bằng công thức Bellman:
+            $$Q(s, a) \leftarrow Q(s, a) + lpha \left[ R + \gamma \max_{a'} Q(s', a') - Q(s, a) ight]$$
+            Trong đó $lpha$ là tốc độ học (Learning Rate), còn sai số $\left[ R + \gamma \max_{a'} Q(s', a') - Q(s, a) ight]$ được gọi là Temporal Difference (TD) Error.
+          </p>
+
+          <!-- INTERACTIVE GRID-WORLD SIMULATOR -->
+          <h3>Trình giả lập Q-Learning Grid-World tương tác</h3>
+          <p>
+            Mô phỏng robot (chấm xanh) tự học tìm đường đi từ điểm xuất phát **S** $(0,0)$ đến đích **G** $(2,2)$ (Reward +10) và tránh hố cát **X** $(1,1)$ (Reward -10). Nhấp **Auto Run** để xem robot tự hội tụ hành vi vượt chướng ngại vật sau vài phút học thử-sai:
+          </p>
+
+          <div class="sim-box">
+            <div class="sim-grid">
+              <!-- Left panel: Grid Graphic -->
+              <div style="position: relative;">
+                <div class="grid-world" id="world-container">
+                  <!-- Generated by JS -->
+                </div>
+                <!-- Agent element absolute positioned -->
+                <div class="agent-dot" id="sim-agent"></div>
+              </div>
+
+              <!-- Right panel: Controls & Console -->
+              <div class="sim-controls">
+                <h4 style="margin-top:0; color: var(--secondary-color);">Bảng điều khiển:</h4>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button class="sim-btn sim-btn-primary" onclick="stepQLearning()">⏩ Bước tiếp theo (Train Step)</button>
+                  <button class="sim-btn sim-btn-secondary" id="btn-auto-run" onclick="toggleAutoRun()">⚡ Tự động chạy (Auto Run)</button>
+                  <button class="sim-btn sim-btn-secondary" onclick="resetQLearning()">🎲 Khởi tạo lại (Reset)</button>
+                </div>
+                
+                <div class="sim-console" id="rl-math-log">
+                  Đang khởi tạo thuật toán Q-Learning...
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Từ Q-Learning đến Deep Q-Network (DQN) và Policy Gradient</h2>
+          <p>
+            Khi số lượng trạng thái trong môi trường tăng lên vô hạn (ví dụ: ảnh màn hình game chứa hàng triệu pixel), ta không thể lưu trữ bảng Q-Table khổng lồ.
+          </p>
+          <p>
+            <strong>Deep Q-Network (DQN):</strong> Thay thế Q-Table bằng một mạng nơ-ron sâu để ước lượng xấp xỉ giá trị $Q(s, a)$.
+          </p>
+          <p>
+            <strong>Policy Gradient:</strong> Thay vì học giá trị hành động Q-Value rồi chọn hành động lớn nhất, Policy Gradient trực tiếp tối ưu hóa các tham số của chính sách mạng nơ-ron $\pi_	heta(a|s)$ biểu diễn xác suất đưa ra các hành động khác nhau, rất phù hợp cho các không gian hành động liên tục (như điều khiển góc xoay khớp robot).
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Kiến trúc Actor-Critic và Thuật toán PPO</h2>
+          <p>
+            <strong>Actor-Critic:</strong> Kết hợp cả hai phương pháp để tăng tính ổn định:
+          </p>
+          <ul>
+            <li><strong>Actor (Tác nhân):</strong> Chịu trách nhiệm học chính sách $\pi(a|s)$ để lựa chọn hành động.</li>
+            <li><strong>Critic (Nhà phê bình):</strong> Chịu trách nhiệm học hàm giá trị $V(s)$ để đánh giá xem hành động mà Actor vừa chọn mang lại lợi ích tốt hay xấu so với kỳ vọng trung bình.</li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 520 200" width="100%" height="auto" style="max-width: 520px;">
+    <!-- Actor Box -->
+    <rect x="40" y="30" width="130" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="105" y="55" fill="var(--primary-color)" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">ACTOR (Policy)</text>
+    <text x="105" y="70" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Lựa chọn hành động</text>
+
+    <!-- Critic Box -->
+    <rect x="40" y="120" width="130" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="105" y="145" fill="var(--primary-color)" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">CRITIC (Value)</text>
+    <text x="105" y="160" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Đánh giá hành động</text>
+
+    <!-- Environment Box -->
+    <rect x="340" y="75" width="140" height="50" rx="4" fill="var(--bg-main)" stroke="var(--primary-color)" stroke-width="1.5" />
+    <text x="410" y="100" fill="var(--primary-color)" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">ENVIRONMENT</text>
+    <text x="410" y="115" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Môi trường tương tác</text>
+
+    <!-- Flow Arrows -->
+    <!-- Actor -> Env (Action) -->
+    <path d="M 170 55 L 290 55 L 290 85 L 340 85" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="340,85 332,80 332,90" fill="var(--secondary-color)" />
+    <text x="230" y="48" fill="var(--secondary-color)" font-size="9" font-weight="bold">Action</text>
+
+    <!-- Env -> Critic (Reward) -->
+    <path d="M 410 125 L 410 160 L 170 160" fill="none" stroke="#16a34a" stroke-width="1.5" />
+    <polygon points="170,160 178,155 178,165" fill="#16a34a" />
+    <text x="280" y="152" fill="#16a34a" font-size="9" font-weight="bold">Reward</text>
+
+    <!-- Env -> Both (State) -->
+    <path d="M 340 100 L 220 100 L 220 70 L 170 70" fill="none" stroke="var(--primary-color)" stroke-width="1.2" />
+    <path d="M 220 100 L 220 130 L 170 130" fill="none" stroke="var(--primary-color)" stroke-width="1.2" />
+    <polygon points="170,70 178,65 178,75" fill="var(--primary-color)" />
+    <polygon points="170,130 178,125 178,135" fill="var(--primary-color)" />
+    <text x="240" y="93" fill="var(--primary-color)" font-size="9" font-weight="bold">State</text>
+
+    <!-- Critic -> Actor (TD Error/Advantage feedback) -->
+    <path d="M 105 120 L 105 80" fill="none" stroke="var(--text-dark)" stroke-dasharray="2 2" stroke-width="1.5" />
+    <polygon points="105,80 101,88 109,88" fill="var(--text-dark)" />
+    <text x="114" y="104" fill="var(--text-dark)" font-size="8.5" font-weight="bold">TD Error</text>
+  </svg>
+</div>
+          <p>
+            <strong>PPO (Proximal Policy Optimization):</strong> Được OpenAI công bố năm 2017, PPO hiện nay là thuật toán RLHF và game tiêu chuẩn. PPO giải quyết nhược điểm cập nhật chính sách quá đà làm hỏng quá trình hội tụ bằng cách áp dụng hàm mục tiêu Clipped Objective, khống chế sự chênh lệch tỷ lệ giữa chính sách mới và cũ trong khoảng an toàn $[1-\epsilon, 1+\epsilon]$.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. PPO trong RLHF (Căn chỉnh mô hình ngôn ngữ lớn LLMs)</h2>
+          <p>
+            Để các mô hình ngôn ngữ lớn (như GPT-4, Gemini) sinh ra các câu trả lời an toàn, trung thực, tránh nội dung độc hại, PPO được sử dụng làm thuật toán học tăng cường tối ưu hóa từ phản hồi của con người (RLHF - Reinforcement Learning from Human Feedback):
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 120" width="100%" height="auto" style="max-width: 650px;">
+    <defs>
+      <marker id="arrow-ppo-llm" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Base model -->
+    <rect x="15" y="30" width="100" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="65" y="52" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Pretrained LLM</text>
+    <text x="65" y="68" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Mô hình gốc</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 115 55 L 145 55" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-ppo-llm)" />
+
+    <!-- SFT model -->
+    <rect x="155" y="30" width="100" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="205" y="52" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Supervised FT</text>
+    <text x="205" y="68" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(SFT Model)</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 255 55 L 285 55" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-ppo-llm)" />
+
+    <!-- Reward Model -->
+    <rect x="295" y="30" width="100" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="345" y="52" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Reward Model</text>
+    <text x="345" y="68" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Chỉ số chấm điểm</text>
+
+    <!-- Arrow 3 -->
+    <path d="M 395 55 L 425 55" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-ppo-llm)" />
+
+    <!-- PPO Optimization loop -->
+    <rect x="435" y="30" width="90" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.8" />
+    <text x="480" y="52" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">PPO RL</text>
+    <text x="480" y="68" fill="var(--secondary-color)" font-size="8.5" font-weight="bold" text-anchor="middle">Căn chỉnh hành vi</text>
+
+    <!-- Arrow 4 -->
+    <path d="M 525 55 L 555 55" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-ppo-llm)" />
+
+    <!-- Aligned LLM -->
+    <rect x="565" y="30" width="70" height="50" rx="4" fill="#f0fdf4" stroke="#4ade80" stroke-width="2" />
+    <text x="600" y="52" fill="#16a34a" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Aligned LLM</text>
+    <text x="600" y="68" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(An toàn)</text>
+  </svg>
+</div>
+          <p>
+            Trong quy trình này, **Mô hình Thưởng (Reward Model)** đóng vai trò là Environment cung cấp điểm thưởng $R$ cho câu trả lời của LLM (Agent). Thuật toán PPO sẽ điều chỉnh các tham số trọng số nơ-ron của LLM để câu trả lời đạt được điểm thưởng cao nhất từ con người.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h2>Bảng tổng hợp đối chiếu các thuật toán RL</h2>
+          <table>
+            <thead>
+              <tr style="background-color: var(--highlight-bg);">
+                <th>Thuật toán</th>
+                <th>Phương pháp</th>
+                <th>Cơ chế hoạt động chính</th>
+                <th>Ưu điểm nổi bật</th>
+                <th>Nhược điểm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Q-Learning</strong></td>
+                <td>Value-Based</td>
+                <td>Học giá trị $Q(s,a)$ lưu bảng Q-Table</td>
+                <td>Đơn giản, hội tụ nhanh trên bài toán nhỏ</td>
+                <td>Không mở rộng được cho không gian lớn</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td><strong>DQN</strong></td>
+                <td>Value-Based</td>
+                <td>Ước lượng $Q(s,a)$ qua mạng nơ-ron sâu</td>
+                <td>Xử lý được dữ liệu đầu vào phức tạp (ảnh)</td>
+                <td>Huấn luyện kém ổn định</td>
+              </tr>
+              <tr>
+                <td><strong>Policy Gradient</strong></td>
+                <td>Policy-Based</td>
+                <td>Tối ưu trực tiếp tham số chính sách $\pi(a|s)$</td>
+                <td>Hoạt động tốt trên hành động liên tục</td>
+                <td>Phương sai gradient cao, hội tụ chậm</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td><strong>Actor-Critic</strong></td>
+                <td>Hybrid (Lai)</td>
+                <td>Phối hợp hai mạng Actor và Critic đánh giá</td>
+                <td>Giảm phương sai, học ổn định hơn</td>
+                <td>Cấu trúc mạng phức tạp, tốn bộ nhớ</td>
+              </tr>
+              <tr>
+                <td><strong>PPO</strong></td>
+                <td>Policy-Based</td>
+                <td>Clipped Objective hạn chế cập nhật quá đà</td>
+                <td>Tính ổn định cao, tối ưu cực tốt cho LLMs</td>
+                <td>Tốn nhiều mẫu tương tác môi trường</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // GRID-WORLD Q-LEARNING SIMULATOR ENGINE JS
+    // ----------------------------------------------------
+    // Grid Setup: 3x3
+    // Start: (0,0), Pit: (1,1) (R=-10), Goal: (2,2) (R=+10)
+    let agentPos = { r: 0, c: 0 };
+    
+    // Q-Table representation: stateIndex_actionIndex
+    // Actions: 0 (Up), 1 (Right), 2 (Down), 3 (Left)
+    let qTable = {};
+    const actions = [
+      { dr: -1, dc: 0,  label: "↑" }, // Up
+      { dr: 0,  dc: 1,  label: "→" }, // Right
+      { dr: 1,  dc: 0,  label: "↓" }, // Down
+      { dr: 0,  dc: -1, label: "←" }  // Left
+    ];
+
+    const ALPHA = 0.5;   // Learning Rate
+    const GAMMA = 0.9;   // Discount Factor
+    const EPSILON = 0.25; // Exploration rate
+
+    let autoRunInterval = null;
+    let episodeCount = 0;
+    let stepCount = 0;
+
+    function getStateIndex(r, c) {
+      return r * 3 + c;
+    }
+
+    function initQTable() {
+      for (let s = 0; s < 9; s++) {
+        for (let a = 0; a < 4; a++) {
+          qTable[`${s}_${a}`] = 0.0;
+        }
+      }
+    }
+
+    function drawGridWorld() {
+      const container = document.getElementById('world-container');
+      container.innerHTML = '';
+      
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          
+          if (r === 0 && c === 0) {
+            cell.classList.add('start-cell');
+            cell.innerHTML = '<span style="font-size:0.7rem; color:var(--text-secondary);">Start</span>S';
+          } else if (r === 1 && c === 1) {
+            cell.classList.add('pit-cell');
+            cell.innerHTML = '<span style="font-size:0.7rem;">Pit</span>X';
+          } else if (r === 2 && c === 2) {
+            cell.classList.add('goal-cell');
+            cell.innerHTML = '<span style="font-size:0.7rem;">Goal</span>G';
+          } else {
+            // Find best action arrow based on Q-values
+            const s = getStateIndex(r, c);
+            let maxQ = -Infinity;
+            let bestA = -1;
+            for (let a = 0; a < 4; a++) {
+              const qVal = qTable[`${s}_${a}`];
+              if (qVal > maxQ) {
+                maxQ = qVal;
+                bestA = a;
+              }
+            }
+            // Only draw arrow if maxQ is significantly non-zero
+            if (Math.abs(maxQ) > 0.01) {
+              const arrow = document.createElement('div');
+              arrow.className = 'q-arrow';
+              arrow.innerText = actions[bestA].label;
+              cell.appendChild(arrow);
+              
+              const valText = document.createElement('span');
+              valText.style.fontSize = '0.65rem';
+              valText.style.color = 'var(--text-light)';
+              valText.style.marginTop = '1.5rem';
+              valText.innerText = maxQ.toFixed(1);
+              cell.appendChild(valText);
+            }
+          }
+          container.appendChild(cell);
+        }
+      }
+      
+      updateAgentPositionDOM();
+    }
+
+    function updateAgentPositionDOM() {
+      const agentEl = document.getElementById('sim-agent');
+      // Position calculation based on grid structure: 80px cell size, 4px gap, 4px padding
+      const offsetTop = agentPos.r * (80 + 4) + 4 + 31;
+      const offsetLeft = agentPos.c * (80 + 4) + 4 + 31;
+      agentEl.style.top = `${offsetTop}px`;
+      agentEl.style.left = `${offsetLeft}px`;
+    }
+
+    function resetQLearning() {
+      // Clear auto-run interval if active
+      if (autoRunInterval) {
+        clearInterval(autoRunInterval);
+        autoRunInterval = null;
+        document.getElementById('btn-auto-run').innerText = "⚡ Tự động chạy (Auto Run)";
+      }
+
+      agentPos = { r: 0, c: 0 };
+      initQTable();
+      episodeCount = 0;
+      stepCount = 0;
+      drawGridWorld();
+
+      document.getElementById('rl-math-log').innerHTML = `
+<span style="color: var(--secondary-color); font-weight: bold;">[KHỞI TẠO BẢNG Q-TABLE]</span><br>
+Đã đặt lại vị trí robot về Start (0,0) và xóa trắng toàn bộ giá trị Q-Value.<br>
+Hãy nhấn <strong>Train Step</strong> để học hoặc <strong>Auto Run</strong> để chạy tự động.
+      `;
+    }
+
+    function stepQLearning() {
+      const consoleLog = document.getElementById('rl-math-log');
+      
+      // If current state is terminal (Goal or Pit), reset to Start for next episode
+      if ((agentPos.r === 2 && agentPos.c === 2) || (agentPos.r === 1 && agentPos.c === 1)) {
+        agentPos = { r: 0, c: 0 };
+        episodeCount++;
+        stepCount = 0;
+        updateAgentPositionDOM();
+        consoleLog.innerHTML = `
+<span style="color: var(--secondary-color); font-weight: bold;">[KHỞI ĐẦU TẬP MỚI (EPISODE ${episodeCount + 1})]</span><br>
+Tập huấn luyện trước kết thúc. Robot đã quay lại ô Start (0,0).
+        `;
+        return;
+      }
+
+      const s = getStateIndex(agentPos.r, agentPos.c);
+      
+      // 1. Choose action using epsilon-greedy
+      let a;
+      let isExploration = false;
+      if (Math.random() < EPSILON) {
+        a = Math.floor(Math.random() * 4); // Explore
+        isExploration = true;
+      } else {
+        // Exploit
+        let maxQ = -Infinity;
+        let bestActions = [];
+        for (let i = 0; i < 4; i++) {
+          const qVal = qTable[`${s}_${i}`];
+          if (qVal > maxQ) {
+            maxQ = qVal;
+            bestActions = [i];
+          } else if (qVal === maxQ) {
+            bestActions.push(i);
+          }
+        }
+        a = bestActions[Math.floor(Math.random() * bestActions.length)];
+      }
+
+      // 2. Perform action to get next state s' and reward R
+      const act = actions[a];
+      let nextR = agentPos.r + act.dr;
+      let nextC = agentPos.c + act.dc;
+      
+      let reward = -0.1; // small penalty for movement
+      
+      // Check borders
+      if (nextR < 0 || nextR > 2 || nextC < 0 || nextC > 2) {
+        nextR = agentPos.r;
+        nextC = agentPos.c;
+        reward = -0.5; // penalty for hitting border
+      } else if (nextR === 1 && nextC === 1) {
+        reward = -10.0; // Pit penalty
+      } else if (nextR === 2 && nextC === 2) {
+        reward = 10.0;  // Goal reward
+      }
+
+      const s_next = getStateIndex(nextR, nextC);
+
+      // 3. Compute temporal difference update
+      let maxQNext = -Infinity;
+      for (let i = 0; i < 4; i++) {
+        const qVal = qTable[`${s_next}_${i}`];
+        if (qVal > maxQNext) {
+          maxQNext = qVal;
+        }
+      }
+
+      const oldQ = qTable[`${s}_${a}`];
+      // Bellman update rule
+      const tdTarget = reward + GAMMA * maxQNext;
+      const newQ = oldQ + ALPHA * (tdTarget - oldQ);
+      qTable[`${s}_${a}`] = newQ;
+
+      // Log the math equation detail
+      let modeText = isExploration ? "<span style='color:#ef4444;'>[EXPLORE]</span>" : "<span style='color:#10b981;'>[EXPLOIT]</span>";
+      
+      consoleLog.innerHTML = `
+<span style="color: var(--secondary-color); font-weight: bold;">[TẬP ${episodeCount + 1} - BƯỚC ${stepCount + 1}] ${modeText}</span><br>
+• Đi từ s(${agentPos.r},${agentPos.c}) &rarr; s'(${nextR},${nextC}) chọn hành động "${act.label}"<br>
+• Nhận phần thưởng tương tác: R = ${reward}<br>
+• Cập nhật công thức Bellman:<br>
+  Q_new = ${oldQ.toFixed(2)} + ${ALPHA} &times; [${reward} + ${GAMMA} &times; ${maxQNext.toFixed(2)} - ${oldQ.toFixed(2)}]<br>
+  &rArr; Q(s, a) &larr; <strong style="color:var(--secondary-color);">${newQ.toFixed(3)}</strong>
+      `;
+
+      // 4. Move agent
+      agentPos.r = nextR;
+      agentPos.c = nextC;
+      stepCount++;
+
+      drawGridWorld();
+    }
+
+    function toggleAutoRun() {
+      const btn = document.getElementById('btn-auto-run');
+      
+      if (autoRunInterval) {
+        clearInterval(autoRunInterval);
+        autoRunInterval = null;
+        btn.innerText = "⚡ Tự động chạy (Auto Run)";
+      } else {
+        autoRunInterval = setInterval(() => {
+          stepQLearning();
+        }, 200); // 200ms step rate
+        btn.innerText = "⏸️ Tạm dừng (Pause)";
+      }
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      resetQLearning();
+    });
+  </script>
+</body>
+</html>

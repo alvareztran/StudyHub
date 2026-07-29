@@ -45,51 +45,21 @@
         gap: 1.5rem;
       }
     }
-    /* Filter & Search Styles */
-    .filter-tab {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      padding: 0.5rem 1.25rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .filter-tab:hover {
-      border-color: var(--accent-cyan);
-      color: var(--text-primary);
-    }
-    .filter-tab.active {
-      background-color: rgba(6, 182, 212, 0.1);
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-      box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
-    }
-    #course-search-input:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
-    }
-    .empty-courses-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 3rem 1.5rem;
-      background-color: var(--bg-card);
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
-      color: var(--text-secondary);
-    }
   </style>
 </head>
 <body class="landing-page">
   <div class="landing-container">
     <!-- Header & Navigation -->
     <header class="landing-header">
-      <div class="brand-wrapper">
+      <div class="brand-wrapper" style="cursor: pointer;" onclick="window.location.href='index.html'">
         <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
         <span class="brand-name">StudyHub</span>
       </div>
+      <nav class="landing-nav no-print">
+        <a href="index.html" class="nav-item active">Trang chủ</a>
+        <a href="tai-lieu-khac.html" class="nav-item">Tài liệu khác</a>
+        <a href="flappy-bird.html" class="nav-item">Giải trí 🎮</a>
+      </nav>
       <div style="display: flex; align-items: center; gap: 1rem;">
         <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
           <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -120,6 +90,9 @@
             <a href="#courses" class="btn-primary">
               Bắt đầu học
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="tai-lieu-khac.html" class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+              Tài liệu khác
             </a>
             <a href="https://github.com/alvareztran/StudyHub" target="_blank" class="btn-secondary">
               GitHub Repo
@@ -232,6 +205,46 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
+
+          <!-- Card: NCKH -->
+          <div class="course-card" data-category="chuyen-nganh">
+            <div>
+              <div class="course-badge">NCKH</div>
+              <h3 class="course-title">Nghiên cứu khoa học - AI</h3>
+              <p class="course-desc">Xây dựng kiến thức nền tảng về Trí tuệ nhân tạo (AI), phương pháp luận nghiên cứu khoa học, viết bài báo học thuật và thực nghiệm các mô hình học sâu.</p>
+              <ul class="course-highlights">
+                <li>Phương pháp nghiên cứu &amp; Đọc bài báo khoa học</li>
+                <li>Xây dựng mô hình AI nền tảng</li>
+                <li>Thực nghiệm và đánh giá kết quả</li>
+                <li>Kỹ năng viết báo cáo học thuật</li>
+              </ul>
+            </div>
+            <a href="nckh/index.html" class="course-action-btn">
+              Xem học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card: AI Models & Subfields (New!) -->
+          <div class="course-card" data-category="chuyen-nganh">
+            <div>
+              <div class="course-badge">AI-MODELS</div>
+              <h3 class="course-title">Các mô hình AI & Lĩnh vực con</h3>
+              <p class="course-desc">Nghiên cứu các nhóm mô hình Trí tuệ Nhân tạo kinh điển đến hiện đại: Học máy cổ điển, Deep Learning, Computer Vision, NLP, Học tăng cường và AI tạo sinh.</p>
+              <ul class="course-highlights">
+                <li>Học máy cổ điển &amp; Học sâu (MLP)</li>
+                <li>Mô hình Thị giác máy tính (CNN, ViT, YOLO)</li>
+                <li>Xử lý ngôn ngữ (RNN, Transformer, LLMs)</li>
+                <li>Học tăng cường (MDP, Q-learning, PPO)</li>
+                <li>Mô hình AI tạo sinh (GANs, Diffusion Models)</li>
+              </ul>
+            </div>
+            <a href="mo-hinh-ai/index.html" class="course-action-btn">
+              Xem học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
 
           <!-- Card 3: Machine Learning -->
           <div class="course-card" data-category="khac">
@@ -354,24 +367,6 @@
           </div>
 
 
-          <!-- Card 10: Computer Vision (Coming Soon) -->
-          <div class="course-card coming-soon" data-category="khac" style="opacity: 0.65;">
-            <div>
-              <div class="course-badge" style="color: var(--text-secondary); background: transparent; border-color: var(--border-color);">CTU</div>
-              <h3 class="course-title">Thị giác máy tính (Computer Vision)</h3>
-              <p class="course-desc">Nghiên cứu kiến trúc mạng nơ-ron tích chập (CNN), cơ chế Attention &amp; Vision Transformer (ViT), các tác vụ phân loại ảnh, phát hiện vật thể (YOLO) và phân đoạn ảnh.</p>
-              <ul class="course-highlights">
-                <li>Xử lý đặc trưng ảnh nâng cao</li>
-                <li>Kiến trúc CNN &amp; Vision Transformer</li>
-                <li>Phát hiện vật thể (Object Detection)</li>
-                <li>Phân đoạn ảnh ngữ nghĩa (Segmentation)</li>
-              </ul>
-            </div>
-            <button class="course-action-btn" disabled style="cursor: not-allowed; opacity: 0.7;">
-              Sắp ra mắt
-            </button>
-          </div>
-
           <!-- Card 13: Lịch sử Đảng -->
           <div class="course-card" data-category="dai-cuong">
             <div>
@@ -408,42 +403,6 @@
               Xem học liệu
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
-          </div>
-
-          <!-- Card 11: Programming Fundamentals (Coming Soon) -->
-          <div class="course-card coming-soon" data-category="dai-cuong" style="opacity: 0.65;">
-            <div>
-              <div class="course-badge" style="color: var(--text-secondary); background: transparent; border-color: var(--border-color);">CT101</div>
-              <h3 class="course-title">CT101 - Lập trình căn bản</h3>
-              <p class="course-desc">Học các khái niệm cơ bản về lập trình sử dụng ngôn ngữ C/C++, cấu trúc rẽ nhánh, vòng lặp, hàm, con trỏ, mảng, tệp dữ liệu và rèn luyện tư duy giải quyết bài toán bằng máy tính.</p>
-              <ul class="course-highlights">
-                <li>Cú pháp C/C++ căn bản</li>
-                <li>Hàm &amp; Truyền tham số</li>
-                <li>Con trỏ &amp; Quản lý bộ nhớ Heap</li>
-                <li>Cấu trúc dữ liệu Struct &amp; Mảng</li>
-              </ul>
-            </div>
-            <button class="course-action-btn" disabled style="cursor: not-allowed; opacity: 0.7;">
-              Sắp ra mắt
-            </button>
-          </div>
-
-          <!-- Card 12: Discrete Mathematics (Coming Soon) -->
-          <div class="course-card coming-soon" data-category="khac" style="opacity: 0.65;">
-            <div>
-              <div class="course-badge" style="color: var(--text-secondary); background: transparent; border-color: var(--border-color);">MATH</div>
-              <h3 class="course-title">Toán rời rạc (Discrete Mathematics)</h3>
-              <p class="course-desc">Nghiên cứu về logic toán học, lý thuyết tập hợp, quan hệ, đại số Boole, lý thuyết đồ thị (đường đi Euler/Hamilton, cây khung nhỏ nhất) và toán tổ hợp phục vụ ngành Máy tính.</p>
-              <ul class="course-highlights">
-                <li>Logic mệnh đề &amp; Tập hợp</li>
-                <li>Đại số Boole &amp; Mạch logic</li>
-                <li>Lý thuyết đồ thị &amp; Thuật toán</li>
-                <li>Bài toán đếm &amp; Hệ thức truy hồi</li>
-              </ul>
-            </div>
-            <button class="course-action-btn" disabled style="cursor: not-allowed; opacity: 0.7;">
-              Sắp ra mắt
-            </button>
           </div>
         </div>
       </section>

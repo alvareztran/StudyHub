@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Object Detection (Phát hiện đối tượng) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for NCKH subject */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    
+    /* Interactive Demo Box Styles */
+    .demo-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .demo-canvas {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      background-color: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #334155;
+    }
+    .demo-image-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 3rem;
+      user-select: none;
+    }
+    .bbox {
+      position: absolute;
+      border: 3px dashed transparent;
+      border-radius: 4px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .bbox-label {
+      background-color: var(--secondary-color);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 2px;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    /* Cat BBox Coordinates mapping */
+    .bbox-cat {
+      left: 15%;
+      top: 25%;
+      width: 30%;
+      height: 50%;
+    }
+    /* Dog BBox Coordinates mapping */
+    .bbox-dog {
+      left: 55%;
+      top: 15%;
+      width: 35%;
+      height: 70%;
+    }
+    /* Highlighting logic */
+    .bbox-cat.active, .demo-canvas:hover .bbox-cat {
+      border-color: #10b981;
+      background-color: rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    .bbox-dog.active, .demo-canvas:hover .bbox-dog {
+      border-color: #06b6d4;
+      background-color: rgba(6, 182, 212, 0.15);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+    }
+    .bbox.active .bbox-label, .demo-canvas:hover .bbox .bbox-label {
+      opacity: 1;
+    }
+    .demo-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .control-btn {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .control-btn:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .control-btn.active-cat {
+      border-color: #10b981;
+      background-color: rgba(16, 185, 129, 0.08);
+      font-weight: 600;
+    }
+    .control-btn.active-dog {
+      border-color: #06b6d4;
+      background-color: rgba(6, 182, 212, 0.08);
+      font-weight: 600;
+    }
+    .demo-info-panel {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">NCKH - Nền tảng AI</a> &raquo; Phát hiện đối tượng
+      </div>
+      <h1>Phát hiện đối tượng (Object Detection)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tổng quan lý thuyết từ cơ bản đến nâng cao về Object Detection, phương pháp biểu diễn Bounding Box và ứng dụng thực tiễn.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu NCKH</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan NCKH</a></li>
+          <li><a href="phat-hien-doi-tuong.html" class="active">1. Phát hiện đối tượng (Object Detection)</a></li>
+          <li><a href="neuro-symbolic-ai.html">2. Trí tuệ nhân tạo nơ-ron ký hiệu (Neuro-Symbolic AI)</a></li>
+          <li><a href="knowledge-graph.html">3. Đồ thị tri thức (Knowledge Graph)</a></li>
+          <li><a href="ontology.html">4. Bản thể học (Ontology)</a></li>
+          <li><a href="explainable-ai.html">5. Trí tuệ nhân tạo giải thích được (XAI)</a></li>
+        </ul>
+        
+        <h3>Lộ trình học tiếp theo</h3>
+        <ul>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">6. Mô hình YOLO (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">7. Vision Transformer (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">8. Graph Neural Network (Dự kiến)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Object Detection (Phát hiện đối tượng)</h2>
+          <p>
+            <strong>Object Detection (Phát hiện đối tượng)</strong> là một trong những lĩnh vực quan trọng nhất của <strong>Computer Vision (Thị giác máy tính)</strong>. Để hiểu đúng về Object Detection, chúng ta sẽ bắt đầu tìm hiểu từ những khái niệm nền tảng sơ khởi nhất.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Khái niệm nền tảng</h2>
+          
+          <h3>1.1. Computer Vision là gì?</h3>
+          <p>
+            <strong>Computer Vision (CV - Thị giác máy tính)</strong> là một lĩnh vực của Trí tuệ nhân tạo (AI) giúp máy tính có khả năng "nhìn" và "hiểu" được hình ảnh hoặc video tương tự như con người.
+          </p>
+          <blockquote>
+            <strong>Sự khác biệt trong cách nhận diện:</strong><br>
+            <ul>
+              <li><strong>Con người nhìn bức ảnh:</strong> Nhận biết ngay lập tức <em>"Đây là một chiếc lá lúa bị nhiễm bệnh đạo ôn"</em>.</li>
+              <li><strong>Máy tính nhìn bức ảnh:</strong> Chỉ tiếp nhận một chuỗi ma trận số của các điểm ảnh (pixel), ví dụ: <code>125, 86, 42, 73, 255...</code></li>
+            </ul>
+          </blockquote>
+          <p>Nhiệm vụ cốt lõi của Computer Vision là chuyển đổi chuỗi giá trị pixel khô khan đó thành thông tin có ngữ nghĩa:</p>
+          <pre style="text-align: center; font-weight: bold; background-color: var(--highlight-bg); border-color: var(--highlight-border);">Ảnh đầu vào &rarr; Trích xuất đặc trưng &rarr; Nhận diện chiếc lá &rarr; Xác định vết bệnh &rarr; Kết luận: Bệnh đạo ôn</pre>
+
+          <h3>1.2. Một bức ảnh được biểu diễn như thế nào?</h3>
+          <p>
+            Một bức ảnh số thực chất là một <strong>ma trận các pixel</strong>.
+          </p>
+          <ul>
+            <li>
+              Đối với <strong>ảnh xám (grayscale)</strong>, mỗi pixel biểu thị cường độ sáng bằng 1 con số đơn lẻ từ $0$ (đen) đến $255$ (trắng):
+              $$\begin{bmatrix} 120 & 121 & 123 \\ 118 & 119 & 122 \\ 110 & 115 & 117 \end{bmatrix}$$
+            </li>
+            <li>
+              Đối với <strong>ảnh màu RGB</strong>, mỗi pixel là một vector gồm 3 giá trị $(R, G, B)$ tương ứng với ba kênh màu Đỏ (Red), Lục (Green) và Lam (Blue). Ví dụ: pixel mang giá trị $(255, 0, 0)$ biểu diễn màu đỏ thuần khiết.
+            </li>
+          </ul>
+          <p>
+            Nếu một bức ảnh có kích thước $640 \times 480$ pixels, nó sẽ chứa tổng cộng:
+            $$640 \times 480 = 307,200 \text{ pixels}$$
+            Nếu không được huấn luyện thông qua các thuật toán học máy, máy tính sẽ hoàn toàn không thể tự biết đâu là chiếc lá, đâu là thân cây hay đâu là vết bệnh.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Máy tính có thể làm gì với hình ảnh?</h2>
+          <p>
+            Tùy thuộc vào mục tiêu nghiên cứu và ứng dụng, AI có thể xử lý hình ảnh theo nhiều bài toán khác nhau. Dưới đây là các bài toán chính của Computer Vision:
+          </p>
+          <ul>
+            <li><strong>Image Classification</strong> (Phân loại ảnh)</li>
+            <li><strong>Object Detection</strong> (Phát hiện đối tượng)</li>
+            <li><strong>Semantic Segmentation</strong> (Phân vùng ngữ nghĩa)</li>
+            <li><strong>Instance Segmentation</strong> (Phân vùng thực thể)</li>
+            <li><strong>Pose Estimation</strong> (Ước lượng tư thế)</li>
+            <li><strong>OCR</strong> (Nhận dạng ký tự quang học)</li>
+            <li><strong>Object Tracking</strong> (Theo dõi đối tượng)</li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Image Classification và hạn chế</h2>
+          <p>
+            <strong>Image Classification (Phân loại hình ảnh)</strong> là bài toán đơn giản nhất. Nhiệm vụ của nó là gán một nhãn phân loại (class label) duy nhất cho toàn bộ bức ảnh.
+          </p>
+          <p>
+            <em>Ví dụ:</em> Đưa vào bức ảnh chứa một con mèo, AI trả về kết quả nhãn là <strong>"Cat"</strong>. AI chỉ biết trong bức ảnh có tồn tại mèo chứ hoàn toàn không xác định được con mèo nằm ở đâu.
+          </p>
+          
+          <h3>Hạn chế lớn nhất:</h3>
+          <p>
+            Giả sử bức ảnh chứa nhiều đối tượng đan xen như: 🐱 (mèo), 🐶 (chó) và 🚗 (ô tô).
+            Image Classification chỉ có thể trả lời chung chung rằng: <em>"Ảnh này chứa: Cát, Dog, Car"</em>.
+          </p>
+          <p>
+            Nó không thể xác định được vị trí cụ thể của từng đối tượng. Đối với các ứng dụng thực tế như robot nhặt đồ vật, xe tự hành tránh chướng ngại vật hay drone phun thuốc, nếu không có tọa độ vị trí chính xác, hệ thống sẽ không thể vận hành được. Đó chính là lý do bài toán <strong>Object Detection</strong> ra đời.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Object Detection là gì?</h2>
+          <p>
+            <strong>Object Detection (Phát hiện đối tượng)</strong> là bài toán xác định sự xuất hiện và vị trí của các đối tượng thuộc các lớp quan tâm trong ảnh. AI cần trả lời đồng thời hai câu hỏi:
+          </p>
+          <ol>
+            <li><strong>Phân loại (Classification):</strong> Đối tượng đó là cái gì?</li>
+            <li><strong>Định vị (Localization):</strong> Đối tượng đó nằm ở đâu trong ảnh?</li>
+          </ol>
+
+          <!-- Interactive Demo Widget -->
+          <div class="demo-container">
+            <h3 style="margin-top: 0; font-size: 1.15rem; color: var(--secondary-color); border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+              Interactive Demo: Trực quan hóa kết quả Object Detection
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">
+              Di chuột vào khung ảnh hoặc nhấn các nút điều khiển để xem cách Bounding Box bao quanh và định vị đối tượng.
+            </p>
+            <div class="demo-grid">
+              <div class="demo-canvas">
+                <div class="demo-image-bg">
+                  <span>🐱</span>
+                  <span>🐶</span>
+                </div>
+                <!-- Cat BBox -->
+                <div id="bbox-cat" class="bbox bbox-cat">
+                  <div class="bbox-label" style="background-color: #10b981;">Cat | Conf: 98%</div>
+                </div>
+                <!-- Dog BBox -->
+                <div id="bbox-dog" class="bbox bbox-dog">
+                  <div class="bbox-label" style="background-color: #06b6d4;">Dog | Conf: 95%</div>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <button id="btn-cat" class="control-btn" onmouseover="highlightBBox('cat')" onmouseout="clearHighlight()">
+                  🐱 <strong>Cat</strong><br>
+                  <span style="font-size: 0.8rem; opacity: 0.8;">Confidence: 98%</span>
+                </button>
+                <button id="btn-dog" class="control-btn" onmouseover="highlightBBox('dog')" onmouseout="clearHighlight()">
+                  🐶 <strong>Dog</strong><br>
+                  <span style="font-size: 0.8rem; opacity: 0.8;">Confidence: 95%</span>
+                </button>
+                <div class="demo-info-panel">
+                  <div style="font-weight: bold; color: var(--secondary-color); margin-bottom: 0.25rem;">[Tọa độ Bounding Box]</div>
+                  <div id="bbox-coords">Di chuột lên đối tượng để xem tọa độ...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. Phương pháp định vị bằng Bounding Box</h2>
+          <p>
+            Để mô tả vị trí của một đối tượng, các mô hình AI sử dụng khái niệm <strong>Bounding Box (Hộp bao)</strong>. Đây là hình chữ nhật nhỏ nhất bao bọc hoàn toàn đối tượng.
+          </p>
+          <p>Một Bounding Box chuẩn thường được đặc tả bởi 4 tham số:</p>
+          <ul>
+            <li><strong>$(x, y)$:</strong> Tọa độ của góc trên bên trái của hộp bao (hoặc tọa độ tâm hộp tùy định dạng).</li>
+            <li><strong>$w$ (width):</strong> Chiều rộng của hộp bao.</li>
+            <li><strong>$h$ (height):</strong> Chiều cao của hộp bao.</li>
+          </ul>
+          
+          <h3>Đầu ra đầy đủ của một mô hình Object Detection gồm:</h3>
+          <ol>
+            <li><strong>Class (Lớp đối tượng):</strong> Tên nhãn nhận diện (ví dụ: Cat, Dog, Rice Blast).</li>
+            <li><strong>Confidence (Độ tin cậy):</strong> Chỉ số phần trăm (%) thể hiện mức độ tự tin của mô hình vào dự đoán của mình (Ví dụ: $99\%$ có nghĩa mô hình cực kỳ chắc chắn).</li>
+            <li><strong>Bounding Box Coordinates:</strong> Tọa độ hộp bao vị trí đối tượng.</li>
+          </ol>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>6. Ứng dụng thực tiễn trong Nông nghiệp</h2>
+          <p>
+            Trong nông nghiệp thông minh, thay vì chỉ sử dụng phân loại ảnh để kết luận chung chung <em>"Lá lúa bị bệnh"</em>, mô hình <strong>Object Detection</strong> giúp phát hiện từng <strong>vùng bệnh (Disease Spots)</strong> riêng biệt trên bề mặt lá lúa.
+          </p>
+          <p>
+            Ứng dụng này cực kỳ quan trọng cho:
+          </p>
+          <ul>
+            <li>Thiết bị bay không người lái (Drone) định vị chính xác khu vực cần xử lý thuốc bảo vệ thực vật.</li>
+            <li>Robot nông nghiệp thực hiện các thao tác cắt tỉa lá bệnh tự động.</li>
+            <li>Đánh giá chính xác mật độ và mức độ tàn phá của dịch bệnh theo tỷ lệ diện tích bề mặt.</li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>7. Cơ chế hoạt động của Object Detection</h2>
+          <p>Hầu hết các mô hình Object Detection hiện đại đều hoạt động dựa trên quy trình tổng quát sau:</p>
+          <pre style="background-color: var(--bg-code); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; overflow-x: auto;">
+Ảnh đầu vào (Input Image)
+      &darr;
+Mạng xương sống (Backbone: CNN / Vision Transformer)
+      &darr;
+Trích xuất bản đồ đặc trưng (Feature Maps Extraction)
+      &darr;
+Bộ phát hiện đối tượng (Object Detector Head)
+      &darr;
+Dự đoán đồng thời: [Lớp đối tượng] + [Tọa độ BBox] + [Độ tin cậy]
+          </pre>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>8. Phân biệt các bài toán thị giác máy tính</h2>
+          <p>Bảng so sánh chi tiết giúp phân biệt rõ các tác vụ xử lý ảnh:</p>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-align: left;">
+            <thead>
+              <tr style="background-color: var(--highlight-bg); border-bottom: 2px solid var(--border-color);">
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Tác vụ (Task)</th>
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Đầu ra (Output)</th>
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Biết vị trí?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Image Classification</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Nhãn (Class) đại diện cho toàn bộ ảnh</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">❌ Không</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Object Detection</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Nhãn + Tọa độ Bounding Box hình chữ nhật</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #10b981; font-weight: bold;">✓ Có</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Semantic Segmentation</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Nhãn phân lớp cho từng điểm ảnh (pixel-level)</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #10b981; font-weight: bold;">✓ Có (Chính xác biên)</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Instance Segmentation</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Tách biệt chi tiết từng pixel của từng thực thể riêng biệt</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #10b981; font-weight: bold;">✓ Có (Tách biệt thực thể)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>9. Các mô hình Object Detection nổi tiếng</h2>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #3b82f6;">Mô hình Hai giai đoạn (Two-stage)</h3>
+              <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Đại diện:</strong> R-CNN, Fast R-CNN, Faster R-CNN, Mask R-CNN.</p>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Giai đoạn 1: Đề xuất các vùng chứa đối tượng tiềm năng (Region Proposal).</li>
+                <li>Giai đoạn 2: Phân loại và tinh chỉnh tọa độ hộp bao trên từng vùng đó.</li>
+                <li><strong>Ưu điểm:</strong> Độ chính xác rất cao.</li>
+                <li><strong>Nhược điểm:</strong> Tốc độ tính toán chậm hơn.</li>
+              </ul>
+            </div>
+            
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #10b981;">Mô hình Một giai đoạn (One-stage)</h3>
+              <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Đại diện:</strong> YOLO (You Only Look Once), SSD, RetinaNet.</p>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Dự đoán trực tiếp tọa độ Bounding Box và lớp đối tượng từ ảnh gốc qua một mạng nơ-ron duy nhất.</li>
+                <li><strong>Ưu điểm:</strong> Tốc độ xử lý cực kỳ nhanh, phù hợp cho các ứng dụng thời gian thực (real-time).</li>
+                <li><strong>Nhược điểm:</strong> Đôi khi kém chính xác hơn ở các đối tượng rất nhỏ hoặc xếp chồng lên nhau.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin-top: 1.5rem;">
+            <h3 style="margin-top: 0; color: #8b5cf6;">Mô hình dựa trên Transformer</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Đại diện:</strong> DETR (Detection Transformer), Deformable DETR, DINO.</p>
+            <ul style="font-size: 0.9rem; margin-bottom: 0;">
+              <li>Sử dụng kiến trúc Attention của Transformer để ánh xạ tập hợp ảnh thành tập hợp các dự đoán đối tượng song song.</li>
+              <li>Loại bỏ hoàn toàn các bước xử lý hậu kỳ thủ công phức tạp (như Non-Maximum Suppression - NMS).</li>
+              <li>Đạt hiệu năng rất tốt trên các tập dữ liệu quy mô lớn.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>10. Mối liên hệ với Đề tài AgriNeSy-Graph</h2>
+          <p>
+            Trong đề tài nghiên cứu nâng cao <strong>AgriNeSy-Graph: Adaptive Neuro-Symbolic Graph Reasoning for Explainable Crop Disease Prediction</strong>, Object Detection đóng vai trò cực kỳ quan trọng ở bước <strong>tiền xử lý dữ liệu đầu vào</strong> và <strong>trích xuất thực thể</strong>:
+          </p>
+          <div style="background-color: var(--highlight-bg); border-left: 4px solid var(--secondary-color); padding: 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;">
+            <strong>Luồng xử lý tích hợp:</strong><br>
+            Ảnh chụp đồng ruộng &rarr; <strong>[Object Detection]</strong> phát hiện từng vùng lá và vùng nhiễm bệnh cụ thể &rarr; Cắt các vùng bệnh phục vụ trích xuất đặc trưng sâu qua CNN/ViT &rarr; Chuyển đổi thành <em>Thực thể (Entities)</em> và <em>Mối quan hệ (Relations)</em> trong <strong>Đồ thị Tri thức (Knowledge Graph)</strong> &rarr; Thực hiện suy luận mạng nơ-ron ký hiệu (Neuro-Symbolic Reasoning) để dự đoán và giải thích nguồn gốc bệnh.
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>11. Tóm tắt ưu điểm &amp; Hạn chế</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div>
+              <h4 style="color: #10b981;">✓ Ưu điểm</h4>
+              <ul>
+                <li>Định vị chính xác và nhận diện đa lớp đồng thời trên ảnh.</li>
+                <li>Hỗ trợ xử lý tốc độ cao cho robot, drone và xe tự hành.</li>
+                <li>Nền tảng của các hệ thống AI có khả năng giải thích dựa trên ngữ cảnh không gian.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="color: #ef4444;">✗ Hạn chế</h4>
+              <ul>
+                <li>Gặp khó khăn với các đối tượng có kích thước siêu nhỏ hoặc bị che khuất một phần (Occlusion).</li>
+                <li>Yêu cầu tài nguyên gán nhãn cực lớn (vẽ thủ công hàng ngàn Bounding Box tọa độ).</li>
+                <li>Chỉ biểu diễn vùng biên bằng hình chữ nhật thô, không khớp chính xác đường viền như Segmentation.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h2>📚 Tài liệu nên đọc thêm</h2>
+          <ul>
+            <li><strong>Sách:</strong> <em>Deep Learning</em> (Ian Goodfellow, Yoshua Bengio) - Chương về Computer Vision; <em>Computer Vision: Algorithms and Applications</em> (Richard Szeliski).</li>
+            <li>
+              <strong>Bài báo khoa học kinh điển:</strong>
+              <ul>
+                <li>YOLO (You Only Look Once) - Redmon et al.</li>
+                <li>Faster R-CNN - Ren et al.</li>
+                <li>DETR (End-to-End Object Detection with Transformers) - Carion et al.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Interactive Demo Highlight Script
+    function highlightBBox(type) {
+      // Clear previous active classes
+      document.querySelectorAll('.bbox').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.control-btn').forEach(el => {
+        el.classList.remove('active-cat');
+        el.classList.remove('active-dog');
+      });
+
+      // Highlight active items
+      const bbox = document.getElementById('bbox-' + type);
+      const btn = document.getElementById('btn-' + type);
+      const coordPanel = document.getElementById('bbox-coords');
+
+      if (type === 'cat') {
+        bbox.classList.add('active');
+        btn.classList.add('active-cat');
+        coordPanel.innerHTML = `<strong>Lớp: Cat (Mèo)</strong><br>Tọa độ hộp: x: 100, y: 50, w: 200, h: 180<br>Confidence Score: 98%`;
+      } else if (type === 'dog') {
+        bbox.classList.add('active');
+        btn.classList.add('active-dog');
+        coordPanel.innerHTML = `<strong>Lớp: Dog (Chó)</strong><br>Tọa độ hộp: x: 260, y: 80, w: 150, h: 110<br>Confidence Score: 95%`;
+      }
+    }
+
+    function clearHighlight() {
+      document.querySelectorAll('.bbox').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.control-btn').forEach(el => {
+        el.classList.remove('active-cat');
+        el.classList.remove('active-dog');
+      });
+      document.getElementById('bbox-coords').innerHTML = 'Di chuột lên đối tượng để xem tọa độ...';
+    }
+
+    // Attach hover listener directly to bbox elements inside the image canvas
+    document.getElementById('bbox-cat').addEventListener('mouseover', () => highlightBBox('cat'));
+    document.getElementById('bbox-cat').addEventListener('mouseout', clearHighlight);
+    document.getElementById('bbox-dog').addEventListener('mouseover', () => highlightBBox('dog'));
+    document.getElementById('bbox-dog').addEventListener('mouseout', clearHighlight);
+  </script>
+</body>
+</html>

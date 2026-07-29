@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu khác - StudyHub</title>
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+  <script src="js/theme.js"></script>
+</head>
+<body class="landing-page">
+  <div class="landing-container">
+    <!-- Header & Navigation -->
+    <header class="landing-header">
+      <div class="brand-wrapper" style="cursor: pointer;" onclick="window.location.href='index.html'">
+        <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
+        <span class="brand-name">StudyHub</span>
+      </div>
+      <nav class="landing-nav no-print">
+        <a href="index.html" class="nav-item">Trang chủ</a>
+        <a href="tai-lieu-khac.html" class="nav-item active">Tài liệu khác</a>
+        <a href="flappy-bird.html" class="nav-item">Giải trí 🎮</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="meta-info">
+          Trần Vũ Bằng &bull; Alvarez Tran
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero/Header Section -->
+      <section style="padding: 3.5rem 0 2.5rem 0; text-align: center;">
+        <h1 class="hero-title" style="font-size: 2.75rem; margin-bottom: 1rem; line-height: 1.2;">
+          Kho tài liệu &amp; <span>Công cụ học tập</span>
+        </h1>
+        <p class="hero-desc" style="margin: 0 auto 2.5rem auto; max-width: 680px; font-size: 1.05rem;">
+          Tổng hợp liên kết học tập ngoài, giáo trình tham khảo chuyên ngành và các công cụ hỗ trợ lập trình hữu ích do người học đóng góp.
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+          <!-- Search Input -->
+          <div style="position: relative; width: 100%; max-width: 480px;">
+            <input type="text" id="doc-search-input" placeholder="Tìm kiếm tài liệu, sách, công cụ..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: all 0.2s;" />
+            <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.95rem; opacity: 0.7;">🔍</span>
+          </div>
+          <!-- Filter Tabs -->
+          <div class="filter-tabs-wrapper" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="book-resource">Tài liệu &amp; Sách</button>
+            <button class="filter-tab" data-filter="coding-platform">Tự học &amp; Luyện code</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Document Cards Grid -->
+      <section style="padding-bottom: 5rem;">
+        <div class="course-grid" id="doc-grid">
+          
+          <!-- ITEM 1: System Design Interview Notes -->
+          <div class="course-card" data-category="book-resource">
+            <div>
+              <div class="course-badge">Guide Book</div>
+              <h3 class="course-title">System Design Interview Notes</h3>
+              <p class="course-desc">Tài liệu ghi chép chi tiết từ cuốn sách nổi tiếng "System Design Interview - An Insider's Guide" của tác giả Alex Xu. Tổng hợp thiết kế hệ thống phân tán chịu tải lớn, Caching, Load Balancers.</p>
+              <ul class="course-highlights">
+                <li>Thiết kế hệ thống phân tán chịu tải cao</li>
+                <li>Các giải pháp Caching &amp; Load Balancing</li>
+                <li>Mô phỏng Rate Limiter, Chat, Web Crawler</li>
+              </ul>
+            </div>
+            <a href="https://github.com/liquidslr/system-design-notes" target="_blank" class="course-action-btn">
+              Xem Github Repo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 2: SVUIT -->
+          <div class="course-card" data-category="coding-platform">
+            <div>
+              <div class="course-badge">IT Community</div>
+              <h3 class="course-title">Cộng đồng SVUIT (Kiến thức CNTT)</h3>
+              <p class="course-desc">Diễn đàn học tập và chia sẻ kiến thức CNTT &amp; An toàn thông tin. Nơi cung cấp các bài viết chuyên sâu về Quản trị hệ thống, Cisco Network, Điện toán đám mây và Bảo mật.</p>
+              <ul class="course-highlights">
+                <li>Tài liệu học tập Quản trị mạng &amp; Hệ thống</li>
+                <li>Chuyên đề An toàn thông tin &amp; An ninh mạng</li>
+                <li>Diễn đàn thảo luận, giải đáp thắc mắc CNTT</li>
+              </ul>
+            </div>
+            <a href="https://svuit.org/" target="_blank" class="course-action-btn">
+              Ghé thăm SVUIT
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 3: Claude with LeetCode -->
+          <div class="course-card" data-category="coding-platform">
+            <div>
+              <div class="course-badge">AI Study Tool</div>
+              <h3 class="course-title">Claude with LeetCode (DSA Mentor)</h3>
+              <p class="course-desc">Dự án tích hợp Claude Code làm cố vấn học tập cấu trúc dữ liệu và giải thuật (DSA). Hỗ trợ đồng bộ hóa lời giải LeetCode tự động qua đa ngôn ngữ (Python, C++, Java, Go, Rust...).</p>
+              <ul class="course-highlights">
+                <li>Luyện giải thuật LeetCode hàng ngày cùng AI</li>
+                <li>Cố vấn học tập thuật toán cá nhân tự động</li>
+                <li>Học liệu lời giải đa ngôn ngữ chuẩn hóa</li>
+              </ul>
+            </div>
+            <a href="https://github.com/Stewie-pixel/claude-with-leetcode" target="_blank" class="course-action-btn">
+              Xem Github Repo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thiết kế khoa học, responsive &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("doc-search-input");
+      const filterTabs = document.querySelectorAll(".filter-tab");
+      const docCards = document.querySelectorAll("#doc-grid .course-card");
+      const docGrid = document.getElementById("doc-grid");
+
+      let activeFilter = "all";
+      let searchQuery = "";
+
+      // Helper function to remove Vietnamese diacritics (accents) for search optimization
+      function removeVietnameseTones(str) {
+        return str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d")
+          .replace(/Đ/g, "D");
+      }
+
+      function filterDocs() {
+        let visibleCount = 0;
+        
+        // Remove existing empty state if any
+        const existingEmpty = document.querySelector(".empty-courses-state");
+        if (existingEmpty) {
+          existingEmpty.remove();
+        }
+
+        const normalizedSearch = removeVietnameseTones(searchQuery);
+
+        docCards.forEach(card => {
+          const cardCategory = card.getAttribute("data-category");
+          const title = card.querySelector(".course-title").innerText.toLowerCase();
+          const desc = card.querySelector(".course-desc").innerText.toLowerCase();
+          const badge = card.querySelector(".course-badge").innerText.toLowerCase();
+
+          const normTitle = removeVietnameseTones(title);
+          const normDesc = removeVietnameseTones(desc);
+          const normBadge = removeVietnameseTones(badge);
+
+          // Find highlight items if any
+          const highlights = Array.from(card.querySelectorAll(".course-highlights li"))
+            .map(li => removeVietnameseTones(li.innerText.toLowerCase()))
+            .join(" ");
+
+          const matchesFilter = (activeFilter === "all" || cardCategory === activeFilter);
+          const matchesSearch = (
+            normTitle.includes(normalizedSearch) || 
+            normDesc.includes(normalizedSearch) || 
+            normBadge.includes(normalizedSearch) ||
+            highlights.includes(normalizedSearch)
+          );
+
+          if (matchesFilter && matchesSearch) {
+            card.style.display = "flex";
+            visibleCount++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        // Show empty state if no documents match
+        if (visibleCount === 0) {
+          const emptyDiv = document.createElement("div");
+          emptyDiv.className = "empty-courses-state";
+          emptyDiv.innerHTML = `
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">📭</div>
+            <h3 style="color: var(--text-primary); margin-bottom: 0.25rem; font-family: var(--font-heading);">Không tìm thấy tài liệu</h3>
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">Thử tìm kiếm với từ khóa khác hoặc chuyển danh mục lọc.</p>
+          `;
+          docGrid.appendChild(emptyDiv);
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          searchQuery = e.target.value.toLowerCase().trim();
+          filterDocs();
+        });
+      }
+
+      filterTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          filterTabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          
+          activeFilter = tab.getAttribute("data-filter");
+          filterDocs();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

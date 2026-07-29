@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 1: Tổng quan về Trí tuệ Nhân tạo và các lĩnh vực con - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Sandbox domain matcher widget */
+    .sandbox-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .sandbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .sandbox-problem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .sandbox-btn-problem {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .sandbox-btn-problem:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sandbox-btn-problem.active {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      box-shadow: 0 0 0 2px var(--highlight-border);
+    }
+    .sandbox-dashboard {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .dash-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+      align-items: center;
+    }
+    .dash-row:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .dash-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .dash-val {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      border: 1px solid var(--highlight-border);
+    }
+    .dash-desc {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .sandbox-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Các mô hình AI &amp; Lĩnh vực con</a> &raquo; Tổng quan về AI
+      </div>
+      <h1>Tổng quan về Trí tuệ nhân tạo (AI) và các lĩnh vực con</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Giới thiệu các định nghĩa nền tảng, sơ đồ Venn phân cấp AI, Machine Learning, Deep Learning, và phân loại 5 phân ngành cốt lõi của AI hiện đại.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu Môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan môn học</a></li>
+          <li><a href="tong-quan-ai.html" class="active">1. Tổng quan AI và lĩnh vực con</a></li>
+          <li><a href="classical-ml.html">2. Các mô hình Học máy kinh điển</a></li>
+          <li><a href="ann-mlp.html">3. Mạng Nơ-ron &amp; Học sâu (ANN &amp; MLP)</a></li>
+          <li><a href="cnn.html">4. Mạng tích chập CNN</a></li>
+          <li><a href="nlp-models.html">5. Các mô hình NLP</a></li>
+          <li><a href="reinforcement-learning.html">6. Học tăng cường RL</a></li>
+          <li><a href="generative-models.html">7. Mô hình AI tạo sinh</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">1. Giới thiệu về Trí tuệ nhân tạo (Artificial Intelligence - AI)</h2>
+          <p>
+            <strong>Trí tuệ nhân tạo (Artificial Intelligence - AI)</strong> là phân ngành khoa học máy tính nghiên cứu và kiến tạo các hệ thống có khả năng tự động thực hiện những tác vụ vốn đòi hỏi trí thông minh và suy nghĩ của con người. Các tác vụ này bao gồm khả năng học hỏi tri thức, suy luận logic, thiết lập kế hoạch hành động, nhận thức thế giới xung quanh, giao tiếp ngữ nghĩa và đưa ra quyết định độc lập.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Mối quan hệ phân cấp giữa AI, Machine Learning và Deep Learning</h2>
+          <p>
+            Ba thuật ngữ này biểu diễn các mức độ chi tiết hóa công nghệ khác nhau và có quan hệ bao hàm từ ngoài vào trong:
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 550 220" width="100%" height="auto" style="max-width: 550px;">
+    <!-- AI Outer Ring -->
+    <rect x="10" y="10" width="530" height="200" rx="8" fill="var(--bg-main)" stroke="var(--primary-color)" stroke-width="2" />
+    <text x="25" y="32" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700">ARTIFICIAL INTELLIGENCE (AI)</text>
+    <text x="25" y="47" fill="var(--text-light)" font-family="sans-serif" font-size="9">(Expert Systems, Search, Logic, Reasoning, ML)</text>
+
+    <!-- Left: Symbolic AI -->
+    <rect x="25" y="65" width="180" height="130" rx="6" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-dasharray="3 3" stroke-width="1.5" />
+    <text x="115" y="85" fill="var(--secondary-color)" font-family="sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">Symbolic AI</text>
+    <text x="115" y="105" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" text-anchor="middle">&bull; Knowledge Graphs</text>
+    <text x="115" y="125" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" text-anchor="middle">&bull; Rule-based Systems</text>
+    <text x="115" y="145" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" text-anchor="middle">&bull; Ontologies &amp; Logic</text>
+
+    <!-- Right: Machine Learning (ML) -->
+    <rect x="220" y="65" width="305" height="130" rx="6" fill="var(--bg-card)" stroke="var(--primary-color)" stroke-width="1.5" />
+    <text x="235" y="85" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="bold">Machine Learning (ML)</text>
+    <text x="235" y="102" fill="var(--text-light)" font-family="sans-serif" font-size="9">(Regression, Trees, SVM, Clustering)</text>
+
+    <!-- Nested: Deep Learning (DL) -->
+    <rect x="235" y="112" width="275" height="70" rx="4" fill="var(--highlight-bg)" stroke="#16a34a" stroke-width="1.5" />
+    <text x="245" y="128" fill="#16a34a" font-family="sans-serif" font-size="11" font-weight="bold">Deep Learning (DL)</text>
+    <text x="245" y="145" fill="var(--text-dark)" font-family="sans-serif" font-size="10">&bull; MLP, CNN (Images), RNN/LSTM (Sequences)</text>
+    <text x="245" y="165" fill="var(--text-dark)" font-family="sans-serif" font-size="10">&bull; Transformers (LLMs), Graph Neural Nets (GNN)</text>
+  </svg>
+</div>
+          <ul>
+            <li><strong>Artificial Intelligence (AI):</strong> Khái niệm rộng nhất, bao gồm bất kỳ phương pháp nào (từ các bộ quy tắc logic viết tay, hệ chuyên gia, cho đến học máy) giúp máy tính xử lý thông minh.</li>
+            <li><strong>Machine Learning (ML):</strong> Nhánh con của AI giúp máy tính tự động tìm ra quy luật toán học từ dữ liệu đầu vào mà không cần lập trình các dòng lệnh điều kiện tĩnh.</li>
+            <li><strong>Deep Learning (DL):</strong> Nhánh con sâu nhất của ML, sử dụng các cấu trúc mạng nơ-ron đa lớp (Neural Networks) để tự động trích xuất các tầng đặc trưng phân cấp của dữ liệu.</li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. So sánh đối chiếu AI, ML và DL</h2>
+          <table>
+            <thead>
+              <tr style="background-color: var(--highlight-bg);">
+                <th>Tiêu chí</th>
+                <th>AI (Trí tuệ nhân tạo)</th>
+                <th>Machine Learning (Học máy)</th>
+                <th>Deep Learning (Học sâu)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Phạm vi</strong></td>
+                <td>Bao quát toàn bộ phân ngành</td>
+                <td>Thuộc nhánh con của AI</td>
+                <td>Thuộc nhánh con của ML</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td><strong>Yêu cầu dữ liệu</strong></td>
+                <td>Có thể có hoặc không cần dữ liệu</td>
+                <td>Cần dữ liệu huấn luyện phẳng</td>
+                <td>Đòi hỏi lượng dữ liệu khổng lồ</td>
+              </tr>
+              <tr>
+                <td><strong>Cơ chế vận hành</strong></td>
+                <td>Lập luận luật + Học máy + Tìm kiếm</td>
+                <td>Tối ưu hóa các thuật toán thống kê</td>
+                <td>Lan truyền ngược trên mạng nơ-ron</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td><strong>Mô hình tiêu biểu</strong></td>
+                <td>Hệ chuyên gia MYCIN, Đồ thị tri thức</td>
+                <td>Random Forest, SVM, K-Means</td>
+                <td>CNN, RNN, Transformers, GNN</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Khảo sát 5 phân ngành ứng dụng cốt lõi của AI</h2>
+          <p>
+            Từ nền tảng học máy và học sâu, AI hiện đại phân tách thành các lĩnh vực con chuyên biệt:
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 170" width="100%" height="auto" style="max-width: 650px;">
+    <!-- Field 1: CV -->
+    <g transform="translate(10, 10)">
+      <rect x="0" y="0" width="115" height="130" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <circle cx="57.5" cy="40" r="16" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <!-- Eye Icon -->
+      <path d="M 45 40 Q 57.5 25 70 40 Q 57.5 55 45 40 Z" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <circle cx="57.5" cy="40" r="5" fill="var(--secondary-color)" />
+      <text x="57.5" y="78" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Computer Vision</text>
+      <text x="57.5" y="96" fill="var(--text-light)" font-size="9" text-anchor="middle">CNN, YOLO, ViT</text>
+      <text x="57.5" y="112" fill="var(--text-dark)" font-size="9" font-weight="bold" text-anchor="middle">Thị giác máy</text>
+    </g>
+
+    <!-- Field 2: NLP -->
+    <g transform="translate(135, 10)">
+      <rect x="0" y="0" width="115" height="130" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <circle cx="57.5" cy="40" r="16" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <!-- Chat Bubble Icon -->
+      <path d="M 48 35 L 67 35 Q 72 35 72 40 L 72 45 Q 72 50 67 50 L 55 50 L 48 55 Z" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <text x="57.5" y="78" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">NLP</text>
+      <text x="57.5" y="96" fill="var(--text-light)" font-size="9" text-anchor="middle">BERT, GPT, LLaMA</text>
+      <text x="57.5" y="112" fill="var(--text-dark)" font-size="9" font-weight="bold" text-anchor="middle">Ngôn ngữ tự nhiên</text>
+    </g>
+
+    <!-- Field 3: RL -->
+    <g transform="translate(260, 10)">
+      <rect x="0" y="0" width="115" height="130" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <circle cx="57.5" cy="40" r="16" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <!-- Loop Arrow Icon -->
+      <path d="M 48 40 A 10 10 0 1 1 57.5 50 L 57.5 45" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="57.5,43 53,47 62,47" fill="var(--secondary-color)" />
+      <text x="57.5" y="78" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Reinforcement L.</text>
+      <text x="57.5" y="96" fill="var(--text-light)" font-size="9" text-anchor="middle">Q-Learning, PPO</text>
+      <text x="57.5" y="112" fill="var(--text-dark)" font-size="9" font-weight="bold" text-anchor="middle">Học tăng cường</text>
+    </g>
+
+    <!-- Field 4: KG -->
+    <g transform="translate(385, 10)">
+      <rect x="0" y="0" width="115" height="130" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <circle cx="57.5" cy="40" r="16" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <!-- Graph Node-Edge Icon -->
+      <circle cx="48" cy="35" r="3" fill="var(--secondary-color)" />
+      <circle cx="67" cy="35" r="3" fill="var(--secondary-color)" />
+      <circle cx="57.5" cy="48" r="3" fill="var(--secondary-color)" />
+      <line x1="48" y1="35" x2="67" y2="35" stroke="var(--secondary-color)" stroke-width="1" />
+      <line x1="48" y1="35" x2="57.5" y2="48" stroke="var(--secondary-color)" stroke-width="1" />
+      <line x1="67" y1="35" x2="57.5" y2="48" stroke="var(--secondary-color)" stroke-width="1" />
+      <text x="57.5" y="78" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Knowledge Graph</text>
+      <text x="57.5" y="96" fill="var(--text-light)" font-size="9" text-anchor="middle">RDF, OWL, Ontology</text>
+      <text x="57.5" y="112" fill="var(--text-dark)" font-size="9" font-weight="bold" text-anchor="middle">Đồ thị tri thức</text>
+    </g>
+
+    <!-- Field 5: GenAI -->
+    <g transform="translate(510, 10)">
+      <rect x="0" y="0" width="115" height="130" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <circle cx="57.5" cy="40" r="16" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <!-- Sparkles Icon -->
+      <path d="M 57.5 28 L 60 37 L 69 40 L 60 43 L 57.5 52 L 55 43 L 46 40 L 55 37 Z" fill="var(--secondary-color)" />
+      <text x="57.5" y="78" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Generative AI</text>
+      <text x="57.5" y="96" fill="var(--text-light)" font-size="9" text-anchor="middle">GAN, Diffusion, GPT</text>
+      <text x="57.5" y="112" fill="var(--text-dark)" font-size="9" font-weight="bold" text-anchor="middle">AI tạo sinh</text>
+    </g>
+  </svg>
+</div>
+
+          <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">4.1 Computer Vision (Thị giác máy tính - CV)</h3>
+          <p>
+            Giúp máy tính thu nhận, xử lý và hiểu ngữ nghĩa từ ảnh tĩnh hoặc video. Các nhiệm vụ kinh điển gồm Phân loại ảnh (Classification), Phát hiện đối tượng (Object Detection), Nhận diện khuôn mặt (Face Recognition) và Phân vùng ảnh (Segmentation). Mô hình tiêu biểu: CNN, YOLO, ViT.
+          </p>
+
+          <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">4.2 Natural Language Processing (Xử lý Ngôn ngữ Tự nhiên - NLP)</h3>
+          <p>
+            Nghiên cứu cơ chế tương tác ngữ nghĩa giữa máy tính và ngôn ngữ tự nhiên của con người. Nhiệm vụ gồm dịch máy, phân loại cảm xúc văn bản, tóm tắt tự động và trả lời câu hỏi. Mô hình tiêu biểu: LSTM, BERT, GPT-4, LLaMA.
+          </p>
+
+          <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">4.3 Reinforcement Learning (Học tăng cường - RL)</h3>
+          <p>
+            Tác nhân (Agent) tự học cách đưa ra các quyết định hành động (Action) tối ưu trong một môi trường (Environment) giả lập thông qua cơ chế thưởng/phạt (Reward/Penalty) để tối đa hóa phần thưởng lâu dài. Ứng dụng nhiều trong Robot và Game AI. Thuật toán tiêu biểu: Q-Learning, PPO.
+          </p>
+
+          <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">4.4 Knowledge Graph (Đồ thị Tri thức - KG)</h3>
+          <p>
+            Biểu diễn tri thức dưới dạng mạng lưới ngữ nghĩa liên kết gồm các Thực thể (Entities) đóng vai trò làm nút và các Mối quan hệ (Relationships) làm cạnh.
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 500 100" width="100%" height="auto" style="max-width: 500px;">
+    <!-- Node 1: Albert Einstein -->
+    <rect x="15" y="30" width="140" height="38" rx="6" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="85" y="54" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Albert Einstein</text>
+    <text x="85" y="85" fill="var(--text-light)" font-size="9.5" font-weight="bold" text-anchor="middle">Chủ thể (Subject)</text>
+
+    <!-- Relationship Link Arrow -->
+    <path d="M 155 49 L 335 49" fill="none" stroke="var(--primary-color)" stroke-width="2" />
+    <polygon points="335,49 325,43 325,55" fill="var(--primary-color)" />
+    <text x="245" y="41" fill="var(--secondary-color)" font-family="monospace" font-size="11.5" font-weight="bold" text-anchor="middle">born_in</text>
+    <text x="245" y="85" fill="var(--text-light)" font-size="9.5" font-weight="bold" text-anchor="middle">Mối quan hệ (Predicate)</text>
+
+    <!-- Node 2: Ulm -->
+    <rect x="345" y="30" width="140" height="38" rx="6" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="415" y="54" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Ulm</text>
+    <text x="415" y="85" fill="var(--text-light)" font-size="9.5" font-weight="bold" text-anchor="middle">Đối thể (Object)</text>
+  </svg>
+</div>
+
+          <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">4.5 Generative AI (AI tạo sinh - GenAI)</h3>
+          <p>
+            Xây dựng các mô hình có khả năng tự động sáng tạo ra các nội dung hoàn toàn mới (văn bản, tranh ảnh, nhạc, mã nguồn lập trình) dựa trên phân bố xác suất học từ tập dữ liệu lớn. Mô hình tiêu biểu: GAN, VAE, Diffusion Models (Stable Diffusion), Transformer.
+          </p>
+        </section>
+
+        <!-- INTERACTIVE AI DOMAIN MATCHER -->
+        <section style="margin-top: 2.5rem;">
+          <h2>Trình tương tác Phân tích &amp; Định vị Công nghệ AI</h2>
+          <p>
+            Chọn một bài toán thực tế bên dưới để hệ thống tự động phân tích và xác định lĩnh vực ứng dụng, phân cấp kỹ thuật cùng mô hình đề xuất tối ưu:
+          </p>
+
+          <div class="sandbox-box">
+            <div class="sandbox-grid">
+              <!-- Left: Problem List -->
+              <div class="sandbox-problem-list">
+                <button class="sandbox-btn-problem" id="p-0" onclick="selectProblem(0)">📸 Phát hiện đốm lá lúa nhiễm bệnh đạo ôn qua ảnh camera</button>
+                <button class="sandbox-btn-problem" id="p-1" onclick="selectProblem(1)">💬 Trò chuyện giải đáp kiến thức nông nghiệp tự động</button>
+                <button class="sandbox-btn-problem" id="p-2" onclick="selectProblem(2)">🎮 Huấn luyện xe tự hành tránh chướng ngại vật trong mê cung</button>
+                <button class="sandbox-btn-problem" id="p-3" onclick="selectProblem(3)">🕸️ Biểu diễn quan hệ phả hệ các giống lúa và sâu bệnh hại</button>
+                <button class="sandbox-btn-problem" id="p-4" onclick="selectProblem(4)">🎨 Vẽ ảnh minh họa lá lúa từ câu lệnh mô tả văn bản</button>
+                <button class="sandbox-btn-problem" id="p-5" onclick="selectProblem(5)">📊 Dự đoán giá trị xuất khẩu gạo dựa trên chỉ số diện tích gieo sạ</button>
+              </div>
+
+              <!-- Right: Dashboard Output -->
+              <div class="sandbox-dashboard">
+                <div class="dash-row">
+                  <span class="dash-label">Lĩnh vực AI:</span>
+                  <span class="dash-val" id="dash-domain">...</span>
+                </div>
+                <div class="dash-row">
+                  <span class="dash-label">Bậc công nghệ:</span>
+                  <span class="dash-val" id="dash-level">...</span>
+                </div>
+                <div class="dash-row">
+                  <span class="dash-label">Mô hình Đề xuất:</span>
+                  <span class="dash-val" id="dash-model">...</span>
+                </div>
+                <div>
+                  <div class="dash-label" style="margin-bottom: 0.25rem;">Giải trình thuật toán:</div>
+                  <div class="dash-desc" id="dash-desc">Vui lòng chọn một bài toán ở danh sách bên trái để bắt đầu phân tích khoa học.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. Mối liên hệ lai kết hợp: Kỷ nguyên Neuro-Symbolic AI</h2>
+          <p>
+            Các hệ thống AI hiện đại không còn hoạt động đơn lẻ mà ngày càng tích hợp chéo. Đỉnh cao của sự tích hợp này chính là <strong>Neuro-Symbolic AI</strong>:
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 180" width="100%" height="auto" style="max-width: 650px;">
+    <!-- Left Panel: Neural AI -->
+    <rect x="15" y="20" width="180" height="110" rx="8" fill="var(--bg-main)" stroke="var(--primary-color)" stroke-width="1.5" />
+    <text x="105" y="42" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">1. NEURAL AI (DL)</text>
+    <line x1="30" y1="50" x2="180" y2="50" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="105" y="70" fill="var(--text-dark)" font-size="10.5" text-anchor="middle">Nhận diện hình ảnh lá lúa</text>
+    <text x="105" y="90" fill="var(--text-dark)" font-size="10.5" text-anchor="middle">Trích xuất vector đặc trưng</text>
+    <text x="105" y="110" fill="var(--text-light)" font-size="9" text-anchor="middle">(Hộp đen / Xử lý cảm quan)</text>
+
+    <!-- Path from Left to Center -->
+    <path d="M 195 75 L 235 75" fill="none" stroke="var(--secondary-color)" stroke-width="2" />
+    <polygon points="235,75 227,69 227,81" fill="var(--secondary-color)" />
+
+    <!-- Center: Neuro-Symbolic AI -->
+    <rect x="245" y="20" width="160" height="110" rx="8" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2.5" />
+    <text x="325" y="42" fill="var(--secondary-color)" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">HYBRID SYSTEM</text>
+    <text x="325" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">AgriNeSy-Graph</text>
+    <line x1="255" y1="68" x2="395" y2="68" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="325" y="88" fill="#16a34a" font-size="10.5" font-weight="bold" text-anchor="middle">Dự đoán bệnh chính xác</text>
+    <text x="325" y="108" fill="#16a34a" font-size="10.5" font-weight="bold" text-anchor="middle">+ Lập luận giải thích XAI</text>
+
+    <!-- Path from Right to Center -->
+    <path d="M 455 75 L 415 75" fill="none" stroke="var(--secondary-color)" stroke-width="2" />
+    <polygon points="415,75 423,69 423,81" fill="var(--secondary-color)" />
+
+    <!-- Right Panel: Symbolic AI -->
+    <rect x="465" y="20" width="170" height="110" rx="8" fill="var(--bg-main)" stroke="var(--primary-color)" stroke-width="1.5" />
+    <text x="550" y="42" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">2. SYMBOLIC AI (KG)</text>
+    <line x1="480" y1="50" x2="620" y2="50" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="550" y="70" fill="var(--text-dark)" font-size="10.5" text-anchor="middle">Lập luận Bản thể học bệnh cây</text>
+    <text x="550" y="90" fill="var(--text-dark)" font-size="10.5" text-anchor="middle">Ràng buộc logic ngữ nghĩa</text>
+    <text x="550" y="110" fill="var(--text-light)" font-size="9" text-anchor="middle">(Hộp trắng / Quy tắc tri thức)</text>
+
+    <text x="325" y="160" fill="var(--text-light)" font-size="11" font-weight="bold" text-anchor="middle">Mô hình lai kết hợp Ưu điểm của cả hai trường phái</text>
+  </svg>
+</div>
+          <p>
+            Mô hình lai này giải quyết bài toán cốt lõi của đề tài <strong>AgriNeSy-Graph</strong>:
+          </p>
+          <ul>
+            <li><strong>Khối Neural (DL/CNN):</strong> Xử lý dữ liệu ảnh thô để phát hiện đốm bệnh lá lúa (nhận diện cảm quan nhạy bén).</li>
+            <li><strong>Khối Symbolic (KG/Ontology/Logic):</strong> Áp dụng luật ràng buộc nông nghiệp ngữ nghĩa để thực hiện suy luận chẩn đoán chính xác và xuất ra giải thích logic tự nhiên mà con người có thể hiểu rõ lý do (Explainable AI).</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // DOMAIN MATCHER SANDBOX ENGINE JS
+    // ----------------------------------------------------
+    const problems = [
+      {
+        domain: "Computer Vision",
+        level: "Deep Learning (DL)",
+        model: "YOLOv8 / ResNet / ViT",
+        desc: "Bài toán xử lý thông tin đầu vào dạng lưới pixel (hình ảnh lá lúa), tự động trích xuất các đặc trưng biên cạnh và hình dáng đốm bệnh qua các bộ lọc tích chập (CNN) hoặc phân mảnh tự chú ý (ViT)."
+      },
+      {
+        domain: "Natural Language Processing",
+        level: "Deep Learning (DL)",
+        model: "GPT-4 / LLaMA-3 / BERT",
+        desc: "Yêu cầu máy tính hiểu cấu trúc ngữ cảnh chuỗi văn bản đầu vào của con người và sinh câu trả lời hợp lý thông qua cơ chế tự chú ý (Self-Attention) của mạng Transformer."
+      },
+      {
+        domain: "Reinforcement Learning",
+        level: "Machine Learning (ML / RL)",
+        model: "PPO / Q-Learning",
+        desc: "Xe tự lái đóng vai trò Agent tự thực hiện tương tác thử-sai trong mê cung (Environment), học được chính sách di chuyển tối ưu nhờ tối đa hóa hàm thưởng phạt (Reward) nhận được."
+      },
+      {
+        domain: "Knowledge Graph",
+        level: "Symbolic AI",
+        model: "Neo4j / RDF / OWL Ontology",
+        desc: "Mô hình hóa mối liên kết phi phẳng của tri thức nông nghiệp. Sử dụng các đỉnh (thực thể giống lúa, loài sâu hại) và cạnh (mối quan hệ truyền bệnh) để hỗ trợ suy luận logic chính xác."
+      },
+      {
+        domain: "Generative AI",
+        level: "Deep Learning (DL)",
+        model: "Diffusion Models / GANs",
+        desc: "Sinh nội dung pixel ảnh hoàn toàn mới từ dữ liệu mô tả văn bản bằng cách học phân phối xác suất và khử nhiễu (Denoising) của các mô hình khuếch tán tiên tiến."
+      },
+      {
+        domain: "Machine Learning (Classic)",
+        level: "Machine Learning (ML)",
+        model: "Linear Regression / Random Forest",
+        desc: "Dự đoán giá trị số thực liên tục dựa trên các thuộc tính dạng bảng phẳng. Các mô hình hồi quy tuyến tính hoặc cây quyết định hoạt động tối ưu và tốn ít tài nguyên nhất trên kiểu dữ liệu này."
+      }
+    ];
+
+    function selectProblem(idx) {
+      // Toggle active buttons
+      for (let i = 0; i <= 5; i++) {
+        const btn = document.getElementById(`p-${i}`);
+        if (btn) {
+          btn.classList.remove('active');
+        }
+      }
+      document.getElementById(`p-${idx}`).classList.add('active');
+
+      // Update dashboard labels
+      const p = problems[idx];
+      document.getElementById('dash-domain').innerText = p.domain;
+      document.getElementById('dash-level').innerText = p.level;
+      document.getElementById('dash-model').innerText = p.model;
+      document.getElementById('dash-desc').innerHTML = p.desc;
+    }
+
+    // Load first problem on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      selectProblem(0);
+    });
+  </script>
+</body>
+</html>

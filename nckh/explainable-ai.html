@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Trí tuệ nhân tạo giải thích được (Explainable AI - XAI) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Interactive Simulator Box Styles */
+    .demo-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    
+    .xai-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+    .xai-btn {
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      text-align: left;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .xai-btn:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .xai-btn.active {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    
+    .xai-output-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      background-color: var(--bg-main);
+      min-height: 240px;
+    }
+    .xai-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .xai-text-desc {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+    }
+
+    /* SHAP styled bars */
+    .shap-container {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .shap-bar-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 50px;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .shap-bar-name {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--text-dark);
+    }
+    .shap-bar-wrapper {
+      height: 10px;
+      background-color: var(--border-color);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .shap-bar-fill {
+      height: 100%;
+      background-color: var(--secondary-color);
+      border-radius: 5px;
+      transition: width 0.4s ease;
+    }
+    .shap-bar-fill.neg {
+      background-color: #ef4444;
+    }
+    .shap-bar-val {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--text-light);
+      text-align: right;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">NCKH - Nền tảng AI</a> &raquo; Explainable AI (XAI)
+      </div>
+      <h1>Trí tuệ nhân tạo giải thích được (Explainable AI - XAI)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Nghiên cứu mục tiêu tối cao của AI tin cậy: cơ chế giải thích hành vi hộp đen của Deep Learning (CNN/ViT) bằng Grad-CAM, SHAP, LIME và giải pháp suy luận ngữ nghĩa của Neuro-Symbolic AI.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu NCKH</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan NCKH</a></li>
+          <li><a href="phat-hien-doi-tuong.html">1. Phát hiện đối tượng (Object Detection)</a></li>
+          <li><a href="neuro-symbolic-ai.html">2. Trí tuệ nhân tạo nơ-ron ký hiệu (Neuro-Symbolic AI)</a></li>
+          <li><a href="knowledge-graph.html">3. Đồ thị tri thức (Knowledge Graph)</a></li>
+          <li><a href="ontology.html">4. Bản thể học (Ontology)</a></li>
+          <li><a href="explainable-ai.html" class="active">5. Trí tuệ nhân tạo giải thích được (XAI)</a></li>
+        </ul>
+        
+        <h3>Lộ trình học tiếp theo</h3>
+        <ul>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">6. Mô hình YOLO (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">7. Vision Transformer (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">8. Graph Neural Network (Dự kiến)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Explainable AI (XAI) là gì?</h2>
+          <p>
+            <strong>Explainable AI (XAI - Trí tuệ nhân tạo giải thích được)</strong> là một lĩnh vực của Trí tuệ nhân tạo chuyên nghiên cứu các phương pháp và kỹ thuật giúp con người hiểu được nguyên nhân, cơ chế và lý do vì sao một mô hình AI lại đưa ra một quyết định hoặc kết quả dự đoán cụ thể.
+          </p>
+          <p>
+            Nói một cách ngắn gọn, XAI sinh ra để trả lời cho câu hỏi: <strong>"Tại sao AI lại dự đoán như vậy?"</strong>. Đây là một trong những chủ đề nghiên cứu nóng bỏng nhất của AI hiện đại, đóng vai trò sống còn trong việc triển khai AI vào các lĩnh vực nhạy cảm có độ rủi ro cao như y tế, tài chính, pháp luật, xe tự lái và nông nghiệp thông minh.
+          </p>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 200" width="100%" height="auto" style="max-width: 650px;">
+    <!-- Standard AI (Top) -->
+    <g transform="translate(10, 10)">
+      <rect x="5" y="5" width="610" height="75" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+      <text x="20" y="24" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="11" font-weight="700">1. Standard AI (AI Hộp đen)</text>
+      
+      <!-- Leaf Input -->
+      <rect x="50" y="33" width="70" height="34" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="85" y="54" fill="var(--text-dark)" font-family="sans-serif" font-size="11" text-anchor="middle">Leaf Image</text>
+      
+      <!-- Arrow 1 -->
+      <path d="M 125 50 L 160 50" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+      <polygon points="160,50 152,46 152,54" fill="var(--text-light)" />
+
+      <!-- Black box Model -->
+      <rect x="165" y="33" width="120" height="34" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.2" />
+      <text x="225" y="54" fill="white" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Black Box (CNN)</text>
+
+      <!-- Arrow 2 -->
+      <path d="M 285 50 L 320 50" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+      <polygon points="320,50 312,46 312,54" fill="var(--text-light)" />
+
+      <!-- Output -->
+      <rect x="325" y="33" width="140" height="34" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="395" y="54" fill="#dc2626" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Rice Blast (97%)</text>
+
+      <text x="480" y="54" fill="#dc2626" font-family="sans-serif" font-size="11" font-weight="700">❌ Không giải thích</text>
+    </g>
+
+    <!-- Explainable AI (Bottom) -->
+    <g transform="translate(10, 100)">
+      <rect x="5" y="5" width="610" height="85" rx="6" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+      <text x="20" y="24" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11" font-weight="700">2. Explainable AI (XAI)</text>
+
+      <!-- Leaf Input -->
+      <rect x="50" y="35" width="70" height="34" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="85" y="56" fill="var(--text-dark)" font-family="sans-serif" font-size="11" text-anchor="middle">Leaf Image</text>
+
+      <!-- Arrow 1 -->
+      <path d="M 125 52 L 160 52" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="160,52 152,48 152,56" fill="var(--secondary-color)" />
+
+      <!-- Glass box Model -->
+      <rect x="165" y="35" width="120" height="34" rx="4" fill="var(--bg-card)" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <text x="225" y="56" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Explainable Model</text>
+
+      <!-- Arrow 2 -->
+      <path d="M 285 52 L 320 52" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="320,52 312,48 312,56" fill="var(--secondary-color)" />
+
+      <!-- Output -->
+      <rect x="325" y="35" width="140" height="34" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="395" y="56" fill="#16a34a" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Rice Blast (97%)</text>
+
+      <!-- Explanation -->
+      <rect x="480" y="20" width="120" height="60" rx="4" fill="var(--bg-card)" stroke="#16a34a" stroke-width="1.2" />
+      <text x="540" y="35" fill="#16a34a" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">✓ Diamond Spot</text>
+      <text x="540" y="50" fill="#16a34a" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">✓ High Humidity</text>
+      <text x="540" y="65" fill="#16a34a" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">✓ Rule #18 Applied</text>
+    </g>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Vấn nạn Hộp đen (Black Box Problem)</h2>
+          <p>
+            Các mô hình học sâu (Deep Learning) hiện đại như mạng nơ-ron tích chập (CNN), Transformer, LLM có hàng triệu đến hàng tỷ tham số toán học. Chúng đưa ra kết quả dự đoán với độ tin cậy rất cao (ví dụ: chẩn đoán ảnh chụp lá lúa nhiễm bệnh đạo ôn với tỷ lệ 98%), nhưng con người hoàn toàn không biết cấu trúc bên trong mô hình đã tính toán ra sao để ra được kết quả đó.
+          </p>
+          <blockquote>
+            <strong>Sự nguy hiểm của mô hình Hộp đen:</strong><br>
+            <ul>
+              <li><strong>Rủi ro chẩn đoán sai:</strong> AI có thể nhận diện đốm vàng trên lá là bệnh đạo ôn, nhưng thực chất nó chỉ "nhìn" vào vệt đất dính trên lá lúa (tương quan giả - spurious correlation). Nếu không có XAI, người nông dân có thể phun sai thuốc bảo vệ thực vật, làm hỏng ruộng lúa.</li>
+              <li><strong>Thiếu tính pháp lý &amp; tin cậy:</strong> Trong y tế, bác sĩ không dám điều trị ung thư dựa trên kết luận của AI nếu mô hình không giải thích được vì sao chuẩn đoán là ung thư.</li>
+            </ul>
+          </blockquote>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Phân loại các hướng tiếp cận XAI</h2>
+          <p>Có hai trường phái lớn để tạo ra một hệ thống AI có khả năng giải thích:</p>
+          
+          <h3>2.1. Intrinsic Explainability (Tự giải thích cấu trúc)</h3>
+          <p>
+            Sử dụng các mô hình vốn đã đơn giản và minh bạch về mặt cấu trúc để con người nhìn vào là hiểu ngay luồng ra quyết định. Ví dụ: Cây quyết định (Decision Tree), Hệ thống luật logic (Rule-based System), Hồi quy tuyến tính.
+          </p>
+
+          <h3>2.2. Post-hoc Explainability (Giải thích sau dự đoán)</h3>
+          <p>
+            Chấp nhận mô hình cốt lõi là một hộp đen phức tạp (như CNN) để đạt hiệu năng tối đa. Sau khi mô hình đưa ra dự đoán, ta áp dụng một kỹ thuật XAI độc lập bên ngoài để giải thích hành vi của nó (ví dụ: tạo heatmap vùng chú ý).
+          </p>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 700 220" width="100%" height="auto" style="max-width: 700px;">
+    <!-- Left: Intrinsic Explainability -->
+    <g transform="translate(10, 10)">
+      <rect x="15" y="15" width="280" height="170" rx="8" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <text x="155" y="35" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">1. Intrinsic (Tự giải thích cấu trúc)</text>
+
+      <!-- Decision Tree representation -->
+      <rect x="100" y="55" width="110" height="24" rx="4" fill="var(--bg-card)" stroke="var(--text-dark)" stroke-width="1.2" />
+      <text x="155" y="71" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" text-anchor="middle">Humidity > 90%?</text>
+
+      <path d="M 155 79 L 105 105" fill="none" stroke="var(--border-color)" stroke-width="1.2" />
+      <text x="120" y="93" fill="var(--text-light)" font-family="sans-serif" font-size="9.5" text-anchor="middle">Yes</text>
+      <path d="M 155 79 L 205 105" fill="none" stroke="var(--border-color)" stroke-width="1.2" />
+      <text x="190" y="93" fill="var(--text-light)" font-family="sans-serif" font-size="9.5" text-anchor="middle">No</text>
+
+      <rect x="50" y="105" width="90" height="24" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.2" />
+      <text x="95" y="121" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" text-anchor="middle">Diamond Spot?</text>
+
+      <rect x="175" y="105" width="80" height="24" rx="4" fill="var(--bg-code)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="215" y="121" fill="var(--text-light)" font-family="sans-serif" font-size="10.5" text-anchor="middle">Healthy</text>
+
+      <path d="M 95 129 L 95 145" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" />
+      <text x="85" y="141" fill="var(--secondary-color)" font-family="sans-serif" font-size="9.5">Yes</text>
+
+      <rect x="50" y="145" width="90" height="24" rx="4" fill="var(--bg-card)" stroke="#16a34a" stroke-width="1.5" />
+      <text x="95" y="161" fill="#16a34a" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Rice Blast</text>
+    </g>
+
+    <!-- Divider -->
+    <line x1="340" y1="20" x2="340" y2="200" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="1" />
+
+    <!-- Right: Post-hoc Explainability -->
+    <g transform="translate(350, 10)">
+      <rect x="15" y="15" width="290" height="170" rx="8" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+      <text x="160" y="35" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">2. Post-hoc (Giải thích mô hình Hộp đen)</text>
+
+      <!-- CNN Model -->
+      <rect x="35" y="65" width="100" height="40" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5" />
+      <text x="85" y="89" fill="white" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Black Box (CNN)</text>
+
+      <!-- Connection to output -->
+      <path d="M 135 85 L 180 85" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="180,85 172,81 172,89" fill="var(--secondary-color)" />
+
+      <!-- Prediction -->
+      <rect x="185" y="65" width="105" height="40" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="237.5" y="89" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Rice Blast (97%)</text>
+
+      <!-- Explainer Hook -->
+      <path d="M 85 105 L 85 135 L 180 135" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" stroke-dasharray="3 3" />
+      <polygon points="180,135 172,131 172,139" fill="var(--secondary-color)" />
+
+      <!-- Explainer Block -->
+      <rect x="185" y="115" width="105" height="40" rx="4" fill="var(--bg-card)" stroke="#e2e8f0" stroke-width="1.5" />
+      <text x="237.5" y="132" fill="var(--secondary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Grad-CAM / SHAP</text>
+      <text x="237.5" y="146" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Bản đồ vùng chú ý)</text>
+    </g>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Các phương pháp giải thích XAI phổ biến</h2>
+          <p>Hiện nay, giới nghiên cứu AI sử dụng một số công cụ XAI tiêu chuẩn:</p>
+          <ul>
+            <li>
+              <strong>Grad-CAM:</strong> Dành cho dữ liệu hình ảnh (Computer Vision). Nó tính toán dòng gradient đi qua lớp tích chập cuối cùng của CNN để sinh ra một bản đồ nhiệt (Heatmap). Bản đồ nhiệt này chỉ rõ các vùng điểm ảnh (pixels) đóng góp lớn nhất vào dự đoán của mô hình.
+            </li>
+            <li>
+              <strong>LIME:</strong> Hoạt động bằng cách thay đổi nhỏ dữ liệu đầu vào (che/xóa một vùng ảnh) để xem quyết định ngõ ra thay đổi thế nào, từ đó xác định độ quan trọng của từng vùng dữ liệu.
+            </li>
+            <li>
+              <strong>SHAP:</strong> Dựa trên lý thuyết trò chơi (Shapley values) để tính toán chính xác điểm số đóng góp của từng thuộc tính đặc trưng đối với kết quả dự đoán cuối cùng.
+            </li>
+          </ul>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 600 220" width="100%" height="auto" style="max-width: 600px;">
+    <!-- Root -->
+    <rect x="200" y="10" width="200" height="36" rx="6" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="300" y="32" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">Explainable AI (XAI) Methods</text>
+
+    <!-- Branch Paths -->
+    <path d="M 300 46 L 300 80 L 80 80 L 80 110" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+    <path d="M 300 46 L 300 80 L 250 80 L 250 110" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+    <path d="M 300 46 L 300 80 L 420 80 L 420 110" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+    <path d="M 300 46 L 300 80 L 530 80 L 530 110" fill="none" stroke="var(--secondary-color)" stroke-width="2" />
+
+    <!-- Leaf 1: Pixel attribution -->
+    <rect x="25" y="110" width="110" height="70" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="80" y="130" fill="var(--text-dark)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Pixel Attribution</text>
+    <line x1="35" y1="138" x2="125" y2="138" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="80" y="154" fill="var(--text-light)" font-family="monospace" font-size="9.5" text-anchor="middle">Grad-CAM</text>
+    <text x="80" y="167" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Attribution Maps)</text>
+
+    <!-- Leaf 2: Perturbation -->
+    <rect x="195" y="110" width="110" height="70" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="250" y="130" fill="var(--text-dark)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Perturbation</text>
+    <line x1="205" y1="138" x2="295" y2="138" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="250" y="154" fill="var(--text-light)" font-family="monospace" font-size="9.5" text-anchor="middle">LIME</text>
+    <text x="250" y="167" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Local perturbations)</text>
+
+    <!-- Leaf 3: Feature contrib -->
+    <rect x="365" y="110" width="110" height="70" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="420" y="130" fill="var(--text-dark)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Feature Values</text>
+    <line x1="375" y1="138" x2="465" y2="138" stroke="var(--border-color)" stroke-width="0.8" />
+    <text x="420" y="154" fill="var(--text-light)" font-family="monospace" font-size="9.5" text-anchor="middle">SHAP</text>
+    <text x="420" y="167" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Shapley values)</text>
+
+    <!-- Leaf 4: Semantic Graph (Neuro-Symbolic) -->
+    <rect x="480" y="110" width="110" height="70" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="535" y="130" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Neuro-Symbolic</text>
+    <line x1="490" y1="138" x2="580" y2="138" stroke="var(--highlight-border)" stroke-width="1" />
+    <text x="535" y="154" fill="var(--secondary-color)" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">AgriNeSy-Graph</text>
+    <text x="535" y="167" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Knowledge-based XAI)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2.5rem;">
+          <h2>4. Trình Mô Phỏng Giải Thích XAI Tương Tác (Interactive Explainer)</h2>
+          <p>
+            Hãy tương tác với trình mô phỏng XAI dưới đây để trực quan hóa sự khác biệt sâu sắc giữa các chế độ giải thích khác nhau đối với ảnh chụp lá lúa nhiễm bệnh:
+          </p>
+
+          <!-- INTERACTIVE XAI SIMULATOR -->
+          <div class="demo-container">
+            <div class="demo-grid">
+              <!-- Left side: Interactive Leaf representation -->
+              <div style="background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; display: flex; justify-content: center; align-items: center;">
+                <svg viewBox="0 0 300 200" width="100%" height="auto" style="max-width: 300px; display: block; margin: 0 auto;">
+  <defs>
+    <!-- Grad-CAM Heatmap Radial Gradient -->
+    <radialGradient id="gradcam-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.85" />
+      <stop offset="35%" stop-color="#f59e0b" stop-opacity="0.65" />
+      <stop offset="70%" stop-color="#3b82f6" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Leaf Base Structure -->
+  <path d="M 30,100 C 90,40 210,40 270,100 C 210,160 90,160 30,100 Z" fill="#22c55e" stroke="#166534" stroke-width="2.5" />
+  <!-- Main Vein -->
+  <path d="M 30,100 Q 150,100 270,100" fill="none" stroke="#15803d" stroke-width="2" />
+  
+  <!-- Veins -->
+  <path d="M 80,100 Q 110,75 140,65" fill="none" stroke="#15803d" stroke-width="1.2" />
+  <path d="M 80,100 Q 110,125 140,135" fill="none" stroke="#15803d" stroke-width="1.2" />
+  <path d="M 150,100 Q 180,78 210,70" fill="none" stroke="#15803d" stroke-width="1.2" />
+  <path d="M 150,100 Q 180,122 210,130" fill="none" stroke="#15803d" stroke-width="1.2" />
+
+  <!-- Symptom: Diamond Spot (Blast Disease spot) in the center -->
+  <polygon id="diamond-spot-node" points="150,85 165,100 150,115 135,100" fill="#a1a1aa" stroke="#52525b" stroke-width="1.5" />
+  <text x="150" y="127" id="diamond-spot-text" fill="var(--text-dark)" font-size="8.5" font-weight="700" text-anchor="middle">Diamond Spot</text>
+
+  <!-- Symptom: Brown Spot (Brown Spot Disease spot) on the left side -->
+  <circle id="brown-spot-node" cx="80" cy="80" r="9" fill="#78350f" stroke="#451a03" stroke-width="1.5" />
+  <text x="80" y="65" id="brown-spot-text" fill="var(--text-dark)" font-size="8.5" font-weight="700" text-anchor="middle">Brown Spot</text>
+
+  <!-- Grad-CAM Heatmap overlay (toggled opacity by JS) -->
+  <circle id="gradcam-heatmap-layer" cx="150" cy="100" r="45" fill="url(#gradcam-glow)" style="opacity: 0; transition: opacity 0.4s ease;" />
+</svg>
+              </div>
+
+              <!-- Right side: Control panel & Log output -->
+              <div>
+                <h4 style="margin-top: 0; color: var(--secondary-color);">Chọn Phương Pháp Giải Thích (Explainer):</h4>
+                <div class="xai-controls">
+                  <button class="xai-btn active" onclick="switchXAI('cnn', this)">🔌 CNN truyền thống (No Explanation)</button>
+                  <button class="xai-btn" onclick="switchXAI('gradcam', this)">🔥 Grad-CAM Heatmap (Giải thích vùng ảnh)</button>
+                  <button class="xai-btn" onclick="switchXAI('shap', this)">📊 SHAP Values (Giải thích giá trị đặc trưng)</button>
+                  <button class="xai-btn" onclick="switchXAI('nesy', this)">🧠 Neuro-Symbolic AI (Giải thích ngữ nghĩa đồ thị)</button>
+                </div>
+
+                <div class="xai-output-box" style="margin-top: 1.5rem;">
+                  <div class="xai-title" id="xai-log-title">Kết quả dự đoán (CNN)</div>
+                  <div class="xai-text-desc" id="xai-log-content">
+                    Mô hình dự đoán: <strong>Rice Blast Disease (Bệnh đạo ôn)</strong> với độ tin cậy 97%.<br>
+                    <span style="color: #dc2626; font-weight: bold;">[Không có giải thích nào thêm. Đây là mô hình Hộp đen]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. XAI trong kiến trúc Neuro-Symbolic AI</h2>
+          <p>
+            Mặc dù Grad-CAM hay SHAP rất hữu ích, chúng vẫn chỉ đưa ra các giải thích toán học thô sơ (như chỉ ra tọa độ vùng ảnh màu đỏ hoặc điểm số đóng góp $+0.41$). Người nông dân không thể hiểu được điểm số $+0.41$ có ý nghĩa sinh học như thế nào.
+          </p>
+          <p>
+            <strong>Neuro-Symbolic AI</strong> giải quyết triệt để rào cản này bằng cách **gắn ngữ nghĩa tri thức** cho các phát hiện:
+          </p>
+          <pre style="background-color: var(--bg-code); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6; overflow-x: auto;">
+Ảnh lá &rarr; CNN phát hiện &rarr; Ánh xạ vào Ontology &rarr; Kết nối Knowledge Graph &rarr; Lập luận logic &rarr; Giải thích ngữ nghĩa
+          </pre>
+          <p>
+            Lúc này, AI không chỉ hiển thị điểm số, mà nó sẽ đưa ra một lập luận logic chặt chẽ:
+          </p>
+          <div class="callout" style="background-color: var(--highlight-bg); border-color: var(--highlight-border);">
+            <strong>Lời giải thích ngữ nghĩa chuyên gia:</strong><br>
+            "Hệ thống phát hiện thấy triệu chứng <em>Vết bệnh hình thoi (Diamond Spot)</em>. Dựa trên Đồ thị tri thức, triệu chứng này kết hợp với yếu tố môi trường <em>Độ ẩm không khí cao</em> kích hoạt luật sinh học số 18, kết luận cây lúa mắc bệnh <em>Đạo ôn</em> do nấm <em>Magnaporthe oryzae</em>."
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>6. Sơ đồ liên kết toàn diện các khái niệm đã học</h2>
+          <p>
+            Dưới đây là bức tranh toàn cảnh kết nối toàn bộ các môn học NCKH bạn đã đi qua. Nó chỉ rõ vai trò của từng cấu phần hướng đến đích đến cuối cùng là **Explainable AI (XAI)**:
+          </p>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 760 160" width="100%" height="auto" style="max-width: 760px;">
+    <defs>
+      <marker id="arrow-xai" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Node 1: Object Detection -->
+    <rect x="10" y="50" width="85" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="52.5" y="73" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Object Detection</text>
+    <text x="52.5" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(YOLO / R-CNN)</text>
+
+    <path d="M 95 75 L 110 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 2: Neural Net (CNN/ViT) -->
+    <rect x="120" y="50" width="95" height="50" rx="4" fill="rgba(34, 197, 94, 0.08)" stroke="#16a34a" stroke-width="1.2" />
+    <text x="167.5" y="73" fill="#16a34a" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Neural (CNN/ViT)</text>
+    <text x="167.5" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(Perception)</text>
+
+    <path d="M 215 75 L 230 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 3: Feature Extraction -->
+    <rect x="240" y="50" width="90" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="285" y="73" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Trích Xuất Đặc trưng</text>
+    <text x="285" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(Vết đốm hình thoi)</text>
+
+    <path d="M 330 75 L 345 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 4: Ontology -->
+    <rect x="355" y="50" width="90" height="50" rx="4" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5" />
+    <text x="400" y="73" fill="#d97706" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Ontology</text>
+    <text x="400" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(Schema Ràng buộc)</text>
+
+    <path d="M 445 75 L 460 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 5: Knowledge Graph -->
+    <rect x="470" y="50" width="100" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.2" />
+    <text x="520" y="73" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Knowledge Graph</text>
+    <text x="520" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(Bộ nhớ tri thức)</text>
+
+    <path d="M 570 75 L 585 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 6: Symbolic Reasoning -->
+    <rect x="595" y="50" width="80" height="50" rx="4" fill="rgba(239, 68, 68, 0.08)" stroke="#ef4444" stroke-width="1.2" />
+    <text x="635" y="73" fill="#dc2626" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Suy Luận Logic</text>
+    <text x="635" y="87" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="8.5" text-anchor="middle">(Rules Engine)</text>
+
+    <path d="M 675 75 L 690 75" fill="none" stroke="var(--secondary-color)" stroke-width="1.2" marker-end="url(#arrow-xai)" />
+
+    <!-- Node 7: Prediction + XAI Output -->
+    <rect x="700" y="25" width="55" height="100" rx="4" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.5" />
+    <text x="727.5" y="55" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle">Dự đoán</text>
+    <text x="727.5" y="70" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle">+</text>
+    <text x="727.5" y="85" fill="#16a34a" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Giải Thích</text>
+    <text x="727.5" y="102" fill="#16a34a" font-family="system-ui, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">(XAI)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>7. Ưu điểm và Thách thức của XAI</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #10b981;">✓ Ưu điểm thực tiễn</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Xây dựng niềm tin vững chắc của người dùng cuối (nông dân, bác sĩ).</li>
+                <li>Giúp kỹ sư dễ dàng gỡ lỗi (debug) mô hình khi xảy ra chẩn đoán sai lệch.</li>
+                <li>Đảm bảo tính tuân thủ pháp lý và tiêu chuẩn kiểm thử công nghệ.</li>
+              </ul>
+            </div>
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #ef4444;">✗ Thách thức kỹ thuật</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Giải thích toán học (như Grad-CAM) đôi khi chỉ mang tính xấp xỉ, chưa phản ánh 100% cơ chế bên trong mạng nơ-ron.</li>
+                <li>Tích hợp các module giải thích ngữ nghĩa làm tăng độ phức tạp kiến trúc và chi phí tính toán.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // INTERACTIVE XAI SIMULATOR JS
+    // ----------------------------------------------------
+    function switchXAI(mode, btn) {
+      // Toggle button classes
+      document.querySelectorAll('.xai-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const heatmap = document.getElementById('gradcam-heatmap-layer');
+      const diamondSpot = document.getElementById('diamond-spot-node');
+      const brownSpot = document.getElementById('brown-spot-node');
+      
+      const logTitle = document.getElementById('xai-log-title');
+      const logContent = document.getElementById('xai-log-content');
+
+      // Reset styles
+      heatmap.style.opacity = '0';
+      diamondSpot.setAttribute('stroke', '#52525b');
+      diamondSpot.setAttribute('stroke-width', '1.5');
+      brownSpot.setAttribute('stroke', '#451a03');
+      brownSpot.setAttribute('stroke-width', '1.5');
+
+      if (mode === 'cnn') {
+        logTitle.innerText = 'Kết quả dự đoán (CNN thô)';
+        logContent.innerHTML = `
+          Mô hình dự đoán: <strong>Rice Blast Disease (Bệnh đạo ôn)</strong> với độ tin cậy 97%.<br>
+          <span style="color: #dc2626; font-weight: bold; margin-top: 0.5rem; display: block;">[Không có giải thích nào thêm. Đây là mô hình Hộp đen]</span>
+        `;
+      } 
+      else if (mode === 'gradcam') {
+        // Show heatmap overlay
+        heatmap.style.opacity = '1';
+        diamondSpot.setAttribute('stroke', '#ef4444');
+        diamondSpot.setAttribute('stroke-width', '2.5');
+        
+        logTitle.innerText = 'Bản đồ nhiệt Grad-CAM';
+        logContent.innerHTML = `
+          Mô hình dự đoán: <strong>Rice Blast Disease (Bệnh đạo ôn)</strong> với độ tin cậy 97%.<br><br>
+          <strong>Giải thích pixel (CAM):</strong><br>
+          Bộ quét chập Grad-CAM chỉ ra mạng CNN đang tập trung 88% năng lượng chú ý (vùng màu đỏ phát sáng trên heatmap) vào đúng khu vực chứa vết bệnh hình thoi (<code>Diamond Spot</code>) ở trung tâm lá lúa để đưa ra kết luận chẩn đoán.
+        `;
+      } 
+      else if (mode === 'shap') {
+        logTitle.innerText = 'Đóng góp đặc trưng SHAP Values';
+        logContent.innerHTML = `
+          Mô hình dự đoán: <strong>Rice Blast Disease (Bệnh đạo ôn)</strong> với độ tin cậy 97%.<br><br>
+          <strong>Trọng số đóng góp SHAP:</strong>
+          <div class="shap-container">
+            <div class="shap-bar-row">
+              <span class="shap-bar-name">Diamond Spot</span>
+              <div class="shap-bar-wrapper"><div class="shap-bar-fill" style="width: 82%;"></div></div>
+              <span class="shap-bar-val">+0.41</span>
+            </div>
+            <div class="shap-bar-row">
+              <span class="shap-bar-name">Air Humidity</span>
+              <div class="shap-bar-wrapper"><div class="shap-bar-fill" style="width: 70%;"></div></div>
+              <span class="shap-bar-val">+0.35</span>
+            </div>
+            <div class="shap-bar-row">
+              <span class="shap-bar-name">Leaf Vein Color</span>
+              <div class="shap-bar-wrapper"><div class="shap-bar-fill" style="width: 16%;"></div></div>
+              <span class="shap-bar-val">+0.08</span>
+            </div>
+            <div class="shap-bar-row">
+              <span class="shap-bar-name">Background Noise</span>
+              <div class="shap-bar-wrapper"><div class="shap-bar-fill neg" style="width: 4%;"></div></div>
+              <span class="shap-bar-val">-0.02</span>
+            </div>
+          </div>
+        `;
+      } 
+      else if (mode === 'nesy') {
+        // Highlight elements
+        diamondSpot.setAttribute('stroke', 'var(--secondary-color)');
+        diamondSpot.setAttribute('stroke-width', '2.5');
+
+        logTitle.innerText = 'Giải thích ngữ nghĩa Neuro-Symbolic AI';
+        logContent.innerHTML = `
+          Mô hình dự đoán: <strong>Rice Blast Disease (Bệnh đạo ôn)</strong> với độ tin cậy 97%.<br><br>
+          <strong>Lập luận ngữ nghĩa chuyên gia (Explainable AI):</strong>
+          <ul style="padding-left: 1.25rem; margin-top: 0.5rem;">
+            <li>Phát hiện vết bệnh hình thoi (<code>Diamond Spot</code>) từ module thị giác CNN.</li>
+            <li>Ontology xác định <code>Diamond Spot</code> thuộc lớp <code>Symptom</code> của cây lúa.</li>
+            <li>Đồ thị tri thức (Knowledge Graph) liên kết triệu chứng này với nấm <code>Magnaporthe oryzae</code> lây lan mạnh khi độ ẩm (<code>Air Humidity</code>) cao.</li>
+            <li>Đã kích hoạt luật chẩn đoán số 18 thành công, giải thích trọn vẹn nguyên nhân gây bệnh.</li>
+          </ul>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

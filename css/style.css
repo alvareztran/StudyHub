@@ -25,7 +25,7 @@ body {
   font-family: var(--font-sans);
   color: var(--text-dark);
   background-color: var(--bg-main);
-  line-height: 1.7;
+  line-height: 1.85;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
@@ -110,17 +110,17 @@ h4 {
 
 /* Paragraphs & Lists */
 p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: justify;
 }
 
 ul, ol {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   padding-left: 1.75rem;
 }
 
 li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
 /* Math, Code, Matrices */

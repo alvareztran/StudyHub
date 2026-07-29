@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 7: Mô hình AI tạo sinh (Generative Models) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Latent Space Simulator Box */
+    .sim-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .slider-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .latent-slider {
+      width: 100%;
+      accent-color: var(--secondary-color);
+      cursor: pointer;
+    }
+    .canvas-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sim-canvas {
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .sim-console {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.825rem;
+      line-height: 1.5;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Các mô hình AI &amp; Lĩnh vực con</a> &raquo; Mô hình AI tạo sinh
+      </div>
+      <h1>Bài 7: Mô hình AI tạo sinh (Generative Models)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tìm hiểu không gian tiềm ẩn (Latent Space), kiến trúc nén-giải mã Autoencoders, Variational Autoencoders (VAE), mạng GAN cạnh tranh đối nghịch và nguyên lý khử nhiễu khuếch tán Diffusion.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu Môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan môn học</a></li>
+          <li><a href="tong-quan-ai.html">1. Tổng quan AI và lĩnh vực con</a></li>
+          <li><a href="classical-ml.html">2. Các mô hình Học máy kinh điển</a></li>
+          <li><a href="ann-mlp.html">3. Mạng Nơ-ron &amp; Học sâu (ANN &amp; MLP)</a></li>
+          <li><a href="cnn.html">4. Mạng tích chập CNN</a></li>
+          <li><a href="nlp-models.html">5. Các mô hình NLP</a></li>
+          <li><a href="reinforcement-learning.html">6. Học tăng cường RL</a></li>
+          <li><a href="generative-models.html" class="active">7. Mô hình AI tạo sinh</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Khái niệm về Generative Models</h2>
+          <p>
+            <strong>Generative Models (Mô hình tạo sinh)</strong> là nhóm mô hình AI có khả năng học được phân bố xác suất thực tế của dữ liệu huấn luyện (Data Distribution), từ đó sinh ra các mẫu dữ liệu mới hoàn toàn (như văn bản, hình ảnh, âm thanh, video) có đặc điểm và cấu trúc tương đồng với dữ liệu gốc, thay vì chỉ thực hiện các bài toán phân loại nhãn hay dự đoán số trị.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Đối sánh: Discriminative Model vs Generative Model</h2>
+          <ul>
+            <li><strong>Discriminative Model (Mô hình phân biệt):</strong> Học ranh giới quyết định giữa các lớp dữ liệu để tìm xác suất có điều kiện $P(Y | X)$ (ví dụ: đưa ảnh lá lúa qua CNN để phân biệt xem là lá khỏe hay lá bệnh).</li>
+            <li><strong>Generative Model (Mô hình tạo sinh):</strong> Học cách mô phỏng lại cách phân bố dữ liệu đầu vào $P(X)$ hoặc xác suất đồng thời $P(X, Y)$ (ví dụ: yêu cầu AI vẽ ra một chiếc lá lúa bị bệnh đốm nâu mới hoàn toàn).</li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 560 160" width="100%" height="auto" style="max-width: 560px;">
+    <!-- LEFT: Discriminative -->
+    <rect x="15" y="10" width="240" height="140" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="135" y="28" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">Mô hình phân biệt (Discriminative)</text>
+    
+    <!-- Input image block -->
+    <rect x="35" y="55" width="45" height="35" rx="3" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+    <text x="57" y="76" fill="var(--secondary-color)" font-size="8.5" text-anchor="middle">Ảnh X</text>
+    
+    <!-- Arrow -->
+    <path d="M 85 72 L 115 72" fill="none" stroke="var(--text-light)" stroke-width="1.2" />
+    <polygon points="115,72 108,68 108,76" fill="var(--text-light)" />
+
+    <!-- Model block -->
+    <rect x="120" y="55" width="55" height="35" rx="3" fill="var(--secondary-color)" />
+    <text x="147" y="76" fill="white" font-size="9" font-weight="bold" text-anchor="middle">CNN/MLP</text>
+
+    <!-- Arrow -->
+    <path d="M 180 72 L 205 72" fill="none" stroke="var(--text-light)" stroke-width="1.2" />
+    <polygon points="205,72 198,68 198,76" fill="var(--text-light)" />
+
+    <!-- Label output -->
+    <text x="235" y="76" fill="var(--primary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">Cat</text>
+    <text x="135" y="125" fill="var(--text-light)" font-size="9" text-anchor="middle">Học ranh giới quyết định P(Y|X)</text>
+
+
+    <!-- RIGHT: Generative -->
+    <rect x="305" y="10" width="240" height="140" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="425" y="28" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">Mô hình tạo sinh (Generative)</text>
+
+    <!-- Label input -->
+    <text x="335" y="76" fill="var(--primary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">Cat</text>
+    <text x="335" y="90" fill="var(--text-light)" font-size="7.5" text-anchor="middle">(hoặc nhiễu z)</text>
+
+    <!-- Arrow -->
+    <path d="M 355 72 L 385 72" fill="none" stroke="var(--text-light)" stroke-width="1.2" />
+    <polygon points="385,72 378,68 378,76" fill="var(--text-light)" />
+
+    <!-- Model block -->
+    <rect x="390" y="55" width="55" height="35" rx="3" fill="#10b981" />
+    <text x="417" y="76" fill="white" font-size="9" font-weight="bold" text-anchor="middle">Gen AI</text>
+
+    <!-- Arrow -->
+    <path d="M 450 72 L 475 72" fill="none" stroke="var(--text-light)" stroke-width="1.2" />
+    <polygon points="475,72 468,68 468,76" fill="var(--text-light)" />
+
+    <!-- Output image block -->
+    <rect x="480" y="55" width="50" height="35" rx="3" fill="var(--highlight-bg)" stroke="#10b981" stroke-width="1.2" />
+    <text x="505" y="76" fill="#10b981" font-size="8.5" font-weight="bold" text-anchor="middle">Ảnh mới</text>
+    
+    <text x="425" y="125" fill="var(--text-light)" font-size="9" text-anchor="middle">Học phân bố dữ liệu thực P(X)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Không gian tiềm ẩn (Latent Space) và Autoencoders</h2>
+          <p>
+            <strong>Latent Space (Không gian tiềm ẩn):</strong> Là một không gian vector đa chiều thu nhỏ biểu diễn các đặc trưng cốt lõi ẩn giấu của dữ liệu.
+          </p>
+          <ul>
+            <li><strong>Autoencoder (AE):</strong> Gồm mạng **Encoder** nén dữ liệu pixel kích thước lớn về một vector tiềm ẩn duy nhất $z$ tại cổ chai (**Bottleneck**), và mạng **Decoder** học cách giải nén vector $z$ đó để khôi phục ảnh gốc. Mô hình tối ưu bằng hàm lỗi tái cấu trúc Reconstruction Loss (như MSE).</li>
+            <li><strong>Variational Autoencoder (VAE):</strong> Bước nâng cấp quan trọng của AE. Thay vì nén thành một vector tĩnh $z$ dễ bị rời rạc hóa, VAE nén dữ liệu thành một **Phân bố xác suất Gaussian** đại diện bởi Kỳ vọng $\mu$ và Phương sai $\sigma^2$. Để lan truyền ngược được qua bước lấy mẫu ngẫu nhiên $z \sim \mathcal{N}(\mu, \sigma^2)$, VAE áp dụng mẹo **Reparameterization Trick**:
+            $$z = \mu + \sigma \odot \epsilon \quad 	ext{với} \quad \epsilon \sim \mathcal{N}(0, I)$$
+            </li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 580 170" width="100%" height="auto" style="max-width: 580px;">
+    <!-- Input Image X -->
+    <rect x="15" y="55" width="50" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="40" y="84" fill="var(--primary-color)" font-size="11" font-weight="bold" text-anchor="middle">Ảnh X</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 70 80 L 105 80" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="105,80 97,75 97,85" fill="var(--secondary-color)" />
+
+    <!-- Encoder Trapezoid -->
+    <polygon points="110,40 180,60 180,100 110,120" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="145" y="84" fill="var(--primary-color)" font-size="11" font-weight="bold" text-anchor="middle">Encoder</text>
+
+    <!-- Latent Space (Bottleneck / Distribution) -->
+    <!-- Mean & LogVar circles for VAE representation -->
+    <circle cx="230" cy="55" r="14" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.2" />
+    <text x="230" y="59" fill="var(--text-dark)" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">μ</text>
+
+    <circle cx="230" cy="105" r="14" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.2" />
+    <text x="230" y="109" fill="var(--text-dark)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">σ²</text>
+    
+    <path d="M 180 80 L 210 80" fill="none" stroke="var(--border-color)" stroke-width="1" />
+    <text x="230" y="145" fill="var(--text-light)" font-size="9" text-anchor="middle">Latent Space (z)</text>
+
+    <!-- Reparameterization Trick transition -->
+    <path d="M 248 80 L 285 80" fill="none" stroke="var(--border-color)" stroke-width="1.2" />
+    <polygon points="285,80 277,75 277,85" fill="var(--border-color)" />
+    <text x="266" y="70" fill="var(--text-light)" font-family="monospace" font-size="8" text-anchor="middle">z=μ+σ·ε</text>
+
+    <!-- Decoder Trapezoid -->
+    <polygon points="295,60 365,40 365,120 295,100" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="330" y="84" fill="var(--primary-color)" font-size="11" font-weight="bold" text-anchor="middle">Decoder</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 370 80 L 405 80" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="405,80 397,75 397,85" fill="var(--secondary-color)" />
+
+    <!-- Reconstructed Image X_hat -->
+    <rect x="415" y="55" width="50" height="50" rx="4" fill="var(--bg-main)" stroke="#10b981" stroke-width="1.8" />
+    <text x="440" y="84" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">Ảnh X̂</text>
+    <text x="440" y="125" fill="#10b981" font-size="8.5" text-anchor="middle">Reconstructed</text>
+  </svg>
+</div>
+          <p>
+            Hàm mất mát của VAE phối hợp giữa Reconstruction Loss ( MSE hoặc Cross Entropy) và sai khác phân bố **KL Divergence Loss** để ép phân bố tiềm ẩn tuân thủ phân bố Gaussian chuẩn tắc $\mathcal{N}(0, I)$:
+            $$\mathcal{L}_{	ext{VAE}} = \mathcal{L}_{	ext{Reconstruction}} + D_{	ext{KL}}\left( q_\phi(z|x) \parallel p(z) ight)$$
+          </p>
+
+          <!-- INTERACTIVE LATENT SPACE LATENT DECODER -->
+          <h3>Trình giả lập giải mã Không gian tiềm ẩn (Latent Space Decoder)</h3>
+          <p>
+            Mô phỏng cơ chế của Decoder trong VAE/Generative AI giải mã vector tiềm ẩn $z = [z_1, z_2]$ thành ảnh chiếc lá lúa sinh ra tương ứng. Di chuyển các thanh trượt tọa độ tiềm ẩn để quan sát sự thay đổi hình dáng chiếc lá và sự thay đổi của hàm mất mát KL Divergence:
+          </p>
+
+          <div class="sim-box">
+            <div class="sim-grid">
+              <!-- Sliders controls -->
+              <div class="slider-container">
+                <h4 style="margin-top:0; color: var(--secondary-color);">Tọa độ Vector tiềm ẩn $z$:</h4>
+                
+                <div class="slider-group">
+                  <div class="slider-label">
+                    <span>Chiều $z_1$ (Mức độ đốm bệnh lá)</span>
+                    <span id="z1-val">0.00</span>
+                  </div>
+                  <input type="range" id="z1-slider" class="latent-slider" min="-2" max="2" step="0.1" value="0" oninput="updateLatentDecoder()">
+                </div>
+
+                <div class="slider-group">
+                  <div class="slider-label">
+                    <span>Chiều $z_2$ (Mức độ vàng úa / Necrosis)</span>
+                    <span id="z2-val">0.00</span>
+                  </div>
+                  <input type="range" id="z2-slider" class="latent-slider" min="-2" max="2" step="0.1" value="0" oninput="updateLatentDecoder()">
+                </div>
+                
+                <div class="sim-console" id="latent-math-log">
+                  Hàm mất mát KL Divergence tương ứng...
+                </div>
+              </div>
+
+              <!-- Graphic Leaf Canvas -->
+              <div class="canvas-container">
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-color);">Lá cây được Decoder giải mã từ Vector z</div>
+                <canvas id="leaf-canvas" class="sim-canvas" width="250" height="200"></canvas>
+                <div id="leaf-status" style="font-size:0.85rem; font-weight:bold; color:var(--secondary-color);">Lá khỏe mạnh bình thường</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Mạng đối nghịch tạo sinh (Generative Adversarial Network - GAN)</h2>
+          <p>
+            Phát biểu bởi Ian Goodfellow năm 2014, **GAN** thiết lập một trò chơi minimax giữa hai mạng nơ-ron:
+          </p>
+          <ol>
+            <li><strong>Generator (Mạng sinh - G):</strong> Cố gắng sinh ra các bức ảnh giả mạo từ vector nhiễu ngẫu nhiên $z$ giống thật nhất có thể để đánh lừa Discriminator.</li>
+            <li><strong>Discriminator (Mạng phân biệt - D):</strong> Học cách phân loại chuẩn xác đâu là ảnh thật từ tập dữ liệu huấn luyện và đâu là ảnh giả do G sinh ra.</li>
+          </ol>
+          <p>
+            Quá trình huấn luyện kết thúc khi đạt trạng thái cân bằng **Nash Equilibrium**, lúc này Discriminator hoàn toàn bất lực trong việc phân biệt thật giả (xác suất nhận diện đúng là 0.5).
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 580 200" width="100%" height="auto" style="max-width: 580px;">
+    <!-- Noise Vector z -->
+    <rect x="15" y="30" width="80" height="30" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="55" y="48" fill="var(--text-dark)" font-family="monospace" font-size="10" text-anchor="middle">Nhiễu z (Noise)</text>
+
+    <!-- Arrow to Generator -->
+    <path d="M 95 45 L 135 45" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="135,45 127,40 127,50" fill="var(--secondary-color)" />
+
+    <!-- Generator Box -->
+    <rect x="140" y="25" width="100" height="40" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.8" />
+    <text x="190" y="49" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">GENERATOR (G)</text>
+
+    <!-- Fake Image Output -->
+    <path d="M 240 45 L 290 45 L 290 75 L 320 75" fill="none" stroke="#ef4444" stroke-width="1.5" />
+    <polygon points="320,75 312,70 312,80" fill="#ef4444" />
+    <text x="280" y="35" fill="#ef4444" font-size="9.5" text-anchor="middle">Ảnh giả (Fake)</text>
+
+    <!-- Real Images Database -->
+    <rect x="140" y="125" width="100" height="40" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="190" y="149" fill="var(--primary-color)" font-size="11" font-weight="bold" text-anchor="middle">Ảnh thật (Real)</text>
+
+    <!-- Real Image Arrow -->
+    <path d="M 240 145 L 290 145 L 290 105 L 320 105" fill="none" stroke="#16a34a" stroke-width="1.5" />
+    <polygon points="320,105 312,100 312,110" fill="#16a34a" />
+    <text x="280" y="160" fill="#16a34a" font-size="9.5" text-anchor="middle">Ảnh thật (Real)</text>
+
+    <!-- Discriminator Box -->
+    <rect x="330" y="70" width="120" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.8" />
+    <text x="390" y="95" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">DISCRIMINATOR (D)</text>
+    <text x="390" y="110" fill="var(--text-light)" font-size="8" text-anchor="middle">Phân biệt thật/giả</text>
+
+    <!-- Arrow to Output -->
+    <path d="M 450 95 L 490 95" fill="none" stroke="var(--text-dark)" stroke-width="1.5" />
+    <polygon points="490,95 482,90 482,100" fill="var(--text-dark)" />
+
+    <!-- Output labels Real/Fake -->
+    <text x="535" y="91" fill="#16a34a" font-size="11" font-weight="bold" text-anchor="middle">Thật (1)</text>
+    <text x="535" y="109" fill="#ef4444" font-size="11" font-weight="bold" text-anchor="middle">Giả (0)</text>
+
+    <!-- Feedback arrow loop representing Adversarial Training -->
+    <path d="M 390 70 L 390 10 L 190 10 L 190 20" fill="none" stroke="var(--text-light)" stroke-dasharray="3 3" stroke-width="1" />
+    <polygon points="190,20 186,12 194,12" fill="var(--text-light)" />
+    <text x="290" y="18" fill="var(--text-light)" font-size="8" text-anchor="middle">Tối ưu phản hồi ngược (Adversarial Loss)</text>
+  </svg>
+</div>
+          <p>
+            Công thức hàm Loss của GAN được định nghĩa dưới dạng hàm Minimax:
+            $$\min_G \max_D V(D, G) = \mathbb{E}_{x \sim p_{	ext{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$$
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Mô hình khuếch tán (Diffusion Models) &amp; Stable Diffusion</h2>
+          <p>
+            Các mô hình tạo sinh hiện đại nhất hiện nay (như Midjourney, Stable Diffusion) hoạt động dựa trên cơ chế khuếch tán:
+          </p>
+          <ul>
+            <li><strong>Forward Process (Khuếch tán xuôi):</strong> Thêm nhiễu Gaussian từng bước nhỏ vào ảnh ban đầu cho đến khi ảnh trở thành nhiễu trắng hoàn toàn.</li>
+            <li><strong>Reverse Process (Khuếch tán ngược):</strong> Huấn luyện một mạng nơ-ron (thường là U-Net) để học cách dự đoán lượng nhiễu đã được thêm vào ở mỗi bước để khử nhiễu ngược lại, khôi phục bức ảnh sạch từ nhiễu ngẫu nhiên.</li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 600 130" width="100%" height="auto" style="max-width: 600px;">
+    <!-- Step 0: Clean Image -->
+    <rect x="15" y="35" width="60" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="45" y="64" fill="var(--primary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">x_0</text>
+    <text x="45" y="102" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Ảnh gốc (Clean)</text>
+
+    <!-- Arrow -->
+    <path d="M 85 60 L 145 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="145,60 137,55 137,65" fill="var(--secondary-color)" />
+
+    <!-- Step t: Partially Noised -->
+    <rect x="165" y="35" width="60" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-dasharray="2 2" stroke-width="1.2" />
+    <text x="195" y="64" fill="var(--primary-color)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">x_t</text>
+    <text x="195" y="102" fill="var(--text-light)" font-size="8.5" text-anchor="middle">Nhiễu nhẹ (Noise)</text>
+
+    <!-- Arrow -->
+    <path d="M 235 60 L 295 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="295,60 287,55 287,65" fill="var(--secondary-color)" />
+
+    <!-- Step T: Pure Noise -->
+    <rect x="315" y="35" width="60" height="50" rx="3" fill="var(--bg-code)" stroke="#ef4444" stroke-width="1.5" />
+    <text x="345" y="64" fill="#ef4444" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">x_T</text>
+    <text x="345" y="102" fill="#ef4444" font-size="8.5" font-weight="bold" text-anchor="middle">Nhiễu Gaussian</text>
+
+    <!-- Process Labels -->
+    <!-- Forward Process arrow -->
+    <path d="M 90 20 L 330 20" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="330,20 322,16 322,24" fill="var(--secondary-color)" />
+    <text x="210" y="12" fill="var(--secondary-color)" font-size="9" font-weight="bold" text-anchor="middle">Forward Process q(x_t | x_t-1) (Thêm nhiễu)</text>
+
+    <!-- Reverse Process arrow -->
+    <path d="M 330 118 L 90 118" fill="none" stroke="#10b981" stroke-width="1.5" />
+    <polygon points="90,118 98,114 98,122" fill="#10b981" />
+    <text x="210" y="128" fill="#10b981" font-size="9" font-weight="bold" text-anchor="middle">Reverse Process p_θ(x_t-1 | x_t) (Khử nhiễu / Denoising)</text>
+  </svg>
+</div>
+          <p>
+            <strong>Stable Diffusion (Latent Diffusion Models - LDM):</strong> Thực hiện quá trình khuếch tán và khử nhiễu trong **Không gian tiềm ẩn (Latent Space)** thay vì không gian điểm ảnh gốc (Pixel Space). Điều này làm giảm hàng chục lần khối lượng tính toán, giúp mô hình chạy mượt mà ngay cả trên phần cứng cá nhân.
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 600 160" width="100%" height="auto" style="max-width: 600px;">
+    <!-- Prompt input -->
+    <rect x="15" y="45" width="100" height="50" rx="3" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="65" y="68" fill="var(--primary-color)" font-size="10" font-weight="bold" text-anchor="middle">Prompt</text>
+    <text x="65" y="82" fill="var(--text-light)" font-size="8" text-anchor="middle">"Ảnh lá bệnh đốm"</text>
+
+    <!-- Text Encoder CLIP -->
+    <path d="M 115 70 L 140 70" fill="none" stroke="var(--border-color)" stroke-width="1" />
+    <rect x="145" y="45" width="80" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="185" y="70" fill="var(--primary-color)" font-size="10.5" font-weight="bold" text-anchor="middle">CLIP Text Enc.</text>
+
+    <!-- Embedding arrow to Cross Attention -->
+    <path d="M 225 70 Q 285 70 300 70" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <polygon points="300,70 292,65 292,75" fill="var(--secondary-color)" />
+
+    <!-- Latent Diffusion Space (Denoising U-Net) -->
+    <rect x="315" y="25" width="120" height="90" rx="6" fill="var(--bg-main)" stroke="#10b981" stroke-width="2" />
+    <text x="375" y="48" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">Latent Space</text>
+    <rect x="330" y="60" width="90" height="40" rx="3" fill="var(--highlight-bg)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="375" y="80" fill="var(--primary-color)" font-size="10" font-weight="bold" text-anchor="middle">U-Net Denoise</text>
+    <text x="375" y="93" fill="var(--secondary-color)" font-size="7.5" text-anchor="middle">Cross Attention</text>
+
+    <!-- VAE Decoder -->
+    <path d="M 435 70 L 465 70" fill="none" stroke="#10b981" stroke-width="1.5" />
+    <polygon points="465,70 457,65 457,75" fill="#10b981" />
+    
+    <rect x="475" y="45" width="60" height="50" rx="3" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="505" y="70" fill="var(--primary-color)" font-size="10.5" font-weight="bold" text-anchor="middle">VAE Dec.</text>
+
+    <!-- Final Image Output -->
+    <path d="M 535 70 L 555 70" fill="none" stroke="var(--border-color)" stroke-width="1" />
+    <circle cx="570" cy="70" r="12" fill="#16a34a" />
+    <text x="570" y="74" fill="white" font-size="11" font-weight="bold" text-anchor="middle">★</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. Ứng dụng Generative Models trong đề tài AgriNeSy-Graph</h2>
+          <p>
+            Mặc dù đề tài trọng tâm là nhận diện bệnh cây bằng Neuro-Symbolic AI, Generative AI vẫn mang lại những giá trị bổ trợ cực lớn trong xử lý hình ảnh nông nghiệp:
+          </p>
+          <ul>
+            <li><strong>Tăng cường dữ liệu (Data Augmentation):</strong> Sử dụng GAN hoặc Diffusion sinh thêm ảnh lá lúa bị các loại bệnh hiếm gặp (như bệnh đạo ôn hoặc cháy bìa lá ở giai đoạn đầu) để cân bằng phân bố tập dữ liệu huấn luyện cho CNN.</li>
+            <li><strong>Khôi phục chất lượng ảnh (Denoising &amp; Super-Resolution):</strong> Các mô hình Reverse Diffusion giúp khử nhiễu, làm sắc nét các ảnh lá cây bị mờ hoặc chụp trong điều kiện thiếu sáng ngoài đồng ruộng trước khi đưa vào khối cảm nhận nơ-ron.</li>
+            <li><strong>Phát hiện bất thường (Anomaly Detection):</strong> Huấn luyện Autoencoder trên tập ảnh lá lúa khỏe mạnh. Khi đưa vào một ảnh lá bị dị dạng hoặc có vết đốm bất thường, lỗi tái cấu trúc (Reconstruction Loss) sẽ vọt lên rất cao, giúp hệ thống phát hiện sớm dấu hiệu bất thường mà không cần định nghĩa nhãn bệnh từ trước.</li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h2>Lộ trình học Generative AI khuyến nghị cho sinh viên Khoa học Máy tính</h2>
+          <div class="sim-console" style="background-color: var(--highlight-bg); border-left: 4px solid var(--secondary-color);">
+            <strong style="color:var(--primary-color);">Lộ trình 8 bước tự học Generative AI cơ bản:</strong><br>
+            1. <strong>Xác suất thống kê</strong> (Gaussian Distribution, Sampling) &rarr;<br>
+            2. <strong>Không gian tiềm ẩn (Latent Space &amp; Vector Embeddings)</strong> &rarr;<br>
+            3. <strong>Autoencoder (AE)</strong> (Mã hóa nén &amp; giải nén ảnh) &rarr;<br>
+            4. <strong>Variational Autoencoder (VAE)</strong> (Lấy mẫu xác suất, Reparameterization Trick) &rarr;<br>
+            5. <strong>Mạng GAN đối nghịch</strong> (Generator đấu tranh Discriminator) &rarr;<br>
+            6. <strong>Conditional GAN (cGAN)</strong> (Sinh ảnh có điều kiện nhãn nhập vào) &rarr;<br>
+            7. <strong>Mô hình khuếch tán (Diffusion Models)</strong> (Forward/Reverse Denoising) &rarr;<br>
+            8. <strong>Stable Diffusion / Latent Diffusion</strong> (CLIP text, U-Net, VAE, Cross Attention).
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // LATENT SPACE DECODER SIMULATOR JS
+    // ----------------------------------------------------
+    
+    // Draw leaf based on Latent Space coordinates z1 (spots) and z2 (yellowing)
+    function drawLeaf(ctx, z1, z2) {
+      const w = ctx.canvas.width;
+      const h = ctx.canvas.height;
+      
+      // Clear
+      ctx.clearRect(0, 0, w, h);
+      
+      // Base color interpolation:
+      // Healthy green: rgb(34, 197, 94) -> Hex #22c55e
+      // Wilted yellow/brown: rgb(180, 120, 20) -> Hex #b47814
+      let r = 34;
+      let g = 197;
+      let b = 94;
+      
+      if (z2 > 0) {
+        // interpolate to yellow/brown
+        const factor = Math.min(z2 / 2.0, 1.0);
+        r = Math.round(34 + (180 - 34) * factor);
+        g = Math.round(197 + (120 - 197) * factor);
+        b = Math.round(94 + (20 - 94) * factor);
+      } else if (z2 < 0) {
+        // interpolate to darker forest green
+        const factor = Math.min(Math.abs(z2) / 2.0, 1.0);
+        r = Math.round(34 + (15 - 34) * factor);
+        g = Math.round(197 + (95 - 197) * factor);
+        b = Math.round(94 + (40 - 94) * factor);
+      }
+      
+      const leafColor = `rgb(${r}, ${g}, ${b})`;
+      
+      // Draw leaf shape
+      ctx.save();
+      ctx.translate(w / 2, h / 2 + 10);
+      
+      // Draw stem line
+      ctx.strokeStyle = `rgb(${Math.max(r - 40, 10)}, ${Math.max(g - 40, 10)}, ${Math.max(b - 20, 10)})`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 70);
+      ctx.quadraticCurveTo(-10, 20, 0, -60);
+      ctx.stroke();
+      
+      // Draw Leaf outline
+      ctx.fillStyle = leafColor;
+      ctx.strokeStyle = `rgb(${Math.max(r - 30, 0)}, ${Math.max(g - 30, 0)}, ${Math.max(b - 30, 0)})`;
+      ctx.lineWidth = 1.5;
+      
+      ctx.beginPath();
+      // Left side curve
+      ctx.moveTo(0, 50);
+      ctx.bezierCurveTo(-70, 30, -60, -40, 0, -60);
+      // Right side curve
+      ctx.bezierCurveTo(60, -40, 70, 30, 0, 50);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      
+      // Draw secondary veins
+      ctx.strokeStyle = `rgba(${Math.max(r - 50, 0)}, ${Math.max(g - 50, 0)}, ${Math.max(b - 50, 0)}, 0.4)`;
+      ctx.lineWidth = 1.5;
+      
+      // Left side veins
+      for (let i = -30; i < 40; i += 20) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.quadraticCurveTo(-25, i - 10, -40, i - 5);
+        ctx.stroke();
+      }
+      // Right side veins
+      for (let i = -30; i < 40; i += 20) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.quadraticCurveTo(25, i - 10, 40, i - 5);
+        ctx.stroke();
+      }
+      
+      // Draw Brown disease spots if z1 > 0
+      if (z1 > 0) {
+        const spotCount = Math.round(z1 * 10);
+        ctx.fillStyle = 'rgba(100, 50, 10, 0.85)';
+        ctx.strokeStyle = 'rgba(60, 30, 5, 0.9)';
+        ctx.lineWidth = 1;
+        
+        // Pre-defined relative coordinates inside the leaf area to prevent spots jumping randomly
+        const spotCoords = [
+          { x: -20, y: -20, r: 3 },
+          { x: 25, y: 10, r: 4 },
+          { x: -30, y: 15, r: 2.5 },
+          { x: 15, y: -35, r: 5 },
+          { x: -10, y: 35, r: 3.5 },
+          { x: 30, y: -15, r: 2.5 },
+          { x: -25, y: -5, r: 4.5 },
+          { x: 5, y: -10, r: 3 },
+          { x: 20, y: 30, r: 3 },
+          { x: -15, y: -45, r: 2.2 },
+          { x: 35, y: 5, r: 3 },
+          { x: -35, y: 0, r: 4 },
+          { x: 10, y: 25, r: 2.7 },
+          { x: -5, y: -30, r: 3.8 },
+          { x: 25, y: -25, r: 4.2 }
+        ];
+        
+        const limit = Math.min(spotCount, spotCoords.length);
+        for (let i = 0; i < limit; i++) {
+          const s = spotCoords[i];
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * (0.6 + z1 * 0.2), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+      }
+      
+      ctx.restore();
+    }
+
+    function updateLatentDecoder() {
+      const z1 = parseFloat(document.getElementById('z1-slider').value);
+      const z2 = parseFloat(document.getElementById('z2-slider').value);
+      
+      // Update labels
+      document.getElementById('z1-val').innerText = z1.toFixed(2);
+      document.getElementById('z2-val').innerText = z2.toFixed(2);
+      
+      // Draw canvas leaf
+      const canvas = document.getElementById('leaf-canvas');
+      const ctx = canvas.getContext('2d');
+      drawLeaf(ctx, z1, z2);
+      
+      // Update status text
+      const statusEl = document.getElementById('leaf-status');
+      if (z1 <= 0.2 && z2 <= 0.2) {
+        statusEl.innerText = "Lá khỏe mạnh bình thường";
+        statusEl.style.color = "#10b981";
+      } else if (z1 > 0.2 && z2 <= 0.3) {
+        statusEl.innerText = `Lá bị nhiễm bệnh đốm nâu (Mức độ: ${z1 > 1.2 ? 'Nặng' : 'Trung bình'})`;
+        statusEl.style.color = "#b47814";
+      } else if (z1 <= 0.2 && z2 > 0.3) {
+        statusEl.innerText = `Lá có hiện tượng vàng úa / Thiếu dưỡng chất (Mức độ: ${z2 > 1.2 ? 'Nặng' : 'Nhẹ'})`;
+        statusEl.style.color = "#ef4444";
+      } else {
+        statusEl.innerText = "Lá nhiễm bệnh kép (Đốm lá + Héo úa vàng)";
+        statusEl.style.color = "#991b1b";
+      }
+
+      // Compute mathematical statistics
+      // KL Divergence simulation: D_KL = 0.5 * (z1^2 + z2^2)
+      const klDivergence = 0.5 * (z1*z1 + z2*z2);
+      const reconLoss = Math.max(0.1, 0.05 * (2.0 - Math.abs(z1)) * (2.0 - Math.abs(z2)));
+
+      document.getElementById('latent-math-log').innerHTML = `
+<span style="color: var(--secondary-color); font-weight: bold;">[VAE STATISTICAL METRICS]</span><br>
+-------------------------------------------------------<br>
+• Vector tiềm ẩn: z = [${z1.toFixed(2)}, ${z2.toFixed(2)}]<br>
+• Sai khác phân bố KL Divergence:<br>
+  D_KL = 0.5 &times; (z1² + z2²) = <strong style="color:var(--secondary-color);">${klDivergence.toFixed(4)}</strong><br>
+• Lỗi tái cấu trúc Reconstruction Loss:<br>
+  L_recon = <span style="color:#10b981; font-weight:bold;">${reconLoss.toFixed(4)}</span>
+      `;
+    }
+
+    // Initialize on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateLatentDecoder();
+    });
+  </script>
+</body>
+</html>

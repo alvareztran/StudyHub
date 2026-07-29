@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Neuro-Symbolic AI - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout styling for NCKH subject */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+
+    /* Simulator Styles */
+    .sim-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.5rem;
+    }
+    .sim-panel-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .sim-input-group {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      background-color: var(--bg-main);
+    }
+    .sim-input-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .sim-select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background: var(--bg-card);
+      color: var(--text-dark);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .sim-select:focus {
+      border-color: var(--secondary-color);
+    }
+    .sim-panel-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-left: 2px dashed var(--border-color);
+      padding-left: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+      .sim-panel-right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 2px dashed var(--border-color);
+        padding-top: 1.5rem;
+      }
+    }
+    .flow-step {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      position: relative;
+    }
+    .flow-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-bottom: 0.25rem;
+    }
+    .badge-neural { background-color: #ef4444; color: white; }
+    .badge-symbolic { background-color: #3b82f6; color: white; }
+    .badge-reasoning { background-color: #8b5cf6; color: white; }
+    .badge-output { background-color: #10b981; color: white; }
+
+    .explanation-list {
+      list-style-type: square;
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .explanation-list li {
+      margin-bottom: 0.25rem;
+    }
+    
+    .rule-box {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: var(--bg-code);
+      padding: 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">NCKH - Nền tảng AI</a> &raquo; Neuro-Symbolic AI
+      </div>
+      <h1>Trí tuệ nhân tạo Nơ-ron Ký hiệu (Neural-Symbolic AI)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Sự kết hợp tối ưu giữa khả năng học máy sâu (Neural Network) và tư duy suy luận logic logic (Symbolic AI).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu NCKH</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan NCKH</a></li>
+          <li><a href="phat-hien-doi-tuong.html">1. Phát hiện đối tượng (Object Detection)</a></li>
+          <li><a href="neuro-symbolic-ai.html" class="active">2. Trí tuệ nhân tạo nơ-ron ký hiệu (Neuro-Symbolic AI)</a></li>
+          <li><a href="knowledge-graph.html">3. Đồ thị tri thức (Knowledge Graph)</a></li>
+          <li><a href="ontology.html">4. Bản thể học (Ontology)</a></li>
+          <li><a href="explainable-ai.html">5. Trí tuệ nhân tạo giải thích được (XAI)</a></li>
+        </ul>
+        
+        <h3>Lộ trình học tiếp theo</h3>
+        <ul>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">6. Mô hình YOLO (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">7. Vision Transformer (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">8. Graph Neural Network (Dự kiến)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Neural-Symbolic AI (Neuro-Symbolic AI)</h2>
+          <p>
+            <strong>Neural-Symbolic AI (Trí tuệ nhân tạo Nơ-ron Ký hiệu)</strong> là một hướng nghiên cứu tiên phong trong Trí tuệ nhân tạo nhằm kết hợp khả năng học từ dữ liệu của <em>Mạng Nơ-ron (Neural Network)</em> với khả năng suy luận logic chặt chẽ của <em>Ký hiệu AI (Symbolic AI)</em>. Mục tiêu là tạo ra những hệ thống AI vừa thông minh vượt trội, vừa có khả năng tự giải thích, và suy luận sâu sắc dựa trên hệ thống tri thức. 
+          </p>
+          <p>Đây chính là khái niệm cốt lõi cấu thành nên đề tài nghiên cứu <strong>AgriNeSy-Graph</strong>.</p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Câu hỏi đặt ra: AI hiện đại còn thiếu điều gì?</h2>
+          <p>
+            Giả sử bạn đưa cho một mô hình Deep Learning tiên tiến một bức ảnh lá lúa. Nó có thể trả lời nhanh chóng: <em>"Bức ảnh chứa bệnh đạo ôn với độ tin cậy 98%"</em>. Tuy nhiên, nếu bạn hỏi tiếp: <em>"Tại sao lại là bệnh đạo ôn?"</em>, đa phần các mô hình "hộp đen" (black box) sẽ không thể trả lời được.
+          </p>
+          <blockquote>
+            <strong>Hạn chế lớn của Deep Learning hiện tại:</strong><br>
+            <ul>
+              <li>Dự đoán rất xuất sắc dựa trên xác suất thống kê nhưng không giải thích được cơ chế ra quyết định.</li>
+              <li>Không có khả năng tích hợp và suy luận trực tiếp dựa trên kho tri thức chuyên gia sẵn có.</li>
+              <li>Dễ bị lỗi nặng khi gặp các tình huống hoặc phân phối dữ liệu chưa từng được huấn luyện (Out-Of-Distribution).</li>
+            </ul>
+          </blockquote>
+          <p>Neuro-Symbolic AI ra đời chính là để bù đắp các khoảng trống này.</p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Hai trường phái lớn trong lịch sử AI</h2>
+          <p>Để hiểu được bản chất của Neuro-Symbolic AI, chúng ta cần phân biệt hai trường phái đối nghịch có lịch sử phát triển từ những năm 1950:</p>
+          
+        <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <svg viewBox="0 0 600 240" width="100%" height="auto" style="max-width: 600px;">
+            <defs>
+              <marker id="arrow-sci" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+              </marker>
+            </defs>
+
+            <!-- Root: AI -->
+            <rect x="180" y="10" width="240" height="50" rx="6" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+            <text x="300" y="32" fill="var(--primary-color)" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" text-anchor="middle">ARTIFICIAL INTELLIGENCE</text>
+            <text x="300" y="48" fill="var(--text-light)" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">(Trí tuệ nhân tạo)</text>
+
+            <!-- Connecting Paths -->
+            <path d="M 300 60 L 300 85 L 120 85 L 120 102" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-sci)" />
+            <path d="M 300 60 L 300 85 L 480 85 L 480 102" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-sci)" />
+
+            <!-- Left: Symbolic AI -->
+            <rect x="20" y="110" width="220" height="110" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+            <text x="130" y="132" fill="var(--primary-color)" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Symbolic AI (AI Ký hiệu)</text>
+            <line x1="30" y1="142" x2="230" y2="142" stroke="var(--border-color)" stroke-width="1" />
+            <text x="35" y="162" fill="var(--text-dark)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• Dựa trên logic &amp; luật định</text>
+            <text x="35" y="182" fill="var(--text-dark)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• Tri thức chuyên gia lập trình sẵn</text>
+            <text x="35" y="202" fill="var(--text-light)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">Ví dụ: Hệ chuyên gia, Web ngữ nghĩa</text>
+
+            <!-- Right: Neural AI -->
+            <rect x="360" y="110" width="220" height="110" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+            <text x="470" y="132" fill="var(--primary-color)" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Neural AI (AI Nơ-ron)</text>
+            <line x1="370" y1="142" x2="570" y2="142" stroke="var(--border-color)" stroke-width="1" />
+            <text x="375" y="162" fill="var(--text-dark)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• Dựa trên học từ dữ liệu số</text>
+            <text x="375" y="182" fill="var(--text-dark)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• Mạng nơ-ron tự trích xuất đặc trưng</text>
+            <text x="375" y="202" fill="var(--text-light)" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">Ví dụ: Deep Learning, CNN, LLM</text>
+          </svg>
+        </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Symbolic AI (AI Ký hiệu)</h2>
+          
+          <h3>3.1. Ý tưởng cốt lõi</h3>
+          <p>
+            Trường phái này cho rằng tư duy của con người thực chất là quá trình vận dụng các luật logic. 
+            Ví dụ, một kỹ sư nông nghiệp hoặc bác sĩ chẩn đoán bệnh theo các mệnh đề điều kiện:
+            $$\text{Nếu (Sốt cao) và (Ho nhiều) và (Khó thở) } \rightarrow \text{ Kết luận: Viêm phổi}$$
+            Symbolic AI không đòi hỏi phải huấn luyện bằng hàng triệu mẫu dữ liệu, nó chỉ cần: <strong>Tri thức sẵn có</strong>, <strong>Luật logic (Rules)</strong> và <strong>Cơ chế suy luận (Reasoning Engine)</strong>.
+          </p>
+          
+          <h3>3.2. Các khái niệm cơ bản</h3>
+          <ul>
+            <li><strong>Symbol (Ký hiệu):</strong> Là cách biểu diễn thực thể bằng ngôn ngữ máy tính hiểu được. Ví dụ, thực thể <code>Rice</code> (cây lúa) hay <code>Blast</code> (nấm đạo ôn) được liên kết các quan hệ ngữ nghĩa thay vì chỉ là chuỗi text thô.</li>
+            <li><strong>Rule (Luật):</strong> Mệnh đề logic biểu diễn mối quan hệ nhân quả. Ví dụ:
+              $$\text{Nếu (Độ ẩm } > 90\%) \text{ và (Vết bệnh hình thoi) } \rightarrow \text{ Kết luận: Bệnh đạo ôn}$$
+            </li>
+            <li><strong>Knowledge Base (Cơ sở tri thức - KB):</strong> Tập hợp toàn bộ các thực thể, thuộc tính và hệ luật logic do chuyên gia xây dựng.</li>
+            <li><strong>Symbolic Reasoning (Suy luận ký hiệu):</strong> Áp dụng các luật định trong KB lên các dữ kiện thực tế (Fact) để rút ra kết luận mới.</li>
+          </ul>
+
+          <h3>3.3. Ưu và nhược điểm</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px;">
+              <h4 style="margin-top: 0; color: #10b981;">✓ Ưu điểm của Symbolic</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Giải thích được rõ ràng (Explainable): Chỉ ra cụ thể luật nào được kích hoạt.</li>
+                <li>Không cần tập dữ liệu huấn luyện khổng lồ.</li>
+                <li>Đảm bảo tính logic tuyệt đối, dễ dàng kiểm thử và cấu hình lại.</li>
+              </ul>
+            </div>
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px;">
+              <h4 style="margin-top: 0; color: #ef4444;">✗ Hạn chế của Symbolic</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Không có khả năng xử lý cảm quan (Perception) tốt: Không thể trực tiếp "nhìn" bức ảnh để biết đâu là lá hay đốm bệnh.</li>
+                <li>Gặp khó khăn lớn trong việc tự học từ các mẫu dữ liệu thực tế.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Neural AI (Deep Learning)</h2>
+          <p>
+            Đây là trường phái thống trị kỷ nguyên AI hiện nay với các mô hình học sâu như CNN, Transformer, LLMs. 
+          </p>
+          <ul>
+            <li><strong>Ý tưởng:</strong> Thay vì viết luật thủ công, chúng ta đưa cho mạng nơ-ron hàng trăm ngàn hình ảnh mẫu được gán nhãn để nó tự học các đặc trưng (features) như đường biên, màu sắc, góc cạnh thông qua thuật toán lan truyền ngược (Backpropagation).</li>
+            <li><strong>Ưu điểm:</strong> Xử lý ảnh cực tốt, dịch thuật ngôn ngữ xuất sắc và nhận diện giọng nói siêu việt.</li>
+            <li><strong>Hạn chế:</strong> Hoạt động như một chiếc "Hộp đen" (Black box) toán học khổng lồ, đưa ra xác suất mà không có lập luận logic hay diễn giải được căn nguyên.</li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. Bảng so sánh tổng quan</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-align: left;">
+            <thead>
+              <tr style="background-color: var(--highlight-bg); border-bottom: 2px solid var(--border-color);">
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Tiêu chí</th>
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Symbolic AI</th>
+                <th style="padding: 0.75rem; font-weight: bold; border: 1px solid var(--border-color);">Neural AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Cơ chế nền tảng</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Luật định và Logic hình thức</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Dữ liệu số và Mạng nơ-ron</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Tự học từ dữ liệu</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">❌ Không hỗ trợ trực tiếp</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: bold;">✓ Học rất mạnh</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Khả năng giải thích (XAI)</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: bold;">✓ Rõ ràng từng bước</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">❌ Hộp đen (Black Box)</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Xử lý dữ liệu thô (Ảnh/Sóng)</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">❌ Rất khó khăn</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: bold;">✓ Rất mạnh</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);"><strong>Suy luận logic</strong></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: bold;">✓ Suy luận chặt chẽ</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border-color);">❌ Suy luận lỏng lẻo (dễ ảo giác)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>6. Sự kết hợp: Trình mô phỏng suy luận Neuro-Symbolic</h2>
+          <p>
+            Neuro-Symbolic AI sử dụng mạng Neural làm bộ phận cảm quan (nhận diện hình dạng vết bệnh, độ ẩm, v.v.), chuyển đổi thông tin thành ký hiệu (Symbols), rồi dùng bộ suy luận logic Symbolic để chẩn đoán và giải thích.
+          </p>
+
+          <!-- Interactive Simulator Widget -->
+          <div class="sim-container">
+            <h3 style="margin-top: 0; font-size: 1.15rem; color: var(--secondary-color); border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+              Trình mô phỏng suy luận Neuro-Symbolic (Chẩn đoán bệnh lúa)
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.25rem;">
+              Thay đổi các đặc trưng nhận diện ảnh và cảm biến môi trường để xem luồng suy luận nơ-ron ký hiệu hoạt động.
+            </p>
+            
+            <div class="sim-grid">
+              <div class="sim-panel-left">
+                <!-- Select 1: Spot Shape -->
+                <div class="sim-input-group">
+                  <div class="sim-input-title">1. Neural Detection (Hình dạng đốm bệnh)</div>
+                  <select id="select-shape" class="sim-select" onchange="runSimulation()">
+                    <option value="diamond">Hình thoi (Diamond Spot)</option>
+                    <option value="round">Hình tròn nhỏ (Round Spot)</option>
+                    <option value="irregular">Không đều (Irregular Spot)</option>
+                  </select>
+                </div>
+                <!-- Select 2: Humidity -->
+                <div class="sim-input-group">
+                  <div class="sim-input-title">2. Sensor Data (Độ ẩm không khí)</div>
+                  <select id="select-humidity" class="sim-select" onchange="runSimulation()">
+                    <option value="high">Độ ẩm cao (92%)</option>
+                    <option value="low">Độ ẩm thấp (65%)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="sim-panel-right">
+                <!-- Step 1: Neural Processing -->
+                <div class="flow-step">
+                  <span class="flow-badge badge-neural">1. Neural Stage (Perception)</span>
+                  <div id="sim-neural-text">Đang nhận diện...</div>
+                </div>
+
+                <!-- Step 2: Knowledge Mapping -->
+                <div class="flow-step">
+                  <span class="flow-badge badge-symbolic">2. Symbolic Mapping (Knowledge Base)</span>
+                  <div id="sim-symbolic-text">Đang ánh xạ ký hiệu...</div>
+                </div>
+
+                <!-- Step 3: Logic Reasoning -->
+                <div class="flow-step">
+                  <span class="flow-badge badge-reasoning">3. Symbolic Reasoning (Rules Engine)</span>
+                  <div id="sim-reasoning-text">Đang áp dụng luật...</div>
+                </div>
+
+                <!-- Step 4: Final Output & Explain -->
+                <div class="flow-step" style="border-color: #10b981; background-color: rgba(16, 185, 129, 0.05);">
+                  <span class="flow-badge badge-output">4. Output &amp; Explanation (XAI)</span>
+                  <div id="sim-output-text">Chưa có kết quả.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>7. Vai trò của Neuro-Symbolic AI trong AgriNeSy-Graph</h2>
+          <p>
+            Trong đề tài <strong>AgriNeSy-Graph</strong>, sự phân tách vai trò được thiết kế rất rõ ràng nhằm tối ưu hóa thế mạnh của cả hai trường phái:
+          </p>
+          <ol>
+            <li>
+              <strong>Phần Neural (Deep Learning):</strong> Sử dụng các mô hình Object Detection (như YOLO, Faster R-CNN) và Vision Transformer (ViT) để quét hình ảnh lá cây trồng, phát hiện các đốm bệnh, trích xuất đặc trưng hình thái học (màu sắc, hình dạng, viền).
+            </li>
+            <li>
+              <strong>Phần Graph &amp; Symbolic (Logic Tri thức):</strong> 
+              Xây dựng Đồ thị tri thức (Knowledge Graph - KG) chứa các thực thể bệnh học, điều kiện thời tiết, loài cây và mối quan hệ sinh học. Sử dụng bộ luật logic chuyên gia (Expert Rules) để suy luận trên đồ thị tri thức nhằm:
+              <ul>
+                <li>Đưa ra chẩn đoán chính xác cuối cùng.</li>
+                <li><strong>Cung cấp cây giải thích (Explanation Tree)</strong> chỉ rõ tại sao bệnh này xuất hiện dựa trên triệu chứng thực thể và quy luật môi trường.</li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>8. Ưu điểm và Hạn chế</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div>
+              <h4 style="color: #10b981;">✓ Ưu điểm vượt trội</h4>
+              <ul>
+                <li>Khả năng tự giải thích tuyệt đối cho các hệ thống y tế/nông nghiệp quan trọng.</li>
+                <li>Khả năng tích hợp tri thức có sẵn của con người vào mô hình máy tính một cách trực tiếp mà không cần huấn luyện lại từ đầu.</li>
+                <li>Hoạt động hiệu quả và chính xác ngay cả khi lượng dữ liệu hình ảnh đầu vào khan hiếm.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="color: #ef4444;">✗ Hạn chế kỹ thuật</h4>
+              <ul>
+                <li>Kiến trúc hệ thống rất phức tạp, đòi hỏi kết hợp nhiều module khác nhau (Neural + Graph + Rules Engine).</li>
+                <li>Tốn kém tài nguyên và thời gian để xây dựng, chuẩn hóa bộ luật (rules) và Ontology của Đồ thị tri thức.</li>
+                <li>Khó đồng bộ hóa trọng số tối ưu hóa của mạng nơ-ron với suy luận ký hiệu cứng nhắc.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h2>📚 Các khái niệm cốt lõi cần nghiên cứu tiếp</h2>
+          <p>Để triển khai phần Neuro-Symbolic của đề tài AgriNeSy-Graph, bạn cần làm quen dần với các chủ đề sau:</p>
+          <ul>
+            <li><strong>Knowledge Representation (Biểu diễn tri thức):</strong> Tìm hiểu về Đồ thị tri thức (Knowledge Graph), Ontology (Hệ thống phân loại thực thể) sử dụng RDF, OWL.</li>
+            <li><strong>First-Order Logic (FOL - Logic bậc một):</strong> Quy tắc biểu diễn mệnh đề logic và các phép suy luận.</li>
+            <li><strong>Inference Engine (Bộ suy luận):</strong> Cơ chế suy luận tiến (Forward Chaining - đi từ triệu chứng đến bệnh) và suy luận lùi (Backward Chaining - kiểm chứng bệnh dựa trên triệu chứng).</li>
+            <li><strong>Graph Neural Network (GNN):</strong> Phương pháp học biểu diễn vectơ trực tiếp trên cấu trúc đồ thị tri thức.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Simulator Engine logic
+    function runSimulation() {
+      const shape = document.getElementById('select-shape').value;
+      const humidity = document.getElementById('select-humidity').value;
+
+      // DOM nodes
+      const neuralText = document.getElementById('sim-neural-text');
+      const symbolicText = document.getElementById('sim-symbolic-text');
+      const reasoningText = document.getElementById('sim-reasoning-text');
+      const outputText = document.getElementById('sim-output-text');
+
+      // 1. Neural perception representation
+      let detectedLabel = "";
+      let confidence = 0;
+      if (shape === 'diamond') {
+        detectedLabel = "Diamond-shaped lesions (Vết đốm hình thoi)";
+        confidence = 94.5;
+      } else if (shape === 'round') {
+        detectedLabel = "Tiny circular spots (Vết đốm tròn nhỏ)";
+        confidence = 89.2;
+      } else {
+        detectedLabel = "Large irregular lesions (Vết đốm lớn không đều)";
+        confidence = 91.1;
+      }
+      neuralText.innerHTML = `<strong>Đầu ra CNN/ViT:</strong> Phát hiện thấy <em>${detectedLabel}</em> với độ tin cậy $\\approx ${confidence}\\%$.`;
+
+      // 2. Symbolic mapping to Knowledge Graph entities
+      let shapeEntity = "";
+      let humidityEntity = humidity === 'high' ? "HighHumidity" : "NormalHumidity";
+      if (shape === 'diamond') shapeEntity = "DiamondSpot";
+      else if (shape === 'round') shapeEntity = "BrownSpot";
+      else shapeEntity = "BlightSpot";
+
+      symbolicText.innerHTML = `<strong>Thực thể hóa (KG Nodes):</strong><br>
+        &bull; Triệu chứng lá: <code>${shapeEntity}</code> (Độ tin cậy: ${confidence/100})<br>
+        &bull; Môi trường: <code>${humidityEntity}</code> (Độ ẩm: ${humidity === 'high' ? '92%' : '65%'})`;
+
+      // 3 & 4. Reasoning & Output chẩn đoán bệnh lúa
+      let ruleApplied = "";
+      let diagnosis = "";
+      let explanation = "";
+
+      if (shapeEntity === 'DiamondSpot' && humidityEntity === 'HighHumidity') {
+        diagnosis = "Rice Blast (Bệnh đạo ôn lúa - Magnaporthe oryzae)";
+        ruleApplied = "IF DiamondSpot AND HighHumidity THEN Disease = RiceBlast";
+        explanation = `
+          <ul class="explanation-list">
+            <li>Phát hiện vết bệnh đặc trưng hình thoi (<code>DiamondSpot</code>).</li>
+            <li>Độ ẩm không khí cao trên 90% (<code>HighHumidity</code>) kích thích nấm bệnh phát triển nhanh.</li>
+            <li>Đã kích hoạt luật chẩn đoán <strong>Rule #18</strong> trong Ontology lúa gạo.</li>
+          </ul>
+        `;
+      } else if (shapeEntity === 'BrownSpot') {
+        diagnosis = "Brown Spot (Bệnh đốm nâu - Bipolaris oryzae)";
+        ruleApplied = "IF BrownSpot THEN Disease = BrownSpot";
+        explanation = `
+          <ul class="explanation-list">
+            <li>Phát hiện vết đốm tròn màu nâu nhỏ (<code>BrownSpot</code>) trên mặt lá.</li>
+            <li>Kích hoạt <strong>Rule #07</strong>: Triệu chứng điển hình của nấm đốm nâu gây hại khi ruộng thiếu phân bón hoặc chua.</li>
+          </ul>
+        `;
+      } else if (shapeEntity === 'BlightSpot' && humidityEntity === 'HighHumidity') {
+        diagnosis = "Bacterial Leaf Blight (Bệnh bạc lá do vi khuẩn - Xanthomonas oryzae)";
+        ruleApplied = "IF BlightSpot AND HighHumidity THEN Disease = LeafBlight";
+        explanation = `
+          <ul class="explanation-list">
+            <li>Phát hiện vết cháy loang lổ không đều từ mép lá (<code>BlightSpot</code>).</li>
+            <li>Điều kiện ẩm ướt (<code>HighHumidity</code>) là môi trường tối ưu cho vi khuẩn lan rộng qua giọt sương.</li>
+            <li>Kích hoạt <strong>Rule #22</strong> về bệnh do vi khuẩn hại lúa.</li>
+          </ul>
+        `;
+      } else {
+        diagnosis = "Chưa đủ dữ kiện chẩn đoán chắc chắn / Theo dõi thêm";
+        ruleApplied = "Không có luật logic nào khớp hoàn toàn.";
+        explanation = `<ul class="explanation-list"><li>Triệu chứng hoặc yếu tố thời tiết không nằm trong tập quy tắc chẩn đoán nguy cấp. Đề nghị chuyên gia kiểm tra trực tiếp.</li></ul>`;
+      }
+
+      reasoningText.innerHTML = `<strong>Kích hoạt Rules Engine:</strong>
+        <div class="rule-box">${ruleApplied}</div>`;
+
+      outputText.innerHTML = `
+        <div style="font-weight: bold; font-size: 1rem; color: #10b981; margin-bottom: 0.5rem;">Kết luận: ${diagnosis}</div>
+        <strong>Cây giải thích nguồn gốc (Explanation Tree):</strong>
+        ${explanation}
+      `;
+
+      // Re-trigger KaTeX rendering on updated text
+      if (window.renderMathInElement) {
+        renderMathInElement(document.getElementById('sim-neural-text'), {
+          delimiters: [ { left: '$', right: '$', display: false } ]
+        });
+      }
+    }
+
+    // Run first simulation on load
+    window.addEventListener('DOMContentLoaded', () => {
+      runSimulation();
+    });
+  </script>
+</body>
+</html>

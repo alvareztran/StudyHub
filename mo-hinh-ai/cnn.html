@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4: Mạng nơ-ron tích chập (CNN) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Calculator Widget Styles */
+    .calculator-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .calc-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .calc-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .calc-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    .calc-input {
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .calc-result {
+      background-color: var(--highlight-bg);
+      border: 1px solid var(--highlight-border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--secondary-color);
+      text-align: center;
+    }
+
+    /* Simulator grid styles */
+    .sim-grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    .sim-matrix {
+      display: grid;
+      gap: 3px;
+      background-color: var(--border-color);
+      padding: 3px;
+      border-radius: 4px;
+    }
+    .sim-cell {
+      width: 32px;
+      height: 32px;
+      background-color: var(--bg-card);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--text-dark);
+      cursor: default;
+      user-select: none;
+      transition: background-color 0.15s;
+    }
+    .sim-cell.highlight-input {
+      background-color: var(--highlight-bg);
+      border: 1.5px solid var(--secondary-color);
+      font-weight: bold;
+    }
+    .sim-cell.highlight-center {
+      background-color: var(--highlight-bg);
+      border: 1.5px solid #dc2626;
+      font-weight: bold;
+    }
+    .sim-cell.hover-output {
+      background-color: var(--highlight-bg);
+      border: 1.5px solid var(--secondary-color);
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .sim-expr-box {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .calc-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sim-grid-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Các mô hình AI &amp; Lĩnh vực con</a> &raquo; Mạng nơ-ron tích chập (CNN)
+      </div>
+      <h1>Mạng nơ-ron tích chập (CNN)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tìm hiểu cấu trúc tích chập (Convolution), phép toán lọc trích xuất đặc trưng (Kernel/Filter), lớp Pooling giảm chiều, và cơ chế biểu diễn đặc trưng phân cấp của CNN.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu Môn học</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan môn học</a></li>
+          <li><a href="tong-quan-ai.html">1. Tổng quan AI và lĩnh vực con</a></li>
+          <li><a href="classical-ml.html">2. Các mô hình Học máy kinh điển</a></li>
+          <li><a href="ann-mlp.html">3. Mạng Nơ-ron &amp; Học sâu (ANN &amp; MLP)</a></li>
+          <li><a href="cnn.html" class="active">4. Mạng tích chập CNN</a></li>
+          <li><a href="nlp-models.html">5. Các mô hình NLP</a></li>
+          <li><a href="reinforcement-learning.html">6. Học tăng cường RL</a></li>
+          <li><a href="generative-models.html">7. Mô hình AI tạo sinh</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Khái niệm về Convolutional Neural Network (CNN)</h2>
+          <p>
+            <strong>Convolutional Neural Network (CNN - Mạng Nơ-ron Tích chập)</strong> là một loại mạng nơ-ron nhân tạo (ANN) được thiết kế chuyên biệt để xử lý dữ liệu có dạng lưới (grid-like topology), điển hình nhất là dữ liệu hình ảnh 2D.
+          </p>
+          <p>
+            Nói một cách đơn giản, CNN cung cấp cơ chế giúp máy tính học cách "nhìn" và phân tích cấu trúc không gian của ảnh, tự động trích xuất các đặc trưng hình thái học từ đơn giản (như đường biên, góc, cạnh) đến phức tạp (như hình dáng, kết cấu của các bộ phận hay đối tượng đích). Trong đề tài <strong>AgriNeSy-Graph</strong>, CNN đóng vai trò là khối nơ-ron cảm quan (Neural Perception) trích xuất đặc trưng chiếc lá nhiễm bệnh để cấp dữ liệu cho khối suy luận đồ thị.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Tại sao cần mạng tích chập CNN?</h2>
+          <p>
+            Để xử lý ảnh màu kích thước trung bình $100 	imes 100 	imes 3$ (RGB), một mạng nơ-ron liên kết toàn bộ (Fully Connected Network - FCN) đòi hỏi tới 30.000 đầu vào. Nếu tầng ẩn đầu tiên có 1.000 neuron, số lượng trọng số cần tối ưu hóa lên tới:
+            $$30,000 	imes 1000 = 3 	imes 10^7 	ext{ tham số}$$
+            Việc bùng nổ tham số này làm cho mô hình rất dễ rơi vào trạng thái quá khớp (Overfitting), đồng thời tốn bộ nhớ RAM/GPU và thời gian tính toán khổng lồ.
+          </p>
+          <p>
+            CNN giải quyết triệt để vấn đề này nhờ hai nguyên lý thiết kế lấy cảm hứng từ vỏ não thị giác sinh học:
+          </p>
+          <ul>
+            <li><strong>Local Connectivity (Kết nối cục bộ):</strong> Mỗi nơ-ron tầng sau chỉ kết nối với một vùng không gian nhỏ ở tầng trước (gọi là Receptive Field - Trường thụ cảm) thay vì toàn bộ ảnh.</li>
+            <li><strong>Weight Sharing (Chia sẻ trọng số):</strong> Các vùng không gian khác nhau trên ảnh sẽ sử dụng chung một bộ tham số lọc (Kernel), giúp giảm số lượng tham số xuống hàng vạn lần.</li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 200" width="100%" height="auto" style="max-width: 650px;">
+    <!-- Left: Fully Connected Network (FCN) -->
+    <g transform="translate(10, 10)">
+      <rect x="15" y="15" width="280" height="155" rx="8" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <text x="155" y="32" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">1. Fully Connected (Mạng liên kết toàn bộ)</text>
+
+      <!-- Input Layer (Nodes) -->
+      <circle cx="60" cy="60" r="8" fill="var(--secondary-color)" />
+      <circle cx="60" cy="85" r="8" fill="var(--secondary-color)" />
+      <circle cx="60" cy="110" r="8" fill="var(--secondary-color)" />
+      <circle cx="60" cy="135" r="8" fill="var(--secondary-color)" />
+      <text x="60" y="152" fill="var(--text-light)" font-size="9" text-anchor="middle">Inputs</text>
+
+      <!-- Hidden Layer (Nodes) -->
+      <circle cx="240" cy="70" r="8" fill="var(--text-dark)" />
+      <circle cx="240" cy="95" r="8" fill="var(--text-dark)" />
+      <circle cx="240" cy="120" r="8" fill="var(--text-dark)" />
+      <text x="240" y="142" fill="var(--text-light)" font-size="9" text-anchor="middle">Neurons</text>
+
+      <!-- Dense Connections -->
+      <!-- Draw links from all inputs to all hidden neurons to show complexity -->
+      <line x1="68" y1="60" x2="232" y2="70" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="60" x2="232" y2="95" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="60" x2="232" y2="120" stroke="var(--border-color)" stroke-width="0.8" />
+
+      <line x1="68" y1="85" x2="232" y2="70" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="85" x2="232" y2="95" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="85" x2="232" y2="120" stroke="var(--border-color)" stroke-width="0.8" />
+
+      <line x1="68" y1="110" x2="232" y2="70" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="110" x2="232" y2="95" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="110" x2="232" y2="120" stroke="var(--border-color)" stroke-width="0.8" />
+
+      <line x1="68" y1="135" x2="232" y2="70" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="135" x2="232" y2="95" stroke="var(--border-color)" stroke-width="0.8" />
+      <line x1="68" y1="135" x2="232" y2="120" stroke="var(--border-color)" stroke-width="0.8" />
+
+      <text x="150" y="160" fill="#ef4444" font-size="10.5" font-weight="700" text-anchor="middle">Mỗi nút nối tất cả &rarr; Bùng nổ tham số</text>
+    </g>
+
+    <!-- Divider -->
+    <line x1="340" y1="20" x2="340" y2="180" stroke="var(--border-color)" stroke-dasharray="3 3" stroke-width="1" />
+
+    <!-- Right: CNN Local Connections & Weight Sharing -->
+    <g transform="translate(350, 10)">
+      <rect x="15" y="15" width="280" height="155" rx="8" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+      <text x="155" y="32" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">2. CNN (Kết nối cục bộ &amp; Chia sẻ)</text>
+
+      <!-- Input Grid mockup -->
+      <rect x="40" y="55" width="60" height="80" rx="3" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="70" y="98" fill="var(--text-light)" font-size="9" text-anchor="middle">Local Field</text>
+      
+      <!-- Receptive Field highlight -->
+      <rect x="50" y="65" width="40" height="40" fill="none" stroke="var(--secondary-color)" stroke-width="2" />
+      
+      <!-- Shared weights lines -->
+      <line x1="90" y1="85" x2="210" y2="95" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <line x1="90" y1="65" x2="210" y2="95" stroke="var(--secondary-color)" stroke-width="1" stroke-dasharray="2 2" />
+      <line x1="90" y1="105" x2="210" y2="95" stroke="var(--secondary-color)" stroke-width="1" stroke-dasharray="2 2" />
+
+      <!-- Feature Map node output -->
+      <circle cx="220" cy="95" r="10" fill="var(--bg-card)" stroke="var(--secondary-color)" stroke-width="2" />
+      <text x="220" y="98.5" fill="var(--primary-color)" font-size="9" font-weight="bold" text-anchor="middle">F</text>
+      
+      <text x="150" y="160" fill="#16a34a" font-size="10.5" font-weight="700" text-anchor="middle">Chỉ quét cục bộ &rarr; Tiết kiệm tham số</text>
+    </g>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Phép toán Tích chập 2D (2D Convolution)</h2>
+          <p>
+            Phép toán tích chập sử dụng một cửa sổ ma trận nhỏ gọi là <strong>Kernel (Bộ lọc)</strong> trượt qua ảnh đầu vào. Tại mỗi vị trí dừng, ta nhân từng phần tử của Kernel với giá trị pixel tương ứng của ảnh và cộng dồn lại để cho ra một giá trị duy nhất trong <strong>Feature Map (Bản đồ đặc trưng)</strong>.
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 550 170" width="100%" height="auto" style="max-width: 550px;">
+    <!-- Input Grid -->
+    <g transform="translate(10, 20)">
+      <text x="60" y="-8" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Ảnh Đầu Vào (4x4)</text>
+      <!-- Grid cells -->
+      <rect x="0" y="0" width="120" height="120" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <line x1="30" y1="0" x2="30" y2="120" stroke="var(--border-color)" />
+      <line x1="60" y1="0" x2="60" y2="120" stroke="var(--border-color)" />
+      <line x1="90" y1="0" x2="90" y2="120" stroke="var(--border-color)" />
+      <line x1="0" y1="30" x2="120" y2="30" stroke="var(--border-color)" />
+      <line x1="0" y1="60" x2="120" y2="60" stroke="var(--border-color)" />
+      <line x1="0" y1="90" x2="120" y2="90" stroke="var(--border-color)" />
+      
+      <!-- Values -->
+      <text x="15" y="20" fill="var(--text-dark)" font-size="11" text-anchor="middle">1</text>
+      <text x="45" y="20" fill="var(--text-dark)" font-size="11" text-anchor="middle">2</text>
+      <text x="75" y="20" fill="var(--text-light)" font-size="11" text-anchor="middle">0</text>
+      <text x="105" y="20" fill="var(--text-light)" font-size="11" text-anchor="middle">1</text>
+
+      <text x="15" y="50" fill="var(--text-dark)" font-size="11" text-anchor="middle">0</text>
+      <text x="45" y="50" fill="var(--text-dark)" font-size="11" text-anchor="middle">1</text>
+      <text x="75" y="50" fill="var(--text-light)" font-size="11" text-anchor="middle">3</text>
+      <text x="105" y="50" fill="var(--text-light)" font-size="11" text-anchor="middle">0</text>
+
+      <!-- Active selection highlight (left top 2x2) -->
+      <rect x="0" y="0" width="60" height="60" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" />
+    </g>
+
+    <!-- Mathematical Operator (Cross/Asterisk) -->
+    <g transform="translate(160, 75)">
+      <circle cx="0" cy="0" r="14" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <text x="0" y="5" fill="var(--secondary-color)" font-size="18" font-weight="bold" text-anchor="middle">*</text>
+    </g>
+
+    <!-- Kernel (2x2) -->
+    <g transform="translate(200, 40)">
+      <text x="40" y="-12" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Bộ Lọc / Kernel</text>
+      <rect x="10" y="0" width="60" height="60" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <line x1="40" y1="0" x2="40" y2="60" stroke="var(--border-color)" />
+      <line x1="10" y1="30" x2="70" y2="30" stroke="var(--border-color)" />
+      
+      <!-- Kernel Values -->
+      <text x="25" y="20" fill="var(--secondary-color)" font-size="11.5" font-weight="bold" text-anchor="middle">1</text>
+      <text x="55" y="20" fill="var(--secondary-color)" font-size="11.5" font-weight="bold" text-anchor="middle">0</text>
+      <text x="25" y="50" fill="var(--secondary-color)" font-size="11.5" font-weight="bold" text-anchor="middle">0</text>
+      <text x="55" y="50" fill="var(--secondary-color)" font-size="11.5" font-weight="bold" text-anchor="middle">1</text>
+      
+      <text x="40" y="80" fill="var(--text-light)" font-size="9" text-anchor="middle">(Nhân chập chéo)</text>
+    </g>
+
+    <!-- Equals arrow -->
+    <g transform="translate(305, 75)">
+      <path d="M 0 0 L 30 0" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" />
+      <polygon points="30,0 20,-6 20,6" fill="var(--secondary-color)" />
+      <text x="15" y="-10" fill="var(--text-light)" font-size="9" text-anchor="middle">Sum</text>
+    </g>
+
+    <!-- Feature Map Output (3x3) -->
+    <g transform="translate(370, 30)">
+      <text x="45" y="-12" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Feature Map (3x3)</text>
+      <rect x="0" y="0" width="90" height="90" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <line x1="30" y1="0" x2="30" y2="90" stroke="var(--border-color)" />
+      <line x1="60" y1="0" x2="60" y2="90" stroke="var(--border-color)" />
+      <line x1="0" y1="30" x2="90" y2="30" stroke="var(--border-color)" />
+      <line x1="0" y1="60" x2="90" y2="60" stroke="var(--border-color)" />
+      
+      <!-- Output Cell Highlight -->
+      <rect x="0" y="0" width="30" height="30" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <text x="15" y="20" fill="var(--secondary-color)" font-size="12" font-weight="bold" text-anchor="middle">2</text>
+      <text x="15" y="112" fill="var(--text-light)" font-size="10.5" text-anchor="middle">(1x1 + 2x0 + 0x0 + 1x1 = 2)</text>
+    </g>
+  </svg>
+</div>
+
+          <h3>Trình giả lập tích chập 2D tương tác (Convolution Simulator)</h3>
+          <p>
+            Chọn bộ lọc bên dưới, sau đó <strong>di chuột qua các ô của Feature Map (bên phải)</strong> để xem trực quan vùng tính toán nhân chập tương ứng trên ảnh nguồn (bên trái):
+          </p>
+
+          <div class="calculator-box" style="padding: 1.5rem;">
+            <div style="margin-bottom: 1.25rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+              <button class="calc-input" id="btn-filter-edge" onclick="selectSimFilter('edge')" style="cursor: pointer; font-weight: bold;">🔍 Phát hiện đường biên dọc (Edge)</button>
+              <button class="calc-input" id="btn-filter-sharpen" onclick="selectSimFilter('sharpen')" style="cursor: pointer;">✨ Làm nét ảnh (Sharpen)</button>
+              <button class="calc-input" id="btn-filter-blur" onclick="selectSimFilter('blur')" style="cursor: pointer;">🌫️ Làm mịn/Mờ ảnh (Box Blur)</button>
+            </div>
+
+            <div class="sim-grid-container">
+              <!-- Source Image 5x5 -->
+              <div>
+                <div style="font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--primary-color);">Ảnh nguồn $5 	imes 5$</div>
+                <div class="sim-matrix" id="matrix-source" style="grid-template-columns: repeat(5, 32px);">
+                  <!-- 25 cells will be generated by JS -->
+                </div>
+              </div>
+
+              <!-- Operator Symbol -->
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">*</div>
+
+              <!-- Feature Map 3x3 -->
+              <div>
+                <div style="font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--primary-color);">Feature Map $3 	imes 3$</div>
+                <div class="sim-matrix" id="matrix-output" style="grid-template-columns: repeat(3, 32px);">
+                  <!-- 9 cells will be generated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <div class="sim-expr-box" id="sim-math-expression">
+              Di chuột vào các ô của Feature Map để xem công thức tính tích chập chi tiết.
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Công thức tính kích thước Feature Map</h2>
+          <p>
+            Kích thước đầu ra của Feature Map sau phép tích chập phụ thuộc vào: kích thước ảnh gốc $W_{in}$, kích thước bộ lọc $K$, độ đệm viền $P$ (Padding), và bước nhảy trượt $S$ (Stride). Công thức toán học xác định kích thước đầu ra được định nghĩa như sau:
+            $$W_{out} = \left\lfloor rac{W_{in} - K + 2P}{S} ightfloor + 1$$
+          </p>
+
+          <!-- INTERACTIVE CALCULATOR -->
+          <div class="calculator-box">
+            <h4 style="margin-top:0; color: var(--primary-color);">Bộ tính toán kích thước Feature Map đầu ra:</h4>
+            <div class="calc-row">
+              <div class="calc-group">
+                <label for="input-w">Ảnh gốc $W_{in}$:</label>
+                <input type="number" id="input-w" class="calc-input" value="224" oninput="calculateOutputDim()">
+              </div>
+              <div class="calc-group">
+                <label for="input-k">Bộ lọc $K$:</label>
+                <input type="number" id="input-k" class="calc-input" value="3" oninput="calculateOutputDim()">
+              </div>
+              <div class="calc-group">
+                <label for="input-p">Độ đệm $P$ (Padding):</label>
+                <input type="number" id="input-p" class="calc-input" value="1" oninput="calculateOutputDim()">
+              </div>
+              <div class="calc-group">
+                <label for="input-s">Bước trượt $S$ (Stride):</label>
+                <input type="number" id="input-s" class="calc-input" value="1" oninput="calculateOutputDim()">
+              </div>
+            </div>
+            <div class="calc-result" id="dim-calc-output">
+              Feature Map đầu ra: 224 x 224
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. Lớp Pooling (Lớp gom cụm / Giảm kích thước)</h2>
+          <p>
+            Lớp Pooling được chèn xen kẽ giữa các tầng tích chập nhằm giảm thiểu số lượng tham số, tiết kiệm bộ nhớ tính toán và tạo ra tính bất biến dịch chuyển (translation invariance) đối với các đặc trưng cục bộ.
+          </p>
+          <ul>
+            <li><strong>Max Pooling:</strong> Trượt một cửa sổ qua ảnh và chỉ lấy giá trị lớn nhất trong cửa sổ đó. Giúp trích xuất các đặc trưng nổi trội nhất.</li>
+            <li><strong>Average Pooling:</strong> Lấy giá trị trung bình cộng của tất cả các phần tử nằm trong cửa sổ trượt.</li>
+          </ul>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 600 170" width="100%" height="auto" style="max-width: 600px;">
+    <!-- Input 2x2 Cell Block -->
+    <g transform="translate(40, 30)">
+      <text x="40" y="-12" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Feature Map (2x2)</text>
+      <rect x="0" y="0" width="80" height="80" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+      <line x1="40" y1="0" x2="40" y2="80" stroke="var(--border-color)" />
+      <line x1="0" y1="40" x2="80" y2="40" stroke="var(--border-color)" />
+      
+      <!-- Values -->
+      <text x="20" y="26" fill="var(--text-dark)" font-size="16" text-anchor="middle">3</text>
+      <text x="60" y="26" fill="var(--text-dark)" font-size="16" text-anchor="middle">2</text>
+      <text x="20" y="66" fill="var(--secondary-color)" font-size="18" font-weight="bold" text-anchor="middle">8</text>
+      <text x="60" y="66" fill="var(--text-dark)" font-size="16" text-anchor="middle">1</text>
+    </g>
+
+    <!-- Branch 1: Max Pooling (Top Right) -->
+    <g transform="translate(230, 20)">
+      <path d="M 0 40 L 70 15" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="70,15 60,15 64,22" fill="var(--secondary-color)" />
+      <text x="35" y="18" fill="var(--secondary-color)" font-family="sans-serif" font-size="10.5" font-weight="bold" text-anchor="middle">Max Pooling</text>
+
+      <rect x="80" y="-5" width="40" height="40" fill="var(--highlight-bg)" stroke="#16a34a" stroke-width="2" />
+      <text x="100" y="22" fill="#16a34a" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">8</text>
+      <text x="155" y="18" fill="var(--text-light)" font-size="10" text-anchor="start">(Lấy phần tử lớn nhất)</text>
+    </g>
+
+    <!-- Branch 2: Average Pooling (Bottom Right) -->
+    <g transform="translate(230, 95)">
+      <path d="M 0 0 L 70 25" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+      <polygon points="70,25 64,18 60,25" fill="var(--border-color)" />
+      <text x="35" y="24" fill="var(--text-light)" font-family="sans-serif" font-size="10.5" text-anchor="middle">Average Pooling</text>
+
+      <rect x="80" y="5" width="40" height="40" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.5" />
+      <text x="100" y="32" fill="var(--text-dark)" font-family="sans-serif" font-size="15" font-weight="bold" text-anchor="middle">3.5</text>
+      <text x="155" y="28" fill="var(--text-light)" font-size="10" text-anchor="start">((3+2+8+1)/4 = 3.5)</text>
+    </g>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>5. Kiến trúc tổng quát và Quá trình học đặc trưng phân cấp</h2>
+          <p>
+            Một kiến trúc mạng CNN kinh điển bao gồm chuỗi tuần tự kết nối từ trích xuất đặc trưng sang chẩn đoán lớp:
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 740 140" width="100%" height="auto" style="max-width: 740px;">
+    <defs>
+      <marker id="arrow-cnn" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Input -->
+    <rect x="10" y="35" width="70" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="45" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">Ảnh Gốc</text>
+    <text x="45" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Image)</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 85 60 L 105 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-cnn)" />
+
+    <!-- Layer 1: Conv -->
+    <rect x="115" y="35" width="85" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="157.5" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">Convolution</text>
+    <text x="157.5" y="72" fill="var(--secondary-color)" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle">ReLU</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 205 60 L 225 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-cnn)" />
+
+    <!-- Layer 2: Pooling -->
+    <rect x="235" y="35" width="85" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="277.5" y="58" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">Max Pooling</text>
+    <text x="277.5" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Downsample)</text>
+
+    <!-- Arrow 3 -->
+    <path d="M 325 60 L 345 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-cnn)" />
+
+    <!-- Layer 3: Conv 2 -->
+    <rect x="355" y="35" width="85" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="397.5" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">Convolution</text>
+    <text x="397.5" y="72" fill="var(--secondary-color)" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle">ReLU</text>
+
+    <!-- Arrow 4 -->
+    <path d="M 445 60 L 465 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-cnn)" />
+
+    <!-- Layer 4: Pooling 2 -->
+    <rect x="475" y="35" width="85" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="517.5" y="58" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">Max Pooling</text>
+    <text x="517.5" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Downsample)</text>
+
+    <!-- Arrow 5 -->
+    <path d="M 565 60 L 585 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-cnn)" />
+
+    <!-- Layer 5: Fully Connected -->
+    <rect x="595" y="35" width="130" height="50" rx="4" fill="var(--bg-code)" stroke="var(--text-dark)" stroke-width="1.5" />
+    <text x="660" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Fully Connected</text>
+    <text x="660" y="72" fill="#16a34a" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">Chẩn Đoán Bệnh</text>
+  </svg>
+</div>
+          <p>
+            Trong quá trình huấn luyện bằng thuật toán lan truyền ngược sai số (Backpropagation) và Gradient Descent, các bộ lọc (Kernels) ban đầu được khởi tạo ngẫu nhiên sẽ tự động tối ưu hóa để học cách nhận diện các cấu trúc hình học đặc trưng từ đơn giản đến phức tạp:
+          </p>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 140" width="100%" height="auto" style="max-width: 650px;">
+    <defs>
+      <marker id="arrow-hierarchy" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Level 1: Low-level features -->
+    <rect x="15" y="25" width="170" height="70" rx="5" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="100" y="47" fill="var(--text-dark)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Lớp Đầu (Low-level)</text>
+    <text x="100" y="65" fill="var(--secondary-color)" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Đường thẳng &amp; Biên cạnh</text>
+    <text x="100" y="80" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Edges, Lines, Angles)</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 195 60 L 220 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-hierarchy)" />
+
+    <!-- Level 2: Mid-level features -->
+    <rect x="235" y="25" width="180" height="70" rx="5" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+    <text x="325" y="47" fill="var(--primary-color)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Lớp Giữa (Mid-level)</text>
+    <text x="325" y="65" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Vết đốm &amp; Hoạt hình học</text>
+    <text x="325" y="80" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Textures, Shapes, Leaf spots)</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 425 60 L 450 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-hierarchy)" />
+
+    <!-- Level 3: High-level features -->
+    <rect x="465" y="25" width="170" height="70" rx="5" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.2" />
+    <text x="550" y="47" fill="var(--text-dark)" font-family="sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Lớp Sâu (High-level)</text>
+    <text x="550" y="65" fill="#16a34a" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Bệnh Đạo ôn / Bệnh Lá</text>
+    <text x="550" y="80" fill="var(--text-light)" font-family="sans-serif" font-size="9" text-anchor="middle">(Whole objects / Blast Disease)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>6. Ưu điểm và Hạn chế của CNN</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #10b981;">✓ Ưu điểm vượt trội</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Đạt hiệu suất xuất sắc nhất trên dữ liệu dạng lưới không gian như ảnh và video.</li>
+                <li>Tự động học các đặc trưng mà không cần kỹ sư thiết kế bộ lọc thủ công như trước.</li>
+                <li>Số lượng tham số nhỏ hơn rất nhiều so với mạng FCN nhờ cơ chế chia sẻ trọng số.</li>
+              </ul>
+            </div>
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #ef4444;">✗ Hạn chế kỹ thuật</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li>Đòi hỏi lượng dữ liệu gán nhãn cực lớn để tránh hiện tượng quá khớp ở các tầng sâu.</li>
+                <li>Bản chất là mô hình Hộp đen (Black Box), rất khó giải thích rõ ràng cơ chế ra quyết định bên trong nơ-ron nếu không có các công cụ XAI bổ trợ.</li>
+                <li>Chỉ học tương quan số học từ dữ liệu, hoàn toàn không có khả năng suy luận logic nghiệp vụ.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // DIMENSION CALCULATOR ENGINE JS
+    // ----------------------------------------------------
+    function calculateOutputDim() {
+      const w = parseInt(document.getElementById('input-w').value) || 0;
+      const k = parseInt(document.getElementById('input-k').value) || 0;
+      const p = parseInt(document.getElementById('input-p').value) || 0;
+      const s = parseInt(document.getElementById('input-s').value) || 1;
+
+      const outBox = document.getElementById('dim-calc-output');
+
+      if (s <= 0) {
+        outBox.innerText = "Lỗi: Bước trượt (Stride) phải lớn hơn 0";
+        return;
+      }
+
+      const exact = (w - k + 2 * p) / s + 1;
+      const outputDim = Math.floor(exact);
+
+      if (outputDim <= 0) {
+        outBox.innerText = "Lỗi: Tham số không hợp lệ (Đầu ra <= 0)";
+      } else {
+        outBox.innerText = `Feature Map đầu ra: ${outputDim} x ${outputDim} (giá trị thực tế: ${exact.toFixed(2)})`;
+      }
+    }
+
+    // ----------------------------------------------------
+    // CONVOLUTION SIMULATOR JS
+    // ----------------------------------------------------
+    const sourceMatrix = [
+      [10, 10, 10, 0, 0],
+      [10, 10, 10, 0, 0],
+      [10, 10, 10, 0, 0],
+      [10, 10, 10, 0, 0],
+      [10, 10, 10, 0, 0]
+    ];
+
+    const filters = {
+      edge: [
+        [1, 0, -1],
+        [1, 0, -1],
+        [1, 0, -1]
+      ],
+      sharpen: [
+        [0, -1, 0],
+        [-1, 5, -1],
+        [0, -1, 0]
+      ],
+      blur: [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+      ]
+    };
+
+    let activeFilterName = 'edge';
+
+    function initSimulator() {
+      const srcContainer = document.getElementById('matrix-source');
+      const outContainer = document.getElementById('matrix-output');
+
+      srcContainer.innerHTML = '';
+      outContainer.innerHTML = '';
+
+      // Generate Source Image cells
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 5; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'sim-cell';
+          cell.id = `src-${r}-${c}`;
+          cell.innerText = sourceMatrix[r][c];
+          srcContainer.appendChild(cell);
+        }
+      }
+
+      // Generate Output cells
+      const kernel = filters[activeFilterName];
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'sim-cell hover-output';
+          cell.id = `out-${r}-${c}`;
+          
+          // Calculate convolution value
+          let val = 0;
+          for (let kr = 0; kr < 3; kr++) {
+            for (let kc = 0; kc < 3; kc++) {
+              val += sourceMatrix[r + kr][c + kc] * kernel[kr][kc];
+            }
+          }
+          if (activeFilterName === 'blur') {
+            val = Math.round(val / 9); // Average normalized
+          }
+
+          cell.innerText = val;
+          
+          // Add hover events
+          cell.addEventListener('mouseover', () => highlightReceptiveField(r, c, val));
+          cell.addEventListener('mouseout', resetHighlights);
+
+          outContainer.appendChild(cell);
+        }
+      }
+    }
+
+    function selectSimFilter(name) {
+      activeFilterName = name;
+      document.getElementById('btn-filter-edge').style.fontWeight = name === 'edge' ? 'bold' : 'normal';
+      document.getElementById('btn-filter-sharpen').style.fontWeight = name === 'sharpen' ? 'bold' : 'normal';
+      document.getElementById('btn-filter-blur').style.fontWeight = name === 'blur' ? 'bold' : 'normal';
+
+      initSimulator();
+      resetHighlights();
+    }
+
+    function highlightReceptiveField(outRow, outCol, outVal) {
+      resetHighlights();
+      const kernel = filters[activeFilterName];
+      let mathExpr = '';
+      
+      if (activeFilterName === 'blur') {
+        mathExpr += 'Average = (';
+      }
+
+      let terms = [];
+      for (let kr = 0; kr < 3; kr++) {
+        for (let kc = 0; kc < 3; kc++) {
+          const r = outRow + kr;
+          const c = outCol + kc;
+          const cell = document.getElementById(`src-${r}-${c}`);
+          if (cell) {
+            cell.classList.add('sim-cell', 'highlight-input');
+            if (kr === 1 && kc === 1) {
+              cell.classList.add('highlight-center');
+            }
+          }
+          terms.push(`(${sourceMatrix[r][c]} &times; ${kernel[kr][kc]})`);
+        }
+      }
+
+      mathExpr += terms.join(' + ');
+      if (activeFilterName === 'blur') {
+        mathExpr += ') / 9';
+      }
+      mathExpr += ` = <strong>${outVal}</strong>`;
+
+      document.getElementById(`out-${outRow}-${outCol}`).classList.add('hover-output', 'highlight-input');
+      document.getElementById('sim-math-expression').innerHTML = `Feature Map[${outRow}][${outCol}] = ${mathExpr}`;
+    }
+
+    function resetHighlights() {
+      document.querySelectorAll('#matrix-source .sim-cell').forEach(c => {
+        c.className = 'sim-cell';
+      });
+      document.querySelectorAll('#matrix-output .sim-cell').forEach(c => {
+        c.className = 'sim-cell hover-output';
+      });
+      document.getElementById('sim-math-expression').innerHTML = "Di chuột vào các ô của Feature Map để xem công thức tính tích chập chi tiết.";
+    }
+
+    // Initialize widgets on load
+    window.addEventListener('DOMContentLoaded', () => {
+      calculateOutputDim();
+      selectSimFilter('edge');
+    });
+  </script>
+</body>
+</html>

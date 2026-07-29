@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyên đề: Đồ thị Tri thức (Knowledge Graph) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js?v=2"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .section-title {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+
+    /* Interactive Demo Box Styles */
+    .demo-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .sim-btn {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: left;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .sim-btn:hover {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sim-btn.active {
+      border-color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    
+    .sim-explain-panel {
+      margin-top: 1rem;
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* SVG highlighting classes */
+    .highlight-node circle {
+      stroke: var(--secondary-color) !important;
+      stroke-width: 3px !important;
+      fill: var(--highlight-bg) !important;
+      filter: url(#glow);
+    }
+    .highlight-edge {
+      stroke: var(--secondary-color) !important;
+      stroke-width: 3px !important;
+      marker-end: url(#arrow-highlight) !important;
+      filter: url(#glow);
+    }
+    .highlight-label {
+      fill: var(--secondary-color) !important;
+      font-weight: 700 !important;
+    }
+    .faded-element {
+      opacity: 0.15;
+      transition: opacity 0.3s ease;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">NCKH - Nền tảng AI</a> &raquo; Đồ thị Tri thức (Knowledge Graph)
+      </div>
+      <h1>Đồ thị Tri thức (Knowledge Graph)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Nghiên cứu cơ chế biểu diễn tri thức dưới dạng đồ thị (nodes và edges), bộ ba RDF Triples, thiết kế Ontology, ứng dụng trong suy luận logic giải thích được (Explainable AI).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="author-toggle" class="btn-pdf btn-author" aria-label="Hiện/Ẩn tác giả khi in">
+        <span>✍️ Ẩn tác giả khi in</span>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Học liệu NCKH</h3>
+        <ul>
+          <li><a href="index.html">🏠 Trang tổng quan NCKH</a></li>
+          <li><a href="phat-hien-doi-tuong.html">1. Phát hiện đối tượng (Object Detection)</a></li>
+          <li><a href="neuro-symbolic-ai.html">2. Trí tuệ nhân tạo nơ-ron ký hiệu (Neuro-Symbolic AI)</a></li>
+          <li><a href="knowledge-graph.html" class="active">3. Đồ thị tri thức (Knowledge Graph)</a></li>
+          <li><a href="ontology.html">4. Bản thể học (Ontology)</a></li>
+          <li><a href="explainable-ai.html">5. Trí tuệ nhân tạo giải thích được (XAI)</a></li>
+        </ul>
+        
+        <h3>Lộ trình học tiếp theo</h3>
+        <ul>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">6. Mô hình YOLO (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">7. Vision Transformer (Dự kiến)</a></li>
+          <li><a href="#" style="pointer-events: none; opacity: 0.5;">8. Graph Neural Network (Dự kiến)</a></li>
+        </ul>
+      </aside>
+
+      <!-- Right side: Main Content -->
+      <main>
+        <section>
+          <h2 class="section-title">Khái quát về Đồ thị Tri thức (Knowledge Graph)</h2>
+          <p>
+            <strong>Knowledge Graph (KG - Đồ thị Tri thức)</strong> là phương pháp biểu diễn tri thức dưới dạng mạng lưới kết nối đồ thị, trong đó các thực thể (entities) được biểu diễn bằng các nút (nodes/vertices) và mối quan hệ (relationships) giữa chúng được biểu diễn bằng các cạnh có hướng có nhãn (labeled directed edges).
+          </p>
+          <p>
+            Nói một cách đơn giản, đồ thị tri thức cho phép máy tính lưu trữ, mô hình hóa và suy luận thông tin theo cách tự nhiên tương tự như con người liên kết các khái niệm tri thức với nhau. Đây chính là mảnh ghép trung tâm, đóng vai trò "bộ nhớ tri thức cứng" của các kiến trúc <strong>Neuro-Symbolic AI</strong>.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>1. Tại sao cần Đồ thị Tri thức?</h2>
+          <p>
+            Khi bạn hỏi một kỹ sư nông nghiệp: <em>"Bệnh đạo ôn lúa là gì?"</em>, bộ não của họ không chỉ trả xuất một định nghĩa từ điển rời rạc. Thay vào đó, một mạng lưới liên tưởng ngữ nghĩa khổng lồ sẽ được kích hoạt ngay lập tức:
+          </p>
+          <p style="text-align: center; font-weight: bold; color: var(--primary-color);">
+            Bệnh đạo ôn lúa &rarr; Gây hại &rarr; Cây lúa &rarr; Do tác nhân &rarr; Nấm Magnaporthe &rarr; Phát triển mạnh khi &rarr; Độ ẩm cao
+          </p>
+          <p>
+            Con người lưu trữ và liên kết kiến thức theo dạng mạng lưới liên kết nhân quả, không phải các bản ghi tách biệt. Đồ thị tri thức được thiết kế để giúp máy tính làm được điều tương tự: chuyển đổi từ dữ liệu thô thành tri thức có khả năng suy luận.
+          </p>
+
+          <h3>Tiến trình chuyển đổi từ Dữ liệu đến Tri thức:</h3>
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 650 140" width="100%" height="auto" style="max-width: 650px;">
+    <defs>
+      <marker id="arrow-dik" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Box 1: Data -->
+    <rect x="15" y="25" width="150" height="70" rx="6" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="90" y="47" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">1. DATA (Dữ liệu thô)</text>
+    <text x="90" y="67" fill="var(--text-light)" font-family="monospace" font-size="11.5" text-anchor="middle">"Rice", "Blast", "Tomato"</text>
+    <text x="90" y="82" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="10" text-anchor="middle">(Chuỗi ký tự rời rạc, chưa liên kết)</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 180 60 L 215 60" fill="none" stroke="var(--secondary-color)" stroke-width="2" marker-end="url(#arrow-dik)" />
+
+    <!-- Box 2: Information -->
+    <rect x="230" y="25" width="180" height="70" rx="6" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+    <text x="320" y="47" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">2. INFORMATION (Thông tin)</text>
+    <text x="320" y="67" fill="var(--text-dark)" font-family="monospace" font-size="11.5" font-weight="bold" text-anchor="middle">Rice -[hasDisease]-> Blast</text>
+    <text x="320" y="82" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="10" text-anchor="middle">(Đã thêm ngữ nghĩa liên kết)</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 425 60 L 460 60" fill="none" stroke="var(--secondary-color)" stroke-width="2" marker-end="url(#arrow-dik)" />
+
+    <!-- Box 3: Knowledge -->
+    <rect x="475" y="25" width="160" height="70" rx="6" fill="var(--bg-main)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="555" y="47" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">3. KNOWLEDGE (Tri thức)</text>
+    <text x="555" y="67" fill="var(--secondary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">Mạng lưới liên kết ngữ nghĩa</text>
+    <text x="555" y="82" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="10" text-anchor="middle">(Ontology + Triples + Rules)</text>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>2. Đỉnh (Node) và Cạnh (Edge) trong Đồ thị</h2>
+          <p>
+            Trong Toán học và Lý thuyết đồ thị, một đồ thị $\mathcal{G}$ là một cấu trúc gồm tập hợp các đỉnh $\mathcal{V}$ (Nodes) và tập hợp các cạnh $\mathcal{E}$ (Edges) nối giữa chúng:
+            $$\mathcal{G} = (\mathcal{V}, \mathcal{E})$$
+          </p>
+          <ul>
+            <li>
+              <strong>Node (Đỉnh / Thực thể):</strong> Đại diện cho một đối tượng cụ thể trong thế giới thực hoặc một khái niệm trừu tượng. Ví dụ: <code>Rice Plant</code> (Cây lúa), <code>Blast Disease</code> (Bệnh đạo ôn), <code>High Humidity</code> (Độ ẩm không khí cao).
+            </li>
+            <li>
+              <strong>Edge (Cạnh / Quan hệ):</strong> Đại diện cho liên kết hay mối quan hệ ngữ nghĩa giữa hai Node. Trong đồ thị tri thức, mỗi cạnh bắt buộc phải có nhãn (labeled edge) để xác định rõ loại quan hệ nhân quả. Ví dụ:
+              <pre style="text-align: center; font-weight: bold; background-color: var(--highlight-bg); border-color: var(--highlight-border); margin: 0.5rem 0;">Rice Plant ─── [hasDisease] ───&gt; Blast Disease</pre>
+            </li>
+          </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>3. Bộ ba tri thức (RDF Triple)</h2>
+          <p>
+            Đơn vị lưu trữ cơ bản nhỏ nhất cấu thành nên toàn bộ Đồ thị tri thức được gọi là một <strong>Triple (Bộ ba tri thức)</strong>. Mỗi bộ ba bao gồm ba thành phần theo cú pháp chuẩn của khung mô tả tài nguyên RDF:
+          </p>
+          
+          <div class="callout">
+            <div class="callout-title">Cấu trúc một Triple: (Subject, Predicate, Object)</div>
+            <ul>
+              <li><strong>Subject (Chủ thể):</strong> Thực thể xuất phát mối quan hệ (Node nguồn).</li>
+              <li><strong>Predicate (Vị ngữ / Thuộc tính):</strong> Mối quan hệ hoặc cạnh nối.</li>
+              <li><strong>Object (Đối thể):</strong> Thực thể đích nhận mối quan hệ (Node đích).</li>
+            </ul>
+          </div>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 550 120" width="100%" height="auto" style="max-width: 550px;">
+    <defs>
+      <marker id="arrow-triple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Subject -->
+    <rect x="15" y="35" width="130" height="50" rx="6" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+    <text x="80" y="57" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Subject (Chủ thể)</text>
+    <text x="80" y="73" fill="var(--text-dark)" font-family="monospace" font-size="12" text-anchor="middle">Rice Plant (Cây lúa)</text>
+
+    <!-- Predicate Line -->
+    <path d="M 155 60 L 385 60" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" marker-end="url(#arrow-triple)" />
+    <rect x="195" y="47" width="110" height="24" rx="4" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="1" />
+    <text x="250" y="63" fill="var(--secondary-color)" font-family="monospace" font-size="11.5" font-weight="bold" text-anchor="middle">hasDisease</text>
+
+    <!-- Object -->
+    <rect x="405" y="35" width="130" height="50" rx="6" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.5" />
+    <text x="470" y="57" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Object (Đối thể)</text>
+    <text x="470" y="73" fill="var(--text-dark)" font-family="monospace" font-size="12" text-anchor="middle">Blast Disease (Đạo ôn)</text>
+  </svg>
+</div>
+
+          <p>
+            Bằng việc ghép hàng triệu bộ ba tri thức lại với nhau, máy tính sẽ sở hữu một mạng lưới đồ thị liên kết chéo khổng lồ, giúp hệ thống suy luận sâu sắc các mối quan hệ bắc cầu.
+          </p>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>4. So sánh Cơ sở dữ liệu quan hệ (RDBMS) và Đồ thị Tri thức</h2>
+          <p>
+            Mặc dù cả hai đều dùng để lưu trữ dữ liệu, kiến trúc của đồ thị tri thức có những ưu thế vượt trội khi xử lý các mối quan hệ phức tạp:
+          </p>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 700 220" width="100%" height="auto" style="max-width: 700px;">
+    <!-- Left: Tabular Database -->
+    <g transform="translate(10, 10)">
+      <text x="140" y="20" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">1. Relational Database (Dữ liệu bảng)</text>
+      
+      <!-- Table mockup -->
+      <rect x="15" y="35" width="250" height="135" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1" />
+      
+      <!-- Table Header -->
+      <rect x="15" y="35" width="250" height="30" fill="var(--bg-code)" />
+      <text x="30" y="54" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700">Crop_ID</text>
+      <text x="110" y="54" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700">Crop_Name</text>
+      <text x="195" y="54" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700">Disease_ID</text>
+      <line x1="15" y1="65" x2="265" y2="65" stroke="var(--border-color)" stroke-width="1.5" />
+
+      <!-- Row 1 -->
+      <text x="30" y="85" fill="var(--text-dark)" font-family="monospace" font-size="11">C01</text>
+      <text x="110" y="85" fill="var(--text-dark)" font-family="sans-serif" font-size="11">Rice</text>
+      <text x="195" y="85" fill="var(--text-dark)" font-family="monospace" font-size="11">D08</text>
+      <line x1="15" y1="95" x2="265" y2="95" stroke="var(--border-color)" stroke-width="1" />
+
+      <!-- Row 2 -->
+      <text x="30" y="115" fill="var(--text-dark)" font-family="monospace" font-size="11">C02</text>
+      <text x="110" y="115" fill="var(--text-dark)" font-family="sans-serif" font-size="11">Tomato</text>
+      <text x="195" y="115" fill="var(--text-dark)" font-family="monospace" font-size="11">D12</text>
+      <line x1="15" y1="125" x2="265" y2="125" stroke="var(--border-color)" stroke-width="1" />
+
+      <text x="140" y="190" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="10.5" text-anchor="middle">Lưu trữ các dòng độc lập, truy vấn bằng phép JOIN</text>
+    </g>
+
+    <!-- Divider -->
+    <line x1="340" y1="20" x2="340" y2="200" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="1" />
+
+    <!-- Right: Knowledge Graph -->
+    <g transform="translate(350, 10)">
+      <text x="165" y="20" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">2. Knowledge Graph (Đồ thị tri thức)</text>
+      
+      <!-- Nodes -->
+      <circle cx="60" cy="100" r="28" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <text x="60" y="103" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle">Rice Plant</text>
+      
+      <circle cx="270" cy="100" r="28" fill="var(--bg-main)" stroke="var(--text-dark)" stroke-width="1.5" />
+      <text x="270" y="103" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle">Blast Disease</text>
+
+      <circle cx="165" cy="50" r="20" fill="var(--bg-code)" stroke="var(--border-color)" stroke-width="1" />
+      <text x="165" y="53" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">Fungus</text>
+
+      <!-- Connecting arrows -->
+      <path d="M 88 100 L 235 100" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <!-- Arrowheads -->
+      <polygon points="235,100 227,96 227,104" fill="var(--secondary-color)" />
+      <text x="165" y="93" fill="var(--secondary-color)" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">hasDisease</text>
+
+      <path d="M 152 64 L 83 87" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+      <polygon points="83,87 91,89 88,82" fill="var(--text-light)" />
+      <text x="105" y="70" fill="var(--text-light)" font-family="monospace" font-size="8.5" text-anchor="middle">affects</text>
+
+      <path d="M 178 64 L 247 87" fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+      <polygon points="247,87 242,82 239,89" fill="var(--text-light)" />
+      <text x="225" y="70" fill="var(--text-light)" font-family="monospace" font-size="8.5" text-anchor="middle">causes</text>
+
+      <text x="165" y="190" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="10.5" text-anchor="middle">Lưu trữ ngữ nghĩa, truy vấn bằng liên kết mạng lưới</text>
+    </g>
+  </svg>
+</div>
+
+          <table>
+            <thead>
+              <tr style="background-color: var(--highlight-bg);">
+                <th>Tiêu chí</th>
+                <th>Cơ sở dữ liệu quan hệ (SQL)</th>
+                <th>Đồ thị tri thức (Graph DB)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Mô hình lưu trữ</strong></td>
+                <td>Dạng bảng (Hàng và Cột phẳng)</td>
+                <td>Mạng lưới Đỉnh và Cạnh ngữ nghĩa</td>
+              </tr>
+              <tr style="background-color: var(--bg-main);">
+                <td><strong>Truy vấn mối quan hệ</strong></td>
+                <td>Dùng lệnh <code>JOIN</code> (Tốn hiệu năng khi quan hệ nhiều tầng)</td>
+                <td>Duyệt trực tiếp theo liên kết cạnh (Tốc độ không đổi khi đồ thị mở rộng)</td>
+              </tr>
+              <tr>
+                <td><strong>Tính linh hoạt lược đồ</strong></td>
+                <td>Cứng nhắc (Schema cố định, đổi bảng rất khó)</td>
+                <td>Linh hoạt (Schema động, dễ dàng thêm Node/Edge mới)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="margin-top: 2.5rem;">
+          <h2>5. Trình giả lập suy luận Đồ thị Tri thức (Interactive KG Reasoner)</h2>
+          <p>
+            Đây là trình giả lập tích hợp Đồ thị tri thức nông nghiệp chẩn đoán bệnh lúa. Hãy chọn triệu chứng hoặc điều kiện thời tiết bên dưới để xem **đường dẫn suy luận logic (Reasoning Path)** được kích hoạt trực tiếp trên đồ thị SVG:
+          </p>
+
+          <!-- INTERACTIVE SIMULATOR CONTAINER -->
+          <div class="demo-container">
+            <div class="demo-grid">
+              <!-- Left side: Interactive SVG Graph -->
+              <div style="background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.5rem;">
+                <svg viewBox="0 0 720 350" width="100%" height="auto" style="max-width: 720px; font-family: system-ui, sans-serif;">
+  <defs>
+    <!-- Arrowhead markers -->
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="21" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
+    </marker>
+    <marker id="arrow-highlight" viewBox="0 0 10 10" refX="21" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+    </marker>
+    
+    <!-- Drop Shadow filter for highlighted paths -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- 1. Central Crop Node (Rice Plant) -->
+  <g id="node-Rice" class="kg-node">
+    <circle cx="360" cy="175" r="32" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="360" y="171" fill="var(--primary-color)" font-size="11" font-weight="700" text-anchor="middle">Rice Plant</text>
+    <text x="360" y="186" fill="var(--text-light)" font-size="9.5" text-anchor="middle">(Cây lúa)</text>
+  </g>
+
+  <!-- ==================== PATH A: BLAST DISEASE (LEFT) ==================== -->
+  <!-- Env Node: High Humidity -->
+  <g id="node-Humidity" class="kg-node">
+    <circle cx="100" cy="275" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="100" y="271" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">High Humidity</text>
+    <text x="100" y="284" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Độ ẩm cao)</text>
+  </g>
+
+  <!-- Symptom Node: Diamond Spot -->
+  <g id="node-Diamond" class="kg-node">
+    <circle cx="220" cy="275" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="220" y="271" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Diamond Spot</text>
+    <text x="220" y="284" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Vết hình thoi)</text>
+  </g>
+
+  <!-- Disease Node: Blast Disease -->
+  <g id="node-Blast" class="kg-node">
+    <circle cx="220" cy="75" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="220" y="71" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Blast Disease</text>
+    <text x="220" y="84" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Bệnh đạo ôn)</text>
+  </g>
+
+  <!-- Pathogen Node: Magnaporthe -->
+  <g id="node-FungusA" class="kg-node">
+    <circle cx="100" cy="75" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="100" y="71" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Magnaporthe</text>
+    <text x="100" y="84" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Nấm ký sinh)</text>
+  </g>
+
+  <!-- Connecting Edges Path A -->
+  <!-- Magnaporthe -causes-> Blast -->
+  <line id="edge-FungusA-Blast" x1="128" y1="75" x2="192" y2="75" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-FungusA-Blast" x="160" y="67" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">causes</text>
+
+  <!-- Blast -affects-> Rice -->
+  <line id="edge-Blast-Rice" x1="239" y1="96" x2="335" y2="159" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-Blast-Rice" x="295" y="122" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">affects</text>
+
+  <!-- Rice -hasSymptom-> Diamond Spot -->
+  <line id="edge-Rice-Diamond" x1="337" y1="197" x2="248" y2="259" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-Rice-Diamond" x="285" y="235" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">hasSymptom</text>
+
+  <!-- Diamond Spot -favoredBy-> High Humidity -->
+  <line id="edge-Diamond-Humidity" x1="192" y1="275" x2="128" y2="275" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-Diamond-Humidity" x="160" y="267" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">favoredBy</text>
+
+
+  <!-- ==================== PATH B: BROWN SPOT DISEASE (RIGHT) ==================== -->
+  <!-- Env Node: Low Nutrition -->
+  <g id="node-Nutrition" class="kg-node">
+    <circle cx="620" cy="275" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="620" y="271" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Poor Soil</text>
+    <text x="620" y="284" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Thiếu dinh dưỡng)</text>
+  </g>
+
+  <!-- Symptom Node: Brown Spot -->
+  <g id="node-Brown" class="kg-node">
+    <circle cx="500" cy="275" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="500" y="271" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Brown Spot</text>
+    <text x="500" y="284" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Đốm nâu tròn)</text>
+  </g>
+
+  <!-- Disease Node: Brown Spot Disease -->
+  <g id="node-BrownDisease" class="kg-node">
+    <circle cx="500" cy="75" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="500" y="71" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Brown Spot Dis</text>
+    <text x="500" y="84" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Bệnh đốm nâu)</text>
+  </g>
+
+  <!-- Pathogen Node: Bipolaris -->
+  <g id="node-FungusB" class="kg-node">
+    <circle cx="620" cy="75" r="28" fill="var(--bg-card)" stroke="#94a3b8" stroke-width="2" />
+    <text x="620" y="71" fill="var(--text-dark)" font-size="10.5" font-weight="700" text-anchor="middle">Bipolaris</text>
+    <text x="620" y="84" fill="var(--text-light)" font-size="8.5" text-anchor="middle">(Nấm đốm nâu)</text>
+  </g>
+
+  <!-- Connecting Edges Path B -->
+  <!-- Bipolaris -causes-> BrownSpotDisease -->
+  <line id="edge-FungusB-BrownDisease" x1="592" y1="75" x2="528" y2="75" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-FungusB-BrownDisease" x="560" y="67" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">causes</text>
+
+  <!-- BrownSpotDisease -affects-> Rice -->
+  <line id="edge-BrownDisease-Rice" x1="481" y1="96" x2="385" y2="159" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-BrownDisease-Rice" x="425" y="122" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">affects</text>
+
+  <!-- Rice -hasSymptom-> Brown Spot -->
+  <line id="edge-Rice-Brown" x1="383" y1="197" x2="472" y2="259" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-Rice-Brown" x="435" y="235" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">hasSymptom</text>
+
+  <!-- Brown Spot -favoredBy-> Poor Soil -->
+  <line id="edge-Brown-Nutrition" x1="528" y1="275" x2="592" y2="275" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-gray)" />
+  <text id="label-Brown-Nutrition" x="560" y="267" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">favoredBy</text>
+</svg>
+              </div>
+
+              <!-- Right side: Selection and Explanation -->
+              <div>
+                <h4 style="margin-top: 0; color: var(--secondary-color);">Chọn Triệu chứng / Điều kiện:</h4>
+                <div class="sim-controls">
+                  <button class="sim-btn active" onclick="triggerReasoning('all', this)">🌐 Xem toàn bộ Đồ thị tri thức</button>
+                  <button class="sim-btn" onclick="triggerReasoning('blast', this)">🍂 Vết bệnh hình thoi &amp; Ẩm ướt (Bệnh Đạo ôn)</button>
+                  <button class="sim-btn" onclick="triggerReasoning('brown', this)">🟤 Vết đốm tròn nâu &amp; Đất bạc màu (Bệnh Đốm nâu)</button>
+                </div>
+
+                <h4 style="margin-top: 1.5rem; color: var(--primary-color);">Cơ chế suy luận &amp; Giải thích (XAI):</h4>
+                <div class="sim-explain-panel" id="kg-reasoning-output">
+                  Chọn một triệu chứng để chạy trình suy luận logic trên đồ thị.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>6. Phân biệt giữa Ontology và Knowledge Graph</h2>
+          <p>
+            Trong khoa học dữ liệu tri thức, hai khái niệm <strong>Ontology (Hệ phân loại khái niệm)</strong> và <strong>Knowledge Graph</strong> thường bị nhầm lẫn, nhưng chúng thực chất có vai trò bổ trợ lẫn nhau:
+          </p>
+          <ul>
+            <li>
+              <strong>Ontology:</strong> Là lược đồ thiết kế (schema) định nghĩa các lớp thực thể (Classes), các thuộc tính cho phép và các quy tắc ràng buộc logic. Nó giống như bản vẽ thiết kế kỹ thuật.
+            </li>
+            <li>
+              <strong>Knowledge Graph:</strong> Là dữ liệu cụ thể (instances) được điền vào bản thiết kế đó để tạo nên thực tế. Nó chính là ngôi nhà hoàn chỉnh được xây dựng dựa trên bản vẽ Ontology.
+            </li>
+          </ul>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 700 200" width="100%" height="auto" style="max-width: 700px;">
+    <!-- Left: Ontology (Conceptual Model) -->
+    <g transform="translate(10, 10)">
+      <rect x="25" y="15" width="260" height="150" rx="8" fill="var(--bg-main)" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="1.5" />
+      <text x="155" y="35" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">ONTOLOGY (Lược đồ thiết kế)</text>
+
+      <!-- Schema Node 1 -->
+      <rect x="45" y="60" width="70" height="34" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="1" />
+      <text x="80" y="81" fill="var(--primary-color)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Class: Crop</text>
+
+      <!-- Schema Node 2 -->
+      <rect x="190" y="60" width="80" height="34" rx="4" fill="var(--bg-card)" stroke="var(--text-dark)" stroke-width="1" />
+      <text x="230" y="81" fill="var(--text-dark)" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Class: Disease</text>
+
+      <!-- Connection -->
+      <path d="M 115 77 L 185 77" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="185,77 177,73 177,81" fill="var(--secondary-color)" />
+      <text x="152.5" y="70" fill="var(--secondary-color)" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle">hasDisease</text>
+
+      <text x="155" y="125" fill="var(--text-light)" font-family="sans-serif" font-size="10.5" text-anchor="middle">Định nghĩa cấu trúc luật:</text>
+      <text x="155" y="142" fill="var(--text-light)" font-family="monospace" font-size="9.5" text-anchor="middle">Crop được phép có quan hệ hasDisease</text>
+    </g>
+
+    <!-- Mapping Indicator -->
+    <g transform="translate(305, 75)">
+      <path d="M 0 15 L 30 15" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" />
+      <polygon points="30,15 20,9 20,21" fill="var(--secondary-color)" />
+      <text x="15" y="0" fill="var(--secondary-color)" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="middle">Instantiate</text>
+    </g>
+
+    <!-- Right: Knowledge Graph (Instance Data) -->
+    <g transform="translate(370, 10)">
+      <rect x="15" y="15" width="280" height="150" rx="8" fill="var(--highlight-bg)" stroke="var(--highlight-border)" stroke-width="1.5" />
+      <text x="155" y="35" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">KNOWLEDGE GRAPH (Dữ liệu cụ thể)</text>
+
+      <!-- Instance Node 1 -->
+      <circle cx="65" cy="77" r="22" fill="var(--bg-card)" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <text x="65" y="80" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Rice</text>
+      <text x="65" y="112" fill="var(--text-light)" font-family="sans-serif" font-size="8.5" text-anchor="middle">(Instance of Crop)</text>
+
+      <!-- Instance Node 2 -->
+      <circle cx="235" cy="77" r="22" fill="var(--bg-card)" stroke="var(--text-dark)" stroke-width="1.5" />
+      <text x="235" y="80" fill="var(--text-dark)" font-family="sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Blast</text>
+      <text x="235" y="112" fill="var(--text-light)" font-family="sans-serif" font-size="8.5" text-anchor="middle">(Instance of Disease)</text>
+
+      <!-- Connection -->
+      <path d="M 87 77 L 208 77" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" />
+      <polygon points="208,77 200,73 200,81" fill="var(--secondary-color)" />
+      <text x="147.5" y="70" fill="var(--secondary-color)" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle">hasDisease</text>
+
+      <text x="150" y="142" fill="var(--primary-color)" font-family="sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">Thực thể hóa tri thức đời thực</text>
+    </g>
+  </svg>
+</div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>7. Vai trò của Đồ thị Tri thức trong Neuro-Symbolic AI</h2>
+          <p>
+            Trong kiến trúc AI lai (Hybrid AI), Đồ thị tri thức đóng vai trò làm cầu nối chuyển dịch thông tin từ thế giới cảm quan dữ liệu số sang logic ký hiệu chặt chẽ:
+          </p>
+
+          <div class="diagram-container" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <svg viewBox="0 0 760 140" width="100%" height="auto" style="max-width: 760px;">
+    <defs>
+      <marker id="arrow-pipe" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary-color)" />
+      </marker>
+    </defs>
+
+    <!-- Step 1: Input -->
+    <rect x="10" y="35" width="85" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="52.5" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Ảnh Lá Lúa</text>
+    <text x="52.5" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Input Image)</text>
+
+    <!-- Arrow 1 -->
+    <path d="M 100 60 L 115 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-pipe)" />
+
+    <!-- Step 2: Neural Net -->
+    <rect x="125" y="35" width="95" height="50" rx="4" fill="rgba(34, 197, 94, 0.1)" stroke="#16a34a" stroke-width="1.5" />
+    <text x="172.5" y="58" fill="#16a34a" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">CNN / ViT</text>
+    <text x="172.5" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Neural Perception)</text>
+
+    <!-- Arrow 2 -->
+    <path d="M 225 60 L 240 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-pipe)" />
+
+    <!-- Step 3: Features -->
+    <rect x="250" y="35" width="95" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="297.5" y="58" fill="var(--text-dark)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Đặc trưng</text>
+    <text x="297.5" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Diamond Spot)</text>
+
+    <!-- Arrow 3 -->
+    <path d="M 350 60 L 365 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-pipe)" />
+
+    <!-- Step 4: Knowledge Graph -->
+    <rect x="375" y="35" width="130" height="50" rx="4" fill="var(--highlight-bg)" stroke="var(--secondary-color)" stroke-width="2" />
+    <text x="440" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Knowledge Graph</text>
+    <text x="440" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Bộ nhớ tri thức)</text>
+
+    <!-- Arrow 4 -->
+    <path d="M 510 60 L 525 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-pipe)" />
+
+    <!-- Step 5: Symbolic Reasoner -->
+    <rect x="535" y="35" width="110" height="50" rx="4" fill="rgba(239, 68, 68, 0.08)" stroke="#ef4444" stroke-width="1.5" />
+    <text x="590" y="58" fill="#dc2626" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Suy Luận Logic</text>
+    <text x="590" y="72" fill="var(--text-light)" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">(Rules / Ontology)</text>
+
+    <!-- Arrow 5 -->
+    <path d="M 650 60 L 665 60" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" marker-end="url(#arrow-pipe)" />
+
+    <!-- Step 6: Output -->
+    <rect x="675" y="35" width="75" height="50" rx="4" fill="var(--bg-main)" stroke="var(--border-color)" stroke-width="1.5" />
+    <text x="712.5" y="58" fill="var(--primary-color)" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">Kết luận</text>
+    <text x="712.5" y="72" fill="#16a34a" font-family="system-ui, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">+ GIẢI THÍCH</text>
+  </svg>
+</div>
+
+          <ol>
+            <li>
+              <strong>Giai đoạn Neural (Nhận diện cảm quan):</strong> Mạng nơ-ron tích chập (CNN) hoặc ViT quét ảnh chụp chiếc lá lúa nhiễm bệnh, phát hiện ra các đặc trưng hình học (ví dụ: phát hiện thấy vết đốm hình thoi).
+            </li>
+            <li>
+              <strong>Giai đoạn Ánh xạ ký hiệu:</strong> Đặc trưng số hóa được chuyển đổi thành một thực thể ký hiệu cụ thể trong hệ thống Ontology (ánh xạ thành Entity: <code>DiamondSpot</code>).
+            </li>
+            <li>
+              <strong>Giai đoạn Duyệt đồ thị (Knowledge Retrieval):</strong> Thực thể <code>DiamondSpot</code> được liên kết vào đồ thị tri thức để tìm kiếm các thực thể liên quan như loài cây chịu tác động (<code>RicePlant</code>), tác nhân nấm gây ra (<code>Magnaporthe</code>).
+            </li>
+            <li>
+              <strong>Giai đoạn Lập luận Logic (Symbolic Reasoning):</strong> Áp dụng các quy tắc logic nghiệp vụ chuyên gia (Expert Rules) để đưa ra kết luận chẩn đoán cuối cùng kèm theo **cây giải thích (Explanation Tree)** chi tiết, dễ hiểu cho người nông dân.
+            </li>
+          </ol>
+        </section>
+
+        <section style="margin-top: 2rem;">
+          <h2>8. Ưu điểm và Hạn chế của Đồ thị Tri thức</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #10b981;">✓ Ưu điểm vượt trội</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li><strong>Khả năng tự giải thích (XAI):</strong> Mọi kết luận của mô hình đều có thể được truy ngược đường đi trên đồ thị để giải thích rõ ràng lý do chẩn đoán.</li>
+                <li><strong>Tích hợp tri thức chuyên gia:</strong> Dễ dàng đưa tri thức tích lũy của con người vào hệ thống máy tính trực tiếp mà không cần huấn luyện lại từ đầu.</li>
+                <li><strong>Linh hoạt và Dễ mở rộng:</strong> Khác với cơ sở dữ liệu bảng, ta có thể thêm các mối quan hệ hoặc thực thể mới vào đồ thị bất cứ lúc nào.</li>
+              </ul>
+            </div>
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="margin-top: 0; color: #ef4444;">✗ Hạn chế kỹ thuật</h4>
+              <ul style="font-size: 0.9rem; margin-bottom: 0;">
+                <li><strong>Chi phí xây dựng lớn:</strong> Đòi hỏi thời gian ban đầu để chuyên gia miền thiết kế hệ Ontology chuẩn mực, tránh mâu thuẫn logic.</li>
+                <li><strong>Truy xuất đồ thị lớn tốn tài nguyên:</strong> Khi số lượng nút lên tới hàng tỷ (như đồ thị tri thức của Google), thuật toán duyệt đường đi và lập luận sẽ tốn kém chi phí phần cứng.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h2>🛠️ Công nghệ cốt lõi thường dùng</h2>
+          <ul>
+            <li><strong>RDF &amp; OWL:</strong> Ngôn ngữ mô tả tài nguyên và ngôn ngữ Ontology chuẩn W3C dành cho Web ngữ nghĩa (Semantic Web).</li>
+            <li><strong>SPARQL:</strong> Ngôn ngữ truy vấn chuyên dụng cho dữ liệu đồ thị tri thức (tương tự như SQL cho DB quan hệ).</li>
+            <li><strong>Protégé:</strong> Phần mềm mã nguồn mở phổ biến nhất được các nhà nghiên cứu dùng để thiết kế, chỉnh sửa và chuẩn hóa Ontology.</li>
+            <li><strong>Neo4j:</strong> Hệ quản trị cơ sở dữ liệu đồ thị hàng đầu thế giới hiện nay, lưu trữ trực tiếp các node và edge ngữ nghĩa.</li>
+            <li><strong>PyTorch Geometric (PyG):</strong> Thư viện học sâu trên đồ thị dùng để huấn luyện mạng nơ-ron đồ thị (GNN) kết hợp học biểu diễn đặc trưng node.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // INTERACTIVE KNOWLEDGE GRAPH REASONER JS
+    // ----------------------------------------------------
+    const reasoningPaths = {
+      all: {
+        nodes: [],
+        edges: [],
+        text: `<strong>Trạng thái: Hiển thị toàn bộ Đồ thị tri thức.</strong><br>
+        Đây là đồ thị tri thức nông nghiệp mô hình hóa các thực thể bệnh học lúa gạo và điều kiện môi trường. Đỉnh ở trung tâm là cây lúa (<code>Rice Plant</code>) kết nối các tác nhân gây hại xung quanh.`
+      },
+      blast: {
+        nodes: ['node-Rice', 'node-Blast', 'node-FungusA', 'node-Diamond', 'node-Humidity'],
+        edges: ['edge-FungusA-Blast', 'edge-Blast-Rice', 'edge-Rice-Diamond', 'edge-Diamond-Humidity'],
+        labels: ['label-FungusA-Blast', 'label-Blast-Rice', 'label-Rice-Diamond', 'label-Diamond-Humidity'],
+        text: `<div style="font-weight: bold; color: var(--secondary-color); font-size: 0.95rem; margin-bottom: 0.5rem;">
+          Kết luận chẩn đoán: Bệnh đạo ôn lúa (Rice Blast Disease)
+        </div>
+        <strong>Cây suy luận logic (Explanation Tree):</strong>
+        <ul style="padding-left: 1.25rem; margin-top: 0.25rem; margin-bottom: 0;">
+          <li>Phát hiện triệu chứng vết bệnh hình thoi (<code>Diamond Spot</code>) trên lá.</li>
+          <li>Theo Ontology lúa gạo, vết bệnh hình thoi này có tác nhân gây hại chính là nấm <code>Magnaporthe</code> (phép kéo theo: <code>causes</code>).</li>
+          <li>Điều kiện độ ẩm không khí cao (<code>High Humidity</code>) là tác nhân xúc tác (<code>favoredBy</code>) thúc đẩy bào tử nấm lây lan mạnh mẽ.</li>
+          <li>Kích hoạt luật lập luận: <code>IF DiamondSpot AND HighHumidity THEN Disease = RiceBlast</code>.</li>
+        </ul>`
+      },
+      brown: {
+        nodes: ['node-Rice', 'node-BrownDisease', 'node-FungusB', 'node-Brown', 'node-Nutrition'],
+        edges: ['edge-FungusB-BrownDisease', 'edge-BrownDisease-Rice', 'edge-Rice-Brown', 'edge-Brown-Nutrition'],
+        labels: ['label-FungusB-BrownDisease', 'label-BrownDisease-Rice', 'label-Rice-Brown', 'label-Brown-Nutrition'],
+        text: `<div style="font-weight: bold; color: var(--secondary-color); font-size: 0.95rem; margin-bottom: 0.5rem;">
+          Kết luận chẩn đoán: Bệnh đốm nâu hại lúa (Brown Spot Disease)
+        </div>
+        <strong>Cây suy luận logic (Explanation Tree):</strong>
+        <ul style="padding-left: 1.25rem; margin-top: 0.25rem; margin-bottom: 0;">
+          <li>Phát hiện triệu chứng đốm tròn màu nâu nhỏ (<code>Brown Spot</code>) rải rác trên bề mặt lá lúa.</li>
+          <li>Theo đồ thị tri thức bệnh học, đốm nâu này do nấm <code>Bipolaris oryzae</code> gây ra trên <code>Rice Plant</code>.</li>
+          <li>Điều kiện xúc tác chính là đất nghèo chất dinh dưỡng (<code>Poor Soil</code>), khiến đề kháng của cây lúa suy giảm.</li>
+          <li>Kích hoạt luật lập luận: <code>IF BrownSpot AND PoorSoil THEN Disease = BrownSpot</code>.</li>
+        </ul>`
+      }
+    };
+
+    function triggerReasoning(mode, btn) {
+      // Toggle active classes on buttons
+      document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const pathData = reasoningPaths[mode];
+      const outputBox = document.getElementById('kg-reasoning-output');
+      
+      // Update text output with smooth animation
+      outputBox.innerHTML = pathData.text;
+
+      // Reset all SVG elements classes
+      document.querySelectorAll('.kg-node').forEach(node => {
+        node.classList.remove('highlight-node', 'faded-element');
+      });
+      document.querySelectorAll('line').forEach(line => {
+        line.classList.remove('highlight-edge', 'faded-element');
+      });
+      document.querySelectorAll('svg text').forEach(txt => {
+        txt.classList.remove('highlight-label', 'faded-element');
+      });
+
+      if (mode === 'all') {
+        return; // Normal viewing state
+      }
+
+      // 1. Highlight selected path elements
+      pathData.nodes.forEach(nId => {
+        const el = document.getElementById(nId);
+        if (el) el.classList.add('highlight-node');
+      });
+      pathData.edges.forEach(eId => {
+        const el = document.getElementById(eId);
+        if (el) el.classList.add('highlight-edge');
+      });
+      pathData.labels.forEach(lId => {
+        const el = document.getElementById(lId);
+        if (el) el.classList.add('highlight-label');
+      });
+
+      // 2. Fade non-selected elements to highlight the path contrast
+      document.querySelectorAll('.kg-node').forEach(node => {
+        if (!pathData.nodes.includes(node.id)) {
+          node.classList.add('faded-element');
+        }
+      });
+      document.querySelectorAll('line').forEach(line => {
+        // Skip background grid lines in container
+        if (line.id && !pathData.edges.includes(line.id)) {
+          line.classList.add('faded-element');
+        }
+      });
+      document.querySelectorAll('svg text').forEach(txt => {
+        // Keep the labels highlight state or fade them
+        const parentId = txt.parentElement ? txt.parentElement.id : null;
+        if (txt.id) {
+          if (!pathData.labels.includes(txt.id)) {
+            txt.classList.add('faded-element');
+          }
+        } else if (parentId) {
+          if (!pathData.nodes.includes(parentId)) {
+            txt.classList.add('faded-element');
+          }
+        }
+      });
+    }
+
+    // Run default highlight on start
+    window.addEventListener('DOMContentLoaded', () => {
+      triggerReasoning('all', document.querySelector('.sim-btn.active'));
+    });
+  </script>
+</body>
+</html>
