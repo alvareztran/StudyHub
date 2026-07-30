@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài Liệu Tổng Hợp Xử Lý Ảnh (CT316) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Styling overrides for the summary guide to look highly structured */
+    .summary-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+    .summary-section h2 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    .formula-box {
+      background-color: var(--bg-code);
+      border-left: 4px solid var(--secondary-color);
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-sans);
+    }
+    .formula-title {
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 960px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT316 - Xử lý ảnh</a> &raquo; Tài liệu tổng hợp
+      </div>
+      <h1>Tài Liệu Tổng Hợp Lý Thuyết Xử Lý Ảnh (CT316)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem; font-size: 1.05rem;">
+        Giáo trình lý thuyết tổng hợp đầy đủ và chính xác 100% nội dung của cả 5 chương học.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF / In ấn
+      </button>
+    </div>
+
+    <main>
+      
+      <!-- Section for Chương 1: Cấu Trúc Ảnh Số -->
+      <section class="summary-section" id="chuong-1">
+        <h2 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; text-transform: uppercase;">
+          Chương 1: Cấu Trúc Ảnh Số
+        </h2>
+        <!-- Section 1.1 -->
+      <section id="sec-1-1">
+        <h2>1.1 Ảnh và số hóa ảnh</h2>
+        
+        <h3>1.1.1 Ảnh là gì?</h3>
+        <p><strong>Ảnh</strong> là sự biểu diễn thông tin thị giác của thế giới thực. Dựa trên phương thức biểu diễn và xử lý, ảnh được chia làm hai loại chính:</p>
+        
+        <ul>
+          <li>
+            <strong>Ảnh tương tự (Analog Image):</strong> 
+            Tồn tại liên tục theo không gian và cường độ sáng. 
+            <em>Ví dụ:</em> Ảnh chụp bằng phim truyền thống. Loại ảnh này không thể biểu diễn trực tiếp bằng số và không được máy tính xử lý trực tiếp.
+          </li>
+          <li>
+            <strong>Ảnh số (Digital Image):</strong> 
+            Được biểu diễn dưới dạng các con số rời rạc và lưu trữ trong máy tính. Ảnh số thực chất là một tập hợp các điểm ảnh rời rạc. Máy tính chỉ có thể xử lý loại ảnh này.
+          </li>
+        </ul>
+
+        <div class="callout">
+          <div class="callout-title">Định nghĩa: Điểm ảnh (Pixel)</div>
+          <p><strong>Pixel (Picture Element)</strong> là đơn vị nhỏ nhất tạo nên ảnh số. Mỗi pixel tại một tọa độ xác định lưu trữ các giá trị đại diện cho mức sáng hoặc màu sắc của vị trí đó.</p>
+          <p style="margin-top: 0.5rem; font-style: italic; color: var(--text-light); font-size: 0.9rem;">Lưu ý: Pixel không phải là hình vuông trong thực tế vật lý. Hình vuông chỉ là cách các phần mềm đồ họa hiển thị pixel trên màn hình để con người dễ quan sát.</p>
+        </div>
+
+        <h4>Ví dụ về biểu diễn Pixel</h4>
+        <ul>
+          <li>
+            <strong>Ảnh xám (Grayscale):</strong> Mỗi pixel lưu một giá trị cường độ sáng duy nhất.
+            <div class="matrix">
+              [ 0 &nbsp; 120 &nbsp; 255 ]<br>
+              [ 60 &nbsp; 90 &nbsp; 180 ]
+            </div>
+            <br>
+            Trong đó: <code>255</code> ứng với màu trắng, <code>0</code> ứng với màu đen, và các giá trị trung gian như <code>128</code> ứng với màu xám.
+          </li>
+          <li>
+            <strong>Ảnh màu (Color Image):</strong> Mỗi pixel lưu ba giá trị ứng với các kênh màu cơ bản <code>(R, G, B)</code>.
+            <br>
+            Ví dụ: Giá trị <code>(255, 0, 0)</code> đại diện cho màu đỏ thuần khiết.
+          </li>
+        </ul>
+
+        <h3>Quá trình thu nhận ảnh</h3>
+        <p>Quá trình chuyển đổi thông tin ánh sáng từ thế giới thực thành một bức ảnh số trong máy tính diễn ra qua các giai đoạn sau:</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Thế giới thực</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ánh sáng</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ống kính (Lens)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Cảm biến ảnh (Sensor)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">ADC (Analog Digital Converter)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh số</div>
+        </div>
+
+        <ol>
+          <li>
+            <strong>Bước 1: Phản xạ ánh sáng.</strong> 
+            Đối tượng trong thế giới thực phản xạ ánh sáng từ nguồn sáng (như mặt trời hoặc đèn). 
+            <em>Ví dụ:</em> Quả táo hấp thụ hầu hết các bước sóng và phản xạ lại ánh sáng màu đỏ tới ống kính.
+          </li>
+          <li>
+            <strong>Bước 2: Ống kính (Lens).</strong> 
+            Nhiệm vụ hội tụ chùm sáng phản xạ, lấy nét (focusing) vào bề mặt cảm biến, đồng thời giảm thiểu các hiện tượng méo ảnh do quang học.
+          </li>
+          <li>
+            <strong>Bước 3: Cảm biến ảnh (Image Sensor).</strong> 
+            Thực hiện chuyển đổi các photon ánh sáng thành điện tích. Lượng điện tích sinh ra tỉ lệ thuận với cường độ ánh sáng chiếu vào.
+          </li>
+          <li>
+            <strong>Bước 4: ADC (Analog-to-Digital Converter).</strong> 
+            Bộ chuyển đổi tương tự - số có nhiệm vụ đo lượng điện áp tích lũy tại mỗi ô cảm biến và số hóa nó thành một giá trị nguyên (ví dụ: điện áp đo được chuyển đổi thành số nguyên <code>135</code>, ghi nhận giá trị pixel = <code>135</code>).
+          </li>
+        </ol>
+
+        <h3>Cảm biến ảnh (Image Sensor)</h3>
+        <p>Hiện nay có hai công nghệ sản xuất cảm biến ảnh phổ biến nhất:</p>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc tính</th>
+              <th>CCD (Charge Coupled Device)</th>
+              <th>CMOS (Complementary Metal Oxide Semiconductor)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cơ chế đọc</strong></td>
+              <td>Dịch chuyển điện tích qua từng dòng rồi chuyển đổi tập trung ở góc.</td>
+              <td>Tích hợp bộ chuyển đổi điện áp - số ngay tại từng pixel riêng lẻ.</td>
+            </tr>
+            <tr>
+              <td><strong>Ưu điểm</strong></td>
+              <td>Ít nhiễu, chất lượng ảnh rất cao, dải màu đẹp và trung thực.</td>
+              <td>Chi phí sản xuất rẻ, tốc độ đọc dữ liệu cực nhanh, tiết kiệm điện năng.</td>
+            </tr>
+            <tr>
+              <td><strong>Nhược điểm</strong></td>
+              <td>Giá thành đắt, tiêu thụ điện năng lớn, tốc độ đọc chậm.</td>
+              <td>(Trước đây) Nhiễu nhiều hơn CCD, dải tương phản thấp hơn.</td>
+            </tr>
+            <tr>
+              <td><strong>Xu thế hiện nay</strong></td>
+              <td>Chỉ còn dùng trong thiết bị khoa học chuyên dụng.</td>
+              <td>Đã cải tiến vượt bậc và gần như thay thế hoàn toàn CCD trong camera dân dụng và smartphone.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Bộ lọc màu Bayer (Bayer Filter &amp; Demosaicing)</h3>
+        <p>Một điểm đặc biệt là bản thân mỗi pixel trên cảm biến ảnh <strong>không thể phân biệt được màu sắc</strong>, nó chỉ đo được cường độ sáng (photon). Để thu được ảnh màu, người ta đặt một ma trận lọc màu phía trước cảm biến.</p>
+
+        <div class="bayer-container">
+          <div class="bayer-grid">
+            <div class="bayer-cell bayer-g">G</div>
+            <div class="bayer-cell bayer-r">R</div>
+            <div class="bayer-cell bayer-b">B</div>
+            <div class="bayer-cell bayer-g">G</div>
+          </div>
+          <div class="bayer-caption">Hình 1.1: Cấu trúc bộ lọc Bayer cơ bản (2&times;2)</div>
+        </div>
+
+        <ul>
+          <li><strong>Cấu trúc ma trận Bayer:</strong> Lặp lại các nhóm lọc màu kích thước 2&times;2 bao gồm: 50% xanh lá (Green - G), 25% đỏ (Red - R) và 25% lam (Blue - B).</li>
+          <li><strong>Tại sao màu xanh lá (Green) nhiều gấp đôi?</strong> Mắt người nhạy cảm với bước sóng màu xanh lá cây nhất. Việc tăng mật độ màu xanh lá giúp ảnh số hiển thị trông sắc nét và sáng hơn với thị giác con người.</li>
+          <li><strong>Quá trình nội suy màu (Demosaicing):</strong> Vì mỗi pixel thực tế chỉ ghi nhận được 1 trong 3 màu (R, G hoặc B), máy ảnh phải thực hiện thuật toán nội suy từ các pixel lân cận để khôi phục đủ 3 giá trị màu cho từng điểm ảnh. Quá trình này được gọi là <em>Demosaicing</em>.</li>
+        </ul>
+
+        <h4>Các biến thể cảm biến khác</h4>
+        <ul>
+          <li><strong>Kodak Pattern:</strong> Một biến thể của Bayer nhằm cải thiện độ chính xác màu và giảm nhiễu.</li>
+          <li><strong>Fujifilm EXR:</strong> Bố trí pixel xoay góc và nhóm lại để tăng dải động (Dynamic Range) và chụp thiếu sáng tốt hơn.</li>
+          <li><strong>Fujifilm X-Trans:</strong> Sử dụng ma trận lọc màu lớn hơn (6&times;6) sắp xếp ngẫu nhiên hơn. Giúp loại bỏ hiện tượng nhiễu răng cưa (Moiré) mà không cần dùng đến kính lọc thông thấp quang học (Optical Low Pass Filter), giữ nguyên độ sắc nét tối đa.</li>
+          <li><strong>Foveon X3 (Sigma):</strong> Cảm biến đặc biệt không dùng Bayer filter. Nó tận dụng tính chất vật lý của silicon (các bước sóng ánh sáng khác nhau đâm xuyên sâu khác nhau) để đặt 3 lớp cảm biến thu nhận đủ cả 3 màu R, G, B tại cùng một vị trí pixel. Ảnh chụp từ Foveon cực kỳ sắc nét và chuẩn màu, nhưng giá thành rất cao, nhiễu lớn ở ISO cao và ít phổ biến.</li>
+        </ul>
+
+        <h3>Số hóa ảnh (Image Digitization)</h3>
+        <p>Quá trình chuyển đổi một cảnh liên tục ở thế giới thực thành ảnh số gồm hai bước bắt buộc:</p>
+        <ol>
+          <li>
+            <strong>Lấy mẫu (Sampling):</strong>
+            Số hóa về mặt <em>không gian</em>. Quá trình này chia bức ảnh liên tục thành một lưới các pixel rời rạc. Tần số lấy mẫu quyết định <strong>độ phân giải</strong> (Resolution) của ảnh (ví dụ: lấy mẫu thành lưới 1000&times;1000 pixels).
+          </li>
+          <li>
+            <strong>Lượng tử hóa (Quantization):</strong>
+            Số hóa về mặt <em>cường độ sáng</em>. Biến đổi giá trị cường độ liên tục tại mỗi pixel thành một giá trị số nguyên rời rạc nằm trong một dải hữu hạn. Số bit dùng để lượng tử hóa quyết định độ sâu màu (Bit depth):
+            <ul>
+              <li><code>8 bit</code> &rarr; 2<sup>8</sup> = 256 mức xám (từ 0 đến 255).</li>
+              <li><code>10 bit</code> &rarr; 2<sup>10</sup> = 1024 mức xám.</li>
+              <li><code>12 bit</code> &rarr; 2<sup>12</sup> = 4096 mức xám.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>Không gian màu (Color Space)</h3>
+        <p>Không gian màu là mô hình toán học dùng để biểu diễn các màu sắc dưới dạng các tọa độ số. Các hệ màu phổ biến bao gồm:</p>
+        <ul>
+          <li><strong>RGB (Red, Green, Blue):</strong> Hệ màu cộng tính dựa trên ba màu gốc. Phổ biến nhất trong các thiết bị hiển thị như màn hình, điện thoại, máy ảnh. Giá trị thường chạy từ <code>0</code> đến <code>255</code> cho mỗi kênh.</li>
+          <li><strong>Grayscale (Ảnh xám):</strong> Không gian đơn kênh chỉ biểu diễn độ sáng thô, hoàn toàn không chứa thông tin màu sắc. Thường dùng 8 bit (256 mức độ từ đen 0 đến trắng 255).</li>
+          <li><strong>HSV (Hue, Saturation, Value):</strong> Biểu diễn màu sắc qua 3 thông số: Tông màu (Hue - H), Độ bão hòa (Saturation - S), và Giá trị sáng (Value - V). Không gian này phản ánh trực giác con người tốt hơn và rất được ưa chuộng trong các thuật toán Thị giác máy tính (Computer Vision) để phân ngưỡng màu sắc.</li>
+          <li><strong>YCbCr:</strong> Tách biệt thông tin độ sáng (Luma - Y) khỏi hai thông tin màu sắc (Chroma - Cb, Cr). Hệ màu này cực kỳ hữu ích trong việc nén dữ liệu ảnh/video (như chuẩn JPEG, MPEG) vì mắt người nhạy với chi tiết sáng hơn chi tiết màu, cho phép giảm dung lượng kênh màu mà không làm giảm chất lượng cảm nhận rõ rệt.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.2 -->
+      <section id="sec-1-2">
+        <h2>1.2 Các thông số của ảnh số</h2>
+        
+        <h3>Độ phân giải (Resolution)</h3>
+        <p>Độ phân giải biểu thị số lượng pixel có trong một bức ảnh, thường viết dưới dạng <code>Chiều rộng &times; Chiều cao</code>.</p>
+        <p><em>Ví dụ:</em> Độ phân giải Full HD <code>1920 &times; 1080</code> chứa 2.073.600 pixel (xấp xỉ 2 Megapixels). Ảnh có độ phân giải càng lớn thì càng hiển thị được nhiều chi tiết sắc nét khi thu phóng, nhưng dung lượng lưu trữ cũng tăng theo tương ứng.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Phân biệt DPI và PPI</div>
+          <ul>
+            <li><strong>PPI (Pixels Per Inch):</strong> Mật độ pixel trên mỗi inch chiều dài của màn hình hiển thị vật lý.</li>
+            <li><strong>DPI (Dots Per Inch):</strong> Mật độ điểm mực trên mỗi inch chiều dài khi in ấn ra giấy.</li>
+          </ul>
+        </div>
+
+        <h3>Độ sâu màu (Color Depth / Bit Depth)</h3>
+        <p>Độ sâu màu là số lượng bit được sử dụng để biểu diễn màu sắc cho một pixel duy nhất.</p>
+        <ul>
+          <li><strong>1 bit:</strong> Chỉ biểu diễn được 2 màu (thường là đen và trắng).</li>
+          <li><strong>8 bit:</strong> Biểu diễn được 256 màu hoặc mức xám.</li>
+          <li><strong>24 bit (True Color):</strong> Sử dụng 8 bit cho mỗi kênh trong hệ màu RGB (8 bit R + 8 bit G + 8 bit B), cho phép tạo ra tối đa 16.7 triệu màu sắc khác nhau.</li>
+          <li><strong>32 bit:</strong> Thường gồm 24 bit màu RGB và thêm 8 bit cho kênh Alpha (độ trong suốt của pixel).</li>
+        </ul>
+
+        <h3>Dải tương phản động (Dynamic Range)</h3>
+        <p>Là khả năng ghi nhận đồng thời thông tin từ vùng tối nhất (Shadows) cho đến vùng sáng nhất (Highlights) trong một khung cảnh mà không bị mất chi tiết. Đơn vị đo là <strong>Stops (EV)</strong>.</p>
+        <p>Nếu một camera có Dynamic Range thấp, chụp cảnh chênh sáng mạnh sẽ dễ bị hiện tượng "cháy sáng" (mất chi tiết vùng sáng, biến thành màu trắng tinh) hoặc "tối đen" (mất chi tiết vùng tối). Camera có Dynamic Range 15 Stops sẽ giữ chi tiết tốt hơn camera 12 Stops.</p>
+
+        <h3>Gamma (Gamma Correction)</h3>
+        <p>Mắt người cảm nhận độ sáng <strong>không theo quy luật tuyến tính</strong> (chúng ta nhạy cảm với sự thay đổi trong vùng tối hơn vùng sáng). Tuy nhiên, các cảm biến máy ảnh lại ghi nhận ánh sáng một cách tuyến tính vật lý. Do đó, ảnh cần trải qua phép biến đổi Gamma để hiển thị phù hợp với mắt người.</p>
+        <p>Nếu hệ số Gamma hiệu chỉnh quá thấp, ảnh sẽ bị tối và mất chi tiết vùng tối. Nếu quá cao, ảnh sẽ bị bạc màu và nhạt. Không gian màu tiêu chuẩn <code>sRGB</code> sử dụng giá trị Gamma hiệu chỉnh xấp xỉ <strong>2.2</strong>.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.3 -->
+      <section id="sec-1-3">
+        <h2>1.3 Đánh giá chất lượng ảnh</h2>
+        <p>Đánh giá chất lượng ảnh bao gồm việc phân tích các tiêu chí kỹ thuật và thẩm mỹ trực quan:</p>
+        
+        <ul>
+          <li><strong>Độ nét (Sharpness):</strong> Thể hiện khả năng phân tách rõ ràng các chi tiết nhỏ hoặc ranh giới biên giữa các vùng ảnh. Ảnh bị nhòe, mờ là ảnh có độ nét thấp.</li>
+          <li><strong>Độ sáng (Brightness):</strong> Tổng lượng ánh sáng trung bình của toàn bộ bức ảnh. Ảnh quá sáng gọi là <em>Over-exposure</em> (dư sáng), quá tối gọi là <em>Under-exposure</em> (thiếu sáng).</li>
+          <li><strong>Độ tương phản (Contrast):</strong> Sự chênh lệch về cường độ sáng giữa vùng sáng nhất và vùng tối nhất của ảnh. Độ tương phản thấp làm ảnh trông phẳng và mờ nhạt, độ tương phản cao làm các khối hình nổi bật sắc nét.</li>
+          <li><strong>Độ bão hòa màu (Saturation):</strong> Mức độ đậm đặc, tinh khiết của màu sắc. Ở 0% saturation, ảnh trở thành ảnh đen trắng (Grayscale). Ở 100%, màu sắc sẽ rực rỡ nhất.</li>
+          <li><strong>Cân bằng trắng (White Balance):</strong> Quá trình hiệu chỉnh màu sắc sao cho các vật thể có màu trắng trong thực tế sẽ hiển thị đúng màu trắng trên ảnh. Sai cân bằng trắng khiến ảnh bị ám màu (ví dụ: ám vàng ấm hoặc ám xanh lạnh).</li>
+          <li>
+            <strong>Nhiễu ảnh (Noise):</strong> Các hạt màu sắc hoặc độ sáng phân bố ngẫu nhiên không mong muốn trên ảnh, thường xuất hiện khi chụp ở ISO cao, cảm biến nhỏ hoặc trong điều kiện thiếu sáng. Các loại nhiễu toán học phổ biến bao gồm:
+            <ul>
+              <li><em>Nhiễu Gaussian (Gaussian Noise):</em> Nhiễu phân bố theo hàm Gauss.</li>
+              <li><em>Nhiễu muối tiêu (Salt and Pepper Noise):</em> Xuất hiện dưới dạng các đốm trắng và đen ngẫu nhiên.</li>
+              <li><em>Nhiễu Poisson (Poisson Noise):</em> Nhiễu lượng tử do bản chất hạt của ánh sáng.</li>
+              <li><em>Nhiễu Speckle (Speckle Noise):</em> Nhiễu đốm thường thấy trong ảnh radar hoặc siêu âm.</li>
+            </ul>
+          </li>
+          <li><strong>Tính thẩm mỹ (Aesthetics):</strong> Tiêu chí định tính không có công thức tính toán cố định, phụ thuộc vào bố cục, góc chụp, cách phân bổ ánh sáng, màu sắc nghệ thuật và thông điệp truyền tải.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 1.4 -->
+      <section id="sec-1-4">
+        <h2>1.4 Lưu trữ và biểu diễn ảnh</h2>
+        
+        <h3>Biểu diễn ảnh trong máy tính</h3>
+        <p>Máy tính biểu diễn ảnh xám dưới dạng một <strong>ma trận hai chiều</strong> kích thước <code>M &times; N</code>, trong đó mỗi phần tử ma trận tương ứng với một pixel lưu giá trị cường độ sáng.</p>
+        
+        <div class="matrix">
+          A = <br>
+          [ 100 &nbsp; 120 &nbsp; 130 ]<br>
+          [ &nbsp;80 &nbsp; &nbsp;90 &nbsp; 100 ]<br>
+          [ &nbsp;60 &nbsp; &nbsp;70 &nbsp; &nbsp;80 ]
+        </div>
+
+        <p>Đối với ảnh màu (như RGB), máy tính biểu diễn bằng <strong>ba ma trận hai chiều chồng lên nhau</strong>, tương ứng với ba kênh màu Đỏ (Red), Lục (Green) và Lam (Blue). Mỗi pixel màu là một bộ ba giá trị ví dụ <code>(120, 200, 45)</code>.</p>
+
+        <h3>Các định dạng file ảnh phổ biến</h3>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Định dạng</th>
+              <th>Đặc điểm nén</th>
+              <th>Đặc trưng nổi bật</th>
+              <th>Ứng dụng chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BMP (Bitmap)</strong></td>
+              <td>Không nén</td>
+              <td>Giữ nguyên chất lượng gốc, dung lượng file cực kỳ lớn.</td>
+              <td>Lưu trữ thô, ít dùng trên môi trường mạng.</td>
+            </tr>
+            <tr>
+              <td><strong>JPEG / JPG</strong></td>
+              <td>Nén mất dữ liệu (Lossy)</td>
+              <td>Dung lượng nhỏ, loại bỏ các chi tiết mắt người khó nhận biết. Rất phổ biến.</td>
+              <td>Ảnh chụp camera, chia sẻ mạng xã hội, website.</td>
+            </tr>
+            <tr>
+              <td><strong>PNG</strong></td>
+              <td>Nén không mất dữ liệu (Lossless)</td>
+              <td>Hỗ trợ kênh Alpha nền trong suốt (Transparency). Chi tiết đồ họa sắc nét.</td>
+              <td>Logo, icon, ảnh đồ họa, thiết kế web.</td>
+            </tr>
+            <tr>
+              <td><strong>TIFF</strong></td>
+              <td>Không nén hoặc nén lossless</td>
+              <td>Chất lượng cực cao, hỗ trợ nhiều không gian màu chuyên sâu (như CMYK).</td>
+              <td>In ấn chuyên nghiệp, y tế, lưu trữ tài liệu gốc.</td>
+            </tr>
+            <tr>
+              <td><strong>GIF</strong></td>
+              <td>Nén lossless (LZW)</td>
+              <td>Chỉ hỗ trợ tối đa 256 màu. Hỗ trợ ảnh động đơn giản.</td>
+              <td>Ảnh động vui nhộn trên mạng, đồ họa đơn sắc đơn giản.</td>
+            </tr>
+            <tr>
+              <td><strong>RAW</strong></td>
+              <td>Không nén hoặc nén tối thiểu</td>
+              <td>Lưu trữ trực tiếp dữ liệu thô từ cảm biến chưa qua xử lý của máy ảnh. Cho phép can thiệp hậu kỳ cực mạnh. Dung lượng rất lớn.</td>
+              <td>Nhiếp ảnh chuyên nghiệp.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+
+      <!-- Section for Chương 2: Các Kỹ Thuật Tiền Xử Lý Ảnh -->
+      <section class="summary-section" id="chuong-2">
+        <h2 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; text-transform: uppercase;">
+          Chương 2: Các Kỹ Thuật Tiền Xử Lý Ảnh
+        </h2>
+        <!-- Section 2.1 -->
+      <section id="sec-2-1">
+        <h2>2.1 Tiền xử lý ảnh là gì?</h2>
+        <p><strong>Tiền xử lý ảnh (Image Preprocessing)</strong> là tập hợp các kỹ thuật biến đổi dữ liệu ảnh thô trước khi đưa vào các bước phân tích, trích xuất đặc trưng hoặc nhận dạng tự động.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Mục tiêu của Tiền xử lý</div>
+          <ul>
+            <li>Cải thiện chất lượng trực quan của ảnh (lọc mờ, tăng nét).</li>
+            <li>Giảm nhiễu (loại bỏ các hạt nhiễu do cảm biến hoặc môi trường truyền dẫn).</li>
+            <li>Tăng độ tương phản (làm rõ các cấu trúc mờ nhạt).</li>
+            <li>Làm nổi bật các vùng đặc trưng quan trọng phục vụ phân vùng.</li>
+            <li>Chuẩn hóa kích thước, độ sáng để giảm khối lượng tính toán cho các thuật toán phía sau.</li>
+          </ul>
+        </div>
+
+        <p>Quá trình tiền xử lý <strong>không làm thay đổi nội dung thông tin gốc</strong> của ảnh, mà chỉ nhằm tối ưu hóa ảnh giúp con người quan sát dễ dàng hơn hoặc giúp các thuật toán thị giác máy tính nhận dạng chính xác hơn.</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc (nhiễu, mờ)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Tiền xử lý</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh rõ nét / chuẩn hóa</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Nhận dạng (Khuôn mặt, biển số...)</div>
+        </div>
+
+        <h3>Quy ước trong xử lý ảnh</h3>
+        <p>Trong khuôn khổ chương này, chúng ta chủ yếu xét trên <strong>ảnh mức xám (Grayscale)</strong>. Đối với ảnh màu, các phép toán này có thể được áp dụng độc lập trên từng kênh màu (như kênh R, G, B) hoặc chuyển đổi sang không gian HSV rồi xử lý riêng trên kênh sáng (kênh V).</p>
+        
+        <h4>Quy ước cơ bản:</h4>
+        <ul>
+          <li><strong>Mức sáng:</strong> Giá trị <code>0</code> biểu diễn màu đen hoàn toàn, và giá trị cực đại (ví dụ <code>255</code> với ảnh 8-bit) biểu diễn màu trắng hoàn toàn. Các giá trị trung gian biểu diễn các mức xám chuyển tiếp.</li>
+          <li>
+            <strong>Tọa độ điểm ảnh:</strong> Ảnh kích thước M&times;N được xem như một ma trận gồm M hàng (trục x) và N cột (trục y). Mỗi pixel được định vị bằng cặp tọa độ <code>(x, y)</code>.
+            <div class="matrix">
+              (0,0) &nbsp; (0,1) &nbsp; ... &nbsp; (0,N-1)<br>
+              (1,0) &nbsp; (1,1) &nbsp; ... &nbsp; (1,N-1)<br>
+              ... &nbsp; &nbsp; &nbsp; ... &nbsp; &nbsp; &nbsp; ... &nbsp; &nbsp; ...<br>
+              (M-1,0) (M-1,1) ... (M-1,N-1)
+            </div>
+          </li>
+          <li>
+            <strong>Các điểm ảnh lân cận (Neighborhoods):</strong>
+            Xét một pixel trung tâm \(P\) tại tọa độ \((x,y)\):
+            <ul>
+              <li>
+                <strong>Lân cận 4 (4-neighborhood):</strong> Chỉ gồm 4 pixel chung cạnh trực tiếp (trên, dưới, trái, phải).
+                <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+                  &nbsp; P2 &nbsp; <br>
+                  P4 P P1<br>
+                  &nbsp; P3 &nbsp; 
+                </div>
+              </li>
+              <li>
+                <strong>Lân cận 8 (8-neighborhood):</strong> Gồm 4 pixel chung cạnh và 4 pixel chung đỉnh theo đường chéo.
+                <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+                  P1 P2 P3<br>
+                  P4 P &nbsp;P5<br>
+                  P6 P7 P8
+                </div>
+              </li>
+            </ul>
+            <p>Khái niệm lân cận này là nền tảng cốt lõi trong các phép toán lọc không gian, phát hiện biên, xử lý hình thái học (morphological operations) và tìm kiếm các thành phần liên thông trong ảnh.</p>
+          </li>
+        </ul>
+
+        <h3>Phân loại các phép xử lý ảnh</h3>
+        <p>Dựa vào phạm vi pixel tham gia tính toán giá trị mới, người ta chia làm 3 nhóm chính:</p>
+        <ol>
+          <li>
+            <strong>Xử lý điểm ảnh (Point Processing):</strong>
+            Giá trị mới của một pixel chỉ phụ thuộc vào duy nhất giá trị cũ của chính pixel đó tại tọa độ \((x,y)\).
+            <p>Công thức tổng quát: \[s = T(r)\]</p>
+            Trong đó: \(r\) là giá trị độ sáng cũ, \(s\) là giá trị độ sáng mới, và \(T\) là hàm biến đổi cường độ sáng.
+          </li>
+          <li>
+            <strong>Xử lý lân cận (Neighborhood Processing):</strong>
+            Giá trị mới của một pixel được tính toán dựa trên các giá trị của chính nó và các pixel nằm trong một vùng lân cận xác định xung quanh nó (sử dụng cửa sổ lọc).
+            <p>Công thức tổng quát: \[s = T(\text{vùng lân cận của } r)\]</p>
+            Các ứng dụng tiêu biểu: Lọc làm mờ (Blurring), lọc làm nét (Sharpening), phát hiện biên (Edge Detection).
+          </li>
+          <li>
+            <strong>Xử lý toàn cục (Global Processing):</strong>
+            Giá trị mới của các pixel phụ thuộc vào thông tin thu thập được từ toàn bộ bức ảnh (ví dụ: phân bố tần suất sáng trên toàn ảnh).
+            <p>Ví dụ điển hình: Thuật toán cân bằng lược đồ xám toàn cục (Global Histogram Equalization).</p>
+          </li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 2.2 -->
+      <section id="sec-2-2">
+        <h2>2.2 Các phép biến đổi điểm ảnh và Histogram</h2>
+        <p>Giả sử ảnh mức xám được lượng tử hóa bằng \(n\) bit. Khi đó số mức xám khả dụng là \(L = 2^n\). Với ảnh 8-bit phổ biến, ta có \(L = 256\) mức xám chạy từ \(r \in [0, 255]\).</p>
+
+        <h3>Phép biến đổi ảnh âm bản (Negative)</h3>
+        <p>Biến đổi đảo ngược mức sáng: Vùng tối trở thành vùng sáng và ngược lại.</p>
+        <p>Công thức: \[s = (L - 1) - r\]</p>
+        <p>Với ảnh 8-bit: \[s = 255 - r\]</p>
+        <p><em>Ứng dụng:</em> Tăng cường khả năng hiển thị các cấu trúc màu trắng trên nền tối, rất phổ biến trong phân tích phim chụp X-quang y tế hoặc ảnh vệ tinh chụp hồng ngoại.</p>
+
+        <h3>Biến đổi Gamma (Power-law / Gamma Transformation)</h3>
+        <p>Biến đổi phi tuyến tính dùng để điều chỉnh độ tương phản và độ sáng của ảnh theo hàm mũ.</p>
+        <p>Công thức: \[s = c \cdot r^{\gamma}\]</p>
+        <p>Trong đó \(c\) là hằng số tỉ lệ (thường chọn để ánh xạ dải đầu ra về sát \([0, L-1]\)), còn \(\gamma\) (gamma) quyết định độ cong của hàm biến đổi:</p>
+        <ul>
+          <li><strong>Trường hợp \(\gamma < 1\):</strong> Hàm biến đổi cong lồi lên phía trên. Phép toán sẽ kéo giãn các mức xám ở vùng tối và nén các mức xám ở vùng sáng. Kết quả làm <strong>ảnh sáng hơn</strong> và hiển thị rõ chi tiết ở các vùng bóng tối.</li>
+          <li><strong>Trường hợp \(\gamma > 1\):</strong> Hàm biến đổi cong lõm xuống dưới. Phép toán nén vùng tối và kéo giãn các mức xám vùng sáng. Kết quả làm <strong>ảnh tối đi</strong>.</li>
+        </ul>
+        <p><em>Ứng dụng:</em> Hiệu chỉnh hiển thị của màn hình (Gamma Correction), cứu chi tiết ảnh bị thiếu sáng hoặc xử lý ảnh thô RAW từ máy ảnh.</p>
+
+        <h3>Lược đồ xám (Histogram)</h3>
+        <p><strong>Histogram</strong> là biểu đồ thống kê tần suất xuất hiện của các mức xám trong một bức ảnh.</p>
+        <ul>
+          <li><strong>Trục hoành (x):</strong> Đại diện cho các mức xám từ \(0 \rightarrow 255\).</li>
+          <li><strong>Trục tung (y):</strong> Số lượng điểm ảnh (hoặc tỉ lệ phần trăm điểm ảnh) có mức xám tương ứng.</li>
+        </ul>
+
+        <h4>Phân tích lược đồ xám (Histogram Analysis)</h4>
+        <ul>
+          <li><strong>Histogram lệch trái (tập trung nhiều ở vùng thấp):</strong> Ảnh bị tối, thiếu sáng (Under-exposed).</li>
+          <li><strong>Histogram lệch phải (tập trung nhiều ở vùng cao):</strong> Ảnh bị chói, dư sáng (Over-exposed).</li>
+          <li><strong>Histogram hẹp (pixel tập trung vào một khoảng hẹp ở giữa):</strong> Ảnh có độ tương phản thấp (Contrast thấp), các chi tiết nhạt nhòa lẫn vào nhau.</li>
+          <li><strong>Histogram rộng (pixel phân bố trải đều từ tối đến sáng):</strong> Ảnh có độ tương phản cao (Contrast cao), chi tiết rõ ràng, sắc nét.</li>
+        </ul>
+
+        <h3>Thay đổi độ sáng bằng trượt Histogram</h3>
+        <p>Tăng hoặc giảm độ sáng đồng đều cho toàn bộ bức ảnh bằng cách cộng thêm một hằng số \(c\) vào tất cả các pixel.</p>
+        <p>Công thức: \[s = r + c\]</p>
+        <div class="callout">
+          <div class="callout-title">Lưu ý về tràn số (Clipping)</div>
+          <p>Sau khi thực hiện phép tính cộng/trừ cường độ sáng, ta phải áp dụng hàm giới hạn giá trị để tránh hiện tượng tràn số:</p>
+          <pre><code>s = max(0, min(255, r + c))</code></pre>
+          <p>Nếu \(c > 0\), lược đồ xám bị trượt sang phải (ảnh sáng lên). Nếu \(c < 0\), lược đồ xám trượt sang trái (ảnh tối đi).</p>
+        </div>
+
+        <h3>Thay đổi độ tương phản</h3>
+        
+        <h4>Căng lược đồ xám (Histogram Stretching)</h4>
+        <p>Nhân giá trị pixel với một hằng số tỉ lệ \(c\): \[s = c \cdot r\]</p>
+        <ul>
+          <li>Nếu \(c > 1\): Kéo giãn các mức xám ra xa nhau, làm <strong>tăng độ tương phản</strong>.</li>
+          <li>Nếu \(0 < c < 1\): Co các mức xám lại gần nhau, làm <strong>giảm độ tương phản</strong>.</li>
+        </ul>
+
+        <h4>Biến đổi tuyến tính tổng quát</h4>
+        <p>Công thức: \[s = a \cdot r + b\]</p>
+        <p>Trong đó, hệ số \(a\) đóng vai trò điều khiển độ tương phản (Contrast), và hệ số \(b\) đóng vai trò điều khiển độ sáng (Brightness).</p>
+
+        <h4>Biến đổi tuyến tính từng phần (Piecewise Linear Transformation)</h4>
+        <p>Không áp dụng một hàm biến đổi duy nhất cho toàn bộ dải mức xám, mà chia dải mức xám ra làm nhiều phân đoạn và áp dụng các hàm tuyến tính khác nhau trên từng phân đoạn đó. Điều này cho phép kéo giãn tương phản ở một dải mức xám đặc biệt quan tâm (ví dụ vùng trung gian) và nén các vùng không quan trọng khác.</p>
+        <p><em>Ứng dụng:</em> Nâng cao độ tương phản chi tiết trong ảnh chụp chụp cắt lớp CT, ảnh quét radar quân sự hoặc ảnh vệ tinh.</p>
+
+        <h3>Cân bằng Histogram (Histogram Equalization)</h3>
+        <p>Là phương pháp tự động điều chỉnh độ tương phản của ảnh bằng cách dàn đều phân bố các mức xám trên toàn dải \([0, L-1]\).</p>
+        <p>Công thức ánh xạ dựa trên hàm phân phối tích lũy (Cumulative Distribution Function - CDF) của lược đồ xám: \[s = C(r) \cdot (L - 1)\]</p>
+        <p>Trong đó \(C(r)\) là giá trị tích lũy xác suất của mức xám từ \(0\) đến \(r\) (chạy từ \(0 \rightarrow 1\)).</p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Hoàn toàn tự động, hiệu quả cao với các bức ảnh có phân bố sáng tối không đều hoặc quá mờ.</li>
+          <li><strong>Nhược điểm:</strong> Có thể làm khuếch đại cả nhiễu nền ở các vùng mịn, hoặc gây ra hiện tượng mất tự nhiên đối với ảnh chụp phong cảnh thông thường.</li>
+        </ul>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 2.3 -->
+      <section id="sec-2-3">
+        <h2>2.3 Phép tích chập không gian (Spatial Convolution)</h2>
+        <p><strong>Phép tích chập (Convolution)</strong> là phép toán nền tảng quan trọng nhất trong lọc không gian. Phép toán này trượt một ma trận hệ số nhỏ gọi là <strong>Kernel</strong> (hoặc mặt nạ lọc - Mask) trên khắp bề mặt của ảnh nguồn \(f\) để tạo ra ảnh đích \(g\).</p>
+        
+        <p>Nếu kernel có kích thước lẻ là \((2a+1) \times (2b+1)\), công thức tích chập tại vị trí \((x,y)\) được định nghĩa là:
+        \[g(x,y) = f(x,y) * w(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t) \cdot f(x-s, y-t)\]
+        </p>
+
+        <h3>Các bước thực hiện tích chập</h3>
+        <ol>
+          <li><strong>Padding ảnh:</strong> Bổ sung thêm viền xung quanh ảnh để tránh hiện tượng mất kích thước ở biên khi lọc.</li>
+          <li><strong>Xoay Kernel:</strong> Xoay ma trận Kernel 180 độ theo cả hai chiều ngang và dọc (đối với các bộ lọc đối xứng thì bước này không làm thay đổi kernel).</li>
+          <li><strong>Trượt và nhân chập:</strong> Đặt tâm của kernel lên pixel \((x,y)\) cần tính. Nhân từng phần tử của kernel với pixel tương ứng đè bên dưới của ảnh.</li>
+          <li><strong>Cộng tích lũy:</strong> Cộng tất cả các kết quả nhân ở bước trên lại.</li>
+          <li><strong>Gán giá trị mới:</strong> Gán tổng vừa tính được vào tọa độ tương ứng của ảnh kết quả \(g(x,y)\).</li>
+          <li><strong>Lặp lại:</strong> Trượt kernel sang pixel tiếp theo và lặp lại cho đến hết toàn bộ ảnh.</li>
+        </ol>
+
+        <h3>Các phương pháp Padding biên ảnh</h3>
+        <p>Do kernel có kích thước lớn hơn 1&times;1, khi đặt tâm kernel ở các pixel ngoài biên ảnh, một phần của kernel sẽ nằm ra ngoài phạm vi của ảnh. Ta cần các kỹ thuật điền đầy biên (Padding):</p>
+        <ul>
+          <li>
+            <strong>Zero Padding (Điền số 0):</strong> Gán toàn bộ các pixel ảo ngoài biên bằng giá trị <code>0</code>.
+            <br>
+            <em>Đặc điểm:</em> Đơn giản nhưng có nhược điểm lớn là tạo ra viền đen bao quanh ảnh kết quả sau khi lọc mờ.
+          </li>
+          <li>
+            <strong>Mirror Padding (Phản chiếu biên):</strong> Giá trị pixel ảo được lấy bằng cách đối xứng gương các pixel thật sát biên qua đường biên.
+            <br>
+            <em>Đặc điểm:</em> Đảm bảo tính liên tục của cấu trúc ảnh tốt nhất, tránh lỗi sẫm màu ở viền.
+          </li>
+          <li>
+            <strong>Replicate Padding (Lặp lại biên):</strong> Sao chép giá trị của pixel sát biên nhất và kéo dài ra ngoài.
+            <br>
+            <em>Đặc điểm:</em> Được sử dụng rộng rãi vì tính toán nhanh và hiệu quả ổn định.
+          </li>
+        </ul>
+
+        <h3>Các bộ lọc thông thấp (Low-pass Filters)</h3>
+        <p>Mục tiêu của bộ lọc thông thấp là triệt tiêu các thành phần tần số cao (nơi cường độ sáng thay đổi đột ngột như biên cạnh, nhiễu hạt) để làm mịn ảnh và giảm nhiễu.</p>
+
+        <h4>1. Bộ lọc trung bình (Box Filter / Mean Filter)</h4>
+        <p>Tất cả các phần tử trong ma trận kernel đều bằng nhau và có tổng bằng 1. Giá trị pixel mới là trung bình cộng của các pixel trong vùng lân cận.</p>
+        <p>Ví dụ kernel Box cỡ 3&times;3:
+        <div class="matrix">
+          W = 1/9 &times; <br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+          [ 1 &nbsp; 1 &nbsp; 1 ]
+        </div>
+        </p>
+        <p><em>Tác dụng:</em> Làm mờ ảnh nhanh chóng, triệt tiêu nhiễu hạt nhưng đồng thời cũng làm mờ đi các đường biên quan trọng của vật thể.</p>
+
+        <h4>2. Bộ lọc Gaussian (Gaussian Filter)</h4>
+        <p>Sử dụng hàm mật độ xác suất Gaussian để tính toán trọng số cho các phần tử trong kernel. Trọng số lớn nhất nằm ở tâm và giảm dần khi ra xa tâm.</p>
+        <p>Ví dụ mẫu kernel Gaussian xấp xỉ nguyên 3&times;3:
+        <div class="matrix">
+          W = 1/16 &times; <br>
+          [ 1 &nbsp; 2 &nbsp; 1 ]<br>
+          [ 2 &nbsp; 4 &nbsp; 2 ]<br>
+          [ 1 &nbsp; 2 &nbsp; 1 ]
+        </div>
+        </p>
+        <p><strong>Vai trò của độ lệch chuẩn \(\sigma\) (Sigma):</strong> 
+          \(\sigma\) đặc trưng cho độ rộng của phân bố Gaussian. 
+          Nếu \(\sigma\) nhỏ, bộ lọc chỉ tập trung làm mờ nhẹ các chi tiết cực nhỏ. 
+          Nếu \(\sigma\) lớn, năng lượng phân bố rộng ra các pixel ở xa, làm ảnh mờ mạnh hơn.
+        </p>
+
+        <h3>So sánh Box Filter và Gaussian Filter</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc điểm so sánh</th>
+              <th>Bộ lọc trung bình (Box Filter)</th>
+              <th>Bộ lọc Gaussian (Gaussian Filter)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phân bố trọng số</strong></td>
+              <td>Mọi phần tử trong kernel đều bằng nhau.</td>
+              <td>Trọng số giảm dần từ tâm ra rìa theo hàm Gauss.</td>
+            </tr>
+            <tr>
+              <td><strong>Độ tự nhiên của ảnh</strong></td>
+              <td>Dễ xuất hiện các vệt ô vuông không tự nhiên.</td>
+              <td>Làm mờ mượt mà, tự nhiên giống hiện tượng nhòe quang học.</td>
+            </tr>
+            <tr>
+              <td><strong>Bảo toàn chi tiết biên</strong></td>
+              <td>Làm mờ biên rất mạnh, gây mất chi tiết nhanh.</td>
+              <td>Giữ lại cấu trúc biên tốt hơn ở cùng mức độ giảm nhiễu.</td>
+            </tr>
+            <tr>
+              <td><strong>Tốc độ tính toán</strong></td>
+              <td>Cực kỳ nhanh (có thể tối ưu bằng tích lũy dòng).</td>
+              <td>Chậm hơn do tính toán nhân chập phức tạp hơn.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Khái niệm Bộ lọc thông cao (High-pass Filters)</h3>
+        <p>Ngược lại với Low-pass Filter, bộ lọc thông cao (High-pass Filter) triệt tiêu các vùng có tần số thấp (vùng có màu sắc phẳng, đồng đều) và giữ lại các thành phần tần số cao. Phép toán này có tác dụng làm nổi bật biên cạnh của đối tượng, tăng cường độ sắc nét (Sharpening) cho ảnh. Chi tiết về các bộ lọc này sẽ được tìm hiểu sâu ở chương tiếp theo.</p>
+      </section>
+      </section>
+
+
+      <!-- Section for Chương 3: Phát Hiện Đường Biên (Edge Detection) -->
+      <section class="summary-section" id="chuong-3">
+        <h2 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; text-transform: uppercase;">
+          Chương 3: Phát Hiện Đường Biên (Edge Detection)
+        </h2>
+        <!-- Section 1 -->
+      <section id="sec-3-def">
+        <h2>1. Đường biên (Edge) là gì?</h2>
+        <p><strong>Đường biên (Edge)</strong> là tập hợp các điểm ảnh nơi xảy ra sự thay đổi đột ngột hoặc có bước nhảy lớn về mức sáng (grayscale) hoặc màu sắc giữa các vùng lân cận trong bức ảnh.</p>
+        
+        <div class="callout">
+          <div class="callout-title">Ví dụ trực quan về biên</div>
+          <p>Xét một chuỗi pixel một chiều nằm ngang chuyển tiếp từ đen sang trắng:</p>
+          <div class="matrix" style="letter-spacing: 0.2rem;">
+            [ 0 &nbsp; 0 &nbsp; 0 &nbsp; | &nbsp; 255 &nbsp; 255 &nbsp; 255 ]
+          </div>
+          <p style="margin-top: 0.5rem;">Ba điểm đầu tiên màu đen ($0$), ba điểm sau màu trắng ($255$). Vị trí ranh giới phân cách giữa giá trị $0$ và $255$ chính là <strong>đường biên</strong>.</p>
+        </div>
+
+        <h3>Tại sao phải phát hiện đường biên?</h3>
+        <p>Đường biên mang thông tin hình học cốt lõi nhất của ảnh (hình dáng, biên giới, kích thước, cấu trúc của vật thể) nhưng chiếm dung lượng dữ liệu rất nhỏ so với ảnh gốc. Do đó, phát hiện biên là bước tiền đề tối quan trọng cho các bài toán:</p>
+        
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Phát hiện biên</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đường viền vật thể</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Nhận dạng &amp; Phân tích</div>
+        </div>
+
+        <ul>
+          <li>Nhận dạng ký tự quang học (OCR) và chữ viết tay.</li>
+          <li>Hệ thống nhận dạng khuôn mặt và sinh trắc học.</li>
+          <li>Phân khúc đối tượng, hỗ trợ xe tự lái nhận diện làn đường, biển báo, chướng ngại vật.</li>
+          <li>Điều khiển robot công nghiệp định vị sản phẩm trên băng chuyền.</li>
+        </ul>
+
+        <h3>Các loại đường biên cơ bản</h3>
+        <p>Trong thực tế, đường biên thường được chia làm ba mô hình cơ bản:</p>
+        <ol>
+          <li><strong>Step Edge (Biên bậc thang):</strong> Cường độ sáng thay đổi đột ngột tại ranh giới (mô hình lý thuyết lý tưởng). Ký hiệu dạng đồ thị: <code>____|&macr;&macr;&macr;</code>.</li>
+          <li><strong>Ramp Edge (Biên dốc):</strong> Cường độ sáng thay đổi mịn hơn, từ từ chuyển tiếp qua một khoảng không gian nhỏ. Loại biên này xuất hiện phổ biến trong thực tế do hiện tượng mờ quang học hoặc nhiễu. Ký hiệu đồ thị: <code>____/&macr;&macr;&macr;</code>.</li>
+          <li><strong>Roof Edge (Biên mái nhà):</strong> Cường độ sáng tăng dần lên đạt đỉnh rồi giảm xuống, đặc trưng cho các đường nét rất mỏng (như sợi tóc, đường vẽ chỉ dẫn). Ký hiệu đồ thị: <code>&nbsp;/\&nbsp;</code>.</li>
+        </ol>
+
+        <h3>Nguyên lý toán học phát hiện biên</h3>
+        <p>Nếu tại một vùng ảnh, mức xám của các pixel lân cận gần như không thay đổi &rarr; vùng đó đồng nhất, <strong>không chứa biên</strong>.</p>
+        <p>Nếu mức xám thay đổi mạnh mẽ &rarr; vùng đó <strong>chứa biên</strong>. Do đó, bản chất của phát hiện biên là đo <strong>tốc độ thay đổi (độ dốc)</strong> của cường độ sáng.</p>
+        <p>Trong toán học, đại lượng đo tốc độ thay đổi chính là <strong>đạo hàm</strong>. Vì ảnh số là tín hiệu rời rạc nên ta không thể tính đạo hàm liên tục mà phải xấp xỉ bằng phép <strong>sai phân (Difference)</strong> giữa các pixel đứng cạnh nhau.</p>
+        <p><em>Ví dụ sai phân 1 chiều:</em> Có hai pixel liên tiếp giá trị $100$ và $110$, mức thay đổi là $110 - 100 = 10$.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.1 -->
+      <section id="sec-3-1">
+        <h2>3.1 Phương pháp đạo hàm bậc một (Gradient-based)</h2>
+        <p>Phương pháp đạo hàm bậc một sử dụng đại lượng <strong>Gradient</strong> để xác định vị trí biên ảnh. Gradient của ảnh là một vector đặc trưng cho tốc độ thay đổi nhanh nhất của cường độ sáng và hướng của sự thay đổi đó.</p>
+
+        <p>Vector Gradient tại điểm ảnh \(f(x,y)\) gồm hai thành phần sai phân theo trục ngang \(G_x\) và trục dọc \(G_y\):
+        \[\nabla f = \begin{bmatrix} G_x \\ G_y \end{bmatrix}\]
+        </p>
+
+        <h3>Độ lớn của Gradient (Gradient Magnitude)</h3>
+        <p>Độ lớn của Gradient thể hiện độ dốc hay cường độ của đường biên:
+        \[|\nabla f| = \sqrt{G_x^2 + G_y^2}\]
+        </p>
+        <p>Để giảm chi phí tính toán căn bậc hai trong lập trình nhúng hoặc phần cứng thời gian thực, người ta thường dùng công thức xấp xỉ trị tuyệt đối:
+        \[|\nabla f| \approx |G_x| + |G_y|\]
+        </p>
+        <ul>
+          <li>Nếu \(|\nabla f| \approx 0\): Vùng ảnh mịn, đồng nhất (không chứa biên).</li>
+          <li>Nếu \(|\nabla f|\) có giá trị lớn: Cường độ sáng biến đổi mạnh (có biên).</li>
+        </ul>
+
+        <h3>Hướng của Gradient (Gradient Direction)</h3>
+        <p>Góc hướng \(\theta\) của vector Gradient chỉ ra hướng mà độ sáng thay đổi nhanh nhất (luôn vuông góc với đường biên vật thể và hướng từ vùng tối sang vùng sáng):
+        \[\theta = \arctan\left(\frac{G_y}{G_x}\right)\]
+        </p>
+
+        <h3>Xấp xỉ sai phân trên ma trận $3 \times 3$</h3>
+        <p>Xét cửa sổ ảnh cục bộ $3 \times 3$ xung quanh điểm trung tâm $z_5$:</p>
+        <div class="matrix" style="letter-spacing: 0.3rem; text-align: center;">
+          z1 z2 z3<br>
+          z4 z5 z6<br>
+          z7 z8 z9
+        </div>
+        <p>Phép tính sai phân đơn giản nhất là hiệu trực tiếp với pixel kề cạnh:
+        \[G_x = z_6 - z_5\]
+        \[G_y = z_8 - z_5\]
+        Tuy nhiên, cách tính này chỉ sử dụng thông tin của 2 pixel nên cực kỳ nhạy với nhiễu hạt.</p>
+
+        <h3>1. Toán tử Roberts (Roberts Cross Operator)</h3>
+        <p>Được Lawrence Roberts đề xuất vào năm 1965, đây là một trong những toán tử phát hiện biên đầu tiên. Roberts sử dụng sai phân chéo để tăng độ chính xác:
+        \[G_x = z_9 - z_5\]
+        \[G_y = z_8 - z_6\]
+        </p>
+        <p>Hai mặt nạ chập (Kernel) tương ứng là:
+        \[\text{Kernel}_x = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}, \quad \text{Kernel}_y = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}\]
+        </p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Ma trận kích thước nhỏ (2&times;2), tính toán cực nhanh, tốn ít bộ nhớ.</li>
+          <li><strong>Nhược điểm:</strong> Do kích thước quá nhỏ nên khả năng chống nhiễu cực kỳ kém, biên thu được dễ bị đứt gãy.</li>
+        </ul>
+
+        <h3>2. Toán tử Sobel (Sobel Operator)</h3>
+        <p>Toán tử Sobel khắc phục nhược điểm của Roberts bằng cách sử dụng mặt nạ kích thước $3 \times 3$ kết hợp với hệ số làm mịn. Đây là toán tử phổ biến nhất hiện nay.</p>
+        <p>Các mặt nạ Sobel theo chiều X (ngang) và chiều Y (dọc):
+        \[H_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad H_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}\]
+        </p>
+        <p><strong>Tại sao Sobel tốt hơn Roberts?</strong> Việc sử dụng kích thước $3 \times 3$ và đặt trọng số bằng <code>2</code> (hoặc <code>-2</code>) ở tâm viền giúp bộ lọc tích hợp sẵn khả năng làm mờ (smooth), giảm bớt ảnh hưởng của các hạt nhiễu nhỏ, làm cho đường biên thu được liên tục và mượt mà hơn.</p>
+
+        <h3>3. Toán tử Prewitt (Prewitt Operator)</h3>
+        <p>Toán tử Prewitt tương tự Sobel nhưng không sử dụng trọng số nhấn mạnh ở giữa mà chia đều hệ số:</p>
+        <p>Mặt nạ Prewitt theo X và Y:
+        \[H_x = \begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix}, \quad H_y = \begin{bmatrix} -1 & -1 & -1 \\ 0 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix}\]
+        </p>
+
+        <h3>So sánh các toán tử đạo hàm bậc một</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Toán tử</th>
+              <th>Kích thước Kernel</th>
+              <th>Khả năng chống nhiễu</th>
+              <th>Độ sắc nét của biên</th>
+              <th>Tốc độ xử lý</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Roberts</strong></td>
+              <td>2&times;2</td>
+              <td>Kém nhất</td>
+              <td>Rất mảnh</td>
+              <td>Nhanh nhất</td>
+            </tr>
+            <tr>
+              <td><strong>Prewitt</strong></td>
+              <td>3&times;3</td>
+              <td>Trung bình</td>
+              <td>Hơi dày</td>
+              <td>Nhanh</td>
+            </tr>
+            <tr>
+              <td><strong>Sobel</strong></td>
+              <td>3&times;3</td>
+              <td>Tốt hơn</td>
+              <td>Dày và mượt</td>
+              <td>Nhanh</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Quy trình phát hiện biên bằng Gradient</h3>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Chập với $H_x$ &rarr; $G_x$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Chập with $H_y$ &rarr; $G_y$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tính $G = |G_x| + |G_y|$</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Ngưỡng (Threshold)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh biên nhị phân</div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-title">Phép phân ngưỡng (Thresholding)</div>
+          <p>Sau khi có ảnh biên độ Gradient, ta thực hiện phân ngưỡng để lọc bỏ các biên giả do nhiễu gây ra và đưa ảnh về ảnh nhị phân (chỉ gồm đen và trắng):</p>
+          <p>\[g(x,y) = \begin{cases} 255 & \text{nếu } |\nabla f(x,y)| > T \\ 0 & \text{ngược lại} \end{cases}\]</p>
+          <p>Trong đó \(T\) là giá trị ngưỡng do người dùng thiết lập.</p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.2 -->
+      <section id="sec-3-2">
+        <h2>3.2 Phương pháp đạo hàm bậc hai (Laplacian-based)</h2>
+        <p>Thay vì tìm độ dốc cực đại như đạo hàm bậc một, phương pháp đạo hàm bậc hai đi tìm các điểm uốn của sự thay đổi mức sáng, tương ứng với vị trí đạo hàm bậc hai bằng 0.</p>
+
+        <h3>Toán tử Laplacian</h3>
+        <p>Laplacian là một toán tử vi phân tuyến tính đẳng hướng (không phụ thuộc vào hướng biên) được định nghĩa là tổng đạo hàm bậc hai riêng phần theo hai chiều không gian:
+        \[\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}\]
+        </p>
+
+        <p>Các ma trận kernel Laplacian thông dụng:</p>
+        <div style="display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0;">
+          <div>
+            <p style="text-align: center; font-weight: 600;">Lân cận 4:</p>
+            <div class="matrix">
+              [ &nbsp;0 &nbsp;-1 &nbsp; 0 ]<br>
+              [ -1 &nbsp; 4 &nbsp;-1 ]<br>
+              [ &nbsp;0 &nbsp;-1 &nbsp; 0 ]
+            </div>
+          </div>
+          <div>
+            <p style="text-align: center; font-weight: 600;">Lân cận 8 (bao gồm chéo):</p>
+            <div class="matrix">
+              [ -1 &nbsp;-1 &nbsp;-1 ]<br>
+              [ -1 &nbsp; 8 &nbsp;-1 ]<br>
+              [ -1 &nbsp;-1 &nbsp;-1 ]
+            </div>
+          </div>
+        </div>
+
+        <h3>Nguyên lý Zero Crossing</h3>
+        <p>Điểm biên được xác định tại các điểm mà giá trị đạo hàm bậc hai đổi dấu (từ dương sang âm hoặc ngược lại), được gọi là điểm **Zero Crossing**.</p>
+        <div class="matrix" style="letter-spacing: 0.3rem; text-align: center; margin: 1rem 0;">
+          + &nbsp; + &nbsp; [0] &nbsp; - &nbsp; -
+        </div>
+        <p>Điểm trung tâm có giá trị bằng 0 nằm giữa vùng dương và âm chính là vị trí biên chính xác.</p>
+        
+        <p><strong>Nhược điểm:</strong> Đạo hàm bậc hai cực kỳ nhạy cảm với nhiễu (nhiễu dù rất nhỏ cũng sẽ tạo ra các điểm đổi dấu giả). Vì vậy, <strong>không bao giờ áp dụng trực tiếp Laplacian lên ảnh gốc</strong>.</p>
+
+        <h3>Bộ lọc LoG (Laplacian of Gaussian)</h3>
+        <p>Để giải quyết nhược điểm nhạy nhiễu của Laplacian, quy trình LoG ra đời:</p>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Gaussian Blur (Giảm nhiễu)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tích chập Laplacian</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tìm Zero Crossing</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đường biên sạch</div>
+        </div>
+
+        <h3>Kỹ thuật làm sắc nét ảnh (Unsharp Masking)</h3>
+        <p>Unsharp Masking là kỹ thuật dùng đường biên được tách ra để cộng ngược lại vào ảnh gốc, làm cho các chi tiết biên rõ nét hơn.</p>
+        <ol>
+          <li>
+            <strong>Tìm mặt nạ biên (Mask):</strong> Trừ ảnh gốc cho ảnh đã được làm mờ (Low-pass filtered). Thành phần còn lại chính là các chi tiết tần số cao (đường biên):
+            \[\text{Mask} = \text{Original} - \text{Blurred}\]
+          </li>
+          <li>
+            <strong>Cộng tăng cường:</strong> Cộng mặt nạ vào ảnh gốc với hệ số tỉ lệ \(k\):
+            \[\text{Sharpened} = \text{Original} + k \cdot \text{Mask}\]
+            <ul>
+              <li>Nếu \(k = 1\): Gọi là Unsharp Masking thông thường.</li>
+              <li>Nếu \(k > 1\): Gọi là High-boost Filtering.</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 3.3 -->
+      <section id="sec-3-3">
+        <h2>So sánh Phương pháp Đạo hàm bậc 1 và Đạo hàm bậc 2</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc điểm so sánh</th>
+              <th>Đạo hàm bậc một (Gradient)</th>
+              <th>Đạo hàm bậc hai (Laplacian)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cơ chế phát hiện</strong></td>
+              <td>Tìm các điểm có độ dốc cực đại.</td>
+              <td>Tìm điểm uốn, điểm đổi dấu (Zero Crossing).</td>
+            </tr>
+            <tr>
+              <td><strong>Tính hướng</strong></td>
+              <td>Có hướng (tính được góc biên \(\theta\)).</td>
+              <td>Vô hướng (đẳng hướng, nhạy đều mọi hướng).</td>
+            </tr>
+            <tr>
+              <td><strong>Ảnh hưởng của nhiễu</strong></td>
+              <td>Ít nhạy nhiễu hơn.</td>
+              <td>Cực kỳ nhạy nhiễu, cần kết hợp Gaussian.</td>
+            </tr>
+            <tr>
+              <td><strong>Đặc điểm đường biên</strong></td>
+              <td>Biên thường dày, cần bước phân ngưỡng hoặc làm mảnh.</td>
+              <td>Tạo ra đường biên mảnh, khép kín tốt hơn.</td>
+            </tr>
+            <tr>
+              <td><strong>Thuật toán đại diện</strong></td>
+              <td>Sobel, Roberts, Prewitt</td>
+              <td>Laplacian, LoG (Laplacian of Gaussian)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Giải thuật Canny Edge Detector (Mở rộng)</h3>
+        <p>Mặc dù thuật toán Canny phức tạp hơn các toán tử chập thông thường, đây lại là giải thuật phát hiện biên chuẩn mực và được sử dụng rộng rãi nhất trong thực tế nhờ 5 bước tối ưu:</p>
+        <ol>
+          <li><strong>Lọc Gaussian:</strong> Làm mờ để giảm nhiễu hạt.</li>
+          <li><strong>Tính Gradient:</strong> Sử dụng toán tử Sobel để tìm độ lớn và hướng của biên.</li>
+          <li><strong>Non-maximum Suppression (Triệt tiêu cực đại cục bộ):</strong> Dựa vào hướng Gradient để quét dọc biên và chỉ giữ lại pixel có độ lớn lớn nhất, giúp làm mảnh đường biên về độ rộng 1 pixel.</li>
+          <li><strong>Ngưỡng kép (Double Thresholding):</strong> Sử dụng 2 ngưỡng (ngưỡng cao \(T_H\) và ngưỡng thấp \(T_L\)) để phân loại các pixel biên thành: Biên mạnh (chắc chắn là biên), Biên yếu (nghi ngờ) và Không phải biên.</li>
+          <li><strong>Theo vết biên bằng Hysteresis:</strong> Kết nối các biên yếu vào biên mạnh nếu chúng liên thông với nhau, giúp loại bỏ nhiễu biên và giữ lại các đường viền dài liên tục.</li>
+        </ol>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Formulas Section -->
+      <section id="sec-3-formulas">
+        <h2>Các công thức toán học cần nhớ</h2>
+        <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
+          <ul>
+            <li>
+              <strong>Vector Gradient:</strong>
+              \[\nabla f = \begin{bmatrix} G_x \\ G_y \end{bmatrix}\]
+            </li>
+            <li>
+              <strong>Độ lớn Gradient (Xấp xỉ nhanh):</strong>
+              \[|\nabla f| = \sqrt{G_x^2 + G_y^2} \quad \approx \quad |G_x| + |G_y|\]
+            </li>
+            <li>
+              <strong>Toán tử Laplacian liên tục:</strong>
+              \[\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}\]
+            </li>
+            <li>
+              <strong>Làm nét ảnh Unsharp Masking:</strong>
+              \[\text{Mask} = f(x,y) - f_{\text{blurred}}(x,y)\]
+              \[f_{\text{sharpened}}(x,y) = f(x,y) + k \cdot \text{Mask}(x,y)\]
+            </li>
+          </ul>
+        </div>
+      </section>
+      </section>
+
+
+      <!-- Section for Chương 4: Phân Vùng Ảnh (Image Segmentation) -->
+      <section class="summary-section" id="chuong-4">
+        <h2 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; text-transform: uppercase;">
+          Chương 4: Phân Vùng Ảnh (Image Segmentation)
+        </h2>
+        <!-- Section 1 -->
+      <section id="sec-4-def">
+        <h2>1. Phân vùng ảnh là gì?</h2>
+        <p><strong>Phân vùng ảnh (Image Segmentation)</strong> là quá trình phân chia một bức ảnh kỹ thuật số thành nhiều phân vùng (vùng ảnh - Regions) riêng biệt có ý nghĩa vật lý. Mục tiêu là làm sao cho:</p>
+        <ul>
+          <li>Các điểm ảnh (pixels) trong cùng một vùng có tính chất hoặc đặc trưng đồng nhất (giống nhau).</li>
+          <li>Các điểm ảnh thuộc các vùng khác nhau có tính chất khác biệt rõ rệt.</li>
+        </ul>
+        
+        <p>Các đặc trưng phổ biến được sử dụng để phân chia ranh giới giữa các vùng bao gồm: <strong>Độ sáng (Intensity)</strong>, <strong>Màu sắc (Color)</strong>, <strong>Kết cấu bề mặt (Texture)</strong>, <strong>Hình dạng (Shape)</strong> và <strong>Độ tương đồng (Similarity)</strong>.</p>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh đầu vào</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Tiền xử lý (Lọc mờ, khử nhiễu)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node" style="background-color: var(--highlight-bg); border-color: var(--secondary-color);">Phân vùng (Segmentation)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Các đối tượng riêng lẻ (Người, Xe, Cây, Nền)</div>
+        </div>
+
+        <h3>Mục đích của việc phân vùng ảnh</h3>
+        <p>Phân vùng ảnh là bước trung gian quyết định sự thành bại của các thuật toán nhận dạng cấp cao trong Thị giác máy tính. Kết quả phân vùng giúp:</p>
+        <ul>
+          <li>Xác định và định vị chính xác vị trí của từng đối tượng trong ảnh.</li>
+          <li>Đếm số lượng đối tượng (ví dụ: đếm số tế bào trong ảnh y sinh, đếm số sản phẩm trên băng tải).</li>
+          <li>Đo đạc các thông số hình học như diện tích, chu vi, tỉ lệ dài rộng.</li>
+          <li>Theo dõi chuyển động của vật thể trong chuỗi video (object tracking).</li>
+        </ul>
+
+        <h3>Phân loại các phương pháp phân vùng</h3>
+        <p>Lý thuyết xử lý ảnh chia phân vùng thành nhiều trường phái giải thuật:</p>
+        <ul>
+          <li><strong>Phương pháp phân ngưỡng (Thresholding)</strong></li>
+          <li><strong>Phương pháp phát triển vùng (Region Growing)</strong></li>
+          <li><strong>Phương pháp chia và hợp nhất (Split and Merge)</strong></li>
+          <li><strong>Phương pháp phân vùng lưu vực (Watershed)</strong></li>
+          <li><strong>Phương pháp phân cụm (Clustering - K-Means, Mean Shift)</strong></li>
+          <li><strong>Phương pháp dựa trên đồ thị (Graph-based Segmentation)</strong></li>
+          <li><strong>Các mạng học sâu hiện đại (Deep Learning - U-Net, Mask R-CNN, SAM...)</strong></li>
+        </ul>
+        <p>Trong nội dung chương này, chúng ta tập trung nghiên cứu 3 phương pháp kinh điển: <strong>Thresholding</strong>, <strong>Split and Merge</strong> và <strong>Watershed</strong>.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.1 -->
+      <section id="sec-4-1">
+        <h2>4.1 Phương pháp phân ngưỡng (Thresholding)</h2>
+        <p>Đây là phương pháp phân vùng đơn giản, trực quan và tốn ít chi phí tính toán nhất. Phép phân ngưỡng biến đổi một ảnh mức xám thành một ảnh nhị phân bằng cách so sánh giá trị mỗi pixel với một ngưỡng độ sáng \(T\) xác định.</p>
+
+        <div class="callout">
+          <div class="callout-title">Công thức Phân ngưỡng Nhị phân</div>
+          <p>Nếu cường độ sáng tại pixel \((x,y)\) lớn hơn hoặc bằng ngưỡng \(T\), pixel đó được coi là đối tượng (gán giá trị <code>255</code> - màu trắng). Ngược lại, gán bằng <code>0</code> (màu đen - nền):</p>
+          <p>\[g(x,y) = \begin{cases} 255 & \text{nếu } f(x,y) \ge T \\ 0 & \text{nếu } f(x,y) \lt T \end{cases}\]</p>
+        </div>
+
+        <h4>Ví dụ phân ngưỡng nhị phân với ngưỡng $T = 100$:</h4>
+        <div style="display: flex; gap: 2rem; align-items: center; margin: 1.25rem 0;">
+          <div>
+            <p style="font-weight: 600; font-size: 0.9rem;">Ma trận ảnh xám ban đầu:</p>
+            <div class="matrix">
+              [&nbsp; 20 &nbsp; &nbsp;30 &nbsp; &nbsp;90 ]<br>
+              [ 150 &nbsp; 180 &nbsp; 210 ]
+            </div>
+          </div>
+          <span style="font-weight: bold; font-size: 1.5rem; color: var(--secondary-color);">&rarr;</span>
+          <div>
+            <p style="font-weight: 600; font-size: 0.9rem;">Ảnh nhị phân kết quả:</p>
+            <div class="matrix">
+              [&nbsp; &nbsp;0 &nbsp; &nbsp; 0 &nbsp; &nbsp; 0 ]<br>
+              [ 255 &nbsp; 255 &nbsp; 255 ]
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>Ưu điểm:</strong> Tốc độ xử lý cực kỳ nhanh, cài đặt đơn giản chỉ bằng một câu lệnh so sánh, tiêu tốn cực ít tài nguyên.</li>
+          <li><strong>Nhược điểm:</strong> Chỉ hoạt động tốt khi ảnh có độ tương phản cao và ánh sáng phân bố đồng đều. Phương pháp này hoàn toàn thất bại nếu ảnh bị nhiễu nặng, có bóng mờ hoặc ánh sáng không đều.</li>
+        </ul>
+
+        <h3>Thuật toán lặp tìm ngưỡng tối ưu (Iterative Thresholding)</h3>
+        <p>Để tìm ra ngưỡng \(T\) tự động thay vì chọn thủ công bằng mắt, thuật toán lặp sau đây được sử dụng:</p>
+        <ol>
+          <li><strong>Bước 1: Khởi tạo.</strong> Chọn một giá trị ngưỡng \(T\) ban đầu (thường chọn bằng giá trị mức xám trung bình của toàn bộ bức ảnh).</li>
+          <li><strong>Bước 2: Phân nhóm.</strong> Chia toàn bộ pixel trong ảnh thành hai nhóm: Nhóm \(G_1\) chứa các pixel có giá trị \(\le T\), nhóm \(G_2\) chứa các pixel có giá trị \(> T\).</li>
+          <li><strong>Bước 3: Tính trung bình.</strong> Tính giá trị độ sáng trung bình \(m_1\) của nhóm \(G_1\) và \(m_2\) của nhóm \(G_2\).</li>
+          <li><strong>Bước 4: Cập nhật ngưỡng mới:</strong>
+            \[T_{\text{new}} = \frac{m_1 + m_2}{2}\]
+          </li>
+          <li><strong>Bước 5: Kiểm tra điều kiện dừng.</strong> Nếu hiệu số \(|T_{\text{new}} - T| \le \Delta T\) (với \Delta T là một sai số nhỏ cho trước, ví dụ $0.5$ hoặc $0.1$), ta dừng và chọn \(T_{\text{new}}\) làm ngưỡng phân vùng. Ngược lại, gán \(T = T_{\text{new}}\) và quay lại Bước 2.</li>
+        </ol>
+
+        <h3>Thuật toán phân ngưỡng Otsu (Otsu's Method)</h3>
+        <p>Otsu là phương pháp xác định **ngưỡng toàn cục (Global Threshold)** tự động tối ưu nhất cho các bức ảnh có phân bố Histogram dạng **hai đỉnh (Bimodal)** rõ rệt.</p>
+        <ul>
+          <li><strong>Nguyên lý:</strong> Thuật toán duyệt qua tất cả các mức xám khả thi để tìm ra một ngưỡng \(T\) sao cho **phương sai giữa hai lớp (Between-class variance - \(\sigma_B^2\)) là lớn nhất**, hoặc tương đương là tối thiểu hóa phương sai trong cùng một lớp (Within-class variance).</li>
+          <li><strong>Ưu điểm:</strong> Hoàn toàn tự động, cho kết quả phân vùng biên cực tốt khi ảnh có độ tương phản phân định rõ rệt giữa nền và vật thể.</li>
+          <li><strong>Nhược điểm:</strong> Không cho kết quả tốt nếu ảnh không có dạng lược đồ 2 đỉnh (ví dụ ảnh có dải sáng chuyển tiếp đều hoặc ảnh chụp bị cháy sáng/tối đen diện rộng).</li>
+        </ul>
+
+        <h3>Phân ngưỡng cục bộ (Local / Adaptive Thresholding)</h3>
+        <p>Trong thực tế, do hướng chiếu sáng hoặc bóng đổ, các vùng khác nhau trong ảnh sẽ có độ sáng trung bình khác nhau. Phân ngưỡng toàn cục (như Otsu) sẽ làm mất chi tiết ở vùng tối. </p>
+        <p><strong>Giải pháp:</strong> Sử dụng phân ngưỡng cục bộ. Thuật toán chia nhỏ bức ảnh thành các cửa sổ con kích thước nhỏ (ví dụ 11&times;11 hoặc 15&times;15). Với mỗi pixel, ngưỡng \(T(x,y)\) sẽ được tính riêng biệt dựa trên độ sáng trung bình (hoặc trung bình trọng số Gaussian) của các pixel nằm trong cửa sổ xung quanh nó. Nhờ đó, ảnh có bóng đổ hoặc ánh sáng không đều vẫn được phân vùng hoàn hảo.</p>
+
+        <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color);">
+          <div class="callout-title">Quy trình kết hợp lọc Gaussian</div>
+          <p>Để tăng độ chính xác khi phân ngưỡng nhị phân và giảm nhiễu biên (tránh các đốm trắng li ti xuất hiện do nhiễu hạt), ta nên thực hiện lọc làm mờ trước khi phân ngưỡng:</p>
+          <div style="font-weight: 500; font-size: 0.95rem; text-align: center; margin-top: 0.5rem;">
+            Ảnh gốc &rarr; Lọc Gaussian (Làm mờ giảm nhiễu) &rarr; Phân ngưỡng (Thresholding) &rarr; Ảnh nhị phân sạch
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.2 -->
+      <section id="sec-4-2">
+        <h2>4.2 Phương pháp chia và hợp nhất (Split and Merge)</h2>
+        <p>Khác với phân ngưỡng chỉ dựa trên độ sáng đơn lẻ, phương pháp **Chia và Hợp nhất** phân tích tính đồng nhất của cấu trúc trên một vùng không gian ảnh dựa trên một điều kiện kiểm thử \(Q\) cho trước.</p>
+
+        <h3>1. Quá trình chia (Split)</h3>
+        <p>Bắt đầu coi toàn bộ bức ảnh là một vùng lớn duy nhất. Ta thực hiện thuật toán đệ quy:</p>
+        <ul>
+          <li>Kiểm tra xem vùng ảnh hiện tại có thỏa mãn điều kiện đồng nhất \(Q\) hay không (ví dụ: kiểm tra độ lệch chuẩn mức xám của vùng đó có nhỏ hơn một ngưỡng \(\sigma_0 = 10\) hay không).</li>
+          <li>Nếu thỏa mãn \(Q\): Giữ nguyên vùng đó, không cần chia tiếp.</li>
+          <li>Nếu không thỏa mãn \(Q\): Chia vùng ảnh hiện tại thành 4 vùng con bằng nhau (cấu trúc hình cây tứ phân - **Quadtree**). Sau đó lập tức lặp lại bước kiểm tra trên cho từng vùng con này.</li>
+        </ul>
+
+        <h3>2. Quá trình hợp nhất (Merge)</h3>
+        <p>Sau khi kết thúc quá trình chia, ta thu được rất nhiều vùng nhỏ đồng nhất. Tuy nhiên, các vùng nằm cạnh nhau có thể có cùng tính chất. Ta tiến hành hợp nhất:</p>
+        <ul>
+          <li>Quét qua các vùng kề cạnh nhau.</li>
+          <li>Nếu hai vùng liền kề khi kết hợp lại vẫn thỏa mãn điều kiện đồng nhất \(Q\), ta gộp chúng lại thành một vùng lớn hơn.</li>
+          <li>Quá trình này lặp lại cho đến khi không còn cặp vùng kề nhau nào có thể hợp nhất được nữa.</li>
+        </ul>
+
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Split (Chia qua cấu trúc Quadtree)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Hàng loạt ô lưới nhỏ đồng nhất</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Merge (Gộp các ô kề cạnh tương đồng)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Ảnh phân vùng hoàn thiện</div>
+        </div>
+
+        <p><strong>Ưu điểm:</strong> Phân chia vùng rất chính xác, bảo toàn được cấu trúc không gian của ảnh, hoạt động tốt với các ảnh có nhiều đối tượng phức tạp.</p>
+        <p><strong>Nhược điểm:</strong> Tốc độ tính toán chậm do phải duyệt đệ quy cây tứ phân, việc lựa chọn điều kiện đồng nhất \(Q\) tối ưu cho từng loại ảnh là tương đối phức tạp.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.3 -->
+      <section id="sec-4-3">
+        <h2>4.3 Thuật toán phân vùng Watershed (Lưu vực sông)</h2>
+        <p><strong>Watershed</strong> là một thuật toán phân vùng dựa trên lý thuyết hình thái học địa hình. Thuật toán coi bức ảnh mức xám (thường là ảnh độ lớn Gradient) giống như một bề mặt địa hình 3D:</p>
+        <ul>
+          <li>Các pixel có giá trị tối (độ lớn gradient thấp) đại diện cho các <strong>thung lũng, lòng hồ (Valleys / Local Minima)</strong>.</li>
+          <li>Các pixel có giá trị sáng (độ lớn gradient cao - thường là biên giới các vật thể) đại diện cho các <strong>dãy núi, đỉnh đồi (Ridge lines / Peaks)</strong>.</li>
+        </ul>
+
+        <h3>Mô phỏng hiện tượng ngập nước (Flooding Simulation)</h3>
+        <p>Thuật toán hoạt động bằng cách đục các lỗ nhỏ tại các cực tiểu địa phương (local minima) và cho nước dâng lên từ dưới lòng đất với tốc độ đều nhau:</p>
+        <ol>
+          <li>Nước dâng lên sẽ lấp đầy các lưu vực địa hình, tạo thành các hồ chứa nước riêng biệt gọi là **Lưu vực (Catchment Basins)**.</li>
+          <li>Khi mực nước dâng cao đến mức nước từ hai lưu vực khác nhau chuẩn bị tràn vào và hòa lẫn với nhau, thuật toán sẽ xây dựng một bức đập ngăn cách tại vị trí tiếp xúc.</li>
+          <li>Quá trình dâng nước tiếp tục cho đến khi toàn bộ địa hình ngập nước. Các bức đập được xây dựng chính là ranh giới phân vùng, gọi là đường phân lưu **(Watershed Lines)**. Đường biên này có độ rộng 1 pixel.</li>
+        </ol>
+
+        <h3>Hiện tượng phân mảnh quá mức (Over-segmentation) và giải pháp Marker</h3>
+        <p>Do ảnh thực tế luôn tồn tại nhiễu hạt li ti, các hạt nhiễu này vô tình tạo ra hàng nghìn điểm cực tiểu địa phương (local minima) giả. Nếu áp dụng Watershed trực tiếp, ảnh sẽ bị vỡ vụn thành hàng ngàn vùng nhỏ vô nghĩa, gọi là hiện tượng **Over-segmentation**.</p>
+        
+        <p><strong>Giải pháp: Marker-Controlled Watershed (Watershed có kiểm soát bằng điểm đánh dấu)</strong></p>
+        <p>Trước khi cho nước dâng, người dùng hoặc thuật toán phụ sẽ xác định trước một số điểm chắc chắn thuộc đối tượng (Foreground Marker) và các điểm chắc chắn thuộc nền (Background Marker). Nước sẽ chỉ được dâng lên từ các điểm đánh dấu này, giúp loại bỏ hoàn toàn các cực tiểu giả và cho kết quả phân vùng chính xác.</p>
+
+        <p><em>Ứng dụng tiêu biểu:</em> Phân tách các hạt tế bào nằm chồng lấn hoặc chạm nhau trong ảnh sinh học, đếm số lượng đồng xu, phân khúc các đối tượng liền kề.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 4.4 -->
+      <section id="sec-4-4">
+        <h2>Các phương pháp phân vùng hiện đại khác</h2>
+        <ul>
+          <li><strong>K-Means Clustering:</strong> Phương pháp phân nhóm không giám sát. Nó nhóm các pixel có đặc trưng màu sắc hoặc mức xám gần nhau vào \(K\) cụm khác nhau mà không cần quan tâm đến vị trí không gian của chúng.</li>
+          <li><strong>Superpixel (Siêu điểm ảnh):</strong> Gom cụm các pixel kề nhau có độ sáng và màu sắc tương đồng thành các đa giác nhỏ gọi là các siêu điểm ảnh (ví dụ thuật toán SLIC). Kỹ thuật này giúp giảm chiều dữ liệu của ảnh đầu vào hàng trăm lần, đẩy nhanh tốc độ cho các thuật toán nhận dạng phía sau.</li>
+          <li><strong>Graph-based Segmentation:</strong> Mô hình hóa bức ảnh thành một đồ thị toán học. Mỗi pixel là một đỉnh (node), các pixel kề nhau được nối bởi các cạnh (edge) có trọng số thể hiện độ tương đồng. Thuật toán sẽ tìm các đường cắt đồ thị tối ưu (Graph Cut, Normalized Cut) để tách ảnh thành các thành phần liên thông.</li>
+        </ul>
+
+        <h3>Bảng so sánh các phương pháp phân vùng ảnh</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Phương pháp</th>
+              <th>Ưu điểm</th>
+              <th>Nhược điểm</th>
+              <th>Trường hợp áp dụng tốt nhất</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phân ngưỡng (Threshold)</strong></td>
+              <td>Tốc độ xử lý nhanh nhất, thuật toán đơn giản nhất.</td>
+              <td>Phụ thuộc lớn vào điều kiện ánh sáng, nhạy nhiễu.</td>
+              <td>Ảnh có độ tương phản cao, nền sáng đồng đều.</td>
+            </tr>
+            <tr>
+              <td><strong>Ngưỡng Otsu</strong></td>
+              <td>Tự động tìm ngưỡng, hoạt động ổn định.</td>
+              <td>Chỉ hoạt động tốt khi histogram có dạng 2 đỉnh rõ rệt.</td>
+              <td>Phân tách chữ viết, tài liệu quét trắng đen.</td>
+            </tr>
+            <tr>
+              <td><strong>Ngưỡng cục bộ (Local)</strong></td>
+              <td>Xử lý tốt ảnh bị bóng mờ, chiếu sáng không đồng đều.</td>
+              <td>Chi phí tính toán cao hơn phân ngưỡng toàn cục.</td>
+              <td>Đọc biển số xe, quét tài liệu dưới ánh sáng thực tế.</td>
+            </tr>
+            <tr>
+              <td><strong>Chia &amp; Trộn (Split &amp; Merge)</strong></td>
+              <td>Phân vùng chính xác cấu trúc, hoạt động đa vùng tốt.</td>
+              <td>Tốc độ xử lý chậm, khó thiết lập điều kiện Q tối ưu.</td>
+              <td>Ảnh cấu trúc phức tạp, ảnh viễn thám.</td>
+            </tr>
+            <tr>
+              <td><strong>Lưu vực sông (Watershed)</strong></td>
+              <td>Biên đối tượng rõ ràng, khép kín, tách tốt các vật chạm nhau.</td>
+              <td>Nhạy cảm với nhiễu, dễ gây phân mảnh quá mức (Over-segmentation).</td>
+              <td>Đếm tế bào y tế, đếm số lượng hạt, vật thể hình tròn chạm nhau.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Formulas Section -->
+      <section id="sec-4-formulas">
+        <h2>Các công thức toán học cần nhớ</h2>
+        <div class="callout" style="background-color: #fafafa; border-left-color: var(--primary-color);">
+          <ul>
+            <li>
+              <strong>Công thức phân ngưỡng nhị phân:</strong>
+              \[g(x,y) = \begin{cases} 255 & \text{nếu } f(x,y) \ge T \\ 0 & \text{nếu } f(x,y) \lt T \end{cases}\]
+            </li>
+            <li>
+              <strong>Cập nhật ngưỡng trong thuật toán lặp:</strong>
+              \[T_{\text{new}} = \frac{m_1 + m_2}{2}\]
+            </li>
+            <li>
+              <strong>Điều kiện dừng thuật toán lặp:</strong>
+              \[|T_{\text{new}} - T| \le \Delta T\]
+            </li>
+          </ul>
+        </div>
+      </section>
+      </section>
+
+
+      <!-- Section for Chương 5: Xử Lý Hình Thái Nhị Phân (Binary Morphology) -->
+      <section class="summary-section" id="chuong-5">
+        <h2 style="margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; text-transform: uppercase;">
+          Chương 5: Xử Lý Hình Thái Nhị Phân (Binary Morphology)
+        </h2>
+        <!-- Section 1 -->
+      <section id="sec-5-def">
+        <h2>1. Xử lý hình thái học (Morphology) là gì?</h2>
+        <p><strong>Xử lý hình thái học (Mathematical Morphology)</strong> là một lĩnh vực xử lý ảnh dựa trên hình dạng (Shape) và cấu trúc hình học của các đối tượng trong ảnh.</p>
+        
+        <p>Khác biệt với các phương pháp trước đó:</p>
+        <ul>
+          <li><strong>Histogram:</strong> Chỉ xử lý dựa trên mức xám mà không quan tâm đến vị trí không gian.</li>
+          <li><strong>Tích chập (Convolution):</strong> Phép toán lọc tuyến tính dựa trên giá trị mức xám lân cận.</li>
+          <li><strong>Phát hiện biên:</strong> Chỉ đi tìm các điểm có độ thay đổi đột ngột (đạo hàm).</li>
+        </ul>
+        <p>Morphology tập trung phân tích <strong>hình dạng</strong>, <strong>kích thước</strong> và <strong>mối quan hệ cấu trúc</strong> giữa các phần tử của đối tượng.</p>
+
+        <h3>Đối tượng xử lý</h3>
+        <p>Về cơ bản, xử lý hình thái học được áp dụng chủ yếu trên <strong>Ảnh nhị phân (Binary Image)</strong>. Mặc dù có thể mở rộng ra cho ảnh mức xám (Grayscale Morphology), chương này chỉ tập trung nghiên cứu trên ảnh nhị phân.</p>
+        <p>Trong ảnh nhị phân, một pixel chỉ nhận một trong hai giá trị:</p>
+        <ul>
+          <li><code>1</code>: Đại diện cho <strong>đối tượng (Foreground)</strong>, thường hiển thị màu trắng.</li>
+          <li><code>0</code>: Đại diện cho <strong>nền (Background)</strong>, thường hiển thị màu đen.</li>
+        </ul>
+        
+        <h4>Ví dụ một đối tượng nhị phân:</h4>
+        <div class="matrix">
+          0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 1 &nbsp; 1 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 1 &nbsp; 1 &nbsp; 0 &nbsp; 0<br>
+          0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0 &nbsp; 0
+        </div>
+
+        <h3>Phần tử cấu trúc - Structuring Element (SE)</h3>
+        <p>Mọi phép toán hình thái học đều cần một ma trận nhỏ đi kèm đóng vai trò như một "mẫu dò" hay bộ lọc, gọi là **Phần tử cấu trúc (Structuring Element - SE)**, thường ký hiệu là \(B\).</p>
+        
+        <p>Các hình dạng SE thông dụng kích thước $3 \times 3$:</p>
+        <div style="display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0;">
+          <div>
+            <p style="text-align: center; font-weight: 600;">SE dạng hình vuông (Square):</p>
+            <div class="matrix">
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]
+            </div>
+          </div>
+          <div>
+            <p style="text-align: center; font-weight: 600;">SE dạng chữ thập (Cross):</p>
+            <div class="matrix">
+              [ 0 &nbsp; 1 &nbsp; 0 ]<br>
+              [ 1 &nbsp; 1 &nbsp; 1 ]<br>
+              [ 0 &nbsp; 1 &nbsp; 0 ]
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Vai trò:</strong> SE giống như một khuôn mẫu. Ta đặt tâm của SE lên từng pixel của ảnh gốc, so sánh sự trùng khớp giữa các điểm <code>1</code> của SE với các điểm <code>1</code> của đối tượng trên ảnh để quyết định giá trị pixel kết quả. Kích thước và hình dạng của SE quyết định hình dáng đối tượng thay đổi thế nào sau khi lọc.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.1 -->
+      <section id="sec-5-1">
+        <h2>5.1 Phép toán ăn mòn (Erosion)</h2>
+        <p>Phép toán ăn mòn làm co nhỏ kích thước của đối tượng trong ảnh nhị phân.</p>
+        <p>Ký hiệu: \[A \ominus B\]</p>
+        
+        <div class="callout">
+          <div class="callout-title">Nguyên lý hoạt động</div>
+          <p>Đặt tâm của phần tử cấu trúc \(B\) tại tọa độ \((x,y)\) của ảnh \(A\). Pixel kết quả tại \((x,y)\) bằng <code>1</code> <strong>khi và chỉ khi toàn bộ các điểm 1 của B đều khớp (nằm đè hoàn toàn) lên các điểm 1 của A</strong>. Nếu có bất kỳ điểm 1 nào của B bị lệch ra ngoài nền (Background), pixel kết quả sẽ bằng <code>0</code>.</p>
+        </div>
+
+        <p><em>Ví dụ:</em> Nếu một hình vuông đối tượng kích thước $3 \times 3$ bị ăn mòn bởi phần tử cấu trúc hình vuông kích thước $3 \times 3$, kết quả sẽ bị co lại chỉ còn duy nhất $1$ điểm ảnh nằm ở tâm.</p>
+
+        <h4>Tác dụng chính:</h4>
+        <ul>
+          <li>Làm mỏng, thu nhỏ hoặc làm co hẹp biên của vật thể.</li>
+          <li>Loại bỏ hoàn toàn các chấm nhiễu nhỏ màu trắng (nhiễu muối) có kích thước nhỏ hơn phần tử cấu trúc.</li>
+          <li>Tách các vật thể dính liền nhau thành các vật thể độc lập (ví dụ tách các tế bào chạm nhau nhẹ).</li>
+        </ul>
+        <p><strong>Nhược điểm:</strong> Có thể làm mất đi các chi tiết quan trọng kích thước nhỏ hoặc làm đứt gãy các đường nét mảnh của đối tượng.</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.2 -->
+      <section id="sec-5-2">
+        <h2>5.2 Phép toán giãn nở (Dilation)</h2>
+        <p>Ngược lại với ăn mòn, phép toán giãn nở làm mở rộng kích thước của đối tượng.</p>
+        <p>Ký hiệu: \[A \oplus B\]</p>
+        
+        <div class="callout">
+          <div class="callout-title">Nguyên lý hoạt động</div>
+          <p>Đặt tâm của phần tử cấu trúc \(B\) tại tọa độ \((x,y)\). Pixel kết quả tại \((x,y)\) bằng <code>1</code> <strong>chỉ cần ít nhất một điểm 1 của B khớp (chồng lên) với điểm 1 của đối tượng A</strong>. Trừ phi toàn bộ SE nằm trong vùng nền 0 thì pixel kết quả mới bằng <code>0</code>.</p>
+        </div>
+
+        <h4>Tác dụng chính:</h4>
+        <ul>
+          <li>Làm dày biên, phóng to kích thước đối tượng.</li>
+          <li>Lấp đầy các lỗ trống nhỏ, các khe nứt li ti bên trong đối tượng.</li>
+          <li>Nối liền các đoạn vẽ bị đứt gãy gần nhau thành một đường liên tục.</li>
+        </ul>
+
+        <h3>So sánh Erosion và Dilation</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc trưng</th>
+              <th>Ăn mòn (Erosion)</th>
+              <th>Giãn nở (Dilation)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ký hiệu</strong></td>
+              <td>\(A \ominus B\)</td>
+              <td>\(A \oplus B\)</td>
+            </tr>
+            <tr>
+              <td><strong>Kích thước đối tượng</strong></td>
+              <td>Bị thu nhỏ, làm mỏng đi.</td>
+              <td>Được phóng to, làm dày lên.</td>
+            </tr>
+            <tr>
+              <td><strong>Xử lý nhiễu / Khoảng trống</strong></td>
+              <td>Xóa bỏ nhiễu trắng nhỏ ở nền.</td>
+              <td>Lấp đầy lỗ đen nhỏ trong đối tượng.</td>
+            </tr>
+            <tr>
+              <td><strong>Tác động lên nét vẽ</strong></td>
+              <td>Dễ làm đứt các nét vẽ mảnh.</td>
+              <td>Nối các nét bị đứt đoạn gần nhau.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.3 -->
+      <section id="sec-5-3">
+        <h2>5.3 Phép biến đổi Hit-or-Miss (Hit-or-Miss Transform - HMT)</h2>
+        <p>Hit-or-Miss là phép biến đổi hình thái học dùng để **so khớp mẫu (Pattern Matching)** nhằm phát hiện các cấu trúc hình học cụ thể (như điểm góc, điểm cuối đường thẳng, điểm giao nhau).</p>
+        <p>HMT sử dụng một cặp phần tử cấu trúc: \(B_1\) (để kiểm tra khớp đối tượng - Hit) và \(B_2\) (để kiểm tra khớp nền - Miss). Hai phần tử cấu trúc này không giao nhau (\(B_1 \cap B_2 = \emptyset\)).</p>
+        <p>Ký hiệu: \[A \circledast B = (A \ominus B_1) \cap (A^c \ominus B_2)\]</p>
+        <p>Trong đó \(A^c\) là ảnh bù (ngược) của ảnh \(A\).</p>
+        
+        <div class="callout">
+          <div class="callout-title">Khái niệm Don't Care (x)</div>
+          <p>Trong phần tử cấu trúc của phép Hit-or-Miss, ký hiệu <code>x</code> đại diện cho phần tử không quan tâm (don't care). Khi thực hiện so khớp, các vị trí có giá trị <code>x</code> sẽ được bỏ qua, không cần kiểm tra trùng khớp.</p>
+        </div>
+
+        <p><em>Ứng dụng:</em> Nhận diện các điểm góc (Corner Detection), các điểm mút của nét vẽ (Endpoint Detection), hỗ trợ giải thuật làm mảnh ảnh (Skeletonization).</p>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.4 -->
+      <section id="sec-5-4">
+        <h2>5.4 Phép toán Mở (Opening) và Đóng (Closing)</h2>
+
+        <h3>Phép toán Mở (Opening)</h3>
+        <p>Phép toán mở là sự kết hợp tuần tự: <strong>Thực hiện ăn mòn (Erosion) trước, sau đó giãn nở (Dilation) sau</strong> với cùng một phần tử cấu trúc \(B\).</p>
+        <p>Công thức: \[A \circ B = (A \ominus B) \oplus B\]</p>
+        <p><strong>Ý nghĩa hoạt động:</strong> Phép ăn mòn đầu tiên sẽ xóa sạch các đốm nhiễu nhỏ cô lập và cắt đứt các cầu nối mỏng giữa các đối tượng. Phép giãn nở tiếp theo có nhiệm vụ khôi phục lại gần như nguyên vẹn kích thước và hình dáng ban đầu của các đối tượng lớn còn sót lại.</p>
+        <p><strong>Tác dụng:</strong> Loại bỏ các chi tiết thừa nhỏ, làm trơn tru (smooth) đường biên ngoài của vật thể mà không làm thay đổi đáng kể diện tích đối tượng.</p>
+
+        <h3>Phép toán Đóng (Closing)</h3>
+        <p>Phép toán đóng là sự kết hợp tuần tự: <strong>Thực hiện giãn nở (Dilation) trước, sau đó ăn mòn (Erosion) sau</strong>.</p>
+        <p>Công thức: \[A \bullet B = (A \oplus B) \ominus B\]</p>
+        <p><strong>Ý nghĩa hoạt động:</strong> Phép giãn nở đầu tiên lấp đầy các khe hở, lỗ trống nhỏ và nối các nét đứt. Phép ăn mòn tiếp theo co lại đối tượng để khôi phục lại kích thước ban đầu.</p>
+        <p><strong>Tác dụng:</strong> Lấp đầy các lỗ trống nhỏ bên trong đối tượng, nối các vết rạn nứt nhỏ, làm trơn biên bên trong đối tượng.</p>
+
+        <h3>So sánh Opening và Closing</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Đặc tính</th>
+              <th>Phép toán Mở (Opening)</th>
+              <th>Phép toán Đóng (Closing)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Thứ tự thực hiện</strong></td>
+              <td>Ăn mòn &rarr; Giãn nở (Erosion &rarr; Dilation)</td>
+              <td>Giãn nở &rarr; Ăn mòn (Dilation &rarr; Erosion)</td>
+            </tr>
+            <tr>
+              <td><strong>Mục tiêu chính</strong></td>
+              <td>Loại bỏ nhiễu hạt nhỏ bên ngoài vật thể.</td>
+              <td>Lấp đầy lỗ rỗng nhỏ bên trong vật thể.</td>
+            </tr>
+            <tr>
+              <td><strong>Tác dụng biên</strong></td>
+              <td>Làm mượt các góc lồi ngoài biên.</td>
+              <td>Làm mượt các góc lõm trong biên.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Section 5.5 -->
+      <section id="sec-5-5">
+        <h2>Các thuật toán hình thái học mở rộng</h2>
+        
+        <h3>1. Trích xuất đường biên (Boundary Extraction)</h3>
+        <p>Để trích xuất đường viền bao ngoài độ dày 1 pixel của đối tượng, ta lấy ảnh gốc trừ đi ảnh sau khi bị ăn mòn bởi phần tử cấu trúc \(B\) cỡ $3 \times 3$:</p>
+        <p>\[\text{Boundary} = A - (A \ominus B)\]</p>
+
+        <h3>2. Lấp lỗ rỗng (Hole Filling)</h3>
+        <p>Lấp đầy các vùng nền <code>0</code> bị bao quanh hoàn toàn bởi các pixel đối tượng <code>1</code>. Thuật toán sử dụng phép giãn nở có điều kiện lặp cho đến khi hội tụ.</p>
+
+        <h3>3. Phân tích thành phần liên thông (Connected Components)</h3>
+        <p>Vùng liên thông là tập hợp các pixel đối tượng <code>1</code> tiếp xúc kề cạnh với nhau. Thuật toán gán nhãn thành phần liên thông (Connected Component Labeling) duyệt ảnh bằng các giải thuật như loang vùng (Flood Fill), BFS, DFS hoặc Union-Find để gán một nhãn ID riêng cho từng vật thể.</p>
+        <p><em>Ứng dụng:</em> Tách biệt và đếm số lượng các vật thể rời rạc xuất hiện trong ảnh nhị phân.</p>
+
+        <h3>4. Bao lồi (Convex Hull)</h3>
+        <p>Bao lồi của tập hợp điểm đối tượng là đa giác lồi nhỏ nhất bao trọn toàn bộ đối tượng đó (tương tự việc căng một sợi dây thun vòng quanh một cụm đinh). Ứng dụng nhiều trong phân tích đặc trưng hình dạng vật thể.</p>
+
+        <h3>5. Bộ xương đối tượng (Skeletonization / Thinning)</h3>
+        <p>Phép làm mảnh lặp đi lặp lại biên ngoài của vật thể cho đến khi đối tượng co lại thành một đường nét mảnh độ dày đúng 1 pixel nằm ở giữa (bộ xương). Rất hữu ích trong nhận dạng chữ viết tay, vân tay hoặc OCR vì nó giữ lại cấu trúc nét vẽ cốt lõi.</p>
+
+        <h3>Chuỗi xử lý Morphology điển hình trong thực tế</h3>
+        <div class="flowchart">
+          <div class="flow-node">Ảnh gốc</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phân ngưỡng (Threshold)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phép mở (Opening) để xóa nhiễu</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Phép đóng (Closing) để lấp lỗ</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Gán nhãn liên thông (Connected Comp.)</div>
+          <span class="flow-arrow">&rarr;</span>
+          <div class="flow-node">Đếm và phân tích vật thể</div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+      <!-- Summary Section -->
+      <section id="sec-5-summary">
+        <h2>Bảng tổng hợp các công thức Morphological</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ký hiệu / Công thức</th>
+              <th>Mục tiêu &amp; Tác dụng chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ăn mòn (Erosion)</strong></td>
+              <td>\(A \ominus B\)</td>
+              <td>Làm mảnh đối tượng, tách các vật dính nhau, xóa nhiễu nhỏ nền.</td>
+            </tr>
+            <tr>
+              <td><strong>Giãn nở (Dilation)</strong></td>
+              <td>\(A \oplus B\)</td>
+              <td>Làm dày đối tượng, lấp đầy khe hở nhỏ, nối liền nét đứt.</td>
+            </tr>
+            <tr>
+              <td><strong>Phép Mở (Opening)</strong></td>
+              <td>\(A \circ B = (A \ominus B) \oplus B\)</td>
+              <td>Loại bỏ nhiễu hạt nhỏ ngoài nền, làm trơn biên ngoài.</td>
+            </tr>
+            <tr>
+              <td><strong>Phép Đóng (Closing)</strong></td>
+              <td>\(A \bullet B = (A \oplus B) \ominus B\)</td>
+              <td>Lấp lỗ đen bên trong đối tượng, nối vật thể kề sát.</td>
+            </tr>
+            <tr>
+              <td><strong>Trích biên (Boundary)</strong></td>
+              <td>\(A - (A \ominus B)\)</td>
+              <td>Trích xuất đường viền bao ngoài của đối tượng.</td>
+            </tr>
+            <tr>
+              <td><strong>Hit-or-Miss (HMT)</strong></td>
+              <td>\(A \circledast B\)</td>
+              <td>Phát hiện các mẫu hình cụ thể (góc, điểm cuối nét, giao lộ).</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
