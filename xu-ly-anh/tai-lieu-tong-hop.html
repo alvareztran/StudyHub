@@ -1475,20 +1475,43 @@
         
         <h3>1. Trích xuất đường biên (Boundary Extraction)</h3>
         <p>Để trích xuất đường viền bao ngoài độ dày 1 pixel của đối tượng, ta lấy ảnh gốc trừ đi ảnh sau khi bị ăn mòn bởi phần tử cấu trúc \(B\) cỡ $3 \times 3$:</p>
-        <p>\[\text{Boundary} = A - (A \ominus B)\]</p>
+        <p>\[\text{Boundary}(A) = A - (A \ominus B)\]</p>
 
         <h3>2. Lấp lỗ rỗng (Hole Filling)</h3>
-        <p>Lấp đầy các vùng nền <code>0</code> bị bao quanh hoàn toàn bởi các pixel đối tượng <code>1</code>. Thuật toán sử dụng phép giãn nở có điều kiện lặp cho đến khi hội tụ.</p>
+        <p>Lấp đầy các vùng nền <code>0</code> bị bao quanh hoàn toàn bởi các pixel đối tượng <code>1</code>. Gọi \(I\) là ảnh nhị phân gốc chứa lỗ rỗng, và \(I^c\) là ảnh đảo ngược (ảnh bù) của \(I\). Thuật toán khởi tạo một ảnh \(Y_0\) chỉ chứa một điểm <code>1</code> nằm bên trong lỗ cần lấp. Công thức lặp có điều kiện (giãn nở có điều kiện) là:</p>
+        <p>\[Y_k = (Y_{k-1} \oplus B) \cap I^c, \quad k = 1, 2, 3, \dots\]</p>
+        <p>Trong đó \(B\) là phần tử cấu trúc dạng chữ thập kích thước \(3 \times 3\). Quá trình lặp dừng lại khi \(Y_k = Y_{k-1}\). Ảnh kết quả sau khi lấp lỗ là:</p>
+        <p>\[\text{HoleFilled} = Y_k \cup I\]</p>
 
         <h3>3. Phân tích thành phần liên thông (Connected Components)</h3>
-        <p>Vùng liên thông là tập hợp các pixel đối tượng <code>1</code> tiếp xúc kề cạnh với nhau. Thuật toán gán nhãn thành phần liên thông (Connected Component Labeling) duyệt ảnh bằng các giải thuật như loang vùng (Flood Fill), BFS, DFS hoặc Union-Find để gán một nhãn ID riêng cho từng vật thể.</p>
+        <p>Để xác định và tách biệt các vùng liên thông (các nhóm điểm <code>1</code> tiếp xúc kề cạnh với nhau) từ ảnh gốc \(A\), ta khởi tạo một ảnh \(Y_0\) chứa một điểm <code>1</code> thuộc vùng liên thông cần tìm. Công thức lặp giãn nở có điều kiện là:</p>
+        <p>\[Y_k = (Y_{k-1} \oplus B) \cap A, \quad k = 1, 2, 3, \dots\]</p>
+        <p>Trong đó \(B\) là phần tử cấu trúc kích thước \(3 \times 3\) đại diện cho kiểu liên thông (4-liên thông hoặc 8-liên thông). Quá trình lặp dừng lại khi \(Y_k = Y_{k-1}\). Tập hợp các điểm mang giá trị <code>1</code> trong \(Y_k\) chính là thành phần liên thông chứa điểm bắt đầu.</p>
         <p><em>Ứng dụng:</em> Tách biệt và đếm số lượng các vật thể rời rạc xuất hiện trong ảnh nhị phân.</p>
 
         <h3>4. Bao lồi (Convex Hull)</h3>
-        <p>Bao lồi của tập hợp điểm đối tượng là đa giác lồi nhỏ nhất bao trọn toàn bộ đối tượng đó (tương tự việc căng một sợi dây thun vòng quanh một cụm đinh). Ứng dụng nhiều trong phân tích đặc trưng hình dạng vật thể.</p>
+        <p>Bao lồi của tập điểm đối tượng trong ảnh \(A\) là đa giác lồi nhỏ nhất bao trọn đối tượng. Gọi \(B^1, B^2, B^3, B^4\) là bốn phần tử cấu trúc dạng xoay của phép Hit-or-Miss dùng để dò góc trong bốn hướng. Công thức lặp cho từng hướng \(i \in \{1, 2, 3, 4\}\) là:</p>
+        <p>\[X_k^i = (X_{k-1}^i \circledast B^i) \cup A, \quad k = 1, 2, 3, \dots\]</p>
+        <p>Với điều kiện biên \(X_0^i = A\). Khi phép lặp hội tụ (\(X_{j}^i = X_{j-1}^i\")), ta thu được kết quả \(D^i = X_j^i\). Bao lồi của đối tượng được xác định bằng phép hợp của kết quả cả 4 hướng:</p>
+        <p>\[\text{ConvexHull}(A) = \bigcup_{i=1}^{4} D^i\]</p>
 
-        <h3>5. Bộ xương đối tượng (Skeletonization / Thinning)</h3>
-        <p>Phép làm mảnh lặp đi lặp lại biên ngoài của vật thể cho đến khi đối tượng co lại thành một đường nét mảnh độ dày đúng 1 pixel nằm ở giữa (bộ xương). Rất hữu ích trong nhận dạng chữ viết tay, vân tay hoặc OCR vì nó giữ lại cấu trúc nét vẽ cốt lõi.</p>
+        <h3>5. Bộ xương đối tượng (Skeletonization)</h3>
+        <p>Bộ xương đối tượng \(S(A)\) là đường mảnh dày 1 pixel nằm ở đường trung tâm của đối tượng. Bộ xương được tính bằng cách hợp của các tập con xương \(S_k(A)\):</p>
+        <p>\[S(A) = \bigcup_{k=0}^{K} S_k(A)\]</p>
+        <p>Trong đó, các tập con xương thứ \(k\) được tính bằng công thức:</p>
+        <p>\[S_k(A) = (A \ominus k B) - ((A \ominus k B) \circ B)\]</p>
+        <p>Ký hiệu \((A \ominus k B)\) đại diện cho \(k\) lần ăn mòn liên tiếp của ảnh \(A\) bởi phần tử cấu trúc \(B\):</p>
+        <p>\[(A \ominus k B) = \underbrace{(((A \ominus B) \ominus B) \dots \ominus B)}_{k \text{ lần}}\]</p>
+        <p>Với \((A \ominus 0 B) = A\) và \(K\) là bước ăn mòn cuối cùng trước khi đối tượng bị triệt tiêu hoàn toàn:</p>
+        <p>\[K = \max \{k \mid (A \ominus k B) \neq \emptyset\}\]</p>
+
+        <h3>6. Làm mảnh (Thinning) và Làm dày (Thickening)</h3>
+        <p><strong>Làm mảnh (Thinning):</strong> Dùng để giảm dần độ dày của đối tượng dựa trên phép biến biến đổi Hit-or-Miss:</p>
+        <p>\[A \otimes B = A - (A \circledast B) = A \cap (A \circledast B)^c\]</p>
+        <p>Thực tế, phép làm mảnh thường thực hiện tuần tự với một tập hợp gồm 8 phần tử cấu trúc xoay hướng \(\{B^1, B^2, \dots, B^8\}\):</p>
+        <p>\[A \otimes \{B\} = (( \dots (A \otimes B^1) \otimes B^2 \dots ) \otimes B^8)\]</p>
+        <p><strong>Làm dày (Thickening):</strong> Là phép toán đối ngẫu của làm mảnh, dùng để mở rộng biên ngoài đối tượng:</p>
+        <p>\[A \odot B = A \cup (A \circledast B)\]</p>
 
         <h3>Chuỗi xử lý Morphology điển hình trong thực tế</h3>
         <div class="flowchart">
@@ -1547,8 +1570,38 @@
             </tr>
             <tr>
               <td><strong>Hit-or-Miss (HMT)</strong></td>
-              <td>\(A \circledast B\)</td>
+              <td>\(A \circledast B = (A \ominus B_1) \cap (A^c \ominus B_2)\)</td>
               <td>Phát hiện các mẫu hình cụ thể (góc, điểm cuối nét, giao lộ).</td>
+            </tr>
+            <tr>
+              <td><strong>Lấp lỗ rỗng (Hole Filling)</strong></td>
+              <td>\(Y_k = (Y_{k-1} \oplus B) \cap I^c\),<br>dừng khi \(Y_k = Y_{k-1}\);<br>\(\text{Result} = Y_k \cup I\)</td>
+              <td>Lấp đầy các khoảng trống màu đen bị bao kín bởi đối tượng màu trắng.</td>
+            </tr>
+            <tr>
+              <td><strong>Thành phần liên thông</strong></td>
+              <td>\(Y_k = (Y_{k-1} \oplus B) \cap A\),<br>dừng khi \(Y_k = Y_{k-1}\)</td>
+              <td>Trích xuất toàn bộ vùng vật thể kết nối liên tục từ một điểm mẫu.</td>
+            </tr>
+            <tr>
+              <td><strong>Bao lồi (Convex Hull)</strong></td>
+              <td>\(X_k^i = (X_{k-1}^i \circledast B^i) \cup A\);<br>\(\text{ConvexHull} = \bigcup_{i=1}^4 D^i\)</td>
+              <td>Tìm đa giác lồi nhỏ nhất bao phủ toàn bộ các điểm của vật thể.</td>
+            </tr>
+            <tr>
+              <td><strong>Bộ xương (Skeleton)</strong></td>
+              <td>\(S(A) = \bigcup_{k=0}^K S_k(A)\),<br>với \(S_k(A) = (A \ominus kB) - ((A \ominus kB) \circ B)\)</td>
+              <td>Thu gọn vật thể về các đường trục mỏng độ rộng 1 pixel.</td>
+            </tr>
+            <tr>
+              <td><strong>Làm mảnh (Thinning)</strong></td>
+              <td>\(A \otimes B = A - (A \circledast B)\)</td>
+              <td>Làm co hẹp dần biên ngoài dựa trên mẫu cấu trúc xác định.</td>
+            </tr>
+            <tr>
+              <td><strong>Làm dày (Thickening)</strong></td>
+              <td>\(A \odot B = A \cup (A \circledast B)\)</td>
+              <td>Mở rộng dần biên ngoài dựa trên mẫu cấu trúc xác định.</td>
             </tr>
           </tbody>
         </table>

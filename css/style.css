@@ -209,6 +209,11 @@ tr:hover {
   background-color: var(--highlight-bg);
 }
 
+/* Prevent formula wrapping in morphological summary table */
+#sec-5-summary table td:nth-child(2) {
+  white-space: nowrap;
+}
+
 /* Sơ đồ quy trình (Diagram wrapper) */
 .flowchart {
   display: flex;
@@ -524,7 +529,10 @@ body.dark-theme table {
     print-color-adjust: exact !important;
   }
   /* Page break optimization */
-  pre, code, .callout, table, blockquote, .matrix, .flowchart, .flow-node, h2, h3 {
+  pre, code, .callout, blockquote, .matrix, .flowchart, .flow-node, h2, h3 {
+    page-break-inside: avoid;
+  }
+  tr {
     page-break-inside: avoid;
   }
   h2, h3 {

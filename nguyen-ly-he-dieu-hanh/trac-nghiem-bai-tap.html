@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc Nghiệm Bài Tập & Tính Toán Hệ Điều Hành - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .score-badge {
+      font-size: 0.75rem;
+      background: var(--border-color);
+      color: var(--text-light);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      font-weight: normal;
+    }
+    .score-badge.completed {
+      background: rgba(34, 197, 94, 0.2);
+      color: #16a34a;
+      font-weight: bold;
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .quiz-question pre {
+      background-color: var(--bg-code);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+    .quiz-question table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .quiz-question th, .quiz-question td {
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.6rem;
+      text-align: center;
+    }
+    .quiz-question th {
+      background-color: var(--bg-code);
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quiz-options label:hover {
+      background: var(--highlight-bg);
+      border-color: var(--text-light);
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.2rem;
+    }
+    .quiz-options label.correct {
+      background: rgba(34, 197, 94, 0.15) !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .quiz-feedback.feedback-correct {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-feedback.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .chapter-header h2 {
+      margin: 0;
+      color: var(--secondary-color);
+      font-size: 1.4rem;
+    }
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .progress-bar-bg {
+      flex-grow: 1;
+      height: 10px;
+      background: var(--border-color);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--secondary-color);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .reset-btn {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover {
+      background: var(--highlight-bg);
+      border-color: var(--text-light);
+    }
+
+    /* Fast Navigation Grid in Sidebar */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+    }
+    .nav-grid-btn {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .nav-grid-btn:hover {
+      background-color: var(--highlight-bg);
+      border-color: var(--secondary-color);
+    }
+    .nav-grid-btn.correct {
+      background-color: #22c55e !important;
+      color: white !important;
+      border-color: #22c55e !important;
+    }
+    .nav-grid-btn.incorrect {
+      background-color: #ef4444 !important;
+      color: white !important;
+      border-color: #ef4444 !important;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Nguyên lý Hệ điều hành</a> &raquo; Trắc nghiệm bài tập
+      </div>
+      <h1>Luyện Tập Trắc Nghiệm Bài Tập Hệ Điều Hành</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Hệ thống 100 câu hỏi trắc nghiệm bài tập tính toán và ứng dụng thực tế. Đọc hiểu code, vẽ Gantt chart, tránh deadlock và phân chia trang bộ nhớ.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Left side: Navigation sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Các phần bài tập</h3>
+        <ul>
+          <li><a href="#" class="sec-link" id="link-sec1" onclick="switchSection('sec1'); return false;">1. Tiến trình &amp; Luồng (1-20) <span class="score-badge" id="badge-sec1">0/20</span></a></li>
+          <li><a href="#" class="sec-link" id="link-sec2" onclick="switchSection('sec2'); return false;">2. Định thời CPU (21-40) <span class="score-badge" id="badge-sec2">0/20</span></a></li>
+          <li><a href="#" class="sec-link" id="link-sec3" onclick="switchSection('sec3'); return false;">3. Đồng bộ hóa (41-60) <span class="score-badge" id="badge-sec3">0/20</span></a></li>
+          <li><a href="#" class="sec-link" id="link-sec4" onclick="switchSection('sec4'); return false;">4. Khóa chết (Deadlock) (61-80) <span class="score-badge" id="badge-sec4">0/20</span></a></li>
+          <li><a href="#" class="sec-link" id="link-sec5" onclick="switchSection('sec5'); return false;">5. Quản lý bộ nhớ (81-100) <span class="score-badge" id="badge-sec5">0/20</span></a></li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">Bảng điều hướng nhanh</h3>
+        <div class="nav-grid" id="fast-nav-grid">
+          <!-- Dynamic 100 buttons rendered via JS -->
+        </div>
+      </aside>
+
+      <!-- Right side: Quiz Content Area -->
+      <main>
+        <div class="progress-container">
+          <div style="font-weight: 600; font-size: 0.9rem;" id="progress-text">Tổng tiến độ: 0/100 câu</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+          <button class="reset-btn" onclick="confirmResetAll()">🔄 Làm lại tất cả</button>
+        </div>
+
+        <div class="chapter-header">
+          <h2 id="section-title">Phần 1: Khởi tạo Tiến trình &amp; Luồng (Câu 1 - 20)</h2>
+          <span style="font-weight: 700; color: var(--secondary-color);" id="section-score-display">Đúng: 0/0 câu</span>
+        </div>
+
+        <div id="questions-container">
+          <!-- Questions will be dynamically rendered here via JS -->
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // QUIZ DATA ARRAY OF 100 EXERCISES
+    // -------------------------------------------------------------------------
+    const quizData = {
+  "sec1": [
+    {
+      "q": "Xét đoạn mã nguồn C sau:<br><pre><code>int main() {\n    fork();\n    fork();\n    fork();\n    printf(\"A\\n\");\n    return 0;\n}</code></pre>Có tổng cộng bao nhiêu tiến trình in ra ký tự 'A'?",
+      "a": [
+        "3 tiến trình",
+        "6 tiến trình",
+        "8 tiến trình",
+        "9 tiến trình"
+      ],
+      "c": 2,
+      "e": "Mỗi lời gọi <code>fork()</code> nhân đôi số lượng tiến trình hiện có. Với 3 lời gọi <code>fork()</code> liên tiếp, số tiến trình được tạo ra là $2^3 = 8$ tiến trình. Tất cả 8 tiến trình này đều thực hiện lệnh <code>printf(\"A\\n\");</code>."
+    },
+    {
+      "q": "Xét đoạn mã nguồn C sau:<br><pre><code>for(int i = 0; i < 3; i++) {\n    fork();\n}</code></pre>Có bao nhiêu tiến trình CON (child processes) được tạo ra thêm từ tiến trình cha ban đầu?",
+      "a": [
+        "3 tiến trình",
+        "7 tiến trình",
+        "8 tiến trình",
+        "6 tiến trình"
+      ],
+      "c": 1,
+      "e": "Vòng lặp chạy 3 lần, mỗi lần gọi <code>fork()</code>. Tổng số tiến trình cuối cùng là $2^3 = 8$. Số tiến trình con được tạo ra thêm là $8 - 1 = 7$ (trừ đi tiến trình cha ban đầu)."
+    },
+    {
+      "q": "Xét đoạn mã nguồn C sau:<br><pre><code>int main() {\n    int val = 5;\n    if (fork() == 0) {\n        val += 10;\n        printf(\"%d \", val);\n    } else {\n        wait(NULL);\n        val -= 2;\n        printf(\"%d \", val);\n    }\n    return 0;\n}</code></pre>Kết quả xuất ra màn hình của đoạn chương trình trên là gì?",
+      "a": [
+        "15 3",
+        "15 13",
+        "3 15",
+        "15 15"
+      ],
+      "c": 0,
+      "e": "Sau khi <code>fork()</code>, tiến trình con có không gian bộ nhớ riêng. Nhánh con (trả về 0) cộng thêm 10 vào bản sao <code>val</code> của nó và in ra <code>15</code>. Tiến trình cha chờ con kết thúc, sau đó giảm 2 từ biến <code>val</code> ban đầu (5 - 2 = 3) và in ra <code>3</code>."
+    },
+    {
+      "q": "Xét đoạn chương trình C sau:<br><pre><code>int main() {\n    fork() && fork();\n    printf(\"X \");\n    return 0;\n}</code></pre>Ký tự 'X' được in ra bao nhiêu lần?",
+      "a": [
+        "1 lần",
+        "2 lần",
+        "3 lần",
+        "4 lần"
+      ],
+      "c": 2,
+      "e": "Gọi tiến trình ban đầu là P. <code>fork()</code> đầu tiên tạo ra con C1. Ở P, kết quả trả về của <code>fork()</code> là PID của C1 (khác 0 - True), nên P tiếp tục thực hiện vế sau của phép toán <code>&&</code> bằng cách gọi <code>fork()</code> thứ hai để tạo ra con C2. Ở C1, kết quả trả về của <code>fork()</code> đầu tiên là 0 (False), phép <code>&&</code> ngắn mạch nên C1 không gọi <code>fork()</code> tiếp theo. Do đó, có tổng cộng 3 tiến trình (P, C1, C2) hoạt động và in ra 'X '."
+    },
+    {
+      "q": "Xét đoạn chương trình C sau:<br><pre><code>int main() {\n    fork() || fork();\n    printf(\"Y \");\n    return 0;\n}</code></pre>Ký tự 'Y' được in ra bao nhiêu lần?",
+      "a": [
+        "2 lần",
+        "3 lần",
+        "4 lần",
+        "5 lần"
+      ],
+      "c": 1,
+      "e": "Gọi tiến trình ban đầu là P. <code>fork()</code> đầu tiên tạo ra con C1. Ở P, kết quả trả về của <code>fork()</code> đầu tiên là PID của C1 (khác 0 - True), phép toán <code>||</code> ngắn mạch nên P không gọi <code>fork()</code> thứ hai. Ở C1, kết quả trả về của <code>fork()</code> đầu tiên là 0 (False), C1 bắt buộc phải đánh giá vế sau bằng cách gọi <code>fork()</code> thứ hai để tạo ra con C2. Vậy có tổng cộng 3 tiến trình hoạt động (P, C1, C2) và in ra 'Y '."
+    },
+    {
+      "q": "Nếu hai luồng (threads) trong cùng một tiến trình cùng thực hiện tăng một biến toàn cục <code>count</code> lên 1000 lần mà không có cơ chế đồng bộ hóa. Giá trị nhỏ nhất và lớn nhất có thể của <code>count</code> sau khi cả hai luồng kết thúc (ban đầu <code>count = 0</code>) là bao nhiêu?",
+      "a": [
+        "Min: 2, Max: 2000",
+        "Min: 1000, Max: 2000",
+        "Min: 2, Max: 1000",
+        "Min: 0, Max: 2000"
+      ],
+      "c": 0,
+      "e": "Do tranh chấp dữ liệu (race conditions), một luồng có thể đọc giá trị cũ của <code>count</code>, bị dừng lại, luồng kia chạy xong và luồng đầu ghi đè giá trị cũ cộng 1 lên. Giá trị lớn nhất là 2000 khi hai luồng chạy tuần tự hoàn hảo. Giá trị nhỏ nhất lý thuyết là 2 (khi luồng 1 chạy và dừng liên tục để bị luồng 2 ghi đè dữ liệu trung gian)."
+    },
+    {
+      "q": "Xét đoạn mã nguồn C sau:<br><pre><code>int main() {\n    pid_t pid = fork();\n    if (pid == 0) {\n        fork();\n        printf(\"1 \");\n    } else {\n        wait(NULL);\n        printf(\"2 \");\n    }\n    return 0;\n}</code></pre>Đoạn mã trên sẽ xuất ra bao nhiêu ký tự '1' và '2'?",
+      "a": [
+        "Hai ký tự '1' và một ký tự '2'",
+        "Một ký tự '1' và hai ký tự '2'",
+        "Hai ký tự '1' và hai ký tự '2'",
+        "Ba ký tự '1' và một ký tự '2'"
+      ],
+      "c": 0,
+      "e": "Tiến trình cha fork ra con 1. Tiến trình cha nhảy vào nhánh <code>else</code> và đợi (wait). Tiến trình con 1 nhảy vào nhánh <code>if</code>, tiếp tục fork ra con 2. Cả hai tiến trình con này cùng in ra '1 '. Sau khi các con kết thúc, tiến trình cha được đánh thức và in ra '2 '. Kết quả: hai chữ '1' và một chữ '2'."
+    },
+    {
+      "q": "Trước khi gọi <code>fork()</code>, tiến trình cha cấp phát bộ nhớ động trên Heap bằng <code>malloc()</code> và lưu địa chỉ vào con trỏ <code>ptr</code>. Sau khi <code>fork()</code>, tiến trình con ghi dữ liệu mới vào vùng nhớ <code>*ptr</code>. Khi tiến trình con kết thúc, tiến trình cha đọc vùng nhớ <code>*ptr</code>. Giá trị cha đọc được là gì?",
+      "a": [
+        "Dữ liệu do tiến trình con đã sửa đổi",
+        "Dữ liệu ban đầu trước khi fork",
+        "Lỗi phân đoạn bộ nhớ (Segfault)",
+        "Giá trị ngẫu nhiên hoặc rác"
+      ],
+      "c": 1,
+      "e": "Khi fork, hệ điều hành nhân bản không gian địa chỉ ảo của cha sang con (sử dụng cơ chế Copy-on-Write). Do đó, vùng nhớ heap của con và cha là hoàn toàn độc lập về mặt vật lý. Con sửa đổi dữ liệu không làm ảnh hưởng đến dữ liệu gốc của cha."
+    },
+    {
+      "q": "Xét đoạn chương trình C sau:<br><pre><code>void* runner(void* param) {\n    printf(\"T \");\n    pthread_exit(0);\n}\nint main() {\n    pthread_t tid[4];\n    for(int i = 0; i < 4; i++) {\n        pthread_create(&tid[i], NULL, runner, NULL);\n    }\n    for(int i = 0; i < 4; i++) {\n        pthread_join(tid[i], NULL);\n    }\n    return 0;\n}</code></pre>Có bao nhiêu luồng (không tính luồng chính main) được tạo ra và thực thi?",
+      "a": [
+        "1 luồng",
+        "2 luồng",
+        "4 luồng",
+        "5 luồng"
+      ],
+      "c": 2,
+      "e": "Vòng lặp chạy 4 lần gọi <code>pthread_create()</code> tạo ra chính xác 4 luồng chạy hàm <code>runner</code>."
+    },
+    {
+      "q": "Một biến toàn cục <code>x = 10</code>. Luồng A thực hiện lệnh <code>x += 5</code>. Luồng B thực hiện lệnh <code>x *= 2</code>. Giả sử hai lệnh này được thực hiện bất đồng bộ mà không có cơ chế đồng bộ, các giá trị cuối cùng khả thi của <code>x</code> là:",
+      "a": [
+        "Chỉ có 30",
+        "Chỉ có 25",
+        "25 hoặc 30",
+        "15, 20, 25 hoặc 30"
+      ],
+      "c": 2,
+      "e": "Nếu luồng A hoàn thành trước luồng B: $x = (10 + 5) \\times 2 = 30$. Nếu luồng B hoàn thành trước luồng A: $x = (10 \\times 2) + 5 = 25$."
+    },
+    {
+      "q": "Xét đoạn mã nguồn C sau:<br><pre><code>int main() {\n    for(int i = 0; i < 2; i++) {\n        fork();\n        printf(\"Z\\n\");\n    }\n    return 0;\n}</code></pre>Có bao nhiêu dòng ký tự 'Z' được in ra màn hình?",
+      "a": [
+        "4 dòng",
+        "6 dòng",
+        "8 dòng",
+        "2 dòng"
+      ],
+      "c": 1,
+      "e": "Vòng lặp i=0: Tiến trình gốc fork tạo ra 1 con. Cả 2 tiến trình in ra 'Z' (tổng: 2 dòng). Vòng lặp i=1: Cả 2 tiến trình hiện tại tiếp tục fork tạo thêm 2 con nữa (tổng cộng 4 tiến trình). Cả 4 tiến trình này cùng in ra 'Z' (tổng: 4 dòng). Tổng số dòng 'Z' in ra = 2 + 4 = 6 dòng."
+    },
+    {
+      "q": "Một tiến trình zombie (zombie process) được tạo ra trong hệ điều hành Unix/Linux khi nào?",
+      "a": [
+        "Tiến trình cha kết thúc trước khi tiến trình con gọi exit()",
+        "Tiến trình con kết thúc nhưng tiến trình cha chưa gọi wait() để thu dọn trạng thái của con",
+        "Tiến trình con chạy vô hạn ở chế độ nền",
+        "Tiến trình cha gọi wait() trong khi tiến trình con vẫn đang chạy"
+      ],
+      "c": 1,
+      "e": "Khi tiến trình con kết thúc, hệ thống giải phóng tài nguyên của nó nhưng vẫn giữ lại thông tin trạng thái trong bảng tiến trình (Process Table) để cha đọc. Nếu cha không gọi <code>wait()</code>, mục này sẽ tồn tại mãi, tiến trình con trở thành zombie."
+    },
+    {
+      "q": "Khi tiến trình cha kết thúc trước khi tiến trình con gọi exit(), tiến trình con sẽ trở thành tiến trình mồ côi (orphan process). Hệ điều hành Unix/Linux giải quyết tình huống này như thế nào?",
+      "a": [
+        "Hủy bỏ tiến trình con ngay lập tức",
+        "Chuyển tiến trình con thành tiến trình zombie",
+        "Tiến trình con được nhận nuôi bởi tiến trình init (PID 1)",
+        "Tiến trình con tiếp tục chạy độc lập mà không có cha"
+      ],
+      "c": 2,
+      "e": "Để tránh việc tích tụ các tiến trình mồ côi khi kết thúc sẽ trở thành zombie vĩnh viễn, tiến trình tổ tiên <code>init</code> (hoặc <code>systemd</code> có PID 1) sẽ nhận nuôi chúng và tự động gọi <code>wait()</code> khi các tiến trình con này kết thúc."
+    },
+    {
+      "q": "Trong các lệnh hệ thống (System Calls) sau, lệnh nào được dùng để thay thế toàn bộ không gian địa chỉ và chương trình của tiến trình hiện tại bằng một chương trình mới?",
+      "a": [
+        "fork()",
+        "exec()",
+        "wait()",
+        "exit()"
+      ],
+      "c": 1,
+      "e": "Lời gọi hệ thống thuộc họ <code>exec()</code> (như <code>execve</code>, <code>execlp</code>...) nạp một file thực thi mới đè lên không gian địa chỉ của tiến trình hiện tại và bắt đầu thực thi chương trình mới."
+    },
+    {
+      "q": "Một tiến trình cha mở một file descriptor ghi nhật ký trước khi gọi <code>fork()</code>. Khi tiến trình con ghi dữ liệu vào file này, con trỏ vị trí file (file offset) thay đổi như thế nào đối với tiến trình cha?",
+      "a": [
+        "Không thay đổi, cha và con có con trỏ vị trí file độc lập",
+        "Thay đổi đồng thời, cha và con chia sẻ chung con trỏ vị trí file thông qua bảng file hệ thống",
+        "Tiến trình con không thể ghi file",
+        "File descriptor bị tự động đóng ở tiến trình con"
+      ],
+      "c": 1,
+      "e": "Khi gọi <code>fork()</code>, các file descriptor được sao chép nhưng chúng cùng trỏ tới cùng một mục trong bảng file hệ thống (System-wide File Table). Do đó, chúng chia sẻ chung con trỏ vị trí file (file offset)."
+    },
+    {
+      "q": "Lời gọi hàm <code>pthread_join(tid, NULL)</code> có tác dụng gì trong lập trình luồng POSIX?",
+      "a": [
+        "Kích hoạt luồng <code>tid</code> bắt đầu thực thi",
+        "Tạm dừng luồng gọi cho đến khi luồng <code>tid</code> kết thúc thực thi",
+        "Hủy bỏ luồng <code>tid</code> ngay lập tức",
+        "Chia sẻ bộ nhớ cục bộ với luồng <code>tid</code>"
+      ],
+      "c": 1,
+      "e": "Hàm <code>pthread_join()</code> là cơ chế đồng bộ hóa luồng. Nó block luồng gọi (thường là luồng main) cho đến khi luồng đích <code>tid</code> kết thúc để thu hồi tài nguyên luồng."
+    },
+    {
+      "q": "Trong hệ điều hành, sau khi thực hiện lời gọi <code>fork()</code> thành công, tiến trình nào sẽ được chọn để chạy tiếp trước?",
+      "a": [
+        "Luôn luôn là tiến trình cha",
+        "Luôn luôn là tiến trình con",
+        "Tùy thuộc vào thuật toán lập lịch của hệ điều hành và trạng thái hệ thống",
+        "Tiến trình nào có PID nhỏ hơn sẽ chạy trước"
+      ],
+      "c": 2,
+      "e": "Sau khi <code>fork()</code> thành công, cả cha và con đều ở trạng thái Ready. Việc tiến trình nào được chạy trước hoàn toàn phụ thuộc vào bộ định thời (CPU Scheduler) của nhân hệ điều hành."
+    },
+    {
+      "q": "Các biến cục bộ được khai báo bên trong một hàm của chương trình C khi thực thi sẽ được lưu trữ trong phân vùng bộ nhớ nào của tiến trình?",
+      "a": [
+        "Code segment",
+        "Heap segment",
+        "Stack segment",
+        "Data segment"
+      ],
+      "c": 2,
+      "e": "Phân vùng Stack được dùng để lưu trữ các activation record của hàm, bao gồm tham số truyền vào, địa chỉ phản hồi và các biến cục bộ (local variables) tự động."
+    },
+    {
+      "q": "Vùng nhớ được cấp phát động thông qua các hàm như <code>malloc()</code> hoặc <code>calloc()</code> trong C được quản lý và phân bổ tại phân vùng nào của tiến trình?",
+      "a": [
+        "Stack segment",
+        "Data segment",
+        "Heap segment",
+        "Text segment"
+      ],
+      "c": 2,
+      "e": "Phân vùng Heap là vùng bộ nhớ dùng cho cấp phát động tại thời điểm chạy (runtime). Người lập trình phải chủ động quản lý và giải phóng vùng nhớ này."
+    },
+    {
+      "q": "Nếu lời gọi hệ thống <code>fork()</code> trả về giá trị -1, điều này có ý nghĩa gì?",
+      "a": [
+        "Đang chạy trong tiến trình con",
+        "Không thể tạo tiến trình mới (lỗi hệ thống)",
+        "Đang chạy trong tiến trình cha thành công",
+        "Tiến trình đã được đưa vào hàng đợi chờ"
+      ],
+      "c": 1,
+      "e": "<code>fork()</code> trả về 0 trong tiến trình con, trả về PID của con trong tiến trình cha, và trả về -1 nếu gặp lỗi không thể tạo tiến trình mới (ví dụ do hết bộ nhớ hoặc đạt giới hạn số tiến trình tối đa)."
+    }
+  ],
+  "sec2": [
+    {
+      "q": "Cho danh sách các tiến trình đến hệ thống theo thuật toán định thời FCFS (First-Come, First-Served) sau:<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>0</td><td>10</td></tr><tr><td>P2</td><td>1</td><td>5</td></tr><tr><td>P3</td><td>2</td><td>8</td></tr></table>Thời gian chờ trung bình (Average Waiting Time) của các tiến trình là bao nhiêu?",
+      "a": [
+        "7.33 ms",
+        "8.50 ms",
+        "6.33 ms",
+        "9.67 ms"
+      ],
+      "c": 0,
+      "e": "Thứ tự chạy FCFS:<br>- P1 chạy từ t=0 đến t=10. Thời gian chờ P1 = 0.<br>- P2 chạy từ t=10 đến t=15. Thời gian chờ P2 = 10 - 1 = 9 ms.<br>- P3 chạy từ t=15 đến t=23. Thời gian chờ P3 = 15 - 2 = 13 ms.<br>Thời gian chờ trung bình = $(0 + 9 + 13) / 3 = 22 / 3 \\approx 7.33$ ms."
+    },
+    {
+      "q": "Cho các tiến trình cùng đến hệ thống tại thời điểm t=0 theo giải thuật SJF không trưng dụng (Non-preemptive Shortest Job First) sau:<br><table><tr><th>Tiến trình</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>6</td></tr><tr><td>P2</td><td>8</td></tr><tr><td>P3</td><td>7</td></tr><tr><td>P4</td><td>3</td></tr></table>Thời gian chờ trung bình của các tiến trình là:",
+      "a": [
+        "7.0 ms",
+        "9.0 ms",
+        "8.2 ms",
+        "6.8 ms"
+      ],
+      "c": 0,
+      "e": "Sắp xếp theo thứ tự thời gian thực thi tăng dần: P4 (3) -> P1 (6) -> P3 (7) -> P2 (8).<br>- P4 chạy từ t=0 đến t=3 (chờ 0).<br>- P1 chạy từ t=3 đến t=9 (chờ 3).<br>- P3 chạy từ t=9 đến t=16 (chờ 9).<br>- P2 chạy từ t=16 đến t=24 (chờ 16).<br>Trung bình chờ = $(0 + 3 + 9 + 16) / 4 = 28 / 4 = 7$ ms."
+    },
+    {
+      "q": "Cho các tiến trình định thời theo giải thuật SJF không trưng dụng sau:<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>0</td><td>7</td></tr><tr><td>P2</td><td>2</td><td>4</td></tr><tr><td>P3</td><td>4</td><td>1</td></tr><tr><td>P4</td><td>5</td><td>4</td></tr></table>Thời gian hoàn thành trung bình (Average Turnaround Time) của các tiến trình là:",
+      "a": [
+        "8.0 ms",
+        "9.5 ms",
+        "7.2 ms",
+        "10.0 ms"
+      ],
+      "c": 0,
+      "e": "Lập biểu đồ Gantt:<br>- t=0: Chỉ có P1 đến. Chạy P1 từ t=0 đến t=7. P1 kết thúc lúc 7. Turnaround P1 = 7 - 0 = 7.<br>- t=7: P2, P3, P4 đã đến. P3 có burst nhỏ nhất (1). Chạy P3 từ t=7 đến t=8. P3 kết thúc lúc 8. Turnaround P3 = 8 - 4 = 4.<br>- t=8: Còn P2 (4) và P4 (4) cùng burst. Theo quy tắc đến trước hoặc PID nhỏ hơn, chạy P2 từ t=8 đến t=12. P2 kết thúc lúc 12. Turnaround P2 = 12 - 2 = 10.<br>- t=12: Chạy P4 từ t=12 đến t=16. P4 kết thúc lúc 16. Turnaround P4 = 16 - 5 = 11.<br>Thời gian hoàn thành trung bình = $(7 + 10 + 4 + 11) / 4 = 32 / 4 = 8.0$ ms."
+    },
+    {
+      "q": "Cho các tiến trình định thời theo thuật toán SRTF (Shortest Remaining Time First - SJF trưng dụng) sau:<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>0</td><td>8</td></tr><tr><td>P2</td><td>1</td><td>4</td></tr><tr><td>P3</td><td>2</td><td>9</td></tr><tr><td>P4</td><td>3</td><td>5</td></tr></table>Thời gian chờ trung bình của các tiến trình là bao nhiêu?",
+      "a": [
+        "6.5 ms",
+        "5.5 ms",
+        "7.5 ms",
+        "8.0 ms"
+      ],
+      "c": 0,
+      "e": "Trực quan hóa biểu đồ Gantt:<br>- t=0: P1 bắt đầu chạy.<br>- t=1: P2 (burst 4) đến. P1 còn lại 7. Vì 4 < 7 nên P2 trưng dụng CPU của P1. P1 dừng.<br>- t=2: P3 (burst 9) đến. P2 còn lại 3. Tiếp tục chạy P2.<br>- t=3: P4 (burst 5) đến. P2 còn lại 2. Tiếp tục chạy P2.<br>- t=5: P2 kết thúc. Các tiến trình đang sẵn sàng: P1 (còn lại 7), P3 (9), P4 (5). Chạy P4 (shortest) từ t=5 đến t=10.<br>- t=10: P4 kết thúc. Còn P1 (7) và P3 (9). Chạy P1 từ t=10 đến t=17.<br>- t=17: P1 kết thúc. Chạy P3 từ t=17 đến t=26.<br>Thời gian chờ của từng tiến trình:<br>- P2: 0 ms.<br>- P4: 5 - 3 = 2 ms.<br>- P1: chạy [0, 1] rồi dừng đến t=10 chạy tiếp -> Chờ = 10 - 1 = 9 ms.<br>- P3: 17 - 2 = 15 ms.<br>Trung bình chờ = $(9 + 0 + 15 + 2) / 4 = 26 / 4 = 6.5$ ms."
+    },
+    {
+      "q": "Cho các tiến trình cùng đến tại thời điểm t=0 định thời theo thuật toán Round Robin với thời gian lượng tử (Quantum) q = 4 ms:<br><table><tr><th>Tiến trình</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>24</td></tr><tr><td>P2</td><td>3</td></tr><tr><td>P3</td><td>3</td></tr></table>Thời gian hoàn thành trung bình (Average Turnaround Time) của các tiến trình là:",
+      "a": [
+        "15.67 ms",
+        "12.33 ms",
+        "18.67 ms",
+        "20.00 ms"
+      ],
+      "c": 0,
+      "e": "Hàng đợi ban đầu: [P1, P2, P3].<br>- P1 chạy từ t=0 đến t=4. Còn lại 20. Hàng đợi mới: [P2, P3, P1].<br>- P2 chạy từ t=4 đến t=7. P2 kết thúc lúc 7. Turnaround P2 = 7 - 0 = 7 ms.<br>- P3 chạy từ t=7 đến t=10. P3 kết thúc lúc 10. Turnaround P3 = 10 - 0 = 10 ms.<br>- P1 chạy liên tục hết 20 ms còn lại từ t=10 đến t=30. P1 kết thúc lúc 30. Turnaround P1 = 30 - 0 = 30 ms.<br>Trung bình Turnaround = $(30 + 7 + 10) / 3 = 47 / 3 \\approx 15.67$ ms."
+    },
+    {
+      "q": "Cho các tiến trình định thời theo giải thuật Round Robin với lượng tử q = 2 ms:<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi (Burst)</th></tr><tr><td>P1</td><td>0</td><td>5</td></tr><tr><td>P2</td><td>1</td><td>3</td></tr><tr><td>P3</td><td>2</td><td>1</td></tr></table>Thời gian chờ trung bình (Average Waiting Time) của các tiến trình là:",
+      "a": [
+        "3.33 ms",
+        "4.00 ms",
+        "2.67 ms",
+        "5.12 ms"
+      ],
+      "c": 0,
+      "e": "Lập biểu đồ Gantt chi tiết:<br>- t=0: P1 chạy (còn lại 5). Hàng đợi: [P1].<br>- t=1: P2 đến. Hàng đợi: [P1, P2].<br>- t=2: P1 hết quantum. P3 đến cùng lúc. P1 được đẩy xuống cuối hàng đợi sau các tiến trình mới đến. Hàng đợi: [P2, P3, P1]. Chạy P2 từ t=2 đến t=4 (còn lại 1).<br>- t=4: P2 hết quantum. Hàng đợi: [P3, P1, P2]. Chạy P3 từ t=4 đến t=5. P3 kết thúc (chờ = 4 - 2 = 2). Hàng đợi: [P1, P2].<br>- t=5: Chạy P1 từ t=5 đến t=7 (còn lại 1). Hàng đợi: [P2, P1].<br>- t=7: Chạy P2 từ t=7 đến t=8. P2 kết thúc (Turnaround P2 = 8 - 1 = 7. Chờ P2 = 7 - 3 = 4). Hàng đợi: [P1].<br>- t=8: Chạy P1 từ t=8 đến t=9. P1 kết thúc (Turnaround P1 = 9 - 0 = 9. Chờ P1 = 9 - 5 = 4).<br>Trung bình chờ = $(4 + 4 + 2) / 3 = 10 / 3 \\approx 3.33$ ms."
+    },
+    {
+      "q": "Cho các tiến trình định thời theo giải thuật Ưu tiên có trưng dụng (Preemptive Priority Scheduling - Số ưu tiên càng nhỏ độ ưu tiên càng cao):<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi</th><th>Độ ưu tiên</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>3</td></tr><tr><td>P2</td><td>1</td><td>1</td><td>1</td></tr><tr><td>P3</td><td>2</td><td>2</td><td>2</td></tr></table>Thời điểm hoàn thành (Completion Time) của tiến trình P1 là bao nhiêu?",
+      "a": [
+        "13",
+        "10",
+        "11",
+        "14"
+      ],
+      "c": 0,
+      "e": "Biểu đồ Gantt:<br>- t=0: P1 chạy.<br>- t=1: P2 (độ ưu tiên 1) đến. Độ ưu tiên 1 > 3 của P1, nên P2 trưng dụng CPU. P1 tạm dừng (còn lại 9). P2 chạy từ t=1 đến t=2 và kết thúc.<br>- t=2: P3 (độ ưu tiên 2) đến. So sánh độ ưu tiên giữa P3 (2) và P1 (3), P3 cao hơn nên chạy P3 từ t=2 đến t=4.<br>- t=4: P3 kết thúc. Chỉ còn P1 trong hàng đợi, chạy P1 tiếp tục 9 ms còn lại từ t=4 đến t=13.<br>Vậy P1 hoàn thành tại thời điểm 13."
+    },
+    {
+      "q": "Cho các tiến trình định thời theo giải thuật Ưu tiên KHÔNG trưng dụng (Non-preemptive Priority - số nhỏ độ ưu tiên cao):<br><table><tr><th>Tiến trình</th><th>Thời điểm đến</th><th>Thời gian thực thi</th><th>Độ ưu tiên</th></tr><tr><td>P1</td><td>0</td><td>4</td><td>2</td></tr><tr><td>P2</td><td>1</td><td>3</td><td>1</td></tr><tr><td>P3</td><td>2</td><td>2</td><td>3</td></tr></table>Thời gian chờ trung bình của các tiến trình là:",
+      "a": [
+        "2.67 ms",
+        "3.33 ms",
+        "1.67 ms",
+        "4.00 ms"
+      ],
+      "c": 0,
+      "e": "Giải thuật không trưng dụng:<br>- t=0: Chỉ có P1. Chạy P1 không ngắt quãng đến t=4. Thời gian chờ P1 = 0 ms.<br>- t=4: P1 kết thúc. P2 và P3 đã nằm trong hàng đợi. P2 có độ ưu tiên 1 (cao hơn 3 của P3) nên chạy P2 từ t=4 đến t=7. Thời gian chờ P2 = 4 - 1 = 3 ms.<br>- t=7: Chạy P3 từ t=7 đến t=9. Thời gian chờ P3 = 7 - 2 = 5 ms.<br>Thời gian chờ trung bình = $(0 + 3 + 5) / 3 = 8 / 3 \\approx 2.67$ ms."
+    },
+    {
+      "q": "Công thức nào sau đây dùng để tính toán thời gian hoàn thành (Turnaround Time) của một tiến trình?",
+      "a": [
+        "Turnaround Time = Burst Time - Waiting Time",
+        "Turnaround Time = Completion Time - Arrival Time",
+        "Turnaround Time = Waiting Time + Arrival Time",
+        "Turnaround Time = Completion Time - Burst Time"
+      ],
+      "c": 1,
+      "e": "Thời gian hoàn thành (Turnaround Time) được định nghĩa là khoảng thời gian từ lúc tiến trình được nạp vào hệ thống (Arrival Time) đến khi nó kết thúc hoàn toàn (Completion Time). Công thức: $Turnaround = Completion - Arrival$."
+    },
+    {
+      "q": "Trong các giải thuật định thời sau, giải thuật nào thường được tối ưu hóa tốt nhất cho các hệ thống tương tác (interactive systems) để đảm bảo thời gian phản hồi (Response Time) tốt cho người dùng?",
+      "a": [
+        "FCFS",
+        "SJF",
+        "Round Robin",
+        "Priority"
+      ],
+      "c": 2,
+      "e": "Round Robin chia nhỏ thời gian CPU thành các lượng tử thời gian tuần hoàn cho các tiến trình, đảm bảo mỗi tiến trình tương tác đều nhận được phản hồi nhanh chóng mà không phải đợi các tiến trình dài chạy xong."
+    },
+    {
+      "q": "Giải thuật Shortest Job First (SJF) được chứng minh là tối ưu vì nó giảm thiểu tối đa chỉ số nào sau đây?",
+      "a": [
+        "Thời gian chờ đợi tối đa của hệ thống",
+        "Thời gian chờ đợi trung bình (Average Waiting Time) của các tiến trình",
+        "Tỉ lệ sử dụng CPU (CPU Utilization)",
+        "Thông lượng (Throughput) của hệ thống"
+      ],
+      "c": 1,
+      "e": "SJF luôn ưu tiên các tiến trình ngắn chạy trước, từ đó giảm tối đa tổng thời gian chờ đợi lũy kế của tất cả các tiến trình, giúp thời gian chờ trung bình đạt mức nhỏ nhất."
+    },
+    {
+      "q": "Một hệ thống đo lường được trong khoảng thời gian 100 ms, CPU bận thực thi mã lệnh của các tiến trình hết 80 ms, và rảnh rỗi (idle) trong 20 ms. Hiệu suất sử dụng CPU (CPU Utilization) của hệ thống là bao nhiêu?",
+      "a": [
+        "20%",
+        "80%",
+        "100%",
+        "50%"
+      ],
+      "c": 1,
+      "e": "Hiệu suất sử dụng CPU = (Thời gian CPU bận / Tổng thời gian quan sát) * 100% = (80 / 100) * 100% = 80%."
+    },
+    {
+      "q": "Nếu hệ thống hoàn thành được 15 tiến trình trong vòng 3 giây, thông lượng (Throughput) của hệ thống này là bao nhiêu?",
+      "a": [
+        "5 tiến trình/giây",
+        "15 tiến trình/giây",
+        "3 tiến trình/giây",
+        "45 tiến trình/giây"
+      ],
+      "c": 0,
+      "e": "Thông lượng (Throughput) là số lượng tiến trình được hoàn thành trong một đơn vị thời gian. Công thức: $Throughput = 15 / 3 = 5$ tiến trình/giây."
+    },
+    {
+      "q": "Khi kích thước thời gian lượng tử (Quantum Time) của giải thuật định thời Round Robin tiến dần tới vô cùng (rất lớn), giải thuật này sẽ tiệm cận và hoạt động giống hệt giải thuật nào?",
+      "a": [
+        "Shortest Job First (SJF)",
+        "First-Come, First-Served (FCFS)",
+        "Last-In, First-Out (LIFO)",
+        "Ưu tiên có trưng dụng (Preemptive Priority)"
+      ],
+      "c": 1,
+      "e": "Nếu lượng tử thời gian cực kỳ lớn, không có tiến trình nào bị ngắt giữa chừng do hết lượng tử. Các tiến trình sẽ chạy liên tục đến khi kết thúc theo thứ tự nạp vào. Điều này trùng với cơ chế của FCFS."
+    },
+    {
+      "q": "Giả sử thời gian cần thiết để thực hiện một lần chuyển đổi ngữ cảnh (context switch) trong hệ thống là 1 ms. Nếu thuật toán định thời Round Robin chọn lượng tử thời gian là 9 ms, thì tỷ lệ phần trăm thời gian CPU bị lãng phí do chuyển đổi ngữ cảnh là bao nhiêu?",
+      "a": [
+        "10%",
+        "11.1%",
+        "9%",
+        "1%"
+      ],
+      "c": 0,
+      "e": "Mỗi chu kỳ bao gồm 9 ms chạy tiến trình và 1 ms chuyển ngữ cảnh. Tổng thời gian là $9 + 1 = 10$ ms. Tỷ lệ lãng phí do context switch = $1 / 10 = 10\\%$."
+    },
+    {
+      "q": "Hiện tượng Nghịch đảo ưu tiên (Priority Inversion) xảy ra trong trường hợp nào?",
+      "a": [
+        "Một tiến trình ưu tiên cao bị chiếm quyền trực tiếp bởi một tiến trình ưu tiên trung bình",
+        "Một tiến trình ưu tiên thấp đang giữ tài nguyên mà tiến trình ưu tiên cao cần, trong khi tiến trình ưu tiên trung bình lại chiếm quyền của tiến trình ưu tiên thấp đó",
+        "Một tiến trình ưu tiên trung bình chạy nhanh hơn tiến trình ưu tiên cao",
+        "Tất cả các tiến trình ưu tiên cao đều bị đói tài nguyên"
+      ],
+      "c": 1,
+      "e": "Priority Inversion là hiện tượng tiến trình ưu tiên cao (H) phải chờ gián tiếp một tiến trình ưu tiên trung bình (M) vì M chiếm quyền của tiến trình ưu tiên thấp (L), mà L lại đang giữ khóa tài nguyên mà H cần."
+    },
+    {
+      "q": "Hiện tượng 'Đoàn tàu hộ tống' (Convoy Effect) - nơi các tiến trình ngắn phải xếp hàng dài chờ đợi một tiến trình dài kết thúc - thường xảy ra ở giải thuật định thời nào?",
+      "a": [
+        "Shortest Job First (SJF)",
+        "Round Robin",
+        "First-Come, First-Served (FCFS)",
+        "Priority Scheduling"
+      ],
+      "c": 2,
+      "e": "Do FCFS không trưng dụng, một tiến trình dài chiếm dụng CPU sẽ khiến tất cả các tiến trình ngắn đến sau phải xếp hàng đợi rất lâu, làm giảm hiệu năng chung của hệ thống."
+    },
+    {
+      "q": "Kỹ thuật 'Lão hóa' (Aging) trong định thời ưu tiên được sử dụng để giải quyết vấn đề gì?",
+      "a": [
+        "Giải quyết Deadlock hệ thống",
+        "Ngăn ngừa sự đói tài nguyên (Starvation) của các tiến trình có độ ưu tiên thấp",
+        "Giảm thiểu chi phí chuyển đổi ngữ cảnh",
+        "Hạn chế lỗi trang (Page Fault)"
+      ],
+      "c": 1,
+      "e": "Aging tăng dần độ ưu tiên của các tiến trình nằm đợi quá lâu trong hàng đợi Ready, giúp chúng chắc chắn sẽ được thực thi và không bị đói tài nguyên vĩnh viễn."
+    },
+    {
+      "q": "Hàng đợi đa cấp phản hồi (Multilevel Feedback Queue - MLFQ) có đặc điểm nổi bật nào dưới đây?",
+      "a": [
+        "Tiến trình bị cố định tại một hàng đợi duy nhất suốt vòng đời",
+        "Cho phép các tiến trình di chuyển giữa các hàng đợi khác nhau dựa trên hành vi sử dụng CPU của chúng",
+        "Chỉ thực hiện định thời FCFS trên tất cả các hàng đợi",
+        "Yêu cầu phải biết trước thời gian thực thi (burst time) của tiến trình"
+      ],
+      "c": 1,
+      "e": "MLFQ phân chia các hàng đợi với lượng tử thời gian khác nhau. Nếu một tiến trình sử dụng quá nhiều CPU, nó sẽ bị đẩy xuống hàng đợi thấp hơn; ngược lại, tiến trình tương tác / I/Obound sẽ được giữ ở hàng đợi ưu tiên cao."
+    },
+    {
+      "q": "Độ trễ điều phối (Dispatch Latency) được định nghĩa là gì?",
+      "a": [
+        "Thời gian từ lúc tiến trình sẵn sàng đến khi nó kết thúc",
+        "Thời gian cần thiết để bộ điều phối (Dispatcher) dừng tiến trình hiện tại và khởi động một tiến trình khác",
+        "Thời gian thực thi mã lệnh của tiến trình",
+        "Tổng thời gian chờ đợi của tiến trình trong hàng đợi Ready"
+      ],
+      "c": 1,
+      "e": "Dispatch Latency là chi phí hệ thống để dừng tiến trình cũ, lưu ngữ cảnh, nạp ngữ cảnh tiến trình mới và nhảy tới vị trí lệnh cần thực thi tiếp theo."
+    }
+  ],
+  "sec3": [
+    {
+      "q": "Một semaphore đếm $S$ (counting semaphore) được khởi tạo với giá trị ban đầu là 10. Tiếp sau đó, hệ thống thực hiện 6 thao tác $P(S)$ (wait) và 4 thao tác $V(S)$ (signal). Giá trị cuối cùng của semaphore $S$ là bao nhiêu?",
+      "a": [
+        "8",
+        "12",
+        "4",
+        "10"
+      ],
+      "c": 0,
+      "e": "Mỗi thao tác $P(S)$ làm giảm giá trị semaphore đi 1. Mỗi thao tác $V(S)$ làm tăng giá trị semaphore lên 1. Giá trị cuối cùng = $10 - 6 + 4 = 8$."
+    },
+    {
+      "q": "Trong một số triển khai semaphore của hệ điều hành, nếu giá trị của semaphore $S$ âm và bằng -5, điều này cho biết điều gì?",
+      "a": [
+        "Hệ thống đang bị deadlock",
+        "Có 5 tiến trình đang bị block để đợi tài nguyên trên semaphore này",
+        "Semaphore đã bị tràn bộ nhớ",
+        "Có 5 tiến trình đã vào vùng tương trục thành công"
+      ],
+      "c": 1,
+      "e": "Nếu giá trị semaphore âm, trị tuyệt đối của nó biểu thị số lượng tiến trình đang bị xếp vào hàng đợi blocked của semaphore đó để chờ được giải phóng."
+    },
+    {
+      "q": "Trong bài toán Producer-Consumer với bộ đệm giới hạn kích thước $N = 5$. Giá trị khởi tạo của hai semaphore <code>empty</code> (biểu thị số ô trống) và <code>full</code> (biểu thị số ô có dữ liệu) lần lượt là bao nhiêu?",
+      "a": [
+        "empty = 0, full = 5",
+        "empty = 5, full = 0",
+        "empty = 1, full = 1",
+        "empty = 5, full = 5"
+      ],
+      "c": 1,
+      "e": "Ban đầu bộ đệm hoàn toàn trống. Do đó, số ô trống bằng kích thước bộ đệm (<code>empty = 5</code>) và không có ô nào chứa dữ liệu (<code>full = 0</code>)."
+    },
+    {
+      "q": "Xét hai tiến trình song song sau với Semaphore $S$ được khởi tạo bằng 0:<br><pre><code>// Tiến trình A\nStatement A1;\nsem_post(&S);\n\n// Tiến trình B\nsem_wait(&S);\nStatement B1;</code></pre>Đoạn mã trên đảm bảo trình tự thực thi nào chắc chắn xảy ra?",
+      "a": [
+        "B1 luôn thực thi trước A1",
+        "A1 luôn thực thi trước B1",
+        "A1 và B1 thực thi song song hoàn toàn",
+        "Tiến trình B bị đói tài nguyên vĩnh viễn"
+      ],
+      "c": 1,
+      "e": "Vì $S=0$, Tiến trình B khi chạy đến <code>sem_wait(&S)</code> sẽ bị chặn lại. Chỉ sau khi Tiến trình A thực hiện xong <code>Statement A1</code> và gọi <code>sem_post(&S)</code> giải phóng (tăng $S$ lên 1), Tiến trình B mới có thể vượt qua <code>sem_wait</code> để chạy <code>Statement B1</code>."
+    },
+    {
+      "q": "Để bảo vệ một vùng tương trục (Critical Section) cho phép tối đa duy nhất 1 tiến trình vào tại một thời điểm, ta sử dụng một binary semaphore mutex. Mutex này phải được khởi tạo giá trị ban đầu là bao nhiêu?",
+      "a": [
+        "0",
+        "1",
+        "dưới 0",
+        "Bằng số tiến trình tối đa"
+      ],
+      "c": 1,
+      "e": "Mutex phải khởi tạo bằng 1. Tiến trình đầu tiên gọi <code>wait(mutex)</code> sẽ giảm giá trị xuống 0 và đi vào vùng tương trục. Các tiến trình sau gọi <code>wait(mutex)</code> thấy giá trị $\\le 0$ sẽ bị chặn bên ngoài."
+    },
+    {
+      "q": "Hàm TestAndSet nguyên tử (atomic) được định nghĩa như sau:<br><pre><code>boolean TestAndSet(boolean *target) {\n    boolean rv = *target;\n    *target = TRUE;\n    return rv;\n}</code></pre>Giả sử biến <code>lock</code> ban đầu là FALSE. Có 3 luồng cùng chạy đoạn code sau:<br><pre><code>while (TestAndSet(&lock));\n// Critical Section\nlock = FALSE;</code></pre>Có bao nhiêu luồng có thể vào vùng tương trục đồng thời?",
+      "a": [
+        "0 luồng",
+        "1 luồng",
+        "2 luồng",
+        "3 luồng"
+      ],
+      "c": 1,
+      "e": "Hàm TestAndSet thực hiện ghi giá trị TRUE vào <code>lock</code> và trả về giá trị cũ. Luồng đầu tiên chạy sẽ nhận về FALSE (thoát vòng lặp <code>while</code>) và đặt <code>lock = TRUE</code>. Các luồng sau chạy tiếp theo sẽ nhận về TRUE (bị kẹt trong vòng lặp <code>while</code>). Do đó chỉ duy nhất 1 luồng được vào vùng tương trục."
+    },
+    {
+      "q": "Trong giải pháp Peterson đồng bộ hóa hai tiến trình Pi và Pj, khi Pi thực hiện:<br><pre><code>flag[i] = true;\nturn = j;\nwhile (flag[j] && turn == j);</code></pre>Điều kiện nào cho phép tiến trình Pi thoát khỏi vòng lặp và đi vào vùng tương trục?",
+      "a": [
+        "flag[j] == true && turn == j",
+        "flag[j] == false || turn == i",
+        "flag[i] == true",
+        "turn == j"
+      ],
+      "c": 1,
+      "e": "Pi sẽ bị kẹt trong vòng lặp <code>while</code> nếu Pj cũng muốn vào (<code>flag[j] == true</code>) và đang đến lượt của Pj (<code>turn == j</code>). Do đó, Pi được vào khi Pj không muốn vào (<code>flag[j] == false</code>) hoặc lượt vào đã chuyển sang cho Pi (<code>turn == i</code>)."
+    },
+    {
+      "q": "Sự khác biệt cốt lõi nhất giữa Mutex và Semaphore nhị phân (Binary Semaphore) là gì?",
+      "a": [
+        "Mutex có thể nhận các giá trị lớn hơn 1",
+        "Mutex có khái niệm sở hữu (chỉ luồng khóa mới được quyền mở khóa), còn Semaphore nhị phân có thể được signal bởi bất kỳ luồng nào",
+        "Semaphore nhị phân hoạt động như một spinlock bận",
+        "Mutex được triển khai hoàn toàn bằng phần cứng"
+      ],
+      "c": 1,
+      "e": "Mutex yêu cầu tính sở hữu (ownership) nghiêm ngặt: luồng nào giữ lock thì chỉ luồng đó mới có quyền release lock. Semaphore nhị phân không có tính sở hữu, một luồng có thể đợi (wait) và luồng khác có thể phát tín hiệu giải phóng (signal/post)."
+    },
+    {
+      "q": "Trong bài toán Readers-Writers phiên bản ưu tiên Reader (Reader Preference), điều gì sẽ xảy ra nếu liên tục có các tiến trình Reader mới yêu cầu đọc dữ liệu khi đang có một tiến trình Writer chờ ghi?",
+      "a": [
+        "Các Reader mới phải xếp hàng chờ sau Writer",
+        "Các Reader mới liên tục được vào đọc, khiến tiến trình Writer bị đói tài nguyên (starvation)",
+        "Tiến trình Writer sẽ tự động ghi đè mà không cần khóa",
+        "Hệ thống rơi vào deadlock ngay lập tức"
+      ],
+      "c": 1,
+      "e": "Do ưu tiên Reader, chỉ cần có ít nhất một Reader đang đọc thì các Reader đến sau được phép vào ngay mà không cần đợi Writer. Nếu Reader đến liên tục không ngừng, Writer sẽ bị đói tài nguyên."
+    },
+    {
+      "q": "Nhược điểm lớn nhất của khóa xoay (Spinlock) sử dụng cơ chế bận đợi (Busy Waiting) là gì?",
+      "a": [
+        "Gây ra chi phí chuyển đổi ngữ cảnh (context switch) rất lớn",
+        "Gây lãng phí chu kỳ xử lý của CPU do liên tục chạy vòng lặp kiểm tra điều kiện khóa",
+        "Chỉ sử dụng được cho hệ thống một luồng duy nhất",
+        "Không đảm bảo tính loại trừ tương hỗ"
+      ],
+      "c": 1,
+      "e": "Spinlock không đưa tiến trình vào trạng thái Blocked/Sleep mà liên tục chạy vòng lặp kiểm tra điều kiện. Việc này làm tiêu hao năng lượng và chu kỳ CPU vô ích (Busy Waiting)."
+    },
+    {
+      "q": "Tại sao trong bài toán Bounded-Buffer ta cần thêm một semaphore <code>mutex</code> bên cạnh hai semaphore quản lý số lượng phần tử <code>empty</code> và <code>full</code>?",
+      "a": [
+        "Để chặn Producer khi bộ đệm đầy",
+        "Để loại trừ tương hỗ khi ghi/đọc dữ liệu vào vùng đệm dùng chung, tránh race condition trên các con trỏ in/out",
+        "Để đếm số lượng phần tử trong hàng đợi",
+        "Để tránh starvation cho các tiến trình"
+      ],
+      "c": 1,
+      "e": "Các semaphore <code>empty</code> và <code>full</code> chỉ quản lý số lượng phần tử. Semaphore <code>mutex</code> đảm bảo tại một thời điểm chỉ có 1 luồng (Producer hoặc Consumer) được can thiệp vào cấu trúc dữ liệu mảng/con trỏ của bộ đệm để tránh tranh chấp."
+    },
+    {
+      "q": "Trong bài toán bữa ăn của các triết gia (Dining Philosophers), nếu tất cả 5 triết gia đồng thời nhấc chiếc đũa bên trái của mình lên, hiện tượng gì sẽ xảy ra?",
+      "a": [
+        "Có 2 triết gia được ăn",
+        "Hệ thống rơi vào trạng thái bế tắc (Deadlock)",
+        "Có 1 triết gia được ăn",
+        "Các triết gia tự động đặt đũa xuống sau 5 giây"
+      ],
+      "c": 1,
+      "e": "Mỗi triết gia giữ một đũa bên trái và đều đợi chiếc đũa bên phải (đang bị giữ bởi triết gia bên cạnh). Tạo thành một chu kỳ đợi vòng tròn khép kín, dẫn đến deadlock."
+    },
+    {
+      "q": "Phương pháp nào sau đây KHÔNG phải là cách giải quyết bế tắc hiệu quả cho bài toán Dining Philosophers?",
+      "a": [
+        "Chỉ cho phép triết gia nhặt đũa khi cả hai chiếc đũa bên trái và phải đều rảnh",
+        "Sử dụng giải pháp phi đối xứng (triết gia lẻ nhặt đũa trái trước, triết gia chẵn nhặt đũa phải trước)",
+        "Giới hạn số lượng triết gia ngồi cùng bàn tối đa là 4 người thay vì 5",
+        "Yêu cầu các triết gia phải chờ một khoảng thời gian ngẫu nhiên trước khi nhặt đũa bên trái"
+      ],
+      "c": 3,
+      "e": "Chờ đợi ngẫu nhiên không loại bỏ được điều kiện cần của deadlock, hệ thống vẫn có xác suất bị rơi vào deadlock nếu thời gian trùng hợp."
+    },
+    {
+      "q": "Trong cấu trúc đồng bộ hóa Monitor, lệnh gọi hàm <code>x.wait()</code> có tác dụng gì đối với tiến trình đang thực thi?",
+      "a": [
+        "Tiến trình tạm nhường CPU nhưng vẫn giữ khóa Monitor",
+        "Tiến trình bị đình chỉ thực thi và giải phóng khóa Monitor để cho phép tiến trình khác đi vào Monitor",
+        "Tiến trình kết thúc ngay lập tức",
+        "Tăng giá trị của biến điều kiện <code>x</code> lên 1"
+      ],
+      "c": 1,
+      "e": "Khi gọi <code>x.wait()</code>, tiến trình tự nguyện giải phóng quyền độc quyền truy cập Monitor và rơi vào hàng đợi chờ của biến điều kiện <code>x</code>, cho phép tiến trình khác vào Monitor."
+    },
+    {
+      "q": "Theo ngữ nghĩa Monitor kiểu 'Signal and Continue' (của Hansen), khi tiến trình P gọi <code>x.signal()</code> để đánh thức tiến trình Q đang đợi trên biến điều kiện x:",
+      "a": [
+        "P phải rời Monitor ngay lập tức để nhường chỗ cho Q",
+        "P tiếp tục thực thi cho đến khi rời Monitor hoặc bị block, sau đó Q mới được tranh chấp vào Monitor",
+        "Q trưng dụng quyền và đẩy P ra ngoài ngay lập tức",
+        "Cả P và Q cùng chạy đồng thời trong vùng tương trục của Monitor"
+      ],
+      "c": 1,
+      "e": "Kiểu 'Signal and Continue' cho phép luồng phát tín hiệu (P) hoàn thành nốt công việc của mình trong Monitor. Luồng được đánh thức (Q) sẽ chuyển từ hàng đợi CV sang hàng đợi Ready của Monitor."
+    },
+    {
+      "q": "Cho lệnh <code>x = x + 1</code>. Ở mức hợp ngữ, lệnh này gồm 3 bước: (1) Load x vào thanh ghi; (2) Cộng 1 vào thanh ghi; (3) Store thanh ghi lại vào x. Giả sử biến toàn cục <code>x = 5</code>. Hai luồng thực hiện lệnh này song song. Nếu luồng A chạy xong bước (1) rồi bị chuyển ngữ cảnh, luồng B chạy trọn vẹn cả 3 bước, sau đó luồng A chạy nốt bước (2) và (3). Giá trị cuối cùng của <code>x</code> là bao nhiêu?",
+      "a": [
+        "7",
+        "6",
+        "5",
+        "Không xác định"
+      ],
+      "c": 1,
+      "e": "Luồng A đọc $x = 5$ lưu vào thanh ghi của nó. Luồng B chạy xong cả 3 bước ghi $x = 6$. Luồng A phục hồi ngữ cảnh, thanh ghi của nó vẫn là 5. Nó cộng 1 thành 6 và ghi đè 6 vào biến $x$. Kết quả là 6 thay vì 7."
+    },
+    {
+      "q": "Lệnh nguyên tử (atomic instruction) nào sau đây được hỗ trợ ở cấp độ phần cứng CPU giúp các kỹ sư xây dựng các thư viện đồng bộ hóa hệ thống hiệu quả?",
+      "a": [
+        "Read-Modify-Write",
+        "Compare-And-Swap (CAS)",
+        "Interrupt Enable/Disable",
+        "Load Link / Store Conditional"
+      ],
+      "c": 1,
+      "e": "Lệnh Compare-And-Swap (CAS) so sánh giá trị hiện tại của ô nhớ với một giá trị mong đợi, nếu bằng thì ghi đè giá trị mới. Toàn bộ chu kỳ này được CPU thực hiện nguyên tử không bị ngắt."
+    },
+    {
+      "q": "Một Semaphore S khởi tạo bằng 1. Ba tiến trình A, B, C lần lượt gọi <code>sem_wait(&S)</code>. Giá trị của Semaphore S sau khi cả 3 tiến trình gọi xong là bao nhiêu?",
+      "a": [
+        "0",
+        "-1",
+        "-2",
+        "1"
+      ],
+      "c": 2,
+      "e": "Giá trị ban đầu là 1. Mỗi lần gọi <code>sem_wait</code> làm giảm giá trị đi 1. Sau 3 lần giảm: $1 - 3 = -2$."
+    },
+    {
+      "q": "Sự khác biệt cơ bản giữa Bế tắc (Deadlock) và Khóa động (Livelock) là gì?",
+      "a": [
+        "Trong Deadlock các tiến trình đổi trạng thái liên tục, còn Livelock thì đứng yên",
+        "Trong Deadlock các tiến trình bị block hoàn toàn (không tiêu tốn CPU), còn trong Livelock các tiến trình thay đổi trạng thái liên tục nhưng không tạo ra tiến trình công việc thực tế (tiêu tốn CPU)",
+        "Deadlock xảy ra ở phần cứng, Livelock xảy ra ở phần mềm",
+        "Livelock không bao giờ làm tiêu hao tài nguyên CPU"
+      ],
+      "c": 1,
+      "e": "Livelock giống như hai người nhường đường nhau đi qua đi lại cùng hướng liên tục trên hành lang. Họ không bị block tĩnh (đứng im), họ vẫn chuyển động nhưng không thể đi qua nhau."
+    },
+    {
+      "q": "Định nghĩa chính xác của hiện tượng 'Đói tài nguyên' (Starvation) trong hệ điều hành là gì?",
+      "a": [
+        "Tiến trình bị khóa vĩnh viễn do đợi vòng tròn",
+        "Tiến trình có sẵn sàng (Ready) nhưng không bao giờ được cấp phát CPU hoặc tài nguyên do các tiến trình khác liên tục được ưu tiên hơn",
+        "Tiến trình bị tràn bộ nhớ khi thực thi",
+        "Hệ thống bị quá tải nhiệt"
+      ],
+      "c": 1,
+      "e": "Starvation là tình trạng một tiến trình Ready bị trì hoãn vô thời hạn do thuật toán lập lịch luôn thiên vị cho các tiến trình khác."
+    }
+  ],
+  "sec4": [
+    {
+      "q": "Trong thuật toán Banker, cho tiến trình P0 có vectơ nhu cầu tối đa <code>Max = [7, 5, 3]</code> và vectơ tài nguyên đang được cấp phát <code>Allocation = [0, 1, 0]</code>. Vectơ nhu cầu còn lại <code>Need</code> của tiến trình P0 là bao nhiêu?",
+      "a": [
+        "[7, 6, 3]",
+        "[7, 4, 3]",
+        "[7, 5, 3]",
+        "[0, 4, 0]"
+      ],
+      "c": 1,
+      "e": "Vectơ nhu cầu còn lại được tính bằng công thức: $Need = Max - Allocation = [7-0, 5-1, 3-0] = [7, 4, 3]$."
+    },
+    {
+      "q": "Một hệ thống gồm 3 tiến trình {P0, P1, P2} và 1 loại tài nguyên duy nhất với tổng số 10 thực thể (instances).<br>- Allocation: P0: 3, P1: 2, P2: 2.<br>- Max Demand: P0: 9, P1: 4, P2: 7.<br>Trạng thái hiện tại của hệ thống có an toàn (Safe State) hay không? Nếu có, chuỗi an toàn là gì?",
+      "a": [
+        "Không an toàn (Unsafe)",
+        "Có an toàn, chuỗi là &lt;P1, P2, P0&gt;",
+        "Có an toàn, chuỗi là &lt;P0, P1, P2&gt;",
+        "Có an toàn, chuỗi là &lt;P1, P0, P2&gt;"
+      ],
+      "c": 1,
+      "e": "Tính toán:<br>- Tổng tài nguyên đã cấp phát = $3 + 2 + 2 = 7$.<br>- Tài nguyên còn rảnh (Available) = $10 - 7 = 3$.<br>- Vectơ Need còn lại: P0: 6, P1: 2, P2: 5.<br>Khảo sát:<br>1. P1 cần 2 $\\le$ Available (3) -> Chạy P1 xong giải phóng. Available mới = $3 + 2 = 5$.<br>2. P2 cần 5 $\\le$ Available (5) -> Chạy P2 xong giải phóng. Available mới = $5 + 2 = 7$.<br>3. P0 cần 6 $\\le$ Available (7) -> Chạy P0 xong giải phóng. Available mới = $7 + 3 = 10$.<br>Vậy hệ thống ở trạng thái an toàn với chuỗi an toàn là &lt;P1, P2, P0&gt;."
+    },
+    {
+      "q": "Một hệ thống có 4 tiến trình, mỗi tiến trình đều yêu cầu tối đa 3 đơn vị tài nguyên loại R để hoàn thành công việc. Số lượng đơn vị tối thiểu của tài nguyên R cần có để hệ thống chắc chắn KHÔNG bao giờ rơi vào deadlock là bao nhiêu?",
+      "a": [
+        "8 đơn vị",
+        "9 đơn vị",
+        "12 đơn vị",
+        "10 đơn vị"
+      ],
+      "c": 1,
+      "e": "Công thức tính số tài nguyên tối thiểu tránh deadlock cho $N$ tiến trình, mỗi tiến trình yêu cầu tối đa $W$ tài nguyên: $R_{min} = N \\times (W - 1) + 1$. Áp dụng: $4 \\times (3 - 1) + 1 = 8 + 1 = 9$ đơn vị. (Khi có 8 đơn vị, trạng thái xấu nhất là mỗi tiến trình giữ 2 đơn vị và đều chờ đơn vị thứ 3 -> deadlock. Thêm 1 đơn vị thứ 9 phá vỡ bế tắc)."
+    },
+    {
+      "q": "Biểu đồ quan hệ chờ đợi (Wait-for Graph) là một cấu trúc rút gọn được sử dụng để phát hiện deadlock trong trường hợp nào?",
+      "a": [
+        "Khi tài nguyên có nhiều thực thể (multiple instances)",
+        "Khi tất cả các loại tài nguyên chỉ có duy nhất một thực thể (single instance)",
+        "Dùng cho mọi bài toán tránh deadlock",
+        "Chỉ dùng để tính toán ma trận Banker"
+      ],
+      "c": 1,
+      "e": "Wait-for Graph được vẽ bằng cách loại bỏ các nút tài nguyên khỏi đồ thị RAG và chỉ giữ lại các cung chỉ ra tiến trình này đang chờ tiến trình kia giải phóng tài nguyên. Nó chỉ hoạt động chính xác khi các loại tài nguyên có đúng 1 thực thể."
+    },
+    {
+      "q": "Nếu Đồ thị cấp phát tài nguyên (Resource Allocation Graph - RAG) của hệ thống xuất hiện một chu trình (cycle), kết luận nào sau đây là chính xác?",
+      "a": [
+        "Hệ thống chắc chắn đang bị deadlock",
+        "Hệ thống có thể bị deadlock (nếu tài nguyên có nhiều thực thể, chu trình chỉ là điều kiện cần chứ chưa đủ để kết luận deadlock)",
+        "Hệ thống hoàn toàn an toàn",
+        "Thuật toán Banker đã bị lỗi định cấu hình"
+      ],
+      "c": 1,
+      "e": "Trong đồ thị RAG:<br>- Nếu mỗi loại tài nguyên chỉ có 1 thực thể: chu trình $\\Leftrightarrow$ deadlock.<br>- Nếu các loại tài nguyên có nhiều thực thể: chu trình chỉ chỉ ra khả năng xảy có thể xảy ra deadlock."
+    },
+    {
+      "q": "Mối quan hệ giữa Trạng thái không an toàn (Unsafe State) và Trạng thái bế tắc (Deadlock State) là gì?",
+      "a": [
+        "Hai trạng thái này trùng khớp hoàn toàn",
+        "Trạng thái deadlock là một tập con của trạng thái không an toàn (trạng thái không an toàn chưa chắc đã dẫn đến deadlock)",
+        "Trạng thái không an toàn là tập con của deadlock",
+        "Hai trạng thái này hoàn toàn độc lập"
+      ],
+      "c": 1,
+      "e": "Hệ thống ở trạng thái không an toàn chỉ nghĩa là hệ điều hành không thể đảm bảo một chuỗi tiến trình kết thúc an toàn nếu tất cả tiến trình đồng thời yêu cầu tài nguyên tối đa. Tuy nhiên, nếu thực tế các tiến trình không yêu cầu tối đa, hệ thống vẫn có thể kết thúc bình thường không bị deadlock."
+    },
+    {
+      "q": "Điều kiện nào sau đây KHÔNG phải là một trong bốn điều kiện cần của bế tắc (Coffman conditions)?",
+      "a": [
+        "Loại trừ tương hỗ (Mutual Exclusion)",
+        "Giữ và đợi (Hold and Wait)",
+        "Được phép trưng dụng tài nguyên (Preemption)",
+        "Chờ đợi vòng tròn (Circular Wait)"
+      ],
+      "c": 2,
+      "e": "Bốn điều kiện cần của deadlock bao gồm: (1) Mutual exclusion, (2) Hold and wait, (3) KHÔNG được trưng dụng tài nguyên (No preemption), và (4) Circular wait. Việc cho phép trưng dụng (Preemption) thực chất là cách để ngăn ngừa/phá vỡ deadlock."
+    },
+    {
+      "q": "Để ngăn ngừa điều kiện 'Giữ và đợi' (Hold and Wait) nhằm tránh deadlock, hệ điều hành có thể áp dụng chiến lược nào?",
+      "a": [
+        "Yêu cầu tiến trình phải giải phóng tất cả tài nguyên đang nắm giữ trước khi muốn yêu cầu thêm tài nguyên mới, hoặc phải yêu cầu toàn bộ tài nguyên một lần duy nhất lúc bắt đầu",
+        "Cho phép các tài nguyên được chia sẻ dùng chung",
+        "Cho phép thu hồi tài nguyên của tiến trình khác",
+        "Đánh số thứ tự yêu cầu tài nguyên"
+      ],
+      "c": 0,
+      "e": "Loại bỏ 'Giữ và đợi' yêu cầu tiến trình chỉ được giữ tài nguyên khi không phải đợi tài nguyên khác, hoặc chỉ được đợi khi không giữ tài nguyên nào."
+    },
+    {
+      "q": "Để ngăn ngừa điều kiện 'Chờ đợi vòng tròn' (Circular Wait) nhằm tránh deadlock, hệ điều hành có thể áp dụng chiến lược nào?",
+      "a": [
+        "Cấp phát tài nguyên động",
+        "Đánh số thứ tự ưu tiên tuyến tính cho tất cả các loại tài nguyên và buộc các tiến trình chỉ được yêu cầu tài nguyên theo thứ tự tăng dần của các số này",
+        "Hủy bỏ tiến trình giữ tài nguyên lâu nhất",
+        "Tắt cơ chế đa luồng của hệ thống"
+      ],
+      "c": 1,
+      "e": "Bằng cách bắt buộc yêu cầu tài nguyên theo thứ tự tăng dần (ví dụ: muốn xin tài nguyên số 5 thì phải giải phóng các tài nguyên số lớn hơn), ta đảm bảo đồ thị quan hệ yêu cầu không bao giờ tạo thành chu kỳ khép kín."
+    },
+    {
+      "q": "Hệ thống đang có vectơ tài nguyên sẵn có <code>Available = [3, 3, 2]</code>. Tiến trình P0 có vectơ nhu cầu còn lại <code>Need = [4, 3, 3]</code> và đưa ra yêu cầu cấp phát <code>Request = [1, 0, 2]</code>. Hệ điều hành có nên duyệt cấp phát yêu cầu này ngay lập tức không?",
+      "a": [
+        "Có, vì Request &le; Need và Request &le; Available",
+        "Không, vì Request vượt quá Available",
+        "Không, vì Request vượt quá Need",
+        "Có, nhưng nó sẽ đưa hệ thống vào trạng thái không an toàn ngay tức thì"
+      ],
+      "c": 0,
+      "e": "Kiểm tra điều kiện:<br>1. $Request [1, 0, 2] \\le Need [4, 3, 3]$ (Đúng).<br>2. $Request [1, 0, 2] \\le Available [3, 3, 2]$ (Đúng).<br>Vì cả hai điều kiện đều thỏa mãn nên hệ thống có thể tiến hành xem xét giả lập cấp phát."
+    },
+    {
+      "q": "Trong các phương pháp khôi phục sau khi phát hiện hệ thống bị deadlock, phương án nào giúp giảm thiểu chi phí hệ thống nhất nhưng có thể làm mất mát công việc của tiến trình?",
+      "a": [
+        "Hủy bỏ toàn bộ các tiến trình đang bị deadlock",
+        "Hủy bỏ từng tiến trình một lần lượt cho đến khi phá vỡ được chu trình deadlock",
+        "Thu hồi tài nguyên từ các tiến trình khác",
+        "Khởi động lại toàn bộ hệ điều hành"
+      ],
+      "c": 1,
+      "e": "Hủy bỏ toàn bộ tiến trình là quá tốn kém. Thu hồi tài nguyên đòi hỏi cơ chế rollback phức tạp. Giải pháp hủy từng tiến trình một và kiểm tra lại trạng thái deadlock giúp cứu vãn các tiến trình không liên quan."
+    },
+    {
+      "q": "Các nút (vertices) trong Đồ thị cấp phát tài nguyên (Resource Allocation Graph - RAG) biểu diễn cho các đối tượng nào?",
+      "a": [
+        "Tiến trình và File dữ liệu",
+        "Tiến trình và Tài nguyên",
+        "File dữ liệu và Thư mục",
+        "Semaphore và Mutex"
+      ],
+      "c": 1,
+      "e": "Tập hợp các nút $V$ trong RAG được chia làm 2 tập con: các tiến trình $P = \\{P_1, P_2, \\dots, P_n\\}$ và các loại tài nguyên $R = \\{R_1, R_2, \\dots, R_m\\}$."
+    },
+    {
+      "q": "Nếu hệ thống có $n$ tiến trình và $m$ loại tài nguyên, độ phức tạp thuật toán để kiểm tra xem hệ thống có đang ở trạng thái an toàn hay không trong thuật toán Banker là:",
+      "a": [
+        "$O(m \\times n)$",
+        "$O(m \\times n^2)$",
+        "$O(m^2 \\times n)$",
+        "$O(n^3)$"
+      ],
+      "c": 1,
+      "e": "Thuật toán kiểm tra an toàn chạy vòng lặp tìm tiến trình có thể đáp ứng tối đa $n$ lần. Trong mỗi lần, thực hiện so sánh vectơ kích thước $m$ cho tối đa $n$ tiến trình. Do đó độ phức tạp là $O(m \\times n^2)$."
+    },
+    {
+      "q": "Hầu hết các hệ điều hành thương mại phổ biến hiện nay (như Linux, Windows) xử lý vấn đề deadlock bằng chiến lược nào?",
+      "a": [
+        "Dùng thuật toán Banker kiểm tra mọi lúc",
+        "Bỏ qua vấn đề deadlock hoàn toàn (Ostrich algorithm), để người dùng hoặc lập trình viên tự xử lý",
+        "Ngăn chặn triệt để bằng cách cấm đa tiến trình",
+        "Tự động rollback hệ thống về điểm khôi phục gần nhất"
+      ],
+      "c": 1,
+      "e": "Chi phí để chạy các thuật toán tránh/phát hiện deadlock liên tục là cực kỳ đắt đỏ và làm chậm hệ thống. Các hệ điều hành hiện đại chọn cách bỏ qua (thuật toán đà điểu), giả định deadlock rất hiếm khi xảy ra."
+    },
+    {
+      "q": "Trong đồ thị quan hệ chờ đợi Wait-for Graph, một cung hướng từ tiến trình $P_i$ sang tiến trình $P_j$ biểu thị điều gì?",
+      "a": [
+        "$P_i$ đang giữ tài nguyên mà $P_j$ cần",
+        "$P_i$ đang chờ $P_j$ giải phóng một tài nguyên mà $P_i$ đang yêu cầu",
+        "$P_i$ và $P_j$ đang bị deadlock",
+        "$P_j$ là tiến trình con của $P_i$"
+      ],
+      "c": 1,
+      "e": "Cung $P_i \\rightarrow P_j$ biểu thị quan hệ phụ thuộc: tiến trình $P_i$ đang bị chặn để đợi một tài nguyên mà tiến trình $P_j$ đang sở hữu."
+    },
+    {
+      "q": "Cho trạng thái phân bổ tài nguyên của thuật toán Banker như sau:<br>- Allocation: P0: [0, 1, 0], P1: [2, 0, 0], P2: [3, 0, 2]<br>- Max Matrix: P0: [7, 5, 3], P1: [3, 2, 2], P2: [9, 0, 2]<br>Giá trị của ma trận Nhu cầu còn lại <code>Need</code> là:",
+      "a": [
+        "P0: [7, 4, 3], P1: [1, 2, 2], P2: [6, 0, 0]",
+        "P0: [7, 5, 3], P1: [3, 2, 2], P2: [9, 0, 2]",
+        "P0: [0, 1, 0], P1: [2, 0, 0], P2: [3, 0, 2]",
+        "P0: [7, 6, 3], P1: [1, 2, 2], P2: [6, 0, 2]"
+      ],
+      "c": 0,
+      "e": "Áp dụng công thức $Need = Max - Allocation$:<br>- Need(P0) = [7-0, 5-1, 3-0] = [7, 4, 3]<br>- Need(P1) = [3-2, 2-0, 2-0] = [1, 2, 2]<br>- Need(P2) = [9-3, 0-0, 2-2] = [6, 0, 0]"
+    },
+    {
+      "q": "Một hệ thống có tổng số thực thể của các tài nguyên loại {A, B, C} lần lượt là <code>[10, 5, 7]</code>. Tổng số thực thể đang được cấp phát (tổng các cột Allocation của mọi tiến trình) là <code>[7, 2, 5]</code>. Vectơ tài nguyên còn rảnh <code>Available</code> là:",
+      "a": [
+        "[3, 3, 2]",
+        "[17, 7, 12]",
+        "[0, 0, 0]",
+        "[7, 2, 5]"
+      ],
+      "c": 0,
+      "e": "Vectơ rảnh rỗi = Tổng số thực thể của tài nguyên - Tổng số thực thể đang được cấp phát = [10-7, 5-2, 7-5] = [3, 3, 2]."
+    },
+    {
+      "q": "Hai tiến trình P1 và P2 cùng chia sẻ một bộ tài nguyên loại T. Mỗi tiến trình cần tối đa 2 đơn vị tài nguyên T để hoàn thành. Số lượng đơn vị tài nguyên T tối thiểu cần có là bao nhiêu để đảm bảo không bao giờ xảy ra deadlock?",
+      "a": [
+        "2 đơn vị",
+        "3 đơn vị",
+        "4 đơn vị",
+        "1 đơn vị"
+      ],
+      "c": 1,
+      "e": "Áp dụng công thức: $R_{min} = N \\times (W - 1) + 1 = 2 \\times (2 - 1) + 1 = 3$ đơn vị."
+    },
+    {
+      "q": "Phát biểu nào sau đây là ĐÚNG về mối quan hệ giữa Bế tắc (Deadlock) và Đói tài nguyên (Starvation)?",
+      "a": [
+        "Bế tắc luôn kéo theo đói tài nguyên, nhưng đói tài nguyên chưa chắc đã là bế tắc",
+        "Đói tài nguyên luôn kéo theo bế tắc, nhưng bế tắc chưa chắc đã là đói tài nguyên",
+        "Hai khái niệm này hoàn toàn tương đương nhau",
+        "Không khái niệm nào kéo theo khái niệm còn lại"
+      ],
+      "c": 0,
+      "e": "Khi xảy ra bế tắc, các tiến trình bị kẹt vĩnh viễn và không bao giờ được cấp phát tài nguyên (đói tài nguyên). Tuy nhiên, một tiến trình bị đói tài nguyên (do bị thuật toán định thời bỏ qua) có thể không liên quan đến việc chờ đợi vòng tròn của deadlock và có thể tự phục hồi nếu hệ thống rảnh."
+    },
+    {
+      "q": "Một trạng thái an toàn (Safe State) được định nghĩa là gì?",
+      "a": [
+        "Trạng thái mà hệ thống có thể phân bổ tài nguyên cho các tiến trình mà vẫn tránh được deadlock bằng cách tìm ra một chuỗi an toàn để thực thi toàn bộ tiến trình",
+        "Trạng thái mà không có tiến trình nào phải chờ đợi",
+        "Trạng thái mà hiệu suất CPU đạt 100%",
+        "Trạng thái mà tất cả semaphores đều dương"
+      ],
+      "c": 0,
+      "e": "Trạng thái an toàn đảm bảo rằng tồn tại ít nhất một thứ tự thực thi (chuỗi an toàn) giúp mọi tiến trình đều có thể yêu cầu tài nguyên tối đa và hoàn thành mà không gây ra deadlock."
+    }
+  ],
+  "sec5": [
+    {
+      "q": "Trong hệ thống quản lý bộ nhớ phân trang với kích thước trang là 4 KB ($2^{12}$ bytes). Một địa chỉ logic dạng thập phân là <code>12345</code>. Địa chỉ này tương ứng với Số trang (Page Number) và Độ lệch (Offset) nào?",
+      "a": [
+        "Số trang: 3, Độ lệch: 57",
+        "Số trang: 2, Độ lệch: 4153",
+        "Số trang: 4, Độ lệch: 57",
+        "Số trang: 3, Độ lệch: 123"
+      ],
+      "c": 0,
+      "e": "Kích thước trang = 4096 bytes.<br>- Số trang = $12345 / 4096 = 3$ (phép chia nguyên).<br>- Độ lệch = $12345 \\% 4096 = 57$ (phép chia dư)."
+    },
+    {
+      "q": "Một hệ thống phân trang có thời gian truy cập bộ nhớ chính (Memory Access Time) là 100 ns, thời gian tra cứu bảng trang trên bộ đệm TLB (TLB Lookup) là 20 ns. Nếu tỷ lệ tìm thấy trên TLB (TLB Hit Ratio) là 80%, thời gian truy cập bộ nhớ hiệu dụng (EAT - Effective Access Time) là bao nhiêu?",
+      "a": [
+        "140 ns",
+        "120 ns",
+        "220 ns",
+        "180 ns"
+      ],
+      "c": 0,
+      "e": "Công thức EAT:<br>- Trường hợp trúng TLB (Hit - 80%): $TLB\\_Lookup + Memory\\_Access = 20 + 100 = 120$ ns.<br>- Trường hợp trượt TLB (Miss - 20%): Phải truy cập bộ nhớ 2 lần (1 lần đọc bảng trang, 1 lần đọc dữ liệu thực tế) -> $TLB\\_Lookup + 2 \\times Memory\\_Access = 20 + 200 = 220$ ns.<br>$EAT = 0.8 \\times 120 + 0.2 \\times 220 = 96 + 44 = 140$ ns."
+    },
+    {
+      "q": "Xét không gian địa chỉ logic 32-bit, kích thước trang là 4 KB. Nếu mỗi mục nhập trong bảng trang (Page Table Entry) chiếm 4 bytes, kích thước của bảng trang một cấp (Single-level Page Table) đầy đủ của tiến trình là bao nhiêu?",
+      "a": [
+        "4 MB",
+        "1 MB",
+        "2 MB",
+        "8 MB"
+      ],
+      "c": 0,
+      "e": "Số lượng trang = Không gian địa chỉ / Kích thước trang = $2^{32} / 2^{12} = 2^{20}$ trang.<br>Kích thước bảng trang = Số lượng trang * Kích thước 1 mục nhập = $2^{20} \\times 4$ bytes = $4 \\times 2^{20}$ bytes = 4 MB."
+    },
+    {
+      "q": "Xét chuỗi truy cập trang: <code>7, 0, 1, 2, 0, 3, 0, 4</code>. Giả sử hệ thống cấp phát 3 khung trang vật lý (frames) trống ban đầu. Theo thuật toán thay thế trang FIFO (First-In, First-Out), có bao nhiêu lỗi trang (Page Faults) xảy ra?",
+      "a": [
+        "6",
+        "7",
+        "8",
+        "5"
+      ],
+      "c": 1,
+      "e": "Mô phỏng từng bước FIFO:<br>1. Yêu cầu 7 -> Nạp 7 (Khung: [7]). Lỗi trang 1.<br>2. Yêu cầu 0 -> Nạp 0 (Khung: [7, 0]). Lỗi trang 2.<br>3. Yêu cầu 1 -> Nạp 1 (Khung: [7, 0, 1]). Lỗi trang 3.<br>4. Yêu cầu 2 -> Thế 7 (vào đầu tiên) bằng 2 (Khung: [2, 0, 1]). Lỗi trang 4.<br>5. Yêu cầu 0 -> Hit (Khung: [2, 0, 1]).<br>6. Yêu cầu 3 -> Thế 0 (vào tiếp theo) bằng 3 (Khung: [2, 3, 1]). Lỗi trang 5.<br>7. Yêu cầu 0 -> Thế 1 (vào tiếp theo) bằng 0 (Khung: [2, 3, 0]). Lỗi trang 6.<br>8. Yêu cầu 4 -> Thế 2 (vào tiếp theo) bằng 4 (Khung: [4, 3, 0]). Lỗi trang 7.<br>Tổng số lỗi trang = 7."
+    },
+    {
+      "q": "Xét chuỗi truy cập trang: <code>7, 0, 1, 2, 0, 3, 0, 4</code>. Giả sử hệ thống cấp phát 3 khung trang vật lý trống ban đầu. Theo thuật toán thay thế trang LRU (Least Recently Used), có bao nhiêu lỗi trang xảy ra?",
+      "a": [
+        "6",
+        "7",
+        "8",
+        "5"
+      ],
+      "c": 0,
+      "e": "Mô phỏng từng bước LRU:<br>1. Yêu cầu 7 -> Khung: [7]. Lỗi trang 1.<br>2. Yêu cầu 0 -> Khung: [7, 0]. Lỗi trang 2.<br>3. Yêu cầu 1 -> Khung: [7, 0, 1]. Lỗi trang 3.<br>4. Yêu cầu 2 -> Thế trang ít dùng nhất gần đây (7) bằng 2. Khung: [2, 0, 1]. Lỗi trang 4.<br>5. Yêu cầu 0 -> Hit. Khung: [2, 0, 1] (thứ tự dùng gần đây: 1, 2, 0).<br>6. Yêu cầu 3 -> Thế trang ít dùng nhất gần đây (1) bằng 3. Khung: [2, 0, 3]. Lỗi trang 5.<br>7. Yêu cầu 0 -> Hit. Khung: [2, 0, 3] (thứ tự dùng gần đây: 2, 3, 0).<br>8. Yêu cầu 4 -> Thế trang ít dùng nhất gần đây (2) bằng 4. Khung: [4, 0, 3]. Lỗi trang 6.<br>Tổng số lỗi trang = 6."
+    },
+    {
+      "q": "Xét chuỗi truy cập trang: <code>7, 0, 1, 2, 0, 3, 0, 4</code>. Giả sử hệ thống cấp phát 3 khung trang vật lý trống ban đầu. Theo thuật toán thay thế trang Tối ưu (Optimal), có bao nhiêu lỗi trang xảy ra?",
+      "a": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "c": 1,
+      "e": "Mô phỏng từng bước Optimal (thay trang lâu được dùng lại nhất trong tương lai):<br>1. Yêu cầu 7 -> Khung: [7]. Lỗi trang 1.<br>2. Yêu cầu 0 -> Khung: [7, 0]. Lỗi trang 2.<br>3. Yêu cầu 1 -> Khung: [7, 0, 1]. Lỗi trang 3.<br>4. Yêu cầu 2 -> Nhìn tương lai thấy 0 dùng ở bước kế, 3 dùng sau, 7 không dùng nữa. Thế 7 bằng 2. Khung: [2, 0, 1]. Lỗi trang 4.<br>5. Yêu cầu 0 -> Hit. Khung: [2, 0, 1].<br>6. Yêu cầu 3 -> Nhìn tương lai thấy 0 dùng ở bước kế, 4 dùng sau, 1 và 2 không dùng nữa. Thế 1 bằng 3. Khung: [2, 0, 3]. Lỗi trang 5.<br>7. Yêu cầu 0 -> Hit. Khung: [2, 0, 3].<br>8. Yêu cầu 4 -> Thế 2 bằng 4. Khung: [4, 0, 3]. Lỗi trang 6.<br>Tổng số lỗi trang = 6."
+    },
+    {
+      "q": "Hiện tượng bất thường Belady (Belady's Anomaly) - khi tăng số lượng khung trang vật lý cấp phát cho tiến trình lại làm tăng số lượng lỗi trang - có thể xảy ra đối với thuật toán thay thế trang nào dưới đây?",
+      "a": [
+        "LRU",
+        "Tối ưu (Optimal)",
+        "FIFO",
+        "LFU"
+      ],
+      "c": 2,
+      "e": "FIFO không có thuộc tính xếp chồng (stack property), do đó nó dễ gặp phải hiện tượng Belady. Các thuật toán như LRU và Optimal có thuộc tính xếp chồng nên không bao giờ gặp phải hiện tượng này."
+    },
+    {
+      "q": "Một hệ thống sử dụng cơ chế phân đoạn bộ nhớ (Segmentation). Bảng phân đoạn hiện tại của tiến trình:<br>- Phân đoạn 0: Cơ sở (Base) = 1400, Giới hạn (Limit) = 1000<br>- Phân đoạn 1: Cơ sở = 6300, Giới hạn = 400<br>Địa chỉ vật lý tương ứng với địa chỉ logic <code>(Phân đoạn 1, Độ lệch 250)</code> là bao nhiêu?",
+      "a": [
+        "1650",
+        "6550",
+        "Gây lỗi ngoại lệ truy cập bộ nhớ (Trap)",
+        "6300"
+      ],
+      "c": 1,
+      "e": "Kiểm tra điều kiện: Độ lệch (Offset = 250) < Giới hạn (Limit = 400) -> Thỏa mãn.<br>Địa chỉ vật lý = Cơ sở + Độ lệch = $6300 + 250 = 6550$."
+    },
+    {
+      "q": "Cũng dựa trên bảng phân đoạn ở câu hỏi trước, nếu một truy cập bộ nhớ yêu cầu dịch địa chỉ logic <code>(Phân đoạn 1, Độ lệch 450)</code>, kết quả xử lý của hệ thống sẽ là gì?",
+      "a": [
+        "Địa chỉ dịch thành 6750",
+        "Gây lỗi ngoại lệ truy cập bộ nhớ (Trap / Segmentation Fault)",
+        "Địa chỉ dịch thành 6300",
+        "Địa chỉ tự động quay vòng về đầu đoạn"
+      ],
+      "c": 1,
+      "e": "Kiểm tra điều kiện: Độ lệch (Offset = 450) > Giới hạn (Limit = 400). Điều này vi phạm an toàn bộ nhớ. Phần cứng MMU sẽ chặn lại và ném ra một lỗi ngoại lệ Trap truy cập trái phép bộ nhớ (Segmentation Fault)."
+    },
+    {
+      "q": "Trong kỹ thuật quản lý bộ nhớ phân trang (Paging), hiện tượng phân mảnh bộ nhớ nào có thể xảy ra?",
+      "a": [
+        "Phân mảnh ngoài (External fragmentation)",
+        "Phân mảnh trong (Internal fragmentation) ở khung trang cuối cùng của tiến trình",
+        "Cả phân mảnh trong và ngoài",
+        "Không xảy ra phân mảnh nào"
+      ],
+      "c": 1,
+      "e": "Paging chia bộ nhớ vật lý thành các khung kích thước bằng nhau nên loại bỏ hoàn toàn phân mảnh ngoài. Tuy nhiên, nếu kích thước tiến trình không chia hết cho kích thước trang, trang cuối cùng sẽ bị dư ô nhớ trống, gây ra phân mảnh trong."
+    },
+    {
+      "q": "Kỹ thuật Dồn dịch bộ nhớ (Compaction) được sử dụng để giải quyết loại phân mảnh nào trong các chiến lược cấp phát bộ nhớ liên tục?",
+      "a": [
+        "Phân mảnh trong",
+        "Phân mảnh ngoài",
+        "Lỗi trang",
+        "Tranh chấp Cache"
+      ],
+      "c": 1,
+      "e": "Compaction dịch chuyển tất cả các phân vùng bộ nhớ đang bị chiếm dụng về một phía để gom các ô nhớ trống rải rác lại thành một khối trống lớn liên tục, từ đó triệt tiêu phân mảnh ngoài."
+    },
+    {
+      "q": "Nguyên nhân trực tiếp nào gây ra sự kiện Lỗi trang (Page Fault)?",
+      "a": [
+        "Tiến trình truy cập vào một trang có bit Valid-Invalid trong bảng trang được đặt là Invalid (trang chưa được nạp vào RAM)",
+        "Tiến trình ghi đè lên phân vùng Code",
+        "Tiến trình vượt quá giới hạn phân đoạn",
+        "Khi bộ nhớ đệm Cache bị đầy"
+      ],
+      "c": 0,
+      "e": "Khi dịch địa chỉ, MMU kiểm tra bit Valid-Invalid trong bảng trang. Nếu bit này là Invalid, nghĩa là trang mong muốn đang nằm ở bộ nhớ phụ (Disk/Swap) chứ chưa được nạp vào RAM, kích hoạt ngắt Page Fault."
+    },
+    {
+      "q": "Hiện tượng Trì trệ hệ thống (Thrashing) trong bộ nhớ ảo xảy ra khi nào?",
+      "a": [
+        "Hệ thống có quá nhiều bộ nhớ vật lý rảnh rỗi",
+        "Hệ thống dành nhiều thời gian cho việc hoán đổi các trang (paging) vào/ra hơn là thực thi các chỉ thị lệnh thực tế của tiến trình",
+        "Lượng tử thời gian CPU quá nhỏ",
+        "Có quá nhiều bảng trang cùng hoạt động"
+      ],
+      "c": 1,
+      "e": "Thrashing xảy ra khi tổng số trang hoạt động (working sets) của các tiến trình vượt quá dung lượng RAM vật lý có sẵn. Hệ thống liên tục phải tráo trang cũ ra để nạp trang mới vào, làm CPU bị nghẽn do I/O và hiệu năng sụt giảm nghiêm trọng."
+    },
+    {
+      "q": "Vai trò của bộ đệm TLB (Translation Lookaside Buffer) trong phần cứng MMU là gì?",
+      "a": [
+        "Làm không gian lưu trữ Swap cho đĩa cứng",
+        "Làm cache phần cứng tốc độ cao lưu trữ các bản dịch địa chỉ logic-vật lý gần đây để tăng tốc độ dịch địa chỉ",
+        "Lưu trữ bảng trang đầy đủ của mọi tiến trình",
+        "Quản lý ngắt hệ thống"
+      ],
+      "c": 1,
+      "e": "Thay vì mỗi lần dịch địa chỉ phải tốn 1 lần đọc bảng trang trong RAM, MMU sẽ kiểm tra nhanh trên cache TLB. Nếu trúng (TLB Hit), địa chỉ vật lý có ngay lập tức với độ trễ cực nhỏ."
+    },
+    {
+      "q": "Theo chiến lược cấp phát bộ nhớ liên tục Best-fit, khối nhớ nào sẽ được chọn để phân bổ cho tiến trình?",
+      "a": [
+        "Khối nhớ đầu tiên tìm thấy đủ lớn",
+        "Khối nhớ có kích thước nhỏ nhất trong số các khối đủ lớn để chứa tiến trình",
+        "Khối nhớ lớn nhất trong hệ thống",
+        "Khối nhớ kế tiếp vị trí vừa cấp phát"
+      ],
+      "c": 1,
+      "e": "Best-fit tìm kiếm toàn bộ danh sách khối nhớ trống và chọn khối nhớ nào sát nhất với kích thước yêu cầu của tiến trình để giảm thiểu phần dư thừa bị lãng phí."
+    },
+    {
+      "q": "Chiến lược cấp phát bộ nhớ liên tục Worst-fit hoạt động theo nguyên tắc nào?",
+      "a": [
+        "Chọn khối nhớ đầu tiên đủ chứa tiến trình",
+        "Chọn khối nhớ nhỏ nhất đủ chứa tiến trình",
+        "Chọn khối nhớ lớn nhất trong danh sách các khối đủ chứa tiến trình để để lại khối trống dư thừa có kích thước lớn nhất",
+        "Chọn khối nhớ ngẫu nhiên"
+      ],
+      "c": 2,
+      "e": "Worst-fit cố tình chọn khối trống lớn nhất để sau khi phân bổ cho tiến trình, phần bộ nhớ trống còn dư lại vẫn đủ lớn để cấp phát cho các tiến trình khác sau này."
+    },
+    {
+      "q": "Một hệ thống có thời gian truy cập bộ nhớ chính là 200 ns, thời gian xử lý lỗi trang (Page Fault Service Time) trung bình là 10 ms ($10^7$ ns). Nếu tỷ lệ lỗi trang của hệ thống là $p = 0.01$ (1%). Thời gian truy cập bộ nhớ hiệu dụng (EAT) là bao nhiêu?",
+      "a": [
+        "200 ns",
+        "100,198 ns",
+        "10,200 ns",
+        "1,000,200 ns"
+      ],
+      "c": 1,
+      "e": "Công thức EAT:<br>$EAT = (1-p) \\times Memory\\_Access + p \\times Page\\_Fault\\_Service\\_Time$<br>$EAT = 0.99 \\times 200 + 0.01 \\times 10,000,000 = 198 + 100,000 = 100,198$ ns."
+    },
+    {
+      "q": "Trong mô hình Tập làm việc (Working-set Model) với tham số cửa sổ trượt $\\Delta$, tập làm việc đại diện cho đối tượng nào?",
+      "a": [
+        "Tổng số trang của tiến trình được nạp vào RAM",
+        "Tập hợp các trang được tiến trình truy cập trong khoảng $\\Delta$ lần tham chiếu bộ nhớ gần nhất",
+        "Tổng kích thước mã lệnh thực thi",
+        "Số khung trang tối thiểu hệ thống cấp phát"
+      ],
+      "c": 1,
+      "e": "Working-set biểu thị xấp xỉ vùng địa chỉ cục bộ (locality) hiện tại của tiến trình. Hệ thống sử dụng nó để cấp phát động số khung trang nhằm tránh thrashing."
+    },
+    {
+      "q": "Ưu điểm lớn nhất của bảng trang nghịch đảo (Inverted Page Table) so với bảng trang truyền thống là gì?",
+      "a": [
+        "Tốc độ tra cứu nhanh hơn nhờ truy cập trực tiếp",
+        "Tiết kiệm đáng kể dung lượng bộ nhớ dùng để lưu trữ bảng trang (chỉ cần một mục nhập duy nhất cho mỗi khung trang vật lý trong RAM thay vì một mục cho mỗi trang ảo)",
+        "Loại bỏ hoàn toàn lỗi trang",
+        "Giúp việc chia sẻ bộ nhớ giữa các tiến trình trở nên đơn giản hơn"
+      ],
+      "c": 1,
+      "e": "Bảng trang truyền thống có kích thước tỷ lệ thuận với không gian ảo (rất lớn). Bảng trang nghịch đảo có kích thước cố định chỉ tỷ lệ thuận với kích thước RAM vật lý, giúp tiết kiệm bộ nhớ cho bảng trang."
+    },
+    {
+      "q": "Một hệ thống quyết định tăng kích thước trang (Page Size) từ 4 KB lên 16 KB. Hệ quả trực tiếp của việc thay đổi này là gì?",
+      "a": [
+        "Kích thước bảng trang tăng lên",
+        "Lượng phân mảnh trong (internal fragmentation) trung bình của các tiến trình tăng lên",
+        "Hiện tượng phân mảnh ngoài xuất hiện",
+        "Độ phủ của bộ đệm TLB giảm đi"
+      ],
+      "c": 1,
+      "e": "Kích thước trang lớn hơn sẽ làm tăng lượng bộ nhớ bị lãng phí do phân mảnh trong ở trang cuối cùng (trung bình lãng phí = Kích thước trang / 2, tăng từ 2 KB lên 8 KB). Tuy nhiên, nó giúp giảm kích thước bảng trang và tăng độ phủ của TLB."
+    }
+  ]
+};
+
+    // User progress state
+    let userProgress = {};
+    let currentSection = "sec1";
+
+    const sectionTitles = {
+      sec1: "Phần 1: Khởi tạo Tiến trình & Luồng (Câu 1 - 20)",
+      sec2: "Phần 2: Định thời CPU (Câu 21 - 40)",
+      sec3: "Phần 3: Đồng bộ hóa Tiến trình (Câu 41 - 60)",
+      sec4: "Phần 4: Khóa chết Deadlock (Câu 61 - 80)",
+      sec5: "Phần 5: Quản lý Bộ nhớ & Bộ nhớ ảo (Câu 81 - 100)"
+    };
+
+    function initProgress() {
+      const saved = localStorage.getItem("studyhub_os_practice_quiz_progress");
+      if (saved) {
+        try {
+          userProgress = JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to load quiz progress", e);
+        }
+      }
+      
+      // Initialize keys if missing
+      for (let sec in quizData) {
+        if (!userProgress[sec]) {
+          userProgress[sec] = {};
+        }
+      }
+
+      switchSection(currentSection);
+      renderFastNavGrid();
+    }
+
+    function saveProgress() {
+      localStorage.setItem("studyhub_os_practice_quiz_progress", JSON.stringify(userProgress));
+      updateProgressHeader();
+      updateAllSidebarBadges();
+      updateFastNavGrid();
+    }
+
+    function switchSection(secId) {
+      currentSection = secId;
+      document.querySelectorAll(".sec-link").forEach(link => link.classList.remove("active"));
+      const activeLink = document.getElementById("link-" + secId);
+      if (activeLink) activeLink.classList.add("active");
+
+      document.getElementById("section-title").textContent = sectionTitles[secId];
+      renderQuestions(secId);
+      updateProgressHeader();
+      updateAllSidebarBadges();
+      updateFastNavGrid();
+    }
+
+    function renderFastNavGrid() {
+      const grid = document.getElementById("fast-nav-grid");
+      grid.innerHTML = "";
+      
+      let count = 1;
+      for (let secId of ["sec1", "sec2", "sec3", "sec4", "sec5"]) {
+        const secQs = quizData[secId];
+        secQs.forEach((q, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "nav-grid-btn";
+          btn.textContent = count;
+          
+          // Capture references
+          const targetSec = secId;
+          const targetIndex = idx;
+          const totalIndex = count - 1;
+
+          btn.onclick = () => {
+            if (currentSection !== targetSec) {
+              switchSection(targetSec);
+            }
+            // Scroll to the question card
+            const card = document.getElementById(`card_q_${totalIndex}`);
+            if (card) {
+              card.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          };
+
+          grid.appendChild(btn);
+          count++;
+        });
+      }
+    }
+
+    function updateFastNavGrid() {
+      const btns = document.querySelectorAll(".nav-grid-btn");
+      let count = 0;
+      for (let secId of ["sec1", "sec2", "sec3", "sec4", "sec5"]) {
+        const secProgress = userProgress[secId] || {};
+        const secQs = quizData[secId];
+        
+        secQs.forEach((q, idx) => {
+          const btn = btns[count];
+          if (btn) {
+            btn.className = "nav-grid-btn";
+            const ans = secProgress[idx];
+            if (ans !== undefined) {
+              if (ans.isCorrect) {
+                btn.classList.add("correct");
+              } else {
+                btn.classList.add("incorrect");
+              }
+            }
+          }
+          count++;
+        });
+      }
+    }
+
+    function updateProgressHeader() {
+      let totalAnswered = 0;
+      let totalCorrect = 0;
+      let totalQuestions = 100;
+
+      for (let sec in userProgress) {
+        const answers = userProgress[sec];
+        for (let qIdx in answers) {
+          totalAnswered++;
+          if (answers[qIdx].isCorrect) {
+            totalCorrect++;
+          }
+        }
+      }
+
+      const pct = Math.round((totalAnswered / totalQuestions) * 100);
+      document.getElementById("progress-text").textContent = `Tổng tiến độ: ${totalAnswered}/${totalQuestions} câu`;
+      document.getElementById("progress-bar").style.width = pct + "%";
+    }
+
+    function updateAllSidebarBadges() {
+      for (let secId of ["sec1", "sec2", "sec3", "sec4", "sec5"]) {
+        const answers = userProgress[secId] || {};
+        const answeredCount = Object.keys(answers).length;
+        const correctCount = Object.values(answers).filter(a => a.isCorrect).length;
+        const badge = document.getElementById("badge-" + secId);
+        
+        if (badge) {
+          badge.textContent = `${correctCount}/${answeredCount}`;
+          if (answeredCount === 20) {
+            badge.classList.add("completed");
+          } else {
+            badge.classList.remove("completed");
+          }
+        }
+      }
+
+      // Update current section score
+      const currentAnswers = userProgress[currentSection] || {};
+      const currentAnswered = Object.keys(currentAnswers).length;
+      const currentCorrect = Object.values(currentAnswers).filter(a => a.isCorrect).length;
+      document.getElementById("section-score-display").textContent = `Đúng: ${currentCorrect}/${currentAnswered} câu`;
+    }
+
+    function renderQuestions(secId) {
+      const container = document.getElementById("questions-container");
+      container.innerHTML = "";
+
+      const qList = quizData[secId];
+      const progress = userProgress[secId] || {};
+
+      // Get starting index for questions
+      let startNumber = 1;
+      if (secId === "sec2") startNumber = 21;
+      else if (secId === "sec3") startNumber = 41;
+      else if (secId === "sec4") startNumber = 61;
+      else if (secId === "sec5") startNumber = 81;
+
+      qList.forEach((qObj, index) => {
+        const globalIdx = startNumber + index - 1;
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.id = `card_q_${globalIdx}`;
+
+        const questionText = document.createElement("div");
+        questionText.className = "quiz-question";
+        questionText.innerHTML = `<strong>Câu ${globalIdx + 1}.</strong> ${qObj.q}`;
+        card.appendChild(questionText);
+
+        const optionsContainer = document.createElement("div");
+        optionsContainer.className = "quiz-options";
+
+        const savedAns = progress[index];
+        const hasBeenAnswered = savedAns !== undefined;
+
+        qObj.a.forEach((optionText, optIdx) => {
+          const label = document.createElement("label");
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = `q_${globalIdx}`;
+          radio.value = optIdx;
+          
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(` ${String.fromCharCode(65 + optIdx)}. ${optionText}`));
+          optionsContainer.appendChild(label);
+
+          if (hasBeenAnswered) {
+            radio.disabled = true;
+            if (optIdx === qObj.c) {
+              label.classList.add("correct");
+            }
+            if (optIdx === savedAns.selectedAnswerIndex) {
+              radio.checked = true;
+              if (optIdx !== qObj.c) {
+                label.classList.add("incorrect");
+              }
+            }
+            label.classList.add("disabled");
+          } else {
+            radio.addEventListener("change", () => {
+              handleOptionSelect(secId, index, optIdx);
+            });
+          }
+        });
+
+        card.appendChild(optionsContainer);
+
+        const feedbackDiv = document.createElement("div");
+        feedbackDiv.className = "quiz-feedback";
+        feedbackDiv.id = `fb_q_${globalIdx}`;
+        card.appendChild(feedbackDiv);
+
+        if (hasBeenAnswered) {
+          if (savedAns.isCorrect) {
+            card.classList.add("correct-card");
+            feedbackDiv.innerHTML = `<strong>✅ Đúng!</strong> ${qObj.e}`;
+            feedbackDiv.className = "quiz-feedback show feedback-correct";
+          } else {
+            card.classList.add("incorrect-card");
+            feedbackDiv.innerHTML = `<strong>❌ Sai.</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + qObj.c)}</strong>. ${qObj.e}`;
+            feedbackDiv.className = "quiz-feedback show feedback-incorrect";
+          }
+        }
+
+        container.appendChild(card);
+      });
+
+      // Render math formulas
+      if (window.renderMathInElement) {
+        window.renderMathInElement(container, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ]
+        });
+      }
+    }
+
+    function handleOptionSelect(secId, qIdx, optIdx) {
+      const qObj = quizData[secId][qIdx];
+      const isCorrect = optIdx === qObj.c;
+
+      userProgress[secId][qIdx] = {
+        selectedAnswerIndex: optIdx,
+        isCorrect: isCorrect
+      };
+
+      saveProgress();
+      renderQuestions(secId);
+    }
+
+    function confirmResetAll() {
+      if (confirm("Bạn có chắc chắn muốn xóa toàn bộ tiến trình và làm lại từ đầu?")) {
+        for (let sec in quizData) {
+          userProgress[sec] = {};
+        }
+        saveProgress();
+        switchSection("sec1");
+      }
+    }
+
+    window.onload = initProgress;
+  </script>
+</body>
+</html>
