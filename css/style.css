@@ -394,6 +394,108 @@ footer {
   color: var(--text-dark) !important;
 }
 
+/* Mobile-first base styles (default for layout-wrapper & sidebar) */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.sidebar {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+/* Two-column Grid Layout for Desktop Viewports (min-width: 1200px) */
+@media (min-width: 1200px) {
+  .container:has(.layout-wrapper) {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .layout-wrapper {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 900px);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
+}
+
+.sidebar h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.sidebar h3:first-of-type {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.5rem;
+  list-style-type: none;
+}
+
+.sidebar a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+  background-color: var(--highlight-bg);
+  color: var(--secondary-color);
+}
+
+.sidebar a.active {
+  background-color: var(--primary-color);
+  color: white !important;
+  font-weight: 600;
+}
+
+.score-badge {
+  background-color: var(--border-color);
+  color: var(--text-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 9999px;
+  float: right;
+  margin-top: 0.1rem;
+}
+
+.sidebar a.active .score-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+
+
 /* Theme Toggle Button for Reading Pages */
 .theme-toggle-btn {
   display: inline-flex;
