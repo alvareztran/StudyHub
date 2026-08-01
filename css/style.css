@@ -560,6 +560,36 @@ body.dark-theme table {
   background-color: var(--bg-card);
 }
 
+/* Layout card grid for generic content boxes */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.bayer-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bayer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+body.dark-theme .bayer-card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
 /* Print Media Query to match web design high-fidelity PDF */
 @media print {
   body, body.dark-theme {

@@ -162,9 +162,9 @@
     <header>
       <div class="breadcrumb">
         <a href="../index.html">StudyHub</a> &raquo; 
-        <a href="index.html">Lịch sử Đảng Cộng sản Việt Nam</a> &raquo; Luyện tập trắc nghiệm
+        <a href="index.html">Lịch sử Đảng (Cô Xuyến)</a> &raquo; Luyện tập trắc nghiệm
       </div>
-      <h1>Luyện tập trắc nghiệm: Đề cô Xuyến (Dữ liệu Đại học Cần Thơ)</h1>
+      <h1>Luyện tập trắc nghiệm: Đề cô Xuyến</h1>
       <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống trắc nghiệm tự chấm điểm trực quan giúp ôn tập và ghi nhớ các mốc sự kiện, lý thuyết lịch sử Đảng hiệu quả.</p>
     </header>
 
@@ -187,7 +187,7 @@
           <div style="flex: 1; min-width: 200px;">
             <div class="score-text">Kết quả của bạn</div>
             <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
-              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / 32 câu đúng</span>
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / <span id="score-total-count">33</span> câu đúng</span>
             </div>
           </div>
           
@@ -622,6 +622,7 @@
 
       // Update scoreboard elements
       document.getElementById('score-correct-count').innerText = correct;
+      document.getElementById('score-total-count').innerText = quizData.length;
       const percent = quizData.length > 0 ? (answeredCount / quizData.length) * 100 : 0;
       document.getElementById('score-progress-bar').style.width = percent + '%';
 
@@ -630,7 +631,7 @@
       if (answeredCount === 0) {
         fbText.innerText = "Trả lời các câu hỏi để xem kết quả đánh giá năng lực tự ôn tập.";
       } else if (answeredCount < quizData.length) {
-        fbText.innerText = `Đã làm ${answeredCount}/32 câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
+        fbText.innerText = `Đã làm ${answeredCount}/${quizData.length} câu. Đúng ${correct} câu. Hãy tiếp tục để hoàn thành bài thi!`;
       } else {
         const rating = (correct / quizData.length) * 10;
         let ratingStr = "";
