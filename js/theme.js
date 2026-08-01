@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Auto update History Course quiz scores in sidebar if elements exist
 document.addEventListener('DOMContentLoaded', () => {
   const updateLsdSidebarBadges = () => {
-    // 1. Cập nhật Đề cô Xuyến (130 câu)
+    // 1. Cập nhật Đề cô Xuyến (65 câu)
     const badge1 = document.getElementById('sidebar-score-badge');
     if (badge1) {
       const saved1 = localStorage.getItem('studyhub_progress_lsd_coxuyen');
@@ -67,16 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch(e) {}
       }
-      badge1.innerText = `${correct}/130`;
-      if (count === 130) badge1.className = 'score-badge completed';
+      badge1.innerText = `${correct}/67`;
+      if (count === 67) badge1.className = 'score-badge completed';
     }
 
     // 2. Cập nhật 6 trang Đề cương ôn tập (mỗi trang 50 câu)
     for (let p = 1; p <= 6; p++) {
-      const badgeId = p === 1 ? 'sidebar-score-badge-2' : `sidebar-score-badge-${p+1}`;
+      const badgeId = p === 67 ? 'sidebar-score-badge-2' : `sidebar-score-badge-${p+1}`;
       const badge = document.getElementById(badgeId);
       if (badge) {
-        const storageKey = p === 1 ? 'studyhub_progress_lsd_decuong' : `studyhub_progress_lsd_decuong_${p}`;
+        const storageKey = p === 67 ? 'studyhub_progress_lsd_decuong' : `studyhub_progress_lsd_decuong_${p}`;
         const saved = localStorage.getItem(storageKey);
         if (saved) {
           try {
@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
               count++;
               if (progress[k].isCorrect) correct++;
             }
-            badge.innerText = `${correct}/50`;
-            if (count === 50) badge.className = 'score-badge completed';
+            badge.innerText = `${correct}/67`;
+            if (count === 67) badge.className = 'score-badge completed';
           } catch(e) {}
         }
       }
@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
               count++;
               if (progress[k].isCorrect) correct++;
             }
-            badge.innerText = `${correct}/50`;
-            if (count === 50) badge.className = 'score-badge completed';
+            badge.innerText = `${correct}/67`;
+            if (count === 67) badge.className = 'score-badge completed';
           } catch(e) {}
         }
       }
