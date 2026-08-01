@@ -46,31 +46,67 @@ Học liệu lý thuyết cốt lõi qua 7 chương học chi tiết và hệ th
   - *Đề tài:* Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study (NeurIPS 2024)
   - *Tài liệu trực quan:* Sơ đồ căn chỉnh 3 bước (Alignment Pipeline) & So sánh chi tiết kiến trúc toán học PPO vs DPO.
 
-### 3. Machine Learning cơ bản
+### 3. Nghiên cứu khoa học - AI (NCKH)
+Kho tài liệu nền tảng học tập nghiên cứu khoa học:
+* **Phương pháp luận:** Hướng dẫn cách tìm kiếm, đọc hiểu bài báo khoa học chuẩn NeurIPS/ICML.
+* **Kỹ năng cốt lõi:** Phương pháp viết bài báo học thuật, chuẩn bị slide báo cáo chuyên đề và thực nghiệm các mô hình deep learning.
+
+### 4. Các mô hình AI & Lĩnh vực con (AI-MODELS)
+Tổng hợp phân loại các nhánh mô hình trí tuệ nhân tạo từ cổ điển đến hiện đại:
+* **Machine Learning & Deep Learning:** Khung phân loại MLP, mạng lan truyền ngược (Backpropagation).
+* **Computer Vision:** Mô hình CNN (AlexNet, ResNet), Vision Transformer (ViT) và phát hiện vật thể YOLO.
+* **NLP (Natural Language Processing):** RNN, LSTM, cơ chế Attention, kiến trúc Transformer và các mô hình ngôn ngữ lớn (LLMs).
+* **Học tăng cường (Reinforcement Learning):** Tiến trình quyết định Markov (MDP), thuật toán Q-learning, Policy Gradient và PPO.
+* **AI tạo sinh (Generative AI):** Mạng đối nghịch tạo sinh (GANs), Autoencoders (VAE) và mô hình khuếch tán (Diffusion Models).
+
+### 5. Machine Learning cơ bản (ML)
 Kho học liệu lý thuyết và bài tập thực hành học máy cơ bản:
 * **Chương 1: Machine Learning là gì?** (Khái niệm học máy, định nghĩa Mitchell, lập trình truyền thống vs học máy)
 * **Chương 2: Phân nhóm các thuật toán Machine Learning** (Học có giám sát, học không giám sát, học bán giám sát, học tăng cường)
-* **Chương 3: Lộ trình 4 Bước Cho Người Mới Bắt Đầu** (Chuẩn bị vũ khí, thuật toán nhập môn, thực hành với Scikit-Learn, Deep Learning và chuyên sâu)
-* **Chương 4: Tìm hiểu các thư viện Python cơ bản** (Trụ cột NumPy, Pandas, trực quan hóa Matplotlib/Seaborn, huấn luyện Scikit-Learn)
-* **Chương 5: Các khóa học Machine Learning cho người mới bắt đầu** (Đánh giá Andrew Ng Specialization, Google MLCC, Kaggle Learn)
+* **Chương 3: Lộ trình 4 Bước Cho Người Mới Bắt Đầu** (Chuẩn bị vũ khí, định hướng thư viện và Scikit-Learn)
+* **Chương 4: Tìm hiểu các thư viện Python cơ bản** (NumPy, Pandas, Matplotlib/Seaborn, Scikit-Learn)
+* **Chương 5: Các khóa học Machine Learning cho người mới bắt đầu** (Đánh giá Andrew Ng ML Specialization, Google MLCC, Kaggle Learn)
 * **Chương 6: Dự án phân loại Titanic** (Quy trình ML 5 bước: thu thập, làm sạch dữ liệu, train-test split, huấn luyện Random Forest và đánh giá Confusion Matrix)
 
-### 4. Nguyên lý Hệ điều hành
+### 6. CT178 - Nguyên lý Hệ điều hành (OS)
 Kho học liệu lý thuyết và bộ câu hỏi trắc nghiệm tương tác:
-* **Chương 1: Giới thiệu Hệ điều hành** (Định nghĩa, vai trò bộ quản lý tài nguyên, quy trình khởi động Bootstrap, các hệ thống đa chương/chia thời gian/thời gian thực/phân tán)
-* **Chương 2: Cấu trúc Hệ điều hành** (Thành phần hệ điều hành, các dịch vụ hệ thống, lời gọi hệ thống System Call, kiến trúc nhân Monolithic/Layered/Microkernel/Máy ảo)
-* **Chương 3: Tiến trình** (Bản chất tiến trình, cấu trúc phân vùng nhớ, 5 trạng thái vòng đời, PCB, hàng đợi và bộ định thời, tạo/hủy tiến trình và IPC)
-* **Chương 4: Định thời CPU** (Chu kỳ CPU-I/O Burst, Dispatcher, các tiêu chí đánh giá, giải thuật FCFS/SJF/Priority/Round Robin/Multilevel Queue, định thời đa nhân và thời gian thực)
-* **Chương 5: Đồng bộ hóa tiến trình** (Hiện tượng Race Condition, bài toán CSP, các giải pháp Peterson/Bakery, chỉ thị phần cứng test_and_set/compare_and_swap, công cụ Semaphore và cấu trúc Monitor)
-* **Chương 6: Khóa chết** (Định nghĩa Deadlock, 4 điều kiện cần, đồ thị RAG, Wait-for Graph, giải thuật Banker, phát hiện và khôi phục hệ thống)
-* **Chương 7: Quản lý bộ nhớ** (Cơ chế Base/Limit, địa chỉ Logic vs Physical, MMU, Hoán đổi bộ nhớ Swapping, giải thuật cấp phát kề nhau First/Best/Worst-fit, Phân trang Paging, bộ đệm TLB và Phân đoạn Segmentation)
+* **Chương 1: Giới thiệu Hệ điều hành** (Quy trình khởi động Bootstrap, hệ thống đa chương/chia thời gian/thời gian thực/phân tán)
+* **Chương 2: Cấu trúc Hệ điều hành** (Thành phần hệ điều hành, dịch vụ hệ thống, System Call, kiến trúc nhân Monolithic/Layered/Microkernel)
+* **Chương 3: Tiến trình** (Cấu trúc phân vùng nhớ, 5 trạng thái vòng đời, PCB, hàng đợi và bộ định thời, tạo/hủy tiến trình và IPC)
+* **Chương 4: Định thời CPU** (Chu kỳ CPU-I/O Burst, giải thuật FCFS/SJF/Priority/Round Robin/Multilevel Queue)
+* **Chương 5: Đồng bộ hóa tiến trình** (Hiện tượng Race Condition, bài toán CSP, các giải pháp Peterson/Bakery, Semaphore và Monitor)
+* **Chương 6: Khóa chết** (Định nghĩa Deadlock, 4 điều kiện cần, đồ thị RAG, giải thuật Banker, phát hiện và khôi phục hệ thống)
+* **Chương 7: Quản lý bộ nhớ** (Địa chỉ Logic vs Physical, MMU, Hoán đổi Swapping, giải thuật First/Best/Worst-fit, Phân trang Paging, bộ đệm TLB và Phân đoạn Segmentation)
 
-### 5. Cơ sở văn hóa Việt Nam
-Học liệu trắc nghiệm tương tác đang phát triển:
-* **Chủ đề 1: Khái luận về văn hóa và văn hóa học** (Định nghĩa, cấu trúc văn hóa, chức năng văn hóa)
-* **Chủ đề 2: Định vị văn hóa Việt Nam** (Chủ thể, không gian, thời gian lịch sử)
-* **Chủ đề 3: Tiến trình lịch sử văn hóa Việt Nam** (Các lớp văn hóa bản địa, giao lưu tiếp xúc)
-* **Chủ đề 4: Các thành tố văn hóa Việt Nam** (Văn hóa nhận thức, tổ chức cộng đồng, ứng xử môi trường tự nhiên & xã hội)
+### 7. TailwindCSS - Phát triển giao diện (TW)
+* **Lý thuyết nền tảng:** Tư duy Utility-first, Root CSS, reset preflight, hệ thống spacing & đơn vị rem/px.
+* **Kỹ thuật chuyên sâu:** Thiết kế Responsive (breakpoints), Dark Mode, cấu hình custom config và tối ưu hóa compiler JIT.
+
+### 8. NodeJS & ExpressJS (NODE)
+* **Kiến trúc cốt lõi:** Tìm hiểu Event Loop, lập trình bất đồng bộ Single-thread, các module fs, path, http.
+* **Xây dựng API:** ExpressJS Routing, hệ thống Middleware, bảo mật, mã hóa mật khẩu và xác thực Token JWT.
+
+### 9. Java Core Basic (JAVA)
+* **Nền tảng:** Cú pháp Java, kiến trúc máy ảo JVM, bộ JDK/JRE.
+* **Hướng đối tượng (OOP):** Thực hành 4 tính chất Đóng gói, Kế thừa, Đa hình và Trừu tượng. Collections Framework (List, Set, Map), Generic và đọc ghi file cơ bản.
+
+### 10. Advanced Java Core (JAVA-ADV)
+* **Quản lý bộ nhớ:** Stack, Heap, Metaspace và cơ chế Garbage Collection.
+* **Lập trình nâng cao:** Lambda Expression, Stream API, đa luồng Multithreading & Concurrency, Reflection API và tối ưu hóa Connection Pooling (HikariCP).
+
+### 11. Lịch sử Đảng Cộng sản Việt Nam (LSD)
+Học liệu chương trình đại cương chuẩn quốc gia:
+* **Nội dung:** Lịch sử thành lập Đảng (1930), lãnh đạo kháng chiến chống Pháp (1945-1954), kháng chiến chống Mỹ (1954-1975) và chặng đường đổi mới đất nước.
+
+### 12. Lịch sử Đảng - Cô Xuyến (LSD-CX)
+Học liệu số hóa chi tiết và ngân hàng trắc nghiệm phục vụ riêng cho lớp học phần Cô Xuyến:
+* **Bài giảng chi tiết:** Thiết kế bài học tương thích cao, sơ đồ tóm tắt Chương 1, 2, 3 và 4 (1975 - 2021).
+* **Ghi chú trên lớp Chương III (1975 - Nay):** Tóm tắt toàn diện các kỳ Đại hội Đảng (Đại hội IV, V, VI, VII, VIII, IX, X, XI) và các bước đột phá chuyển đổi kinh tế.
+* **Bảng ôn thi tổng hợp (Chuyên đề rút gọn):** So sánh các Cương lĩnh (1930, 1951, 1991, 2011), hệ thống 8 Mặt trận, so sánh chiến lược chiến tranh, Hiệp định Sơ bộ/Giơnevơ/Paris, sơ đồ các chiến dịch lớn, nhân vật lịch sử và bài văn mẫu nguyên nhân thắng lợi.
+* **Trắc nghiệm tự động:** Ngân hàng 33 câu hỏi trắc nghiệm ôn tập chính thức có chấm điểm và giải thích chi tiết.
+
+### 13. Cơ sở văn hóa Việt Nam (CSVH)
+* **Nội dung:** Khái luận về văn hóa học, tiến trình lịch sử văn hóa bản địa qua các thời kỳ và cấu trúc thành tố văn hóa (ứng xử tự nhiên, xã hội, nhận thức triết lý âm dương).
 
 ---
 
@@ -82,56 +118,46 @@ Học liệu trắc nghiệm tương tác đang phát triển:
 ├── css/
 │   ├── style.css                # Hệ thống Design System dùng chung và CSS Print
 │   └── landing.css              # Giao diện Trang chủ tối tân và CSS Print
+├── js/
+│   └── theme.js                 # Quản lý giao diện Sáng/Tối và đếm điểm trắc nghiệm
 ├── xu-ly-anh/
 │   ├── index.html               # Mục lục môn CT316 - Xử lý ảnh
 │   └── chapters/                # Tài liệu chi tiết 5 chương học
-│       ├── chuong-1-cau-truc-anh-so.html
-│       ├── chuong-2-cac-ky-thuat-tien-xu-ly-anh.html
-│       ├── chuong-3-phat-hien-duong-bien.html
-│       ├── chuong-4-phan-vung-anh.html
-│       └── chuong-5-xu-ly-hinh-thai-nhi-phan.html
 ├── tri-tue-nhan-tao/
-│   ├── index.html                   # Mục lục môn CT332 - Trí tuệ nhân tạo
-│   ├── tri-tue-nhan-tao-la-gi.html  # Lý thuyết Chương 1
-│   ├── giai-quyet-van-de-bang-tim-kiem.html # Lý thuyết Chương 2
-│   ├── cac-ky-thuat-tim-kiem-heuristic.html # Lý thuyết Chương 3
-│   ├── bieu-dien-tri-thuc.html      # Lý thuyết Chương 4
-│   ├── thu-tuc-hop-giai.html        # Lý thuyết Chương 5
-│   ├── suy-dien-tien-lui.html       # Lý thuyết Chương 6
-│   ├── giai-thuat-di-truyen.html    # Lý thuyết Chương 7
-│   ├── trac-nghiem-chuong-1.html    # Trắc nghiệm tương tác Chương 1 (đến Chương 7)
-│   ├── trac-nghiem-bai-tap-tinh-toan.html # Trắc nghiệm Bài tập tính toán (50 câu)
-│   ├── js/
-│   │   └── quiz-data.js             # Cơ sở dữ liệu 400 câu hỏi trắc nghiệm
-│   └── reports/
-│       ├── bao-cao-mon-hoc.html     # Báo cáo chuyên đề PPO vs DPO
-│       └── cong-thuc-so-do-ppo-dpo.html # Đồ họa trực quan & công thức toán học
-├── co-so-van-hoa-viet-nam/
-│   ├── index.html                   # Mục lục môn Cơ sở văn hóa Việt Nam
-│   ├── trac-nghiem-chuong-1.html    # Trắc nghiệm Chương 1 (52 câu)
-│   ├── trac-nghiem-chuong-2.html    # Trắc nghiệm Chương 2 (31 câu)
-│   ├── trac-nghiem-chuong-3.html    # Trắc nghiệm Chương 3 (34 câu)
-│   └── js/
-│       └── quiz-data.js             # Cơ sở dữ liệu câu hỏi trắc nghiệm
+│   ├── index.html               # Mục lục môn CT332 - Trí tuệ nhân tạo
+│   └── reports/                 # Báo cáo chuyên đề PPO vs DPO
+├── nckh/
+│   └── index.html               # Học liệu môn Nghiên cứu khoa học
+├── mo-hinh-ai/
+│   └── index.html               # Cổng phân loại các mô hình AI
 ├── machine-learning/
 │   ├── index.html               # Mục lục môn Machine Learning cơ bản
 │   └── chapters/                # Các chương học chi tiết
-│       ├── chuong-1-machine-learning-la-gi.html
-│       ├── chuong-2-phan-nhom-cac-thuat-toan-machine-learning.html
-│       ├── chuong-3-lo-trinh-4-buoc-cho-nguoi-moi-bat-dau.html
-│       ├── chuong-4-tim-hieu-cac-thu-vien.html
-│       ├── chuong-5-cac-khoa-hoc-machine-learning-cho-nguoi-moi-bat-dau.html
-│       └── chuong-6-du-doan-kha-nang-song-sot-tren-tau-titanic.html
 ├── nguyen-ly-he-dieu-hanh/
 │   ├── index.html               # Mục lục môn Nguyên lý Hệ điều hành
 │   └── chapters/                # Các chương học chi tiết
-│       ├── chuong-1-gioi-thieu-he-dieu-hanh.html
-│       ├── chuong-2-cau-truc-he-dieu-hanh.html
-│       ├── chuong-3-tien-trinh.html
-│       ├── chuong-4-dinh-thoi-cpu.html
-│       ├── chuong-5-dong-bo-hoa-tien-trinh.html
-│       ├── chuong-6-khoa-chet.html
-│       └── chuong-7-quan-ly-bo-nho.html
+├── tailwind-css/
+│   └── index.html               # Học liệu Tailwind CSS
+├── node-express/
+│   └── index.html               # Học liệu Node & ExpressJS
+├── java-core/
+│   └── gioi-thieu-java.html     # Học liệu Java cơ bản
+├── java-advanced/
+│   └── bo-nho-java.html         # Học liệu Java nâng cao
+├── co-so-van-hoa-viet-nam/
+│   ├── index.html               # Mục lục môn Cơ sở văn hóa Việt Nam
+│   └── js/                      # Cơ sở dữ liệu câu hỏi trắc nghiệm CSVH
+├── lich-su-dang/
+│   └── index.html               # Học liệu môn Lịch sử Đảng (Chương trình chung)
+├── lich-su-dang-co-xuyen/
+│   ├── index.html               # Cổng môn học Lịch sử Đảng Cô Xuyến
+│   ├── nhung-van-de-chung.html  # Tài liệu ôn thi tổng hợp (Mặt trận, Hiệp định, Chiến dịch...)
+│   ├── chuong-1.html            # Lý thuyết Chương 1 (1930 - 1945)
+│   ├── chuong-2.html            # Lý thuyết Chương 2 (1945 - 1954)
+│   ├── chuong-3.html            # Lý thuyết Chương 3 (1954 - 1975)
+│   ├── chuong-4.html            # Lý thuyết Chương 4 (1975 - 2021)
+│   ├── ghi-chu-chuong-3.html    # Ghi chú trên lớp Chương 3 (1975 - Nay)
+│   └── trac-nghiem-de-co-xuyen.html # Ngân hàng trắc nghiệm tương tác (33 câu)
 └── README.md                    # Hướng dẫn dự án
 ```
 
