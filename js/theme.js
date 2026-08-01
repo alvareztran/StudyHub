@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Auto update History Course quiz scores in sidebar if elements exist
 document.addEventListener('DOMContentLoaded', () => {
   const updateLsdSidebarBadges = () => {
-    // 1. Cập nhật Đề cô Xuyến (33 câu)
+    // 1. Cập nhật Đề cô Xuyến (48 câu)
     const badge1 = document.getElementById('sidebar-score-badge');
     if (badge1) {
       const saved1 = localStorage.getItem('studyhub_progress_lsd_coxuyen');
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             count++;
             if (progress[k].isCorrect) correct++;
           }
-          badge1.innerText = `${correct}/33`;
-          if (count === 33) badge1.className = 'score-badge completed';
+          badge1.innerText = `${correct}/48`;
+          if (count === 48) badge1.className = 'score-badge completed';
         } catch(e) {}
       }
     }

@@ -187,7 +187,7 @@
           <div style="flex: 1; min-width: 200px;">
             <div class="score-text">Kết quả của bạn</div>
             <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-color, #0284c7); font-family: Outfit, sans-serif;">
-              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / <span id="score-total-count">33</span> câu đúng</span>
+              <span id="score-correct-count">0</span><span style="font-size: 1rem; color: var(--text-light); font-weight: normal;"> / <span id="score-total-count">48</span> câu đúng</span>
             </div>
           </div>
           
@@ -221,7 +221,7 @@
     // DỮ LIỆU 32 CÂU HỎI TRẮC NGHIỆM ĐỀ CÔ XUYẾN
     const quizData = [
       {
-        q: "Câu 1: Xã hội Việt Nam dưới tác động chính sách thống trị của thực dân Pháp đã ra đời những giai cấp mới nào?",
+        q: "Câu 1: Xã hội Việt Nam dưới tác động chính sách thống trị của thực dân Pháp đã ra đời những giai cấp và tầng lớp mới nào?",
         o: [
           "Công nhân và tư sản",
           "Công nhân, tư sản và tiểu tư sản",
@@ -229,18 +229,18 @@
           "Công nhân, nông dân, tiểu tư sản và tư sản dân tộc"
         ],
         c: 1,
-        e: "Chính sách khai thác thuộc địa của thực dân Pháp làm biến đổi cơ cấu giai cấp Việt Nam, dẫn đến sự ra đời của ba giai cấp và tầng lớp mới là: Công nhân, tư sản và tiểu tư sản."
+        e: "Chính sách khai thác thuộc địa của thực dân Pháp đã làm biến đổi cơ cấu xã hội Việt Nam, làm xuất hiện các giai cấp và tầng lớp mới gồm công nhân, tư sản và tiểu tư sản."
       },
       {
-        q: "Câu 2: Bước đột phá thứ ba của Đảng ta về đổi mới cơ chế quản lý kinh tế thời kỳ trước đổi mới là?",
+        q: "Câu 2: Bước đột phá thứ ba của Đảng ta về đổi mới cơ chế quản lý kinh tế thời kỳ trước đổi mới là:",
         o: [
           "Hội nghị Trung ương 6 khoá IV (8/1979)",
           "Chỉ thị 100 (1981) của Ban Bí thư Trung ương về Khoán sản phẩm đến nhóm người lao động",
-          "Hội nghị Trung ương 8 khoá V (6/1985) với cuộc cái cách giá - lương - tiền",
+          "Hội nghị Trung ương 8 khoá V (6/1985) với cuộc cải cách giá - lương - tiền",
           "Kết luận của Hội nghị Bộ Chính trị về một số quan điểm thuộc về kinh tế (8/1986)"
         ],
         c: 3,
-        e: "Đột phá 1: Hội nghị TW 6 khóa IV (8/1979). Đột phá 2: Hội nghị TW 8 khóa V (6/1985). Đột phá 3: Kết luận của Hội nghị Bộ Chính trị khóa V (8/1986) về ba quan điểm kinh tế lớn."
+        e: "Đột phá 1: Hội nghị TW 6 khóa IV (8/1979). Đột phá 2: Hội nghị TW 8 khóa V (6/1985). Đột phá 3: Kết luận của Hội nghị Bộ Chính trị khóa V (8/1986)."
       },
       {
         q: "Câu 3: Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội mấy của Đảng?",
@@ -251,7 +251,7 @@
           "Đại hội lần thứ IV (12/1976)"
         ],
         c: 1,
-        e: "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội đại biểu toàn quốc lần thứ II (2/1951) tại Chiêm Hóa, Tuyên Quang."
+        e: "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội đại biểu toàn quốc lần thứ II của Đảng (2/1951) tại Chiêm Hóa, Tuyên Quang."
       },
       {
         q: "Câu 4: Phương châm đối ngoại Việt Nam là bạn, đối tác tin cậy và là thành viên có trách nhiệm trong cộng đồng quốc tế được xác định tại Đại hội mấy của Đảng?",
@@ -262,7 +262,7 @@
           "Đại hội lần thứ XIII (01/2021)"
         ],
         c: 2,
-        e: "Đại hội XI (1/2011) bổ sung cụm từ 'và là thành viên có trách nhiệm trong cộng đồng quốc tế' vào phương châm đối ngoại."
+        e: "Đại hội XI (01/2011) bổ sung cụm từ 'và là thành viên có trách nhiệm trong cộng đồng quốc tế' vào phương châm đối ngoại của Đảng."
       },
       {
         q: "Câu 5: Trong giai đoạn đấu tranh giành chính quyền (1939-1945), Hội nghị Trung ương nào là Hội nghị Trung ương đầu tiên đề ra chủ trương chiến lược mới của Đảng?",
@@ -273,7 +273,7 @@
           "Hội nghị Ban Thường vụ Trung ương mở rộng (12/3/1945)"
         ],
         c: 0,
-        e: "Hội nghị Ban Chấp hành Trung ương lần thứ 6 (11/1939) do Tổng Bí thư Nguyễn Văn Cừ chủ trì là hội nghị đầu tiên chuyển hướng chỉ đạo chiến lược, đặt nhiệm vụ giải phóng dân tộc lên hàng đầu."
+        e: "Hội nghị Ban Chấp hành Trung ương lần thứ 6 (11/1939) do Tổng Bí thư Nguyễn Văn Cừ chủ trì là hội nghị đầu tiên quyết định chuyển hướng chỉ đạo chiến lược, đặt nhiệm vụ giải phóng dân tộc lên hàng đầu."
       },
       {
         q: "Câu 6: Từ kỳ họp nào sau đây, nước ta có tên gọi là nước Cộng hòa xã hội chủ nghĩa Việt Nam?",
@@ -284,7 +284,7 @@
           "Hội nghị Ban chấp hành trung ương Đảng lần thứ 3, khóa IV (12/1977)"
         ],
         c: 0,
-        e: "Kỳ họp thứ nhất của Quốc hội khóa VI (Quốc hội nước Việt Nam thống nhất họp từ 24/6 đến 3/7/1976) đã quyết định đặt tên nước là Cộng hòa xã hội chủ nghĩa Việt Nam."
+        e: "Kỳ họp thứ nhất Quốc hội khóa VI (24/06 - 03/07/1976) quyết định đổi tên nước từ Việt Nam Dân chủ Cộng hòa thành Cộng hòa xã hội chủ nghĩa Việt Nam."
       },
       {
         q: "Câu 7: Tại Đại hội III (9/1960), Đảng xác định cách mạng miền Nam có vai trò như thế nào đối với sự nghiệp giải phóng miền Nam, thực hiện hoà bình, thống nhất nước nhà?",
@@ -295,7 +295,7 @@
           "Giữ vai trò nòng cốt"
         ],
         c: 2,
-        e: "Đại hội III xác định: Cách mạng XHCN ở miền Bắc giữ vai trò quyết định nhất đối với sự nghiệp cách mạng cả nước; Cách mạng dân tộc dân chủ nhân dân ở miền Nam giữ vai trò quyết định trực tiếp đối với sự nghiệp giải phóng miền Nam."
+        e: "Đại hội III (9/1960) xác định cách mạng xã hội chủ nghĩa ở miền Bắc giữ vai trò quyết định nhất; cách mạng dân tộc dân chủ nhân dân ở miền Nam giữ vai trò quyết định trực tiếp."
       },
       {
         q: "Câu 8: Nghị quyết Hội nghị Trung ương 04 khoá XII (10/2016) về tăng cường xây dựng, chỉnh đốn Đảng; ngăn chặn, đẩy lùi sự suy thoái về tư tưởng chính trị, đạo đức, lối sống, những biểu hiện 'tự diễn biến', 'tự chuyển hoá' trong nội bộ đã nêu mấy biểu hiện suy thoái về tư tưởng chính trị?",
@@ -306,10 +306,10 @@
           "29"
         ],
         c: 1,
-        e: "Nghị quyết Trung ương 4 khóa XII nêu ra 27 biểu hiện tự diễn biến, tự chuyển hóa (gồm 9 biểu hiện suy thoái về tư tưởng chính trị, 9 biểu hiện suy thoái về đạo đức lối sống và 9 biểu hiện về tự diễn biến, tự chuyển hóa)."
+        e: "Nghị quyết Trung ương 4 khóa XII nêu ra 27 biểu hiện tự diễn biến, tự chuyển hóa (gồm 9 biểu hiện suy thoái về tư tưởng chính trị, 9 biểu hiện suy thoái về đạo đức lối sống và 9 biểu hiện tự diễn biến, tự chuyển hóa)."
       },
       {
-        q: "Câu 9: Đảng Cộng sản Việt Nam là sự kết hợp các yếu tố nào?",
+        q: "Câu 9: Đảng Cộng sản Việt Nam là sự kết hợp các yếu tố:",
         o: [
           "Chủ nghĩa Mác và phong trào công nhân",
           "Chủ nghĩa Mác - Lênin, phong trào công nhân, phong trào trí thức",
@@ -317,7 +317,7 @@
           "Chủ nghĩa Mác - Lênin, phong trào công nhân, phong trào nông dân"
         ],
         c: 2,
-        e: "Quy luật ra đời của Đảng Cộng sản Việt Nam là sự kết hợp giữa Chủ nghĩa Mác-Lênin, phong trào công nhân và phong trào yêu nước Việt Nam."
+        e: "Đảng Cộng sản Việt Nam ra đời là sự kết hợp giữa Chủ nghĩa Mác-Lênin, phong trào công nhân và phong trào yêu nước Việt Nam."
       },
       {
         q: "Câu 10: Tổ chức nào đóng vai trò trụ cột trong hệ thống chính trị ở nước ta hiện nay?",
@@ -328,7 +328,7 @@
           "Các đoàn thể nhân dân"
         ],
         c: 1,
-        e: "Trong hệ thống chính trị Việt Nam: Đảng lãnh đạo; Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam đóng vai trò trụ cột quản lý toàn bộ đời sống kinh tế - xã hội."
+        e: "Trong hệ thống chính trị ở nước ta hiện nay, Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam giữ vai trò trụ cột quản lý toàn bộ đời sống kinh tế - xã hội."
       },
       {
         q: "Câu 11: Trong các nguồn lực để tiến hành công nghiệp hóa, hiện đại hóa ở nước ta, Đại hội VIII của Đảng (6/1996) đã xác định nguồn lực nào là yếu tố cơ bản cho sự phát triển nhanh và bền vững?",
@@ -350,10 +350,10 @@
           "Dân giàu, nước mạnh, xã hội công bằng, dân chủ và văn minh"
         ],
         c: 0,
-        e: "Cương lĩnh bổ sung, phát triển năm 2011 (Đại hội XI) xác định mục tiêu tổng quát là: 'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh' (đưa chữ 'dân chủ' lên trước)."
+        e: "Cương lĩnh bổ sung, phát triển năm 2011 (Đại hội XI) xác định mục tiêu tổng quát là: 'Dân giàu, nước mạnh, dân chủ, công bằng, văn minh' (đưa cụm từ 'dân chủ' lên trước)."
       },
       {
-        q: "Câu 13: Đại hội lần thứ mấy của Đảng ta đã đưa ra khái niệm chặng đường đầu tiên của thời kì quá độ lên xã hội chủ nghĩa?",
+        q: "Câu 13: Đại hội lần thứ mấy của Đảng ta đã đưa ra khái niệm chặng đường đầu tiên của thời kỳ quá độ lên xã hội chủ nghĩa?",
         o: [
           "Đại hội III (9/1960)",
           "Đại hội IV (12/1976)",
@@ -364,7 +364,7 @@
         e: "Đại hội V (3/1982) xác định thời kỳ quá độ nước ta gồm nhiều chặng đường và vạch ra mục tiêu cho chặng đường đầu tiên."
       },
       {
-        q: "Câu 14: Lần đầu tiên Đảng ta xác định mô hình lên CNXH là nền kinh tế thị trường định hướng kinh tế tổng quát của nước ta trong thời kỳ quá độ xã hội chủ nghĩa tại Đại hội lần thứ mấy?",
+        q: "Câu 14: Lần đầu tiên Đảng ta xác định mô hình kinh tế tổng quát của nước ta trong thời kỳ quá độ lên chủ nghĩa xã hội là nền kinh tế thị trường định hướng xã hội chủ nghĩa tại Đại hội lần thứ mấy?",
         o: [
           "Đại hội VIII (6/1996)",
           "Đại hội IX (4/2001)",
@@ -399,13 +399,90 @@
       {
         q: "Câu 17: Mục tiêu phát triển được Đảng ta xác định tại Đại hội đại biểu toàn quốc lần thứ XIII (01/2021) nào sau đây là đúng?",
         o: [
-          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển, theo định hướng XHCN",
-          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước hiện đại, theo định hướng XHCN",
-          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước đang phát triển, theo định hướng XHCN",
-          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển và hiện đại, theo định hướng XHCN"
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển, theo định hướng xã hội chủ nghĩa",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước hiện đại, theo định hướng xã hội chủ nghĩa",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước đang phát triển, theo định hướng xã hội chủ nghĩa",
+          "Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển và hiện đại, theo định hướng xã hội chủ nghĩa"
         ],
         c: 0,
         e: "Văn kiện Đại hội XIII xác định: 'Phấn đấu đến giữa thế kỷ XXI, nước ta trở thành nước phát triển, theo định hướng xã hội chủ nghĩa'."
+      },
+      {
+        q: "Câu 18: Hãy cho biết đâu là cách diễn đạt đúng nhất về vai trò lãnh đạo của Đảng đối với cách mạng Việt Nam hiện nay?",
+        o: [
+          "Sự lãnh đạo của Đảng là nhân tố bảo đảm cho thắng lợi của cách mạng Việt Nam",
+          "Sự lãnh đạo của Đảng là nhân tố quyết định đến thắng lợi của cách mạng Việt Nam",
+          "Sự lãnh đạo đúng đắn của Đảng là nhân tố hàng đầu quyết định thắng lợi của cách mạng Việt Nam",
+          "Sự lãnh đạo đúng đắn của Đảng là nhân tố quyết định hàng đầu bảo đảm thắng lợi của cách mạng Việt Nam"
+        ],
+        c: 2,
+        e: "Đảng ta luôn khẳng định: 'Sự lãnh đạo đúng đắn của Đảng là nhân tố hàng đầu quyết định thắng lợi của cách mạng Việt Nam'."
+      },
+      {
+        q: "Câu 19: Tại Đại hội đại biểu toàn quốc lần thứ XIII (01/2021), Đảng ta xác định mục tiêu phát triển cụ thể đến năm 2025 của nước ta là?",
+        o: [
+          "Là nước đang phát triển, có công nghiệp theo hướng hiện đại, vượt qua mức thu nhập trung bình thấp",
+          "Là nước đang phát triển, có công nghiệp hiện đại, vượt qua mức thu nhập trung bình thấp",
+          "Là nước đang phát triển, có công nghiệp hiện đại, thu nhập trung bình cao",
+          "Trở thành nước phát triển, thu nhập cao"
+        ],
+        c: 0,
+        e: "Mục tiêu cụ thể đến năm 2025: Là nước đang phát triển, có công nghiệp theo hướng hiện đại, vượt qua mức thu nhập trung bình thấp."
+      },
+      {
+        q: "Câu 20: Đâu là cách diễn đạt đúng theo quan điểm của Đảng ta hiện nay về đối ngoại?",
+        o: [
+          "Vì lợi ích quốc gia, dân tộc, vì một nước Việt Nam xã hội chủ nghĩa giàu mạnh",
+          "Bảo đảm lợi ích tối cao của quốc gia - dân tộc, trên cơ sở các nguyên tắc cơ bản của luật pháp quốc tế, bình đẳng và cùng có lợi",
+          "Bảo đảm lợi ích tối cao của quốc gia - dân tộc trên cơ sở các nguyên tắc cơ bản của Hiến chương Liên hợp quốc và luật pháp quốc tế, bình đẳng, hợp tác, cùng có lợi",
+          "Bảo đảm cao nhất lợi ích quốc gia - dân tộc trên cơ sở các nguyên tắc cơ bản của Hiến chương Liên hợp quốc và luật pháp quốc tế, bình đẳng, hợp tác, cùng có lợi"
+        ],
+        c: 3,
+        e: "Đại hội XIII của Đảng (2021) xác định nguyên tắc đối ngoại: 'Bảo đảm cao nhất lợi ích quốc gia - dân tộc trên cơ sở các nguyên tắc cơ bản của Hiến chương Liên hợp quốc và luật pháp quốc tế, bình đẳng, hợp tác, cùng có lợi'. (Đại hội XII năm 2016 trước đó dùng cụm từ 'Bảo đảm lợi ích tối cao')."
+      },
+      {
+        q: "Câu 21: Nghị quyết Hội nghị Trung ương lần thứ 15 khóa II (1959) xác định con đường duy nhất của cách mạng miền Nam là:",
+        o: [
+          "Đẩy mạnh đấu tranh chính trị",
+          "Đẩy mạnh đấu tranh ngoại giao",
+          "Kết hợp đánh lớn, đánh vừa, đánh nhỏ",
+          "Sử dụng bạo lực cách mạng, kết hợp đấu tranh chính trị với đấu tranh vũ trang"
+        ],
+        c: 3,
+        e: "Nghị quyết Trung ương 15 (1/1959) xác định con đường phát triển cơ bản của cách mạng miền Nam là khởi nghĩa giành chính quyền về tay nhân dân, bằng con đường sử dụng bạo lực cách mạng."
+      },
+      {
+        q: "Câu 22: Xếp theo thứ tự thời gian Đảng ta ký kết Hiệp định (từ trước đến sau) 3 sự kiện sau:",
+        o: [
+          "Hiệp định Pari - Hiệp định Giơnevơ - Hiệp định Sơ bộ",
+          "Hiệp định Sơ bộ - Hiệp định Giơnevơ - Hiệp định Pari",
+          "Hiệp định Sơ bộ - Hiệp định Pari - Hiệp định Giơnevơ",
+          "Hiệp định Giơnevơ - Hiệp định Sơ bộ - Hiệp định Pari"
+        ],
+        c: 1,
+        e: "Thứ tự thời gian ký kết: Hiệp định Sơ bộ (06/03/1946) -> Hiệp định Giơnevơ (21/07/1954) -> Hiệp định Pari (27/01/1973)."
+      },
+      {
+        q: "Câu 23: Đại hội đại biểu toàn quốc của Đảng lần thứ mấy được xem là Đại hội toàn thắng của sự nghiệp giải phóng dân tộc?",
+        o: [
+          "Đại hội III (9/1960)",
+          "Đại hội IV (12/1976)",
+          "Đại hội V (3/1982)",
+          "Đại hội VI (12/1986)"
+        ],
+        c: 1,
+        e: "Đại hội IV (12/1976) diễn ra sau thắng lợi vĩ đại mùa Xuân 1975, hoàn thành giải phóng dân tộc và thống nhất đất nước, được xem là Đại hội toàn thắng của sự nghiệp giải phóng dân tộc."
+      },
+      {
+        q: "Câu 24: Lần đầu tiên Đảng ta đưa ra quan niệm nền văn hóa Việt Nam có đặc trưng: tiên tiến, đậm đà bản sắc dân tộc là ở kỳ họp nào?",
+        o: [
+          "Đại hội VI (12/1986)",
+          "Đại hội VII (6/1991)",
+          "Đại hội VIII (6/1996)",
+          "Đại hội IX (4/2001)"
+        ],
+        c: 1,
+        e: "Đại hội VII (6/1991) thông qua Cương lĩnh 1991, lần đầu tiên đưa ra đặc trưng nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc."
       },
       {
         q: "Câu 25: Điểm khác nhau căn bản giữa Cương lĩnh chính trị đầu tiên của Đảng và Luận cương chính trị tháng 10/1930 là:",
@@ -416,7 +493,7 @@
           "Phương hướng chiến lược của cách mạng"
         ],
         c: 2,
-        e: "Cương lĩnh đầu tiên (2/1930) đặt giải phóng dân tộc lên hàng đầu; Luận cương (10/1930) đặt cách mạng ruộng đất và đấu tranh giai cấp lên hàng đầu. Đó là sự khác biệt lớn về vị trí của hai nhiệm vụ chiến lược."
+        e: "Cương lĩnh đầu tiên đặt nhiệm vụ giải phóng dân tộc lên hàng đầu (chống đế quốc trước); Luận cương đặt nhiệm vụ cách mạng ruộng đất đấu tranh giai cấp lên hàng đầu (chống phong kiến trước). Đây chính là sự khác nhau căn bản về vị trí của hai nhiệm vụ chiến lược."
       },
       {
         q: "Câu 26: Đại hội đại biểu nào của Đảng chủ trương: 'chủ động hội nhập kinh tế quốc tế'?",
@@ -438,7 +515,7 @@
           "Mâu thuẫn giữa công nhân và nông dân với đế quốc và phong kiến"
         ],
         c: 2,
-        e: "Do Việt Nam là một nước thuộc địa nửa phong kiến, mâu thuẫn bao trùm và chủ yếu nhất là mâu thuẫn giữa toàn thể dân tộc Việt Nam với thực dân Pháp xâm lược."
+        e: "Dưới ách cai trị của thực dân Pháp, mâu thuẫn giữa toàn thể dân tộc Việt Nam với thực dân Pháp xâm lược là mâu thuẫn chủ yếu nhất, bao trùm lên toàn xã hội."
       },
       {
         q: "Câu 28: Việt Nam đã bắt đầu đặt quan hệ ngoại giao với Liên Xô vào năm nào?",
@@ -449,7 +526,7 @@
           "1954"
         ],
         c: 2,
-        e: "Liên Xô chính thức đặt quan hệ ngoại giao với nước Việt Nam Dân chủ Cộng hòa vào ngày 30 tháng 1 năm 1950."
+        e: "Ngày 30/1/1950, Liên bang Cộng hòa Xã hội Chủ nghĩa Xô viết (Liên Xô) chính thức thiết lập quan hệ ngoại giao với Việt Nam Dân chủ Cộng hòa."
       },
       {
         q: "Câu 29: Chỉ thị 'Kháng chiến, kiến quốc' (25/11/1945) đã nêu ra nhiệm vụ chủ yếu, trước mắt của cách mạng nước ta là:",
@@ -460,18 +537,18 @@
           "Củng cố chính quyền, chống thực dân Pháp xâm lược, bài trừ nội phản, cải thiện đời sống nhân dân"
         ],
         c: 3,
-        e: "Chỉ thị xác định 4 nhiệm vụ trước mắt: củng cố chính quyền cách mạng, chống thực dân Pháp xâm lược, bài trừ nội phản và cải thiện đời sống nhân dân."
+        e: "Chỉ thị xác định 4 nhiệm vụ trước mắt cấp bách: củng cố chính quyền cách mạng, chống thực dân Pháp xâm lược, bài trừ nội phản và cải thiện đời sống nhân dân."
       },
       {
-        q: "Câu 30: Thắng lợi của cuộc kháng chiến chống Mỹ cứu nước đã cho ta nhiều bài học kinh nghiệm có giá trị, trong đó bài học nào có giá trị hàng đầu?",
+        q: "Câu 30: Bài học kinh nghiệm có giá trị hàng đầu được Đảng ta tổng kết trong Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (bổ sung, phát triển năm 2011) là:",
         o: [
-          "Giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội",
-          "Thực hiện chiến tranh nhân dân linh hoạt, sáng tạo",
-          "Coi trọng công tác tổ chức, công tác xây dựng Đảng",
-          "Kiên định tư tưởng chiến lược tiến công, quyết đánh và quyết thắng đế quốc Mỹ xâm lược"
+          "Nắm vững ngọn cờ độc lập dân tộc và chủ nghĩa xã hội",
+          "Sự nghiệp cách mạng là của nhân dân, do nhân dân và vì nhân dân",
+          "Kết hợp sức mạnh dân tộc với sức mạnh thời đại, sức mạnh trong nước với sức mạnh quốc tế",
+          "Sự lãnh đạo đúng đắn của Đảng là nhân tố hàng đầu quyết định thắng lợi của cách mạng Việt Nam"
         ],
         c: 0,
-        e: "Bài học hàng đầu là giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội để kết hợp sức mạnh dân tộc và sức mạnh thời đại."
+        e: "Bài học kinh nghiệm lớn thứ nhất trong Cương lĩnh 2011 là: 'Nắm vững ngọn cờ độc lập dân tộc và chủ nghĩa xã hội'."
       },
       {
         q: "Câu 31: Đại hội đại biểu toàn quốc lần thứ X (4/2006) đã xác định xã hội xã hội chủ nghĩa mà chúng ta đang xây dựng có mấy đặc trưng?",
@@ -482,106 +559,194 @@
           "10 đặc trưng"
         ],
         c: 2,
-        e: "Đại hội X bổ sung và phát triển các đặc trưng xây dựng CNXH tại Việt Nam từ 6 đặc trưng lên thành 8 đặc trưng."
+        e: "Đại hội X (4/2006) đã bổ sung và phát triển các đặc trưng xây dựng CNXH tại Việt Nam từ 6 đặc trưng (trong Cương lĩnh 1991) lên thành 8 đặc trưng."
       },
       {
-        q: "Câu 32: Điền vào chỗ trống sau đây: 'Kết hợp chặt chẽ ngay từ đầu đổi mới kinh tế với đổi mới chính trị, lấy đổi mới ... làm trọng tâm, đồng thời từng bước đổi mới...'.",
+        q: "Câu 32: Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (bổ sung, phát triển năm 2011) đã xác định xã hội xã hội chủ nghĩa mà chúng ta đang xây dựng có mấy đặc trưng?",
         o: [
-          "Chính trị, xã hội",
-          "Kinh tế, xã hội",
-          "Chính trị, kinh tế",
-          "Kinh tế, chính trị"
-        ],
-        c: 3,
-        e: "Quan điểm đổi mới của Đảng xác định: kết hợp chặt chẽ giữa đổi mới kinh tế với đổi mới chính trị, lấy đổi mới **kinh tế** làm trọng tâm, từng bước đổi mới **chính trị**."
-      },
-      {
-        q: "Câu 33: Mốc lịch sử đánh dấu việc thất bại của thực dân Pháp trong chiến lược 'đánh nhanh, thắng nhanh' lần thứ 2 là:",
-        o: [
-          "Chiến thắng Việt Bắc-Thu đông (1947)",
-          "Chiến thắng Biên Giới-Thu đông (1950)",
-          "Chiến thắng đường 18 (1951)",
-          "Chiến thắng Hòa Bình (1952)"
-        ],
-        c: 0,
-        e: "Thắng lợi của chiến dịch Việt Bắc - Thu Đông năm 1947 đã đập tan hoàn toàn chiến lược 'đánh nhanh thắng nhanh' của thực dân Pháp, buộc chúng phải chuyển sang đánh lâu dài."
-      },
-      {
-        q: "Câu 34: Từ 9/1945 - 3/1946, Đảng ta thực hiện sách lược ngoại giao:",
-        o: [
-          "Đánh quân Tưởng và thực dân Pháp",
-          "Hòa hoãn với quân Tưởng và thực dân Pháp",
-          "Hòa hoãn với Tưởng, tập trung đánh Pháp ở Nam Bộ",
-          "Hòa hoãn với thực dân Pháp, đuổi quân Tưởng về nước"
-        ],
-        c: 2,
-        e: "Giai đoạn từ 9/1945 đến trước 6/3/1946, Đảng thực hiện sách lược: 'Hòa hoãn với quân Tưởng ở miền Bắc, tập trung kháng chiến chống Pháp xâm lược ở Nam Bộ'."
-      },
-      {
-        q: "Câu 35: Để gạt mũi nhọn tấn công của kẻ thù, Đảng Cộng sản Đông Dương tuyên bố 'tự giải tán' vào thời gian nào?",
-        o: [
-          "19/8/1945",
-          "02/9/1945",
-          "11/11/1945",
-          "19/12/1946"
-        ],
-        c: 2,
-        e: "Ngày 11/11/1945, để tránh sự khiêu khích phá hoại của quân Tưởng và tay sai, Đảng tuyên bố tự giải tán, thực chất là rút vào hoạt động bí mật."
-      },
-      {
-        q: "Câu 36: Tại Đại hội nào, lần đầu tiên Đảng giương cao ngọn cờ tư tưởng Hồ Chí Minh và khẳng định: 'Đảng Cộng sản Việt Nam lấy chủ nghĩa Mác - Lênin và tư tưởng Hồ Chí Minh làm nền tảng tư tưởng và kim chỉ nam cho hành động.'?",
-        o: [
-          "Đại hội VI (12/1986)",
-          "Đại hội VII (6/1991)",
-          "Đại hội VIII (6/1996)",
-          "Đại hội IX (4/2001)"
+          "4 đặc trưng",
+          "8 đặc trưng",
+          "6 đặc trưng",
+          "10 đặc trưng"
         ],
         c: 1,
-        e: "Tại Đại hội đại biểu toàn quốc lần thứ VII (6/1991), Đảng lần đầu tiên khẳng định lấy chủ nghĩa Mác-Lênin và tư tưởng Hồ Chí Minh làm kim chỉ nam."
+        e: "Cương lĩnh bổ sung, phát triển năm 2011 (Cương lĩnh 2011) xác định xã hội xã hội chủ nghĩa mà nhân dân ta xây dựng có 8 đặc trưng (nhiều hơn 2 đặc trưng so với Cương lĩnh 1991)."
       },
       {
-        q: "Câu 37: Trong giai đoạn 1969 - 1975, đế quốc Mỹ đã thực hiện chiến lược chiến tranh nào ở miền Nam Việt Nam?",
+        q: "Câu 33: Theo Văn kiện Đại hội đại biểu toàn quốc lần thứ XIII (2021), Đảng ta xác định mục tiêu phát triển cụ thể đến năm 2045 là:",
+        o: [
+          "Trở thành nước phát triển, thu nhập cao",
+          "Là nước đang phát triển, có công nghiệp hiện đại, thu nhập trung bình cao",
+          "Là nước đang phát triển, có công nghiệp hiện đại, vượt qua mức thu nhập trung bình thấp",
+          "Là nước đang phát triển, có công nghiệp theo hướng hiện đại, vượt qua mức thu nhập trung bình thấp"
+        ],
+        c: 0,
+        e: "Văn kiện Đại hội XIII xác định mục tiêu phát triển cụ thể đến năm 2045: Trở thành nước phát triển, thu nhập cao."
+      },
+      {
+        q: "Câu 34: Đại hội nào của Đảng đã xác định lấy nông nghiệp làm mặt trận hàng đầu?",
+        o: [
+          "Đại hội III (9/1960)",
+          "Đại hội IV (12/1976)",
+          "Đại hội V (3/1982)",
+          "Đại hội VI (12/1986)"
+        ],
+        c: 2,
+        e: "Đại hội V (3/1982) đã xác định thời kỳ quá độ lên CNXH ở nước ta gồm nhiều chặng đường và xác định nông nghiệp là mặt trận hàng đầu."
+      },
+      {
+        q: "Câu 35: Điểm khác nhau căn bản giữa Cương lĩnh chính trị đầu tiên của Đảng và Luận cương chính trị tháng 10/1930 là:",
+        o: [
+          "Vai trò lãnh đạo cách mạng",
+          "Phương pháp cách mạng",
+          "Chủ trương tập hợp lực lượng cách mạng",
+          "Phương hướng chiến lược của cách mạng"
+        ],
+        c: 2,
+        e: "Cương lĩnh đầu tiên (2/1930) chủ trương tập hợp rộng rãi mọi lực lượng dân tộc yêu nước; Luận cương (10/1930) nhấn mạnh đấu tranh giai cấp và cách mạng ruộng đất nên chỉ tập hợp công - nông."
+      },
+      {
+        q: "Câu 36: Nhiệm vụ chiến lược của Cách mạng tư sản dân quyền và thổ địa cách mạng được nêu trong Cương lĩnh Chính trị đầu tiên của Đảng đề ra là gì?",
+        o: [
+          "Đánh đổ chủ nghĩa đế quốc giành độc lập dân tộc",
+          "Đánh đổ giai cấp tư sản, giải phóng giai cấp công nhân",
+          "Đánh đổ giai cấp địa chủ phong kiến mang lại ruộng đất cho nông dân",
+          "Đánh đổ đế quốc và phong kiến, giành độc lập dân tộc và mang lại ruộng đất cho nông dân"
+        ],
+        c: 3,
+        e: "Cương lĩnh đầu tiên đề ra hai nhiệm vụ chiến lược gắn bó mật thiết là đánh đổ đế quốc Pháp và phong kiến tay sai phản cách mạng, giành lại độc lập dân tộc và ruộng đất cho dân cày."
+      },
+      {
+        q: "Câu 37: Chỉ thị \"Nhật-Pháp bắn nhau và hành động của chúng ta\" đã xác định kẻ thù cụ thể, trước mắt, duy nhất của nhân dân Đông Dương là:",
+        o: [
+          "Thực dân Pháp",
+          "Phát xít Nhật",
+          "Phát xít Nhật và thực dân Pháp",
+          "Thực dân Pháp và bọn tay sai phong kiến"
+        ],
+        c: 1,
+        e: "Sau cuộc đảo chính ngày 9/3/1945, Ban Thường vụ Trung ương Đảng ra chỉ thị xác định phát xít Nhật là kẻ thù cụ thể, trước mắt, duy nhất của nhân dân Đông Dương."
+      },
+      {
+        q: "Câu 38: Trong giai đoạn 1961 - 1965, đế quốc Mỹ đã thực hiện chiến lược chiến tranh nào ở miền Nam Việt Nam?",
         o: [
           "Chiến tranh đặc biệt",
           "Chiến tranh cục bộ",
           "Chiến tranh đơn phương",
           "Việt Nam hóa chiến tranh"
         ],
-        c: 3,
-        e: "Từ 1969 đến 1975, đế quốc Mỹ thực hiện chiến lược 'Việt Nam hóa chiến tranh' ở miền Nam và 'Đông Dương hóa chiến tranh' trên bán đảo Đông Dương."
+        c: 0,
+        e: "Trong giai đoạn 1961-1965, Mỹ thực hiện chiến lược 'Chiến tranh đặc biệt' ở miền Nam Việt Nam (công thức: quân đội Sài Gòn + cố vấn Mỹ + vũ khí Mỹ + quốc sách ấp chiến lược)."
       },
       {
-        q: "Câu 38: Nhằm tiếp tục phát triển kinh tế tư nhân, Hội nghị Trung ương 5 khóa XII (5/2017) chủ trương:",
+        q: "Câu 39: Trong phong trào yêu nước theo khuynh hướng dân chủ tư sản cuối thế kỷ XIX đầu thế kỷ XX, nhà yêu nước nào đại diện cho xu hướng cải cách?",
         o: [
-          "Phát triển kinh tế tư nhân đủ sức thay thế kinh tế nhà nước",
-          "Phát triển kinh tế tư nhân kết hợp với kinh tế tập thể",
-          "Phát triển kinh tế tư nhân trở thành nguồn lực của nền kinh tế thị trường định hướng XHCN",
-          "Phát triển kinh tế tư nhân trở thành một động lực quan trọng của nền kinh tế thị trường định hướng XHCN"
-        ],
-        c: 3,
-        e: "Nghị quyết TW 5 khóa XII xác định: 'Phát triển kinh tế tư nhân trở thành một động lực quan trọng của nền kinh tế thị trường định hướng xã hội chủ nghĩa'."
-      },
-      {
-        q: "Câu 39: Trong phong trào yêu nước theo khuynh hướng dân chủ tư sản cuối thế kỷ XIX đầu thế kỷ XX, nhà yêu nước nào đại diện cho xu hướng bạo động để đánh đuổi thực dân Pháp và bọn tay sai?",
-        o: [
-          "Huỳnh Thúc Kháng",
-          "Nguyễn Thái Học",
+          "Đề Thám",
+          "Hàm Nghi",
           "Phan Bội Châu",
           "Phan Châu Trinh"
         ],
-        c: 2,
-        e: "Phan Bội Châu đại diện cho xu hướng cách mạng bạo động (thành lập Duy Tân Hội, phong trào Đông Du), còn Phan Châu Trinh đại diện cho xu hướng cải cách ôn hòa."
+        c: 3,
+        e: "Phan Châu Trinh là người đại diện tiêu biểu cho xu hướng cải cách (ôn hòa, nâng cao dân trí, dân quyền, phản đối bạo động vũ trang khi chưa đủ thực lực)."
       },
       {
-        q: "Câu 40: Nòng cốt để phát triển nền kinh tế Việt Nam độc lập, tự chủ hiện nay là các thành phần kinh tế:",
+        q: "Câu 40: Văn kiện nào của Đảng xác định 'Vấn đề thổ địa là cái cốt của cách mạng tư sản dân quyền'?",
         o: [
-          "Kinh tế nhà nước, kinh tế tập thể",
-          "Kinh tế nhà nước, kinh tế tập thể, kinh tế tư nhân",
-          "Kinh tế nhà nước, kinh tế tập thể, kinh tế có vốn đầu tư nước ngoài",
-          "Kinh tế nhà nước, kinh tế tư nhân, kinh tế có vốn đầu tư nước ngoài"
+          "Chánh cương vắn tắt, Sách lược vắn tắt (2-1930)",
+          "Luận cương chính trị (10-1930)",
+          "Thư của Trung ương gửi các cấp đảng bộ (12-1930)",
+          "Nghị quyết Đại hội lần thứ nhất của Đảng (3-1935)"
         ],
         c: 1,
-        e: "Nghị quyết Đại hội XIII của Đảng xác định: Kinh tế nhà nước giữ vai trò chủ đạo; Kinh tế tập thể không ngừng củng cố; Kinh tế tư nhân là động lực quan trọng; Ba thành phần kinh tế trong nước này giữ vai trò nòng cốt để phát triển kinh tế tự chủ."
+        e: "Luận cương chính trị tháng 10/1930 do Trần Phú soạn thảo xác định: 'Vấn đề thổ địa là cái cốt của cách mạng tư sản dân quyền'."
+      },
+      {
+        q: "Câu 41: Lần đầu tiên Đảng ta khẳng định xây dựng Nhà nước pháp quyền Việt Nam của nhân dân, do nhân dân, vì nhân dân tại kỳ họp nào?",
+        o: [
+          "Hội nghị Trung ương 6, khóa VI (3/1989)",
+          "Hội nghị đại biểu giữa nhiệm kỳ khóa VII (01/1994)",
+          "Hội nghị Trung ương 5, khóa VIII (7/1998)",
+          "Hội nghị Trung ương 4, khóa XI (01/2012)"
+        ],
+        c: 1,
+        e: "Hội nghị đại biểu toàn quốc giữa nhiệm kỳ khóa VII (1/1994) lần đầu tiên chính thức đưa ra chủ trương xây dựng Nhà nước pháp quyền Việt Nam của nhân dân, do nhân dân, vì nhân dân."
+      },
+      {
+        q: "Câu 42: Đảng ta xác định thành phần kinh tế nhà nước có vai trò gì đối với nền kinh tế quốc dân?",
+        o: [
+          "Động lực",
+          "Nền tảng",
+          "Chủ đạo",
+          "Mấu chốt"
+        ],
+        c: 2,
+        e: "Đảng ta luôn khẳng định trong nền kinh tế nhiều thành phần định hướng XHCN, thành phần kinh tế nhà nước giữ vai trò chủ đạo."
+      },
+      {
+        q: "Câu 43: Bước đột phá thứ nhất của Đảng ta về kinh tế thời kỳ trước đổi mới là:",
+        o: [
+          "Hội nghị Trung ương 6 khoá IV (8/1979)",
+          "Chỉ thị 100 (1981) của Ban Bí thư Trung ương về Khoán sản phẩm đến nhóm người lao động",
+          "Hội nghị Trung ương 8 khoá V (6/1985) với cuộc cải cách giá - lương - tiền",
+          "Kết luận của Hội nghị Bộ Chính trị về một số quan điểm thuộc về kinh tế (8/1986)"
+        ],
+        c: 0,
+        e: "Hội nghị Trung ương 6 khóa IV (8/1979) được xem là bước đột phá thứ nhất về kinh tế trước đổi mới, với chủ trương 'hé mở' cho sản xuất bung ra."
+      },
+      {
+        q: "Câu 44: Tổng Bí thư của Đảng ta hiện nay là:",
+        o: [
+          "Vương Đình Huệ",
+          "Phạm Minh Chính",
+          "Nguyễn Phú Trọng",
+          "Võ Thị Ánh Xuân"
+        ],
+        c: 2,
+        e: "Trong hệ thống câu hỏi của đề thi chính thức này, đáp án là cố Tổng Bí thư Nguyễn Phú Trọng."
+      },
+      {
+        q: "Câu 45: Đại hội XII (01/2016) đã xác định thành phần kinh tế nào là một động lực quan trọng của nền kinh tế?",
+        o: [
+          "Kinh tế nhà nước",
+          "Kinh tế tập thể",
+          "Kinh tế tư nhân",
+          "Kinh tế có vốn đầu tư nước ngoài"
+        ],
+        c: 2,
+        e: "Đại hội XII của Đảng (1/2016) khẳng định: 'Kinh tế tư nhân là một động lực quan trọng của nền kinh tế'."
+      },
+      {
+        q: "Câu 46: Lần đầu tiên Đảng ta chủ trương 'đẩy mạnh công nghiệp hoá, hiện đại hoá gắn với phát triển kinh tế tri thức' là tại kỳ họp nào?",
+        o: [
+          "Đại hội VIII (6/1996)",
+          "Đại hội IX (4/2001)",
+          "Đại hội X (4/2006)",
+          "Đại hội XI (01/2011)"
+        ],
+        c: 2,
+        e: "Đại hội X (4/2006) lần đầu tiên bổ sung chủ trương đẩy mạnh công nghiệp hóa, hiện đại hóa gắn liền với phát triển kinh tế tri thức."
+      },
+      {
+        q: "Câu 47: Chiến thắng nào của nhân dân ta đã góp phần buộc đế quốc Mỹ phải xuống thang chiến tranh, trở lại bàn đàm phán để đi đến ký kết Hiệp định Paris?",
+        o: [
+          "Vạn Tường",
+          "Tổng tiến công và nổi dậy Xuân Mậu Thân",
+          "Chiến dịch Điện Biên Phủ trên không",
+          "Chiến dịch Hồ Chí Minh"
+        ],
+        c: 1,
+        e: "Cuộc Tổng tiến công và nổi dậy Xuân Mậu Thân 1968 đã làm lung lay ý chí xâm lược của Mỹ, buộc Mỹ phải tuyên bố phi Mỹ hóa chiến tranh, ngừng ném bom miền Bắc và chấp nhận đàm phán tại Paris."
+      },
+      {
+        q: "Câu 48: Đường lối đổi mới toàn diện nước ta được đề ra từ Đại hội nào?",
+        o: [
+          "Đại hội V (1982)",
+          "Đại hội VI (1986)",
+          "Đại hội VII (1991)",
+          "Đại hội VIII (1996)"
+        ],
+        c: 1,
+        e: "Đại hội đại biểu toàn quốc lần thứ VI của Đảng (12/1986) đã đề ra đường lối đổi mới toàn diện đất nước, đánh dấu bước phát triển bước ngoặt của nước ta."
       }
     ];
 
