@@ -57,18 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const badge1 = document.getElementById('sidebar-score-badge');
     if (badge1) {
       const saved1 = localStorage.getItem('studyhub_progress_lsd_coxuyen');
+      let correct = 0, count = 0;
       if (saved1) {
         try {
           const progress = JSON.parse(saved1);
-          let correct = 0, count = 0;
           for (let k in progress) {
             count++;
             if (progress[k].isCorrect) correct++;
           }
-          badge1.innerText = `${correct}/130`;
-          if (count === 130) badge1.className = 'score-badge completed';
         } catch(e) {}
       }
+      badge1.innerText = `${correct}/130`;
+      if (count === 130) badge1.className = 'score-badge completed';
     }
 
     // 2. Cập nhật 6 trang Đề cương ôn tập (mỗi trang 50 câu)
