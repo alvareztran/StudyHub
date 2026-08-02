@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cẩm Nang Tổng Hợp Công Thức & Quy Trình Tính Toán Xử Lý Ảnh Số - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      throwOnError: false
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Custom page-specific styling */
+    .formula-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+    .formula-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .step-box {
+      background: var(--bg-code, #f8fafc);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .toc-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .toc-item:hover {
+      border-color: var(--secondary-color);
+      color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    .math-block {
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+    /* Force normal font style to prevent K2D italic spacing bugs */
+    #page-content *, #page-content {
+      font-style: normal !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page-content">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT316 - Xử lý ảnh</a> &raquo; Cẩm Nang Công Thức Tính Toán
+      </div>
+      <h1>CẨM NĂNG TỔNG HỢP CÔNG THỨC &amp; QUY TRÌNH TÍNH TOÁN XỬ LÝ ẢNH SỐ</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Hệ thống hóa toàn bộ công thức toán học, ma trận bộ lọc không gian, đạo hàm bậc 1, bậc 2, thuật toán Otsu, Canny, biến đổi Fourier và các quy trình tính toán từng bước phục vụ ôn thi &amp; thực hành môn Xử lý ảnh.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Quick Navigation Bar / TOC -->
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem;">📌 Tra Cứu Nhanh Các Phần Tính Toán</h2>
+      <div class="toc-grid">
+        <a href="#sec-1-point-ops" class="toc-item">1. Biến Đổi Điểm Ảnh &amp; Độ Sáng</a>
+        <a href="#sec-2-histogram" class="toc-item">2. Cân Bằng &amp; Khớp Histogram</a>
+        <a href="#sec-3-convolution" class="toc-item">3. Tích Chập 2D &amp; Lọc Không Gian</a>
+        <a href="#sec-4-derivatives" class="toc-item">4. Đạo Hàm Bậc 1, 2 &amp; Biên</a>
+        <a href="#sec-5-canny" class="toc-item">5. Thuật Toán Phát Hiện Biên Canny</a>
+        <a href="#sec-6-thresholding" class="toc-item">6. Phân Ngưỡng Lặp &amp; Otsu</a>
+        <a href="#sec-7-morphology" class="toc-item">7. Xử Lý Ảnh Hình Thái Học</a>
+        <a href="#sec-8-fourier" class="toc-item">8. Biến Đổi Fourier &amp; Miền Tần Số</a>
+        <a href="#sec-9-restoration" class="toc-item">9. Khôi Phục Ảnh &amp; Bộ Lọc Nhiễu</a>
+        <a href="#sec-10-affine" class="toc-item">10. Biến Đổi Hình Học &amp; Nội Suy</a>
+        <a href="#sec-11-kernels-ref" class="toc-item">11. Bảng Ma Trận Bộ Lọc Chuẩn</a>
+      </div>
+    </section>
+
+    <main>
+      <!-- Section 1: Biến đổi điểm ảnh -->
+      <section id="sec-1-point-ops" style="margin-top: 2rem;">
+        <h2>1. Biến Đổi Điểm Ảnh &amp; Độ Sáng (Point Operations)</h2>
+        <p>Các phép biến đổi độ sáng hoạt động độc lập trên từng điểm ảnh theo mô hình: $s = T(r)$, trong đó $r$ là mức xám gốc và $s$ là mức xám mới sau biến đổi.</p>
+
+        <div class="formula-card">
+          <div class="formula-title">1.1 Biến đổi Ảnh Âm Bản (Image Negative)</div>
+          <p>Sử dụng để đảo ngược độ sáng, giúp làm nổi bật các chi tiết màu trắng/sáng trên vùng nền tối.</p>
+          <div class="math-block">$$s = L - 1 - r$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Với $L$ là số mức xám ($L = 2^k$). Đối với ảnh 8-bit ($L = 256$): $s = 255 - r$.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">1.2 Biến đổi Hàm Logarit (Log Transformation)</div>
+          <p>Nén dải độ sáng có biên độ biến thiên rộng (như phổ biên độ Fourier) và dãn dải các mức xám tối.</p>
+          <div class="math-block">$$s = c \cdot \log(1 + r)$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Hệ số chuẩn hóa $c = \frac{L-1}{\log(1 + |r_{\max}|)}$. Phép biến đổi ngược (Inverse Log): $s = c \cdot (e^r - 1)$.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">1.3 Biến đổi Hàm Mũ / Hiệu Chỉnh Gamma (Power-Law / Gamma Correction)</div>
+          <p>Điều chỉnh độ tương phản của thiết bị hiển thị và thu nhận ảnh.</p>
+          <div class="math-block">$$s = c \cdot r^\gamma$$</div>
+          <ul>
+            <li><strong>$\gamma &lt; 1$:</strong> Dãn dải mức xám tối (làm sáng ảnh tối).</li>
+            <li><strong>$\gamma &gt; 1$:</strong> Dãn dải mức xám sáng (làm tối ảnh quá sáng).</li>
+          </ul>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">1.4 Kéo Dãn Độ Tương Phản (Contrast Stretching)</div>
+          <p>Phép biến đổi tuyến tính theo từng đoạn gãy khúc để kéo dãn các mức xám hẹp ra toàn dải $[0, L-1]$:</p>
+          <div class="math-block">
+          $$s = \begin{cases} 
+            \alpha \cdot r, &amp; 0 \le r &lt; r_1 \\ 
+            \beta \cdot (r - r_1) + s_1, &amp; r_1 \le r &lt; r_2 \\ 
+            \gamma \cdot (r - r_2) + s_2, &amp; r_2 \le r \le L-1 
+          \end{cases}$$
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Trong đó $\alpha = \frac{s_1}{r_1}$, $\beta = \frac{s_2 - s_1}{r_2 - r_1}$, $\gamma = \frac{(L-1) - s_2}{(L-1) - r_2}$.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">1.5 Phân Mảnh Mặt Phẳng Bit (Bit-Plane Slicing)</div>
+          <p>Trích xuất giá trị bit thứ $i$ ($i = 0, \dots, 7$) của một điểm ảnh 8-bit:</p>
+          <div class="math-block">$$b_i(x,y) = \left\lfloor \frac{f(x,y)}{2^i} \right\rfloor \bmod 2$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Các bit cao ($b_7, b_6, b_5$) chứa phần lớn thông tin cấu trúc hình dạng ảnh; các bit thấp chứa chi tiết mịn hoặc nhiễu.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: Histogram -->
+      <section id="sec-2-histogram" style="margin-top: 3rem;">
+        <h2>2. Xử Lý Histogram (Histogram Equalization &amp; Matching)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">2.1 Định nghĩa Histogram &amp; Xác suất Mức Xám</div>
+          <p>Đối với ảnh kích thước $M \times N$ với các mức xám $r_k \in [0, L-1]$ ($k = 0, \dots, L-1$):</p>
+          <p><strong>Xác suất xuất hiện (PDF):</strong></p>
+          <div class="math-block">$$p_r(r_k) = \frac{n_k}{MN}$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Trong đó $n_k$ là số lượng pixel có mức xám $r_k$. Tổng số pixel $MN = \sum_{k=0}^{L-1} n_k$.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2.2 Quy Trình Tính Toán Cân Bằng Histogram (Histogram Equalization - HE)</div>
+          <p>Thuật toán tự động dàn đều phân bố các mức xám để tăng tối đa độ tương phản toàn cục của ảnh.</p>
+
+          <div class="step-box">
+            <strong>📋 Quy trình tính toán 5 bước chuẩn mực:</strong>
+            <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
+              <li><strong>Bước 1:</strong> Đếm số lượng pixel $n_k$ ứng với từng mức xám $r_k$ ($k = 0, 1, \dots, L-1$).</li>
+              <li><strong>Bước 2:</strong> Tính xác suất mức xám $p_r(r_k) = \frac{n_k}{MN}$.</li>
+              <li><strong>Bước 3:</strong> Tính hàm phân phối tích lũy (CDF) $S_k = \sum_{j=0}^{k} p_r(r_j)$.</li>
+              <li><strong>Bước 4:</strong> Tính mức xám mới $s_k = \text{round}\left((L-1) \cdot S_k\right)$.</li>
+              <li><strong>Bước 5:</strong> Ánh xạ (replace) toàn bộ pixel mức xám cũ $r_k$ trong ảnh thành mức xám mới $s_k$.</li>
+            </ol>
+          </div>
+
+          <p><strong>Công thức tổng quát tính $s_k$:</strong></p>
+          <div class="math-block">$$s_k = \text{round}\left( \frac{L - 1}{MN} \sum_{j=0}^{k} n_j \right)$$</div>
+
+          <div class="callout" style="background-color: var(--highlight-bg); border-left-color: var(--secondary-color); margin-top: 1rem;">
+            <strong>📐 Ví dụ minh họa tính toán nhanh (Ảnh $4 \times 4$, mức xám $L = 8$):</strong>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+              Cho ảnh có $MN = 16$ pixels, số lượng $n_k$ tại các mức $[0..7]$ lần lượt là: $[0, 0, 4, 6, 4, 2, 0, 0]$.<br>
+              - $S_2 = \frac{4}{16} = 0.25 \Rightarrow s_2 = \text{round}(7 \times 0.25) = \text{round}(1.75) = 2$.<br>
+              - $S_3 = \frac{4+6}{16} = 0.625 \Rightarrow s_3 = \text{round}(7 \times 0.625) = \text{round}(4.375) = 4$.<br>
+              - $S_4 = \frac{10+4}{16} = 0.875 \Rightarrow s_4 = \text{round}(7 \times 0.875) = \text{round}(6.125) = 6$.<br>
+              - $S_5 = \frac{14+2}{16} = 1.0 \Rightarrow s_5 = \text{round}(7 \times 1.0) = 7$.
+            </p>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2.3 Quy Trình Khớp Histogram (Histogram Matching / Specification)</div>
+          <p>Biến đổi histogram của ảnh gốc $f$ sao cho khớp với một histogram mục tiêu $p_z(z)$ cho trước:</p>
+          <ol style="font-size: 0.92rem; line-height: 1.6; padding-left: 1.2rem;">
+            <li>Cân bằng histogram ảnh gốc để tìm ánh xạ $s_k = T(r_k)$.</li>
+            <li>Cân bằng histogram lý thuyết mục tiêu để tìm hàm $v_q = G(z_q) = (L-1) \sum_{i=0}^q p_z(z_i)$.</li>
+            <li>Tìm hàm ánh xạ ngược $z_q = G^{-1}(s_k)$ bằng cách tìm $z_q$ sao cho $G(z_q)$ gần nhất với $s_k$.</li>
+            <li>Ánh xạ điểm ảnh gốc $r_k \to s_k \to z_q$.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Section 3: Tích chập 2D & Lọc không gian -->
+      <section id="sec-3-convolution" style="margin-top: 3rem;">
+        <h2>3. Tích Chập 2D &amp; Lọc Không Gian (Spatial Filtering &amp; Convolution)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">3.1 Phép Tích Chập 2D (2D Convolution) &amp; Phép Tương Quan (2D Correlation)</div>
+          <p>Cho ảnh $f(x,y)$ và mặt nạ lọc (kernel) $w(s,t)$ kích thước $(2a+1) \times (2b+1)$:</p>
+          
+          <p><strong>Công thức Tích Chập 2D (2D Convolution):</strong></p>
+          <div class="math-block">$$g(x,y) = w(x,y) * f(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t) \cdot f(x-s, y-t)$$</div>
+
+          <p><strong>Công thức Tương Quan 2D (2D Correlation):</strong></p>
+          <div class="math-block">$$g(x,y) = w(x,y) \star f(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t) \cdot f(x+s, y+t)$$</div>
+
+          <div class="step-box">
+            <strong>⚠️ Điểm khác biệt mấu chốt giữa Tích Chập và Tương Quan:</strong>
+            <p style="margin-top: 0.25rem;">
+              - Phép <strong>Tích chập (Convolution)</strong> phải thực hiện <strong>LẬT MẶT NẠ 180°</strong> (quay mặt nạ theo trục đứng rồi trục ngang) trước khi nhân chập và cộng tổng.<br>
+              - Phép <strong>Tương quan (Correlation)</strong> giữ nguyên hướng mặt nạ để nhân phần tử tương ứng rồi cộng tổng.<br>
+              - Nếu mặt nạ $w$ đối xứng qua tâm (như bộ lọc Box, Gaussian, Laplacian), kết quả Tích chập và Tương quan là <strong>HOÀN TOÀN GIỐNG NHƯNG</strong>.
+            </p>
+          </div>
+
+          <p><strong>Kỹ thuật xử lý biên (Border Handling / Padding):</strong></p>
+          <ul>
+            <li><strong>Zero Padding:</strong> Thêm các hàng/cột giá trị 0 xung quanh biên ảnh. Kích thước ảnh sau padding với kernel $k \times k$: $M' = M + k - 1$.</li>
+            <li><strong>Replicate Padding:</strong> Lặp lại giá trị pixel biên gần nhất.</li>
+            <li><strong>Reflect / Mirror Padding:</strong> Lấy đối xứng qua đường biên.</li>
+          </ul>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">3.2 Các Bộ Lọc Làm Mịn Ảnh (Smoothing Spatial Filters)</div>
+          <p><strong>a. Bộ lọc Trung bình (Mean / Box Filter $3 \times 3$):</strong></p>
+          <div class="math-block">$$w = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</div>
+
+          <p><strong>b. Bộ lọc Trung bình có Trọng số (Weighted Average Filter $3 \times 3$):</strong></p>
+          <div class="math-block">$$w = \frac{1}{16} \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 2 &amp; 4 &amp; 2 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</div>
+
+          <p><strong>c. Bộ lọc Gaussian 2D (Gaussian Filter):</strong></p>
+          <div class="math-block">$$h(u,v) = \frac{1}{2\pi \sigma^2} e^{-\frac{u^2 + v^2}{2\sigma^2}}$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Ví dụ ma trận bộ lọc Gaussian $3 \times 3$ làm tròn với $\sigma = 1.0$ là $\frac{1}{16} \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 2 &amp; 4 &amp; 2 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">3.3 Bộ Lọc Thống Kê Thứ Tự (Order-Statistic Filters)</div>
+          <p>Bộ lọc phi tuyến hoạt động bằng cách sắp xếp dãy các giá trị pixel trong cửa sổ lân cận $S_{xy}$ theo thứ tự tăng dần:</p>
+          <ul>
+            <li><strong>Bộ lọc Trung vị (Median Filter):</strong> $g(x,y) = \text{median}\{f(s,t) \mid (s,t) \in S_{xy}\}$. Đặc biệt hiệu quả trong việc <strong>khử nhiễu muối tiêu (Salt &amp; Pepper Noise)</strong> mà vẫn giữ nét cạnh ảnh.</li>
+            <li><strong>Bộ lọc Max (Max Filter):</strong> $g(x,y) = \max\{f(s,t)\}$. Khử nhiễu tiêu (Pepper noise - hạt đen).</li>
+            <li><strong>Bộ lọc Min (Min Filter):</strong> $g(x,y) = \min\{f(s,t)\}$. Khử nhiễu muối (Salt noise - hạt trắng).</li>
+            <li><strong>Bộ lọc Điểm giữa (Midpoint Filter):</strong> $g(x,y) = \frac{1}{2} \left[ \max\{f(s,t)\} + \min\{f(s,t)\} \right]$.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 4: Đạo hàm bậc 1, bậc 2 -->
+      <section id="sec-4-derivatives" style="margin-top: 3rem;">
+        <h2>4. Đạo Hàm Bậc 1, Bậc 2 &amp; Phát Hiện Biên (Derivative Operators)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">4.1 Đạo Hàm Bậc 1 &amp; Toán Tử Gradient</div>
+          <p>Gradient của ảnh $f(x,y)$ tại tọa độ $(x,y)$ là một véc-tơ chỉ hướng tăng nhanh nhất của mức xám:</p>
+          <div class="math-block">$$\nabla f = \text{grad}(f) = \begin{bmatrix} g_x \\ g_y \end{bmatrix} = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix}$$</div>
+
+          <p><strong>Độ lớn Gradient (Gradient Magnitude):</strong></p>
+          <div class="math-block">$$M(x,y) = |\nabla f| = \sqrt{g_x^2 + g_y^2} \approx |g_x| + |g_y|$$</div>
+
+          <p><strong>Góc hướng Gradient (Gradient Direction / Angle):</strong></p>
+          <div class="math-block">$$\alpha(x,y) = \arctan\left(\frac{g_y}{g_x}\right)$$</div>
+
+          <hr style="margin: 1rem 0; border: none; border-top: 1px dashed var(--border-color);">
+
+          <p><strong>a. Toán tử Roberts Cross ($2 \times 2$):</strong></p>
+          <div class="math-block">$$g_x = \begin{bmatrix} -1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}, \quad g_y = \begin{bmatrix} 0 &amp; -1 \\ 1 &amp; 0 \end{bmatrix}$$</div>
+
+          <p><strong>b. Toán tử Prewitt ($3 \times 3$):</strong></p>
+          <div class="math-block">$$h_x = \begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}, \quad h_y = \begin{bmatrix} -1 &amp; -1 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</div>
+
+          <p><strong>c. Toán tử Sobel ($3 \times 3$ - Có trọng số chống nhiễu):</strong></p>
+          <div class="math-block">$$s_x = \begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -2 &amp; 0 &amp; 2 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}, \quad s_y = \begin{bmatrix} -1 &amp; -2 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">4.2 Đạo Hàm Bậc 2 &amp; Toán Tử Laplacian</div>
+          <p>Toán tử Laplacian là đạo hàm bậc hai vô hướng, đẳng hướng (isotropic):</p>
+          <div class="math-block">$$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}$$</div>
+
+          <p>Khai triển xấp xỉ rời rạc từng hướng:</p>
+          <div class="math-block">$$\frac{\partial^2 f}{\partial x^2} = f(x+1,y) + f(x-1,y) - 2f(x,y)$$</div>
+          <div class="math-block">$$\frac{\partial^2 f}{\partial y^2} = f(x,y+1) + f(x,y-1) - 2f(x,y)$$</div>
+          <div class="math-block">$$\Rightarrow \nabla^2 f = f(x+1,y) + f(x-1,y) + f(x,y+1) + f(x,y-1) - 4f(x,y)$$</div>
+
+          <p><strong>Ma trận bộ lọc Laplacian không gian:</strong></p>
+          <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 0.5rem;">
+            <div>
+              <p style="font-size: 0.9rem; font-weight: 600;">Laplacian 4-lân cận (Tâm âm):</p>
+              <div class="math-block">$$\begin{bmatrix} 0 &amp; 1 &amp; 0 \\ 1 &amp; -4 &amp; 1 \\ 0 &amp; 1 &amp; 0 \end{bmatrix}$$</div>
+            </div>
+            <div>
+              <p style="font-size: 0.9rem; font-weight: 600;">Laplacian 8-lân cận (Tâm âm):</p>
+              <div class="math-block">$$\begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; -8 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</div>
+            </div>
+            <div>
+              <p style="font-size: 0.9rem; font-weight: 600;">Laplacian 8-lân cận (Tâm dương):</p>
+              <div class="math-block">$$\begin{bmatrix} -1 &amp; -1 &amp; -1 \\ -1 &amp; 8 &amp; -1 \\ -1 &amp; -1 &amp; -1 \end{bmatrix}$$</div>
+            </div>
+          </div>
+
+          <p style="margin-top: 1rem;"><strong>Công thức Làm Nét Ảnh bằng Laplacian (Laplacian Sharpening):</strong></p>
+          <div class="math-block">$$g(x,y) = f(x,y) + c \cdot \left[ \nabla^2 f(x,y) \right]$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Trong đó $c = -1$ nếu phần tử tâm ma trận Laplacian là âm; $c = 1$ nếu phần tử tâm ma trận Laplacian là dương.</p>
+
+          <hr style="margin: 1rem 0; border: none; border-top: 1px dashed var(--border-color);">
+
+          <p><strong>Bộ lọc LoG (Laplacian of Gaussian / Mexican Hat Filter):</strong></p>
+          <div class="math-block">$$\text{LoG}(x,y) = -\frac{1}{\pi \sigma^4} \left[ 1 - \frac{x^2+y^2}{2\sigma^2} \right] e^{-\frac{x^2+y^2}{2\sigma^2}}$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Ứng dụng: Kết hợp làm mịn Gaussian khử nhiễu trước khi tính Laplacian để phát hiện điểm chuyển dấu (Zero-Crossing).</p>
+        </div>
+      </section>
+
+      <!-- Section 5: Canny Edge Detector -->
+      <section id="sec-5-canny" style="margin-top: 3rem;">
+        <h2>5. Thuật Toán Phát Hiện Biên Canny (Canny Edge Detector)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">5.1 Quy Trình 5 Bước Thuật Toán Canny Chuẩn Mực</div>
+          <p>Canny là thuật toán phát hiện biên tối ưu (Optimal Edge Detector) dựa trên 3 tiêu chí: tỷ lệ lỗi thấp, vị trí biên chính xác, và phản hồi đơn cho mỗi biên.</p>
+
+          <div class="step-box">
+            <strong>📋 Quy trình 5 bước thực hiện từng bước:</strong>
+            <ol style="margin-top: 0.5rem; padding-left: 1.2rem; line-height: 1.7;">
+              <li>
+                <strong>Bước 1: Làm mịn ảnh bằng lọc Gaussian (Gaussian Blur)</strong><br>
+                Tích chập ảnh với ma trận Gaussian $G(x,y,\sigma)$ để loại bỏ nhiễu cao tần: $f_s(x,y) = f(x,y) * G(x,y,\sigma)$.
+              </li>
+              <li>
+                <strong>Bước 2: Tính độ lớn &amp; hướng Gradient (Sobel Operator)</strong><br>
+                Tính $g_x, g_y$ bằng toán tử Sobel. Độ lớn $M(x,y) = \sqrt{g_x^2 + g_y^2}$ và hướng $\theta(x,y) = \arctan(g_y / g_x)$.<br>
+                Quy đổi hướng $\theta(x,y)$ về 1 trong 4 hướng chuẩn: <strong>0° (ngang), 45° (chéo phải), 90° (dọc), 135° (chéo trái)</strong>.
+              </li>
+              <li>
+                <strong>Bước 3: Khử cực đại địa phương (Non-Maximum Suppression - NMS)</strong><br>
+                Làm mỏng biên thành độ dày 1 pixel. Tại mỗi pixel $(x,y)$, so sánh độ lớn $M(x,y)$ với 2 điểm lân cận theo hướng gradient góc $\theta$.<br>
+                Nếu $M(x,y)$ không phải là giá trị lớn nhất theo hướng đó $\Rightarrow$ Gán $M(x,y) = 0$ (khử bỏ).
+              </li>
+              <li>
+                <strong>Bước 4: Phân ngưỡng kép (Double Thresholding)</strong><br>
+                Thiết lập 2 ngưỡng: ngưỡng cao $T_{\text{high}}$ và ngưỡng thấp $T_{\text{low}}$ (thường $T_{\text{high}} \approx 2 \times T_{\text{low}}$ hoặc $3 \times T_{\text{low}}$):
+                <ul style="margin-top: 0.25rem; padding-left: 1rem;">
+                  <li>$M(x,y) \ge T_{\text{high}} \Rightarrow$ <strong>Biên chắc chắn (Strong Edge)</strong>.</li>
+                  <li>$T_{\text{low}} \le M(x,y) &lt; T_{\text{high}} \Rightarrow$ <strong>Biên yếu (Weak Edge)</strong>.</li>
+                  <li>$M(x,y) &lt; T_{\text{low}} \Rightarrow$ <strong>Không phải biên (Suppressed / Non-edge)</strong>.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Bước 5: Liên kết biên theo vết trễ (Edge Tracking by Hysteresis)</strong><br>
+                Xác định các biên yếu có phải là biên thật hay không: Giữ lại biên yếu nếu nó <strong>liên thông 8-lân cận với ít nhất 1 biên chắc chắn (Strong Edge)</strong>. Ngược lại, loại bỏ biên yếu đó.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Phân ngưỡng ảnh -->
+      <section id="sec-6-thresholding" style="margin-top: 3rem;">
+        <h2>6. Phân Vùng Ảnh &amp; Phân Ngưỡng (Image Thresholding)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">6.1 Phân Ngưỡng Lặp Tự Động (Iterative Global Thresholding)</div>
+          <div class="step-box">
+            <strong>📋 Quy trình 5 bước lặp tìm ngưỡng tự động $T$:</strong>
+            <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
+              <li><strong>Bước 1:</strong> Chọn ngưỡng ban đầu $T_0$ (ví dụ: trung bình mức xám của toàn bộ ảnh $T_0 = \frac{1}{MN} \sum_{x} \sum_{y} f(x,y)$).</li>
+              <li><strong>Bước 2:</strong> Phân chia ảnh thành 2 nhóm pixel dựa trên $T_k$:
+                <br>- Nhóm $G_1$: gồm tất cả pixel có mức xám $f(x,y) &gt; T_k$.
+                <br>- Nhóm $G_2$: gồm tất cả pixel có mức xám $f(x,y) \le T_k$.
+              </li>
+              <li><strong>Bước 3:</strong> Tính trung bình mức xám $m_1$ của nhóm $G_1$ và $m_2$ của nhóm $G_2$.</li>
+              <li><strong>Bước 4:</strong> Tính ngưỡng mới: $T_{k+1} = \frac{m_1 + m_2}{2}$.</li>
+              <li><strong>Bước 5:</strong> Lặp lại Bước 2-4 cho đến khi chênh lệch $|T_{k+1} - T_k| &lt; \Delta T$ (với $\Delta T$ nhỏ cho trước, ví dụ $0.5$).</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">6.2 Thuật Toán Phân Ngưỡng Otsu (Otsu's Optimal Thresholding)</div>
+          <p>Thuật toán Otsu tự động tìm ngưỡng $k^*$ tối ưu bằng cách <strong>cực đại hóa phương sai giữa hai lớp (Between-Class Variance $\sigma_B^2$)</strong>.</p>
+
+          <p><strong>Công thức toán học chi tiết:</strong></p>
+          <ul>
+            <li><strong>Tỷ lệ 2 nhóm pixel tại ngưỡng $k$:</strong>
+              <div class="math-block">$$\omega_0(k) = \sum_{i=0}^{k} p_i, \quad \omega_1(k) = \sum_{i=k+1}^{L-1} p_i = 1 - \omega_0(k)$$</div>
+            </li>
+            <li><strong>Giá trị trung bình mức xám của 2 nhóm:</strong>
+              <div class="math-block">$$\mu_0(k) = \frac{\sum_{i=0}^{k} i \cdot p_i}{\omega_0(k)}, \quad \mu_1(k) = \frac{\sum_{i=k+1}^{L-1} i \cdot p_i}{\omega_1(k)}$$</div>
+            </li>
+            <li><strong>Giá trị trung bình mức xám toàn ảnh:</strong>
+              <div class="math-block">$$\mu_T = \sum_{i=0}^{L-1} i \cdot p_i = \omega_0 \mu_0 + \omega_1 \mu_1$$</div>
+            </li>
+            <li><strong>Phương sai giữa 2 lớp (Between-Class Variance):</strong>
+              <div class="math-block">$$\sigma_B^2(k) = \omega_0(k) [\mu_0(k) - \mu_T]^2 + \omega_1(k) [\mu_1(k) - \mu_T]^2 = \frac{[\mu_T \omega_0(k) - \mu(k)]^2}{\omega_0(k)[1 - \omega_0(k)]}$$</div>
+            </li>
+          </ul>
+
+          <p><strong>Ngưỡng tối ưu $k^*$ là mức xám $k$ đạt giá trị $\sigma_B^2(k)$ lớn nhất:</strong></p>
+          <div class="math-block">$$k^* = \arg\max_{0 \le k &lt; L-1} \sigma_B^2(k)$$</div>
+        </div>
+      </section>
+
+      <!-- Section 7: Hình thái học -->
+      <section id="sec-7-morphology" style="margin-top: 3rem;">
+        <h2>7. Xử Lý Ảnh Hình Thái Học (Morphological Image Processing)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">7.1 Hai Phép Toán Nền Tảng: Ăn Mòn (Erosion) &amp; Giãn Nở (Dilation)</div>
+          <p>Cho tập hợp ảnh $A$ và phần tử cấu trúc (Structuring Element) $B$:</p>
+
+          <p><strong>a. Phép Ăn Mòn (Erosion $\ominus$):</strong></p>
+          <div class="math-block">$$A \ominus B = \{ z \mid (B)_z \subseteq A \}$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Tác dụng: Loại bỏ chi tiết nhỏ, làm mỏng nét, làm đứt các cầu nối hẹp.</p>
+
+          <p><strong>b. Phép Giãn Nở (Dilation $\oplus$):</strong></p>
+          <div class="math-block">$$A \oplus B = \{ z \mid (\hat{B})_z \cap A \neq \emptyset \}$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Tác dụng: Làm dày vật thể, lấp các lỗ rỗng nhỏ và hàn nối các đoạn đứt gãy.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">7.2 Phép Mở (Opening) &amp; Phép Đóng (Closing)</div>
+          <p><strong>a. Phép Mở (Opening $\circ$):</strong> Ăn mòn trước, giãn nở sau.</p>
+          <div class="math-block">$$A \circ B = (A \ominus B) \oplus B$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Tác dụng: Làm mịn đường viền bên ngoài, xóa các gờ nhô và mồi nhiễu nhỏ mà không làm thay đổi diện tích tổng thể.</p>
+
+          <p><strong>b. Phép Đóng (Closing $\bullet$):</strong> Giãn nở trước, ăn mòn sau.</p>
+          <div class="math-block">$$A \bullet B = (A \oplus B) \ominus B$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Tác dụng: Làm mịn đường viền, hàn nối các khe hẹp và lấp các lỗ rỗng nhỏ bên trong vật thể.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">7.3 Các Thuật Toán Hình Thái Học Ứng Dụng</div>
+          <ul>
+            <li><strong>Trích xuất biên (Boundary Extraction):</strong> $\beta(A) = A - (A \ominus B)$</li>
+            <li><strong>Lấp lỗ rỗng (Hole Filling):</strong> $X_k = (X_{k-1} \oplus B) \cap A^c$ với $X_0$ là điểm mầm bên trong lỗ.</li>
+            <li><strong>Biến đổi Top-hat (Grayscale Top-hat):</strong> $T_{\text{top}}(f) = f - (f \circ b)$ (làm nổi bật chi tiết sáng trên nền tối).</li>
+            <li><strong>Biến đổi Bottom-hat (Grayscale Bottom-hat):</strong> $T_{\text{bot}}(f) = (f \bullet b) - f$ (làm nổi bật chi tiết tối trên nền sáng).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 8: Fourier -->
+      <section id="sec-8-fourier" style="margin-top: 3rem;">
+        <h2>8. Biến Đổi Fourier &amp; Miền Tần Số (Frequency Domain Filtering)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">8.1 Biến Đổi Fourier Rời Rạc 2D (2D Discrete Fourier Transform - DFT)</div>
+          <p>Cho ảnh không gian $f(x,y)$ kích thước $M \times N$:</p>
+
+          <p><strong>Công thức Biến Đổi Fourier Thuận 2D (2D DFT):</strong></p>
+          <div class="math-block">$$F(u,v) = \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x,y) \cdot e^{-j 2\pi \left(\frac{ux}{M} + \frac{vy}{N}\right)}$$</div>
+
+          <p><strong>Công thức Biến Đổi Fourier Ngược 2D (2D IDFT):</strong></p>
+          <div class="math-block">$$f(x,y) = \frac{1}{MN} \sum_{u=0}^{M-1} \sum_{v=0}^{N-1} F(u,v) \cdot e^{j 2\pi \left(\frac{ux}{M} + \frac{vy}{N}\right)}$$</div>
+
+          <p><strong>Phổ Biên Độ &amp; Phổ Công Suất:</strong></p>
+          <div class="math-block">$$\text{Phổ biên độ: } |F(u,v)| = \sqrt{R^2(u,v) + I^2(u,v)}$$</div>
+          <div class="math-block">$$\text{Phổ công suất: } P(u,v) = |F(u,v)|^2 = R^2(u,v) + I^2(u,v)$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Dịch gốc tần số về tâm ảnh $(M/2, N/2)$: Nhân ảnh không gian $f(x,y)$ với $(-1)^{x+y}$ trước khi tính DFT.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">8.2 Bộ Lọc Tần Số: Thông Thấp (Lowpass) &amp; Thông Cao (Highpass)</div>
+          <p>Khoảng cách từ điểm $(u,v)$ đến tâm phổ tần số $(M/2, N/2)$:</p>
+          <div class="math-block">$$D(u,v) = \sqrt{\left(u - \frac{M}{2}\right)^2 + \left(v - \frac{N}{2}\right)^2}$$</div>
+
+          <table class="table" style="width:100%; border-collapse: collapse; margin-top: 1rem;">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Loại Bộ Lọc</th>
+                <th style="width: 38%;">Thông Thấp $H_{LP}(u,v)$ (Làm mịn)</th>
+                <th style="width: 37%;">Thông Cao $H_{HP}(u,v)$ (Làm nét biên)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lý Tưởng (Ideal)</strong></td>
+                <td>$$H(u,v) = \begin{cases} 1, &amp; D(u,v) \le D_0 \\ 0, &amp; D(u,v) &gt; D_0 \end{cases}$$</td>
+                <td>$$H_{HP}(u,v) = 1 - H_{LP}(u,v)$$</td>
+              </tr>
+              <tr>
+                <td><strong>Butterworth (Bậc $n$)</strong></td>
+                <td>$$H(u,v) = \frac{1}{1 + \left[ \frac{D(u,v)}{D_0} \right]^{2n}}$$</td>
+                <td>$$H(u,v) = \frac{1}{1 + \left[ \frac{D_0}{D(u,v)} \right]^{2n}}$$</td>
+              </tr>
+              <tr>
+                <td><strong>Gaussian</strong></td>
+                <td>$$H(u,v) = e^{-\frac{D^2(u,v)}{2D_0^2}}$$</td>
+                <td>$$H(u,v) = 1 - e^{-\frac{D^2(u,v)}{2D_0^2}}$$</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">Bộ lọc Gaussian <strong>không gây ra hiện tượng gợn sóng (Ringing Effect)</strong> như bộ lọc Lý tưởng.</p>
+        </div>
+      </section>
+
+      <!-- Section 9: Khôi phục ảnh & Bộ lọc nhiễu -->
+      <section id="sec-9-restoration" style="margin-top: 3rem;">
+        <h2>9. Khôi Phục Ảnh &amp; Các Bộ Lọc Nhiễu (Image Restoration)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">9.1 Mô Hình Ảnh Bị Nhiễu</div>
+          <div class="math-block">$$g(x,y) = f(x,y) + \eta(x,y)$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Trong đó $f(x,y)$ là ảnh gốc, $\eta(x,y)$ là nhiễu cộng và $g(x,y)$ là ảnh quan sát được.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">9.2 Các Bộ Lọc Trung Bình Khử Nhiễu Khai Triển Toán Học</div>
+          <table class="table" style="width:100%; border-collapse: collapse; margin-top: 0.5rem;">
+            <thead>
+              <tr>
+                <th style="width: 30%;">Tên Bộ Lọc</th>
+                <th style="width: 45%;">Công Thức Tính $\hat{f}(x,y)$</th>
+                <th style="width: 25%;">Ứng Dụng Khử Nhiễu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Trung bình số học (Arithmetic Mean)</strong></td>
+                <td>$$\hat{f}(x,y) = \frac{1}{mn} \sum_{(s,t) \in S_{xy}} g(s,t)$$</td>
+                <td>Nhiễu Gaussian, nhiễu đều.</td>
+              </tr>
+              <tr>
+                <td><strong>Trung bình hình học (Geometric Mean)</strong></td>
+                <td>$$\hat{f}(x,y) = \left[ \prod_{(s,t) \in S_{xy}} g(s,t) \right]^{\frac{1}{mn}}$$</td>
+                <td>Giữ chi tiết tốt hơn số học.</td>
+              </tr>
+              <tr>
+                <td><strong>Trung bình điều hòa (Harmonic Mean)</strong></td>
+                <td>$$\hat{f}(x,y) = \frac{mn}{\sum_{(s,t) \in S_{xy}} \frac{1}{g(s,t)}}$$</td>
+                <td>Tốt cho nhiễu Salt (hạt trắng).</td>
+              </tr>
+              <tr>
+                <td><strong>Trung bình Nghịch điều hòa (Contraharmonic)</strong></td>
+                <td>$$\hat{f}(x,y) = \frac{\sum_{(s,t) \in S_{xy}} g(s,t)^{Q+1}}{\sum_{(s,t) \in S_{xy}} g(s,t)^Q}$$</td>
+                <td>$Q &gt; 0$: Khử Salt noise.<br>$Q &lt; 0$: Khử Pepper noise.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">9.3 Bộ Lọc Wiener (Wiener Filter / Minimum Mean Square Error Filter)</div>
+          <p>Bộ lọc tối ưu sai số bình phương trung bình trong miền tần số khi ảnh bị biến dạng bởi hàm truyền $H(u,v)$ và nhiễu:</p>
+          <div class="math-block">$$\hat{F}(u,v) = \left[ \frac{H^*(u,v)}{|H(u,v)|^2 + K} \right] G(u,v)$$</div>
+          <p style="font-size: 0.9rem; color: var(--text-light);">Với $H^*(u,v)$ là phức liên hợp của $H(u,v)$ và $K = \frac{S_\eta(u,v)}{S_f(u,v)}$ là tỷ số mật độ phổ công suất nhiễu/ảnh gốc.</p>
+        </div>
+      </section>
+
+      <!-- Section 10: Biến đổi hình học & Nội suy -->
+      <section id="sec-10-affine" style="margin-top: 3rem;">
+        <h2>10. Biến Đổi Hình Học &amp; Nội Suy Ảnh (Geometric Transformations)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">10.1 Ma Trận Biến Đổi Affine 2D</div>
+          <div class="math-block">$$\begin{bmatrix} x' \\ y' \\ 1 \end{bmatrix} = \mathbf{T} \cdot \begin{bmatrix} x \\ y \\ 1 \end{bmatrix} = \begin{bmatrix} a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ 0 &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}$$</div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div>
+              <p style="font-weight: 600;">1. Phép Dịch Chuyển (Translation):</p>
+              <div class="math-block">$$\begin{bmatrix} 1 &amp; 0 &amp; t_x \\ 0 &amp; 1 &amp; t_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix}$$</div>
+            </div>
+            <div>
+              <p style="font-weight: 600;">2. Phép Co Dãn (Scaling):</p>
+              <div class="math-block">$$\begin{bmatrix} s_x &amp; 0 &amp; 0 \\ 0 &amp; s_y &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}$$</div>
+            </div>
+            <div>
+              <p style="font-weight: 600;">3. Phép Quay Góc $\theta$ (Rotation):</p>
+              <div class="math-block">$$\begin{bmatrix} \cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}$$</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">10.2 Các Phương Pháp Nội Suy Mức Xám (Interpolation)</div>
+          <ul>
+            <li><strong>Nội suy Lân cận Gần nhất (Nearest Neighbor):</strong> Gán giá trị điểm ảnh bằng điểm ảnh gốc gần nhất. Nhanh nhưng gây răng cưa (aliasing/pixellation).</li>
+            <li>
+              <strong>Nội suy Song Tuyến Tính (Bilinear Interpolation):</strong> Tính trung bình có trọng số của 4 điểm lân cận xung quanh $(x,y)$:
+              <div class="math-block">$$f(x,y) \approx (1-\Delta x)(1-\Delta y)f(Q_{11}) + \Delta x(1-\Delta y)f(Q_{21}) + (1-\Delta x)\Delta y f(Q_{12}) + \Delta x \Delta y f(Q_{22})$$</div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 11: Tra cứu ma trận bộ lọc chuẩn -->
+      <section id="sec-11-kernels-ref" style="margin-top: 3rem;">
+        <h2>11. Bảng Tra Cứu Nhanh Ma Trận Bộ Lọc Không Gian Chuẩn (Kernel Reference)</h2>
+
+        <table class="table" style="width:100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Tên Bộ Lọc</th>
+              <th style="width: 45%;">Ma Trận Mặt Nạ $w$ (Kernel)</th>
+              <th style="width: 30%;">Đặc Điểm &amp; Ứng Dụng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Mean Box $3 \times 3$</strong></td>
+              <td>$$\frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</td>
+              <td>Làm mịn ảnh, khử nhiễu. Tổng trọng số = 1.</td>
+            </tr>
+            <tr>
+              <td><strong>Gaussian $3 \times 3$</strong></td>
+              <td>$$\frac{1}{16} \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 2 &amp; 4 &amp; 2 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</td>
+              <td>Làm mịn mượt, ít mờ biên hơn Box filter.</td>
+            </tr>
+            <tr>
+              <td><strong>Sobel $S_x$ (Ngang)</strong></td>
+              <td>$$\begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -2 &amp; 0 &amp; 2 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}$$</td>
+              <td>Phát hiện biên dọc (Gradient ngang $g_x$).</td>
+            </tr>
+            <tr>
+              <td><strong>Sobel $S_y$ (Dọc)</strong></td>
+              <td>$$\begin{bmatrix} -1 &amp; -2 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</td>
+              <td>Phát hiện biên ngang (Gradient dọc $g_y$).</td>
+            </tr>
+            <tr>
+              <td><strong>Prewitt $P_x$</strong></td>
+              <td>$$\begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}$$</td>
+              <td>Phát hiện biên dọc (không trọng số tâm).</td>
+            </tr>
+            <tr>
+              <td><strong>Roberts $R_x, R_y$ ($2 \times 2$)</strong></td>
+              <td>$$R_x = \begin{bmatrix} -1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}, \quad R_y = \begin{bmatrix} 0 &amp; -1 \\ 1 &amp; 0 \end{bmatrix}$$</td>
+              <td>Tính biên nhanh bằng đường chéo $2 \times 2$.</td>
+            </tr>
+            <tr>
+              <td><strong>Laplacian 4-lân cận</strong></td>
+              <td>$$\begin{bmatrix} 0 &amp; 1 &amp; 0 \\ 1 &amp; -4 &amp; 1 \\ 0 &amp; 1 &amp; 0 \end{bmatrix}$$</td>
+              <td>Đạo hàm bậc 2 đẳng hướng 4 hướng. Tổng = 0.</td>
+            </tr>
+            <tr>
+              <td><strong>Laplacian 8-lân cận</strong></td>
+              <td>$$\begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; -8 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</td>
+              <td>Đạo hàm bậc 2 đẳng hướng 8 hướng. Tổng = 0.</td>
+            </tr>
+            <tr>
+              <td><strong>High-Boost Filter ($A \ge 1$)</strong></td>
+              <td>$$\begin{bmatrix} -1 &amp; -1 &amp; -1 \\ -1 &amp; A+8 &amp; -1 \\ -1 &amp; -1 &amp; -1 \end{bmatrix}$$</td>
+              <td>Tăng cường chi tiết cao tần vừa giữ độ sáng gốc.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
