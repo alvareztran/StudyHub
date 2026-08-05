@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Hợp 5 Bài Thực Hành Hệ Điều Hành (CTU) - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Custom styles for lab layout */
+    .cmd-output {
+      background-color: var(--highlight-bg);
+      border-left: 3px solid var(--secondary-color);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      color: var(--text-dark);
+    }
+    .cmd-input {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .solution-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .solution-title {
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Nguyên lý Hệ điều hành</a> &raquo; Tổng hợp Thực hành
+      </div>
+      <h1>TỔNG HỢP TOÀN BỘ 5 BÀI THỰC HÀNH HỆ ĐIỀU HÀNH</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Tài liệu tổng hợp trọn vẹn 5 bài thực hành Linux &amp; Shell Scripting: Lệnh Shell cơ bản, Lập trình Shell cơ bản, Cấu trúc rẽ nhánh &amp; vòng lặp, Quản lý tiến trình &amp; tín hiệu (Signals), Quản lý file &amp; đổi hướng I/O kèm lời giải chi tiết tất cả các bài tập. (Theo Tài liệu Thực hành HĐH - ThS. Phan Thượng Cang &amp; ThS. Bùi Quốc Thái, Bộ môn HTMT&amp;TT &bull; ĐHCT).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+
+      <!-- ========================================== -->
+      <!-- BUỔI THỰC HÀNH SỐ 1 -->
+      <!-- ========================================== -->
+      <article id="lab-1" style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px dashed var(--border-color);">
+        <div style="background-color: var(--primary-color); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">
+          📘 THỰC HÀNH BUỔI 1
+        </div>
+        
+      <!-- Chương trình Đề Cương Thực Hành -->
+      <section id="sec-outline" style="background-color: var(--highlight-bg); border-left: 4px solid var(--primary-color); padding: 1rem 1.25rem; border-radius: 4px; margin-bottom: 2rem;">
+        <h3 style="margin-top: 0; color: var(--primary-color);">📌 ĐỀ CƯƠNG THỰC HÀNH MÔN HỆ ĐIỀU HÀNH (CTU)</h3>
+        <p><strong>Mục tiêu:</strong> Cài đặt HĐH Linux và sử dụng Shell Script để tìm hiểu các thành phần trong HĐH Linux như: hệ thống file, quá trình, bộ nhớ và xuất nhập.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; font-size: 0.92rem;">
+          <div>&bull; <strong>Buổi 1:</strong> Các lệnh cơ bản của Shell</div>
+          <div>&bull; <strong>Buổi 2:</strong> Cơ bản về lập trình Shell</div>
+          <div>&bull; <strong>Buổi 3:</strong> Lập trình cấu trúc &amp; vòng lặp</div>
+          <div>&bull; <strong>Buổi 4:</strong> Quản lý tiến trình</div>
+          <div>&bull; <strong>Buổi 5:</strong> Quản lý vào/ra &amp; tập tin</div>
+          <div>&bull; <strong>Buổi 6:</strong> Ôn tập &amp; Tổng hợp</div>
+        </div>
+      </section>
+
+      <!-- Section 1: Shell -->
+      <section id="sec-shell">
+        <h2>1. Shell – Bộ Thông Dịch Lệnh</h2>
+        
+        <h3>1.1 Shell là gì?</h3>
+        <p>
+          Máy tính chỉ có thể thực thi trực tiếp mã nhị phân (0 và 1). Để con người giao tiếp dễ dàng với hệ thống bằng ngôn ngữ cấp cao, hệ điều hành cung cấp một chương trình đặc biệt gọi là <strong>Shell (Bộ thông dịch lệnh)</strong>.
+        </p>
+        <p><em>Lưu ý:</em> Shell không phải là một thành phần cố định trong nhân (kernel) hệ điều hành, mà là một ứng dụng giao tiếp sử dụng hệ điều hành để thực thi lệnh và thao tác tập tin.</p>
+
+        <h3 style="margin-top: 1.25rem;">Các loại Shell thông dụng trong Linux:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Tên Shell</th>
+              <th>Tác giả / Nhà phát triển</th>
+              <th>Đặc điểm &amp; Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BASH</strong> (Bourne-Again SHell)</td>
+              <td>Brian Fox &amp; Chet Ramey (Free Software Foundation)</td>
+              <td>Là Shell mặc định và thông dụng nhất trên hầu hết các bản phân phối Linux.</td>
+            </tr>
+            <tr>
+              <td><strong>CSH</strong> (C SHell)</td>
+              <td>Bill Joy (University of California - BSD)</td>
+              <td>Có cú pháp câu lệnh rất tương đồng với ngôn ngữ lập trình C.</td>
+            </tr>
+            <tr>
+              <td><strong>KSH</strong> (Korn SHell)</td>
+              <td>David Korn (AT&amp;T Bell Labs)</td>
+              <td>Tối ưu hiệu năng cho các hệ thống Unix thương mại.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">Một vài câu lệnh liên quan đến Shell:</h3>
+        <div class="cmd-output"><span class="cmd-input"># 1. Liệt kê tất cả các loại Shell hỗ trợ trong hệ thống:</span>
+$ cat /etc/shells
+
+<span class="cmd-input"># 2. Kiểm tra loại Shell hiện tại đang sử dụng:</span>
+$ echo $SHELL
+/bin/bash</div>
+
+        <h3>1.2 Khởi động Shell &amp; Dấu nhắc (Prompt)</h3>
+        <p>Trong chế độ Text/Console, Shell được mở ngay khi đăng nhập. Trong chế độ đồ họa (GUI), Shell khởi chạy khi mở ứng dụng Terminal. Dấu nhắc lệnh mặc định dành cho người dùng thường là <code>$</code> (hoặc <code>#</code> dành cho quản trị viên <code>root</code>).</p>
+
+        <h3>1.3 Shell Script là gì?</h3>
+        <p><strong>Shell Script</strong> là một file văn bản chứa tập hợp gồm nhiều câu lệnh Linux được xếp theo thứ tự. Khi thực thi file script, Shell sẽ đọc và lần lượt thi hành từng câu lệnh tự động.</p>
+      </section>
+
+      <!-- Section 2: Lệnh cd, path, PATH -->
+      <section id="sec-path" style="margin-top: 2rem;">
+        <h2>2. Các Lệnh Cơ Bản &amp; Đường Dẫn (Path) Trong Linux</h2>
+        
+        <h3>2.1 Lệnh di chuyển thư mục `cd` &amp; Lệnh `pwd`</h3>
+        <ul>
+          <li><code>pwd</code> (Print Working Directory): Hiển thị đường dẫn tuyệt đối của thư mục làm việc hiện hành.</li>
+          <li><code>cd path</code>: Di chuyển đến thư mục chỉ định bởi <code>path</code>.</li>
+          <li><code>cd</code> (không tham số): Trở về ngay thư mục cá nhân (Home directory) của người dùng hiện tại.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">2.2 Đường dẫn Tuyệt đối vs Đường dẫn Tương đối</h3>
+        <ul>
+          <li><strong>Đường dẫn tuyệt đối (Absolute Path):</strong> Chỉ định đầy đủ vị trí bắt đầu từ thư mục gốc <code>/</code> (Ví dụ: <code>/usr/local/bin</code>). Luôn bắt đầu bằng <code>/</code>.</li>
+          <li><strong>Đường dẫn tương đối (Relative Path):</strong> Tính từ vị trí hiện hành đến thư mục mục tiêu. Không bắt đầu bằng <code>/</code> (Ví dụ đang ở <code>/usr</code> gõ <code>cd local/bin</code>).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">2.3 Ký hiệu thư mục đặc biệt:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Ký hiệu</th>
+              <th>Ý nghĩa</th>
+              <th>Ví dụ ứng dụng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>..</code></td>
+              <td>Thư mục cha (Parent Directory)</td>
+              <td><code>cd ..</code> hoặc <code>cd ../share</code></td>
+            </tr>
+            <tr>
+              <td><code>.</code></td>
+              <td>Thư mục hiện hành (Current Directory)</td>
+              <td><code>./myprog</code> (Thực thi script trong thư mục hiện tại)</td>
+            </tr>
+            <tr>
+              <td><code>~</code></td>
+              <td>Thư mục cá nhân (Home Directory)</td>
+              <td><code>./myprog ~/myfile.txt</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">2.4 Biến môi trường `PATH`</h3>
+        <p>Biến <code>PATH</code> lưu trữ danh sách các đường dẫn thư mục chứa các file chương trình thực thi. Khi bạn nhập một tên lệnh, Shell sẽ tìm kiếm chương trình đó trong các thư mục định nghĩa bởi <code>PATH</code>.</p>
+        <div class="cmd-output"><span class="cmd-input"># Xem danh sách các đường dẫn trong biến PATH:</span>
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/games
+
+<span class="cmd-input"># Thêm một đường dẫn mới vào biến PATH:</span>
+$ PATH=$PATH:/root/shellscript</div>
+      </section>
+
+      <!-- Section 3: ls, less, file -->
+      <section id="sec-ls-less-file" style="margin-top: 2rem;">
+        <h2>3. Khảo Sát Thư Mục Và File (`ls`, `less`, `file`)</h2>
+        
+        <h3>3.1 Lệnh `ls` và phân tích 7 cột định dạng dài (`ls -l`)</h3>
+        <div class="cmd-output">$ ls -l
+-rw-r--r-- 1 root root 1205 Mar 7 10:00 install.log</div>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cột số</th>
+              <th>Thông tin hiển thị</th>
+              <th>Mô tả chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cột (1)</td>
+              <td>Quyền truy xuất &amp; Loại file</td>
+              <td>Ký tự đầu: <code>-</code> (file thường), <code>d</code> (thư mục). 9 ký tự sau phân làm 3 nhóm: Owner (3), Group (3), Other (3) với các quyền <code>r</code>, <code>w</code>, <code>x</code>.</td>
+            </tr>
+            <tr>
+              <td>Cột (2)</td>
+              <td>Số lượng liên kết (Links)</td>
+              <td>Số lượng nối kết cứng trỏ tới file/thư mục.</td>
+            </tr>
+            <tr>
+              <td>Cột (3)</td>
+              <td>Chủ sở hữu (Owner)</td>
+              <td>Tên tài khoản người dùng làm chủ sở hữu file.</td>
+            </tr>
+            <tr>
+              <td>Cột (4)</td>
+              <td>Nhóm sở hữu (Group)</td>
+              <td>Tên nhóm người dùng có quyền tương ứng trên file.</td>
+            </tr>
+            <tr>
+              <td>Cột (5)</td>
+              <td>Kích thước (Size)</td>
+              <td>Kích thước file tính theo đơn vị Bytes.</td>
+            </tr>
+            <tr>
+              <td>Cột (6)</td>
+              <td>Thời gian cập nhật</td>
+              <td>Ngày giờ lần cuối file được chỉnh sửa.</td>
+            </tr>
+            <tr>
+              <td>Cột (7)</td>
+              <td>Tên File / Thư mục</td>
+              <td>Tên hiển thị của đối tượng trong hệ thống.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">3.2 Lệnh `less` xem văn bản theo trang</h3>
+        <p>Cú pháp: <code>$ less tên_file</code>. Các phím điều hướng khi dùng <code>less</code>:</p>
+        <ul style="line-height: 1.6;">
+          <li><code>Page Up</code> hoặc <code>b</code>: Cuộn lên 1 trang màn hình.</li>
+          <li><code>Page Down</code> hoặc <code>Space</code>: Cuộn xuống 1 trang màn hình.</li>
+          <li><code>G</code>: Nhảy trực tiếp đến dòng cuối cùng của file.</li>
+          <li><code>1G</code>: Nhảy về dòng đầu tiên của file.</li>
+          <li><code>/chuỗi</code>: Tìm kiếm từ khóa <code>chuỗi</code> trong nội dung file.</li>
+          <li><code>n</code>: Tìm kiếm tiếp tục kết quả trùng khớp tiếp theo.</li>
+          <li><code>q</code>: Thoát khỏi chế độ xem file.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">3.3 Lệnh `file` xác định định dạng tập tin</h3>
+        <p>Cú pháp: <code>$ file tên_file</code> (Ví dụ: kiểm tra xem file là ASCII text, C source code, Shell script hay ELF executable binary...).</p>
+      </section>
+
+      <!-- Section 4: Thao tác file & find -->
+      <section id="sec-file-ops" style="margin-top: 2rem;">
+        <h2>4. Các Lệnh Thao Tác File &amp; Wildcards</h2>
+        
+        <h3>4.1 Ký tự đại diện (Wildcards)</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Ký tự đại diện</th>
+              <th>Ý nghĩa trùng khớp</th>
+              <th>Ví dụ mẫu (Pattern)</th>
+              <th>Giải thích ví dụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>*</code></td>
+              <td>Trùng khớp với bất kỳ chuỗi một hoặc nhiều ký tự nào</td>
+              <td><code>b*.txt</code></td>
+              <td>Tất cả các file bắt đầu bằng <code>b</code> và kết thúc bằng <code>.txt</code></td>
+            </tr>
+            <tr>
+              <td><code>?</code></td>
+              <td>Trùng khớp với đúng 1 ký tự đơn bất kỳ</td>
+              <td><code>Data???</code></td>
+              <td>Các file bắt đầu bằng <code>Data</code> và có thêm đúng 3 ký tự tiếp theo</td>
+            </tr>
+            <tr>
+              <td><code>[tập_hợp]</code></td>
+              <td>Trùng khớp với 1 ký tự bất kỳ nằm trong khoảng/tập hợp</td>
+              <td><code>[A-Z]*</code></td>
+              <td>Tất cả các file bắt đầu bằng một ký tự chữ hoa</td>
+            </tr>
+            <tr>
+              <td><code>[!tập_hợp]</code></td>
+              <td>Trùng khớp với 1 ký tự KHÔNG nằm trong khoảng/tập hợp</td>
+              <td><code>[!a-z]*</code></td>
+              <td>Tất cả các file có ký tự đầu tiên không phải là chữ thường</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Bảng lệnh thao tác file cơ bản</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Chức năng &amp; Hành vi chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cp file1 file2</code></td>
+              <td>Sao chép file1 thành file2 (Ghi chồng nếu file2 đã tồn tại)</td>
+            </tr>
+            <tr>
+              <td><code>cp -i file1 file2</code></td>
+              <td>Sao chép có cảnh báo xác nhận trước khi ghi đè file2</td>
+            </tr>
+            <tr>
+              <td><code>cp -R dir1 dir2</code></td>
+              <td>Sao chép đệ quy toàn bộ cây thư mục dir1 sang dir2</td>
+            </tr>
+            <tr>
+              <td><code>mv file1 file2</code></td>
+              <td>Đổi tên file1 thành file2 (hoặc di chuyển nếu target là thư mục)</td>
+            </tr>
+            <tr>
+              <td><code>rm file1 file2</code></td>
+              <td>Xóa các tập tin chỉ định</td>
+            </tr>
+            <tr>
+              <td><code>rm -r dir1 dir2</code></td>
+              <td>Xóa đệ quy thư mục dir1, dir2 cùng toàn bộ nội dung bên trong</td>
+            </tr>
+            <tr>
+              <td><code>mkdir tên_dir</code></td>
+              <td>Tạo một thư mục mới</td>
+            </tr>
+            <tr>
+              <td><code>which tên_lệnh</code></td>
+              <td>Tìm vị trí đường dẫn file thực thi của lệnh trong biến <code>$PATH</code></td>
+            </tr>
+            <tr>
+              <td><code>whereis tên_lệnh</code></td>
+              <td>Tìm vị trí file nhị phân, file nguồn và tài liệu hướng dẫn man page</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">4.3 Công cụ tìm kiếm file mạnh mẽ `find`</h3>
+        <ul>
+          <li><code>find /path -name "pattern"</code>: Tìm theo tên file (có phân biệt hoa/thường).</li>
+          <li><code>find /path -iname "pattern"</code>: Tìm theo tên file **không phân biệt chữ hoa/thường**.</li>
+          <li><code>find /path -type [f|d|l|b|c]</code>: Lọc theo loại đối tượng: <code>f</code> (file), <code>d</code> (directory), <code>l</code> (symlink).</li>
+          <li><code>find /path -mtime -1</code>: Tìm các file được cập nhật trong vòng 24 giờ qua.</li>
+          <li><code>find /path -size -50c</code>: Tìm các file thường có kích thước nhỏ hơn 50 bytes (<code>c</code> là bytes, <code>k</code> là KB).</li>
+        </ul>
+      </section>
+
+      <!-- Section 5: Permissions & su, chown, chgrp -->
+      <section id="sec-permissions" style="margin-top: 2rem;">
+        <h2>5. Quyền Truy Xuất File &amp; Quản Lý Quyền (`chmod`, `su`, `chown`, `chgrp`)</h2>
+        
+        <h3>5.1 Bảng mã Bát phân (Octal) trong lệnh `chmod`</h3>
+        <p>Quyền truy cập được chia cho 3 nhóm: Owner - Group - Other. Mỗi nhóm gồm 3 bit đại diện cho <code>r</code> (Read=4), <code>w</code> (Write=2), <code>x</code> (Execute=1):</p>
+        
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Giá trị Octal</th>
+              <th>Ký hiệu Quyền</th>
+              <th>Ý nghĩa &amp; Trường hợp sử dụng phổ biến</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>777</code></td>
+              <td><code>rwx rwx rwx</code></td>
+              <td>Mọi người đều có toàn quyền (Đọc, Ghi, Thực thi). Rất ít khi dùng vì rủi ro bảo mật.</td>
+            </tr>
+            <tr>
+              <td><code>755</code></td>
+              <td><code>rwx r-x r-x</code></td>
+              <td>Owner có toàn quyền, Group &amp; Other có quyền Đọc và Thực thi. Thường dùng cho chương trình/script public.</td>
+            </tr>
+            <tr>
+              <td><code>700</code></td>
+              <td><code>rwx --- ---</code></td>
+              <td>Chỉ duy nhất Owner có toàn quyền, những người khác không có bất kỳ quyền nào. Thường dùng cho script cá nhân bảo mật.</td>
+            </tr>
+            <tr>
+              <td><code>666</code></td>
+              <td><code>rw- rw- rw-</code></td>
+              <td>Tất cả người dùng đều có quyền Đọc và Ghi (không có quyền thực thi).</td>
+            </tr>
+            <tr>
+              <td><code>644</code></td>
+              <td><code>rw- r-- r--</code></td>
+              <td>Owner có quyền Đọc &amp; Ghi, những người khác chỉ có quyền Đọc. Thường dùng cho các file dữ liệu chuẩn.</td>
+            </tr>
+            <tr>
+              <td><code>600</code></td>
+              <td><code>rw- --- ---</code></td>
+              <td>Owner có quyền Đọc &amp; Ghi, những người khác bị cấm hoàn toàn. Thường dùng cho file dữ liệu quan trọng.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">5.2 Lệnh `su`, `chown`, `chgrp`</h3>
+        <ul>
+          <li><code>su root</code>: Chuyển phiên làm việc sang tài khoản Superuser quản trị <code>root</code>. Nhập <code>exit</code> để thoát về user cũ.</li>
+          <li><code>chown user_moi file</code>: Thay đổi chủ sở hữu của file/thư mục (Cần quyền root).</li>
+          <li><code>chgrp group_moi file</code>: Thay đổi nhóm sở hữu của file/thư mục.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 14)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hiện và khảo sát tất cả các ví dụ trên</div>
+          <p>Tạo thử các tập tin, thực thi các lệnh <code>cd</code>, <code>pwd</code>, <code>ls -l</code>, <code>less</code>, <code>file</code>, <code>chmod</code> để quan sát kết quả hệ thống trả về.</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Thực hiện lệnh chuyển thư mục theo thứ tự</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd /</span>                     # 1. Chuyển về thư mục gốc /
+<span class="cmd-input">$ cd /bin</span>                  # 2. Chuyển đến thư mục /bin
+<span class="cmd-input">$ cd /usr/local/bin</span>        # 3. Chuyển đến thư mục /usr/local/bin
+<span class="cmd-input">$ cd ..</span>                    # 4. Chuyển ra thư mục trên một mức (/usr/local)
+<span class="cmd-input">$ cd</span>                       # 5. Chuyển về thư mục cá nhân (Home)</div>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Tạo script `hello` tại `/usr` và kiểm tra thực thi</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd /usr</span>
+<span class="cmd-input">$ cat > hello</span>
+echo "Xin chao!!!"
+[Nhấn Ctrl+D để lưu]
+<span class="cmd-input">$ chmod 755 hello</span>
+<span class="cmd-input">$ sh hello</span>
+Xin chao!!!
+
+<span class="cmd-input">$ cd ~</span>
+<span class="cmd-input">$ sh hello</span>
+sh: hello: No such file or directory</div>
+          <p><strong>Giải thích lý do không thực hiện được:</strong> Khi ở thư mục cá nhân <code>~</code>, gõ <code>sh hello</code> thì Shell sẽ tìm file <code>hello</code> trong thư mục hiện tại và các đường dẫn định nghĩa trong biến <code>$PATH</code>. Vì file <code>hello</code> nằm tại <code>/usr</code> (chưa có trong PATH hoặc không gọi rõ đường dẫn), Shell không thể tìm thấy file.</p>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Sử dụng đường dẫn tuyệt đối để chạy `hello`</div>
+          <div class="cmd-output"><span class="cmd-input">$ sh /usr/hello</span>
+Xin chao!!!</div>
+          <p>Khi chỉ định rõ đường dẫn tuyệt đối <code>/usr/hello</code>, Shell có thể truy xuất trực tiếp file ở bất kỳ vị trí nào.</p>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Thêm thư mục `/usr` vào biến `PATH`</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. Xem nội dung biến PATH hiện tại:</span>
+$ echo $PATH
+
+<span class="cmd-input"># 2. Thêm đường dẫn /usr vào PATH:</span>
+$ PATH=$PATH:/usr
+
+<span class="cmd-input"># 3. Bây giờ gõ 'sh hello' ở bất kỳ thư mục nào cũng đều chạy thành công:</span>
+$ cd ~
+$ sh hello
+Xin chao!!!</div>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Khảo sát quyền trên file `ls`, `sh` và thư mục `/root`</div>
+          <div class="cmd-output"><span class="cmd-input">$ ls -l /bin/ls /bin/sh</span>
+-rwxr-xr-x 1 root root 142144 Jan 1  2024 /bin/ls
+lrwxrwxrwx 1 root root      4 Jan 1  2024 /bin/sh -> bash
+
+<span class="cmd-input">$ ls -ld /root</span>
+drwx------ 1 root root   4096 Mar 7 12:00 /root</div>
+          <p><strong>Nhận xét:</strong> File <code>/bin/ls</code> có quyền <code>755</code> (root toàn quyền, mọi user khác được đọc và chạy). Thư mục <code>/root</code> có quyền <code>700</code> (chỉ duy nhất root mới có quyền truy cập, các user khác bị cấm hoàn toàn).</p>
+        </div>
+
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Thực hành lệnh `file` và `less`</div>
+          <div class="cmd-output"><span class="cmd-input"># Tìm các file dạng ASCII text trong /etc:</span>
+$ file /etc/* | grep "ASCII text"
+
+<span class="cmd-input"># Xem nội dung file ASCII text bằng less:</span>
+$ less /etc/passwd</div>
+        </div>
+
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Tạo cây thư mục `Myweb` bằng lệnh `mkdir -p`</div>
+          <div class="code-block"># Tạo toàn bộ cây thư mục Myweb bằng 1 lệnh duy nhất:
+mkdir -p Myweb/images/background/animation Myweb/images/icon Myweb/databases Myweb/scripts Myweb/java
+
+# Kiểm tra cây thư mục vừa tạo bằng lệnh tree:
+tree Myweb</div>
+          <div class="cmd-output">Myweb
+├── databases
+├── images
+│   ├── background
+│   │   └── animation
+│   └── icon
+├── java
+└── scripts</div>
+        </div>
+
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Tìm file `.html` và `.class` rồi sao chép vào `Myweb`</div>
+          <div class="code-block"># 1. Tìm và sao chép vài file .html vào thư mục Myweb:
+find /usr/share -name "*.html" | head -n 3 | xargs -I {} cp {} Myweb/
+
+# 2. Tìm và sao chép vài file .class vào thư mục Myweb/scripts:
+find /usr -name "*.class" | head -n 3 | xargs -I {} cp {} Myweb/scripts/</div>
+        </div>
+
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Di chuyển các file `.class` từ `scripts` sang `java`</div>
+          <div class="cmd-output"><span class="cmd-input">$ mv Myweb/scripts/*.class Myweb/java/</span>
+<span class="cmd-input">$ ls -l Myweb/java/</span></div>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Xóa các thư mục `scripts` và `animation`</div>
+          <div class="cmd-output"><span class="cmd-input">$ rm -r Myweb/scripts</span>
+<span class="cmd-input">$ rm -r Myweb/images/background/animation</span></div>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: Thiết lập quyền cho `Myweb/databases` chỉ root có toàn quyền</div>
+          <div class="cmd-output"><span class="cmd-input">$ chmod 700 Myweb/databases</span>
+<span class="cmd-input">$ ls -ld Myweb/databases</span>
+drwx------ 2 user1 user1 4096 Mar 7 12:00 Myweb/databases</div>
+          <p>Quyền <code>700</code> (<code>rwx------</code>) đảm bảo chỉ người làm chủ (hoặc root) mới có quyền truy cập, mọi người dùng khác bị chặn hoàn toàn.</p>
+        </div>
+
+        <!-- Bài 13 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 13: Thiết lập quyền cho `Myweb/java` (Owner toàn quyền, người khác chỉ thực thi)</div>
+          <div class="cmd-output"><span class="cmd-input">$ chmod 711 Myweb/java</span>
+<span class="cmd-input">$ ls -ld Myweb/java</span>
+drwx--x--x 2 user1 user1 4096 Mar 7 12:00 Myweb/java</div>
+          <p>Quyền <code>711</code> (<code>rwx--x--x</code>) cho phép Owner có quyền <code>rwx</code> (7), còn Group và Others chỉ có quyền thực thi <code>x</code> (1) để truy nhập qua thư mục nhưng không đọc được danh sách file bên trong.</p>
+        </div>
+
+        <!-- Bài 14 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 14: Ý nghĩa của lệnh `chmod 755 hello` trong Bài 3</div>
+          <p>Lệnh <code>chmod 755 hello</code> có ý nghĩa phân quyền bát phân cho file <code>hello</code> như sau:</p>
+          <ul>
+            <li><strong>Chủ sở hữu (Owner = 7 = `rwx`):</strong> Có đầy đủ quyền Đọc, Ghi và Thực thi file.</li>
+            <li><strong>Nhóm sở hữu (Group = 5 = `r-x`):</strong> Có quyền Đọc và Thực thi file, không có quyền chỉnh sửa.</li>
+            <li><strong>Người dùng khác (Other = 5 = `r-x`):</strong> Có quyền Đọc và Thực thi file, không có quyền chỉnh sửa.</li>
+          </ul>
+        </div>
+      </section>
+    
+      </article>
+
+
+      <!-- ========================================== -->
+      <!-- BUỔI THỰC HÀNH SỐ 2 -->
+      <!-- ========================================== -->
+      <article id="lab-2" style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px dashed var(--border-color);">
+        <div style="background-color: var(--primary-color); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">
+          📘 THỰC HÀNH BUỔI 2
+        </div>
+        
+      <!-- Section 1: Tạo Shell script -->
+      <section id="sec-create-script">
+        <h2>1. Viết Và Thực Thi Một Shell Script Như Thế Nào?</h2>
+        <p>Quy trình chuẩn gồm 3 bước để tạo và chạy một Shell script trong Linux:</p>
+
+        <ol style="line-height: 1.7;">
+          <li><strong>Bước 1: Soạn thảo script:</strong> Sử dụng bất kỳ trình soạn thảo văn bản nào (như <code>gedit</code>, <code>nano</code>, <code>vi</code>...) để nhập các câu lệnh.</li>
+          <li><strong>Bước 2: Cấp quyền thực thi:</strong> Sử dụng lệnh <code>chmod 755 tên_script</code> để phân quyền cho phép chạy. nếu thiếu bước này, khi chạy trực tiếp sẽ bị báo lỗi <code>Permission denied</code>.</li>
+          <li><strong>Bước 3: Thực thi script:</strong> Thực hiện theo 1 trong các cú pháp:
+            <br><code>$ bash tên_script</code>
+            <br><code>$ sh tên_script</code>
+            <br><code>$ ./tên_script</code>
+          </li>
+        </ol>
+
+        <p style="font-weight: 600; margin-top: 1rem;">Ví dụ script đầu tiên `firstscript`:</p>
+        <div class="code-block">#!/bin/bash
+clear
+echo "This is my first script!!!"</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ chmod 755 firstscript</span>
+<span class="cmd-input">$ ./firstscript</span>
+[Màn hình được xóa sạch và hiển thị dòng chữ:]
+This is my first script!!!</div>
+
+        <h3 style="margin-top: 1.5rem;">Làm thế nào để Shell định vị được Script cần thực thi?</h3>
+        <ul>
+          <li><strong>Cách 1: Sử dụng đường dẫn tuyệt đối:</strong> Chỉ định chính xác vị trí thư mục của file script (ví dụ: <code>$ sh /root/shellscript/hello</code>).</li>
+          <li><strong>Cách 2: Sử dụng biến môi trường `PATH`:</strong> Thêm đường dẫn chứa script vào biến <code>PATH</code> (ví dụ: <code>PATH=$PATH:/root/shellscript</code>), giúp bạn có thể gọi tên script ở bất kỳ thư mục nào.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">Bài tập mẫu đầu tiên:</h3>
+        <div class="code-block">#!/bin/bash
+clear
+echo "Hello $USER"
+echo -e "Today is \c"; date
+echo -e "Number of user login : \c"; who | wc -l
+echo "Calendar"
+cal
+exit 0</div>
+      </section>
+
+      <!-- Section 2 & 3: Thao tác biến -->
+      <section id="sec-variables" style="margin-top: 2rem;">
+        <h2>2. Thao Tác Biến Trong Shell</h2>
+        <p>Biến được dùng để lưu trữ và quản lý dữ liệu trong bộ nhớ RAM. Biến trong Linux Shell được chia thành 2 loại:</p>
+
+        <h3>2.1 Biến Hệ Thống (System Variables)</h3>
+        <p>Được tạo ra và quản lý bởi Linux, tên biến thường được quy ước viết bằng <strong>chữ IN HOA</strong>:</p>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Tên biến môi trường</th>
+              <th>Ý nghĩa &amp; Giá trị lưu trữ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>$BASH</code></td>
+              <td>Tên đường dẫn đến bộ thông dịch Shell đang dùng (ví dụ: <code>/bin/bash</code>)</td>
+            </tr>
+            <tr>
+              <td><code>$BASH_VERSION</code></td>
+              <td>Phiên bản hiện tại của BASH Shell</td>
+            </tr>
+            <tr>
+              <td><code>$HOME</code></td>
+              <td>Đường dẫn đến thư mục cá nhân (Home directory) của người dùng</td>
+            </tr>
+            <tr>
+              <td><code>$LOGNAME</code> / <code>$USER</code></td>
+              <td>Tên tài khoản người dùng đang đăng nhập</td>
+            </tr>
+            <tr>
+              <td><code>$OSTYPE</code></td>
+              <td>Loại hệ điều hành (ví dụ: <code>linux-gnu</code>)</td>
+            </tr>
+            <tr>
+              <td><code>$PATH</code></td>
+              <td>Danh sách các đường dẫn thư mục tìm kiếm chương trình thực thi</td>
+            </tr>
+            <tr>
+              <td><code>$PWD</code></td>
+              <td>Đường dẫn thư mục làm việc hiện hành (Print Working Directory)</td>
+            </tr>
+            <tr>
+              <td><code>$SHELL</code></td>
+              <td>Tên file thực thi Shell mặc định hệ thống</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">2.2 Biến Do Người Dùng Định Nghĩa (User Defined Variables - UDV)</h3>
+        <p><strong>Cú pháp gán giá trị:</strong> <code>tên_biến=giá_trị_biến</code> (Ví dụ: <code>no=10</code>, <code>n=100</code>).</p>
+        
+        <p style="font-weight: 600; color: #ef4444;">⚠️ Các quy tắc &amp; Lưu ý đặc biệt quan trọng:</p>
+        <ul>
+          <li><strong>KHÔNG ĐƯỢC có khoảng trắng ở 2 bên dấu bằng <code>=</code>:</strong> <code>no = 10</code> hay <code>no= 10</code> đều bị **LỖI CÚ PHÁP**.</li>
+          <li>Tên biến **phân biệt chữ hoa và chữ thường**: Biến <code>No</code> khác hoàn toàn với biến <code>no</code>.</li>
+          <li>Quy tắc đặt tên: Bắt đầu bằng chữ cái hoặc dấu gạch dưới <code>_</code>, theo sau là chữ, số hoặc <code>_</code> (ví dụ hợp lệ: <code>d100</code>, <code>a1_1</code>, <code>_head</code>).</li>
+          <li>Định nghĩa biến rỗng (NULL): <code>vech=</code> hoặc <code>vech=""</code>.</li>
+          <li>Trích xuất giá trị của biến: Thêm dấu <code>$</code> ở trước tên biến (ví dụ: <code>echo $n</code>, <code>echo "My name is $LOGNAME"</code>).</li>
+        </ul>
+
+        <div class="solution-box">
+          <div class="solution-title">Bài tập phát hiện lỗi trong gán biến:</div>
+          <div class="code-block">myname=Vivek
+myos = TroubleOS          # LỖI 1: Có khoảng trắng 2 bên dấu '=' ! Đúng phải là: myos=TroubleOS
+myno=5
+echo "My name is $myname"
+echo "My os is $myos"
+echo "My number is myno, can you see this number" # LỖI 2: Thiếu dấu '$' trước myno để lấy giá trị biến!</div>
+        </div>
+      </section>
+
+      <!-- Section 4: Các vấn đề cơ bản khác -->
+      <section id="sec-basics" style="margin-top: 2rem;">
+        <h2>3. Các Vấn Đề Cơ Bản Khác Trong Lập Trình Shell</h2>
+        
+        <h3>3.1 Tùy chọn lệnh `echo` và Ký tự thoát (Escape Characters)</h3>
+        <p>Cú pháp: <code>echo [options] [chuỗi, biến...]</code></p>
+        <ul>
+          <li><code>-n</code>: Dấu nhắc không tự động xuống dòng sau khi in.</li>
+          <li><code>-e</code>: Bật chế độ biên dịch các ký tự thoát (Escape characters).</li>
+        </ul>
+
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Ký tự thoát</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>\a</code></td>
+              <td>Phát ra âm thanh cảnh báo Bíp (Alert/Bell)</td>
+            </tr>
+            <tr>
+              <td><code>\b</code></td>
+              <td>Ký tự lùi lại một vị trí (Backspace)</td>
+            </tr>
+            <tr>
+              <td><code>\n</code></td>
+              <td>Ký tự xuống dòng mới (Newline)</td>
+            </tr>
+            <tr>
+              <td><code>\t</code></td>
+              <td>Ký tự thụt lề tab ngang (Tab)</td>
+            </tr>
+            <tr>
+              <td><code>\\</code></td>
+              <td>In ký tự gạch chéo ngược <code>\</code></td>
+            </tr>
+            <tr>
+              <td><code>\c</code></td>
+              <td>Ngăn cấm xuống dòng ở cuối chuỗi hiển thị</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">3.2 Tính toán Biểu thức số học với `expr`</h3>
+        <p>Cú pháp: <code>expr toán_hạng1 toán_tử toán_hạng2</code></p>
+        <p><em>Lưu ý quan trọng:</em> Bắt buộc phải có **khoảng trắng** giữa toán hạng và toán tử. Phép toán nhân phải dùng ký tự thoát <code>\*</code>.</p>
+
+        <div class="cmd-output">$ expr 1 + 3     =>  4
+$ expr 2 - 1     =>  1
+$ expr 10 / 2    =>  5
+$ expr 20 % 3    =>  2
+$ expr 10 \* 3   =>  30</div>
+
+        <p><strong>Nhúng kết quả `expr` vào chuỗi với Dấu nháy ngược Backquote (<code>` `</code>):</strong></p>
+        <div class="code-block">echo "Tong cua 6 va 3 la: `expr 6 + 3`"
+# In ra: Tong cua 6 va 3 la: 9</div>
+
+        <h3 style="margin-top: 1.5rem;">3.3 Trạng thái trả về Exit Status (`$?`)</h3>
+        <p>Mỗi khi một lệnh hoặc một script kết thúc thực thi, nó sẽ trả về một mã trạng thái (Exit status):</p>
+        <ul>
+          <li><strong>Mã 0:</strong> Lệnh thực thi thành công (True / Success).</li>
+          <li><strong>Mã khác 0 (1, 2, 127...):</strong> Lệnh thực thi thất bại hoặc bị lỗi (False / Error).</li>
+        </ul>
+        <p>Hệ thống lưu mã này trong biến đặc biệt <code>$?</code>.</p>
+
+        <div class="cmd-output"><span class="cmd-input">$ rm unknowfile</span>
+rm: cannot remove 'unknowfile': No such file or directory
+<span class="cmd-input">$ echo $?</span>
+1   <-- Lệnh thất bại nên $? = 1
+
+<span class="cmd-input">$ expr 1 + 3</span>
+4
+<span class="cmd-input">$ echo $?</span>
+0   <-- Lệnh thành công nên $? = 0</div>
+
+        <h3 style="margin-top: 1.5rem;">3.4 Đọc dữ liệu từ bàn phím (`read`)</h3>
+        <p>Cú pháp: <code>read biến</code> (Đọc một dòng nhập từ bàn phím và gán vào biến).</p>
+        <div class="code-block">#!/bin/bash
+# Script sayH
+echo "Your first name please:"
+read fname
+echo "Hello $fname, Lets be friend!"</div>
+
+        <h3 style="margin-top: 1.5rem;">3.5 Thực hiện nhiều lệnh trên một dòng</h3>
+        <p>Sử dụng dấu chấm phẩy <code>;</code> để ngăn cách các câu lệnh trên cùng 1 dòng (Ví dụ: <code>echo -n "Today is: "; date</code>).</p>
+
+        <h3 style="margin-top: 1.5rem;">3.6 Truyền Tham Số cho Shell Script</h3>
+        <p>Các biến đặc biệt nhận đối số từ dòng lệnh khi chạy script <code>./script arg1 arg2</code>:</p>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Biến đối số</th>
+              <th>Ý nghĩa &amp; Giá trị lưu trữ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>$0</code></td>
+              <td>Tên của file script đang chạy</td>
+            </tr>
+            <tr>
+              <td><code>$1</code>, <code>$2</code>...</td>
+              <td>Tham số thứ nhất, tham số thứ hai... truyền vào từ dòng lệnh</td>
+            </tr>
+            <tr>
+              <td><code>$#</code></td>
+              <td>Tổng số lượng tham số truyền vào cho script</td>
+            </tr>
+            <tr>
+              <td><code>$*</code> hoặc <code>$@</code></td>
+              <td>Chuỗi chứa toàn bộ danh sách các tham số truyền vào</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">#!/bin/bash
+# Script demo.sh
+echo "Total number of command line argument are $#"
+echo "$0 is script name"
+echo "$1 is first argument"
+echo "$2 is second argument"
+echo "All of them are :- $* or $@"</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ ./demo.sh aa bb</span>
+Total number of command line argument are 2
+./demo.sh is script name
+aa is first argument
+bb is second argument
+All of them are :- aa bb or aa bb</div>
+      </section>
+
+      <!-- Section 5: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 5)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hiện và kiểm tra tất cả các ví dụ trên</div>
+          <p>Tạo các script <code>firstscript</code>, <code>sayH</code>, <code>demo.sh</code>, gán quyền <code>chmod 755</code> và chạy thử nghiệm.</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Script Hiển Thị Thông Tin Hệ Thống Định Dạng Khung</div>
+          <p><strong>Yêu cầu:</strong> Viết script hiển thị ngày giờ, user, pwd, home dir và dừng chờ nhận 1 phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script bai2.sh
+
+echo "\****************************************\"
+echo "Today is:"
+date
+echo "Hello $USER !!!"
+echo "Your current working directory: $PWD"
+echo "Your home directory: $HOME"
+echo -n "Please press any key to finish: "
+read -n 1 key
+echo ""
+echo ""
+echo "Thank you very much!!"
+echo "\****************************************\"</div>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Script Tính Toán Số Học 2 Tham Số Dòng Lệnh</div>
+          <p><strong>Yêu cầu:</strong> Truyền vào 2 số nguyên $x$ và $y$ qua <code>$1</code> và <code>$2</code>, tính tổng, hiệu, tích, thương, chia dư.</p>
+          <div class="code-block">#!/bin/bash
+# Script bai3.sh
+
+x=$1
+y=$2
+
+echo "Tham so ban da truyen vao la 2 so: $x va $y"
+echo "Tong: $x + $y = `expr $x + $y`"
+echo "Hieu: $x - $y = `expr $x - $y`"
+echo "Tich: $x * $y = `expr $x \* $y`"
+echo "Thuong: $x / $y = `expr $x / $y`"
+echo "So du: $x % $y = `expr $x % $y`"</div>
+
+          <div class="cmd-output"><span class="cmd-input">$ ./bai3.sh 10 3</span>
+Tham so ban da truyen vao la 2 so: 10 va 3
+Tong: 10 + 3 = 13
+Hieu: 10 - 3 = 7
+Tich: 10 * 3 = 30
+Thuong: 10 / 3 = 3
+So du: 10 % 3 = 1</div>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Script `taothumuc` Nhập Tên Thư Mục Và Tạo (Báo Lỗi Nếu Thất Bại)</div>
+          <p><strong>Yêu cầu:</strong> Nhập vào tên thư mục, tạo thư mục. Nếu không thành công thì in thông báo lỗi.</p>
+          <div class="code-block">#!/bin/bash
+# Script taothumuc.sh
+
+echo -n "Nhap vao ten thu muc muon tao: "
+read dirname
+
+mkdir "$dirname" 2>/dev/null
+
+if [ $? -ne 0 ]; then
+    echo "Khong the tao duoc thu muc!!!"
+else
+    echo "Da tao thanh cong thu muc: $dirname"
+fi</div>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Script `thuchien` Nhận 2 Tham Số Lệnh và Đối Số</div>
+          <p><strong>Yêu cầu:</strong> Nhận `$1` là tên lệnh (cmd1) và `$2` là tham số (arg1), thực thi lệnh `$1 $2`.</p>
+          <div class="code-block">#!/bin/bash
+# Script thuchien.sh
+
+cmd1=$1
+arg1=$2
+
+echo "Dang thuc hien lenh: $cmd1 $arg1 ..."
+$cmd1 $arg1</div>
+
+          <div class="cmd-output"><span class="cmd-input">$ ./thuchien.sh mkdir aaa</span>
+Dang thuc hien lenh: mkdir aaa ...
+<span class="cmd-input">$ ls -ld aaa</span>
+drwxr-xr-x 2 user1 user1 4096 Mar 7 12:00 aaa</div>
+        </div>
+      </section>
+    
+      </article>
+
+
+      <!-- ========================================== -->
+      <!-- BUỔI THỰC HÀNH SỐ 3 -->
+      <!-- ========================================== -->
+      <article id="lab-3" style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px dashed var(--border-color);">
+        <div style="background-color: var(--primary-color); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">
+          📘 THỰC HÀNH BUỔI 3
+        </div>
+        
+      <!-- Giới thiệu Boolean -->
+      <section id="sec-intro">
+        <h2>Tổng Quan Về Kiểu Boolean Trong Shell</h2>
+        <p>
+          Trong Shell của Linux, giá trị <strong>True (Đúng)</strong> và <strong>False (Sai)</strong> được thể hiện tương ứng bằng 2 giá trị:
+        </p>
+        <ul>
+          <li><strong>0 (Zero - Exit status bằng 0):</strong> Tương ứng với <strong>True (Thành công)</strong>.</li>
+          <li><strong>Khác 0 (Non-zero - Exit status khác 0):</strong> Tương ứng với <strong>False (Thất bại/Lỗi)</strong>.</li>
+        </ul>
+        <div class="cmd-output">Ví dụ:
+ 5 > 2  =>  0 (True / Thành công)
+ 5 < 2  =>  1 (False / Thất bại)</div>
+      </section>
+
+      <!-- Section 1: Lệnh if -->
+      <section id="sec-if" style="margin-top: 2rem;">
+        <h2>1. Câu Lệnh <code>if</code></h2>
+        <p>Câu lệnh <code>if</code> được dùng để thiết lập quyết định (lệnh rẽ nhánh) trong shell script.</p>
+
+        <p><strong>Cú pháp cơ bản:</strong></p>
+        <div class="code-block">if condition
+then
+    command1
+    command2
+    ...
+fi</div>
+
+        <p>Lệnh <code>command1</code> được thực thi khi điều kiện <code>condition</code> là True (trả về 0). Ngược lại, lệnh tiếp theo sau từ khóa <code>fi</code> sẽ được thực hiện.</p>
+
+        <p style="font-weight: 600; margin-top: 1rem;">Ví dụ script <code>rmif</code> (Xóa file nhận từ tham số):</p>
+        <div class="code-block">#!/bin/bash
+if rm $1
+then
+    echo "$1 is deleted successfully"
+fi</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x rmif</span>
+<span class="cmd-input">$ ./rmif aaaa</span>
+rm: cannot remove 'aaaa': No such file or directory
+<span class="cmd-input">$ ./rmif a</span>
+a is deleted successfully</div>
+
+        <p style="font-size: 0.92rem; color: var(--text-light);">
+          <em>Giải thích:</em> Lần 1 thực thi với <code>aaaa</code> không tồn tại nên lệnh <code>rm</code> trả về exit status khác 0 (False), lệnh <code>echo</code> không được thực hiện. Lần 2 thực thi với file <code>a</code> có tồn tại nên <code>rm</code> thành công (exit status = 0 / True), lệnh <code>echo</code> được in ra màn hình.
+        </p>
+      </section>
+
+      <!-- Section 2: Lệnh test hoặc [ expr ] -->
+      <section id="sec-test" style="margin-top: 2rem;">
+        <h2>2. Lệnh <code>test</code> Hoặc <code>[ expr ]</code></h2>
+        <p>Lệnh <code>test</code> hoặc <code>[ expr ]</code> dùng để kiểm tra một biểu thức logic là True hay False. Nếu biểu thức đúng sẽ trả về giá trị <code>0</code>, ngược lại trả về giá trị khác không.</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>ispositive</code>:</p>
+        <div class="code-block">#!/bin/bash
+if test $1 -gt 0
+then
+    echo "$1 is positive number"
+fi</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x ispositive</span>
+<span class="cmd-input">$ ./ispositive 5</span>
+5 is positive number
+<span class="cmd-input">$ ./ispositive -3</span>
+<span class="cmd-input">$ </span></div>
+
+        <h3 style="margin-top: 1.5rem;">Bảng Toán Tử So Sánh Của Lệnh <code>test</code> &amp; <code>[ expr ]</code></h3>
+
+        <h4>a) So sánh Số nguyên (Integer Comparison):</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+              <th>Dùng với <code>test</code></th>
+              <th>Dùng với <code>[ expr ]</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-eq</code></td>
+              <td>So sánh bằng (==)</td>
+              <td><code>if test 5 -eq 6</code></td>
+              <td><code>if [ 5 -eq 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-ne</code></td>
+              <td>Không bằng (!=)</td>
+              <td><code>if test 5 -ne 6</code></td>
+              <td><code>if [ 5 -ne 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-lt</code></td>
+              <td>Nhỏ hơn (&lt;)</td>
+              <td><code>if test 5 -lt 6</code></td>
+              <td><code>if [ 5 -lt 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-le</code></td>
+              <td>Nhỏ hơn hoặc bằng (&lt;=)</td>
+              <td><code>if test 5 -le 6</code></td>
+              <td><code>if [ 5 -le 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-gt</code></td>
+              <td>Lớn hơn (&gt;)</td>
+              <td><code>if test 5 -gt 6</code></td>
+              <td><code>if [ 5 -gt 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-ge</code></td>
+              <td>Lớn hơn hoặc bằng (&gt;=)</td>
+              <td><code>if test 5 -ge 6</code></td>
+              <td><code>if [ 5 -ge 6 ]</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>b) So sánh Chuỗi ký tự (String Comparison):</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+              <th>Dùng với <code>test</code></th>
+              <th>Dùng với <code>[ expr ]</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>=</code></td>
+              <td>So sánh chuỗi bằng nhau</td>
+              <td><code>if test "aa" = "bb"</code></td>
+              <td><code>if [ "aa" = "bb" ]</code></td>
+            </tr>
+            <tr>
+              <td><code>!=</code></td>
+              <td>So sánh chuỗi không bằng nhau</td>
+              <td><code>if test "aa" != "bb"</code></td>
+              <td><code>if [ "aa" != "bb" ]</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>c) Kiểm tra File và Thư mục:</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp <code>test</code></th>
+              <th>Ý nghĩa trả về True (0)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-s file</code></td>
+              <td>File tồn tại và <strong>không rỗng</strong> (kích thước &gt; 0)</td>
+            </tr>
+            <tr>
+              <td><code>-f file</code></td>
+              <td>Là một <strong>file thường</strong> (không phải là thư mục)</td>
+            </tr>
+            <tr>
+              <td><code>-d dir</code></td>
+              <td>Là một <strong>thư mục</strong> (directory)</td>
+            </tr>
+            <tr>
+              <td><code>-w file</code></td>
+              <td>File có quyền <strong>Ghi (Write)</strong></td>
+            </tr>
+            <tr>
+              <td><code>-r file</code></td>
+              <td>File có quyền <strong>Đọc (Read)</strong></td>
+            </tr>
+            <tr>
+              <td><code>-x file</code></td>
+              <td>File có quyền <strong>Thực thi (Execute)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>d) Phép toán Logic:</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>! expression</code></td>
+              <td>Phủ định (NOT) biểu thức <code>expression</code></td>
+            </tr>
+            <tr>
+              <td><code>expr1 -a expr2</code></td>
+              <td>Phép toán <strong>AND</strong> (Cả 2 biểu thức đều đúng)</td>
+            </tr>
+            <tr>
+              <td><code>expr1 -o expr2</code></td>
+              <td>Phép toán <strong>OR</strong> (Ít nhất 1 trong 2 biểu thức đúng)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 3: if ... else ... fi -->
+      <section id="sec-ifelse" style="margin-top: 2rem;">
+        <h2>3. Cấu Trúc <code>if ... else ... fi</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">if condition
+then
+    # condition trả về 0 (true): thực thi phần then
+    command1
+    command2
+else
+    # condition trả về khác 0 (false): thực thi phần else
+    command3
+    command4
+fi</div>
+
+        <p style="font-weight: 600;">Ví dụ:</p>
+        <div class="code-block">#!/bin/bash
+if test $1 -gt 0
+then
+    echo "$1 is positive"
+else
+    echo "$1 is negative"
+fi</div>
+      </section>
+
+      <!-- Section 4: if-then-elif-else nhiều cấp -->
+      <section id="sec-elif" style="margin-top: 2rem;">
+        <h2>4. Lệnh <code>if-then-else</code> Nhiều Cấp (<code>elif</code>)</h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">if condition1
+then
+    # condition1 là True (0)
+    commands1
+elif condition2
+then
+    # condition2 là True (0)
+    commands2
+elif condition3
+then
+    # condition3 là True (0)
+    commands3
+else
+    # Tất cả các điều kiện trên đều False
+    commands_default
+fi</div>
+      </section>
+
+      <!-- Section 5: Vòng lặp for -->
+      <section id="sec-for" style="margin-top: 2rem;">
+        <h2>5. Vòng Lặp <code>for</code></h2>
+        <p>Trong Shell của Linux, vòng lặp <code>for</code> hỗ trợ 2 cú pháp chính:</p>
+
+        <h3>a) Cú pháp 1: Duyệt danh sách (List iteration)</h3>
+        <div class="code-block">for variable_name in list
+do
+    command1
+    command2
+done</div>
+        <p>Biến <code>variable_name</code> sẽ lần lượt được gán từng phần tử trong <code>list</code> và thực hiện các câu lệnh giữa <code>do</code> và <code>done</code>.</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>testfor</code>:</p>
+        <div class="code-block">#!/bin/bash
+for i in 1 2 3 4 5
+do
+    echo "Welcome $i times"
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./testfor</span>
+Welcome 1 times
+Welcome 2 times
+Welcome 3 times
+Welcome 4 times
+Welcome 5 times</div>
+
+        <h3 style="margin-top: 1.5rem;">b) Cú pháp 2: Cú pháp kiểu C (Three-expression loop)</h3>
+        <div class="code-block">for (( expr1; expr2; expr3 ))
+do
+    # Thực hiện các câu lệnh giữa do và done cho đến khi expr2 là False
+    command1
+    command2
+done</div>
+        <ul style="line-height: 1.6;">
+          <li><code>expr1</code>: Biểu thức khởi tạo (ví dụ <code>i = 0</code>).</li>
+          <li><code>expr2</code>: Điều kiện lặp (ví dụ <code>i &lt;= 5</code>).</li>
+          <li><code>expr3</code>: Bước nhảy sau mỗi bước lặp (ví dụ <code>i++</code>).</li>
+        </ul>
+
+        <p style="font-weight: 600;">Ví dụ script <code>for2</code>:</p>
+        <div class="code-block">#!/bin/bash
+for (( i = 0; i <= 5; i++ ))
+do
+    echo "Welcome $i times"
+done</div>
+
+        <h3 style="margin-top: 1.5rem;">c) Vòng lặp <code>for</code> Lồng Nhau (Nested For)</h3>
+        <p style="font-weight: 600;">Ví dụ script <code>nestedfor</code>:</p>
+        <div class="code-block">#!/bin/bash
+for (( i = 1; i <= 5; i++ ))      ### Vòng lặp ngoài ###
+do
+    for (( j = 1; j <= 5; j++ )) ### Vòng lặp trong ###
+    do
+        echo -n "$i "
+    done
+    echo ""                      ### In dòng mới ###
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./nestedfor</span>
+1 1 1 1 1 
+2 2 2 2 2 
+3 3 3 3 3 
+4 4 4 4 4 
+5 5 5 5 5 </div>
+      </section>
+
+      <!-- Section 6: Vòng lặp while -->
+      <section id="sec-while" style="margin-top: 2rem;">
+        <h2>6. Vòng Lặp <code>while</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">while [ condition ]
+do
+    command1
+    command2
+    ...
+done</div>
+        <p>Các câu lệnh giữa <code>do</code> và <code>done</code> sẽ được lặp đi lặp lại liên tục cho đến khi điều kiện <code>condition</code> trả về False (khác 0).</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>whiletest</code>:</p>
+        <div class="code-block">#!/bin/bash
+i=1
+while [ $i -le 5 ]
+do
+    echo "Welcome $i times"
+    i=`expr $i + 1`
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./whiletest</span>
+Welcome 1 times
+Welcome 2 times
+Welcome 3 times
+Welcome 4 times
+Welcome 5 times</div>
+      </section>
+
+      <!-- Section 7: Lệnh case -->
+      <section id="sec-case" style="margin-top: 2rem;">
+        <h2>7. Câu Lệnh Rẽ Nhánh <code>case</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">case $variable-name in
+    pattern1)
+        command1
+        command2
+        ;;
+    pattern2)
+        command3
+        command4
+        ;;
+    patternN)
+        command5
+        ;;
+    *)
+        # Mẫu mặc định khi không khớp mẫu nào ở trên
+        command_default
+        ;;
+esac</div>
+
+        <p style="font-weight: 600;">Ví dụ script <code>casetest</code> (Chọn món ăn):</p>
+        <div class="code-block">#!/bin/bash
+echo "--- MENU THỰC ĐƠN ---"
+echo "1. Phở Bò"
+echo "2. Bún Chả"
+echo "3. Cơm Tấm"
+echo -n "Vui lòng chọn món ăn (1-3): "
+read choice
+
+case $choice in
+    1)
+        echo "Bạn đã chọn món Phở Bò. Cảm ơn quý khách!"
+        ;;
+    2)
+        echo "Bạn đã chọn món Bún Chả. Cảm ơn quý khách!"
+        ;;
+    3)
+        echo "Bạn đã chọn món Cơm Tấm. Cảm ơn quý khách!"
+        ;;
+    *)
+        echo "Rất tiếc! Lựa chọn của bạn không có trong thực đơn."
+        ;;
+esac</div>
+      </section>
+
+      <!-- Section 8: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hiện và kiểm tra tất cả các ví dụ trên</div>
+          <p>Tạo các file script <code>rmif</code>, <code>ispositive</code>, <code>testfor</code>, <code>for2</code>, <code>nestedfor</code>, <code>whiletest</code>, <code>casetest</code>, sau đó gán quyền thực thi bằng lệnh <code>chmod +x filename</code> và chạy thử nghiệm.</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Script in hình Tam Giác Dấu (*) và Ma Trận Số 5x5</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị hình tam giác sao 10 dòng và ma trận số 5x5.</p>
+          <div class="code-block">#!/bin/bash
+# Script in hinh tam giac sao va ma tran so
+
+echo "--- HINH 1: TAM GIAC SAO ---"
+for (( i = 1; i <= 10; i++ ))
+do
+    for (( j = 1; j <= i; j++ ))
+    do
+        echo -n "*"
+    done
+    echo ""
+done
+
+echo ""
+echo "--- HINH 2: MA TRAN SO 5x5 ---"
+for (( i = 1; i <= 5; i++ ))
+do
+    for (( j = 1; j <= 5; j++ ))
+    do
+        echo -n "$j "
+    done
+    echo ""
+done</div>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Script Giải Phương Trình Bậc Nhất $ax + b = 0$</div>
+          <p><strong>Yêu cầu:</strong> Giải phương trình $ax + b = 0$ với hệ số $a, b$ nhập vào từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script giai phuong trinh bac nhat a*x + b = 0
+
+echo -n "Nhap he so a: "
+read a
+echo -n "Nhap he so b: "
+read b
+
+if [ $a -eq 0 ]; then
+    if [ $b -eq 0 ]; then
+        echo "Phuong trinh co VO SO NGHIEM."
+    else
+        echo "Phuong trinh VO NGHIEM."
+    fi
+else
+    # Su dung cong cu bc de tinh so thap phan 2 chu so
+    x=`echo "scale=2; -$b / $a" | bc`
+    echo "Phuong trinh co nghiem duy nhat x = $x"
+fi</div>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Script Tính Tổng Dãy Số Nguyên Từ 1 Đến $n$</div>
+          <p><strong>Yêu cầu:</strong> Tính tổng $S = 1 + 2 + 3 + ... + n$ với $n$ nhập từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script tinh tong tu 1 den n
+
+echo -n "Nhap so nguyen duong n: "
+read n
+
+sum=0
+for (( i = 1; i <= n; i++ ))
+do
+    sum=`expr $sum + $i`
+done
+
+echo "Tong S = 1 + 2 + ... + $n = $sum"</div>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Script In Bảng Cửu Chương &amp; Hỏi Tiếp Tục</div>
+          <p><strong>Yêu cầu:</strong> Nhập vào số $n$, in bảng cửu chương của $n$. Kết thúc hỏi người dùng có muốn tiếp tục không (y/n).</p>
+          <div class="code-block">#!/bin/bash
+# Script in bang cuu chuong va hoi luan phien
+
+ans="y"
+while [ "$ans" = "y" -o "$ans" = "Y" ]
+do
+    echo -n "Nhap vao so nguyen n (1-10): "
+    read n
+    
+    echo "============================="
+    echo "   BANG CUU CHUONG SO $n"
+    echo "============================="
+    for (( i = 1; i <= 10; i++ ))
+    do
+        res=`expr $i \* $n`
+        echo "$i x $n = $res"
+    done
+    echo "============================="
+    
+    echo -n "Ban co muon tiep tuc khong? (y/n): "
+    read ans
+done
+
+echo "Cam on ban da su dung chuong trinh! Tam biet."</div>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Script Tự Động Tạo $n$ Thư Mục <code>user_i</code></div>
+          <p><strong>Yêu cầu:</strong> Tạo $n$ thư mục cho $n$ người dùng với tên thư mục <code>user_i</code> ($i=1..n$). $n$ nhập vào từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script tao n thu muc user_i
+
+echo -n "Nhap so luong thu muc n can tao: "
+read n
+
+for (( i = 1; i <= n; i++ ))
+do
+    mkdir -p "user_$i"
+    echo "Da tao thanh cong thu muc: user_$i"
+done
+
+echo "Hoan thanh tao $n thu muc user_1 den user_$n."</div>
+        </div>
+      </section>
+    
+      </article>
+
+
+      <!-- ========================================== -->
+      <!-- BUỔI THỰC HÀNH SỐ 4 -->
+      <!-- ========================================== -->
+      <article id="lab-4" style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px dashed var(--border-color);">
+        <div style="background-color: var(--primary-color); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">
+          📘 THỰC HÀNH BUỔI 4
+        </div>
+        
+      <!-- Section 1: Mục đích & Tạo tiến trình -->
+      <section id="sec-proc-intro">
+        <h2>1. Tiến Trình Và Cách Thức Thực Hiện Tiến Trình</h2>
+        
+        <h3>1.1 Mục đích của Shell đối với Tiến trình</h3>
+        <p>Shell là một chương trình thông dịch lệnh hoạt động theo chu trình vòng lặp:</p>
+        <div class="cmd-output">Hiển thị dấu nhắc ($)  --->  Đọc lệnh  --->  Tạo tiến trình  --->  Đợi tiến trình kết thúc  --->  Hiển thị dấu nhắc ($)</div>
+
+        <p>Khi chạy một <code>shell_script</code>, chính Shell sẽ phát sinh và quản lý tất cả các tiến trình con cần thiết để thực hiện công việc được mô tả trong file script.</p>
+
+        <h3 style="margin-top: 1.5rem;">1.2 Phân loại và Cây Tiến trình</h3>
+        <p>Tiến trình được hiểu là việc thực thi một chương trình trong một môi trường hệ thống. Phân thành 2 loại:</p>
+        <ul>
+          <li><strong>Tiến trình hệ thống:</strong> Không gắn với bất kỳ terminal nào, được tạo ra khi khởi động OS hoặc bởi daemon do người quản trị đặt.</li>
+          <li><strong>Tiến trình người dùng:</strong> Được tạo ra bởi người dùng trong phiên làm việc.</li>
+        </ul>
+        <p>
+          Các tiến trình được tổ chức dưới dạng <strong>Cây tiến trình (Process Tree)</strong>: <code>Tiến trình cha &rarr; Tiến trình con</code>. Tiến trình <code>init</code> (PID 1) là tiến trình cha gốc của tất cả các tiến trình Shell khi đăng nhập.
+        </p>
+
+        <p style="font-weight: 600; margin-top: 1rem;">Cách cấp quyền và thực hiện một shell_script:</p>
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x proc</span>
+<span class="cmd-input">$ ./proc</span>
+# Hoặc chạy trực tiếp với sh:
+<span class="cmd-input">$ sh proc</span></div>
+      </section>
+
+      <!-- Section 2: Liệt kê tiến trình ps -->
+      <section id="sec-ps" style="margin-top: 2rem;">
+        <h2>2. Liệt Kê Các Tiến Trình (`ps`)</h2>
+        <p>Lệnh <code>ps</code> (Process Status) hiển thị danh sách các tiến trình đang hoạt động trong hệ thống:</p>
+        <div class="cmd-output"><span class="cmd-input">$ ps</span>
+  PID TTY          TIME CMD
+ 3884 pts/1    00:00:00 bash
+ 3955 pts/2    00:00:00 more
+ 3956 pts/5    00:00:05 sqlplus</div>
+
+        <h3 style="margin-top: 1.25rem;">Ý nghĩa các thông số trong lệnh `ps`:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cột thông số</th>
+              <th>Ý nghĩa chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>PID</code></td>
+              <td>Số định danh tiến trình (Process Identity Number)</td>
+            </tr>
+            <tr>
+              <td><code>PPID</code></td>
+              <td>Số định danh tiến trình cha (Parent Process Identity)</td>
+            </tr>
+            <tr>
+              <td><code>UID</code></td>
+              <td>ID người sở hữu tiến trình (User ID)</td>
+            </tr>
+            <tr>
+              <td><code>TTY</code></td>
+              <td>Terminal đang điều khiển tiến trình</td>
+            </tr>
+            <tr>
+              <td><code>TIME</code></td>
+              <td>Thời gian tích lũy CPU đã sử dụng bởi tiến trình (Cumulative CPU time)</td>
+            </tr>
+            <tr>
+              <td><code>STIME</code></td>
+              <td>Thời điểm tiến trình được khởi chạy (Start time)</td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td>Chỉ số phần trăm sử dụng vi xử lý CPU phục vụ lập lịch</td>
+            </tr>
+            <tr>
+              <td><code>CMD / COMMAND</code></td>
+              <td>Tên dòng lệnh sinh ra tiến trình đó</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">Các tùy chọn phổ biến của lệnh `ps`:</h3>
+        <ul>
+          <li><code>ps a</code>: Hiển thị tất cả các tiến trình của mọi người dùng (all users).</li>
+          <li><code>ps u</code>: Hiển thị chi tiết theo định dạng người dùng (User format: kèm UID, %CPU, %MEM, STIME).</li>
+          <li><code>ps x</code>: Hiển thị cả các tiến trình không gắn kết với terminal nào (daemons).</li>
+          <li><code>ps aux</code>: Kết hợp 3 tùy chọn trên &rarr; Liệt kê toàn bộ tiến trình hệ thống.</li>
+          <li><code>ps -ef</code> / <code>ps -ag</code>: Liệt kê chi tiết đầy đủ thông tin cha-con.</li>
+        </ul>
+      </section>
+
+      <!-- Section 3: Bảng các lệnh quản lý tiến trình -->
+      <section id="sec-commands" style="margin-top: 2rem;">
+        <h2>3. Bảng Tổng Hợp Các Lệnh Quản Lý Tiến Trình</h2>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+              <th>Ví dụ câu lệnh minh họa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ps</code></td>
+              <td>Hiển thị các tiến trình đang chạy thuộc terminal hiện tại</td>
+              <td><code>$ ps</code></td>
+            </tr>
+            <tr>
+              <td><code>ps -ag</code> / <code>ps -ef</code></td>
+              <td>Hiển thị đầy đủ thông tin tất cả tiến trình hệ thống</td>
+              <td><code>$ ps -ef</code></td>
+            </tr>
+            <tr>
+              <td><code>ps aux</code></td>
+              <td>Hiển thị các tiến trình cùng với người dùng tạo ra</td>
+              <td><code>$ ps aux</code></td>
+            </tr>
+            <tr>
+              <td><code>kill {PID}</code></td>
+              <td>Gửi tín hiệu dừng tiến trình PID (mặc định Signal 15)</td>
+              <td><code>$ kill 1012</code></td>
+            </tr>
+            <tr>
+              <td><code>killall {name}</code></td>
+              <td>Dừng tất cả các tiến trình có cùng tên <code>name</code></td>
+              <td><code>$ killall httpd</code></td>
+            </tr>
+            <tr>
+              <td><code>kill 0</code></td>
+              <td>Dừng tất cả tiến trình trong cùng nhóm ngoại trừ Shell</td>
+              <td><code>$ kill 0</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh &amp;</code></td>
+              <td>Cho tiến trình chạy ngầm (Background). PID ngầm lưu ở <code>$!</code></td>
+              <td><code>$ ls / -R | wc -l &amp;</code></td>
+            </tr>
+            <tr>
+              <td><code>free</code></td>
+              <td>Thống kê chi tiết việc sử dụng bộ nhớ RAM và Swap</td>
+              <td><code>$ free -m</code></td>
+            </tr>
+            <tr>
+              <td><code>pstree</code></td>
+              <td>Hiển thị cây hệ thống các tiến trình dạng nhánh sơ đồ</td>
+              <td><code>$ pstree</code></td>
+            </tr>
+            <tr>
+              <td><code>[Ctrl + Z]</code></td>
+              <td>Làm treo (tạm ngưng - STOP) tiến trình đang chạy foreground</td>
+              <td>Nhấn tổ hợp phím <code>[Ctrl + Z]</code></td>
+            </tr>
+            <tr>
+              <td><code>bg</code></td>
+              <td>Đưa tiến trình bị tạm ngưng sang chạy tiếp ngầm (Background)</td>
+              <td><code>$ bg %1</code></td>
+            </tr>
+            <tr>
+              <td><code>fg</code></td>
+              <td>Đưa tiến trình đang chạy ngầm lên chạy trên (Foreground)</td>
+              <td><code>$ fg %1</code></td>
+            </tr>
+            <tr>
+              <td><code>jobs</code></td>
+              <td>Liệt kê danh sách các tiến trình/công việc đang chạy ngầm</td>
+              <td><code>$ jobs -l</code></td>
+            </tr>
+            <tr>
+              <td><code>top</code></td>
+              <td>Hiển thị theo thời gian thực (real-time) tài nguyên CPU, RAM, tiến trình</td>
+              <td><code>$ top</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 4: Tiến trình ngầm Background & set -->
+      <section id="sec-background" style="margin-top: 2rem;">
+        <h2>4. Quản Lý Tiến Trình Chạy Ngầm (Background) &amp; Tùy Chọn `set`</h2>
+        
+        <h3>4.1 Cơ chế quản lý Tiến trình chạy ngầm</h3>
+        <ul>
+          <li><strong>Tạo tiến trình chạy ngầm:</strong> Thêm ký tự <code>&amp;</code> vào cuối câu lệnh (Ví dụ: <code>find / -name "*.txt" &amp;</code>).</li>
+          <li><strong>Hiển thị tiến trình ngầm:</strong> <code>jobs -l</code> (hiển thị kèm theo PID).</li>
+          <li><strong>Chạy bất tử với `nohup`:</strong> <code>nohup lệnh &amp;</code> giúp tiến trình không bị dừng khi người dùng ngắt kết nối terminal. Toàn bộ kết quả in ra stdout/stderr sẽ được ghi tự động vào file <code>nohup.out</code>.</li>
+          <li><strong>Đợi tiến trình ngầm kết thúc:</strong> <code>wait PID</code>.</li>
+          <li><strong>Hủy tiến trình ngầm:</strong>
+            <br>- <code>kill PID</code> (phát tín hiệu 15 SIGTERM mặc định).
+            <br>- <code>kill -9 PID</code> (phát tín hiệu 9 SIGKILL hủy cưỡng bức).
+            <br>- <code>kill %n</code> (hủy tiến trình theo số thứ tự Job number <code>n</code> trong danh sách <code>jobs</code>).
+          </li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Thiết lập cách thức chạy Shell Script bằng lệnh `set`</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>set -x</code> / <code>sh -x proc</code></td>
+              <td>Hiển thị từng dòng lệnh <strong>sau khi đã triển khai biến</strong> (dùng để debug lỗi)</td>
+            </tr>
+            <tr>
+              <td><code>set -v</code> / <code>sh -v proc</code></td>
+              <td>Hiển thị từng dòng lệnh <strong>trước khi triển khai</strong></td>
+            </tr>
+            <tr>
+              <td><code>set -e</code></td>
+              <td>Tự động <strong>thoát khỏi Script ngay lập tức</strong> khi gặp một lệnh bị lỗi (exit status &ne; 0)</td>
+            </tr>
+            <tr>
+              <td><code>set -t</code></td>
+              <td>Thoát khỏi Shell script ngay sau khi thực hiện xong câu lệnh tiếp theo</td>
+            </tr>
+            <tr>
+              <td><code>set -</code></td>
+              <td>Xóa bỏ các tác dụng debug của tùy chọn <code>-x</code> và <code>-v</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: Signals & trap -->
+      <section id="sec-signals" style="margin-top: 2rem;">
+        <h2>5. Quản Lý Các Tín Hiệu (Signals) &amp; Lệnh `trap`</h2>
+        
+        <h3>5.1 Bảng danh sách các Tín hiệu (Signals) thông dụng</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Số Tín hiệu (Signal)</th>
+              <th>Tên Tín hiệu</th>
+              <th>Mô tả sự kiện phát sinh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Signal 0</code></td>
+              <td><code>EXIT</code></td>
+              <td>Phát sinh khi ra khỏi Shell (exit of the shell)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 1</code></td>
+              <td><code>SIGHUP</code></td>
+              <td>Cắt liên lạc kết nối với terminal (Disconnection / Hangup)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 2</code></td>
+              <td><code>SIGINT</code></td>
+              <td>Ngắt từ bàn phím (Phím <code>Ctrl + C</code> hoặc phím <code>DEL</code>)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 3</code></td>
+              <td><code>SIGQUIT</code></td>
+              <td>Thoát chương trình và tạo Core Dump (Phím <code>Ctrl + \</code>)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 9</code></td>
+              <td><code>SIGKILL</code></td>
+              <td>Hủy cưỡng bức tiến trình ngay lập tức (không thể bắt hay bỏ qua)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 15</code></td>
+              <td><code>SIGTERM</code></td>
+              <td>Yêu cầu kết thúc tiến trình lịch sự (Mặc định của lệnh <code>kill</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">5.2 Lập trình xử lý Tín hiệu với lệnh `trap`</h3>
+        <p>Lệnh <code>trap</code> cho phép định nghĩa hành động xử lý tùy chỉnh khi một tín hiệu phát sinh trong quá trình chạy script:</p>
+
+        <ul>
+          <li><code>trap</code> (không đối số): Liệt kê danh sách các tín hiệu và các lệnh xử lý đã đăng ký.</li>
+          <li><code>trap 'các_câu_lệnh' 2</code>: Gán các câu lệnh custom để thực thi mỗi khi người dùng nhấn <code>Ctrl + C</code> / <code>DEL</code> (Signal 2).</li>
+          <li><code>trap '' 2</code>: **Bỏ qua (Lờ đi)** tín hiệu phím DEL / Ctrl+C (người dùng nhấn DEL sẽ không làm gián đoạn script).</li>
+          <li><code>trap 2</code>: **Khôi phục lại hành vi mặc định** của phím DEL / Ctrl+C.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 12)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hành lệnh `ps` liệt kê tiến trình</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị tất cả tiến trình của người dùng hiện tại và tất cả tiến trình hệ thống.</p>
+          <div class="cmd-output"><span class="cmd-input"># 1. Hiển thị tiến trình của người dùng hiện tại:</span>
+$ ps -u $USER
+
+<span class="cmd-input"># 2. Hiển thị tất cả tiến trình đang chạy trong toàn hệ thống:</span>
+$ ps -ef
+# Hoặc:
+$ ps aux</div>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Giải thích Output lệnh `ps -l &`</div>
+          <div class="cmd-output">$ ps -l &
+[1] 478</div>
+          <p><strong>Giải thích:</strong> Ký tự <code>&amp;</code> yêu cầu hệ thống thực thi lệnh <code>ps -l</code> dưới dạng tiến trình chạy ngầm (Background). <code>[1]</code> là số thứ tự Job (Job ID = 1), và <code>478</code> là Mã định danh tiến trình (PID = 478) vừa được khởi tạo.</p>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: So sánh Tiến trình Trực tiếp (Foreground) &amp; Chạy ngầm (Background)</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. Tiến trình Foreground:</span>
+$ sleep 10
+# Người dùng phải chờ 10 giây, Shell bị khóa không thể gõ câu lệnh khác.
+
+<span class="cmd-input"># 2. Tiến trình Background:</span>
+$ sleep 10 &
+[1] 5120
+# Shell trả lại dấu nhắc prompt ngay lập tức, người dùng tiếp tục làm việc bình thường.</div>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Thông báo "END." khi tiến trình ngầm kết thúc (Không dùng Shell script)</div>
+          <p><strong>Cách thực hiện bằngSubshell trên dòng lệnh:</strong></p>
+          <div class="cmd-output"><span class="cmd-input">$ (sleep 5 & wait $!; echo "END.")</span>
+# Sau 5 giây, màn hình tự động in ra dòng chữ:
+END.</div>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Chuỗi Thao Tác Quản Lý Tiến Trình Chi Tiết (Các bước 1 &rarr; 7)</div>
+          <div class="cmd-output"><span class="cmd-input"># Bước 1 & 2: Thực thi top và tạm ngưng (Ctrl+Z):</span>
+$ top
+[Nhấn Ctrl+Z]
+[1]+ Stopped top
+
+<span class="cmd-input"># Bước 3 & 4: Tạo tiến trình trì hoãn 2 lần 60s và cho chạy ngầm:</span>
+$ (sleep 60; sleep 60; ls -l > flist) &
+[2] 5432
+
+<span class="cmd-input"># Bước 5: Liệt kê các tiến trình đang chạy ngầm:</span>
+$ jobs -l
+[1]+ Stopped top
+[2]- Running (sleep 60; sleep 60; ls -l > flist) &
+
+<span class="cmd-input"># Bước 6: Hủy tiến trình top (Job 1):</span>
+$ kill -9 %1
+
+<span class="cmd-input"># Bước 7: Kiểm tra kết quả tiến trình lưu flist hoàn tất:</span>
+$ cat flist</div>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Liệt kê tiến trình theo từng trang màn hình</div>
+          <div class="cmd-output"><span class="cmd-input">$ ps aux | more</span>
+# Hoặc dùng less để cuộn trang linh hoạt:
+<span class="cmd-input">$ ps aux | less</span></div>
+        </div>
+
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Shell Script `uncount` đếm ngược 6 về 1 và xử lý phím DEL</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị 6 5 4 3 2 1 mỗi 5 giây; gõ phím DEL (Signal 2) sẽ nhảy ngay sang số kế tiếp.</p>
+          <div class="code-block">#!/bin/bash
+# Script uncount.sh
+skip=0
+
+# Đăng ký bắt tín hiệu Signal 2 (DEL / Ctrl+C)
+trap 'skip=1' 2
+
+for (( i=6; i>=1; i-- ))
+do
+    echo "Con so hien tai: $i"
+    skip=0
+    
+    # Vòng lặp đếm 5 giây
+    for (( t=0; t<5; t++ ))
+    do
+        if [ $skip -eq 1 ]; then
+            echo " -> Da nhan phim DEL! Bỏ qua thoi gian cho, nhay sang so ke..."
+            break
+        fi
+        sleep 1
+    done
+done
+
+# Khôi phục lại xử lý mặc định của phím DEL
+trap 2
+echo "Hoan thanh chuong trinh uncount!"</div>
+        </div>
+
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Liệt kê các tiến trình ngầm hiện đang chạy</div>
+          <div class="cmd-output"><span class="cmd-input">$ jobs -r</span></div>
+        </div>
+
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Liệt kê các tiến trình ngầm đã kết thúc</div>
+          <div class="cmd-output"><span class="cmd-input">$ jobs -d</span>
+# Hoặc xem trạng thái Done trong lệnh jobs:
+<span class="cmd-input">$ jobs</span></div>
+        </div>
+
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Xác định tín hiệu phát sinh khi chạy lệnh `kill`</div>
+          <ul>
+            <li><code>$ kill 408</code> &rarr; Phát sinh **Signal 15 (SIGTERM)**: Tín hiệu yêu cầu kết thúc tiến trình 408 một cách bình thường.</li>
+            <li><code>$ kill -9 521</code> &rarr; Phát sinh **Signal 9 (SIGKILL)**: Tín hiệu diệt cưỡng chế tiến trình 521 ngay lập tức.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Shell Script `LisFileDel` xem danh sách file và nhảy file khi bấm DEL</div>
+          <div class="code-block">#!/bin/bash
+# Script LisFileDel.sh file1 file2 ...
+skip=0
+
+# Đăng ký bắt phím DEL (Signal 2)
+trap 'skip=1' 2
+
+for file in "$@"
+do
+    skip=0
+    echo "=========================================="
+    echo " DANG HIEN THI NOI DUNG FILE: $file"
+    echo "=========================================="
+    
+    if [ ! -f "$file" ]; then
+        echo "Loi: Tap tin $file khong ton tai!"
+        continue
+    fi
+    
+    # Đọc từng dòng của tập tin
+    while IFS= read -r line
+    do
+        if [ $skip -eq 1 ]; then
+            echo ""
+            echo " [=> Da nhan DEL: Bo qua tap tin $file, chuyen sang file ke!]"
+            break
+        fi
+        echo "$line"
+        sleep 0.2
+    done < "$file"
+done
+
+# Khôi phục xử lý mặc định của phím DEL
+trap 2
+echo "Da hien thi xong tat ca cac tap tin trong danh sach."</div>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: Shell Script `trap2` thông báo Shutdown từ 5 về 1 phút</div>
+          <div class="code-block">#!/bin/bash
+# Script trap2.sh
+skip=0
+
+# Đăng ký bắt tín hiệu phím DEL (Signal 2)
+trap 'skip=1' 2
+
+for (( n=5; n>=1; n-- ))
+do
+    echo "Shutdown in $n minutes"
+    skip=0
+    
+    # Giả lập khoảng thời gian chờ (60s mỗi phút, ở đây demo 5s)
+    for (( sec=0; sec<60; sec++ ))
+    do
+        if [ $skip -eq 1 ]; then
+            echo " [=> Da nhan DEL: Lap tuc hien thi thong bao phut tiep theo!]"
+            break
+        fi
+        sleep 1
+    done
+done
+
+# Khôi phục xử lý mặc định của phím DEL
+trap 2
+echo "SYSTEM SHUTDOWN NOW!"</div>
+        </div>
+      </section>
+    
+      </article>
+
+
+      <!-- ========================================== -->
+      <!-- BUỔI THỰC HÀNH SỐ 5 -->
+      <!-- ========================================== -->
+      <article id="lab-5" style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px dashed var(--border-color);">
+        <div style="background-color: var(--primary-color); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">
+          📘 THỰC HÀNH BUỔI 5
+        </div>
+        
+      <!-- Section 1 & 2: Tổ chức tập tin Unix -->
+      <section id="sec-file-org">
+        <h2>1. Tổ Chức Hệ Thống Tập Tin Unix/Linux</h2>
+        
+        <h3>1.1 3 Kiểu tập tin cơ bản</h3>
+        <ul>
+          <li><strong>Tập tin bình thường (Regular file):</strong> Chứa dữ liệu dạng văn bản (ASCII/text) hoặc mã nhị phân (binary). Ký hiệu dạng <code>-</code>.</li>
+          <li><strong>Tập tin thư mục (Directory file):</strong> Chứa danh sách các tên file/thư mục con. Ký hiệu dạng <code>d</code>.</li>
+          <li><strong>Tập tin đặc biệt (Special/Device file):</strong> Đại diện cho các thiết bị phần cứng ngoại vi hoặc cơ chế truyền tin (bàn phím input, màn hình/máy in output). Ký hiệu dạng <code>c</code> (character) hoặc <code>b</code> (block).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">1.2 Cấu trúc Cây hệ thống tập tin Linux</h3>
+        <p>Các tập tin của Unix được tổ chức theo cấu trúc cây phân cấp bắt đầu từ <strong>thư mục gốc (Root - <code>/</code>)</strong>:</p>
+
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Thư mục chuẩn</th>
+              <th>Chức năng &amp; Nội dung lưu trữ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/</code></td>
+              <td>Thư mục gốc (Root directory), chứa tất cả các thư mục khác</td>
+            </tr>
+            <tr>
+              <td><code>/bin</code></td>
+              <td>Chứa các file thực thi nhị phân (binary commands) cần cho khởi động &amp; chế độ đơn dùng (ls, cp, cat, bash...)</td>
+            </tr>
+            <tr>
+              <td><code>/boot</code></td>
+              <td>Chứa Kernel image, grub và các file cấu hình khởi động hệ thống</td>
+            </tr>
+            <tr>
+              <td><code>/dev</code></td>
+              <td>Chứa các file thiết bị phần cứng đặc biệt (sda, null, tty, zero...)</td>
+            </tr>
+            <tr>
+              <td><code>/etc</code></td>
+              <td>Chứa tất cả các file cấu hình hệ thống (passwd, group, shadow, login.defs...)</td>
+            </tr>
+            <tr>
+              <td><code>/home</code></td>
+              <td>Chứa thư mục cá nhân (home directory) của các người dùng thường</td>
+            </tr>
+            <tr>
+              <td><code>/lib</code></td>
+              <td>Chứa các thư viện chia sẻ (shared libraries) cần cho các lệnh trong /bin và /sbin</td>
+            </tr>
+            <tr>
+              <td><code>/mnt</code></td>
+              <td>Điểm gá lắp (mount point) tạm thời cho các thiết bị lưu trữ (USB, HDD ngoài...)</td>
+            </tr>
+            <tr>
+              <td><code>/proc</code></td>
+              <td>Hệ thống tập tin ảo (virtual filesystem) lưu trữ thông tin về Kernel và tiến trình đang chạy</td>
+            </tr>
+            <tr>
+              <td><code>/sbin</code></td>
+              <td>Chứa các lệnh thực thi dành riêng cho quản trị hệ thống (System Binaries: fdisk, reboot, ifconfig...)</td>
+            </tr>
+            <tr>
+              <td><code>/tmp</code></td>
+              <td>Chứa các tập tin tạm thời do hệ thống hoặc ứng dụng tạo ra</td>
+            </tr>
+            <tr>
+              <td><code>/usr</code></td>
+              <td>Chứa các chương trình, thư viện, tài liệu dùng chung cho người dùng (usr/bin, usr/lib, usr/share...)</td>
+            </tr>
+            <tr>
+              <td><code>/var</code></td>
+              <td>Chứa dữ liệu thường xuyên biến đổi (system logs /var/log, mail /var/spool/mail, print spool...)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 3 & 4: Đường dẫn & Di chuyển -->
+      <section id="sec-path-cd" style="margin-top: 2rem;">
+        <h2>2. Đường Dẫn &amp; Thao Tác Di Chuyển Thư Mục</h2>
+        
+        <h3>2.1 Đường dẫn tuyệt đối vs Tương đối</h3>
+        <ul>
+          <li><strong>Đường dẫn tuyệt đối (Absolute Path):</strong> Chỉ rõ vị trí bắt đầu từ gốc <code>/</code> (ví dụ: <code>/home/user1/notes</code>). Luôn bắt đầu bằng <code>/</code>.</li>
+          <li><strong>Đường dẫn tương đối (Relative Path):</strong> Bắt đầu tính từ thư mục làm việc hiện hành (ví dụ đứng tại <code>/home</code> thì gõ <code>user1/notes</code>).</li>
+        </ul>
+
+        <h3 style="margin-top: 1rem;">Ký hiệu đặc biệt trong đường dẫn:</h3>
+        <ul>
+          <li><code>.</code> : Thư mục hiện hành (current directory).</li>
+          <li><code>..</code> : Thư mục cha (parent directory).</li>
+          <li><code>~</code> : Thư mục home của người dùng đang đăng nhập (Home directory).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">2.2 Các lệnh di chuyển thư mục:</h3>
+        <div class="cmd-output"><span class="cmd-input">$ pwd</span>
+/home/user1
+
+<span class="cmd-input">$ cd /usr/bin</span>
+<span class="cmd-input">$ pwd</span>
+/usr/bin
+
+<span class="cmd-input">$ cd ..</span>
+<span class="cmd-input">$ pwd</span>
+/usr
+
+<span class="cmd-input">$ cd</span>
+<span class="cmd-input">$ pwd</span>
+/home/user1</div>
+      </section>
+
+      <!-- Section 5 & 6: Quyền & Người dùng / Nhóm -->
+      <section id="sec-permissions" style="margin-top: 2rem;">
+        <h2>3. Quyền Truy Cập &amp; Quản Lý Người Dùng / Nhóm</h2>
+        
+        <h3>3.1 Phân tích chi tiết một mục từ `ls -l`</h3>
+        <div class="cmd-output">-rwxrw-r-- 1 xyz staff 12 Mar 7 12:35 test</div>
+        <ul style="line-height: 1.6;">
+          <li><code>-</code> : Ký tự đầu tiên cho biết đây là <strong>file thường</strong> (nếu <code>d</code> là thư mục).</li>
+          <li><code>rwx</code> : Quyền của Owner (xyz) &rarr; Đọc (Read), Ghi (Write), Thực thi (Execute).</li>
+          <li><code>rw-</code> : Quyền của Group (staff) &rarr; Đọc, Ghi, không được Thực thi.</li>
+          <li><code>r--</code> : Quyền của Other (người khác) &rarr; Chỉ được Đọc.</li>
+          <li><code>1</code> : Số liên kết cứng (Hard links) trỏ đến file.</li>
+          <li><code>xyz</code> : Tên tài khoản sở hữu (Owner).</li>
+          <li><code>staff</code> : Tên nhóm sở hữu (Group).</li>
+          <li><code>12</code> : Kích thước tập tin (bytes).</li>
+          <li><code>Mar 7 12:35</code> : Thời điểm chỉnh sửa gần nhất.</li>
+          <li><code>test</code> : Tên tập tin.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">3.2 Quản lý Người dùng &amp; Nhóm hệ thống</h3>
+        <ul>
+          <li><strong>Thông tin User:</strong> Lưu tại file <code>/etc/passwd</code> (username, password, uid, gid, comment, home dir, default shell). Lệnh quản trị: <code>useradd</code>.</li>
+          <li><strong>Thông tin Group:</strong> Lưu tại file <code>/etc/group</code> (groupname, password, gid, members). Lệnh quản trị: <code>groupadd</code>.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">Ý nghĩa quyền đối với Thư mục:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Quyền</th>
+              <th>Đối với Tập tin (File)</th>
+              <th>Đối với Thư mục (Directory)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>r</code> (Read)</td>
+              <td>Đọc nội dung tập tin</td>
+              <td>Xem/liệt kê danh sách các file trong thư mục (lệnh <code>ls</code>)</td>
+            </tr>
+            <tr>
+              <td><code>w</code> (Write)</td>
+              <td>Sửa đổi, ghi đè nội dung tập tin</td>
+              <td>Tạo mới, đổi tên hoặc xóa các tập tin bên trong thư mục</td>
+            </tr>
+            <tr>
+              <td><code>x</code> (Execute)</td>
+              <td>Thực thi tập tin như chương trình</td>
+              <td>Đi qua/truy cập vào thư mục (lệnh <code>cd</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 7: I/O Redirection & Pipe -->
+      <section id="sec-io-redirection" style="margin-top: 2rem;">
+        <h2>4. Vào/Ra Chuẩn &amp; Đổi Hướng (I/O Redirection &amp; Pipes)</h2>
+        
+        <h3>4.1 Các luồng Vào/Ra chuẩn (Standard I/O Streams)</h3>
+        <ul>
+          <li><strong>stdin (Standard Input - Descriptor 0):</strong> Đầu vào chuẩn (Mặc định: Bàn phím).</li>
+          <li><strong>stdout (Standard Output - Descriptor 1):</strong> Đầu ra chuẩn (Mặc định: Màn hình Console).</li>
+          <li><strong>stderr (Standard Error - Descriptor 2):</strong> Đầu ra lỗi chuẩn (Mặc định: Màn hình Console).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Cú pháp Đổi hướng &amp; Đường ống (Pipes)</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp Đổi hướng</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+              <th>Ví dụ câu lệnh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lệnh > file</code></td>
+              <td>Đổi hướng stdout vào file (Ghi đè - Overwrite)</td>
+              <td><code>ls /bin > file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh >> file</code></td>
+              <td>Đổi hướng stdout vào file (Ghi nối tiếp - Append)</td>
+              <td><code>ls /bin >> file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh 2> file</code></td>
+              <td>Đổi hướng lỗi stderr vào file (Ghi đè)</td>
+              <td><code>ls /root 2> err.log</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh > file 2>&1</code></td>
+              <td>Đổi hướng cả stdout và stderr vào cùng 1 file</td>
+              <td><code>ls /root > out.log 2>&1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh 2> /dev/null</code></td>
+              <td>Hủy bỏ toàn bộ thông báo lỗi ra thiết bị null</td>
+              <td><code>find / -name "*.c" 2> /dev/null</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh < file</code></td>
+              <td>Đổi hướng đầu vào stdin lấy dữ liệu từ file</td>
+              <td><code>wc -l < file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh << STRING ... STRING</code></td>
+              <td>Here-Document: Đọc dữ liệu đến khi gặp nhãn STRING</td>
+              <td><code>cat > file1 << OK ... OK</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh1 | lệnh2</code></td>
+              <td>Đường ống (Pipe): Lấy stdout của lệnh1 làm stdin của lệnh2</td>
+              <td><code>ps -ef | grep bash</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh | tee file</code></td>
+              <td>Đổi hướng kép: Vừa in ra màn hình vừa ghi ra file</td>
+              <td><code>ps -ef | tee file_ps | grep root</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 18)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thư mục Home và Quyền trên Thư mục Home</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd ~ &amp;&amp; pwd</span>
+/home/user1
+<span class="cmd-input">$ ls -ld /home/user1</span>
+drwxr-xr-x 5 user1 user1 4096 Mar 7 10:00 /home/user1</div>
+          <p><strong>Mô tả:</strong> Thư mục Home của <code>user1</code> có đường dẫn <code>/home/user1</code>. Quyền <code>drwxr-xr-x</code> cho phép Owner (user1) có toàn quyền đọc/ghi/truy cập (`rwx`), Group và Other có quyền đọc và truy cập (`r-x`).</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Liệt kê các thư mục dưới gốc `/`</div>
+          <div class="cmd-output"><span class="cmd-input">$ ls -l /</span></div>
+          <p>Hiển thị các thư mục chuẩn <code>bin</code>, <code>boot</code>, <code>dev</code>, <code>etc</code>, <code>home</code>, <code>lib</code>, <code>mnt</code>, <code>proc</code>, <code>sbin</code>, <code>tmp</code>, <code>usr</code>, <code>var</code> với quyền sở hữu mặc định thuộc về người dùng <code>root</code>.</p>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Giải thích chi tiết mục từ thư mục</div>
+          <div class="cmd-output">drwxr-xr-- 2 abc users 1024 Mar 7 12:35 ddd</div>
+          <ul style="line-height: 1.6;">
+            <li><code>d</code>: Loại tập tin là **Thư mục (Directory)**.</li>
+            <li><code>rwx</code>: Chủ sở hữu (Owner <code>abc</code>) có quyền đọc, ghi, và truy cập thư mục.</li>
+            <li><code>r-x</code>: Nhóm sở hữu (Group <code>users</code>) có quyền đọc danh sách và truy cập, không được sửa/tạo/xóa file trong thư mục.</li>
+            <li><code>r--</code>: Những người dùng khác (Other) chỉ có quyền đọc tên thư mục.</li>
+            <li><code>2</code>: Số liên kết (Hard links).</li>
+            <li><code>abc</code>: Tên tài khoản Owner sở hữu.</li>
+            <li><code>users</code>: Tên Group sở hữu.</li>
+            <li><code>1024</code>: Kích thước thư mục (1024 bytes).</li>
+            <li><code>Mar 7 12:35</code>: Thời điểm chỉnh sửa gần nhất.</li>
+            <li><code>ddd</code>: Tên thư mục.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Thư mục chứa các file cấu hình hệ thống</div>
+          <p>Thư mục <strong><code>/etc</code></strong> chứa tất cả các tập tin cấu hình của hệ thống Linux.</p>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Hai thư mục chứa tập tin thư viện lệnh</div>
+          <p>Hai thư mục chứa các tập tin thư viện lệnh là <strong><code>/lib</code></strong> và <strong><code>/usr/lib</code></strong>.</p>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Phân biệt thư mục `/` và thư mục `/root`</div>
+          <ul>
+            <li><strong><code>/</code> (Thư mục Gốc - Root directory):</strong> Là thư mục cao nhất trong hệ thống tập tin Linux, chứa tất cả các thư mục con khác.</li>
+            <li><strong><code>/root</code>:</strong> Là thư mục Home riêng cá nhân của tài khoản quản trị tối cao (Superuser root).</li>
+          </ul>
+        </div>
+
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Xác định tên thư mục hiện hành qua chuỗi lệnh `cd`</div>
+          <ol style="line-height: 1.6;">
+            <li><code>cd ~</code> &rarr; Về thư mục Home (ví dụ: <code>/home/user1</code>).</li>
+            <li><code>cd .</code> &rarr; Vẫn ở thư mục hiện tại (<code>/home/user1</code>).</li>
+            <li><code>cd ..</code> &rarr; Lên thư mục cha (<code>/home</code>).</li>
+            <li><code>cd user1</code> &rarr; Chuyển vào thư mục tài khoản login (<code>/home/user1</code>).</li>
+          </ol>
+        </div>
+
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Di chuyển thư mục từ `/var/spool`</div>
+          <p>Giả sử đang ở <code>/var/spool</code>:</p>
+          <ul>
+            <li>Thực hiện <code>cd mail</code> &rarr; Thư mục mới là <strong><code>/var/spool/mail</code></strong>.</li>
+            <li>Sau đó thực hiện <code>cd ../spool/mail</code> &rarr; Thư mục mới là <strong><code>/spool/mail</code></strong>.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Các câu hỏi thao tác thư mục trong `/var` và Home</div>
+          <ol style="line-height: 1.6;">
+            <li><code>cd /var &amp;&amp; ls -l | grep "^d" | wc -l</code> &rarr; Đếm số thư mục con dưới <code>/var</code>.</li>
+            <li><code>ls /sbin</code> &rarr; Xem bình thường nếu có quyền đọc, hoặc báo <code>Permission denied</code> nếu bị cấm.</li>
+            <li><code>mkdir /var/userxxx</code> &rarr; Báo lỗi <code>mkdir: cannot create directory '/var/userxxx': Permission denied</code> vì user thường không có quyền ghi vào <code>/var</code>.</li>
+            <li><code>cd ~ &amp;&amp; mkdir ddddd</code> &rarr; Tạo thành công vì user có toàn quyền ghi trong thư mục Home của mình.</li>
+            <li><code>cd ddddd &amp;&amp; echo "This is a message" > fffff &amp;&amp; cat fffff</code> &rarr; Tạo thành công file <code>fffff</code> chứa câu văn bản.</li>
+            <li>Đứng tại <code>/home/user1/ddddd</code> gõ <code>rmdir /home/user1/ddddd</code> &rarr; Báo lỗi <code>rmdir: failed to remove 'ddddd': Directory not empty</code> (thư mục không rỗng) và không thể xóa thư mục khi đang đứng bên trong.</li>
+          </ol>
+        </div>
+
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Liệt kê các tập tin ẩn trong thư mục Home</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd ~ &amp;&amp; ls -a</span>
+.  ..  .bash_history  .bash_logout  .bash_profile  .bashrc</div>
+          <p><strong>Tập tin ẩn:</strong> Là các tập tin có tên bắt đầu bằng dấu chấm <code>.</code> (ví dụ: <code>.bashrc</code>, <code>.bash_profile</code>).</p>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Hiển thị các dòng cuối tập tin với lệnh `tail`</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. 4 dòng cuối /etc/passwd:</span>
+$ tail -n 4 /etc/passwd
+
+<span class="cmd-input"># 2. 6 dòng cuối /etc/group:</span>
+$ tail -n 6 /etc/group
+
+<span class="cmd-input"># 3. 8 dòng cuối /etc/login.defs:</span>
+$ tail -n 8 /etc/login.defs
+
+<span class="cmd-input"># 4. 20 dòng cuối /etc/login.defs:</span>
+$ tail -n 20 /etc/login.defs</div>
+          <p><strong>Nhận xét:</strong> Tùy chọn <code>-n K</code> cho phép trích xuất chính xác $K$ dòng cuối cùng của tập tin văn bản.</p>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: 12 Thao tác quản lý tập tin &amp; thư mục nâng cao</div>
+          <div class="code-block"># 1. Tạo 7 file trong Home:
+touch one two three four five r1 r2 && ls -l
+
+# 2. Thử tạo 7 file trong /var (bị chối quyền Permission denied do không có quyền write):
+touch /var/one
+
+# 3. Sao chép .bash_profile thành bprofile:
+cp ~/.bash_profile bprofile && ls -l bprofile
+
+# 4. Tạo liên kết cứng / mềm lbprofile trỏ đến bprofile:
+ln -s bprofile lbprofile && ls -l lbprofile
+
+# 5. Chép 7 file sang /tmp:
+cp one two three four five r1 r2 /tmp/ && ls -l /tmp
+
+# 6. Chép 7 file sang /root (bị Permission denied do /root bảo vệ chỉ dành cho root):
+cp one two three four five r1 r2 /root/
+
+# 7. Chép /etc/passwd về Home:
+cp /etc/passwd ~/passwd && ls -l ~/passwd /etc/passwd
+# File passwd ở Home thuộc sở hữu người dùng hiện tại nên người dùng có quyền sửa/xóa!
+
+# 8. Tạo thư mục dir1, dir2 và thư mục con dir2a:
+mkdir -p dir1 dir2/dir2a && ls -ld dir1 dir2 dir2/dir2a
+
+# 9. Di chuyển file one vào dir1:
+mv one dir1/ && ls -l dir1/
+
+# 10. Chuyển tất cả file bắt đầu bằng 'f' vào dir2:
+mv f* dir2/ && ls -l dir2/
+
+# 11. Chuyển r1 và r2 vào dir2/dir2a không dùng wildcard (*,?):
+mv r1 r2 dir2/dir2a/ && ls -l dir2/dir2a/
+
+# 12. Xóa thư mục dir2a:
+rm -rf dir2/dir2a</div>
+        </div>
+
+        <!-- Bài 13 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 13: Quản lý Quyền thực thi và Phân quyền file (12 câu nhỏ)</div>
+          <div class="code-block"># 1 & 2. Tạo script hello và reply:
+echo 'echo "Hello"' > hello
+echo 'echo "How are you ?"' >> hello
+echo 'echo "Hello"' > reply
+echo 'echo "Fine. And you ?"' >> reply
+
+# 3 & 4. Xem quyền và chạy thử:
+ls -l hello reply
+./hello
+# Báo lỗi: Permission denied vì chưa có quyền thực thi (x)!
+
+# 5. Cấp quyền thực thi và chạy lại:
+chmod +x hello reply
+./hello
+./reply
+
+# 6. Bỏ quyền group và other:
+chmod go-rwx hello reply
+
+# 7. Cho phép group đọc và chạy:
+chmod g+rx hello reply
+
+# 8 & 9. Thay đổi người sở hữu (cần sudo):
+# sudo chown root hello
+
+# 10, 11 & 12. Điều kiện để user khác chạy file hello1:
+# Thư mục chứa file phải có quyền +x cho other/group, và file hello1 phải có quyền +r+x.
+# Nếu đổi tên hello1 thành rm và chạy lệnh rm -> script hello1 sẽ được gọi thay vì lệnh rm hệ thống nếu đường dẫn PATH ưu tiên thư mục hiện tại.</div>
+        </div>
+
+        <!-- Bài 14 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 14: Phân biệt các lệnh xem tập tin (cat, head, tail, more, less)</div>
+          <table class="op-table">
+            <thead>
+              <tr>
+                <th>Câu lệnh</th>
+                <th>Đặc điểm &amp; Chức năng</th>
+                <th>Ví dụ sử dụng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>cat</code></td>
+                <td>In toàn bộ nội dung file ra màn hình một lượt</td>
+                <td><code>cat /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>head</code></td>
+                <td>Chỉ in $N$ dòng đầu tiên của file (mặc định 10 dòng)</td>
+                <td><code>head -n 5 /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>tail</code></td>
+                <td>Chỉ in $N$ dòng cuối cùng của file (mặc định 10 dòng)</td>
+                <td><code>tail -n 5 /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>more</code></td>
+                <td>Xem file phân trang theo chiều cuộn xuống (Space để qua trang)</td>
+                <td><code>more /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>less</code></td>
+                <td>Xem file phân trang nâng cao (cho phép cuộn lên/xuống, tìm kiếm <code>/</code>)</td>
+                <td><code>less /etc/passwd</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bài 15 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 15: Các ví dụ ứng dụng lệnh `find`</div>
+          <div class="code-block"># 1. Tìm tất cả các file có đuôi .html:
+find / -name "*.html" 2>/dev/null
+
+# 2. Tìm tất cả các file thuộc sở hữu của root:
+find /home -user root
+
+# 3. Tìm thư mục có tên lib trong /usr:
+find /usr -type d -name "lib"
+
+# 4. Lệnh find phát sinh lỗi Permission denied (khi tìm trong thư mục bảo vệ của hệ thống):
+find /root -name "*.txt"
+# Giải thích: Người dùng thường không có quyền đọc (r) hoặc truy cập (x) vào /root!
+
+# 5. Tìm tất cả file bị sửa đổi trong vòng 24 giờ qua:
+find ~ -mtime -1
+
+# 6. Liệt kê tất cả thư mục rỗng:
+find ~ -type d -empty</div>
+        </div>
+
+        <!-- Bài 16 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 16: Các ví dụ ứng dụng lệnh `grep`</div>
+          <div class="code-block"># 1. Hiển thị số dòng và các dòng chứa chuỗi 'root' trong /etc/passwd:
+grep -n "root" /etc/passwd
+
+# 2. Hiển thị các dòng KHÔNG chứa chuỗi 'root' trong /etc/passwd:
+grep -v "root" /etc/passwd
+
+# 3. Liệt kê các file trong /etc/ chứa chuỗi 'echo':
+grep -l "echo" /etc/* 2>/dev/null
+
+# 4. Hiển thị các dòng trong /etc/login.defs KHÔNG phải dòng chú thích (#):
+grep -v "^#" /etc/login.defs | grep -v "^$"
+
+# 5. Hiển thị danh sách user có shell đăng nhập là /bin/bash:
+grep "/bin/bash" /etc/passwd | cut -d: -f1</div>
+        </div>
+
+        <!-- Bài 17 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 17: Thực hành Đổi Hướng I/O &amp; Đường Ống Pipe (9 câu)</div>
+          <div class="code-block"># 1. Lưu danh sách thư mục con vào file one:
+ls -l | grep "^d" > one && cat one
+
+# 2. Hiển thị danh sách người dùng đăng nhập và lưu vào users:
+who | tee users
+
+# 3. Lưu danh sách tiến trình vào cuối file users:
+ps -ef >> users
+
+# 4. Xem nội dung /etc theo từng trang:
+ls -l /etc | more
+
+# 5. Đếm số byte, số từ và số dòng trong /etc/passwd:
+wc /etc/passwd
+
+# 6. Sắp xếp nội dung /etc/group:
+sort /etc/group
+
+# 7. Hiển thị nội dung /var/spool/mail sắp xếp theo kích thước:
+ls -lS /var/spool/mail 2>/dev/null
+
+# 8. Liệt kê các dịch vụ dùng giao thức tcp trong /etc/services:
+grep "tcp" /etc/services | more
+
+# 9. Nhập danh sách họ tên sinh viên từ bàn phím và lưu sắp xếp vào file students:
+sort > students <<EOF
+Nguyen Van A
+Tran Thi B
+Le Van C
+EOF
+cat students</div>
+        </div>
+
+        <!-- Bài 18 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 18: Giải thích Pipeline kết quả lệnh `sort`, `grep`, `wc`, `head`</div>
+          <p>Tạo file <code>commands</code> trong thư mục Home:</p>
+          <div class="cmd-output">cal     /usr/bin    9416
+date    /bin        2860
+who     /usr/bin    8692
+cat     /bin        18056
+lpd     /usr/sbin   42012</div>
+
+          <ol style="line-height: 1.7;">
+            <li><code>sort -r commands | head -1</code> &rarr; Sắp xếp các dòng trong file <code>commands</code> theo thứ tự ngược bảng chữ cái (giảm dần) và lấy dòng đầu tiên lớn nhất (dòng <code>who...</code>).</li>
+            <li><code>grep ^c commands | wc -l</code> &rarr; Lọc các dòng bắt đầu bằng chữ 'c' (gồm <code>cal</code> và <code>cat</code>), sau đó đếm số dòng thu được $\rightarrow$ Kết quả in ra là <code>2</code>.</li>
+            <li><code>grep at commands | sort</code> &rarr; Lọc các dòng chứa chuỗi 'at' (gồm <code>date</code> và <code>cat</code>), sau đó sắp xếp theo thứ tự bảng chữ cái $\rightarrow$ In ra dòng <code>cat</code> trước, <code>date</code> sau.</li>
+          </ol>
+        </div>
+      </section>
+    
+      </article>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

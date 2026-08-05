@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thực hành 3: Lập trình cấu trúc và vòng lặp trong Shell - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Custom styles for lab layout */
+    .cmd-output {
+      background-color: var(--highlight-bg);
+      border-left: 3px solid var(--secondary-color);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      color: var(--text-dark);
+    }
+    .cmd-input {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .solution-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .solution-title {
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Thực hành 3
+      </div>
+      <h1>BÀI THỰC HÀNH BUỔI 3 - LẬP TRÌNH CẤU TRÚC VÀ VÒNG LẶP TRONG SHELL</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Nội dung thực hành: Lệnh điều kiện <code>if...else</code>, lệnh <code>test</code> &amp; biểu thức so sánh <code>[ expr ]</code>, vòng lặp <code>for</code> (2 cú pháp), vòng lặp <code>while</code>, rẽ nhánh <code>case</code> và lời giải bài tập thực hành. (Theo Tài liệu Thực hành HĐH - ThS. Phan Thượng Cang &amp; ThS. Bùi Quốc Thái, Bộ môn HTMT&amp;TT &bull; ĐHCT).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Giới thiệu Boolean -->
+      <section id="sec-intro">
+        <h2>Tổng Quan Về Kiểu Boolean Trong Shell</h2>
+        <p>
+          Trong Shell của Linux, giá trị <strong>True (Đúng)</strong> và <strong>False (Sai)</strong> được thể hiện tương ứng bằng 2 giá trị:
+        </p>
+        <ul>
+          <li><strong>0 (Zero - Exit status bằng 0):</strong> Tương ứng với <strong>True (Thành công)</strong>.</li>
+          <li><strong>Khác 0 (Non-zero - Exit status khác 0):</strong> Tương ứng với <strong>False (Thất bại/Lỗi)</strong>.</li>
+        </ul>
+        <div class="cmd-output">Ví dụ:
+ 5 > 2  =>  0 (True / Thành công)
+ 5 < 2  =>  1 (False / Thất bại)</div>
+      </section>
+
+      <!-- Section 1: Lệnh if -->
+      <section id="sec-if" style="margin-top: 2rem;">
+        <h2>1. Câu Lệnh <code>if</code></h2>
+        <p>Câu lệnh <code>if</code> được dùng để thiết lập quyết định (lệnh rẽ nhánh) trong shell script.</p>
+
+        <p><strong>Cú pháp cơ bản:</strong></p>
+        <div class="code-block">if condition
+then
+    command1
+    command2
+    ...
+fi</div>
+
+        <p>Lệnh <code>command1</code> được thực thi khi điều kiện <code>condition</code> là True (trả về 0). Ngược lại, lệnh tiếp theo sau từ khóa <code>fi</code> sẽ được thực hiện.</p>
+
+        <p style="font-weight: 600; margin-top: 1rem;">Ví dụ script <code>rmif</code> (Xóa file nhận từ tham số):</p>
+        <div class="code-block">#!/bin/bash
+if rm $1
+then
+    echo "$1 is deleted successfully"
+fi</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x rmif</span>
+<span class="cmd-input">$ ./rmif aaaa</span>
+rm: cannot remove 'aaaa': No such file or directory
+<span class="cmd-input">$ ./rmif a</span>
+a is deleted successfully</div>
+
+        <p style="font-size: 0.92rem; color: var(--text-light);">
+          <em>Giải thích:</em> Lần 1 thực thi với <code>aaaa</code> không tồn tại nên lệnh <code>rm</code> trả về exit status khác 0 (False), lệnh <code>echo</code> không được thực hiện. Lần 2 thực thi với file <code>a</code> có tồn tại nên <code>rm</code> thành công (exit status = 0 / True), lệnh <code>echo</code> được in ra màn hình.
+        </p>
+      </section>
+
+      <!-- Section 2: Lệnh test hoặc [ expr ] -->
+      <section id="sec-test" style="margin-top: 2rem;">
+        <h2>2. Lệnh <code>test</code> Hoặc <code>[ expr ]</code></h2>
+        <p>Lệnh <code>test</code> hoặc <code>[ expr ]</code> dùng để kiểm tra một biểu thức logic là True hay False. Nếu biểu thức đúng sẽ trả về giá trị <code>0</code>, ngược lại trả về giá trị khác không.</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>ispositive</code>:</p>
+        <div class="code-block">#!/bin/bash
+if test $1 -gt 0
+then
+    echo "$1 is positive number"
+fi</div>
+
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x ispositive</span>
+<span class="cmd-input">$ ./ispositive 5</span>
+5 is positive number
+<span class="cmd-input">$ ./ispositive -3</span>
+<span class="cmd-input">$ </span></div>
+
+        <h3 style="margin-top: 1.5rem;">Bảng Toán Tử So Sánh Của Lệnh <code>test</code> &amp; <code>[ expr ]</code></h3>
+
+        <h4>a) So sánh Số nguyên (Integer Comparison):</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+              <th>Dùng với <code>test</code></th>
+              <th>Dùng với <code>[ expr ]</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-eq</code></td>
+              <td>So sánh bằng (==)</td>
+              <td><code>if test 5 -eq 6</code></td>
+              <td><code>if [ 5 -eq 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-ne</code></td>
+              <td>Không bằng (!=)</td>
+              <td><code>if test 5 -ne 6</code></td>
+              <td><code>if [ 5 -ne 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-lt</code></td>
+              <td>Nhỏ hơn (&lt;)</td>
+              <td><code>if test 5 -lt 6</code></td>
+              <td><code>if [ 5 -lt 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-le</code></td>
+              <td>Nhỏ hơn hoặc bằng (&lt;=)</td>
+              <td><code>if test 5 -le 6</code></td>
+              <td><code>if [ 5 -le 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-gt</code></td>
+              <td>Lớn hơn (&gt;)</td>
+              <td><code>if test 5 -gt 6</code></td>
+              <td><code>if [ 5 -gt 6 ]</code></td>
+            </tr>
+            <tr>
+              <td><code>-ge</code></td>
+              <td>Lớn hơn hoặc bằng (&gt;=)</td>
+              <td><code>if test 5 -ge 6</code></td>
+              <td><code>if [ 5 -ge 6 ]</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>b) So sánh Chuỗi ký tự (String Comparison):</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+              <th>Dùng với <code>test</code></th>
+              <th>Dùng với <code>[ expr ]</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>=</code></td>
+              <td>So sánh chuỗi bằng nhau</td>
+              <td><code>if test "aa" = "bb"</code></td>
+              <td><code>if [ "aa" = "bb" ]</code></td>
+            </tr>
+            <tr>
+              <td><code>!=</code></td>
+              <td>So sánh chuỗi không bằng nhau</td>
+              <td><code>if test "aa" != "bb"</code></td>
+              <td><code>if [ "aa" != "bb" ]</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>c) Kiểm tra File và Thư mục:</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp <code>test</code></th>
+              <th>Ý nghĩa trả về True (0)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-s file</code></td>
+              <td>File tồn tại và <strong>không rỗng</strong> (kích thước &gt; 0)</td>
+            </tr>
+            <tr>
+              <td><code>-f file</code></td>
+              <td>Là một <strong>file thường</strong> (không phải là thư mục)</td>
+            </tr>
+            <tr>
+              <td><code>-d dir</code></td>
+              <td>Là một <strong>thư mục</strong> (directory)</td>
+            </tr>
+            <tr>
+              <td><code>-w file</code></td>
+              <td>File có quyền <strong>Ghi (Write)</strong></td>
+            </tr>
+            <tr>
+              <td><code>-r file</code></td>
+              <td>File có quyền <strong>Đọc (Read)</strong></td>
+            </tr>
+            <tr>
+              <td><code>-x file</code></td>
+              <td>File có quyền <strong>Thực thi (Execute)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>d) Phép toán Logic:</h4>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Phép toán</th>
+              <th>Ý nghĩa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>! expression</code></td>
+              <td>Phủ định (NOT) biểu thức <code>expression</code></td>
+            </tr>
+            <tr>
+              <td><code>expr1 -a expr2</code></td>
+              <td>Phép toán <strong>AND</strong> (Cả 2 biểu thức đều đúng)</td>
+            </tr>
+            <tr>
+              <td><code>expr1 -o expr2</code></td>
+              <td>Phép toán <strong>OR</strong> (Ít nhất 1 trong 2 biểu thức đúng)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 3: if ... else ... fi -->
+      <section id="sec-ifelse" style="margin-top: 2rem;">
+        <h2>3. Cấu Trúc <code>if ... else ... fi</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">if condition
+then
+    # condition trả về 0 (true): thực thi phần then
+    command1
+    command2
+else
+    # condition trả về khác 0 (false): thực thi phần else
+    command3
+    command4
+fi</div>
+
+        <p style="font-weight: 600;">Ví dụ:</p>
+        <div class="code-block">#!/bin/bash
+if test $1 -gt 0
+then
+    echo "$1 is positive"
+else
+    echo "$1 is negative"
+fi</div>
+      </section>
+
+      <!-- Section 4: if-then-elif-else nhiều cấp -->
+      <section id="sec-elif" style="margin-top: 2rem;">
+        <h2>4. Lệnh <code>if-then-else</code> Nhiều Cấp (<code>elif</code>)</h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">if condition1
+then
+    # condition1 là True (0)
+    commands1
+elif condition2
+then
+    # condition2 là True (0)
+    commands2
+elif condition3
+then
+    # condition3 là True (0)
+    commands3
+else
+    # Tất cả các điều kiện trên đều False
+    commands_default
+fi</div>
+      </section>
+
+      <!-- Section 5: Vòng lặp for -->
+      <section id="sec-for" style="margin-top: 2rem;">
+        <h2>5. Vòng Lặp <code>for</code></h2>
+        <p>Trong Shell của Linux, vòng lặp <code>for</code> hỗ trợ 2 cú pháp chính:</p>
+
+        <h3>a) Cú pháp 1: Duyệt danh sách (List iteration)</h3>
+        <div class="code-block">for variable_name in list
+do
+    command1
+    command2
+done</div>
+        <p>Biến <code>variable_name</code> sẽ lần lượt được gán từng phần tử trong <code>list</code> và thực hiện các câu lệnh giữa <code>do</code> và <code>done</code>.</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>testfor</code>:</p>
+        <div class="code-block">#!/bin/bash
+for i in 1 2 3 4 5
+do
+    echo "Welcome $i times"
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./testfor</span>
+Welcome 1 times
+Welcome 2 times
+Welcome 3 times
+Welcome 4 times
+Welcome 5 times</div>
+
+        <h3 style="margin-top: 1.5rem;">b) Cú pháp 2: Cú pháp kiểu C (Three-expression loop)</h3>
+        <div class="code-block">for (( expr1; expr2; expr3 ))
+do
+    # Thực hiện các câu lệnh giữa do và done cho đến khi expr2 là False
+    command1
+    command2
+done</div>
+        <ul style="line-height: 1.6;">
+          <li><code>expr1</code>: Biểu thức khởi tạo (ví dụ <code>i = 0</code>).</li>
+          <li><code>expr2</code>: Điều kiện lặp (ví dụ <code>i &lt;= 5</code>).</li>
+          <li><code>expr3</code>: Bước nhảy sau mỗi bước lặp (ví dụ <code>i++</code>).</li>
+        </ul>
+
+        <p style="font-weight: 600;">Ví dụ script <code>for2</code>:</p>
+        <div class="code-block">#!/bin/bash
+for (( i = 0; i <= 5; i++ ))
+do
+    echo "Welcome $i times"
+done</div>
+
+        <h3 style="margin-top: 1.5rem;">c) Vòng lặp <code>for</code> Lồng Nhau (Nested For)</h3>
+        <p style="font-weight: 600;">Ví dụ script <code>nestedfor</code>:</p>
+        <div class="code-block">#!/bin/bash
+for (( i = 1; i <= 5; i++ ))      ### Vòng lặp ngoài ###
+do
+    for (( j = 1; j <= 5; j++ )) ### Vòng lặp trong ###
+    do
+        echo -n "$i "
+    done
+    echo ""                      ### In dòng mới ###
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./nestedfor</span>
+1 1 1 1 1 
+2 2 2 2 2 
+3 3 3 3 3 
+4 4 4 4 4 
+5 5 5 5 5 </div>
+      </section>
+
+      <!-- Section 6: Vòng lặp while -->
+      <section id="sec-while" style="margin-top: 2rem;">
+        <h2>6. Vòng Lặp <code>while</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">while [ condition ]
+do
+    command1
+    command2
+    ...
+done</div>
+        <p>Các câu lệnh giữa <code>do</code> và <code>done</code> sẽ được lặp đi lặp lại liên tục cho đến khi điều kiện <code>condition</code> trả về False (khác 0).</p>
+
+        <p style="font-weight: 600;">Ví dụ script <code>whiletest</code>:</p>
+        <div class="code-block">#!/bin/bash
+i=1
+while [ $i -le 5 ]
+do
+    echo "Welcome $i times"
+    i=`expr $i + 1`
+done</div>
+        <div class="cmd-output"><span class="cmd-input">$ ./whiletest</span>
+Welcome 1 times
+Welcome 2 times
+Welcome 3 times
+Welcome 4 times
+Welcome 5 times</div>
+      </section>
+
+      <!-- Section 7: Lệnh case -->
+      <section id="sec-case" style="margin-top: 2rem;">
+        <h2>7. Câu Lệnh Rẽ Nhánh <code>case</code></h2>
+        <p><strong>Cú pháp:</strong></p>
+        <div class="code-block">case $variable-name in
+    pattern1)
+        command1
+        command2
+        ;;
+    pattern2)
+        command3
+        command4
+        ;;
+    patternN)
+        command5
+        ;;
+    *)
+        # Mẫu mặc định khi không khớp mẫu nào ở trên
+        command_default
+        ;;
+esac</div>
+
+        <p style="font-weight: 600;">Ví dụ script <code>casetest</code> (Chọn món ăn):</p>
+        <div class="code-block">#!/bin/bash
+echo "--- MENU THỰC ĐƠN ---"
+echo "1. Phở Bò"
+echo "2. Bún Chả"
+echo "3. Cơm Tấm"
+echo -n "Vui lòng chọn món ăn (1-3): "
+read choice
+
+case $choice in
+    1)
+        echo "Bạn đã chọn món Phở Bò. Cảm ơn quý khách!"
+        ;;
+    2)
+        echo "Bạn đã chọn món Bún Chả. Cảm ơn quý khách!"
+        ;;
+    3)
+        echo "Bạn đã chọn món Cơm Tấm. Cảm ơn quý khách!"
+        ;;
+    *)
+        echo "Rất tiếc! Lựa chọn của bạn không có trong thực đơn."
+        ;;
+esac</div>
+      </section>
+
+      <!-- Section 8: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hiện và kiểm tra tất cả các ví dụ trên</div>
+          <p>Tạo các file script <code>rmif</code>, <code>ispositive</code>, <code>testfor</code>, <code>for2</code>, <code>nestedfor</code>, <code>whiletest</code>, <code>casetest</code>, sau đó gán quyền thực thi bằng lệnh <code>chmod +x filename</code> và chạy thử nghiệm.</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Script in hình Tam Giác Dấu (*) và Ma Trận Số 5x5</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị hình tam giác sao 10 dòng và ma trận số 5x5.</p>
+          <div class="code-block">#!/bin/bash
+# Script in hinh tam giac sao va ma tran so
+
+echo "--- HINH 1: TAM GIAC SAO ---"
+for (( i = 1; i <= 10; i++ ))
+do
+    for (( j = 1; j <= i; j++ ))
+    do
+        echo -n "*"
+    done
+    echo ""
+done
+
+echo ""
+echo "--- HINH 2: MA TRAN SO 5x5 ---"
+for (( i = 1; i <= 5; i++ ))
+do
+    for (( j = 1; j <= 5; j++ ))
+    do
+        echo -n "$j "
+    done
+    echo ""
+done</div>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Script Giải Phương Trình Bậc Nhất $ax + b = 0$</div>
+          <p><strong>Yêu cầu:</strong> Giải phương trình $ax + b = 0$ với hệ số $a, b$ nhập vào từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script giai phuong trinh bac nhat a*x + b = 0
+
+echo -n "Nhap he so a: "
+read a
+echo -n "Nhap he so b: "
+read b
+
+if [ $a -eq 0 ]; then
+    if [ $b -eq 0 ]; then
+        echo "Phuong trinh co VO SO NGHIEM."
+    else
+        echo "Phuong trinh VO NGHIEM."
+    fi
+else
+    # Su dung cong cu bc de tinh so thap phan 2 chu so
+    x=`echo "scale=2; -$b / $a" | bc`
+    echo "Phuong trinh co nghiem duy nhat x = $x"
+fi</div>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Script Tính Tổng Dãy Số Nguyên Từ 1 Đến $n$</div>
+          <p><strong>Yêu cầu:</strong> Tính tổng $S = 1 + 2 + 3 + ... + n$ với $n$ nhập từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script tinh tong tu 1 den n
+
+echo -n "Nhap so nguyen duong n: "
+read n
+
+sum=0
+for (( i = 1; i <= n; i++ ))
+do
+    sum=`expr $sum + $i`
+done
+
+echo "Tong S = 1 + 2 + ... + $n = $sum"</div>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Script In Bảng Cửu Chương &amp; Hỏi Tiếp Tục</div>
+          <p><strong>Yêu cầu:</strong> Nhập vào số $n$, in bảng cửu chương của $n$. Kết thúc hỏi người dùng có muốn tiếp tục không (y/n).</p>
+          <div class="code-block">#!/bin/bash
+# Script in bang cuu chuong va hoi luan phien
+
+ans="y"
+while [ "$ans" = "y" -o "$ans" = "Y" ]
+do
+    echo -n "Nhap vao so nguyen n (1-10): "
+    read n
+    
+    echo "============================="
+    echo "   BANG CUU CHUONG SO $n"
+    echo "============================="
+    for (( i = 1; i <= 10; i++ ))
+    do
+        res=`expr $i \* $n`
+        echo "$i x $n = $res"
+    done
+    echo "============================="
+    
+    echo -n "Ban co muon tiep tuc khong? (y/n): "
+    read ans
+done
+
+echo "Cam on ban da su dung chuong trinh! Tam biet."</div>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Script Tự Động Tạo $n$ Thư Mục <code>user_i</code></div>
+          <p><strong>Yêu cầu:</strong> Tạo $n$ thư mục cho $n$ người dùng với tên thư mục <code>user_i</code> ($i=1..n$). $n$ nhập vào từ bàn phím.</p>
+          <div class="code-block">#!/bin/bash
+# Script tao n thu muc user_i
+
+echo -n "Nhap so luong thu muc n can tao: "
+read n
+
+for (( i = 1; i <= n; i++ ))
+do
+    mkdir -p "user_$i"
+    echo "Da tao thanh cong thu muc: user_$i"
+done
+
+echo "Hoan thanh tao $n thu muc user_1 den user_$n."</div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

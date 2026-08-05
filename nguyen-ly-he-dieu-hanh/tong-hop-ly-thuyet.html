@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Hợp Lý Thuyết Trọng Tâm (7 Chương) - Nguyên lý Hệ điều hành</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Styling for combined theory page */
+    
+    
+    
+    
+    /* Quiz card styling if present */
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 12px !important;
+      }
+      .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+      .no-print, .header-actions, .breadcrumb {
+        display: none !important;
+      }
+      .chapter-block, section, table, figure, svg, .callout {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      h1, h2, h3, h4 {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+    }
+
+    /* Force normal font style for K2D rendering */
+    #page-content *, #page-content {
+      font-style: normal !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page-content">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Nguyên lý Hệ điều hành</a> &raquo; Tổng Hợp Lý Thuyết 7 Chương
+      </div>
+      <h1>TỔNG HỢP TOÀN BỘ LÝ THUYẾT NGUYÊN LÝ HỆ ĐIỀU HÀNH</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Tập hợp đầy đủ nguyên văn kiến thức 7 chương lý thuyết từ giáo trình: Giới thiệu OS, Cấu trúc OS, Tiến trình, Định thời CPU, Đồng bộ hóa, Bế tắc Deadlock, Quản lý Bộ nhớ &amp; Bộ nhớ ảo.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    
+
+    <main>
+      
+      <!-- CHAPTER 1 -->
+      <section id="ch1" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 1. GIỚI THIỆU HỆ ĐIỀU HÀNH</h1>
+        </div>
+        
+      <!-- Section 1 -->
+      <section id="sec-1">
+        <h2>1.1 Hệ điều hành là gì?</h2>
+        <p>
+          <strong>Hệ điều hành (Operating System - OS)</strong> là một chương trình máy tính đóng vai trò quản lý toàn bộ tài nguyên (bao gồm phần cứng và phần mềm) của hệ thống máy tính, đồng thời đóng vai trò như một lớp giao tiếp trung gian giữa người dùng với phần cứng vật lý của máy tính.
+        </p>
+
+        <div class="callout">
+          <div class="callout-title">🎯 Ba mục tiêu cốt lõi của Hệ điều hành:</div>
+          <ol style="margin-left: 1.25rem; font-size: 0.95rem; line-height: 1.6;">
+            <li>Cung cấp phương tiện giao tiếp thuận tiện và hiệu quả giữa người dùng và máy tính.</li>
+            <li>Nhận và thực thi các yêu cầu của người dùng thông qua các chương trình ứng dụng.</li>
+            <li>Quản lý và điều phối các tài nguyên máy tính vật lý một cách hiệu quả, tối ưu nhất.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section id="sec-2" style="margin-top: 2.5rem;">
+        <h2>1.2 Thành phần của một hệ thống máy tính</h2>
+        <p>Một hệ thống máy tính tiêu chuẩn bao gồm 4 thành phần chính hoạt động phối hợp chặt chẽ:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Phần cứng (Hardware):</strong> Cung cấp các tài nguyên tính toán cơ bản của máy bao gồm bộ xử lý trung tâm (CPU), bộ nhớ chính (RAM) và các thiết bị nhập/xuất (I/O Devices).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hệ điều hành (Operating System):</strong> Kiểm soát, điều phối việc sử dụng phần cứng vật lý và quản lý sự chia sẻ tài nguyên hợp lý giữa các chương trình ứng dụng.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chương trình hệ thống và ứng dụng (System/Application Programs):</strong> Định nghĩa cách thức sử dụng tài nguyên hệ thống để giải quyết các bài toán cụ thể của người dùng. Ví dụ: Trình biên dịch (Compiler), Trình hợp dịch (Assembler), Trình soạn thảo văn bản (Text Editor), Hệ quản trị cơ sở dữ liệu (Database System), Trình duyệt Web (Web Browser).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Người dùng (User):</strong> Có thể là con người trực tiếp sử dụng, hoặc các máy tính khác, các thiết bị ngoại vi có nhu cầu thực thi tính toán.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section 3 -->
+      <section id="sec-3" style="margin-top: 2.5rem;">
+        <h2>1.3 Vai trò của hệ điều hành</h2>
+        <p>Vai trò của hệ điều hành được tiếp cận theo hai góc nhìn cơ bản khác nhau:</p>
+        
+        <h3>3.1 Góc nhìn của người dùng (User View)</h3>
+        <p>Quan điểm của người dùng về hệ điều hành phụ thuộc vào thiết bị và môi trường sử dụng:</p>
+        <ul>
+          <li><strong>Máy tính cá nhân (PC):</strong> Tối ưu cho sự dễ sử dụng (easy to use) và hiệu năng cá nhân cao. Người dùng không cần quan tâm nhiều đến việc chia sẻ tài nguyên với ai khác.</li>
+          <li><strong>Máy tính dùng chung (Mainframe, Minicomputer):</strong> Tập trung tối đa vào việc chia sẻ tài nguyên dùng chung, đảm bảo sự công bằng và sử dụng tối ưu năng lực hệ thống.</li>
+          <li><strong>Workstation (Máy trạm):</strong> Kết hợp hài hòa giữa hiệu năng xử lý cá nhân mạnh mẽ và khả năng chia sẻ tài nguyên mạng.</li>
+          <li><strong>Thiết bị cầm tay (Handheld Devices):</strong> Tối ưu hóa việc cân bằng giữa hiệu suất xử lý và tiết kiệm điện năng tiêu thụ (pin có hạn).</li>
+        </ul>
+
+        <h3>3.2 Góc nhìn của hệ thống (System View)</h3>
+        <p>Hệ thống nhìn nhận hệ điều hành dưới 3 khía cạnh quản lý:</p>
+        <ul>
+          <li><strong>Hệ điều hành là bộ cấp phát tài nguyên (Resource Allocator):</strong> Đóng vai trò quản lý, phân phối tài nguyên hệ thống (CPU time, RAM space, I/O devices, file storage) cho các tiến trình một cách công bằng và tránh xung đột.</li>
+          <li><strong>Hệ điều hành là chương trình điều khiển (Control Program):</strong> Điều khiển hoạt động thực thi của các chương trình ứng dụng để ngăn ngừa lỗi hệ thống và việc sử dụng tài nguyên không hợp lệ.</li>
+          <li><strong>Hệ điều hành là nhân hệ thống (Kernel):</strong> Kernel là chương trình lõi duy nhất chạy thường trực trong bộ nhớ chính (RAM) từ lúc máy khởi động đến lúc tắt. Các chương trình khác chỉ được nạp vào RAM khi cần sử dụng.</li>
+        </ul>
+      </section>
+
+      <!-- Section 4 -->
+      <section id="sec-4" style="margin-top: 2.5rem;">
+        <h2>1.4 Tổ chức của hệ thống máy tính</h2>
+        <p>
+          Một hệ thống máy tính hiện đại bao gồm một hoặc nhiều CPU, bộ nhớ chính RAM, và các thiết bị nhập xuất kết nối với nhau thông qua một đường truyền chung gọi là <strong>System Bus</strong>.
+        </p>
+        <p>Mỗi nhóm thiết bị I/O được phụ trách bởi một <strong>Bộ điều khiển thiết bị (Device Controller)</strong> riêng:</p>
+        <ul>
+          <li>CPU và các bộ điều khiển thiết bị có thể hoạt động song song, đồng thời.</li>
+          <li>Mỗi bộ điều khiển thiết bị sở hữu một bộ nhớ đệm (buffer) cục bộ riêng để lưu trữ dữ liệu truyền nhận.</li>
+          <li>Sau khi hoàn thành xong công việc truyền dữ liệu, Device Controller sẽ thông báo cho CPU bằng cách gửi một tín hiệu **Ngắt (Interrupt)**.</li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section id="sec-5" style="margin-top: 2.5rem;">
+        <h2>1.5 Quá trình khởi động máy tính (Boot Process)</h2>
+        <p>Khi máy tính được bật nguồn, quá trình khởi động diễn ra theo 3 bước tuần tự:</p>
+        
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Quy trình nạp khởi động (Bootstrapping):</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+            <div>
+              <strong>Bước 1: Chạy chương trình Bootstrap</strong>
+              <br>Khi máy vừa bật nguồn, RAM trống rỗng. Vi xử lý sẽ nạp và thực thi chương trình <strong>Bootstrap</strong> nhỏ được ghi sẵn trên bộ nhớ bất biến <strong>ROM</strong> hoặc <strong>EPROM</strong> (phần mềm này còn gọi là <strong>Firmware</strong>).
+            </div>
+            <div>
+              <strong>Bước 2: Định vị và nạp Kernel</strong>
+              <br>Chương trình Bootstrap quét đĩa cứng, xác định vị trí file nhân hệ điều hành (Kernel), nạp Kernel vào bộ nhớ chính RAM và chuyển quyền điều hành sang cho Kernel.
+            </div>
+            <div>
+              <strong>Bước 3: Hệ điều hành hoạt động</strong>
+              <br>Sau khi Kernel được khởi chạy thành công, nó sẽ kích hoạt các dịch vụ hệ thống thường trực (system daemons) và sẵn sàng đáp ứng yêu cầu của người dùng thông qua các cuộc gọi hệ thống (System Calls).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6 -->
+      <section id="sec-6" style="margin-top: 2.5rem;">
+        <h2>1.6 Các loại hệ thống máy tính</h2>
+        <p>Hệ thống máy tính được chia làm hai nhóm chính:</p>
+        <ul>
+          <li><strong>Hệ thống đa dụng (General Purpose Systems):</strong> Phục vụ nhiều tác vụ tính toán đa dạng như Mainframe, Desktop, hệ thống đa xử lý (Multiprocessor), hệ thống phân tán (Distributed System) và hệ thống cụm (Clustered System).</li>
+          <li><strong>Hệ thống chuyên dụng (Special Purpose Systems):</strong> Phục vụ các tác vụ đặc biệt như hệ thống thời gian thực (Real-time System), hệ thống đa phương tiện (Multimedia System) và thiết bị cầm tay (Handheld System).</li>
+        </ul>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="sec-7" style="margin-top: 2.5rem;">
+        <h2>1.7 Hệ thống Mainframe</h2>
+        <p>Hệ thống máy tính lớn Mainframe đã trải qua 3 giai đoạn tiến hóa chính trong lịch sử:</p>
+        
+        <h3>7.1 Hệ thống bó (Batch System)</h3>
+        <p>Đây là hệ điều hành sơ khai nhất trong lịch sử máy tính:</p>
+        <ul>
+          <li>Người dùng không tương tác trực tiếp với máy tính. Họ nộp công việc dưới dạng thẻ đục lỗ cho người vận hành (Operator).</li>
+          <li>Operator gom các công việc giống nhau thành từng bó (Batch) và đưa vào máy chạy tuần tự.</li>
+          <li><strong>Nhược điểm:</strong> CPU thường xuyên rơi vào trạng thái rỗi (idle) do chênh lệch tốc độ cực lớn giữa CPU điện tử siêu tốc và các thiết bị đọc thẻ/in giấy cơ khí chậm chạp.</li>
+        </ul>
+
+        <h3>7.2 Hệ thống đa chương (Multiprogramming)</h3>
+        <p>Ra đời nhằm tối ưu hóa hiệu năng CPU:</p>
+        <ul>
+          <li>Nhiều chương trình được nạp đồng thời vào bộ nhớ chính RAM.</li>
+          <li>CPU thực thi tiến trình thứ nhất. Khi tiến trình này phải chờ đợi một thao tác nhập xuất I/O (ví dụ chờ đọc băng từ), hệ điều hành sẽ chuyển quyền điều phối CPU sang thực thi tiến trình thứ hai.</li>
+          <li><strong>Ưu điểm:</strong> CPU luôn bận rộn làm việc, tận dụng tối đa năng lực phần cứng.</li>
+          <li><strong>Yêu cầu hệ điều hành:</strong> Cần có cơ chế quản lý bộ nhớ, lập lịch CPU (CPU Scheduling) và quản lý thiết bị I/O.</li>
+        </ul>
+
+        <h3>7.3 Hệ thống chia thời gian (Time-sharing / Multitasking)</h3>
+        <p>Là sự phát triển mở rộng của công nghệ đa chương hỗ trợ tương tác trực tiếp:</p>
+        <ul>
+          <li>CPU luân phiên chuyển đổi giữa nhiều người dùng với tốc độ cực nhanh (mỗi tiến trình chỉ được cấp một lát cắt thời gian - Time Slice cực ngắn). Người dùng có cảm giác như họ đang sở hữu toàn bộ máy tính riêng.</li>
+          <li>Hỗ trợ người dùng tương tác trực tiếp qua bàn phím, màn hình.</li>
+          <li>Các tiến trình được hoán đổi (swapping) liên tục giữa RAM và đĩa cứng để giải quyết giới hạn bộ nhớ vật lý.</li>
+          <li><strong>Yêu cầu hệ điều hành:</strong> Quản lý bộ nhớ ảo (Virtual Memory), đồng bộ hóa tiến trình (Process Synchronization) và truyền thông điệp liên tiến trình (IPC).</li>
+        </ul>
+      </section>
+
+      <!-- Section 8 & 9 -->
+      <section id="sec-8-9" style="margin-top: 2.5rem;">
+        <h2>1.8 Hệ thống đa xử lý (Multiprocessor Systems)</h2>
+        <p>
+          Là hệ thống tích hợp nhiều CPU dùng chung đường truyền bus, đồng hồ hệ thống, bộ nhớ RAM và các thiết bị ngoại vi. Hệ thống này đem lại 3 lợi ích lớn: **Tăng năng lực xử lý (Throughput)**, **Tiết kiệm chi phí phần cứng** và **Tăng độ tin cậy thông qua khả năng chịu lỗi (Fault Tolerance)**.
+        </p>
+        <p>Hệ thống đa xử lý chia làm 2 kiến trúc chính:</p>
+        <ul>
+          <li>
+            <strong>SMP (Symmetric Multiprocessing - Đa xử lý đối xứng):</strong> Mọi CPU đều có vai trò ngang hàng như nhau. Mỗi CPU tự chạy một bản sao của hệ điều hành và các tiến trình có thể thực thi song song độc lập. Đây là kiến trúc vi xử lý đa nhân phổ biến hiện nay trên máy tính và điện thoại.
+          </li>
+          <li>
+            <strong>AMP (Asymmetric Multiprocessing - Đa xử lý bất đối xứng):</strong> Tổ chức theo mối quan hệ Master-Slave (Chủ - Tớ). Một CPU Master chính đóng vai trò điều phối hệ thống, lập lịch và phân chia công việc cho các CPU Slave phụ thực thi. Kiến trúc này thường dùng trong các siêu máy tính hoặc hệ thống lớn.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 10 & 11 -->
+      <section id="sec-10-11" style="margin-top: 2.5rem;">
+        <h2>1.9 Hệ thống phân tán &amp; Hệ thống cụm</h2>
+        
+        <h3>9.1 Hệ thống phân tán (Distributed System)</h3>
+        <p>
+          Là hệ thống gồm nhiều máy tính vật lý độc lập, mỗi máy có bộ xử lý và bộ nhớ RAM riêng, liên kết phối hợp với nhau qua mạng truyền thông (LAN hoặc WAN) để giải quyết bài toán chung.
+        </p>
+        <ul>
+          <li><strong>Mô hình Client-Server:</strong> Server đóng vai trò cung cấp các dịch vụ dùng chung (như Web Server, File Server). Client gửi yêu cầu và nhận kết quả dịch vụ.</li>
+          <li><strong>Mô hình Peer-to-Peer (Mạng ngang hàng):</strong> Các máy trong mạng bình đẳng nhau, một máy vừa có thể sử dụng dịch vụ của máy khác, vừa có thể chia sẻ tài nguyên cung cấp ngược lại cho mạng mà không cần máy chủ trung tâm cố định.</li>
+        </ul>
+
+        <h3>9.2 Hệ thống cụm (Clustered System)</h3>
+        <p>
+          Tương tự hệ thống phân tán nhưng các máy tính được ghép nối rất chặt chẽ trong cùng một phòng máy, dùng chung một hệ thống lưu trữ lưu trữ SAN (Storage Area Network) để hoạt động như một hệ thống đơn nhất mạnh mẽ.
+        </p>
+        <ul>
+          <li><strong>Asymmetric Clustering:</strong> Một máy tính trong cụm chạy ứng dụng chính, một máy khác ở trạng thái dự phòng nóng (Hot Standby) chỉ làm nhiệm vụ giám sát. Nếu máy chính hỏng, máy dự phòng lập tức khởi chạy ứng dụng thay thế.</li>
+          <li><strong>Symmetric Clustering:</strong> Tất cả các máy trong cụm cùng hoạt động đồng thời, chạy song song các ứng dụng và giám sát chéo lẫn nhau.</li>
+        </ul>
+      </section>
+
+      <!-- Section 12 & 13 -->
+      <section id="sec-12-13" style="margin-top: 2.5rem;">
+        <h2>1.10 Hệ thống thời gian thực (Real-Time Systems)</h2>
+        <p>
+          Được sử dụng trong các môi trường yêu cầu phản hồi dữ liệu tức thời và chính xác tuyệt đối về thời gian như thiết bị y khoa, điều khiển công nghiệp, robotics và quân sự. Hệ thống chia làm 2 loại:
+        </p>
+        <ul>
+          <li>
+            <strong>Hard Real-Time (Thời gian thực cứng):</strong> Các tác vụ bắt buộc phải hoàn thành chính xác trong thời hạn định sẵn (deadline). Nếu bị trễ dù chỉ một phần triệu giây sẽ dẫn đến thảm họa hoặc hỏng hoàn toàn hệ thống. Ví dụ: Hệ thống phanh ABS ô tô, hệ thống điều khiển tên lửa, thiết bị hỗ trợ tim mạch. Nhóm này hầu như không sử dụng bộ nhớ ngoài.
+          </li>
+          <li>
+            <strong>Soft Real-Time (Thời gian thực mềm):</strong> Deadline thời gian vô cùng quan trọng nhưng nếu xảy ra trễ nhỏ ở mức chấp nhận được thì hệ thống vẫn hoạt động bình thường, không gây thảm họa. Ví dụ: Phát video trực tuyến (Video Streaming), game online đối kháng, ứng dụng thực tế ảo (VR).
+          </li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 2 -->
+      <section id="ch2" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 2. CẤU TRÚC HỆ ĐIỀU HÀNH</h1>
+        </div>
+        
+      <!-- Part I -->
+      <section id="part-1">
+        <h2>I. Các Thành Phần của Hệ Điều Hành</h2>
+        <p>
+          Hệ điều hành hiện đại là một phần mềm hệ thống phức tạp bao gồm nhiều thành phần con hoạt động độc lập, thực thi các nghiệp vụ cụ thể.
+        </p>
+
+        <!-- Component 1 -->
+        <h3>1. Quản lý tiến trình (Process Management)</h3>
+        <p>
+          <strong>Tiến trình (Process)</strong> là một chương trình máy tính đang ở trạng thái thực thi. Khác với chương trình là một thực thể tĩnh lưu trên đĩa, tiến trình là một thực thể động sở hữu con trỏ lệnh (program counter), ngăn xếp (stack) và các tài nguyên riêng.
+        </p>
+        <p>Khi chạy, tiến trình đòi hỏi các tài nguyên hệ thống: CPU time, bộ nhớ RAM, tệp tin và thiết bị ngoại vi I/O.</p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Tạo lập/hủy bỏ tiến trình; tạm dừng/tiếp tục tiến trình; cung cấp cơ chế đồng bộ hóa (synchronization), truyền thông liên tiến trình (IPC) và xử lý tránh tắc nghẽn bế tắc (deadlock).</p>
+
+        <!-- Component 2 -->
+        <h3>2. Quản lý bộ nhớ chính (Main Memory Management)</h3>
+        <p>
+          Bộ nhớ chính (RAM) là một mảng lớn gồm các từ (words) hoặc byte, mỗi từ có địa chỉ vật lý riêng biệt. Đây là nơi duy nhất CPU có thể đọc và ghi dữ liệu trực tiếp trong quá trình làm việc. RAM có đặc tính <strong>bay hơi (volatile)</strong>: dữ liệu hoàn toàn biến mất khi ngắt nguồn điện.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Theo dõi trạng thái chi tiết của từng ô nhớ (đang rảnh hay đã cấp); quyết định nạp tiến trình nào vào RAM khi bộ nhớ trống; thực thi cấp phát và thu hồi không gian bộ nhớ linh hoạt.</p>
+
+        <!-- Component 3 -->
+        <h3>3. Quản lý hệ thống tập tin (File Management)</h3>
+        <p>
+          Tập tin (File) là sự trừu tượng hóa các không gian lưu trữ vật lý khác nhau (HDD, SSD, đĩa quang, băng từ) thành một tập hợp các thông tin logic liên quan có cấu trúc.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Tạo/xóa các tệp tin và thư mục (directories); cung cấp các hàm gọi đọc, ghi, sửa file; ánh xạ cấu trúc logic của file lên các khối lưu trữ vật lý của đĩa cứng và hỗ trợ sao lưu dự phòng.</p>
+
+        <!-- Component 4 -->
+        <h3>4. Quản lý hệ thống nhập/xuất (I/O Management)</h3>
+        <p>Hệ thống I/O che giấu sự khác biệt phần cứng của các thiết bị ngoại vi thông qua 3 cơ chế đệm:</p>
+        <ul>
+          <li><strong>Buffering:</strong> Lưu trữ dữ liệu tạm thời trong bộ nhớ đệm trong quá trình truyền dữ liệu giữa hai thiết bị có tốc độ chênh lệch.</li>
+          <li><strong>Caching:</strong> Lưu giữ các dữ liệu hay truy cập trong vùng nhớ tốc độ cao để tăng tốc độ phản hồi.</li>
+          <li><strong>Spooling:</strong> Đưa các yêu cầu xử lý dữ liệu vào hàng đợi trên đĩa cứng trước khi gửi thiết bị ngoại vi xử lý tuần tự (ví dụ hàng đợi máy in).</li>
+        </ul>
+
+        <!-- Component 5 -->
+        <h3>5. Quản lý lưu trữ thứ cấp (Secondary Storage Management)</h3>
+        <p>
+          Vì RAM có dung lượng nhỏ và mất dữ liệu khi mất nguồn điện, hệ thống bắt buộc cần hệ lưu trữ thứ cấp (Secondary Storage) như HDD, SSD để lưu trữ thông tin vĩnh viễn.
+        </p>
+        <p><strong>Nhiệm vụ của hệ điều hành:</strong> Quản lý không gian trống trên đĩa; cấp phát các khối dữ liệu lưu trữ và lập lịch đầu đọc đĩa (Disk Scheduling) để tối ưu tốc độ đọc ghi.</p>
+
+        <!-- Component 6, 7, 8 -->
+        <h3>6. Các thành phần khác</h3>
+        <ul>
+          <li><strong>Hệ thống mạng và phân tán:</strong> Liên kết các bộ xử lý không dùng chung bộ nhớ lại với nhau qua mạng truyền thông, giao tiếp thông qua các giao thức mạng tiêu chuẩn như FTP, NFS, HTTP.</li>
+          <li><strong>Hệ thống bảo vệ (Protection System):</strong> Kiểm soát việc truy cập của người dùng hoặc tiến trình đối với tài nguyên hệ thống (CPU, RAM, file, thiết bị).</li>
+          <li><strong>Giao diện người dùng (User Interface):</strong> Cung cấp giao diện dòng lệnh <strong>CLI (Shell/Command Interpreter)</strong> như CMD, Bash, Zsh hoặc giao diện đồ họa trực quan <strong>GUI (Graphical User Interface)</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- Part II -->
+      <section id="part-2" style="margin-top: 3rem;">
+        <h2>II. Các Dịch Vụ Của Hệ Điều Hành</h2>
+        <p>Hệ điều hành đóng vai trò cung cấp các dịch vụ tiện ích chia làm hai nhóm chính:</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 0.75rem;">1. Dịch vụ cho Người dùng &amp; Chương trình</h4>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+              <li><strong>Giao diện người dùng:</strong> GUI hoặc CLI.</li>
+              <li><strong>Thực thi chương trình:</strong> Nạp ứng dụng từ đĩa vào RAM và chạy.</li>
+              <li><strong>Thao tác I/O:</strong> Giao tiếp đọc/ghi thiết bị.</li>
+              <li><strong>Thao tác file:</strong> Tạo, đọc, viết, xóa file.</li>
+              <li><strong>Truyền thông liên tiến trình (IPC):</strong> Giao tiếp qua <em>Shared Memory</em> hoặc <em>Message Passing</em>.</li>
+              <li><strong>Phát hiện lỗi:</strong> Báo lỗi phần cứng hoặc phần mềm ứng dụng.</li>
+            </ul>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
+            <h4 style="color: var(--secondary-color); margin-top: 0; margin-bottom: 0.75rem;">2. Dịch vụ cho Hệ thống (System Services)</h4>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+              <li><strong>Cấp phát tài nguyên:</strong> Phân bổ CPU, RAM, thiết bị ngoại vi cho các tiến trình chạy đồng thời.</li>
+              <li><strong>Tính toán chi phí (Accounting):</strong> Ghi nhật ký theo dõi lượng tài nguyên và thời gian sử dụng tài nguyên của từng người dùng.</li>
+              <li><strong>Bảo vệ và An ninh (Protection &amp; Security):</strong> Kiểm soát và ngăn ngừa việc truy cập bất hợp pháp vào dữ liệu hệ thống.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part III -->
+      <section id="part-3" style="margin-top: 3rem;">
+        <h2>III. Lời Gọi Hệ Thống (System Call)</h2>
+        <p>
+          <strong>Lời gọi hệ thống (System Call)</strong> là giao diện lập trình cung cấp cách thức để các chương trình người dùng ở chế độ <strong>User Mode</strong> gửi yêu cầu tài nguyên hoặc dịch vụ cho hệ điều hành thực thi ở chế độ đặc quyền <strong>Kernel Mode</strong>.
+        </p>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">API Lập Trình Phổ Biến:</div>
+          <p style="font-size: 0.95rem;">
+            Người lập trình thường không gọi trực tiếp System Call mà sử dụng thông qua các thư viện giao diện lập trình ứng dụng (API):
+            <br>&bull; <strong>Windows API:</strong> Cho các hệ điều hành Windows.
+            <br>&bull; <strong>POSIX API:</strong> Cho các hệ thống nhân UNIX, Linux, macOS.
+            <br>&bull; <strong>Java API:</strong> Cho máy ảo Java (JVM).
+          </p>
+        </div>
+
+        <h3>Các phương thức truyền tham số vào System Call:</h3>
+        <ol>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua thanh ghi (Registers):</strong> Nhanh nhất nhưng bị giới hạn bởi số lượng thanh ghi phần cứng của CPU.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua vùng nhớ (Block/Table):</strong> Lưu toàn bộ tham số vào một bảng trong RAM, rồi truyền địa chỉ của bảng đó vào một thanh ghi duy nhất để CPU trỏ tới.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Qua vùng nhớ ngăn xếp (Stack):</strong> Chương trình người dùng đẩy (push) tham số vào ngăn xếp, hệ điều hành lấy ra (pop) để xử lý.</li>
+        </ol>
+      </section>
+
+      <!-- Part V -->
+      <section id="part-5" style="margin-top: 3rem;">
+        <h2>IV. Kiến Trúc Nhân Hệ Điều Hành</h2>
+        <p>Có 4 kiến trúc tổ chức nhân hệ điều hành chính:</p>
+        
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc nguyên khối (Monolithic Kernel):</strong>
+            <br>Tất cả các dịch vụ hệ thống (CPU scheduler, RAM allocator, file system, driver) được viết chung và gộp vào một không gian nhân (Kernel Space) duy nhất.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Tốc độ gọi dịch vụ cực nhanh vì không tốn chi phí chuyển đổi ngữ cảnh (context switch). Tuy nhiên, hệ thống cực kỳ khó sửa lỗi, một lỗi driver nhỏ cũng có thể làm sập toàn bộ hệ điều hành. Ví dụ: UNIX cổ điển, Linux truyền thống.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc phân tầng (Layered Architecture):</strong>
+            <br>Hệ điều hành chia thành nhiều lớp đồng tâm xếp chồng lên nhau. Lớp $i$ chỉ được phép gọi các hàm dịch vụ do lớp $i-1$ (kề dưới) cung cấp. Lớp 0 là phần cứng, lớp cao nhất là UI.
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Tính mô-đun cao, dễ kiểm thử và sửa lỗi. Tuy nhiên, việc phân chia chức năng giữa các tầng rất khó khăn và chi phí gọi hàm xuyên tầng (overhead) làm giảm tốc độ hệ thống.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Kiến trúc vi nhân (Microkernel):</strong>
+            <br>Kernel tối giản hết mức, chỉ giữ lại 3 nhiệm vụ cốt lõi: Quản lý bộ nhớ, định thời CPU và giao tiếp IPC. Các thành phần khác (File system, Driver, Network protocol) chuyển ra chạy độc lập ở chế độ người dùng (User Space).
+            <br><span style="font-size: 0.9rem; color: var(--text-light);"><em>Đặc điểm:</em> Độ an toàn cực cao (driver hỏng không làm sập nhân). Dễ mở rộng và bảo trì. Điểm yếu là hiệu năng kém hơn do mất chi phí chuyển đổi ngữ cảnh liên tục qua Message Passing. Ví dụ: nhân Mach (macOS), QNX.</span>
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Máy ảo (Virtual Machine):</strong>
+            <br>Sử dụng phần mềm giám sát (Hypervisor/VMM) để mô phỏng chính xác phần cứng vật lý, tạo ra nhiều máy tính logic chạy độc lập các hệ điều hành khách trên cùng một máy vật lý duy nhất. Mang lại sự cách ly an toàn tuyệt đối.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part VI -->
+      <section id="part-6" style="margin-top: 3rem;">
+        <h2>V. Thiết Kế và Cài Đặt Hệ Điều Hành</h2>
+        
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <div class="callout-title">💡 Phân biệt Cơ chế (Mechanism) và Chính sách (Policy):</div>
+          <p style="font-size: 0.95rem;">
+            Trong kỹ nghệ thiết kế hệ điều hành, việc tách biệt hai khái niệm này là nguyên tắc thiết kế tối quan trọng:
+            <br>&bull; <strong>Cơ chế (Mechanism):</strong> Trả lời câu hỏi <em>"Làm như thế nào?" (How)</em>. Đây là phần công cụ thực thi phần cứng (ví dụ: cơ chế cấp phát thanh ghi bảo vệ bộ nhớ).
+            <br>&bull; <strong>Chính sách (Policy):</strong> Trả lời câu hỏi <em>"Làm cái gì?" (What)</em>. Đây là quy tắc quyết định (ví dụ: tiến trình nào được ưu tiên chạy trước).
+            <br>Việc tách biệt giúp hệ thống có thể thay đổi chính sách linh hoạt bằng phần mềm mà không cần phải thay đổi cơ chế phần cứng vật lý bên dưới.
+          </p>
+        </div>
+
+        <p>
+          Hệ điều hành hiện đại ngày nay hầu hết được lập trình bằng các ngôn ngữ hệ thống hiệu năng cao như **C, C++** và gần đây là **Rust** để tối ưu hóa tốc độ và tương tác sâu với phần cứng.
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 3 -->
+      <section id="ch3" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 3. TIẾN TRÌNH & QUẢN LÝ TIẾN TRÌNH</h1>
+        </div>
+        
+      <!-- Section I & II -->
+      <section id="sec-1-2">
+        <h2>3.1 Khái niệm Tiến trình</h2>
+        <p>
+          <strong>Tiến trình (Process)</strong> là một thể hiện (instance) của một chương trình máy tính đang được thực thi hoặc đang chờ được thực thi trong bộ nhớ chính RAM. Để quản lý, hệ điều hành gán cho mỗi tiến trình một mã số nguyên định danh duy nhất gọi là **PID (Process Identifier)**.
+        </p>
+
+        <h3>Cấu trúc phân vùng nhớ của một tiến trình:</h3>
+        <p>Một tiến trình đang hoạt động trong bộ nhớ RAM được phân chia thành 6 phân vùng dữ liệu riêng biệt:</p>
+        <ul>
+          <li><strong>Program Code (Text Section):</strong> Chứa các mã lệnh máy của chương trình được CPU đọc tuần tự.</li>
+          <li><strong>Program Counter (PC):</strong> Thanh ghi con trỏ lệnh, chứa địa chỉ của câu lệnh tiếp theo sẽ thực thi.</li>
+          <li><strong>CPU Registers:</strong> Chứa giá trị của các thanh ghi trong quá trình CPU thực thi tính toán.</li>
+          <li><strong>Stack:</strong> Vùng nhớ chứa các dữ liệu tạm thời co giãn tự động khi gọi hàm (tham số hàm truyền vào, biến cục bộ khai báo trong hàm, địa chỉ trả về của hàm).</li>
+          <li><strong>Data Section:</strong> Chứa các biến toàn cục (global variables) và biến tĩnh (static variables).</li>
+          <li><strong>Heap:</strong> Vùng nhớ được cấp phát động trong quá trình chạy chương trình (ví dụ qua các hàm <code>malloc()</code>/<code>new</code>).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">Phân biệt rõ giữa Chương trình và Tiến trình:</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.75rem;">Đặc tính</th>
+              <th style="padding: 0.75rem;">Chương trình (Program)</th>
+              <th style="padding: 0.75rem;">Tiến trình (Process)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Bản chất thực thể</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Thực thể bị động (Passive entity)</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Thực thể chủ động (Active entity)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Vị trí lưu trữ</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Lưu trữ trên thiết bị ngoại vi (đĩa cứng, SSD)</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Tồn tại và vận hành trong bộ nhớ chính RAM</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem;"><strong>Tiêu thụ tài nguyên</strong></td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Không tiêu tốn chu kỳ CPU hay RAM</td>
+              <td style="padding: 0.75rem; color: var(--text-light);">Đòi hỏi CPU, RAM và các thiết bị I/O hoạt động</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+          <em>Chú ý:</em> Một chương trình đơn lẻ có thể tạo ra nhiều tiến trình đồng thời trong RAM (ví dụ: mở nhiều tab trình duyệt Chrome cùng lúc).
+        </p>
+      </section>
+
+      <!-- Section III -->
+      <section id="sec-3" style="margin-top: 2.5rem;">
+        <h2>3.2 Trạng thái của tiến trình</h2>
+        <p>Trong suốt vòng đời của mình, một tiến trình luân chuyển qua 5 trạng thái cơ bản:</p>
+        <ul>
+          <li><strong>New:</strong> Tiến trình đang được tạo lập ban đầu.</li>
+          <li><strong>Ready:</strong> Tiến trình đã nạp vào RAM, sẵn sàng chạy và đang xếp hàng đợi cấp phát CPU.</li>
+          <li><strong>Running:</strong> CPU đang trực tiếp thực thi các mã lệnh của tiến trình.</li>
+          <li><strong>Waiting (Blocked):</strong> Tiến trình tạm dừng để chờ một sự kiện (ví dụ chờ thao tác đọc ghi I/O hoàn thành hoặc chờ tín hiệu đồng bộ).</li>
+          <li><strong>Terminated:</strong> Tiến trình kết thúc hoàn toàn và được giải phóng khỏi RAM.</li>
+        </ul>
+
+        <!-- Diagram states -->
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="../images/process_states.jpg" alt="Vòng đời 5 trạng thái của tiến trình" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+          <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.75rem;">
+            <strong>Hình 3.1:</strong> Sơ đồ chuyển đổi giữa 5 trạng thái cơ bản của tiến trình
+          </p>
+        </div>
+      </section>
+
+      <!-- Section IV & V -->
+      <section id="sec-4-5" style="margin-top: 2.5rem;">
+        <h2>3.3 PCB và Chuyển Ngữ Cảnh (Context Switch)</h2>
+        
+        <h3>Khối điều khiển tiến trình PCB (Process Control Block):</h3>
+        <p>
+          Hệ điều hành quản lý mỗi tiến trình thông qua một cấu trúc dữ liệu gọi là **PCB**. PCB đóng vai trò là "hồ sơ lý lịch" chứa toàn bộ thông tin của tiến trình:
+        </p>
+        <ul>
+          <li><strong>Trạng thái tiến trình:</strong> Ready, Running, Waiting...</li>
+          <li><strong>Program Counter (PC):</strong> Địa chỉ lệnh tiếp theo CPU cần chạy của tiến trình này.</li>
+          <li><strong>Thanh ghi CPU:</strong> Lưu trữ trạng thái giá trị các thanh ghi của tiến trình khi bị ngắt.</li>
+          <li><strong>Thông tin lập lịch CPU:</strong> Độ ưu tiên (Priority), thời lượng quantum chạy.</li>
+          <li><strong>Thông tin quản lý bộ nhớ:</strong> Bảng trang (Page Table), thanh ghi nền (Base).</li>
+          <li><strong>Thông tin kế toán &amp; I/O:</strong> Mã PID, danh sách tệp tin đang mở, thiết bị đang chiếm dụng.</li>
+        </ul>
+
+        <h3>Chuyển ngữ cảnh (Context Switch):</h3>
+        <p>
+          Khi CPU chuyển đổi phục vụ từ tiến trình cũ $P_1$ sang tiến trình mới $P_2$, hệ điều hành phải thực hiện **Context Switch**:
+        </p>
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <ol style="margin-left: 1.25rem; font-size: 0.95rem; line-height: 1.6;">
+            <li>Lưu trữ toàn bộ trạng thái ghi nhận của $P_1$ vào khối PCB $P_1$.</li>
+            <li>Nạp lại các thông số trạng thái đã lưu trước đó của $P_2$ từ PCB $P_2$ lên các thanh ghi CPU.</li>
+            <li>CPU bắt đầu thực thi tiếp tục tiến trình $P_2$ từ vị trí con trỏ lệnh được nạp lại.</li>
+          </ol>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light); font-style: italic;">
+            <strong>Lưu ý về hiệu năng:</strong> Quá trình Context Switch hoàn toàn không tạo ra công việc hữu ích cho người dùng mà chỉ tiêu tốn tài nguyên xử lý của CPU. Đây là chi phí hao tổn (overhead) bắt buộc của hệ điều hành đa nhiệm.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section VI, VII, VIII -->
+      <section id="sec-6-7-8" style="margin-top: 2.5rem;">
+        <h2>3.4 Định thời và Các Bộ định thời (Process Scheduling)</h2>
+        <p>
+          Định thời tiến trình là việc lựa chọn tiến trình thích hợp trong hàng đợi để trao quyền kiểm soát CPU. Các tiến trình di chuyển qua 3 loại hàng đợi chính:
+        </p>
+        <ul>
+          <li><strong>Job Queue (Hàng đợi công việc):</strong> Lưu toàn bộ các tiến trình của hệ thống trên ổ đĩa.</li>
+          <li><strong>Ready Queue (Hàng đợi sẵn sàng):</strong> Lưu các tiến trình đã nạp vào RAM và sẵn sàng chạy chờ CPU.</li>
+          <li><strong>Device Queue (Hàng đợi thiết bị):</strong> Lưu các tiến trình đang chờ đợi phản hồi từ thiết bị I/O ngoại vi.</li>
+        </ul>
+
+        <h3>Ba bộ định thời (Schedulers) trong hệ thống:</h3>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời dài hạn (Long-Term / Job Scheduler):</strong> Chọn tiến trình từ Job Queue trên đĩa để nạp vào RAM. Quyết định mức độ đa chương của hệ thống. Gọi không thường xuyên.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời ngắn hạn (Short-Term / CPU Scheduler):</strong> Chọn tiến trình từ Ready Queue trong RAM để cấp CPU thực thi. Được gọi rất thường xuyên (mức mili-giây) nên yêu cầu tốc độ xử lý siêu tốc.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ định thời trung hạn (Medium-Term Scheduler):</strong> Thực hiện cơ chế hoán đổi **swapping** (đưa bớt tiến trình tạm ngừng từ RAM ra đĩa cứng và ngược lại) để giải phóng không gian RAM khi quá tải bộ nhớ.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section IX & X -->
+      <section id="sec-9-10" style="margin-top: 2.5rem;">
+        <h2>3.5 Vòng đời Tiến trình: Tạo lập &amp; Kết thúc</h2>
+        <p>Một tiến trình cha (Parent Process) có thể tạo lập ra các tiến trình con (Child Process) thông qua các lời gọi hệ thống, xây dựng nên cấu trúc cây tiến trình (Process Tree).</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background-color: var(--bg-card); border-left: 4px solid var(--secondary-color); padding: 1rem; border-radius: 4px;">
+            <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--secondary-color);">Tạo lập tiến trình con</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              &bull; <strong>Trên UNIX/Linux:</strong> Sử dụng hàm <code>fork()</code> để sao chép nguyên trạng không gian bộ nhớ cha sang con. Sau đó dùng <code>exec()</code> để nạp chương trình mới đè lên con.
+              <br>&bull; <strong>Trên Windows:</strong> Sử dụng hàm API <code>CreateProcess()</code> để đồng thời tạo tiến trình con mới và nạp mã lệnh chạy mới trong một lần gọi duy nhất.
+            </p>
+          </div>
+          
+          <div style="background-color: var(--bg-card); border-left: 4px solid #ef4444; padding: 1rem; border-radius: 4px;">
+            <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #ef4444;">Các trạng thái kết thúc đặc biệt</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              &bull; <strong>Zombie Process (Thây ma):</strong> Tiến trình con đã gọi kết thúc (exit) nhưng PCB vẫn tồn tại trên bảng hệ thống do cha chưa thực hiện cuộc gọi hàm thu dọn <code>wait()</code>.
+              <br>&bull; <strong>Orphan Process (Mồ côi):</strong> Tiến trình cha đã kết thúc đột ngột trước khi tiến trình con kết thúc. Tiến trình con sẽ được hệ thống gán lại cho tiến trình gốc <code>init</code> (PID 1) làm cha nuôi để dọn dẹp sau này.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section XI, XII, XIII, XIV, XV -->
+      <section id="sec-11-12-13-14-15" style="margin-top: 2.5rem;">
+        <h2>3.6 Hợp tác và Giao tiếp liên tiến trình (IPC)</h2>
+        <p>Hợp tác liên tiến trình mang lại các lợi ích lớn: Chia sẻ thông tin, tăng tốc độ xử lý song song và tăng tính mô-đun hóa phần mềm. Có 2 cơ chế giao tiếp liên tiến trình chính:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Bộ nhớ chia sẻ (Shared Memory):</strong>
+            <br>Các tiến trình ánh xạ chung một vùng RAM vật lý để đọc ghi trực tiếp. Tốc độ truyền tải nhanh tối đa vì không cần sự can thiệp của nhân Kernel trong suốt quá trình truyền nhận dữ liệu.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chuyển thông điệp (Message Passing):</strong>
+            <br>Giao tiếp thông qua hai thao tác <code>send(message)</code> và <code>receive(message)</code> dưới sự điều phối của nhân hệ điều hành. Phù hợp tuyệt đối cho kiến trúc mạng phân tán, không đòi hỏi các máy phải dùng chung RAM vật lý.
+          </li>
+        </ol>
+
+        <h3>Mô hình Socket trong giao tiếp Client - Server:</h3>
+        <p>
+          <strong>Socket</strong> được định nghĩa là một điểm cuối giao tiếp (endpoint) giữa hai tiến trình truyền dữ liệu qua mạng. Một socket được cấu thành duy nhất bởi sự kết hợp giữa:
+          <br><strong style="color: var(--primary-color);">[Địa chỉ mạng IP Address] + [Số hiệu cổng Port Number]</strong>
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 4 -->
+      <section id="ch4" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 4. ĐỊNH THỜI CPU (CPU SCHEDULING)</h1>
+        </div>
+        
+      <!-- Section I -->
+      <section id="sec-1">
+        <h2>4.1 Khái niệm cơ bản về định thời CPU</h2>
+        
+        <h3>1. Chu kỳ CPU – I/O (CPU–I/O Burst Cycle):</h3>
+        <p>
+          Sự hoạt động của một tiến trình bao gồm các chu kỳ luân phiên tuần tự giữa xử lý tính toán và chờ đợi thiết bị nhập xuất:
+          $$\text{CPU Burst} \rightarrow \text{I/O Burst} \rightarrow \text{CPU Burst} \rightarrow \text{I/O Burst} \rightarrow \dots$$
+        </p>
+        <ul>
+          <li><strong>CPU Burst:</strong> Khoảng thời gian tiến trình chiếm quyền kiểm soát và tính toán trên CPU.</li>
+          <li><strong>I/O Burst:</strong> Khoảng thời gian tiến trình tạm dừng để chờ đợi thao tác nhập/xuất hoàn thành.</li>
+        </ul>
+        <p><em>Đặc điểm thực tế:</em> Đa phần các CPU burst có thời lượng ngắn, chỉ một tỷ lệ nhỏ tiến trình có CPU burst dài. Đây là cơ sở để thiết kế các giải thuật phân phối CPU.</p>
+
+        <h3>2. Bộ định thời CPU (CPU Scheduler) &amp; Bộ điều phối (Dispatcher):</h3>
+        <ul>
+          <li><strong>CPU Scheduler:</strong> Lựa chọn một tiến trình đang ở trạng thái Ready trong Ready Queue để trao quyền chiếm dụng CPU.</li>
+          <li><strong>Dispatcher (Bộ điều phối):</strong> Là module thực thi việc trao quyền kiểm soát CPU cho tiến trình sau khi được chọn. Nhiệm vụ gồm: Context switch, chuyển đổi CPU sang User Mode, và nhảy đến vị trí lệnh tương ứng để chạy chương trình.</li>
+          <li><strong>Độ trễ điều phối (Dispatch Latency):</strong> Khoảng thời gian bộ điều phối tiêu tốn để dừng một tiến trình cũ và khởi chạy một tiến trình mới.</li>
+        </ul>
+      </section>
+
+      <!-- Section II -->
+      <section id="sec-2" style="margin-top: 2.5rem;">
+        <h2>4.2 Các tiêu chí đánh giá giải thuật định thời</h2>
+        <p>Hệ điều hành sử dụng 5 tiêu chí toán học sau để so sánh chất lượng định thời:</p>
+        
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hiệu suất CPU (CPU Utilization):</strong> Tỷ lệ phần trăm thời gian CPU làm việc hữu ích. Mục tiêu: <em>Càng cao càng tốt (tối ưu từ 40% đến 90%)</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thông lượng (Throughput):</strong> Số lượng tiến trình hoàn thành trọn vẹn trong một đơn vị thời gian. Mục tiêu: <em>Càng lớn càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian hoàn thành (Turnaround Time):</strong> Tổng thời gian tính từ lúc tiến trình gia nhập hệ thống đến khi kết thúc hoàn toàn:
+            $$\text{Turnaround Time} = \text{Finish Time} - \text{Arrival Time}$$
+            Mục tiêu: <em>Càng nhỏ càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian chờ (Waiting Time):</strong> Tổng thời gian tiến trình phải nằm chờ đợi trong Ready Queue:
+            $$\text{Waiting Time} = \text{Turnaround Time} - \text{CPU Burst}$$
+            Mục tiêu: <em>Càng nhỏ càng tốt</em>.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thời gian phản hồi (Response Time):</strong> Khoảng thời gian từ khi tiến trình xuất hiện cho tới khi nhận được phản hồi/lần cấp CPU đầu tiên. Mục tiêu: <em>Càng nhỏ càng tốt (đặc biệt quan trọng trong hệ thống Time-Sharing)</em>.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Section III & IV & V -->
+      <section id="sec-3-4-5" style="margin-top: 2.5rem;">
+        <h2>4.3 Phân loại giải thuật định thời</h2>
+        <p>Các giải thuật định thời được phân chia thành hai cơ chế vận hành chính:</p>
+        <ul>
+          <li><strong>Không trưng dụng (Non-preemptive):</strong> Khi CPU đã được cấp cho một tiến trình, nó sẽ giữ chặt CPU cho đến khi tự nguyện giải phóng (kết thúc tiến trình hoặc chuyển sang waiting). Ví dụ: FCFS, SJF không trưng dụng.</li>
+          <li><strong>Trưng dụng (Preemptive):</strong> Hệ điều hành có quyền cưỡng chế thu hồi CPU khi tiến trình đang chạy chưa kết thúc để cấp cho tiến trình khác ưu tiên hơn. Ví dụ: Round Robin, SRTF, Priority Preemptive.</li>
+        </ul>
+
+        <h3>1. FCFS (First-Come, First-Served):</h3>
+        <p>Đơn giản, đến trước phục vụ trước. Tuy nhiên có nhược điểm lớn là <strong>Hiệu ứng đoàn xe (Convoy Effect)</strong>: Các tiến trình ngắn phải xếp hàng chờ đợi vô lý đằng sau một tiến trình dài chạy trước, kéo thời gian chờ trung bình tăng vọt.</p>
+
+        <h3>2. SJF (Shortest Job First):</h3>
+        <p>Ưu tiên chạy tiến trình có CPU Burst kế tiếp nhỏ nhất. Đây là giải thuật tối ưu nhất về mặt thời gian chờ trung bình. Do không biết trước thời gian burst tiếp theo, hệ điều hành sử dụng công thức dự đoán trung bình mũ (Exponential Average):</p>
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          $$\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$$
+          <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+            Trong đó:
+            <br>&bull; $\tau_{n+1}$: Giá trị dự đoán cho lần tiếp theo.
+            <br>&bull; $t_n$: Thời gian chạy thực tế của lần gần nhất.
+            <br>&bull; $\tau_n$: Giá trị dự đoán lần trước đó.
+            <br>&bull; $\alpha \in [0, 1]$: Trọng số ưu tiên (thường chọn $\alpha = 0.5$).
+          </p>
+        </div>
+      </section>
+
+      <!-- Section VI & VII -->
+      <section id="sec-6-7" style="margin-top: 2.5rem;">
+        <h2>4.4 Định thời Độ ưu tiên &amp; Round Robin</h2>
+        
+        <h3>1. Định thời theo độ ưu tiên (Priority Scheduling):</h3>
+        <p>Cấp CPU cho tiến trình có độ ưu tiên cao nhất. Vấn đề lớn nhất là **Starvation (Chết đói)**: Tiến trình độ ưu tiên thấp có thể bị bỏ đói vô hạn nếu hệ thống liên tục nhận tiến trình độ ưu tiên cao.</p>
+        <p>&bull; <em>Giải pháp:</em> Sử dụng kỹ thuật <strong>Aging (Lão hóa)</strong> để tăng dần độ ưu tiên của tiến trình nằm chờ lâu trong Ready Queue theo thời gian.</p>
+
+        <h3>2. Định thời vòng tròn Round Robin (RR):</h3>
+        <p>
+          Thiết kế đặc dụng cho hệ thống chia thời gian (Time-sharing). Mỗi tiến trình được cấp một khoảng thời gian chạy cố định gọi là <strong>Time Quantum</strong> (thường từ 10ms đến 100ms). Hết quantum, tiến trình bị ngắt và đưa về cuối Ready Queue.
+        </p>
+        <ul>
+          <li>Nếu Time Quantum quá lớn: Giải thuật suy biến thành FCFS.</li>
+          <li>Nếu Time Quantum quá nhỏ: Chi phí Context Switch tăng vọt gây lãng phí năng lực CPU.</li>
+        </ul>
+      </section>
+
+      <!-- Section VIII & IX -->
+      <section id="sec-8-9" style="margin-top: 2.5rem;">
+        <h2>4.5 Hàng đợi nhiều cấp (Multilevel Queue &amp; Feedback Queue)</h2>
+        
+        <h3>1. Multilevel Queue Scheduling:</h3>
+        <p>
+          Phân chia Ready Queue thành nhiều hàng đợi riêng biệt dựa trên đặc tính tiến trình (ví dụ: hàng đợi tiến trình hệ thống, hàng đợi tiến trình tương tác Foreground, hàng đợi tiến trình Batch Background). Mỗi hàng đợi chạy giải thuật định thời riêng (ví dụ: Foreground chạy RR, Background chạy FCFS).
+        </p>
+
+        <h3>2. Multilevel Feedback Queue Scheduling:</h3>
+        <p>
+          Khắc phục nhược điểm của Multilevel Queue bằng cách **cho phép tiến trình dịch chuyển linh hoạt giữa các hàng đợi**.
+          <br>Nếu một tiến trình sử dụng quá nhiều CPU, nó sẽ bị hệ điều hành hạ cấp xuống hàng đợi có độ ưu tiên thấp hơn. Ngược lại, tiến trình chờ quá lâu ở hàng dưới sẽ được nâng cấp lên hàng trên nhờ cơ chế **Aging**.
+        </p>
+
+        <!-- Example callout -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Ví dụ mô hình 3 cấp phổ biến:</h4>
+          <ul>
+            <li><strong>Hàng đợi $Q_0$:</strong> Định thời Round Robin với Quantum = 8ms (độ ưu tiên cao nhất).</li>
+            <li><strong>Hàng đợi $Q_1$:</strong> Định thời Round Robin với Quantum = 16ms.</li>
+            <li><strong>Hàng đợi $Q_2$:</strong> Định thời FCFS (độ ưu tiên thấp nhất).</li>
+          </ul>
+          <p style="font-size: 0.9rem; color: var(--text-light); font-style: italic; margin-top: 0.5rem;">
+            Một tiến trình mới sẽ gia nhập $Q_0$. Nếu chạy quá 8ms chưa xong, nó bị đẩy xuống $Q_1$. Nếu chạy tiếp trong $Q_1$ quá 16ms vẫn chưa hoàn tất, nó bị hạ xuống $Q_2$ thực thi tuần tự.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section X, XI, XII, XIII, XIV -->
+      <section id="sec-10-11-12-13-14" style="margin-top: 2.5rem;">
+        <h2>4.6 Định thời đa xử lý, thời gian thực &amp; Đánh giá</h2>
+        
+        <h3>1. Định thời đa xử lý:</h3>
+        <p>
+          SMP (Đa xử lý đối xứng) cho phép mỗi CPU tự lập lịch định thời, hiện là kiến trúc phổ biến nhất. Đi kèm khái niệm **Processor Affinity (Tính thân thiết bộ xử lý)**: Giữ tiến trình chạy trên cùng một CPU để tránh tốn chi phí nạp lại dữ liệu bộ nhớ đệm Cache CPU (gồm <em>Soft affinity</em> và <em>Hard affinity</em>).
+        </p>
+
+        <h3>2. Định thời thời gian thực (Real-time Scheduling):</h3>
+        <p>
+          Yêu cầu khống chế độ trễ **Dispatch Latency** siêu nhỏ. Hệ điều hành thời gian thực mềm (Soft Real-Time) bắt buộc phải cấu hình nhân có thể bị trưng dụng (Preemptive Kernel) để tiến trình ưu tiên cao cướp CPU ngay lập tức.
+        </p>
+
+        <h3>3. Các phương pháp đánh giá thuật toán:</h3>
+        <ul>
+          <li><strong>Deterministic Modeling:</strong> Đánh giá bằng tập dữ liệu workload xác định trước (đơn giản, nhanh).</li>
+          <li><strong>Queueing Model:</strong> Áp dụng công thức Little để tính toán hàng đợi:
+            $$n = \lambda \times W$$
+            <span style="font-size: 0.9rem; color: var(--text-light);">(Trong đó $n$ là số tiến trình trung bình, $\lambda$ là tốc độ đến, $W$ là thời gian chờ trung bình).</span>
+          </li>
+          <li><strong>Simulation:</strong> Tạo lập chương trình mô phỏng bằng dữ liệu thực tế.</li>
+          <li><strong>Implementation:</strong> Cài đặt chạy trực tiếp trên hệ điều hành thực tế (chính xác nhất nhưng rất tốn kém).</li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 5 -->
+      <section id="ch5" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 5. ĐỒNG BỘ HÓA TIẾN TRÌNH</h1>
+        </div>
+        
+      <!-- Part I & II -->
+      <section id="part-1-2">
+        <h2>5.1 Giới thiệu và Tình trạng tranh đua (Race Condition)</h2>
+        <p>
+          Khi nhiều tiến trình hoặc luồng cùng truy cập và thay đổi dữ liệu dùng chung song song, nếu không được kiểm soát đồng bộ, kết quả cuối cùng của dữ liệu sẽ phụ thuộc vào thứ tự thực thi của các tiến trình đó. Hiện tượng lỗi này gọi là **Race Condition** (Tình trạng tranh đua).
+        </p>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">Ví dụ: Thao tác counter++ và counter--</div>
+          <p style="font-size: 0.95rem;">
+            Thao tác tăng/giảm biến đếm không phải là thao tác <strong>nguyên tử (atomic)</strong> ở mức ngôn ngữ máy, mà được phân rã thành 3 lệnh:
+            <br><code>1. register = counter</code>
+            <br><code>2. register = register &plusmn; 1</code>
+            <br><code>3. counter = register</code>
+            <br>Nếu xảy ra chuyển ngữ cảnh (Context Switch) xen kẽ giữa các lệnh máy này, giá trị của <code>counter</code> sẽ bị sai lệch (ví dụ: bắt đầu bằng 5, tăng và giảm đồng thời có thể ra kết quả bằng 4 hoặc 6 thay vì 5).
+          </p>
+        </div>
+
+        <p>Để đảm bảo tính nhất quán của dữ liệu, các thao tác trên tài nguyên dùng chung phải đạt tính chất:</p>
+        <ul>
+          <li><strong>Nguyên tử (Atomic):</strong> Không thể chia nhỏ thao tác; hoặc thực thi trọn vẹn, hoặc không thực thi gì.</li>
+          <li><strong>Cô lập (Isolated):</strong> Tiến trình khác không thể quan sát trạng thái trung gian dở dang của dữ liệu.</li>
+        </ul>
+      </section>
+
+      <!-- Part III & IV -->
+      <section id="part-3-4" style="margin-top: 2.5rem;">
+        <h2>5.2 Bài toán Miền tương trục (Critical Section Problem - CSP)</h2>
+        <p>
+          <strong>Miền tương trục (Critical Section)</strong> là đoạn mã nguồn của tiến trình có chứa các thao tác ghi dữ liệu, chỉnh sửa tệp tin, cập nhật cơ sở dữ liệu hoặc sử dụng thiết bị I/O dùng chung.
+        </p>
+        <p>Cấu trúc chuẩn của một tiến trình khi tham gia giải quyết miền tương trục:</p>
+        <pre><code>do {
+    entry section    // Xin phép vào miền tương trục
+        critical section  // Thực thi thao tác trên tài nguyên dùng chung
+    exit section     // Giải phóng khóa, nhường quyền cho tiến trình khác
+        remainder section // Làm các công việc độc lập khác
+} while(true);</code></pre>
+
+        <h3>Ba yêu cầu bắt buộc của một lời giải CSP đúng:</h3>
+        <ol>
+          <li style="margin-bottom: 0.5rem;"><strong>Loại trừ tương hỗ (Mutual Exclusion):</strong> Tại một thời điểm, có tối đa duy nhất một tiến trình được thực thi bên trong Critical Section của nó.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Tiến triển (Progress):</strong> Nếu không có tiến trình nào trong Critical Section và có tiến trình muốn vào, việc quyết định lựa chọn tiến trình được vào không được trì hoãn vô hạn.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Chờ đợi có giới hạn (Bounded Waiting):</strong> Có giới hạn số lần các tiến trình khác được phép vượt mặt vào trước một tiến trình đã gửi yêu cầu vào Critical Section, tránh hiện tượng tiến trình đó bị chờ đợi vô hạn (**Starvation**).</li>
+        </ol>
+      </section>
+
+      <!-- Part V & VI -->
+      <section id="part-5-6" style="margin-top: 2.5rem;">
+        <h2>5.3 Các giải pháp Phần mềm và Phần cứng</h2>
+        
+        <h3>1. Các giải pháp phần mềm:</h3>
+        <ul>
+          <li><strong>Thuật toán Peterson (Peterson's Algorithm):</strong> Giải quyết CSP cho đúng 2 tiến trình ($P_0$ và $P_1$) sử dụng hai biến chia sẻ là <code>int turn;</code> và <code>boolean flag[2];</code>. Thỏa mãn tuyệt đối cả 3 yêu cầu CSP.</li>
+          <li><strong>Thuật toán Bakery (Bakery Algorithm):</strong> Giải quyết CSP cho $n$ tiến trình. Sử dụng ý tưởng rút phiếu lấy số thứ tự ở ngân hàng: tiến trình có số phiếu nhỏ hơn được ưu tiên vào trước; nếu số phiếu trùng nhau, tiến trình có chỉ số định danh PID nhỏ hơn sẽ được ưu tiên.</li>
+        </ul>
+
+        <h3>2. Các giải pháp phần cứng:</h3>
+        <p>Sử dụng các lệnh phần cứng nguyên tử để bảo vệ miền tương trục thông qua cơ chế khóa (locks):</p>
+        <ul>
+          <li><strong>Disable Interrupt:</strong> Vô hiệu hóa ngắt toàn bộ hệ thống khi tiến trình vào Critical Section (chỉ hiệu quả trên hệ đơn nhân).</li>
+          <li><strong>test_and_set:</strong> Trả về giá trị hiện tại của khóa và gán khóa bằng true một cách nguyên tử.</li>
+          <li><strong>compare_and_swap:</strong> Hoán đổi giá trị của khóa một cách nguyên tử nếu giá trị hiện tại khớp với mong đợi.</li>
+        </ul>
+        <p style="font-size: 0.9rem; color: var(--text-light); font-style: italic;">
+          *Nhược điểm:* Các giải pháp phần cứng đơn giản dẫn đến hiện tượng **Busy Waiting (Chờ bận/Spinlock)**: tiến trình liên tục chạy vòng lặp kiểm tra khóa làm tiêu tốn 100% tài nguyên CPU một cách lãng phí.
+        </p>
+      </section>
+
+      <!-- Part VII -->
+      <section id="part-7" style="margin-top: 2.5rem;">
+        <h2>5.4 Semaphore</h2>
+        <p>
+          <strong>Semaphore</strong> là công cụ đồng bộ hóa mạnh mẽ được hệ điều hành cung cấp để tránh chờ đợi bận bằng cách cho tiến trình tạm ngủ. Một Semaphore $S$ sở hữu một biến số nguyên được truy cập qua hai thao tác nguyên tử:
+        </p>
+        <ul>
+          <li><code>wait(S)</code> (hoặc <code>P(S)</code>): Giảm giá trị của S đi 1 đơn vị. Nếu S &lt; 0, tiến trình gọi sẽ bị khóa và tạm dừng.</li>
+          <li><code>signal(S)</code> (hoặc <code>V(S)</code>): Tăng giá trị của S lên 1 đơn vị. Nếu có tiến trình đang chờ, đánh thức tiến trình đó dậy.</li>
+        </ul>
+
+        <h3>Phân loại Semaphore:</h3>
+        <ul>
+          <li><strong>Binary Semaphore (Mutex):</strong> Biến số nguyên chỉ có giá trị là 0 hoặc 1. Sử dụng như một ổ khóa loại trừ tương hỗ.</li>
+          <li><strong>Counting Semaphore:</strong> Biến số nguyên có giá trị không âm bất kỳ, dùng để quản lý một tập hợp gồm nhiều tài nguyên đồng dạng.</li>
+        </ul>
+        <p><strong>Cơ chế không chờ đợi bận:</strong> Hệ điều hành tích hợp hai lời gọi hệ thống <code>block()</code> (đưa tiến trình vào hàng đợi chờ và dừng chạy) và <code>wakeup()</code> (đánh thức tiến trình đưa về Ready Queue) để tối ưu hiệu năng CPU.</p>
+      </section>
+
+      <!-- Part VIII & IX -->
+      <section id="part-8-9" style="margin-top: 2.5rem;">
+        <h2>5.5 Các bài toán đồng bộ hóa kinh điển</h2>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Nhà sản xuất - Người tiêu thụ (Producer - Consumer):</strong>
+            <br>Sử dụng 3 Semaphore: <code>mutex = 1</code> (loại trừ tương hỗ), <code>empty = n</code> (theo dõi số ô trống trong bộ đệm), <code>full = 0</code> (theo dõi số ô chứa dữ liệu).
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Bộ đọc - Bộ ghi (Readers - Writers):</strong>
+            <br>Đảm bảo nguyên tắc: Nhiều Reader được đọc dữ liệu đồng thời, nhưng khi Writer thực hiện ghi dữ liệu thì bắt buộc phải độc chiếm tài nguyên (cấm tất cả Reader và Writer khác). Sử dụng <code>rw_mutex</code>, <code>mutex</code>, và biến đếm <code>read_count</code>.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bài toán Năm triết gia ăn tối (Dining Philosophers):</strong>
+            <br>Mô tả 5 triết gia ngồi ăn tối với 5 chiếc đũa xen kẽ. Giải pháp dùng Semaphore cơ bản dễ xảy ra **Deadlock (Khóa chết)** khi cả 5 người cùng đói và cầm đũa trái.
+            <br><em>Cách giải quyết:</em> Tối đa 4 người ngồi bàn; chỉ lấy đũa khi cả hai đũa đều sẵn sàng; hoặc triết gia số lẻ lấy đũa trái trước còn triết gia số chẵn lấy đũa phải trước.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part X -->
+      <section id="part-10" style="margin-top: 2.5rem;">
+        <h2>5.6 Cấu trúc Monitor</h2>
+        <p>
+          <strong>Monitor</strong> là một cấu trúc dữ liệu trừu tượng (ADT) tích hợp ở mức ngôn ngữ lập trình (như Java, C#) giúp đồng bộ hóa an toàn. Monitor tự động đảm bảo đặc tính **Mutual Exclusion**: tại một thời điểm chỉ có tối đa một tiến trình được phép hoạt động bên trong Monitor.
+        </p>
+        <p>Để lập trình các điều kiện chờ đợi phức tạp hơn, Monitor cung cấp các **Biến điều kiện (Condition Variables)** với hai thao tác:</p>
+        <ul>
+          <li><code>x.wait()</code>: Tạm dừng tiến trình gọi và đưa vào hàng đợi chờ điều kiện x, giải phóng Monitor cho tiến trình khác vào.</li>
+          <li><code>x.signal()</code>: Đánh thức duy nhất một tiến trình đang chờ trên điều kiện x. Khác với Semaphore, nếu không có tiến trình nào đang chờ sẵn, lệnh <code>x.signal()</code> sẽ trôi đi và không lưu lại trạng thái lịch sử.</li>
+        </ul>
+
+        <h3>Hai cơ chế xử lý khi gọi signal():</h3>
+        <ul>
+          <li><strong>Signal and Wait:</strong> Tiến trình gọi signal tạm dừng để tiến trình được đánh thức thực thi ngay lập tức.</li>
+          <li><strong>Signal and Continue:</strong> Tiến trình gọi signal tiếp tục thực thi; tiến trình được đánh thức phải chờ cho đến khi tiến trình phát tín hiệu thoát khỏi Monitor.</li>
+        </ul>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 6 -->
+      <section id="ch6" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 6. KHÓA CHẾT (DEADLOCK)</h1>
+        </div>
+        
+      <!-- Part 1 & 2 -->
+      <section id="part-1-2">
+        <h2>6.1 Khái niệm và Bốn điều kiện cần xảy ra Deadlock</h2>
+        <p>
+          <strong>Khóa chết (Deadlock)</strong> là trạng thái hệ thống trong đó một nhóm các tiến trình bị đóng băng vô hạn vì mỗi tiến trình đều đang nắm giữ tài nguyên và xếp hàng chờ đợi các tài nguyên khác do tiến trình trong nhóm đang nắm giữ.
+        </p>
+
+        <h3>Bốn điều kiện cần đồng thời xảy ra Deadlock:</h3>
+        <p>Deadlock chỉ xảy ra khi và chỉ khi hệ thống xuất hiện đồng thời cả 4 điều kiện sau:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Loại trừ tương hỗ (Mutual Exclusion):</strong> Ít nhất một tài nguyên ở trạng thái không thể chia sẻ (tại một thời điểm chỉ có tối đa một tiến trình được phép chiếm dụng tài nguyên này).
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Giữ và chờ (Hold and Wait):</strong> Tiến trình đang giữ ít nhất một tài nguyên cũ đã được cấp phát và tiếp tục gửi yêu cầu xin thêm tài nguyên mới đang bị tiến trình khác chiếm giữ.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Không trưng dụng tài nguyên (No Preemption):</strong> Tài nguyên đã cấp phát không thể bị thu hồi cưỡng bức bởi hệ thống, chỉ giải phóng khi tiến trình sở hữu tự nguyện trả lại.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Chờ đợi vòng tròn (Circular Wait):</strong> Tồn tại chu trình khép kín các tiến trình chờ đợi tài nguyên của nhau: $P_0$ chờ tài nguyên của $P_1$, $P_1$ chờ $P_2$,..., $P_n$ chờ tài nguyên của $P_0$.
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part 3 & 4 & 5 -->
+      <section id="part-3-4-5" style="margin-top: 2.5rem;">
+        <h2>6.2 Đồ thị cấp phát tài nguyên (Resource Allocation Graph - RAG)</h2>
+        <p>
+          Mô hình hóa hệ thống bằng đồ thị có hướng $G = (V, E)$ giúp phát hiện deadlock trực quan:
+        </p>
+        <ul>
+          <li><strong>Tập đỉnh $V$:</strong> Chia làm hai nhóm: Tập tiến trình $P = \{P_1, P_2, \dots, P_n\}$ và Tập tài nguyên $R = \{R_1, R_2, \dots, R_m\}$ (mỗi tài nguyên vẽ các ô vuông nhỏ đại diện cho số thể hiện - <em>instances</em>).</li>
+          <li><strong>Tập cạnh $E$:</strong>
+            <br>&bull; <strong>Cạnh yêu cầu (Request Edge):</strong> Vẽ mũi tên đi từ Tiến trình sang Tài nguyên ($P_i \rightarrow R_j$).
+            <br>&bull; <strong>Cạnh cấp phát (Assignment Edge):</strong> Vẽ mũi tên đi từ Tài nguyên sang Tiến trình ($R_j \rightarrow P_i$).
+          </li>
+        </ul>
+
+        <div class="callout" style="border-left-color: var(--secondary-color);">
+          <div class="callout-title">Mối quan hệ giữa Chu trình và Deadlock:</div>
+          <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+            &bull; <strong>Nếu tài nguyên chỉ có 1 thể hiện (Single Instance):</strong> Chu trình trên đồ thị RAG là điều kiện cần và đủ để kết luận đang xảy ra Deadlock ($\text{Cycle} \Leftrightarrow \text{Deadlock}$).
+            <br>&bull; <strong>Nếu tài nguyên có nhiều thể hiện (Multiple Instances):</strong> Sự xuất hiện của chu trình chỉ báo hiệu nguy cơ tiềm ẩn có thể xảy ra Deadlock, không đủ để kết luận chắc chắn.
+          </p>
+        </div>
+      </section>
+
+      <!-- Part 6 & 7 -->
+      <section id="part-6-7" style="margin-top: 2.5rem;">
+        <h2>6.3 Các cách tiếp cận và Phòng ngừa Deadlock (Deadlock Prevention)</h2>
+        <p>Có 4 hướng xử lý Deadlock chính: Phòng ngừa (Prevention), Tránh (Avoidance), Phát hiện (Detection) và Phục hồi (Recovery).</p>
+        
+        <h3>Deadlock Prevention (Phòng ngừa):</h3>
+        <p>Ngăn chặn deadlock bằng cách đặt ra các quy tắc thiết kế hệ thống nhằm loại bỏ hoàn toàn ít nhất 1 trong 4 điều kiện cần:</p>
+        <ul>
+          <li><strong>Phá vỡ Mutual Exclusion:</strong> Cho phép chia sẻ tài nguyên (không khả thi với các thiết bị độc quyền như máy in, ổ ghi).</li>
+          <li><strong>Phá vỡ Hold and Wait:</strong> Bắt buộc tiến trình phải yêu cầu toàn bộ tài nguyên một lần trước khi chạy, hoặc giải phóng toàn bộ tài nguyên cũ đang giữ trước khi gửi yêu cầu xin tài nguyên mới.</li>
+          <li><strong>Phá vỡ No Preemption:</strong> Nếu một tiến trình xin thêm tài nguyên mà không được đáp ứng ngay, hệ thống tự động thu hồi cưỡng bức toàn bộ tài nguyên nó đang giữ để cấp phát cho tiến trình khác rảnh hơn.</li>
+          <li><strong>Phá vỡ Circular Wait:</strong> Đánh số thứ tự các tài nguyên và bắt buộc các tiến trình chỉ được phép yêu cầu tài nguyên theo thứ tự tăng dần ($R_1 \lt R_2 \lt \dots \lt R_m$), ngăn ngừa tuyệt đối khả năng tạo chu trình chờ khép kín.</li>
+        </ul>
+      </section>
+
+      <!-- Part 8 & 9 & 10 & 11 -->
+      <section id="part-8-9-10-11" style="margin-top: 2.5rem;">
+        <h2>6.4 Tránh Deadlock (Deadlock Avoidance) và Thuật toán Banker</h2>
+        <p>
+          Hệ điều hành giám sát trạng thái cấp phát tài nguyên và chỉ đáp ứng yêu cầu nếu hệ thống được đảm bảo duy trì trong <strong>Trạng thái an toàn (Safe State)</strong> - trạng thái tồn tại một **chuỗi an toàn (Safe Sequence)** đảm bảo mọi tiến trình đều có thể chạy xong mà không bị deadlock. Trạng thái không an toàn (Unsafe State) có nguy cơ cao dẫn tới deadlock.
+        </p>
+
+        <h3>Thuật toán Banker (Banker's Algorithm):</h3>
+        <p>Sử dụng các ma trận dữ liệu để kiểm soát cấp phát cho tài nguyên có nhiều thể hiện:</p>
+        <ul>
+          <li><code>Available[j]</code>: Số lượng tài nguyên loại $R_j$ hiện đang rảnh rỗi.</li>
+          <li><code>Max[i][j]</code>: Số lượng tài nguyên loại $R_j$ tối đa tiến trình $P_i$ có thể yêu cầu.</li>
+          <li><code>Allocation[i][j]</code>: Số lượng tài nguyên loại $R_j$ hiện đã cấp phát cho $P_i$.</li>
+          <li><code>Need[i][j] = Max[i][j] - Allocation[i][j]</code>: Số lượng tài nguyên loại $R_j$ tiến trình $P_i$ còn cần thêm để chạy xong.</li>
+        </ul>
+
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0;">
+          <h4 style="margin-top: 0; color: var(--primary-color);">Thuật toán kiểm tra chuỗi an toàn (Safety Algorithm):</h4>
+          <ol style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+            <li>Khởi tạo vector <code>Work = Available</code> và mảng logic <code>Finish[i] = false</code> với mọi tiến trình.</li>
+            <li>Tìm tiến trình $P_i$ thỏa mãn: <code>Finish[i] == false</code> và <code>Need[i] <= Work</code>.</li>
+            <li>Nếu tìm thấy: giả định $P_i$ chạy xong và trả lại toàn bộ tài nguyên: <code>Work = Work + Allocation[i]</code>; gán <code>Finish[i] = true</code>; quay lại bước 2.</li>
+            <li>Nếu tất cả <code>Finish[i] == true</code>, hệ thống ở trạng thái an toàn. Ngược lại, hệ thống không an toàn.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Part 12 & 13 -->
+      <section id="part-12-13" style="margin-top: 2.5rem;">
+        <h2>6.5 Phát hiện và Phục hồi Deadlock</h2>
+        
+        <h3>Phát hiện Deadlock (Deadlock Detection):</h3>
+        <ul>
+          <li><strong>Với tài nguyên đơn lẻ:</strong> Lược bỏ các đỉnh tài nguyên trên đồ thị RAG để tạo ra đồ thị chờ **Wait-for Graph** (chỉ chứa các đỉnh tiến trình $P_i \rightarrow P_j$). Hệ thống bị deadlock khi và chỉ khi đồ thị Wait-for chứa chu trình.</li>
+          <li><strong>Với tài nguyên nhiều thể hiện:</strong> Chạy thuật toán phát hiện dựa trên ma trận yêu cầu thực tế `Request` thay thế cho ma trận `Need` của Banker.</li>
+        </ul>
+
+        <h3>Phục hồi hệ thống (Deadlock Recovery):</h3>
+        <p>Khi phát hiện deadlock, hệ thống khôi phục trạng thái bằng hai cách:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Hủy bỏ tiến trình (Terminate Process):</strong> Hủy toàn bộ các tiến trình trong vòng lặp deadlock (tốn kém); hoặc hủy lần lượt từng tiến trình cho đến khi giải phóng đủ tài nguyên để bẻ gãy chu trình deadlock.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Thu hồi tài nguyên (Resource Preemption):</strong> Cưỡng chế thu hồi tài nguyên từ một số tiến trình để cấp phát cho tiến trình khác. Cần giải quyết 3 bài toán: Chọn tiến trình nạn nhân (giảm thiểu chi phí thiệt hại), Hoàn tác trạng thái (Rollback tiến trình về điểm an toàn đã lưu) và Tránh chết đói tài nguyên (Starvation - ngăn chặn một tiến trình bị chọn làm nạn nhân liên tục).
+          </li>
+        </ol>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+
+      <!-- CHAPTER 7 -->
+      <section id="ch7" class="chapter-block" style="margin-top: 3rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+        <div style="background: var(--highlight-bg); border-left: 5px solid var(--secondary-color); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem;">
+          <h1 style="font-size: 1.6rem; color: var(--secondary-color); margin: 0;">CHƯƠNG 7. QUẢN LÝ BỘ NHỚ & BỘ NHỚ ẢO</h1>
+        </div>
+        
+      <!-- Part 1: Tổng quan -->
+      <section id="part-1">
+        <h2>7.1 Tổng quan về Bộ nhớ và Tiến trình</h2>
+        <p>
+          Trong hệ thống máy tính, bộ xử lý trung tâm (CPU) chỉ có thể truy xuất trực tiếp các thanh ghi nội bộ (Registers), bộ nhớ đệm (Cache), và bộ nhớ chính (Main Memory - RAM). Mọi mã lệnh và dữ liệu của chương trình trước khi thực thi bắt buộc phải được nạp vào bộ nhớ chính và tổ chức dưới dạng một tiến trình (Process).
+        </p>
+
+        <h3>Phân cấp tốc độ truy xuất bộ nhớ:</h3>
+        <ul>
+          <li><strong>Thanh ghi (Registers):</strong> Nằm trực tiếp bên trong nhân CPU, thời gian truy xuất cực kỳ nhanh (thường chỉ mất tối đa 1 chu kỳ xung nhịp CPU).</li>
+          <li><strong>Bộ nhớ đệm (Cache):</strong> Nằm trung gian giữa CPU và bộ nhớ chính, có tốc độ nhanh hơn RAM nhưng chậm hơn thanh ghi.</li>
+          <li><strong>Bộ nhớ chính (RAM):</strong> Có dung lượng lớn nhưng tốc độ truy xuất chậm hơn nhiều chu kỳ CPU, khiến CPU đôi khi phải dừng lại chờ đợi (memory stall).</li>
+        </ul>
+
+        <h3>Bảo vệ vùng nhớ bằng thanh ghi Nền và Giới hạn:</h3>
+        <p>
+          Để đảm bảo tính đúng đắn và ngăn chặn tiến trình người dùng can thiệp vào vùng nhớ của hệ điều hành hoặc các tiến trình khác, phần cứng trang bị hai thanh ghi:
+        </p>
+        <ul>
+          <li><strong>Thanh ghi nền (Base Register):</strong> Lưu trữ địa chỉ vật lý thấp nhất (địa chỉ khởi đầu) được cấp phát cho tiến trình.</li>
+          <li><strong>Thanh ghi giới hạn (Limit Register):</strong> Xác định kích thước tổng cộng của phân vùng nhớ được cấp phát cho tiến trình.</li>
+        </ul>
+        <p>
+          Tiến trình chỉ được phép truy xuất các địa chỉ trong nửa khoảng:
+          $$\text{Base} \le \text{Địa chỉ} \lt \text{Base} + \text{Limit}$$
+          Nếu CPU phát hiện tiến trình cố tình truy xuất địa chỉ nằm ngoài phạm vi này, nó sẽ kích hoạt một ngắt phần cứng <strong>(Trap to OS)</strong>, báo lỗi vi phạm phân vùng nhớ (Segmentation Fault) và chấm dứt tiến trình. Việc chỉnh sửa hai thanh ghi này là đặc quyền riêng của hệ điều hành thực hiện trong Kernel mode.
+        </p>
+
+        <h3>Liên kết địa chỉ (Address Binding):</h3>
+        <p>
+          Quá trình chuyển đổi từ địa chỉ logic trong mã nguồn sang địa chỉ vật lý thực tế trong RAM trải qua các giai đoạn liên kết khác nhau:
+        </p>
+        <table class="data-table" style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+          <thead>
+            <tr style="background-color: var(--primary-color); color: #fff;">
+              <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Phương pháp liên kết</th>
+              <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Đặc điểm hoạt động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Compile-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Địa chỉ tuyệt đối được xác định ngay khi biên dịch chương trình. Nếu vị trí nạp chương trình vào RAM thay đổi, bắt buộc phải biên dịch lại toàn bộ mã nguồn.</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Load-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Trình biên dịch sinh ra địa chỉ tái định vị (relocatable address). Địa chỉ vật lý cuối cùng được xác định khi nạp chương trình vào RAM. Nếu vị trí nạp thay đổi, chỉ cần nạp lại.</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: bold;">Execution-time Binding</td>
+              <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Địa chỉ được liên kết động trong quá trình chạy. Tiến trình có thể di chuyển giữa các phân vùng nhớ khác nhau. Đòi hỏi hỗ trợ phần cứng đặc biệt (base/limit registers) và là giải pháp của các HĐH hiện đại.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Không gian địa chỉ luận lý (Logical) và vật lý (Physical):</h3>
+        <ul>
+          <li><strong>Địa chỉ luận lý (Logical Address / Virtual Address):</strong> Địa chỉ do CPU sinh ra trong quá trình thực thi mã lệnh.</li>
+          <li><strong>Địa chỉ vật lý (Physical Address):</strong> Địa chỉ thực tế trên các chip RAM được phần cứng MMU ghi nhận để truy xuất.</li>
+        </ul>
+        <p>
+          Trong cơ chế liên kết Compile-time và Load-time, địa chỉ luận lý trùng khớp với địa chỉ vật lý. Trái lại, trong cơ chế Execution-time, địa chỉ luận lý và vật lý hoàn toàn khác biệt.
+        </p>
+
+        <h3>Khối quản lý bộ nhớ (Memory Management Unit - MMU):</h3>
+        <p>
+          MMU là thiết bị phần cứng thực hiện ánh xạ địa chỉ luận lý sang địa chỉ vật lý. Ở dạng đơn giản nhất, MMU sử dụng một <strong>thanh ghi tái định vị (Relocation Register)</strong> chứa địa chỉ cơ sở của tiến trình:
+          $$\text{Địa chỉ vật lý} = \text{Địa chỉ luận lý} + \text{Thanh ghi tái định vị}$$
+        </p>
+        <div class="mmu-diagram">
+          <div class="diagram-box" style="border-color: var(--secondary-color);">CPU (Logical: 346)</div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-box">MMU (Relocation: 14000)</div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-box" style="border-color: #10b981;">RAM (Physical: 14346)</div>
+        </div>
+
+        <div class="callout" style="border-left-color: var(--primary-color);">
+          <div class="callout-title">Nạp động &amp; Liên kết động:</div>
+          <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+            &bull; <strong>Nạp động (Dynamic Loading):</strong> Các thủ tục chỉ được tải vào RAM khi thực sự được gọi, giúp tiết kiệm không gian bộ nhớ.
+            <br>&bull; <strong>Liên kết động (Dynamic Linking):</strong> Các thư viện chia sẻ (Shared Libraries / DLL) không được nhúng vào file thực thi mà được liên kết động tại thời điểm chạy nhờ đoạn mã trung gian (stub), giảm kích thước tệp và bộ nhớ RAM.
+          </p>
+        </div>
+      </section>
+
+      <!-- Part 2: Hoán đổi -->
+      <section id="part-2" style="margin-top: 2.5rem;">
+        <h2>7.2 Hoán đổi bộ nhớ (Swapping)</h2>
+        <p>
+          Hệ điều hành có thể tạm thời di chuyển một tiến trình không hoạt động ra khỏi bộ nhớ chính và ghi vào vùng lưu trữ phụ tốc độ cao trên đĩa gọi là <strong>Backing Store (Swap Out)</strong>, sau đó nạp lại vào RAM khi tiến trình cần chạy tiếp <strong>(Swap In)</strong>.
+        </p>
+        <ul>
+          <li><strong>Ưu điểm:</strong> Cho phép hệ thống chạy đồng thời nhiều tiến trình có tổng kích thước lớn hơn dung lượng bộ nhớ vật lý thực tế của RAM (tăng mức độ đa chương).</li>
+          <li><strong>Nhược điểm:</strong> Thời gian chuyển đổi ngữ cảnh (context switch) khi swapping rất lớn vì phụ thuộc chính vào tốc độ đọc ghi đĩa <strong>(Transfer Time)</strong>.</li>
+        </ul>
+        <p>
+          Do đó, các hệ điều hành hiện đại thường không sử dụng swapping thuần túy mà chỉ kích hoạt cơ chế hoán đổi này khi lượng RAM trống giảm xuống dưới một ngưỡng an toàn tối thiểu (threshold).
+        </p>
+      </section>
+
+      <!-- Part 3: Cấp phát kề nhau -->
+      <section id="part-3" style="margin-top: 2.5rem;">
+        <h2>7.3 Cấp phát bộ nhớ kề nhau (Contiguous Allocation)</h2>
+        <p>
+          Trong phương pháp sơ khai này, bộ nhớ chính được chia làm hai phân vùng: Vùng thấp chứa mã nguồn hệ điều hành và vector ngắt, Vùng cao chứa các tiến trình của người dùng. Mỗi tiến trình được cấp phát một vùng nhớ liên tục duy nhất để chạy.
+        </p>
+
+        <h3>Giải thuật tìm phân hoạch trống (Dynamic Storage-Allocation Problem):</h3>
+        <p>Khi có tiến trình cần nạp vào RAM, hệ thống tìm kiếm trong các lỗ trống (holes) bộ nhớ theo 3 giải thuật:</p>
+        <ol>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>First-fit (Khớp đầu tiên):</strong> Cấp phát lỗ trống đầu tiên tìm thấy đủ lớn. Tốc độ thực hiện nhanh nhất.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Best-fit (Khớp tốt nhất):</strong> Tìm kiếm toàn bộ bộ nhớ và cấp phát lỗ trống nhỏ nhất nhưng vẫn đủ chứa tiến trình. Giải pháp này để lại các lỗ trống dư thừa nhỏ nhất, nhưng tốn thời gian duyệt.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong>Worst-fit (Khớp tệ nhất):</strong> Cấp phát lỗ trống lớn nhất. Ý tưởng là để lại lỗ trống dư thừa sau khi cắt có kích thước đủ lớn để tiến trình khác dùng tiếp, nhưng thực tế hiệu quả kém.
+          </li>
+        </ol>
+
+        <h3>Lỗi phân mảnh bộ nhớ (Fragmentation):</h3>
+        <ul>
+          <li>
+            <strong>Phân mảnh ngoài (External Fragmentation):</strong> Tổng dung lượng các lỗ trống bộ nhớ còn lại đủ để nạp tiến trình, nhưng chúng nằm rải rác không liên tục khiến không thể cấp phát cho tiến trình mới.
+          </li>
+          <li>
+            <strong>Phân mảnh trong (Internal Fragmentation):</strong> Vùng nhớ được cấp phát cho tiến trình lớn hơn một chút so với kích thước thực tế của tiến trình (ví dụ phân hoạch cố định 10KB cấp cho tiến trình 8KB dư thừa 2KB không sử dụng được).
+          </li>
+        </ul>
+        <p>
+          Để khắc phục phân mảnh ngoài, hệ điều hành có thể chạy cơ chế <strong>Dồn dịch bộ nhớ (Compaction)</strong>: dịch chuyển tất cả tiến trình về một phía của RAM để gom các lỗ trống nhỏ thành một khối lớn liên tục. Compaction chỉ thực hiện được khi hệ thống sử dụng cơ chế liên kết địa chỉ tại thời điểm chạy (Execution-time binding).
+        </p>
+      </section>
+
+      <!-- Part 4: Phân trang -->
+      <section id="part-4" style="margin-top: 2.5rem;">
+        <h2>7.4 Phân trang (Paging)</h2>
+        <p>
+          Phân trang là kỹ thuật quản lý bộ nhớ hiện đại cho phép không gian địa chỉ vật lý của tiến trình không cần nằm kề nhau, loại bỏ hoàn toàn hiện tượng phân mảnh ngoài.
+        </p>
+        <ul>
+          <li><strong>Trang luận lý (Page):</strong> Không gian bộ nhớ luận lý của tiến trình được chia thành các khối kích thước cố định bằng nhau.</li>
+          <li><strong>Khung trang vật lý (Frame):</strong> Bộ nhớ vật lý RAM được chia thành các khối có kích thước bằng kích thước trang.</li>
+        </ul>
+
+        <h3>Cấu trúc dịch địa chỉ phân trang:</h3>
+        <p>
+          Địa chỉ luận lý do CPU phát ra gồm 2 phần:
+          <strong>Page Number ($p$)</strong> và <strong>Offset ($d$)</strong>.
+        </p>
+        <ul>
+          <li>Số hiệu trang $p$ được dùng làm chỉ mục (index) tra cứu trong <strong>Bảng trang (Page Table)</strong> để tìm số hiệu khung trang vật lý $f$ tương ứng trong RAM.</li>
+          <li>Địa chỉ vật lý cuối cùng được tính bằng cách ghép $f$ với độ lệch trang $d$:
+            $$\text{Địa chỉ vật lý} = f \times \text{Kích thước trang} + d$$
+          </li>
+        </ul>
+
+        <h3>Bộ đệm chuyển đổi TLB (Translation Look-aside Buffer):</h3>
+        <p>
+          Vì bảng trang được lưu trong RAM, mỗi truy xuất dữ liệu cần 2 lần đọc RAM (1 lần tra bảng trang, 1 lần đọc dữ liệu), làm giảm hiệu năng hệ thống đi 50%. Để khắc phục, phần cứng tích hợp bộ đệm cache tốc độ cao gọi là <strong>TLB</strong> hoạt động theo cơ chế tra cứu kết hợp song song.
+        </p>
+        <p>
+          Thời gian truy cập hiệu dụng <strong>(Effective Access Time - EAT)</strong> được tính theo công thức:
+          $$EAT = \alpha \times (\epsilon + t_m) + (1 - \alpha) \times (\epsilon + 2 t_m)$$
+          Trong đó:
+          <br>&bull; $\alpha$: Tỉ lệ tìm thấy thông tin dịch địa chỉ trong TLB (Hit ratio).
+          <br>&bull; $\epsilon$: Thời gian truy xuất bộ đệm TLB (TLB lookup time).
+          <br>&bull; $t_m$: Thời gian truy cập bộ nhớ RAM chính (Memory access time).
+        </p>
+
+        <h3>Chia sẻ mã lệnh (Shared Pages):</h3>
+        <p>
+          Phân trang cho phép chia sẻ mã nguồn dùng chung (reentrant code - mã không tự thay đổi trong quá trình thực thi) giữa các tiến trình. Ví dụ, 4 tiến trình cùng chạy một trình soạn thảo văn bản chỉ cần nạp duy nhất 1 bản sao mã lệnh vào RAM, mỗi tiến trình chỉ giữ phân vùng dữ liệu (data section) riêng biệt.
+        </p>
+      </section>
+
+      <!-- Part 5: Cấu trúc bảng trang -->
+      <section id="part-5" style="margin-top: 2.5rem;">
+        <h2>7.5 Các cấu trúc bảng trang nâng cao</h2>
+        <p>
+          Với kiến trúc hệ thống 32-bit và kích thước trang 4KB ($2^{12}$ bytes), bảng trang cần chứa $2^{20}$ mục. Nếu mỗi mục chiếm 4 bytes, bảng trang của 1 tiến trình sẽ chiếm tới 4MB RAM, quá lớn để lưu trữ liên tục. Hệ thống giải quyết bằng các cấu trúc:
+        </p>
+        <ol>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang phân cấp (Hierarchical Page Table):</strong> Chia bảng trang lớn thành nhiều cấp bảng trang nhỏ hơn (như bảng trang 2 cấp). Địa chỉ luận lý được chia thành:
+            $$p_1 \mid p_2 \mid d$$
+            Trong đó $p_1$ trỏ vào bảng trang ngoài (Outer Page Table), $p_2$ trỏ vào bảng trang trong.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang băm (Hashed Page Table):</strong> Sử dụng hàm băm để ánh xạ số trang ảo. Phù hợp cho không gian địa chỉ lớn hơn 32-bit (như 64-bit). Các phần tử trùng mã băm được liên kết thành danh sách móc nối.
+          </li>
+          <li style="margin-bottom: 1rem;">
+            <strong>Bảng trang ngược (Inverted Page Table):</strong> Thay vì mỗi tiến trình có một bảng trang riêng, toàn bộ hệ thống chỉ sử dụng duy nhất một bảng trang ngược. Mỗi mục trong bảng tương ứng với một khung trang vật lý RAM và lưu thông tin:
+            $$\langle \text{PID}, \text{Page Number} \rangle$$
+            Giúp tiết kiệm bộ nhớ bảng trang tối đa, nhưng tăng thời gian tìm kiếm địa chỉ (cần dùng bảng băm hỗ trợ).
+          </li>
+        </ol>
+      </section>
+
+      <!-- Part 6: Phân đoạn -->
+      <section id="part-6" style="margin-top: 2.5rem;">
+        <h2>7.6 Phân đoạn (Segmentation)</h2>
+        <p>
+          Phân đoạn quản lý bộ nhớ theo góc nhìn luận lý của lập trình viên. Chương trình không còn là dãy byte tuyến tính mà là tập hợp các đoạn có kích thước logic khác nhau (như đoạn code chính, đoạn stack, mảng dữ liệu, bảng ký hiệu).
+        </p>
+        <p>Địa chỉ phân đoạn gồm: <strong>Số hiệu đoạn (Segment Number - $s$)</strong> và <strong>Độ lệch đoạn (Offset - $d$)</strong>.</p>
+        
+        <h3>Bảng phân đoạn (Segment Table):</h3>
+        <p>Mỗi mục trong bảng phân đoạn gồm hai trường thông tin:</p>
+        <ul>
+          <li><strong>Base (Địa chỉ cơ sở):</strong> Địa chỉ vật lý bắt đầu của đoạn trong RAM.</li>
+          <li><strong>Limit (Giới hạn):</strong> Chiều dài thực tế của đoạn đó.</li>
+        </ul>
+        <p>
+          Khi truy xuất địa chỉ $\langle s, d \rangle$, phần cứng kiểm tra xem độ lệch $d$ có nhỏ hơn giới hạn của đoạn đó hay không ($d \lt \text{Limit}$). Nếu vi phạm ($d \ge \text{Limit}$), hệ thống tạo lỗi trap truy cập bất hợp pháp.
+        </p>
+
+        <h3>Bảo vệ và Chia sẻ đoạn:</h3>
+        <p>
+          Mỗi mục bảng đoạn tích hợp các bit bảo vệ (valid/invalid, quyền đọc/ghi/thực thi). Việc chia sẻ mã nguồn dùng chung giữa các tiến trình được thực hiện dễ dàng bằng cách trỏ chung vào cùng một địa chỉ base của phân đoạn mã lệnh.
+        </p>
+      </section>
+
+      <!-- Part 7: Kết hợp phân trang và phân đoạn -->
+      <section id="part-7" style="margin-top: 2.5rem;">
+        <h2>7.7 Kết hợp phân trang và phân đoạn (Segmented Paging)</h2>
+        <p>
+          Để khắc phục nhược điểm bảng phân đoạn quá lớn và phân mảnh ngoài của phân đoạn, các kiến trúc máy tính hiện đại kết hợp cả hai kỹ thuật.
+        </p>
+        <p>
+          Trong cơ chế này, không gian tiến trình được chia thành các phân đoạn luận lý lớn, sau đó mỗi đoạn lại được chia nhỏ thành các trang kích thước cố định. Địa chỉ luận lý được biểu diễn dưới dạng:
+          $$\text{Segment Number} \mid \text{Page Number} \mid \text{Offset}$$
+          Mỗi mục trong bảng phân đoạn thay vì chứa địa chỉ vật lý RAM của đoạn thì nay chứa địa chỉ của **Bảng trang** quản lý phân đoạn đó.
+        </p>
+        <p>
+          <strong>Ví dụ thực tế:</strong>
+          <br>&bull; <strong>Intel Pentium:</strong> Sử dụng cơ chế phân đoạn thuần túy hoặc kết hợp phân đoạn + phân trang. Địa chỉ luận lý được dịch sang địa chỉ tuyến tính (Linear Address), sau đó đi qua bộ phân trang để ra địa chỉ vật lý.
+          <br>&bull; <strong>Linux:</strong> Sử dụng hệ thống phân trang 3 cấp (hoặc 4 cấp trên 64-bit) để bỏ qua tối đa bước phân đoạn phần cứng nhằm đảm bảo tính tương thích đa nền tảng.
+        </p>
+      </section>
+
+      <!-- Quiz Section -->
+      
+    
+      </section>
+    
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Hợp Công Thức Tính Toán & Lệnh C System Calls - Nguyên lý Hệ điều hành</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      throwOnError: false
+    });"></script>
+
+  <style>
+    /* Styling for Formula & Code Reference Page */
+    .formula-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+    .formula-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .step-box {
+      background: var(--bg-code, #f8fafc);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .exam-tip-box {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+      border-left: 4px solid #eab308;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+      color: #713f12;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+
+    /* Print optimization */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 12px !important;
+      }
+      .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+      header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+      }
+      header h1 {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.15rem !important;
+      }
+      section {
+        margin-top: 1rem !important;
+      }
+      .formula-card {
+        margin-bottom: 0.75rem !important;
+        padding: 0.75rem 1rem !important;
+        break-inside: avoid !important;
+      }
+      .step-box, .exam-tip-box, .code-block, .diagram-box, table, svg {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .no-print, .header-actions, .breadcrumb {
+        display: none !important;
+      }
+      h1, h2, h3, h4, .formula-title {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+      footer {
+        break-before: page !important;
+        page-break-before: always !important;
+        margin-top: 2rem !important;
+        padding-top: 1rem !important;
+        font-size: 0.95rem !important;
+      }
+    }
+
+    /* Force normal font style for K2D rendering */
+    #page-content *, #page-content {
+      font-style: normal !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page-content">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Nguyên lý Hệ điều hành</a> &raquo; Cẩm Nang Lệnh C &amp; Công Thức Bài Tập
+      </div>
+      <h1>CẨM NANG ĐỌC HIỂU LỆNH C &amp; CÔNG THỨC TÍNH TOÁN BÀI TẬP OS</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Tổng hợp 100% chuẩn xác các lệnh C hệ thống (fork, wait, exec, pthread, semaphore) và công thức tính toán từ 7 chương bài giảng (CT178 / CT180 / CT107 - ĐHCT).</p>
+    </header>
+
+    
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- PHẦN 1: CODE C SYSTEM CALLS -->
+      <section id="sec-c-calls" style="margin-top: 1.5rem;">
+        <h2>PHẦN 1. HƯỚNG DẪN ĐỌC HIỂU CODE C &amp; LỆNH HỆ THỐNG (CHƯƠNG 3, 4, 5)</h2>
+
+        <!-- 1.1 fork -->
+        <div class="formula-card">
+          <div class="formula-title">1.1 Lệnh <code>fork()</code> &amp; Quy Tắc Đếm Tiến Trình (Chương 3)</div>
+          <p><strong>Bản chất:</strong> <code>fork()</code> tạo ra 1 tiến trình con là bản sao chính xác của tiến trình cha tại thời điểm gọi.</p>
+          
+          <div class="step-box">
+            <strong>🔑 3 Quy Tắc Vàng Khi Đọc Code <code>fork()</code>:</strong>
+            <ol style="margin-top: 0.25rem; padding-left: 1.2rem;">
+              <li><strong>Giá trị trả về của <code>fork()</code>:</strong>
+                <br>- Trả về <code>0</code> trong tiến trình con (Child Process).
+                <br>- Trả về <code>PID con (&gt;0)</code> trong tiến trình cha (Parent Process).
+                <br>- Trả về <code>-1</code> nếu bị lỗi.
+              </li>
+              <li><strong>Số lượng tiến trình được tạo ra:</strong>
+                <br>- Nếu có $k$ lệnh <code>fork()</code> độc lập nối tiếp nhau $\rightarrow$ Tổng số tiến trình tạo ra là $2^k$.
+                <br>- Số tiến trình con được tạo mới: $N_{\text{child}} = 2^k - 1$.
+              </li>
+              <li><strong>Không gian bộ nhớ riêng biệt (Copy-on-Write):</strong> Sau khi <code>fork()</code>, tiến trình con và cha có bộ nhớ độc lập. Thay đổi biến ở tiến trình con <strong>KHÔNG</strong> làm thay đổi biến ở tiến trình cha!</li>
+            </ol>
+          </div>
+
+          <p style="font-weight: 600; margin-top: 0.75rem;">Ví dụ Đọc Code &amp; Đếm Tiến Trình Cụ Thể (Slide Ch3-p20):</p>
+          <div class="code-block">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main() {
+    int pid = fork(); // Tạo tiến trình con
+    if (pid < 0) {
+        fprintf(stderr, "Fork failed");
+        exit(-1);
+    } else if (pid == 0) {
+        // Tiến trình con nạp chương trình /bin/ls
+        execlp("/bin/ls", "ls", NULL);
+    } else {
+        // Tiến trình cha chờ con hoàn thành
+        wait(NULL);
+        printf("Child completed\n");
+        exit(0);
+    }
+}</div>
+          <p style="font-size: 0.88rem; color: var(--text-light); margin-top: 0.5rem;"><em>Kết quả: Tiến trình cha tạm dừng chờ tiến trình con nạp và chạy xong câu lệnh ls, sau đó mới in "Child completed".</em></p>
+        </div>
+
+        <!-- 1.2 wait -->
+        <div class="formula-card">
+          <div class="formula-title">1.2 Lệnh <code>wait()</code> &amp; Tiến Trình Zombie/Orphan (Chương 3)</div>
+          <p><strong>Bản chất:</strong> Buộc tiến trình cha tạm dừng (WAITING) đến khi tiến trình con kết thúc để thu hồi tài nguyên PCB.</p>
+          <ul style="line-height: 1.6; padding-left: 1.2rem;">
+            <li><code>wait(NULL);</code> &rarr; Chờ bất kỳ tiến trình con nào kết thúc.</li>
+            <li><strong>Zombie Process:</strong> Tiến trình con đã kết thúc nhưng tiến trình cha <em>chưa gọi <code>wait()</code></em> $\rightarrow$ PCB của con vẫn nằm trong bảng tiến trình.</li>
+            <li><strong>Orphan Process:</strong> Tiến trình cha kết thúc trước khi tiến trình con hoàn thành $\rightarrow$ Tiến trình con bị mồ côi, được HĐH nhận làm con của tiến trình <code>init</code> (PID 1).</li>
+          </ul>
+        </div>
+
+        <!-- 1.3 exec -->
+        <div class="formula-card">
+          <div class="formula-title">1.3 Họ Lệnh <code>execlp()</code> (Chương 3)</div>
+          <p><strong>Bản chất:</strong> Nạp một chương trình mới từ đĩa ghi đè hoàn toàn lên không gian địa chỉ (code, data, stack) của tiến trình gọi.</p>
+
+          <div class="exam-tip-box">
+            <strong>⚠️ Quy Tắc Vàng Khi Đọc Code Có <code>execlp()</code>:</strong><br>
+            Nếu lệnh <code>execlp()</code> thực thi <strong>THÀNH CÔNG</strong>, toàn bộ mã lệnh nằm <strong>BÊN DƯỚI</strong> lệnh <code>execlp()</code> trong file C sẽ <strong>KHÔNG BAO GIỜ ĐƯỢC THỰC THI!</strong>
+          </div>
+        </div>
+
+        <!-- 1.4 POSIX Threads & Windows API -->
+        <div class="formula-card">
+          <div class="formula-title">1.4 Đa Luồng POSIX Threads &amp; Windows API (Chương 4)</div>
+          <p>Đơn vị cấp phát CPU trong các HĐH hiện đại là <strong>Luồng (Thread)</strong> thay vì Tiến trình.</p>
+          <div class="step-box">
+            <strong>📋 Các hàm pthread cốt lõi:</strong>
+            <ul style="margin-top: 0.25rem; padding-left: 1.2rem;">
+              <li><code>pthread_create(&amp;tid, NULL, runner, arg);</code> &rarr; Tạo luồng mới.</li>
+              <li><code>pthread_join(tid, NULL);</code> &rarr; Luồng chính chờ luồng con kết thúc.</li>
+              <li><code>pthread_exit(0);</code> &rarr; Kết thúc luồng hiện tại.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 1.5 Semaphore & Chỉ thị phần cứng -->
+        <div class="formula-card">
+          <div class="formula-title">1.5 Chỉ Thị Đồng Bộ Hóa (Chương 5)</div>
+          <p><strong>1. Thao tác nguyên tử Semaphore $S$:</strong></p>
+          <div class="code-block">// Thao tác wait(S) / P(S):
+void wait(semaphore S) {
+    S.value--;
+    if (S.value < 0) {
+        add this process to S.L;
+        block(); // Tạm dừng không chờ bận
+    }
+}
+
+// Thao tác signal(S) / V(S):
+void signal(semaphore S) {
+    S.value++;
+    if (S.value <= 0) {
+        remove a process P from S.L;
+        wakeup(P); // Đánh thức tiến trình chờ
+    }
+}</div>
+          <p style="font-size: 0.88rem; color: var(--text-light);"><em>Ghi chú: Nếu $S.value < 0$, giá trị tuyệt đối $|S.value|$ chính là số tiến trình đang bị khóa trong hàng đợi $S.L$.</em></p>
+
+          <p style="font-weight: 600; margin-top: 1rem;">2. Chỉ thị nguyên tử phần cứng (Hardware Atomic Instructions):</p>
+          <div class="code-block">// Chỉ thị test_and_set
+boolean test_and_set(boolean *target) {
+    boolean rv = *target;
+    *target = true;
+    return rv;
+}
+
+// Chỉ thị compare_and_swap / swap
+boolean compare_and_swap(boolean *target, boolean expected, boolean new_val) {
+    boolean temp = *target;
+    if (*target == expected) *target = new_val;
+    return temp;
+}</div>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: CPU SCHEDULING FORMULAS -->
+      <section id="sec-cpu-sched" style="margin-top: 3rem;">
+        <h2>PHẦN 2. CÔNG THỨC &amp; THUẬT TOÁN ĐỊNH THỜI CPU (CHƯƠNG 4)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">2.1 Các Chỉ Số Đánh Giá Định Thời CPU</div>
+          <p>Cho các tiến trình $P_i$ có Thời điểm đến $A_i$ (Arrival Time) và Thời gian CPU burst $B_i$:</p>
+          
+          <ul style="line-height: 1.7; padding-left: 1.2rem;">
+            <li><strong>Thời điểm hoàn thành $C_i$ (Completion Time):</strong> Thời điểm tiến trình $P_i$ kết thúc hoàn toàn.</li>
+            <li><strong>Thời gian xoay vòng $T_{\text{tat}}^i$ (Turnaround Time):</strong>
+              <div class="math-block">$$T_{\text{tat}}^i = C_i - A_i$$</div>
+            </li>
+            <li><strong>Thời gian chờ $T_w^i$ (Waiting Time):</strong>
+              <div class="math-block">$$T_w^i = T_{\text{tat}}^i - B_i$$</div>
+            </li>
+            <li><strong>Thời gian phản hồi $T_{\text{res}}^i$ (Response Time):</strong>
+              <div class="math-block">$$T_{\text{res}}^i = T_{\text{first\_exec}}^i - A_i$$</div>
+            </li>
+            <li><strong>Thời gian chờ trung bình ($\bar{T}_w$) &amp; Xoay vòng trung bình ($\bar{T}_{\text{tat}}$):</strong>
+              <div class="math-block">$$\bar{T}_w = \frac{1}{N} \sum_{i=1}^{N} T_w^i, \quad \bar{T}_{\text{tat}} = \frac{1}{N} \sum_{i=1}^{N} T_{\text{tat}}^i$$</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2.2 Công Thức Trung Bình Mũ Dự Đoán CPU Burst (Chương 4 Slide 20)</div>
+          <p>Thuật toán SJF dự đoán thời lượng CPU burst tiếp theo $\tau_{n+1}$ thông qua lịch sử các lần trước:</p>
+          <div class="math-block">
+            $$\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$$
+          </div>
+          <ul style="line-height: 1.6; padding-left: 1.2rem;">
+            <li>$t_n$: Thời gian sử dụng CPU thực tế ở lần thứ $n$.</li>
+            <li>$\tau_n$: Thời gian ước lượng ở lần thứ $n$.</li>
+            <li>$\alpha \in [0, 1]$: Hệ số trung bình mũ điều chỉnh trọng số lịch sử (thường chọn $\alpha = 1/2$).</li>
+            <li>Trường hợp đặc biệt: $\alpha = 0 \implies \tau_{n+1} = \tau_n$ (bỏ qua thực tế); $\alpha = 1 \implies \tau_{n+1} = t_n$ (chỉ tính thực tế gần nhất).</li>
+          </ul>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2.3 Mô Hình Hàng Đợi - Công Thức Little (Chương 4 Slide 43)</div>
+          <p>Tính toán chiều dài hàng đợi trung bình trong mô hình hàng đợi định thời:</p>
+          <div class="math-block">
+            $$n = \lambda \times W$$
+          </div>
+          <ul style="line-height: 1.6; padding-left: 1.2rem;">
+            <li>$n$: Chiều dài hàng đợi trung bình (số tiến trình).</li>
+            <li>$\lambda$: Tỷ lệ đến trung bình của các tiến trình mới (tiến trình/giây).</li>
+            <li>$W$: Thời gian chờ trung bình trong hàng đợi (giây).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BANKER & DEADLOCK -->
+      <section id="sec-banker" style="margin-top: 3rem;">
+        <h2>PHẦN 3. BẾ TẮC &amp; THUẬT TOÁN BANKER (CHƯƠNG 6)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">3.1 Ma Trận Nhu Cầu Còn Lại $Need$</div>
+          <p>Cho $n$ tiến trình $P_0..P_{n-1}$ và $m$ loại tài nguyên $R_1..R_m$:</p>
+          <div class="math-block">$$Need[i][j] = Max[i][j] - Allocation[i][j]$$</div>
+
+          <div class="step-box">
+            <strong>📋 Quy Trình Kiểm Tra Trạng Thái An Toàn (Safety Algorithm - Ch6 Slide 29):</strong>
+            <ol style="margin-top: 0.25rem; padding-left: 1.2rem; line-height: 1.7;">
+              <li>Khởi tạo: $Work = Available$ (vector $1 \times m$), $Finish[i] = false$ với mọi $i = 0..n-1$.</li>
+              <li>Tìm $i$ thỏa mãn 2 điều kiện:
+                <br>a) $Finish[i] == false$
+                <br>b) $Need[i] \le Work$ (tức $Need[i][j] \le Work[j]$ với mọi $j=1..m$)
+                <br><em>Nếu không tìm thấy $i$ thỏa mãn $\rightarrow$ Chuyển sang Bước 4.</em>
+              </li>
+              <li>Cập nhật giả định khi $P_i$ hoàn thành:
+                <div class="math-block">$$Work = Work + Allocation[i]$$</div>
+                <div class="math-block">$$Finish[i] = true$$</div>
+                Quay lại Bước 2.
+              </li>
+              <li>Nếu $Finish[i] == true$ với mọi $i \rightarrow$ Hệ thống ở **Trạng Thái An Toàn**. Chuỗi an toàn: $\langle P_{s1}, P_{s2}, ..., P_{sn} \rangle$. Ngược lại $\rightarrow$ **Trạng Thái Không An Toàn (Unsafe)**.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">3.2 Thuật Toán Yêu Cầu Tài Nguyên (Resource-Request Algorithm - Ch6 Slide 30-31)</div>
+          <p>Khi tiến trình $P_i$ gửi yêu cầu $Request_i$:</p>
+          <ol style="line-height: 1.6; padding-left: 1.2rem;">
+            <li>Nếu $Request_i \le Need_i \rightarrow$ Sang Bước 2. Ngược lại báo lỗi vì vượt quá khai báo tối đa.</li>
+            <li>Nếu $Request_i \le Available \rightarrow$ Sang Bước 3. Ngược lại $P_i$ phải chờ do chưa đủ tài nguyên rảnh.</li>
+            <li>Cập nhật giả định:
+              <div class="math-block">$$Available = Available - Request_i$$</div>
+              <div class="math-block">$$Allocation[i] = Allocation[i] + Request_i$$</div>
+              <div class="math-block">$$Need[i] = Need[i] - Request_i$$</div>
+            </li>
+            <li>Chạy Safety Algorithm. Nếu An toàn $\rightarrow$ Cấp phát thật. Nếu Không an toàn $\rightarrow$ Khôi phục lại trạng thái cũ, $P_i$ phải chờ.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- PHẦN 4: PAGING & MMU -->
+      <section id="sec-paging" style="margin-top: 3rem;">
+        <h2>PHẦN 4. QUẢN LÝ BỘ NHỚ &amp; DỊCH ĐỊA CHỈ PHÂN TRANG (CHƯƠNG 7)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">4.1 Công Thức Dịch Địa Chỉ Phân Trang (Paging)</div>
+          <p>Cho Kích thước trang / Frame $P = 2^n$ bytes (ví dụ $P = 4KB = 4096$ bytes $\rightarrow n = 12$ bits offset).</p>
+          
+          <ul style="line-height: 1.7; padding-left: 1.2rem;">
+            <li><strong>Số bit dành cho Offset $d$:</strong> $n = \log_2(P)$.</li>
+            <li><strong>Tách Địa chỉ Logic $A$ thành cặp $(p, d)$:</strong>
+              <div class="math-block">$$p = \lfloor A / P \rfloor \quad (\text{Số trang - Page number})$$</div>
+              <div class="math-block">$$d = A \pmod P \quad (\text{Độ lệch - Offset})$$</div>
+            </li>
+            <li><strong>Tra Bảng Trang (Page Table):</strong> Tìm $f = PageTable[p]$ (Số khung trang - Frame number).</li>
+            <li><strong>Tính Địa chỉ Vật lý $A_{\text{physical}}$ trong RAM:</strong>
+              <div class="math-block">$$A_{\text{physical}} = (f \times P) + d$$</div>
+            </li>
+          </ul>
+
+          <div class="exam-tip-box">
+            <strong>📐 Ví dụ tính toán (Ch7 Slide 29):</strong><br>
+            Kích thước trang $P = 4$ bytes. Bộ nhớ vật lý $32$ bytes ($8$ khung).<br>
+            Địa chỉ Logic $A = 3 \rightarrow p = \lfloor 3 / 4 \rfloor = 0$, $d = 3 \pmod 4 = 3$.<br>
+            Tra bảng trang: $PageTable[0] = 5 \rightarrow$ Địa chỉ vật lý $A_{\text{physical}} = (5 \times 4) + 3 = 23$.
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">4.2 Thời Gian Truy Xuất Hiệu Dụng TLB (Effective Access Time - EAT - Ch7 Slide 35)</div>
+          <p>Cho $\varepsilon$ là thời gian tra bộ đệm TLB, $m$ là thời gian truy xuất RAM, và $\alpha$ là Tỷ lệ tìm thấy trong TLB (Hit ratio):</p>
+          
+          <div class="math-block">
+            $$EAT = (\varepsilon + m)\alpha + (\varepsilon + 2m)(1 - \alpha) = (2 - \alpha)m + \varepsilon$$
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-light);">
+            <em>Ví dụ đề bài: $\varepsilon = 20\text{ns}$, $\alpha = 0.8$, $m = 100\text{ns} \implies EAT = (2 - 0.8) \times 100 + 20 = 140\text{ns}$.</em>
+          </p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">4.3 Địa Chỉ Phân Đoạn (Segmentation - Ch7 Slide 55-56)</div>
+          <p>Địa chỉ logic gồm cặp $(s, d)$ với $s$ là số phân đoạn, $d$ là độ dời offset.</p>
+          <ul style="line-height: 1.6; padding-left: 1.2rem;">
+            <li>Kiểm tra tính hợp lệ: Nếu $d \ge \text{limit}[s] \rightarrow$ Báo lỗi **Segment Fault Trap**.</li>
+            <li>Nếu hợp lệ: $\text{Địa chỉ vật lý} = \text{base}[s] + d$.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 5: EXAM SUMMARY TABLE -->
+      <section id="sec-exam-table" style="margin-top: 3.5rem;">
+        <div style="background: var(--bg-card); border: 2px solid var(--secondary-color); border-radius: 10px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);">
+          <h2 style="color: var(--secondary-color); font-size: 1.35rem; margin-top: 0; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            ⭐ BẢNG TÓM TẮT CÔNG THỨC &amp; QUY TẮC GIẢI NHANH 7 CHƯƠNG
+          </h2>
+          <p style="color: var(--text-light); margin-bottom: 1.25rem;">Tóm tắt nhanh toàn bộ công thức và nguyên tắc tính toán trong phạm vi 7 chương môn học:</p>
+
+          <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: var(--highlight-bg);">
+                <th style="width: 45%; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--border-color);">Dạng bài tập / Nguyên lý</th>
+                <th style="width: 55%; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--border-color);">Công thức / Quy tắc tính toán chuẩn xác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Số tiến trình tạo ra bởi $k$ lệnh <code>fork()</code></td>
+                <td>Tổng số tiến trình = $2^k$. Số tiến trình con mới = $2^k - 1$.</td>
+              </tr>
+              <tr>
+                <td>Giá trị trả về của <code>fork()</code></td>
+                <td>Con: <code>pid == 0</code>. Cha: <code>pid > 0</code> (chứa PID con). Lỗi: <code>pid < 0</code>.</td>
+              </tr>
+              <tr>
+                <td>Mã lệnh bên dưới <code>execlp()</code></td>
+                <td>KHÔNG BAO GIỜ chạy nếu <code>execlp()</code> nạp chương trình thành công.</td>
+              </tr>
+              <tr>
+                <td>Chỉ số Định thời CPU ($T_{\text{tat}}$, $T_w$, $T_{\text{res}}$)</td>
+                <td>$T_{\text{tat}} = C_i - A_i$ &bull; $T_w = T_{\text{tat}} - B_i$ &bull; $T_{\text{res}} = T_{\text{first\_exec}} - A_i$.</td>
+              </tr>
+              <tr>
+                <td>Dự đoán CPU Burst tiếp theo trong SJF</td>
+                <td>$\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$ với $\alpha \in [0, 1]$.</td>
+              </tr>
+              <tr>
+                <td>Mô hình hàng đợi Little</td>
+                <td>$n = \lambda \times W$ ($n$: số tiến trình hàng đợi, $\lambda$: tỷ lệ đến, $W$: thời gian chờ).</td>
+              </tr>
+              <tr>
+                <td>Bài toán Banker ($Need$ &amp; An toàn)</td>
+                <td>$Need[i][j] = Max[i][j] - Allocation[i][j]$. Cấp khi $Need_i \le Work$ và giữ trạng thái Safe.</td>
+              </tr>
+              <tr>
+                <td>Tách địa chỉ Phân trang $(p, d)$</td>
+                <td>Offset $d = \text{Logical} \pmod P$, Trang $p = \lfloor \text{Logical} / P \rfloor$. Địa chỉ RAM $= (f \times P) + d$.</td>
+              </tr>
+              <tr>
+                <td>Thời gian truy xuất hiệu dụng EAT (TLB)</td>
+                <td>$EAT = (\varepsilon + m)\alpha + (\varepsilon + 2m)(1-\alpha) = (2-\alpha)m + \varepsilon$.</td>
+              </tr>
+              <tr>
+                <td>Địa chỉ Phân đoạn $(s, d)$</td>
+                <td>Nếu $d < \text{limit}[s] \implies \text{RAM} = \text{base}[s] + d$. Nếu $d \ge \text{limit} \implies$ Segment Fault.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

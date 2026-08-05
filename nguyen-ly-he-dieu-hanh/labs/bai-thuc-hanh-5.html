@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thực hành 5: Quản lý Vào/Ra, Tập tin và Đổi hướng - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Custom styles for lab layout */
+    .cmd-output {
+      background-color: var(--highlight-bg);
+      border-left: 3px solid var(--secondary-color);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      color: var(--text-dark);
+    }
+    .cmd-input {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .solution-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .solution-title {
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Thực hành 5
+      </div>
+      <h1>BÀI THỰC HÀNH BUỔI 5 - QUẢN LÝ VÀO/RA, TẬP TIN VÀ ĐỔI HƯỚNG</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Nội dung thực hành: Cơ trúc cây hệ thống tập tin Unix/Linux, các loại tập tin, đường dẫn tuyệt đối/tương đối, phân quyền file/thư mục (chmod, chown, chgrp), quản lý user/group (/etc/passwd, /etc/group), đổi hướng các luồng vào/ra chuẩn (stdin, stdout, stderr), đường ống (Pipe |), lệnh tee và lời giải chi tiết 18 bài tập thực hành. (Theo Tài liệu Thực hành HĐH - ThS. Phan Thượng Cang &amp; ThS. Bùi Quốc Thái, Bộ môn HTMT&amp;TT &bull; ĐHCT).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1 & 2: Tổ chức tập tin Unix -->
+      <section id="sec-file-org">
+        <h2>1. Tổ Chức Hệ Thống Tập Tin Unix/Linux</h2>
+        
+        <h3>1.1 3 Kiểu tập tin cơ bản</h3>
+        <ul>
+          <li><strong>Tập tin bình thường (Regular file):</strong> Chứa dữ liệu dạng văn bản (ASCII/text) hoặc mã nhị phân (binary). Ký hiệu dạng <code>-</code>.</li>
+          <li><strong>Tập tin thư mục (Directory file):</strong> Chứa danh sách các tên file/thư mục con. Ký hiệu dạng <code>d</code>.</li>
+          <li><strong>Tập tin đặc biệt (Special/Device file):</strong> Đại diện cho các thiết bị phần cứng ngoại vi hoặc cơ chế truyền tin (bàn phím input, màn hình/máy in output). Ký hiệu dạng <code>c</code> (character) hoặc <code>b</code> (block).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">1.2 Cấu trúc Cây hệ thống tập tin Linux</h3>
+        <p>Các tập tin của Unix được tổ chức theo cấu trúc cây phân cấp bắt đầu từ <strong>thư mục gốc (Root - <code>/</code>)</strong>:</p>
+
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Thư mục chuẩn</th>
+              <th>Chức năng &amp; Nội dung lưu trữ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/</code></td>
+              <td>Thư mục gốc (Root directory), chứa tất cả các thư mục khác</td>
+            </tr>
+            <tr>
+              <td><code>/bin</code></td>
+              <td>Chứa các file thực thi nhị phân (binary commands) cần cho khởi động &amp; chế độ đơn dùng (ls, cp, cat, bash...)</td>
+            </tr>
+            <tr>
+              <td><code>/boot</code></td>
+              <td>Chứa Kernel image, grub và các file cấu hình khởi động hệ thống</td>
+            </tr>
+            <tr>
+              <td><code>/dev</code></td>
+              <td>Chứa các file thiết bị phần cứng đặc biệt (sda, null, tty, zero...)</td>
+            </tr>
+            <tr>
+              <td><code>/etc</code></td>
+              <td>Chứa tất cả các file cấu hình hệ thống (passwd, group, shadow, login.defs...)</td>
+            </tr>
+            <tr>
+              <td><code>/home</code></td>
+              <td>Chứa thư mục cá nhân (home directory) của các người dùng thường</td>
+            </tr>
+            <tr>
+              <td><code>/lib</code></td>
+              <td>Chứa các thư viện chia sẻ (shared libraries) cần cho các lệnh trong /bin và /sbin</td>
+            </tr>
+            <tr>
+              <td><code>/mnt</code></td>
+              <td>Điểm gá lắp (mount point) tạm thời cho các thiết bị lưu trữ (USB, HDD ngoài...)</td>
+            </tr>
+            <tr>
+              <td><code>/proc</code></td>
+              <td>Hệ thống tập tin ảo (virtual filesystem) lưu trữ thông tin về Kernel và tiến trình đang chạy</td>
+            </tr>
+            <tr>
+              <td><code>/sbin</code></td>
+              <td>Chứa các lệnh thực thi dành riêng cho quản trị hệ thống (System Binaries: fdisk, reboot, ifconfig...)</td>
+            </tr>
+            <tr>
+              <td><code>/tmp</code></td>
+              <td>Chứa các tập tin tạm thời do hệ thống hoặc ứng dụng tạo ra</td>
+            </tr>
+            <tr>
+              <td><code>/usr</code></td>
+              <td>Chứa các chương trình, thư viện, tài liệu dùng chung cho người dùng (usr/bin, usr/lib, usr/share...)</td>
+            </tr>
+            <tr>
+              <td><code>/var</code></td>
+              <td>Chứa dữ liệu thường xuyên biến đổi (system logs /var/log, mail /var/spool/mail, print spool...)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 3 & 4: Đường dẫn & Di chuyển -->
+      <section id="sec-path-cd" style="margin-top: 2rem;">
+        <h2>2. Đường Dẫn &amp; Thao Tác Di Chuyển Thư Mục</h2>
+        
+        <h3>2.1 Đường dẫn tuyệt đối vs Tương đối</h3>
+        <ul>
+          <li><strong>Đường dẫn tuyệt đối (Absolute Path):</strong> Chỉ rõ vị trí bắt đầu từ gốc <code>/</code> (ví dụ: <code>/home/user1/notes</code>). Luôn bắt đầu bằng <code>/</code>.</li>
+          <li><strong>Đường dẫn tương đối (Relative Path):</strong> Bắt đầu tính từ thư mục làm việc hiện hành (ví dụ đứng tại <code>/home</code> thì gõ <code>user1/notes</code>).</li>
+        </ul>
+
+        <h3 style="margin-top: 1rem;">Ký hiệu đặc biệt trong đường dẫn:</h3>
+        <ul>
+          <li><code>.</code> : Thư mục hiện hành (current directory).</li>
+          <li><code>..</code> : Thư mục cha (parent directory).</li>
+          <li><code>~</code> : Thư mục home của người dùng đang đăng nhập (Home directory).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">2.2 Các lệnh di chuyển thư mục:</h3>
+        <div class="cmd-output"><span class="cmd-input">$ pwd</span>
+/home/user1
+
+<span class="cmd-input">$ cd /usr/bin</span>
+<span class="cmd-input">$ pwd</span>
+/usr/bin
+
+<span class="cmd-input">$ cd ..</span>
+<span class="cmd-input">$ pwd</span>
+/usr
+
+<span class="cmd-input">$ cd</span>
+<span class="cmd-input">$ pwd</span>
+/home/user1</div>
+      </section>
+
+      <!-- Section 5 & 6: Quyền & Người dùng / Nhóm -->
+      <section id="sec-permissions" style="margin-top: 2rem;">
+        <h2>3. Quyền Truy Cập &amp; Quản Lý Người Dùng / Nhóm</h2>
+        
+        <h3>3.1 Phân tích chi tiết một mục từ `ls -l`</h3>
+        <div class="cmd-output">-rwxrw-r-- 1 xyz staff 12 Mar 7 12:35 test</div>
+        <ul style="line-height: 1.6;">
+          <li><code>-</code> : Ký tự đầu tiên cho biết đây là <strong>file thường</strong> (nếu <code>d</code> là thư mục).</li>
+          <li><code>rwx</code> : Quyền của Owner (xyz) &rarr; Đọc (Read), Ghi (Write), Thực thi (Execute).</li>
+          <li><code>rw-</code> : Quyền của Group (staff) &rarr; Đọc, Ghi, không được Thực thi.</li>
+          <li><code>r--</code> : Quyền của Other (người khác) &rarr; Chỉ được Đọc.</li>
+          <li><code>1</code> : Số liên kết cứng (Hard links) trỏ đến file.</li>
+          <li><code>xyz</code> : Tên tài khoản sở hữu (Owner).</li>
+          <li><code>staff</code> : Tên nhóm sở hữu (Group).</li>
+          <li><code>12</code> : Kích thước tập tin (bytes).</li>
+          <li><code>Mar 7 12:35</code> : Thời điểm chỉnh sửa gần nhất.</li>
+          <li><code>test</code> : Tên tập tin.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">3.2 Quản lý Người dùng &amp; Nhóm hệ thống</h3>
+        <ul>
+          <li><strong>Thông tin User:</strong> Lưu tại file <code>/etc/passwd</code> (username, password, uid, gid, comment, home dir, default shell). Lệnh quản trị: <code>useradd</code>.</li>
+          <li><strong>Thông tin Group:</strong> Lưu tại file <code>/etc/group</code> (groupname, password, gid, members). Lệnh quản trị: <code>groupadd</code>.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.25rem;">Ý nghĩa quyền đối với Thư mục:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Quyền</th>
+              <th>Đối với Tập tin (File)</th>
+              <th>Đối với Thư mục (Directory)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>r</code> (Read)</td>
+              <td>Đọc nội dung tập tin</td>
+              <td>Xem/liệt kê danh sách các file trong thư mục (lệnh <code>ls</code>)</td>
+            </tr>
+            <tr>
+              <td><code>w</code> (Write)</td>
+              <td>Sửa đổi, ghi đè nội dung tập tin</td>
+              <td>Tạo mới, đổi tên hoặc xóa các tập tin bên trong thư mục</td>
+            </tr>
+            <tr>
+              <td><code>x</code> (Execute)</td>
+              <td>Thực thi tập tin như chương trình</td>
+              <td>Đi qua/truy cập vào thư mục (lệnh <code>cd</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 7: I/O Redirection & Pipe -->
+      <section id="sec-io-redirection" style="margin-top: 2rem;">
+        <h2>4. Vào/Ra Chuẩn &amp; Đổi Hướng (I/O Redirection &amp; Pipes)</h2>
+        
+        <h3>4.1 Các luồng Vào/Ra chuẩn (Standard I/O Streams)</h3>
+        <ul>
+          <li><strong>stdin (Standard Input - Descriptor 0):</strong> Đầu vào chuẩn (Mặc định: Bàn phím).</li>
+          <li><strong>stdout (Standard Output - Descriptor 1):</strong> Đầu ra chuẩn (Mặc định: Màn hình Console).</li>
+          <li><strong>stderr (Standard Error - Descriptor 2):</strong> Đầu ra lỗi chuẩn (Mặc định: Màn hình Console).</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Cú pháp Đổi hướng &amp; Đường ống (Pipes)</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp Đổi hướng</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+              <th>Ví dụ câu lệnh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lệnh > file</code></td>
+              <td>Đổi hướng stdout vào file (Ghi đè - Overwrite)</td>
+              <td><code>ls /bin > file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh >> file</code></td>
+              <td>Đổi hướng stdout vào file (Ghi nối tiếp - Append)</td>
+              <td><code>ls /bin >> file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh 2> file</code></td>
+              <td>Đổi hướng lỗi stderr vào file (Ghi đè)</td>
+              <td><code>ls /root 2> err.log</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh > file 2>&1</code></td>
+              <td>Đổi hướng cả stdout và stderr vào cùng 1 file</td>
+              <td><code>ls /root > out.log 2>&1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh 2> /dev/null</code></td>
+              <td>Hủy bỏ toàn bộ thông báo lỗi ra thiết bị null</td>
+              <td><code>find / -name "*.c" 2> /dev/null</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh < file</code></td>
+              <td>Đổi hướng đầu vào stdin lấy dữ liệu từ file</td>
+              <td><code>wc -l < file1</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh << STRING ... STRING</code></td>
+              <td>Here-Document: Đọc dữ liệu đến khi gặp nhãn STRING</td>
+              <td><code>cat > file1 << OK ... OK</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh1 | lệnh2</code></td>
+              <td>Đường ống (Pipe): Lấy stdout của lệnh1 làm stdin của lệnh2</td>
+              <td><code>ps -ef | grep bash</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh | tee file</code></td>
+              <td>Đổi hướng kép: Vừa in ra màn hình vừa ghi ra file</td>
+              <td><code>ps -ef | tee file_ps | grep root</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 18)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thư mục Home và Quyền trên Thư mục Home</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd ~ &amp;&amp; pwd</span>
+/home/user1
+<span class="cmd-input">$ ls -ld /home/user1</span>
+drwxr-xr-x 5 user1 user1 4096 Mar 7 10:00 /home/user1</div>
+          <p><strong>Mô tả:</strong> Thư mục Home của <code>user1</code> có đường dẫn <code>/home/user1</code>. Quyền <code>drwxr-xr-x</code> cho phép Owner (user1) có toàn quyền đọc/ghi/truy cập (`rwx`), Group và Other có quyền đọc và truy cập (`r-x`).</p>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Liệt kê các thư mục dưới gốc `/`</div>
+          <div class="cmd-output"><span class="cmd-input">$ ls -l /</span></div>
+          <p>Hiển thị các thư mục chuẩn <code>bin</code>, <code>boot</code>, <code>dev</code>, <code>etc</code>, <code>home</code>, <code>lib</code>, <code>mnt</code>, <code>proc</code>, <code>sbin</code>, <code>tmp</code>, <code>usr</code>, <code>var</code> với quyền sở hữu mặc định thuộc về người dùng <code>root</code>.</p>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Giải thích chi tiết mục từ thư mục</div>
+          <div class="cmd-output">drwxr-xr-- 2 abc users 1024 Mar 7 12:35 ddd</div>
+          <ul style="line-height: 1.6;">
+            <li><code>d</code>: Loại tập tin là **Thư mục (Directory)**.</li>
+            <li><code>rwx</code>: Chủ sở hữu (Owner <code>abc</code>) có quyền đọc, ghi, và truy cập thư mục.</li>
+            <li><code>r-x</code>: Nhóm sở hữu (Group <code>users</code>) có quyền đọc danh sách và truy cập, không được sửa/tạo/xóa file trong thư mục.</li>
+            <li><code>r--</code>: Những người dùng khác (Other) chỉ có quyền đọc tên thư mục.</li>
+            <li><code>2</code>: Số liên kết (Hard links).</li>
+            <li><code>abc</code>: Tên tài khoản Owner sở hữu.</li>
+            <li><code>users</code>: Tên Group sở hữu.</li>
+            <li><code>1024</code>: Kích thước thư mục (1024 bytes).</li>
+            <li><code>Mar 7 12:35</code>: Thời điểm chỉnh sửa gần nhất.</li>
+            <li><code>ddd</code>: Tên thư mục.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Thư mục chứa các file cấu hình hệ thống</div>
+          <p>Thư mục <strong><code>/etc</code></strong> chứa tất cả các tập tin cấu hình của hệ thống Linux.</p>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Hai thư mục chứa tập tin thư viện lệnh</div>
+          <p>Hai thư mục chứa các tập tin thư viện lệnh là <strong><code>/lib</code></strong> và <strong><code>/usr/lib</code></strong>.</p>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Phân biệt thư mục `/` và thư mục `/root`</div>
+          <ul>
+            <li><strong><code>/</code> (Thư mục Gốc - Root directory):</strong> Là thư mục cao nhất trong hệ thống tập tin Linux, chứa tất cả các thư mục con khác.</li>
+            <li><strong><code>/root</code>:</strong> Là thư mục Home riêng cá nhân của tài khoản quản trị tối cao (Superuser root).</li>
+          </ul>
+        </div>
+
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Xác định tên thư mục hiện hành qua chuỗi lệnh `cd`</div>
+          <ol style="line-height: 1.6;">
+            <li><code>cd ~</code> &rarr; Về thư mục Home (ví dụ: <code>/home/user1</code>).</li>
+            <li><code>cd .</code> &rarr; Vẫn ở thư mục hiện tại (<code>/home/user1</code>).</li>
+            <li><code>cd ..</code> &rarr; Lên thư mục cha (<code>/home</code>).</li>
+            <li><code>cd user1</code> &rarr; Chuyển vào thư mục tài khoản login (<code>/home/user1</code>).</li>
+          </ol>
+        </div>
+
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Di chuyển thư mục từ `/var/spool`</div>
+          <p>Giả sử đang ở <code>/var/spool</code>:</p>
+          <ul>
+            <li>Thực hiện <code>cd mail</code> &rarr; Thư mục mới là <strong><code>/var/spool/mail</code></strong>.</li>
+            <li>Sau đó thực hiện <code>cd ../../spool/mail</code> &rarr; Thư mục mới là <strong><code>/spool/mail</code></strong>.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Các câu hỏi thao tác thư mục trong `/var` và Home</div>
+          <ol style="line-height: 1.6;">
+            <li><code>cd /var &amp;&amp; ls -l | grep "^d" | wc -l</code> &rarr; Đếm số thư mục con dưới <code>/var</code>.</li>
+            <li><code>ls /sbin</code> &rarr; Xem bình thường nếu có quyền đọc, hoặc báo <code>Permission denied</code> nếu bị cấm.</li>
+            <li><code>mkdir /var/userxxx</code> &rarr; Báo lỗi <code>mkdir: cannot create directory '/var/userxxx': Permission denied</code> vì user thường không có quyền ghi vào <code>/var</code>.</li>
+            <li><code>cd ~ &amp;&amp; mkdir ddddd</code> &rarr; Tạo thành công vì user có toàn quyền ghi trong thư mục Home của mình.</li>
+            <li><code>cd ddddd &amp;&amp; echo "This is a message" > fffff &amp;&amp; cat fffff</code> &rarr; Tạo thành công file <code>fffff</code> chứa câu văn bản.</li>
+            <li>Đứng tại <code>/home/user1/ddddd</code> gõ <code>rmdir /home/user1/ddddd</code> &rarr; Báo lỗi <code>rmdir: failed to remove 'ddddd': Directory not empty</code> (thư mục không rỗng) và không thể xóa thư mục khi đang đứng bên trong.</li>
+          </ol>
+        </div>
+
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Liệt kê các tập tin ẩn trong thư mục Home</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd ~ &amp;&amp; ls -a</span>
+.  ..  .bash_history  .bash_logout  .bash_profile  .bashrc</div>
+          <p><strong>Tập tin ẩn:</strong> Là các tập tin có tên bắt đầu bằng dấu chấm <code>.</code> (ví dụ: <code>.bashrc</code>, <code>.bash_profile</code>).</p>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Hiển thị các dòng cuối tập tin với lệnh `tail`</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. 4 dòng cuối /etc/passwd:</span>
+$ tail -n 4 /etc/passwd
+
+<span class="cmd-input"># 2. 6 dòng cuối /etc/group:</span>
+$ tail -n 6 /etc/group
+
+<span class="cmd-input"># 3. 8 dòng cuối /etc/login.defs:</span>
+$ tail -n 8 /etc/login.defs
+
+<span class="cmd-input"># 4. 20 dòng cuối /etc/login.defs:</span>
+$ tail -n 20 /etc/login.defs</div>
+          <p><strong>Nhận xét:</strong> Tùy chọn <code>-n K</code> cho phép trích xuất chính xác $K$ dòng cuối cùng của tập tin văn bản.</p>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: 12 Thao tác quản lý tập tin &amp; thư mục nâng cao</div>
+          <div class="code-block"># 1. Tạo 7 file trong Home:
+touch one two three four five r1 r2 && ls -l
+
+# 2. Thử tạo 7 file trong /var (bị chối quyền Permission denied do không có quyền write):
+touch /var/one
+
+# 3. Sao chép .bash_profile thành bprofile:
+cp ~/.bash_profile bprofile && ls -l bprofile
+
+# 4. Tạo liên kết cứng / mềm lbprofile trỏ đến bprofile:
+ln -s bprofile lbprofile && ls -l lbprofile
+
+# 5. Chép 7 file sang /tmp:
+cp one two three four five r1 r2 /tmp/ && ls -l /tmp
+
+# 6. Chép 7 file sang /root (bị Permission denied do /root bảo vệ chỉ dành cho root):
+cp one two three four five r1 r2 /root/
+
+# 7. Chép /etc/passwd về Home:
+cp /etc/passwd ~/passwd && ls -l ~/passwd /etc/passwd
+# File passwd ở Home thuộc sở hữu người dùng hiện tại nên người dùng có quyền sửa/xóa!
+
+# 8. Tạo thư mục dir1, dir2 và thư mục con dir2a:
+mkdir -p dir1 dir2/dir2a && ls -ld dir1 dir2 dir2/dir2a
+
+# 9. Di chuyển file one vào dir1:
+mv one dir1/ && ls -l dir1/
+
+# 10. Chuyển tất cả file bắt đầu bằng 'f' vào dir2:
+mv f* dir2/ && ls -l dir2/
+
+# 11. Chuyển r1 và r2 vào dir2/dir2a không dùng wildcard (*,?):
+mv r1 r2 dir2/dir2a/ && ls -l dir2/dir2a/
+
+# 12. Xóa thư mục dir2a:
+rm -rf dir2/dir2a</div>
+        </div>
+
+        <!-- Bài 13 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 13: Quản lý Quyền thực thi và Phân quyền file (12 câu nhỏ)</div>
+          <div class="code-block"># 1 & 2. Tạo script hello và reply:
+echo 'echo "Hello"' > hello
+echo 'echo "How are you ?"' >> hello
+echo 'echo "Hello"' > reply
+echo 'echo "Fine. And you ?"' >> reply
+
+# 3 & 4. Xem quyền và chạy thử:
+ls -l hello reply
+./hello
+# Báo lỗi: Permission denied vì chưa có quyền thực thi (x)!
+
+# 5. Cấp quyền thực thi và chạy lại:
+chmod +x hello reply
+./hello
+./reply
+
+# 6. Bỏ quyền group và other:
+chmod go-rwx hello reply
+
+# 7. Cho phép group đọc và chạy:
+chmod g+rx hello reply
+
+# 8 & 9. Thay đổi người sở hữu (cần sudo):
+# sudo chown root hello
+
+# 10, 11 & 12. Điều kiện để user khác chạy file hello1:
+# Thư mục chứa file phải có quyền +x cho other/group, và file hello1 phải có quyền +r+x.
+# Nếu đổi tên hello1 thành rm và chạy lệnh rm -> script hello1 sẽ được gọi thay vì lệnh rm hệ thống nếu đường dẫn PATH ưu tiên thư mục hiện tại.</div>
+        </div>
+
+        <!-- Bài 14 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 14: Phân biệt các lệnh xem tập tin (cat, head, tail, more, less)</div>
+          <table class="op-table">
+            <thead>
+              <tr>
+                <th>Câu lệnh</th>
+                <th>Đặc điểm &amp; Chức năng</th>
+                <th>Ví dụ sử dụng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>cat</code></td>
+                <td>In toàn bộ nội dung file ra màn hình một lượt</td>
+                <td><code>cat /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>head</code></td>
+                <td>Chỉ in $N$ dòng đầu tiên của file (mặc định 10 dòng)</td>
+                <td><code>head -n 5 /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>tail</code></td>
+                <td>Chỉ in $N$ dòng cuối cùng của file (mặc định 10 dòng)</td>
+                <td><code>tail -n 5 /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>more</code></td>
+                <td>Xem file phân trang theo chiều cuộn xuống (Space để qua trang)</td>
+                <td><code>more /etc/passwd</code></td>
+              </tr>
+              <tr>
+                <td><code>less</code></td>
+                <td>Xem file phân trang nâng cao (cho phép cuộn lên/xuống, tìm kiếm <code>/</code>)</td>
+                <td><code>less /etc/passwd</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bài 15 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 15: Các ví dụ ứng dụng lệnh `find`</div>
+          <div class="code-block"># 1. Tìm tất cả các file có đuôi .html:
+find / -name "*.html" 2>/dev/null
+
+# 2. Tìm tất cả các file thuộc sở hữu của root:
+find /home -user root
+
+# 3. Tìm thư mục có tên lib trong /usr:
+find /usr -type d -name "lib"
+
+# 4. Lệnh find phát sinh lỗi Permission denied (khi tìm trong thư mục bảo vệ của hệ thống):
+find /root -name "*.txt"
+# Giải thích: Người dùng thường không có quyền đọc (r) hoặc truy cập (x) vào /root!
+
+# 5. Tìm tất cả file bị sửa đổi trong vòng 24 giờ qua:
+find ~ -mtime -1
+
+# 6. Liệt kê tất cả thư mục rỗng:
+find ~ -type d -empty</div>
+        </div>
+
+        <!-- Bài 16 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 16: Các ví dụ ứng dụng lệnh `grep`</div>
+          <div class="code-block"># 1. Hiển thị số dòng và các dòng chứa chuỗi 'root' trong /etc/passwd:
+grep -n "root" /etc/passwd
+
+# 2. Hiển thị các dòng KHÔNG chứa chuỗi 'root' trong /etc/passwd:
+grep -v "root" /etc/passwd
+
+# 3. Liệt kê các file trong /etc/ chứa chuỗi 'echo':
+grep -l "echo" /etc/* 2>/dev/null
+
+# 4. Hiển thị các dòng trong /etc/login.defs KHÔNG phải dòng chú thích (#):
+grep -v "^#" /etc/login.defs | grep -v "^$"
+
+# 5. Hiển thị danh sách user có shell đăng nhập là /bin/bash:
+grep "/bin/bash" /etc/passwd | cut -d: -f1</div>
+        </div>
+
+        <!-- Bài 17 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 17: Thực hành Đổi Hướng I/O &amp; Đường Ống Pipe (9 câu)</div>
+          <div class="code-block"># 1. Lưu danh sách thư mục con vào file one:
+ls -l | grep "^d" > one && cat one
+
+# 2. Hiển thị danh sách người dùng đăng nhập và lưu vào users:
+who | tee users
+
+# 3. Lưu danh sách tiến trình vào cuối file users:
+ps -ef >> users
+
+# 4. Xem nội dung /etc theo từng trang:
+ls -l /etc | more
+
+# 5. Đếm số byte, số từ và số dòng trong /etc/passwd:
+wc /etc/passwd
+
+# 6. Sắp xếp nội dung /etc/group:
+sort /etc/group
+
+# 7. Hiển thị nội dung /var/spool/mail sắp xếp theo kích thước:
+ls -lS /var/spool/mail 2>/dev/null
+
+# 8. Liệt kê các dịch vụ dùng giao thức tcp trong /etc/services:
+grep "tcp" /etc/services | more
+
+# 9. Nhập danh sách họ tên sinh viên từ bàn phím và lưu sắp xếp vào file students:
+sort > students <<EOF
+Nguyen Van A
+Tran Thi B
+Le Van C
+EOF
+cat students</div>
+        </div>
+
+        <!-- Bài 18 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 18: Giải thích Pipeline kết quả lệnh `sort`, `grep`, `wc`, `head`</div>
+          <p>Tạo file <code>commands</code> trong thư mục Home:</p>
+          <div class="cmd-output">cal     /usr/bin    9416
+date    /bin        2860
+who     /usr/bin    8692
+cat     /bin        18056
+lpd     /usr/sbin   42012</div>
+
+          <ol style="line-height: 1.7;">
+            <li><code>sort -r commands | head -1</code> &rarr; Sắp xếp các dòng trong file <code>commands</code> theo thứ tự ngược bảng chữ cái (giảm dần) và lấy dòng đầu tiên lớn nhất (dòng <code>who...</code>).</li>
+            <li><code>grep ^c commands | wc -l</code> &rarr; Lọc các dòng bắt đầu bằng chữ 'c' (gồm <code>cal</code> và <code>cat</code>), sau đó đếm số dòng thu được $\rightarrow$ Kết quả in ra là <code>2</code>.</li>
+            <li><code>grep at commands | sort</code> &rarr; Lọc các dòng chứa chuỗi 'at' (gồm <code>date</code> và <code>cat</code>), sau đó sắp xếp theo thứ tự bảng chữ cái $\rightarrow$ In ra dòng <code>cat</code> trước, <code>date</code> sau.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thực hành 4: Quản lý tiến trình, Tín hiệu và Đồng bộ - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false } ] });"></script>
+
+  <style>
+    /* Custom styles for lab layout */
+    .cmd-output {
+      background-color: var(--highlight-bg);
+      border-left: 3px solid var(--secondary-color);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      color: var(--text-dark);
+    }
+    .cmd-input {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .solution-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .solution-title {
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Thực hành 4
+      </div>
+      <h1>BÀI THỰC HÀNH BUỔI 4 - QUẢN LÝ TIẾN TRÌNH, TÍN HIỆU VÀ ĐỒNG BỘ</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Nội dung thực hành: Cơ chế tạo và quản lý tiến trình trong Shell; các câu lệnh <code>ps</code>, <code>top</code>, <code>kill</code>, <code>jobs</code>, <code>bg</code>, <code>fg</code>, <code>nohup</code>; quản lý tiến trình chạy ngầm (Background); bắt và xử lý Tín hiệu (Signals) bằng lệnh <code>trap</code> và lời giải 12 bài tập thực hành. (Theo Tài liệu Thực hành HĐH - ThS. Phan Thượng Cang &amp; ThS. Bùi Quốc Thái, Bộ môn HTMT&amp;TT &bull; ĐHCT).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <!-- Section 1: Mục đích & Tạo tiến trình -->
+      <section id="sec-proc-intro">
+        <h2>1. Tiến Trình Và Cách Thức Thực Hiện Tiến Trình</h2>
+        
+        <h3>1.1 Mục đích của Shell đối với Tiến trình</h3>
+        <p>Shell là một chương trình thông dịch lệnh hoạt động theo chu trình vòng lặp:</p>
+        <div class="cmd-output">Hiển thị dấu nhắc ($)  --->  Đọc lệnh  --->  Tạo tiến trình  --->  Đợi tiến trình kết thúc  --->  Hiển thị dấu nhắc ($)</div>
+
+        <p>Khi chạy một <code>shell_script</code>, chính Shell sẽ phát sinh và quản lý tất cả các tiến trình con cần thiết để thực hiện công việc được mô tả trong file script.</p>
+
+        <h3 style="margin-top: 1.5rem;">1.2 Phân loại và Cây Tiến trình</h3>
+        <p>Tiến trình được hiểu là việc thực thi một chương trình trong một môi trường hệ thống. Phân thành 2 loại:</p>
+        <ul>
+          <li><strong>Tiến trình hệ thống:</strong> Không gắn với bất kỳ terminal nào, được tạo ra khi khởi động OS hoặc bởi daemon do người quản trị đặt.</li>
+          <li><strong>Tiến trình người dùng:</strong> Được tạo ra bởi người dùng trong phiên làm việc.</li>
+        </ul>
+        <p>
+          Các tiến trình được tổ chức dưới dạng <strong>Cây tiến trình (Process Tree)</strong>: <code>Tiến trình cha &rarr; Tiến trình con</code>. Tiến trình <code>init</code> (PID 1) là tiến trình cha gốc của tất cả các tiến trình Shell khi đăng nhập.
+        </p>
+
+        <p style="font-weight: 600; margin-top: 1rem;">Cách cấp quyền và thực hiện một shell_script:</p>
+        <div class="cmd-output"><span class="cmd-input">$ chmod +x proc</span>
+<span class="cmd-input">$ ./proc</span>
+# Hoặc chạy trực tiếp với sh:
+<span class="cmd-input">$ sh proc</span></div>
+      </section>
+
+      <!-- Section 2: Liệt kê tiến trình ps -->
+      <section id="sec-ps" style="margin-top: 2rem;">
+        <h2>2. Liệt Kê Các Tiến Trình (`ps`)</h2>
+        <p>Lệnh <code>ps</code> (Process Status) hiển thị danh sách các tiến trình đang hoạt động trong hệ thống:</p>
+        <div class="cmd-output"><span class="cmd-input">$ ps</span>
+  PID TTY          TIME CMD
+ 3884 pts/1    00:00:00 bash
+ 3955 pts/2    00:00:00 more
+ 3956 pts/5    00:00:05 sqlplus</div>
+
+        <h3 style="margin-top: 1.25rem;">Ý nghĩa các thông số trong lệnh `ps`:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cột thông số</th>
+              <th>Ý nghĩa chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>PID</code></td>
+              <td>Số định danh tiến trình (Process Identity Number)</td>
+            </tr>
+            <tr>
+              <td><code>PPID</code></td>
+              <td>Số định danh tiến trình cha (Parent Process Identity)</td>
+            </tr>
+            <tr>
+              <td><code>UID</code></td>
+              <td>ID người sở hữu tiến trình (User ID)</td>
+            </tr>
+            <tr>
+              <td><code>TTY</code></td>
+              <td>Terminal đang điều khiển tiến trình</td>
+            </tr>
+            <tr>
+              <td><code>TIME</code></td>
+              <td>Thời gian tích lũy CPU đã sử dụng bởi tiến trình (Cumulative CPU time)</td>
+            </tr>
+            <tr>
+              <td><code>STIME</code></td>
+              <td>Thời điểm tiến trình được khởi chạy (Start time)</td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td>Chỉ số phần trăm sử dụng vi xử lý CPU phục vụ lập lịch</td>
+            </tr>
+            <tr>
+              <td><code>CMD / COMMAND</code></td>
+              <td>Tên dòng lệnh sinh ra tiến trình đó</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">Các tùy chọn phổ biến của lệnh `ps`:</h3>
+        <ul>
+          <li><code>ps a</code>: Hiển thị tất cả các tiến trình của mọi người dùng (all users).</li>
+          <li><code>ps u</code>: Hiển thị chi tiết theo định dạng người dùng (User format: kèm UID, %CPU, %MEM, STIME).</li>
+          <li><code>ps x</code>: Hiển thị cả các tiến trình không gắn kết với terminal nào (daemons).</li>
+          <li><code>ps aux</code>: Kết hợp 3 tùy chọn trên &rarr; Liệt kê toàn bộ tiến trình hệ thống.</li>
+          <li><code>ps -ef</code> / <code>ps -ag</code>: Liệt kê chi tiết đầy đủ thông tin cha-con.</li>
+        </ul>
+      </section>
+
+      <!-- Section 3: Bảng các lệnh quản lý tiến trình -->
+      <section id="sec-commands" style="margin-top: 2rem;">
+        <h2>3. Bảng Tổng Hợp Các Lệnh Quản Lý Tiến Trình</h2>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+              <th>Ví dụ câu lệnh minh họa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ps</code></td>
+              <td>Hiển thị các tiến trình đang chạy thuộc terminal hiện tại</td>
+              <td><code>$ ps</code></td>
+            </tr>
+            <tr>
+              <td><code>ps -ag</code> / <code>ps -ef</code></td>
+              <td>Hiển thị đầy đủ thông tin tất cả tiến trình hệ thống</td>
+              <td><code>$ ps -ef</code></td>
+            </tr>
+            <tr>
+              <td><code>ps aux</code></td>
+              <td>Hiển thị các tiến trình cùng với người dùng tạo ra</td>
+              <td><code>$ ps aux</code></td>
+            </tr>
+            <tr>
+              <td><code>kill {PID}</code></td>
+              <td>Gửi tín hiệu dừng tiến trình PID (mặc định Signal 15)</td>
+              <td><code>$ kill 1012</code></td>
+            </tr>
+            <tr>
+              <td><code>killall {name}</code></td>
+              <td>Dừng tất cả các tiến trình có cùng tên <code>name</code></td>
+              <td><code>$ killall httpd</code></td>
+            </tr>
+            <tr>
+              <td><code>kill 0</code></td>
+              <td>Dừng tất cả tiến trình trong cùng nhóm ngoại trừ Shell</td>
+              <td><code>$ kill 0</code></td>
+            </tr>
+            <tr>
+              <td><code>lệnh &amp;</code></td>
+              <td>Cho tiến trình chạy ngầm (Background). PID ngầm lưu ở <code>$!</code></td>
+              <td><code>$ ls / -R | wc -l &amp;</code></td>
+            </tr>
+            <tr>
+              <td><code>free</code></td>
+              <td>Thống kê chi tiết việc sử dụng bộ nhớ RAM và Swap</td>
+              <td><code>$ free -m</code></td>
+            </tr>
+            <tr>
+              <td><code>pstree</code></td>
+              <td>Hiển thị cây hệ thống các tiến trình dạng nhánh sơ đồ</td>
+              <td><code>$ pstree</code></td>
+            </tr>
+            <tr>
+              <td><code>[Ctrl + Z]</code></td>
+              <td>Làm treo (tạm ngưng - STOP) tiến trình đang chạy foreground</td>
+              <td>Nhấn tổ hợp phím <code>[Ctrl + Z]</code></td>
+            </tr>
+            <tr>
+              <td><code>bg</code></td>
+              <td>Đưa tiến trình bị tạm ngưng sang chạy tiếp ngầm (Background)</td>
+              <td><code>$ bg %1</code></td>
+            </tr>
+            <tr>
+              <td><code>fg</code></td>
+              <td>Đưa tiến trình đang chạy ngầm lên chạy trên (Foreground)</td>
+              <td><code>$ fg %1</code></td>
+            </tr>
+            <tr>
+              <td><code>jobs</code></td>
+              <td>Liệt kê danh sách các tiến trình/công việc đang chạy ngầm</td>
+              <td><code>$ jobs -l</code></td>
+            </tr>
+            <tr>
+              <td><code>top</code></td>
+              <td>Hiển thị theo thời gian thực (real-time) tài nguyên CPU, RAM, tiến trình</td>
+              <td><code>$ top</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 4: Tiến trình ngầm Background & set -->
+      <section id="sec-background" style="margin-top: 2rem;">
+        <h2>4. Quản Lý Tiến Trình Chạy Ngầm (Background) &amp; Tùy Chọn `set`</h2>
+        
+        <h3>4.1 Cơ chế quản lý Tiến trình chạy ngầm</h3>
+        <ul>
+          <li><strong>Tạo tiến trình chạy ngầm:</strong> Thêm ký tự <code>&amp;</code> vào cuối câu lệnh (Ví dụ: <code>find / -name "*.txt" &amp;</code>).</li>
+          <li><strong>Hiển thị tiến trình ngầm:</strong> <code>jobs -l</code> (hiển thị kèm theo PID).</li>
+          <li><strong>Chạy bất tử với `nohup`:</strong> <code>nohup lệnh &amp;</code> giúp tiến trình không bị dừng khi người dùng ngắt kết nối terminal. Toàn bộ kết quả in ra stdout/stderr sẽ được ghi tự động vào file <code>nohup.out</code>.</li>
+          <li><strong>Đợi tiến trình ngầm kết thúc:</strong> <code>wait PID</code>.</li>
+          <li><strong>Hủy tiến trình ngầm:</strong>
+            <br>- <code>kill PID</code> (phát tín hiệu 15 SIGTERM mặc định).
+            <br>- <code>kill -9 PID</code> (phát tín hiệu 9 SIGKILL hủy cưỡng bức).
+            <br>- <code>kill %n</code> (hủy tiến trình theo số thứ tự Job number <code>n</code> trong danh sách <code>jobs</code>).
+          </li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Thiết lập cách thức chạy Shell Script bằng lệnh `set`</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Ý nghĩa &amp; Chức năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>set -x</code> / <code>sh -x proc</code></td>
+              <td>Hiển thị từng dòng lệnh <strong>sau khi đã triển khai biến</strong> (dùng để debug lỗi)</td>
+            </tr>
+            <tr>
+              <td><code>set -v</code> / <code>sh -v proc</code></td>
+              <td>Hiển thị từng dòng lệnh <strong>trước khi triển khai</strong></td>
+            </tr>
+            <tr>
+              <td><code>set -e</code></td>
+              <td>Tự động <strong>thoát khỏi Script ngay lập tức</strong> khi gặp một lệnh bị lỗi (exit status &ne; 0)</td>
+            </tr>
+            <tr>
+              <td><code>set -t</code></td>
+              <td>Thoát khỏi Shell script ngay sau khi thực hiện xong câu lệnh tiếp theo</td>
+            </tr>
+            <tr>
+              <td><code>set -</code></td>
+              <td>Xóa bỏ các tác dụng debug của tùy chọn <code>-x</code> và <code>-v</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: Signals & trap -->
+      <section id="sec-signals" style="margin-top: 2rem;">
+        <h2>5. Quản Lý Các Tín Hiệu (Signals) &amp; Lệnh `trap`</h2>
+        
+        <h3>5.1 Bảng danh sách các Tín hiệu (Signals) thông dụng</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Số Tín hiệu (Signal)</th>
+              <th>Tên Tín hiệu</th>
+              <th>Mô tả sự kiện phát sinh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Signal 0</code></td>
+              <td><code>EXIT</code></td>
+              <td>Phát sinh khi ra khỏi Shell (exit of the shell)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 1</code></td>
+              <td><code>SIGHUP</code></td>
+              <td>Cắt liên lạc kết nối với terminal (Disconnection / Hangup)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 2</code></td>
+              <td><code>SIGINT</code></td>
+              <td>Ngắt từ bàn phím (Phím <code>Ctrl + C</code> hoặc phím <code>DEL</code>)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 3</code></td>
+              <td><code>SIGQUIT</code></td>
+              <td>Thoát chương trình và tạo Core Dump (Phím <code>Ctrl + \</code>)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 9</code></td>
+              <td><code>SIGKILL</code></td>
+              <td>Hủy cưỡng bức tiến trình ngay lập tức (không thể bắt hay bỏ qua)</td>
+            </tr>
+            <tr>
+              <td><code>Signal 15</code></td>
+              <td><code>SIGTERM</code></td>
+              <td>Yêu cầu kết thúc tiến trình lịch sự (Mặc định của lệnh <code>kill</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">5.2 Lập trình xử lý Tín hiệu với lệnh `trap`</h3>
+        <p>Lệnh <code>trap</code> cho phép định nghĩa hành động xử lý tùy chỉnh khi một tín hiệu phát sinh trong quá trình chạy script:</p>
+
+        <ul>
+          <li><code>trap</code> (không đối số): Liệt kê danh sách các tín hiệu và các lệnh xử lý đã đăng ký.</li>
+          <li><code>trap 'các_câu_lệnh' 2</code>: Gán các câu lệnh custom để thực thi mỗi khi người dùng nhấn <code>Ctrl + C</code> / <code>DEL</code> (Signal 2).</li>
+          <li><code>trap '' 2</code>: **Bỏ qua (Lờ đi)** tín hiệu phím DEL / Ctrl+C (người dùng nhấn DEL sẽ không làm gián đoạn script).</li>
+          <li><code>trap 2</code>: **Khôi phục lại hành vi mặc định** của phím DEL / Ctrl+C.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 12)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hành lệnh `ps` liệt kê tiến trình</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị tất cả tiến trình của người dùng hiện tại và tất cả tiến trình hệ thống.</p>
+          <div class="cmd-output"><span class="cmd-input"># 1. Hiển thị tiến trình của người dùng hiện tại:</span>
+$ ps -u $USER
+
+<span class="cmd-input"># 2. Hiển thị tất cả tiến trình đang chạy trong toàn hệ thống:</span>
+$ ps -ef
+# Hoặc:
+$ ps aux</div>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Giải thích Output lệnh `ps -l &`</div>
+          <div class="cmd-output">$ ps -l &
+[1] 478</div>
+          <p><strong>Giải thích:</strong> Ký tự <code>&amp;</code> yêu cầu hệ thống thực thi lệnh <code>ps -l</code> dưới dạng tiến trình chạy ngầm (Background). <code>[1]</code> là số thứ tự Job (Job ID = 1), và <code>478</code> là Mã định danh tiến trình (PID = 478) vừa được khởi tạo.</p>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: So sánh Tiến trình Trực tiếp (Foreground) &amp; Chạy ngầm (Background)</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. Tiến trình Foreground:</span>
+$ sleep 10
+# Người dùng phải chờ 10 giây, Shell bị khóa không thể gõ câu lệnh khác.
+
+<span class="cmd-input"># 2. Tiến trình Background:</span>
+$ sleep 10 &
+[1] 5120
+# Shell trả lại dấu nhắc prompt ngay lập tức, người dùng tiếp tục làm việc bình thường.</div>
+        </div>
+
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Thông báo "END." khi tiến trình ngầm kết thúc (Không dùng Shell script)</div>
+          <p><strong>Cách thực hiện bằngSubshell trên dòng lệnh:</strong></p>
+          <div class="cmd-output"><span class="cmd-input">$ (sleep 5 & wait $!; echo "END.")</span>
+# Sau 5 giây, màn hình tự động in ra dòng chữ:
+END.</div>
+        </div>
+
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Chuỗi Thao Tác Quản Lý Tiến Trình Chi Tiết (Các bước 1 &rarr; 7)</div>
+          <div class="cmd-output"><span class="cmd-input"># Bước 1 & 2: Thực thi top và tạm ngưng (Ctrl+Z):</span>
+$ top
+[Nhấn Ctrl+Z]
+[1]+ Stopped top
+
+<span class="cmd-input"># Bước 3 & 4: Tạo tiến trình trì hoãn 2 lần 60s và cho chạy ngầm:</span>
+$ (sleep 60; sleep 60; ls -l > flist) &
+[2] 5432
+
+<span class="cmd-input"># Bước 5: Liệt kê các tiến trình đang chạy ngầm:</span>
+$ jobs -l
+[1]+ Stopped top
+[2]- Running (sleep 60; sleep 60; ls -l > flist) &
+
+<span class="cmd-input"># Bước 6: Hủy tiến trình top (Job 1):</span>
+$ kill -9 %1
+
+<span class="cmd-input"># Bước 7: Kiểm tra kết quả tiến trình lưu flist hoàn tất:</span>
+$ cat flist</div>
+        </div>
+
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Liệt kê tiến trình theo từng trang màn hình</div>
+          <div class="cmd-output"><span class="cmd-input">$ ps aux | more</span>
+# Hoặc dùng less để cuộn trang linh hoạt:
+<span class="cmd-input">$ ps aux | less</span></div>
+        </div>
+
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Shell Script `uncount` đếm ngược 6 về 1 và xử lý phím DEL</div>
+          <p><strong>Yêu cầu:</strong> Hiển thị 6 5 4 3 2 1 mỗi 5 giây; gõ phím DEL (Signal 2) sẽ nhảy ngay sang số kế tiếp.</p>
+          <div class="code-block">#!/bin/bash
+# Script uncount.sh
+skip=0
+
+# Đăng ký bắt tín hiệu Signal 2 (DEL / Ctrl+C)
+trap 'skip=1' 2
+
+for (( i=6; i>=1; i-- ))
+do
+    echo "Con so hien tai: $i"
+    skip=0
+    
+    # Vòng lặp đếm 5 giây
+    for (( t=0; t<5; t++ ))
+    do
+        if [ $skip -eq 1 ]; then
+            echo " -> Da nhan phim DEL! Bỏ qua thoi gian cho, nhay sang so ke..."
+            break
+        fi
+        sleep 1
+    done
+done
+
+# Khôi phục lại xử lý mặc định của phím DEL
+trap 2
+echo "Hoan thanh chuong trinh uncount!"</div>
+        </div>
+
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Liệt kê các tiến trình ngầm hiện đang chạy</div>
+          <div class="cmd-output"><span class="cmd-input">$ jobs -r</span></div>
+        </div>
+
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Liệt kê các tiến trình ngầm đã kết thúc</div>
+          <div class="cmd-output"><span class="cmd-input">$ jobs -d</span>
+# Hoặc xem trạng thái Done trong lệnh jobs:
+<span class="cmd-input">$ jobs</span></div>
+        </div>
+
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Xác định tín hiệu phát sinh khi chạy lệnh `kill`</div>
+          <ul>
+            <li><code>$ kill 408</code> &rarr; Phát sinh **Signal 15 (SIGTERM)**: Tín hiệu yêu cầu kết thúc tiến trình 408 một cách bình thường.</li>
+            <li><code>$ kill -9 521</code> &rarr; Phát sinh **Signal 9 (SIGKILL)**: Tín hiệu diệt cưỡng chế tiến trình 521 ngay lập tức.</li>
+          </ul>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Shell Script `LisFileDel` xem danh sách file và nhảy file khi bấm DEL</div>
+          <div class="code-block">#!/bin/bash
+# Script LisFileDel.sh file1 file2 ...
+skip=0
+
+# Đăng ký bắt phím DEL (Signal 2)
+trap 'skip=1' 2
+
+for file in "$@"
+do
+    skip=0
+    echo "=========================================="
+    echo " DANG HIEN THI NOI DUNG FILE: $file"
+    echo "=========================================="
+    
+    if [ ! -f "$file" ]; then
+        echo "Loi: Tap tin $file khong ton tai!"
+        continue
+    fi
+    
+    # Đọc từng dòng của tập tin
+    while IFS= read -r line
+    do
+        if [ $skip -eq 1 ]; then
+            echo ""
+            echo " [=> Da nhan DEL: Bo qua tap tin $file, chuyen sang file ke!]"
+            break
+        fi
+        echo "$line"
+        sleep 0.2
+    done < "$file"
+done
+
+# Khôi phục xử lý mặc định của phím DEL
+trap 2
+echo "Da hien thi xong tat ca cac tap tin trong danh sach."</div>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: Shell Script `trap2` thông báo Shutdown từ 5 về 1 phút</div>
+          <div class="code-block">#!/bin/bash
+# Script trap2.sh
+skip=0
+
+# Đăng ký bắt tín hiệu phím DEL (Signal 2)
+trap 'skip=1' 2
+
+for (( n=5; n>=1; n-- ))
+do
+    echo "Shutdown in $n minutes"
+    skip=0
+    
+    # Giả lập khoảng thời gian chờ (60s mỗi phút, ở đây demo 5s)
+    for (( sec=0; sec<60; sec++ ))
+    do
+        if [ $skip -eq 1 ]; then
+            echo " [=> Da nhan DEL: Lap tuc hien thi thong bao phut tiep theo!]"
+            break
+        fi
+        sleep 1
+    done
+done
+
+# Khôi phục xử lý mặc định của phím DEL
+trap 2
+echo "SYSTEM SHUTDOWN NOW!"</div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

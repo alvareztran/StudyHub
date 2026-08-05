@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thực hành 1: Giới thiệu Shell và các lệnh Shell cơ bản - StudyHub</title>
+  <title>Thực hành 1: Giới thiệu về Shell và các lệnh Shell cơ bản - StudyHub</title>
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
   <script src="../../js/theme.js"></script>
@@ -30,6 +30,48 @@
       font-weight: bold;
       color: var(--primary-color);
     }
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+    .solution-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .solution-title {
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
   </style>
 </head>
 <body>
@@ -39,9 +81,9 @@
         <a href="../../index.html">StudyHub</a> &raquo; 
         <a href="../index.html">Nguyên lý Hệ điều hành</a> &raquo; Thực hành 1
       </div>
-      <h1>BÀI THỰC HÀNH BUỔI 1 - GIỚI THIỆU SHELL VÀ CÁC LỆNH SHELL CƠ BẢN</h1>
+      <h1>BÀI THỰC HÀNH BUỔI 1 - GIỚI THIỆU VỀ SHELL VÀ CÁC LỆNH SHELL CƠ BẢN</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Mục tiêu: Làm quen với Linux Shell, cách di chuyển trong hệ thống thư mục, thao tác với file và thư mục, cũng như hiểu về quyền truy cập (permissions) trong hệ điều hành Linux.
+        Nội dung thực hành: Tìm hiểu bộ thông dịch lệnh Shell (BASH, CSH, KSH), biến môi trường <code>PATH</code>, di chuyển đường dẫn (tuyệt đối, tương đối, <code>.</code>, <code>..</code>, <code>~</code>), khảo sát tập tin và thư mục (<code>ls</code>, <code>less</code>, <code>file</code>), thao tác file (<code>cp</code>, <code>mv</code>, <code>rm</code>, <code>mkdir</code>), các tiện ích tìm kiếm (<code>which</code>, <code>whereis</code>, <code>find</code>), phân quyền truy cập file (<code>chmod</code>, <code>su</code>, <code>chown</code>, <code>chgrp</code>) và lời giải 14 bài tập thực hành. (Theo Tài liệu Thực hành HĐH - ThS. Phan Thượng Cang &amp; ThS. Bùi Quốc Thái, Bộ môn HTMT&amp;TT &bull; ĐHCT).
       </p>
     </header>
 
@@ -57,600 +99,513 @@
     </div>
 
     <main>
-      <!-- Section 1 -->
-      <section id="sec-1">
-        <h2>1. Shell là gì?</h2>
-        <p>Máy tính thực tế chỉ hiểu ngôn ngữ nhị phân gồm các bit 0 và 1. Việc lập trình trực tiếp bằng nhị phân là gần như không thể đối với con người.</p>
-        <p>Vì vậy, hệ điều hành cung cấp một chương trình trung gian cho phép người dùng nhập lệnh bằng tiếng Anh hoặc các câu lệnh dễ hiểu hơn. Chương trình đó gọi là <strong>Shell</strong>.</p>
-        <p>Shell nhận lệnh từ người dùng, chuyển lệnh đó cho nhân hệ điều hành xử lý rồi trả kết quả lại cho người dùng.</p>
-
-        <div class="flowchart" style="margin: 1.5rem auto; max-width: 400px; flex-direction: column !important;">
-          <div class="flow-node">Người dùng</div>
-          <span class="flow-arrow">&darr;</span>
-          <div class="flow-node">Shell (Bash, Zsh...)</div>
-          <span class="flow-arrow">&darr;</span>
-          <div class="flow-node">Hệ điều hành (Kernel)</div>
-          <span class="flow-arrow">&darr;</span>
-          <div class="flow-node">Phần cứng (Hardware)</div>
-        </div>
-
-        <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
-          💡 <strong>Chú ý quan trọng:</strong> Shell không phải là nhân (Kernel) của hệ điều hành mà chỉ là chương trình giao tiếp trung gian với hệ điều hành.
-        </p>
-
-        <h3>Các loại Shell phổ biến:</h3>
-        <div style="overflow-x: auto; margin-top: 1rem;">
-          <table style="width: 100%; border-collapse: collapse; border: 1px solid var(--border-color);">
-            <thead>
-              <tr style="background-color: var(--highlight-bg); border-bottom: 1px solid var(--border-color);">
-                <th style="padding: 0.5rem; text-align: left; border-right: 1px solid var(--border-color);">Shell</th>
-                <th style="padding: 0.5rem; text-align: left;">Đặc điểm nổi bật</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold; color: var(--accent-cyan);">BASH (Bourne Again Shell)</td>
-                <td style="padding: 0.5rem;">Shell mặc định, phổ biến nhất hiện nay trên hầu hết các bản phân phối Linux.</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold;">CSH (C Shell)</td>
-                <td style="padding: 0.5rem;">Cú pháp câu lệnh và lập trình được thiết kế gần giống ngôn ngữ C.</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold;">KSH (Korn Shell)</td>
-                <td style="padding: 0.5rem;">Được phát triển tại Bell Labs, kết hợp các điểm tốt của Bourne Shell và C Shell.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3>Một số lệnh liên quan đến Shell:</h3>
-        <p><strong>Xem tất cả các shell được cài trong hệ thống:</strong></p>
-        <pre><code>cat /etc/shells</code></pre>
-        <div class="cmd-output">
-          /bin/sh<br>
-          /bin/bash<br>
-          /bin/zsh<br>
-          /bin/dash
-        </div>
-
-        <p><strong>Kiểm tra shell hiện tại đang sử dụng:</strong></p>
-        <pre><code>echo $SHELL</code></pre>
-        <div class="cmd-output">
-          /bin/bash
+      <!-- Chương trình Đề Cương Thực Hành -->
+      <section id="sec-outline" style="background-color: var(--highlight-bg); border-left: 4px solid var(--primary-color); padding: 1rem 1.25rem; border-radius: 4px; margin-bottom: 2rem;">
+        <h3 style="margin-top: 0; color: var(--primary-color);">📌 ĐỀ CƯƠNG THỰC HÀNH MÔN HỆ ĐIỀU HÀNH (CTU)</h3>
+        <p><strong>Mục tiêu:</strong> Cài đặt HĐH Linux và sử dụng Shell Script để tìm hiểu các thành phần trong HĐH Linux như: hệ thống file, quá trình, bộ nhớ và xuất nhập.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; font-size: 0.92rem;">
+          <div>&bull; <strong>Buổi 1:</strong> Các lệnh cơ bản của Shell</div>
+          <div>&bull; <strong>Buổi 2:</strong> Cơ bản về lập trình Shell</div>
+          <div>&bull; <strong>Buổi 3:</strong> Lập trình cấu trúc &amp; vòng lặp</div>
+          <div>&bull; <strong>Buổi 4:</strong> Quản lý tiến trình</div>
+          <div>&bull; <strong>Buổi 5:</strong> Quản lý vào/ra &amp; tập tin</div>
+          <div>&bull; <strong>Buổi 6:</strong> Ôn tập &amp; Tổng hợp</div>
         </div>
       </section>
 
-      <!-- Section 2 -->
-      <section id="sec-2" style="margin-top: 2.5rem;">
-        <h2>2. Khởi động Shell</h2>
-        <p>Nếu bạn sử dụng Linux ở chế độ dòng lệnh (Command Line Interface - CLI), thì ngay sau khi đăng nhập bạn sẽ làm việc trực tiếp với Shell.</p>
-        <p>Nếu bạn đang sử dụng giao diện đồ họa (GUI), hãy mở ứng dụng <strong>Terminal</strong> để khởi động một phiên làm việc của Shell.</p>
-        <p>Thông thường, giao diện dòng lệnh sẽ xuất hiện một dấu nhắc lệnh (prompt) mặc định:</p>
-        <pre><code>$</code></pre>
-        <p>Ví dụ cụ thể:</p>
-        <div class="cmd-output">
-          user@ubuntu:~$
-        </div>
-        <p>Trong đó:</p>
-        <ul>
-          <li><strong>user</strong>: Tên tài khoản người dùng hiện tại.</li>
-          <li><strong>ubuntu</strong>: Tên của máy tính (hostname).</li>
-          <li><strong>~</strong>: Ký hiệu của thư mục cá nhân hiện tại (home directory).</li>
-        </ul>
-      </section>
-
-      <!-- Section 3 -->
-      <section id="sec-3" style="margin-top: 2.5rem;">
-        <h2>3. Shell Script là gì?</h2>
-        <p>Thay vì nhập từng lệnh một cách thủ công và chờ đợi kết quả rồi nhập tiếp lệnh tiếp theo:</p>
-        <pre><code>echo Hello
-date
-pwd</code></pre>
-        <p>Chúng ta có thể lưu toàn bộ tập hợp các câu lệnh trên vào trong một file văn bản thô:</p>
-        <pre><code>#!/bin/bash
-echo Hello
-date
-pwd</code></pre>
-        <p>Sau đó yêu cầu Shell biên dịch và thực thi file này cùng một lúc. File chứa các câu lệnh Shell tuần tự như vậy được gọi là <strong>Shell Script</strong>.</p>
-      </section>
-
-      <!-- Section 4 -->
-      <section id="sec-4" style="margin-top: 2.5rem;">
-        <h2>4. Lệnh cd và đường dẫn trong Linux</h2>
-        <p>Lệnh <code>cd</code> (Change Directory) được sử dụng để chuyển đổi thư mục làm việc hiện tại sang một thư mục mới.</p>
-        <p>Cú pháp cơ bản:</p>
-        <pre><code>cd đường_dẫn</code></pre>
-        <p>Ví dụ di chuyển tới thư mục bin của hệ thống:</p>
-        <pre><code>cd /usr/local/bin</code></pre>
-        <p>Trở về thư mục cá nhân (Home directory) của người dùng hiện hành nhanh:</p>
-        <pre><code>cd</code></pre>
-        <p>Hoặc:</p>
-        <pre><code>cd ~</code></pre>
-      </section>
-
-      <!-- Section 5 -->
-      <section id="sec-5" style="margin-top: 2.5rem;">
-        <h2>5. Đường dẫn trong Linux</h2>
-        <p>Muốn truy cập hoặc thực hiện thao tác trên bất kỳ file/thư mục nào, bạn bắt buộc phải chỉ ra đường dẫn (path) xác định vị trí của nó trên hệ thống cây thư mục.</p>
-        <p>Để kiểm tra thư mục hiện hành bạn đang đứng, sử dụng lệnh:</p>
-        <pre><code>pwd</code></pre>
-        <div class="cmd-output">
-          /home/student
-        </div>
-
-        <h3>Có hai loại đường dẫn trong Linux:</h3>
-        <ol>
-          <li style="margin-bottom: 1rem;">
-            <strong>Đường dẫn tuyệt đối (Absolute Path):</strong>
-            <p style="margin-top: 0.25rem;">Là đường dẫn xuất phát từ gốc (thư mục gốc cao nhất <code>/</code>) của hệ thống. Dù bạn đang ở bất kỳ đâu, đường dẫn tuyệt đối luôn không đổi.</p>
-            <p>Ví dụ: <code>/usr/bin</code>, <code>/usr/local/bin</code>, <code>/dev</code>.</p>
-            <pre><code>cd /usr/local/bin</code></pre>
-          </li>
-          <li style="margin-bottom: 1rem;">
-            <strong>Đường dẫn tương đối (Relative Path):</strong>
-            <p style="margin-top: 0.25rem;">Là đường dẫn bắt đầu từ thư mục làm việc hiện hành của bạn (không bắt đầu bằng dấu gạch chéo <code>/</code>).</p>
-            <p>Ví dụ: Bạn đang đứng ở thư mục <code>/usr</code>. Muốn di chuyển vào thư mục <code>/usr/local/bin</code>, bạn chỉ cần nhập:</p>
-            <pre><code>cd local/bin</code></pre>
-          </li>
-        </ol>
-      </section>
-
-      <!-- Section 6 -->
-      <section id="sec-6" style="margin-top: 2.5rem;">
-        <h2>6. Thư mục cha (<code>..</code>)</h2>
-        <p>Ký hiệu hai dấu chấm <code>..</code> đại diện cho thư mục cấp cha (thư mục cấp cao hơn một bậc) chứa thư mục hiện tại.</p>
-        <p>Ví dụ: Bạn đang ở thư mục <code>/usr/local/bin</code>. Thực hiện lệnh:</p>
-        <pre><code>cd ..</code></pre>
-        <p>Hệ thống sẽ chuyển bạn ngược về thư mục cha là <code>/usr/local</code>.</p>
-        <p>Một ví dụ khác: Bạn đang đứng ở <code>/usr/local/bin</code>, muốn chuyển trực tiếp sang thư mục <code>/usr/local/share</code> cùng cấp với <code>bin</code>:</p>
-        <pre><code>cd ../share</code></pre>
-        <div style="background-color: var(--highlight-bg); padding: 0.75rem; border-radius: 4px; font-family: monospace; font-size: 0.9rem; margin-top: 0.5rem; text-align: center;">
-          bin &rarr; .. (local) &rarr; share
-        </div>
-      </section>
-
-      <!-- Section 7 -->
-      <section id="sec-7" style="margin-top: 2.5rem;">
-        <h2>7. Thư mục hiện hành (<code>.</code>)</h2>
-        <p>Dấu chấm đơn <code>.</code> đại diện cho chính thư mục làm việc hiện tại của bạn.</p>
-        <p>Ví dụ, để chạy một tệp chương trình hoặc tập lệnh nằm ngay trong thư mục hiện tại, ta nhập:</p>
-        <pre><code>./myprog</code></pre>
-        <p class="callout" style="border-left: 4px solid var(--accent-cyan); background-color: var(--highlight-bg);">
-          💡 <strong>Tại sao cần ./ ?</strong> Nếu bạn chỉ gõ <code>myprog</code>, Shell sẽ tìm kiếm chương trình này trong danh sách các thư mục chuẩn khai báo ở biến môi trường PATH chứ không tìm trong thư mục hiện tại.
-        </p>
-      </section>
-
-      <!-- Section 8 -->
-      <section id="sec-8" style="margin-top: 2.5rem;">
-        <h2>8. Thư mục cá nhân (<code>~</code>)</h2>
-        <p>Ký hiệu ngã <code>~</code> đại diện cho thư mục home cá nhân của người dùng hiện hành (ví dụ: <code>/home/user_name</code>).</p>
-        <p>Ví dụ: <code>~/Documents</code> tương đương với đường dẫn tuyệt đối <code>/home/user/Documents</code>.</p>
-        <p>Bạn có thể sử dụng ký hiệu này để thao tác nhanh với các tệp tin cá nhân:</p>
-        <pre><code>./myprog ~/myfile.txt</code></pre>
-      </section>
-
-      <!-- Section 9 -->
-      <section id="sec-9" style="margin-top: 2.5rem;">
-        <h2>9. Biến môi trường PATH</h2>
-        <p><strong>PATH</strong> là một biến hệ thống lưu trữ danh sách các đường dẫn thư mục. Khi người dùng nhập vào một tên lệnh (ví dụ: <code>ls</code>, <code>pwd</code>, <code>mkdir</code>), Shell sẽ quét tuần tự trong các thư mục được liệt kê ở biến PATH để tìm file thực thi tương ứng.</p>
-        <p>Xem danh sách các thư mục hiện có trong PATH:</p>
-        <pre><code>echo $PATH</code></pre>
-        <div class="cmd-output">
-          /usr/local/bin:/usr/bin:/bin:/usr/games
-        </div>
-        <p>Thêm một thư mục mới (ví dụ: <code>/root/shellscript</code>) vào biến PATH để có thể gọi lệnh nằm trong đó từ bất kỳ đâu:</p>
-        <pre><code>PATH=$PATH:/root/shellscript</code></pre>
-      </section>
-
-      <!-- Section 10 -->
-      <section id="sec-10" style="margin-top: 2.5rem;">
-        <h2>10. Lệnh ls</h2>
-        <p>Lệnh <code>ls</code> (List) dùng để liệt kê nội dung (danh sách tệp tin và thư mục con) chứa trong một thư mục.</p>
-        <p>Liệt kê cơ bản:</p>
-        <pre><code>ls</code></pre>
-        <p>Liệt kê chi tiết kèm thông tin phân quyền, kích thước và thời gian sửa đổi:</p>
-        <pre><code>ls -l</code></pre>
-        <p>Ví dụ kết quả:</p>
-        <div class="cmd-output">
-          -rw-r--r-- 1 root root 1200 Jul 10 10:30 test.txt
-        </div>
-
-        <h3>Ý nghĩa của cột thông tin phân quyền <code>-rw-r--r--</code>:</h3>
-        <p>Ký tự đầu tiên cho biết loại file:</p>
-        <ul>
-          <li><code>-</code>: File thông thường (regular file).</li>
-          <li><code>d</code>: Thư mục (directory).</li>
-          <li><code>l</code>: Liên kết ký hiệu (symbolic link).</li>
-        </ul>
-
-        <p>9 ký tự tiếp theo được chia làm 3 nhóm, mỗi nhóm 3 ký tự biểu thị quyền hạn:</p>
-        <div style="background-color: var(--highlight-bg); padding: 0.75rem; border-radius: 4px; font-family: monospace; font-size: 0.95rem; text-align: center; margin: 0.5rem 0;">
-          rwx (Chủ sở hữu - Owner) | rwx (Nhóm - Group) | rwx (Người dùng khác - Others)
-        </div>
-        <ul>
-          <li><code>r</code> (Read): Quyền đọc (giá trị bằng 4).</li>
-          <li><code>w</code> (Write): Quyền ghi, chỉnh sửa hoặc xóa (giá trị bằng 2).</li>
-          <li><code>x</code> (Execute): Quyền thực thi chương trình hoặc truy cập thư mục (giá trị bằng 1).</li>
-        </ul>
-      </section>
-
-      <!-- Section 11 -->
-      <section id="sec-11" style="margin-top: 2.5rem;">
-        <h2>11. Lệnh less</h2>
-        <p>Lệnh <code>less</code> dùng để mở và xem nội dung các file văn bản có kích thước lớn. Khác với <code>cat</code>, <code>less</code> không tải toàn bộ file lên màn hình mà cho phép cuộn trang dễ dàng và nhanh chóng.</p>
-        <pre><code>less file.txt</code></pre>
-        <h3>Các phím di chuyển và thao tác chính trong Less:</h3>
-        <ul>
-          <li><strong>Phím Space</strong>: Cuộn xuống 1 trang màn hình.</li>
-          <li><strong>Phím b</strong>: Cuộn ngược lên 1 trang màn hình.</li>
-          <li><strong>Phím G</strong>: Nhảy xuống cuối cùng của file.</li>
-          <li><strong>Phím 1G</strong>: Quay trở lại đầu file.</li>
-          <li><strong>/chuỗi_tìm_kiếm</strong>: Tìm kiếm một chuỗi văn bản trong file.</li>
-          <li><strong>Phím n</strong>: Di chuyển đến kết quả tìm kiếm tiếp theo.</li>
-          <li><strong>Phím q</strong>: Thoát khỏi chế độ xem Less.</li>
-        </ul>
-      </section>
-
-      <!-- Section 12 -->
-      <section id="sec-12" style="margin-top: 2.5rem;">
-        <h2>12. Lệnh file</h2>
-        <p>Trong hệ điều hành Linux, đuôi mở rộng của tệp tin (như .txt, .jpg) chỉ mang tính gợi nhớ chứ không quyết định kiểu tệp tin. Lệnh <code>file</code> giúp kiểm tra thực tế cấu trúc nội dung của tệp tin để chỉ ra chính xác loại tệp tin đó là gì.</p>
-        <pre><code>file test.txt</code></pre>
-        <div class="cmd-output">
-          test.txt: ASCII text
-        </div>
-        <pre><code>file image.jpg</code></pre>
-        <div class="cmd-output">
-          image.jpg: JPEG image data, JFIF standard 1.01
-        </div>
-      </section>
-
-      <!-- Section 13 -->
-      <section id="sec-13" style="margin-top: 2.5rem;">
-        <h2>13. Ký tự đại diện (Wildcard)</h2>
-        <p>Wildcard giúp chọn lọc hàng loạt tệp tin có cấu trúc tên tương đồng trong các câu lệnh Shell.</p>
-        <ul>
-          <li style="margin-bottom: 0.5rem;">
-            <strong>Dấu sao <code>*</code></strong>: Đại diện cho bất kỳ chuỗi ký tự nào (kể cả chuỗi rỗng).
-            <br><small>Ví dụ: <code>ls *.txt</code> hiển thị mọi tệp tin có đuôi .txt.</small>
-          </li>
-          <li style="margin-bottom: 0.5rem;">
-            <strong>Dấu hỏi chấm <code>?</code></strong>: Đại diện cho duy nhất 1 ký tự bất kỳ.
-            <br><small>Ví dụ: <code>Data???</code> sẽ khớp với các file như <code>Data001</code>, <code>DataABC</code> nhưng không khớp với <code>Data01</code>.</small>
-          </li>
-          <li style="margin-bottom: 0.5rem;">
-            <strong>Cặp ngoặc vuông <code>[]</code></strong>: Khớp với bất kỳ ký tự đơn nào nằm bên trong ngoặc.
-            <br><small>Ví dụ: <code>[A-Z]*</code> lọc các file bắt đầu bằng một chữ cái viết hoa.</small>
-          </li>
-          <li style="margin-bottom: 0.5rem;">
-            <strong>Ký hiệu phủ định <code>[! ]</code></strong>: Khớp với ký tự đơn KHÔNG nằm trong ngoặc vuông.
-            <br><small>Ví dụ: <code>[!a-z]*</code> lọc các file không bắt đầu bằng chữ thường.</small>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Section 14 -->
-      <section id="sec-14" style="margin-top: 2.5rem;">
-        <h2>14. Lệnh cp</h2>
-        <p>Lệnh <code>cp</code> (Copy) dùng để sao chép file hoặc thư mục sang vị trí mới.</p>
-        <p>Sao chép file sang tên file mới:</p>
-        <pre><code>cp file1 file2</code></pre>
-        <p>Sao chép kèm theo dấu nhắc hỏi trước khi ghi đè tệp tin đã tồn tại:</p>
-        <pre><code>cp -i file1 file2</code></pre>
-        <p>Sao chép tệp tin vào trong một thư mục:</p>
-        <pre><code>cp file1 dir1</code></pre>
-        <p>Sao chép đệ quy toàn bộ thư mục (bao gồm tất cả thư mục con và file bên trong):</p>
-        <pre><code>cp -R dir1 dir2</code></pre>
-      </section>
-
-      <!-- Section 15 -->
-      <section id="sec-15" style="margin-top: 2.5rem;">
-        <h2>15. Lệnh mv</h2>
-        <p>Lệnh <code>mv</code> (Move) dùng để di chuyển hoặc đổi tên tệp tin, thư mục.</p>
-        <p>Đổi tên file đơn giản (nếu nằm cùng thư mục):</p>
-        <pre><code>mv file1 file2</code></pre>
-        <p>Di chuyển file sang thư mục khác:</p>
-        <pre><code>mv file1 dir</code></pre>
-        <p>Đổi tên thư mục:</p>
-        <pre><code>mv dir1 dir2</code></pre>
-      </section>
-
-      <!-- Section 16 -->
-      <section id="sec-16" style="margin-top: 2.5rem;">
-        <h2>16. Lệnh rm</h2>
-        <p>Lệnh <code>rm</code> (Remove) dùng để xóa file hoặc thư mục.</p>
-        <p>Xóa tệp tin thường:</p>
-        <pre><code>rm file1</code></pre>
-        <p>Xóa đệ quy toàn bộ thư mục và các tệp tin bên trong nó:</p>
-        <pre><code>rm -r folder</code></pre>
-        <p class="callout" style="border-left: 4px solid #ef4444; background-color: var(--highlight-bg);">
-          ⚠️ <strong>Cảnh báo cực kỳ quan trọng:</strong> Lệnh <code>rm</code> trên Linux sẽ xóa vĩnh viễn tệp tin khỏi ổ đĩa chứ không đưa vào thùng rác (Recycle Bin). Cần kiểm tra kỹ các đối số trước khi Enter.
-        </p>
-      </section>
-
-      <!-- Section 17 -->
-      <section id="sec-17" style="margin-top: 2.5rem;">
-        <h2>17. Lệnh mkdir</h2>
-        <p>Lệnh <code>mkdir</code> (Make Directory) dùng để tạo thư mục mới trên hệ thống.</p>
-        <pre><code>mkdir myfolder</code></pre>
-      </section>
-
-      <!-- Section 18 -->
-      <section id="sec-18" style="margin-top: 2.5rem;">
-        <h2>18. Lệnh which</h2>
-        <p>Lệnh <code>which</code> hiển thị đường dẫn tuyệt đối dẫn đến file thực thi của chương trình được tìm thấy đầu tiên trong các thư mục định nghĩa ở biến PATH.</p>
-        <pre><code>which ls</code></pre>
-        <div class="cmd-output">
-          /usr/bin/ls
-        </div>
-      </section>
-
-      <!-- Section 19 -->
-      <section id="sec-19" style="margin-top: 2.5rem;">
-        <h2>19. Lệnh which -a</h2>
-        <p>Lệnh <code>which -a</code> hiển thị tất cả các vị trí chứa tệp thực thi của chương trình nằm trong biến môi trường PATH.</p>
-        <pre><code>which -a ls</code></pre>
-      </section>
-
-      <!-- Section 20 -->
-      <section id="sec-20" style="margin-top: 2.5rem;">
-        <h2>20. Lệnh whereis</h2>
-        <p>Khác với <code>which</code>, lệnh <code>whereis</code> tìm kiếm sâu rộng hơn, trả về vị trí tệp thực thi, tệp mã nguồn gốc (nếu có) và tệp tài liệu hướng dẫn (manual pages) của chương trình.</p>
-        <pre><code>whereis ls</code></pre>
-        <div class="cmd-output">
-          ls: /usr/bin/ls /usr/share/man/man1/ls.1.gz
-        </div>
-      </section>
-
-      <!-- Section 21 -->
-      <section id="sec-21" style="margin-top: 2.5rem;">
-        <h2>21. Lệnh find</h2>
-        <p>Lệnh <code>find</code> cực kỳ mạnh mẽ dùng để tìm kiếm file và thư mục theo nhiều tiêu chí lọc nâng cao.</p>
+      <!-- Section 1: Shell -->
+      <section id="sec-shell">
+        <h2>1. Shell – Bộ Thông Dịch Lệnh</h2>
         
-        <p><strong>Tìm tệp tin chính xác theo tên trong một đường dẫn cụ thể:</strong></p>
-        <pre><code>find /usr/share/doc -name README</code></pre>
+        <h3>1.1 Shell là gì?</h3>
+        <p>
+          Máy tính chỉ có thể thực thi trực tiếp mã nhị phân (0 và 1). Để con người giao tiếp dễ dàng với hệ thống bằng ngôn ngữ cấp cao, hệ điều hành cung cấp một chương trình đặc biệt gọi là <strong>Shell (Bộ thông dịch lệnh)</strong>.
+        </p>
+        <p><em>Lưu ý:</em> Shell không phải là một thành phần cố định trong nhân (kernel) hệ điều hành, mà là một ứng dụng giao tiếp sử dụng hệ điều hành để thực thi lệnh và thao tác tập tin.</p>
+
+        <h3 style="margin-top: 1.25rem;">Các loại Shell thông dụng trong Linux:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Tên Shell</th>
+              <th>Tác giả / Nhà phát triển</th>
+              <th>Đặc điểm &amp; Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BASH</strong> (Bourne-Again SHell)</td>
+              <td>Brian Fox &amp; Chet Ramey (Free Software Foundation)</td>
+              <td>Là Shell mặc định và thông dụng nhất trên hầu hết các bản phân phối Linux.</td>
+            </tr>
+            <tr>
+              <td><strong>CSH</strong> (C SHell)</td>
+              <td>Bill Joy (University of California - BSD)</td>
+              <td>Có cú pháp câu lệnh rất tương đồng với ngôn ngữ lập trình C.</td>
+            </tr>
+            <tr>
+              <td><strong>KSH</strong> (Korn SHell)</td>
+              <td>David Korn (AT&amp;T Bell Labs)</td>
+              <td>Tối ưu hiệu năng cho các hệ thống Unix thương mại.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">Một vài câu lệnh liên quan đến Shell:</h3>
+        <div class="cmd-output"><span class="cmd-input"># 1. Liệt kê tất cả các loại Shell hỗ trợ trong hệ thống:</span>
+$ cat /etc/shells
+
+<span class="cmd-input"># 2. Kiểm tra loại Shell hiện tại đang sử dụng:</span>
+$ echo $SHELL
+/bin/bash</div>
+
+        <h3>1.2 Khởi động Shell &amp; Dấu nhắc (Prompt)</h3>
+        <p>Trong chế độ Text/Console, Shell được mở ngay khi đăng nhập. Trong chế độ đồ họa (GUI), Shell khởi chạy khi mở ứng dụng Terminal. Dấu nhắc lệnh mặc định dành cho người dùng thường là <code>$</code> (hoặc <code>#</code> dành cho quản trị viên <code>root</code>).</p>
+
+        <h3>1.3 Shell Script là gì?</h3>
+        <p><strong>Shell Script</strong> là một file văn bản chứa tập hợp gồm nhiều câu lệnh Linux được xếp theo thứ tự. Khi thực thi file script, Shell sẽ đọc và lần lượt thi hành từng câu lệnh tự động.</p>
+      </section>
+
+      <!-- Section 2: Lệnh cd, path, PATH -->
+      <section id="sec-path" style="margin-top: 2rem;">
+        <h2>2. Các Lệnh Cơ Bản &amp; Đường Dẫn (Path) Trong Linux</h2>
         
-        <p><strong>Tìm bằng cách kết hợp ký tự đại diện:</strong></p>
-        <pre><code>find /usr/share/doc -name "README*"</code></pre>
-
-        <p><strong>Tìm không phân biệt chữ hoa hay chữ thường:</strong></p>
-        <pre><code>find /usr/share/doc -iname readme*</code></pre>
-
-        <p><strong>Tìm theo loại đối tượng (Type):</strong></p>
-        <pre><code>find . -type f</code></pre>
+        <h3>2.1 Lệnh di chuyển thư mục `cd` &amp; Lệnh `pwd`</h3>
         <ul>
-          <li><code>f</code>: Tệp tin thường.</li>
-          <li><code>d</code>: Thư mục.</li>
-          <li><code>l</code>: Liên kết mềm.</li>
+          <li><code>pwd</code> (Print Working Directory): Hiển thị đường dẫn tuyệt đối của thư mục làm việc hiện hành.</li>
+          <li><code>cd path</code>: Di chuyển đến thư mục chỉ định bởi <code>path</code>.</li>
+          <li><code>cd</code> (không tham số): Trở về ngay thư mục cá nhân (Home directory) của người dùng hiện tại.</li>
         </ul>
 
-        <p><strong>Tìm theo mốc thời gian sửa đổi (Modification time):</strong></p>
-        <p>Tìm các tệp tin được cập nhật trong vòng 24 giờ qua:</p>
-        <pre><code>find . -mtime -1</code></pre>
-        <p>Tìm các tệp tin được chỉnh sửa từ hơn 7 ngày trước:</p>
-        <pre><code>find . -mtime +7</code></pre>
+        <h3 style="margin-top: 1.25rem;">2.2 Đường dẫn Tuyệt đối vs Đường dẫn Tương đối</h3>
+        <ul>
+          <li><strong>Đường dẫn tuyệt đối (Absolute Path):</strong> Chỉ định đầy đủ vị trí bắt đầu từ thư mục gốc <code>/</code> (Ví dụ: <code>/usr/local/bin</code>). Luôn bắt đầu bằng <code>/</code>.</li>
+          <li><strong>Đường dẫn tương đối (Relative Path):</strong> Tính từ vị trí hiện hành đến thư mục mục tiêu. Không bắt đầu bằng <code>/</code> (Ví dụ đang ở <code>/usr</code> gõ <code>cd local/bin</code>).</li>
+        </ul>
 
-        <p><strong>Tìm theo dung lượng kích thước (Size):</strong></p>
-        <p>Tìm file có dung lượng nhỏ hơn 50 bytes (ký tự <code>c</code> đại diện cho byte):</p>
-        <pre><code>find . -size -50c</code></pre>
+        <h3 style="margin-top: 1.25rem;">2.3 Ký hiệu thư mục đặc biệt:</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Ký hiệu</th>
+              <th>Ý nghĩa</th>
+              <th>Ví dụ ứng dụng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>..</code></td>
+              <td>Thư mục cha (Parent Directory)</td>
+              <td><code>cd ..</code> hoặc <code>cd ../share</code></td>
+            </tr>
+            <tr>
+              <td><code>.</code></td>
+              <td>Thư mục hiện hành (Current Directory)</td>
+              <td><code>./myprog</code> (Thực thi script trong thư mục hiện tại)</td>
+            </tr>
+            <tr>
+              <td><code>~</code></td>
+              <td>Thư mục cá nhân (Home Directory)</td>
+              <td><code>./myprog ~/myfile.txt</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.25rem;">2.4 Biến môi trường `PATH`</h3>
+        <p>Biến <code>PATH</code> lưu trữ danh sách các đường dẫn thư mục chứa các file chương trình thực thi. Khi bạn nhập một tên lệnh, Shell sẽ tìm kiếm chương trình đó trong các thư mục định nghĩa bởi <code>PATH</code>.</p>
+        <div class="cmd-output"><span class="cmd-input"># Xem danh sách các đường dẫn trong biến PATH:</span>
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/games
+
+<span class="cmd-input"># Thêm một đường dẫn mới vào biến PATH:</span>
+$ PATH=$PATH:/root/shellscript</div>
       </section>
 
-      <!-- Section 22 -->
-      <section id="sec-22" style="margin-top: 2.5rem;">
-        <h2>22. Quyền truy cập file trong Linux</h2>
-        <p>Hệ điều hành Linux phân loại quyền quản lý tệp tin và thư mục chặt chẽ cho 3 đối tượng người dùng:</p>
-        <ol>
-          <li><strong>Chủ sở hữu (Owner - ký hiệu u)</strong>: Người tạo ra file.</li>
-          <li><strong>Nhóm (Group - ký hiệu g)</strong>: Tập hợp nhóm các tài khoản người dùng được gán chung quyền hạn trên file.</li>
-          <li><strong>Người dùng khác (Others - ký hiệu o)</strong>: Tất cả các tài khoản khác trên hệ thống.</li>
-        </ol>
-        <p>Mỗi nhóm đối tượng trên đều được quy định 3 loại quyền hạn: <strong>Đọc (Read - r)</strong>, <strong>Ghi/Sửa/Xóa (Write - w)</strong> và <strong>Thực thi/Truy cập (Execute - x)</strong>.</p>
+      <!-- Section 3: ls, less, file -->
+      <section id="sec-ls-less-file" style="margin-top: 2rem;">
+        <h2>3. Khảo Sát Thư Mục Và File (`ls`, `less`, `file`)</h2>
+        
+        <h3>3.1 Lệnh `ls` và phân tích 7 cột định dạng dài (`ls -l`)</h3>
+        <div class="cmd-output">$ ls -l
+-rw-r--r-- 1 root root 1205 Mar 7 10:00 install.log</div>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cột số</th>
+              <th>Thông tin hiển thị</th>
+              <th>Mô tả chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cột (1)</td>
+              <td>Quyền truy xuất &amp; Loại file</td>
+              <td>Ký tự đầu: <code>-</code> (file thường), <code>d</code> (thư mục). 9 ký tự sau phân làm 3 nhóm: Owner (3), Group (3), Other (3) với các quyền <code>r</code>, <code>w</code>, <code>x</code>.</td>
+            </tr>
+            <tr>
+              <td>Cột (2)</td>
+              <td>Số lượng liên kết (Links)</td>
+              <td>Số lượng nối kết cứng trỏ tới file/thư mục.</td>
+            </tr>
+            <tr>
+              <td>Cột (3)</td>
+              <td>Chủ sở hữu (Owner)</td>
+              <td>Tên tài khoản người dùng làm chủ sở hữu file.</td>
+            </tr>
+            <tr>
+              <td>Cột (4)</td>
+              <td>Nhóm sở hữu (Group)</td>
+              <td>Tên nhóm người dùng có quyền tương ứng trên file.</td>
+            </tr>
+            <tr>
+              <td>Cột (5)</td>
+              <td>Kích thước (Size)</td>
+              <td>Kích thước file tính theo đơn vị Bytes.</td>
+            </tr>
+            <tr>
+              <td>Cột (6)</td>
+              <td>Thời gian cập nhật</td>
+              <td>Ngày giờ lần cuối file được chỉnh sửa.</td>
+            </tr>
+            <tr>
+              <td>Cột (7)</td>
+              <td>Tên File / Thư mục</td>
+              <td>Tên hiển thị của đối tượng trong hệ thống.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">3.2 Lệnh `less` xem văn bản theo trang</h3>
+        <p>Cú pháp: <code>$ less tên_file</code>. Các phím điều hướng khi dùng <code>less</code>:</p>
+        <ul style="line-height: 1.6;">
+          <li><code>Page Up</code> hoặc <code>b</code>: Cuộn lên 1 trang màn hình.</li>
+          <li><code>Page Down</code> hoặc <code>Space</code>: Cuộn xuống 1 trang màn hình.</li>
+          <li><code>G</code>: Nhảy trực tiếp đến dòng cuối cùng của file.</li>
+          <li><code>1G</code>: Nhảy về dòng đầu tiên của file.</li>
+          <li><code>/chuỗi</code>: Tìm kiếm từ khóa <code>chuỗi</code> trong nội dung file.</li>
+          <li><code>n</code>: Tìm kiếm tiếp tục kết quả trùng khớp tiếp theo.</li>
+          <li><code>q</code>: Thoát khỏi chế độ xem file.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;">3.3 Lệnh `file` xác định định dạng tập tin</h3>
+        <p>Cú pháp: <code>$ file tên_file</code> (Ví dụ: kiểm tra xem file là ASCII text, C source code, Shell script hay ELF executable binary...).</p>
       </section>
 
-      <!-- Section 23 -->
-      <section id="sec-23" style="margin-top: 2.5rem;">
-        <h2>23. Lệnh chmod</h2>
-        <p>Lệnh <code>chmod</code> (Change Mode) dùng để thay đổi quyền truy cập của file/thư mục.</p>
-        <p>Hệ thống Linux biểu diễn quyền hạn bằng các con số cơ số 8 (Octal) theo trọng số nhị phân:</p>
-        <div style="overflow-x: auto; margin: 1rem 0;">
-          <table style="width: 100%; border-collapse: collapse; border: 1px solid var(--border-color); text-align: center;">
-            <thead>
-              <tr style="background-color: var(--highlight-bg); border-bottom: 1px solid var(--border-color);">
-                <th style="padding: 0.5rem; border-right: 1px solid var(--border-color);">Quyền hạn</th>
-                <th style="padding: 0.5rem; border-right: 1px solid var(--border-color);">Ký hiệu</th>
-                <th style="padding: 0.5rem;">Giá trị số tương ứng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color);">Xem/Đọc</td>
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold; color: var(--accent-cyan);">r</td>
-                <td style="padding: 0.5rem; font-weight: bold;">4</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color);">Ghi/Sửa</td>
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold; color: var(--accent-cyan);">w</td>
-                <td style="padding: 0.5rem; font-weight: bold;">2</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color);">Thực thi/Truy cập</td>
-                <td style="padding: 0.5rem; border-right: 1px solid var(--border-color); font-weight: bold; color: var(--accent-cyan);">x</td>
-                <td style="padding: 0.5rem; font-weight: bold;">1</td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Section 4: Thao tác file & find -->
+      <section id="sec-file-ops" style="margin-top: 2rem;">
+        <h2>4. Các Lệnh Thao Tác File &amp; Wildcards</h2>
+        
+        <h3>4.1 Ký tự đại diện (Wildcards)</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Ký tự đại diện</th>
+              <th>Ý nghĩa trùng khớp</th>
+              <th>Ví dụ mẫu (Pattern)</th>
+              <th>Giải thích ví dụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>*</code></td>
+              <td>Trùng khớp với bất kỳ chuỗi một hoặc nhiều ký tự nào</td>
+              <td><code>b*.txt</code></td>
+              <td>Tất cả các file bắt đầu bằng <code>b</code> và kết thúc bằng <code>.txt</code></td>
+            </tr>
+            <tr>
+              <td><code>?</code></td>
+              <td>Trùng khớp với đúng 1 ký tự đơn bất kỳ</td>
+              <td><code>Data???</code></td>
+              <td>Các file bắt đầu bằng <code>Data</code> và có thêm đúng 3 ký tự tiếp theo</td>
+            </tr>
+            <tr>
+              <td><code>[tập_hợp]</code></td>
+              <td>Trùng khớp với 1 ký tự bất kỳ nằm trong khoảng/tập hợp</td>
+              <td><code>[A-Z]*</code></td>
+              <td>Tất cả các file bắt đầu bằng một ký tự chữ hoa</td>
+            </tr>
+            <tr>
+              <td><code>[!tập_hợp]</code></td>
+              <td>Trùng khớp với 1 ký tự KHÔNG nằm trong khoảng/tập hợp</td>
+              <td><code>[!a-z]*</code></td>
+              <td>Tất cả các file có ký tự đầu tiên không phải là chữ thường</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">4.2 Bảng lệnh thao tác file cơ bản</h3>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Cú pháp lệnh</th>
+              <th>Chức năng &amp; Hành vi chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cp file1 file2</code></td>
+              <td>Sao chép file1 thành file2 (Ghi chồng nếu file2 đã tồn tại)</td>
+            </tr>
+            <tr>
+              <td><code>cp -i file1 file2</code></td>
+              <td>Sao chép có cảnh báo xác nhận trước khi ghi đè file2</td>
+            </tr>
+            <tr>
+              <td><code>cp -R dir1 dir2</code></td>
+              <td>Sao chép đệ quy toàn bộ cây thư mục dir1 sang dir2</td>
+            </tr>
+            <tr>
+              <td><code>mv file1 file2</code></td>
+              <td>Đổi tên file1 thành file2 (hoặc di chuyển nếu target là thư mục)</td>
+            </tr>
+            <tr>
+              <td><code>rm file1 file2</code></td>
+              <td>Xóa các tập tin chỉ định</td>
+            </tr>
+            <tr>
+              <td><code>rm -r dir1 dir2</code></td>
+              <td>Xóa đệ quy thư mục dir1, dir2 cùng toàn bộ nội dung bên trong</td>
+            </tr>
+            <tr>
+              <td><code>mkdir tên_dir</code></td>
+              <td>Tạo một thư mục mới</td>
+            </tr>
+            <tr>
+              <td><code>which tên_lệnh</code></td>
+              <td>Tìm vị trí đường dẫn file thực thi của lệnh trong biến <code>$PATH</code></td>
+            </tr>
+            <tr>
+              <td><code>whereis tên_lệnh</code></td>
+              <td>Tìm vị trí file nhị phân, file nguồn và tài liệu hướng dẫn man page</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">4.3 Công cụ tìm kiếm file mạnh mẽ `find`</h3>
+        <ul>
+          <li><code>find /path -name "pattern"</code>: Tìm theo tên file (có phân biệt hoa/thường).</li>
+          <li><code>find /path -iname "pattern"</code>: Tìm theo tên file **không phân biệt chữ hoa/thường**.</li>
+          <li><code>find /path -type [f|d|l|b|c]</code>: Lọc theo loại đối tượng: <code>f</code> (file), <code>d</code> (directory), <code>l</code> (symlink).</li>
+          <li><code>find /path -mtime -1</code>: Tìm các file được cập nhật trong vòng 24 giờ qua.</li>
+          <li><code>find /path -size -50c</code>: Tìm các file thường có kích thước nhỏ hơn 50 bytes (<code>c</code> là bytes, <code>k</code> là KB).</li>
+        </ul>
+      </section>
+
+      <!-- Section 5: Permissions & su, chown, chgrp -->
+      <section id="sec-permissions" style="margin-top: 2rem;">
+        <h2>5. Quyền Truy Xuất File &amp; Quản Lý Quyền (`chmod`, `su`, `chown`, `chgrp`)</h2>
+        
+        <h3>5.1 Bảng mã Bát phân (Octal) trong lệnh `chmod`</h3>
+        <p>Quyền truy cập được chia cho 3 nhóm: Owner - Group - Other. Mỗi nhóm gồm 3 bit đại diện cho <code>r</code> (Read=4), <code>w</code> (Write=2), <code>x</code> (Execute=1):</p>
+        
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Giá trị Octal</th>
+              <th>Ký hiệu Quyền</th>
+              <th>Ý nghĩa &amp; Trường hợp sử dụng phổ biến</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>777</code></td>
+              <td><code>rwx rwx rwx</code></td>
+              <td>Mọi người đều có toàn quyền (Đọc, Ghi, Thực thi). Rất ít khi dùng vì rủi ro bảo mật.</td>
+            </tr>
+            <tr>
+              <td><code>755</code></td>
+              <td><code>rwx r-x r-x</code></td>
+              <td>Owner có toàn quyền, Group &amp; Other có quyền Đọc và Thực thi. Thường dùng cho chương trình/script public.</td>
+            </tr>
+            <tr>
+              <td><code>700</code></td>
+              <td><code>rwx --- ---</code></td>
+              <td>Chỉ duy nhất Owner có toàn quyền, những người khác không có bất kỳ quyền nào. Thường dùng cho script cá nhân bảo mật.</td>
+            </tr>
+            <tr>
+              <td><code>666</code></td>
+              <td><code>rw- rw- rw-</code></td>
+              <td>Tất cả người dùng đều có quyền Đọc và Ghi (không có quyền thực thi).</td>
+            </tr>
+            <tr>
+              <td><code>644</code></td>
+              <td><code>rw- r-- r--</code></td>
+              <td>Owner có quyền Đọc &amp; Ghi, những người khác chỉ có quyền Đọc. Thường dùng cho các file dữ liệu chuẩn.</td>
+            </tr>
+            <tr>
+              <td><code>600</code></td>
+              <td><code>rw- --- ---</code></td>
+              <td>Owner có quyền Đọc &amp; Ghi, những người khác bị cấm hoàn toàn. Thường dùng cho file dữ liệu quan trọng.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 1.5rem;">5.2 Lệnh `su`, `chown`, `chgrp`</h3>
+        <ul>
+          <li><code>su root</code>: Chuyển phiên làm việc sang tài khoản Superuser quản trị <code>root</code>. Nhập <code>exit</code> để thoát về user cũ.</li>
+          <li><code>chown user_moi file</code>: Thay đổi chủ sở hữu của file/thư mục (Cần quyền root).</li>
+          <li><code>chgrp group_moi file</code>: Thay đổi nhóm sở hữu của file/thư mục.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6: BÀI TẬP THỰC HÀNH & LỜI GIẢI CHI TIẾT -->
+      <section id="sec-exercises" style="margin-top: 3rem;">
+        <h2>BÀI TẬP THỰC HÀNH &amp; HƯỚNG DẪN LỜI GIẢI CHI TIẾT (BÀI 1 &rarr; 14)</h2>
+
+        <!-- Bài 1 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 1: Thực hiện và khảo sát tất cả các ví dụ trên</div>
+          <p>Tạo thử các tập tin, thực thi các lệnh <code>cd</code>, <code>pwd</code>, <code>ls -l</code>, <code>less</code>, <code>file</code>, <code>chmod</code> để quan sát kết quả hệ thống trả về.</p>
         </div>
-        <p>Ví dụ cách tính tổ hợp quyền:</p>
-        <ul>
-          <li><code>rwx</code> = $4 + 2 + 1 = 7$ (toàn quyền)</li>
-          <li><code>rw-</code> = $4 + 2 + 0 = 6$ (chỉ đọc và ghi)</li>
-          <li><code>r-x</code> = $4 + 0 + 1 = 5$ (đọc và chạy)</li>
-          <li><code>r--</code> = $4 + 0 + 0 = 4$ (chỉ đọc)</li>
-        </ul>
 
-        <h3>Các thiết lập quyền thường dùng:</h3>
-        <ul>
-          <li><strong>777</strong>: Tất cả mọi người (Owner, Group, Others) đều có toàn quyền.</li>
-          <li><strong>755</strong>: Owner toàn quyền; Group và Others chỉ có quyền đọc và chạy chương trình.</li>
-          <li><strong>700</strong>: Chỉ duy nhất Owner có toàn quyền, bảo mật cao.</li>
-          <li><strong>644</strong>: Owner có quyền đọc ghi; Group và Others chỉ được đọc.</li>
-          <li><strong>600</strong>: Chỉ Owner được đọc ghi, người khác không có quyền gì.</li>
-        </ul>
+        <!-- Bài 2 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 2: Thực hiện lệnh chuyển thư mục theo thứ tự</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd /</span>                     # 1. Chuyển về thư mục gốc /
+<span class="cmd-input">$ cd /bin</span>                  # 2. Chuyển đến thư mục /bin
+<span class="cmd-input">$ cd /usr/local/bin</span>        # 3. Chuyển đến thư mục /usr/local/bin
+<span class="cmd-input">$ cd ..</span>                    # 4. Chuyển ra thư mục trên một mức (/usr/local)
+<span class="cmd-input">$ cd</span>                       # 5. Chuyển về thư mục cá nhân (Home)</div>
+        </div>
 
-        <p>Ví dụ thiết lập quyền thực thi cho file <code>hello</code>:</p>
-        <pre><code>chmod 755 hello</code></pre>
-      </section>
+        <!-- Bài 3 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 3: Tạo script `hello` tại `/usr` và kiểm tra thực thi</div>
+          <div class="cmd-output"><span class="cmd-input">$ cd /usr</span>
+<span class="cmd-input">$ cat > hello</span>
+echo "Xin chao!!!"
+[Nhấn Ctrl+D để lưu]
+<span class="cmd-input">$ chmod 755 hello</span>
+<span class="cmd-input">$ sh hello</span>
+Xin chao!!!
 
-      <!-- Section 24 -->
-      <section id="sec-24" style="margin-top: 2.5rem;">
-        <h2>24. Quyền trên thư mục</h2>
-        <p>Khác biệt cốt lõi về quyền hạn trên thư mục so với tệp tin thường:</p>
-        <ul>
-          <li style="margin-bottom: 0.5rem;"><strong>Quyền đọc (r)</strong>: Cho phép xem danh sách tên các tệp tin chứa trong thư mục (bằng lệnh <code>ls</code>).</li>
-          <li style="margin-bottom: 0.5rem;"><strong>Quyền ghi (w)</strong>: Cho phép người dùng tạo mới, đổi tên hoặc xóa các tệp tin chứa bên trong thư mục.</li>
-          <li style="margin-bottom: 0.5rem;"><strong>Quyền thực thi (x)</strong>: Cho phép đi vào thư mục (bằng lệnh <code>cd</code>) để truy cập nội dung cụ thể của các tệp tin bên trong.</li>
-        </ul>
-      </section>
+<span class="cmd-input">$ cd ~</span>
+<span class="cmd-input">$ sh hello</span>
+sh: hello: No such file or directory</div>
+          <p><strong>Giải thích lý do không thực hiện được:</strong> Khi ở thư mục cá nhân <code>~</code>, gõ <code>sh hello</code> thì Shell sẽ tìm file <code>hello</code> trong thư mục hiện tại và các đường dẫn định nghĩa trong biến <code>$PATH</code>. Vì file <code>hello</code> nằm tại <code>/usr</code> (chưa có trong PATH hoặc không gọi rõ đường dẫn), Shell không thể tìm thấy file.</p>
+        </div>
 
-      <!-- Section 25 -->
-      <section id="sec-25" style="margin-top: 2.5rem;">
-        <h2>25. Lệnh su</h2>
-        <p>Lệnh <code>su</code> (Substitute User) dùng để đăng nhập chuyển đổi tạm thời sang một tài khoản khác trong cùng phiên làm việc Shell.</p>
-        <p>Chuyển sang tài khoản quản trị tối cao (Superuser root):</p>
-        <pre><code>su</code></pre>
-        <p>Hoặc:</p>
-        <pre><code>su root</code></pre>
-        <p>Để quay trở về phiên làm việc của người dùng ban đầu, gõ lệnh:</p>
-        <pre><code>exit</code></pre>
-      </section>
+        <!-- Bài 4 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 4: Sử dụng đường dẫn tuyệt đối để chạy `hello`</div>
+          <div class="cmd-output"><span class="cmd-input">$ sh /usr/hello</span>
+Xin chao!!!</div>
+          <p>Khi chỉ định rõ đường dẫn tuyệt đối <code>/usr/hello</code>, Shell có thể truy xuất trực tiếp file ở bất kỳ vị trí nào.</p>
+        </div>
 
-      <!-- Section 26 -->
-      <section id="sec-26" style="margin-top: 2.5rem;">
-        <h2>26. Lệnh chown</h2>
-        <p>Lệnh <code>chown</code> (Change Owner) dùng để thay đổi quyền chủ sở hữu tệp tin hoặc thư mục.</p>
-        <p>Ví dụ chuyển chủ sở hữu tệp <code>test.txt</code> sang cho tài khoản quản trị <code>root</code>:</p>
-        <pre><code>chown root test.txt</code></pre>
-      </section>
+        <!-- Bài 5 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 5: Thêm thư mục `/usr` vào biến `PATH`</div>
+          <div class="cmd-output"><span class="cmd-input"># 1. Xem nội dung biến PATH hiện tại:</span>
+$ echo $PATH
 
-      <!-- Section 27 -->
-      <section id="sec-27" style="margin-top: 2.5rem;">
-        <h2>27. Lệnh chgrp</h2>
-        <p>Lệnh <code>chgrp</code> (Change Group) dùng để thay đổi nhóm sở hữu của tệp tin hoặc thư mục.</p>
-        <p>Ví dụ gán nhóm sở hữu tệp <code>test.txt</code> sang nhóm <code>admin</code>:</p>
-        <pre><code>chgrp admin test.txt</code></pre>
-      </section>
+<span class="cmd-input"># 2. Thêm đường dẫn /usr vào PATH:</span>
+$ PATH=$PATH:/usr
 
-      <!-- Section 28 -->
-      <section id="sec-28" style="margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
-        <h2>28. Hướng dẫn giải chi tiết các bài tập trong tài liệu thực hành</h2>
-        <p>Dưới đây là phần hướng dẫn thực hiện chi tiết cho các yêu cầu bài tập thực hành buổi 1 trên môi trường Linux Terminal:</p>
+<span class="cmd-input"># 3. Bây giờ gõ 'sh hello' ở bất kỳ thư mục nào cũng đều chạy thành công:</span>
+$ cd ~
+$ sh hello
+Xin chao!!!</div>
+        </div>
 
-        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
-          <!-- Ex 1 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 1: Thực hiện lại toàn bộ ví dụ</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Chạy thử tất cả các lệnh căn bản đã được học ở phần lý thuyết.</p>
-            <pre><code>cat /etc/shells
-echo $SHELL
-pwd
-ls -l</code></pre>
-          </div>
+        <!-- Bài 6 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 6: Khảo sát quyền trên file `ls`, `sh` và thư mục `/root`</div>
+          <div class="cmd-output"><span class="cmd-input">$ ls -l /bin/ls /bin/sh</span>
+-rwxr-xr-x 1 root root 142144 Jan 1  2024 /bin/ls
+lrwxrwxrwx 1 root root      4 Jan 1  2024 /bin/sh -> bash
 
-          <!-- Ex 2 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 2: Thực hành di chuyển thư mục bằng cd</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Sử dụng cả đường dẫn tương đối và tuyệt đối để đi vào các thư mục sâu, sau đó lùi lại thư mục cha.</p>
-            <pre><code>cd /usr/share/doc
-cd ../../local/bin
-pwd</code></pre>
-          </div>
+<span class="cmd-input">$ ls -ld /root</span>
+drwx------ 1 root root   4096 Mar 7 12:00 /root</div>
+          <p><strong>Nhận xét:</strong> File <code>/bin/ls</code> có quyền <code>755</code> (root toàn quyền, mọi user khác được đọc và chạy). Thư mục <code>/root</code> có quyền <code>700</code> (chỉ duy nhất root mới có quyền truy cập, các user khác bị cấm hoàn toàn).</p>
+        </div>
 
-          <!-- Ex 3 & 4 & 5 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 3, 4 &amp; 5: Tạo Shell Script và tích hợp biến PATH</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;"><strong>Bước A:</strong> Tạo thư mục chứa và tệp script:</p>
-            <pre><code>mkdir ~/myscripts
-cd ~/myscripts
-cat &gt; hello
-#!/bin/bash
-echo "Hello World!"
-(Bấm Ctrl + D để lưu file)</code></pre>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; margin-top: 0.75rem;"><strong>Bước B:</strong> Gán quyền thực thi cho file và chạy thử bằng đường dẫn tuyệt đối:</p>
-            <pre><code>chmod +x hello
-/home/student/myscripts/hello</code></pre>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; margin-top: 0.75rem;"><strong>Bước C:</strong> Thêm thư mục <code>~/myscripts</code> vào biến PATH để có thể gõ lệnh <code>hello</code> từ bất cứ thư mục nào:</p>
-            <pre><code>export PATH=$PATH:~/myscripts
-cd /tmp
-hello</code></pre>
-          </div>
+        <!-- Bài 7 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 7: Thực hành lệnh `file` và `less`</div>
+          <div class="cmd-output"><span class="cmd-input"># Tìm các file dạng ASCII text trong /etc:</span>
+$ file /etc/* | grep "ASCII text"
 
-          <!-- Ex 6 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 6: Khảo sát quyền truy cập của các file hệ thống</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Kiểm tra quyền truy cập của tệp tin <code>ls</code>, <code>sh</code> và thư mục của quản trị viên <code>/root</code>.</p>
-            <pre><code>ls -l /bin/ls /bin/sh
-ls -ld /root</code></pre>
-            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem;">
-              💡 <em>Giải thích kết quả:</em> <code>/bin/ls</code> thường có quyền <code>rwxr-xr-x</code> (755) cho phép mọi người thực thi. Thư mục <code>/root</code> có quyền <code>rwx------</code> (700) chỉ cho phép tài khoản root truy cập.
-            </p>
-          </div>
+<span class="cmd-input"># Xem nội dung file ASCII text bằng less:</span>
+$ less /etc/passwd</div>
+        </div>
 
-          <!-- Ex 7 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 7: Tìm kiếm file cấu trúc văn bản và đọc bằng less</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Sử dụng lệnh <code>file</code> kết hợp <code>find</code> để xác định tệp văn bản ASCII trong hệ thống và đọc nội dung bằng <code>less</code>.</p>
-            <pre><code>find /usr/share/doc -name "*.txt" -exec file {} \; | grep "text"
-less /usr/share/doc/zenity/README.txt</code></pre>
-          </div>
+        <!-- Bài 8 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 8: Tạo cây thư mục `Myweb` bằng lệnh `mkdir -p`</div>
+          <div class="code-block"># Tạo toàn bộ cây thư mục Myweb bằng 1 lệnh duy nhất:
+mkdir -p Myweb/images/background/animation Myweb/images/icon Myweb/databases Myweb/scripts Myweb/java
 
-          <!-- Ex 8 & 9 & 10 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 8, 9 &amp; 10: Tổ chức quản lý cây thư mục Myweb</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;"><strong>Bước A:</strong> Tạo cấu trúc cây thư mục:</p>
-            <pre><code>mkdir -p ~/Myweb/html ~/Myweb/java</code></pre>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; margin-top: 0.75rem;"><strong>Bước B:</strong> Tìm các tệp tin .html và .class trên hệ thống và sao chép vào các thư mục tương ứng:</p>
-            <pre><code>find / -name "*.html" -exec cp {} ~/Myweb/html/ \; 2&gt;/dev/null
-find / -name "*.class" -exec cp {} ~/Myweb/html/ \; 2&gt;/dev/null</code></pre>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; margin-top: 0.75rem;"><strong>Bước C:</strong> Di chuyển các tệp .class từ thư mục html sang thư mục java:</p>
-            <pre><code>mv ~/Myweb/html/*.class ~/Myweb/java/</code></pre>
-          </div>
+# Kiểm tra cây thư mục vừa tạo bằng lệnh tree:
+tree Myweb</div>
+          <div class="cmd-output">Myweb
+├── databases
+├── images
+│   ├── background
+│   │   └── animation
+│   └── icon
+├── java
+└── scripts</div>
+        </div>
 
-          <!-- Ex 11 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 11: Thực hành xóa thư mục an toàn</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Yêu cầu: Xóa thư mục html chứa các tệp tin bên trong.</p>
-            <pre><code>rm -r ~/Myweb/html</code></pre>
-          </div>
+        <!-- Bài 9 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 9: Tìm file `.html` và `.class` rồi sao chép vào `Myweb`</div>
+          <div class="code-block"># 1. Tìm và sao chép vài file .html vào thư mục Myweb:
+find /usr/share -name "*.html" | head -n 3 | xargs -I {} cp {} Myweb/
 
-          <!-- Ex 12 & 13 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 12 &amp; 13: Thiết lập quyền truy cập cho cơ sở dữ liệu và mã nguồn Java</h4>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;"><strong>Bước A:</strong> Thiết lập quyền chỉ đọc/ghi cá nhân cho database tệp tin cấu hình (600):</p>
-            <pre><code>chmod 600 ~/Myweb/database.conf</code></pre>
-            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; margin-top: 0.75rem;"><strong>Bước B:</strong> Thiết lập quyền đọc và thực thi cho mã nguồn java (755):</p>
-            <pre><code>chmod 755 ~/Myweb/java/*.class</code></pre>
-          </div>
+# 2. Tìm và sao chép vài file .class vào thư mục Myweb/scripts:
+find /usr -name "*.class" | head -n 3 | xargs -I {} cp {} Myweb/scripts/</div>
+        </div>
 
-          <!-- Ex 14 -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px;">
-            <h4 style="margin-top: 0; color: var(--primary-color);">Bài tập 14: Giải thích ý nghĩa lệnh chmod 755 hello</h4>
-            <div style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
-              Lệnh này gán quyền truy cập cho tệp tin <code>hello</code> theo quy tắc số hệ 8 (Octal):
-              <ul style="margin-left: 1.25rem; margin-top: 0.25rem;">
-                <li>Số <strong>7</strong> ($4 + 2 + 1 = \text{rwx}$): Chủ sở hữu (Owner) có toàn quyền đọc (r), ghi (w) và thực thi (x).</li>
-                <li>Số <strong>5</strong> ($4 + 0 + 1 = \text{r-x}$): Nhóm sở hữu (Group) có quyền đọc (r) và thực thi (x), không có quyền ghi/sửa (w).</li>
-                <li>Số <strong>5</strong> ($4 + 0 + 1 = \text{r-x}$): Những người dùng khác (Others) có quyền đọc (r) và thực thi (x), không có quyền ghi/sửa (w).</li>
-              </ul>
-            </div>
-          </div>
+        <!-- Bài 10 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 10: Di chuyển các file `.class` từ `scripts` sang `java`</div>
+          <div class="cmd-output"><span class="cmd-input">$ mv Myweb/scripts/*.class Myweb/java/</span>
+<span class="cmd-input">$ ls -l Myweb/java/</span></div>
+        </div>
+
+        <!-- Bài 11 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 11: Xóa các thư mục `scripts` và `animation`</div>
+          <div class="cmd-output"><span class="cmd-input">$ rm -r Myweb/scripts</span>
+<span class="cmd-input">$ rm -r Myweb/images/background/animation</span></div>
+        </div>
+
+        <!-- Bài 12 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 12: Thiết lập quyền cho `Myweb/databases` chỉ root có toàn quyền</div>
+          <div class="cmd-output"><span class="cmd-input">$ chmod 700 Myweb/databases</span>
+<span class="cmd-input">$ ls -ld Myweb/databases</span>
+drwx------ 2 user1 user1 4096 Mar 7 12:00 Myweb/databases</div>
+          <p>Quyền <code>700</code> (<code>rwx------</code>) đảm bảo chỉ người làm chủ (hoặc root) mới có quyền truy cập, mọi người dùng khác bị chặn hoàn toàn.</p>
+        </div>
+
+        <!-- Bài 13 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 13: Thiết lập quyền cho `Myweb/java` (Owner toàn quyền, người khác chỉ thực thi)</div>
+          <div class="cmd-output"><span class="cmd-input">$ chmod 711 Myweb/java</span>
+<span class="cmd-input">$ ls -ld Myweb/java</span>
+drwx--x--x 2 user1 user1 4096 Mar 7 12:00 Myweb/java</div>
+          <p>Quyền <code>711</code> (<code>rwx--x--x</code>) cho phép Owner có quyền <code>rwx</code> (7), còn Group và Others chỉ có quyền thực thi <code>x</code> (1) để truy nhập qua thư mục nhưng không đọc được danh sách file bên trong.</p>
+        </div>
+
+        <!-- Bài 14 -->
+        <div class="solution-box">
+          <div class="solution-title">Bài 14: Ý nghĩa của lệnh `chmod 755 hello` trong Bài 3</div>
+          <p>Lệnh <code>chmod 755 hello</code> có ý nghĩa phân quyền bát phân cho file <code>hello</code> như sau:</p>
+          <ul>
+            <li><strong>Chủ sở hữu (Owner = 7 = `rwx`):</strong> Có đầy đủ quyền Đọc, Ghi và Thực thi file.</li>
+            <li><strong>Nhóm sở hữu (Group = 5 = `r-x`):</strong> Có quyền Đọc và Thực thi file, không có quyền chỉnh sửa.</li>
+            <li><strong>Người dùng khác (Other = 5 = `r-x`):</strong> Có quyền Đọc và Thực thi file, không có quyền chỉnh sửa.</li>
+          </ul>
         </div>
       </section>
     </main>
 
     <footer>
       <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
-      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thò</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
       <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
     </footer>
   </div>
