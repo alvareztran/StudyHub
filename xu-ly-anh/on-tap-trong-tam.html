@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tóm Tắt Kiến Thức Trọng Tâm & Dấu Hiệu Nhận Biết - Xử Lý Ảnh CT316</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      throwOnError: false
+    });"></script>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <style>
+    /* Custom styling for review page */
+    .formula-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+    .formula-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .step-box {
+      background: var(--bg-code, #f8fafc);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .exam-tip-box {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+      border-left: 4px solid #eab308;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+      color: #713f12;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .toc-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .toc-item:hover {
+      border-color: var(--secondary-color);
+      color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    .math-block {
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+    /* 2x2 Layout Grid for 4 Histogram Types */
+    .histo-2x2-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .histo-card-item {
+      background: var(--bg-card);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    @media (max-width: 640px) {
+      .histo-2x2-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Perfect Print Rules: Chapters 1-5 fit in Sheets 1-5, Lookup Table cleanly occupies Sheet 6 */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 17.5px !important;
+        line-height: 1.55 !important;
+      }
+      .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+      header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        margin-bottom: 0.6rem !important;
+      }
+      header h1 {
+        font-size: 2.05rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      header p {
+        font-size: 1rem !important;
+      }
+      h2 {
+        font-size: 1.7rem !important;
+        margin-top: 1.3rem !important;
+        margin-bottom: 0.45rem !important;
+        padding-bottom: 0.3rem !important;
+      }
+      h3, .formula-title {
+        font-size: 1.48rem !important;
+        margin-bottom: 0.45rem !important;
+      }
+      p, li, td, th {
+        font-size: 17px !important;
+      }
+      .formula-card {
+        margin-bottom: 1.1rem !important;
+        padding: 1.05rem 1.3rem !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+      }
+      .step-box, .exam-tip-box {
+        margin: 0.75rem 0 !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 16.5px !important;
+      }
+      .histo-2x2-grid {
+        gap: 0.9rem !important;
+        margin-top: 0.8rem !important;
+      }
+      .histo-card-item {
+        padding: 0.8rem !important;
+      }
+      .diagram-box {
+        margin-top: 0.8rem !important;
+        padding: 0.8rem !important;
+      }
+      svg {
+        max-height: 120px !important;
+      }
+      .math-block {
+        padding: 0.35rem 0 !important;
+      }
+      table th, table td {
+        padding: 0.35rem 0.5rem !important;
+        font-size: 15px !important;
+      }
+      /* Lookup Table starts cleanly at Sheet 6 without splitting or spilling to Sheet 7 */
+      #sec-lookup-table {
+        break-before: page !important;
+        page-break-before: always !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      #sec-lookup-table table td, #sec-lookup-table table th {
+        padding: 0.35rem 0.5rem !important;
+        font-size: 15px !important;
+      }
+      footer {
+        margin-top: 0.85rem !important;
+        padding-top: 0.45rem !important;
+        font-size: 0.85rem !important;
+      }
+      .no-print, .header-actions, .breadcrumb {
+        display: none !important;
+      }
+      h1, h2, h3, h4, .formula-title {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+      .diagram-box, .histo-card-item, svg, table, figure, .step-box, .exam-tip-box {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+    }
+
+    /* Force normal font style for K2D rendering */
+    #page-content *, #page-content {
+      font-style: normal !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page-content">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">CT316 - Xử lý ảnh</a> &raquo; Ôn Tập Trọng Tâm &amp; Dấu Hiệu Nhận Biết
+      </div>
+      <h1>ÔN TẬP TRỌNG TÂM KIẾN THỨC &amp; DẤU HIỆU NHẬN BIẾT (CT316)</h1>
+      <p style="margin-top: 0.5rem; color: var(--text-light);">Tóm tắt toàn bộ 5 chương lý thuyết cốt lõi, dạng bài tập tính toán đặc thù và bảng tra cứu dấu hiệu nhận biết các phép biến đổi ảnh phục vụ thi cử.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Navigation TOC -->
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem;">📌 Mục Lục Nội Dung Ôn Tập</h2>
+      <div class="toc-grid">
+        <a href="#ch1-histogram" class="toc-item">Chương 1. Histogram &amp; Tăng Cường Ảnh</a>
+        <a href="#ch2-filtering" class="toc-item">Chương 2. Các Bộ Lọc Ảnh</a>
+        <a href="#ch3-thresholding" class="toc-item">Chương 3. Phân Ngưỡng Ảnh</a>
+        <a href="#ch4-morphology" class="toc-item">Chương 4. Xử Lý Hình Thái Học</a>
+        <a href="#ch5-geometry" class="toc-item">Chương 5. Biến Đổi Hình Học</a>
+        <a href="#sec-lookup-table" class="toc-item" style="border-color: var(--secondary-color); font-weight: 700; color: var(--secondary-color);">⭐ Bảng Tra Cứu Dấu Hiệu Thi</a>
+      </div>
+    </section>
+
+    <main>
+      <!-- CHƯƠNG 1 -->
+      <section id="ch1-histogram" style="margin-top: 2rem;">
+        <h2>CHƯƠNG 1. HISTOGRAM VÀ TĂNG CƯỜNG ẢNH</h2>
+
+        <!-- 1.1 -->
+        <div class="formula-card">
+          <div class="formula-title">1. Histogram là gì?</div>
+          <p><strong>Histogram</strong> là biểu đồ biểu diễn số lượng pixel tương ứng với mỗi mức xám có trong ảnh.</p>
+          <p>Đối với <strong>ảnh 8-bit</strong>, dải mức xám biến thiên từ $0 \to 255$ ($L = 256$).</p>
+          
+          <p style="margin-top: 0.75rem; font-weight: 600;">Ví dụ bảng phân bố mức xám &amp; số pixel:</p>
+          <table class="table" style="width: auto; border-collapse: collapse; margin-top: 0.5rem;">
+            <thead>
+              <tr>
+                <th style="padding: 0.4rem 1rem;">Mức xám ($r_k$)</th>
+                <th style="padding: 0.4rem 1rem;">Số pixel ($n_k$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>20</td></tr>
+              <tr><td>1</td><td>35</td></tr>
+              <tr><td>2</td><td>41</td></tr>
+              <tr><td>...</td><td>...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 1.2 -->
+        <div class="formula-card">
+          <div class="formula-title">2. Histogram cho biết điều gì?</div>
+          <p>Hình dạng phân bố của Histogram phản ánh chất lượng độ sáng và độ tương phản của bức ảnh:</p>
+
+          <div class="histo-2x2-grid">
+            <!-- a -->
+            <div class="histo-card-item">
+              <p style="font-weight: 700; color: #e11d48; margin-bottom: 0.5rem;">a) Lệch trái &rarr; Ảnh tối</p>
+              <svg viewBox="0 0 280 130" style="width: 100%; height: auto; display: block; border-radius: 6px; background: #0f172a; padding: 10px;">
+      <!-- Grid lines -->
+      <line x1="30" y1="20" x2="270" y2="20" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="55" x2="270" y2="55" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="90" x2="270" y2="90" stroke="#334155" stroke-dasharray="2 2"/>
+      <!-- Axes -->
+      <line x1="30" y1="10" x2="30" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="30" y1="95" x2="270" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <!-- Axis Labels -->
+      <text x="30" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">0</text>
+      <text x="90" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">64</text>
+      <text x="150" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">128</text>
+      <text x="210" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">192</text>
+      <text x="270" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">255</text>
+      <!-- Bars -->
+      <g fill="#f43f5e">
+        <rect x="30" y="20" width="7" height="75" rx="1"/>
+        <rect x="38" y="13" width="7" height="82" rx="1"/>
+        <rect x="46" y="25" width="7" height="70" rx="1"/>
+        <rect x="54" y="30" width="7" height="65" rx="1"/>
+        <rect x="62" y="37" width="7" height="58" rx="1"/>
+        <rect x="70" y="50" width="7" height="45" rx="1"/>
+        <rect x="78" y="65" width="7" height="30" rx="1"/>
+        <rect x="86" y="75" width="7" height="20" rx="1"/>
+        <rect x="94" y="85" width="7" height="10" rx="1"/>
+        <rect x="102" y="90" width="7" height="5" rx="1"/>
+        <rect x="110" y="93" width="7" height="2" rx="1"/>
+        <rect x="118" y="94" width="7" height="1" rx="1"/>
+        <rect x="126" y="95" width="7" height="0" rx="1"/>
+        <rect x="134" y="95" width="7" height="0" rx="1"/>
+        <rect x="142" y="95" width="7" height="0" rx="1"/>
+        <rect x="150" y="95" width="7" height="0" rx="1"/>
+        <rect x="158" y="95" width="7" height="0" rx="1"/>
+        <rect x="166" y="95" width="7" height="0" rx="1"/>
+        <rect x="174" y="95" width="7" height="0" rx="1"/>
+        <rect x="182" y="95" width="7" height="0" rx="1"/>
+        <rect x="190" y="95" width="7" height="0" rx="1"/>
+        <rect x="198" y="95" width="7" height="0" rx="1"/>
+        <rect x="206" y="95" width="7" height="0" rx="1"/>
+        <rect x="214" y="95" width="7" height="0" rx="1"/>
+        <rect x="222" y="95" width="7" height="0" rx="1"/>
+        <rect x="230" y="95" width="7" height="0" rx="1"/>
+        <rect x="238" y="95" width="7" height="0" rx="1"/>
+        <rect x="246" y="95" width="7" height="0" rx="1"/>
+        <rect x="254" y="95" width="7" height="0" rx="1"/>
+        <rect x="262" y="95" width="7" height="0" rx="1"/>
+      </g>
+    </svg>
+              <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.6rem;">Các pixel tập trung ở mức xám thấp ($0 \to 64$). Ảnh bị tối hoặc thiếu sáng.</p>
+            </div>
+
+            <!-- b -->
+            <div class="histo-card-item">
+              <p style="font-weight: 700; color: #d97706; margin-bottom: 0.5rem;">b) Lệch phải &rarr; Ảnh sáng</p>
+              <svg viewBox="0 0 280 130" style="width: 100%; height: auto; display: block; border-radius: 6px; background: #0f172a; padding: 10px;">
+      <!-- Grid lines -->
+      <line x1="30" y1="20" x2="270" y2="20" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="55" x2="270" y2="55" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="90" x2="270" y2="90" stroke="#334155" stroke-dasharray="2 2"/>
+      <!-- Axes -->
+      <line x1="30" y1="10" x2="30" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="30" y1="95" x2="270" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <!-- Axis Labels -->
+      <text x="30" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">0</text>
+      <text x="90" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">64</text>
+      <text x="150" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">128</text>
+      <text x="210" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">192</text>
+      <text x="270" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">255</text>
+      <!-- Bars -->
+      <g fill="#fbbf24">
+        <rect x="30" y="95" width="7" height="0" rx="1"/>
+        <rect x="38" y="95" width="7" height="0" rx="1"/>
+        <rect x="46" y="95" width="7" height="0" rx="1"/>
+        <rect x="54" y="95" width="7" height="0" rx="1"/>
+        <rect x="62" y="95" width="7" height="0" rx="1"/>
+        <rect x="70" y="95" width="7" height="0" rx="1"/>
+        <rect x="78" y="95" width="7" height="0" rx="1"/>
+        <rect x="86" y="95" width="7" height="0" rx="1"/>
+        <rect x="94" y="95" width="7" height="0" rx="1"/>
+        <rect x="102" y="95" width="7" height="0" rx="1"/>
+        <rect x="110" y="95" width="7" height="0" rx="1"/>
+        <rect x="118" y="95" width="7" height="0" rx="1"/>
+        <rect x="126" y="95" width="7" height="0" rx="1"/>
+        <rect x="134" y="95" width="7" height="0" rx="1"/>
+        <rect x="142" y="95" width="7" height="0" rx="1"/>
+        <rect x="150" y="95" width="7" height="0" rx="1"/>
+        <rect x="158" y="95" width="7" height="0" rx="1"/>
+        <rect x="166" y="95" width="7" height="0" rx="1"/>
+        <rect x="174" y="95" width="7" height="0" rx="1"/>
+        <rect x="182" y="93" width="7" height="2" rx="1"/>
+        <rect x="190" y="87" width="7" height="8" rx="1"/>
+        <rect x="198" y="80" width="7" height="15" rx="1"/>
+        <rect x="206" y="67" width="7" height="28" rx="1"/>
+        <rect x="214" y="53" width="7" height="42" rx="1"/>
+        <rect x="222" y="40" width="7" height="55" rx="1"/>
+        <rect x="230" y="27" width="7" height="68" rx="1"/>
+        <rect x="238" y="17" width="7" height="78" rx="1"/>
+        <rect x="246" y="10" width="7" height="85" rx="1"/>
+        <rect x="254" y="15" width="7" height="80" rx="1"/>
+        <rect x="262" y="23" width="7" height="72" rx="1"/>
+      </g>
+    </svg>
+              <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.6rem;">Các pixel tập trung ở mức xám cao ($192 \to 255$). Ảnh bị dư sáng / cháy sáng.</p>
+            </div>
+
+            <!-- c -->
+            <div class="histo-card-item">
+              <p style="font-weight: 700; color: #9333ea; margin-bottom: 0.5rem;">c) Dồn giữa &rarr; Tương phản thấp</p>
+              <svg viewBox="0 0 280 130" style="width: 100%; height: auto; display: block; border-radius: 6px; background: #0f172a; padding: 10px;">
+      <!-- Grid lines -->
+      <line x1="30" y1="20" x2="270" y2="20" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="55" x2="270" y2="55" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="90" x2="270" y2="90" stroke="#334155" stroke-dasharray="2 2"/>
+      <!-- Axes -->
+      <line x1="30" y1="10" x2="30" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="30" y1="95" x2="270" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <!-- Axis Labels -->
+      <text x="30" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">0</text>
+      <text x="90" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">64</text>
+      <text x="150" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">128</text>
+      <text x="210" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">192</text>
+      <text x="270" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">255</text>
+      <!-- Bars -->
+      <g fill="#a855f7">
+        <rect x="30" y="95" width="7" height="0" rx="1"/>
+        <rect x="38" y="95" width="7" height="0" rx="1"/>
+        <rect x="46" y="95" width="7" height="0" rx="1"/>
+        <rect x="54" y="95" width="7" height="0" rx="1"/>
+        <rect x="62" y="95" width="7" height="0" rx="1"/>
+        <rect x="70" y="95" width="7" height="0" rx="1"/>
+        <rect x="78" y="95" width="7" height="0" rx="1"/>
+        <rect x="86" y="95" width="7" height="0" rx="1"/>
+        <rect x="94" y="95" width="7" height="0" rx="1"/>
+        <rect x="102" y="93" width="7" height="2" rx="1"/>
+        <rect x="110" y="83" width="7" height="12" rx="1"/>
+        <rect x="118" y="57" width="7" height="38" rx="1"/>
+        <rect x="126" y="20" width="7" height="75" rx="1"/>
+        <rect x="134" y="10" width="7" height="85" rx="1"/>
+        <rect x="142" y="15" width="7" height="80" rx="1"/>
+        <rect x="150" y="30" width="7" height="65" rx="1"/>
+        <rect x="158" y="60" width="7" height="35" rx="1"/>
+        <rect x="166" y="85" width="7" height="10" rx="1"/>
+        <rect x="174" y="93" width="7" height="2" rx="1"/>
+        <rect x="182" y="95" width="7" height="0" rx="1"/>
+        <rect x="190" y="95" width="7" height="0" rx="1"/>
+        <rect x="198" y="95" width="7" height="0" rx="1"/>
+        <rect x="206" y="95" width="7" height="0" rx="1"/>
+        <rect x="214" y="95" width="7" height="0" rx="1"/>
+        <rect x="222" y="95" width="7" height="0" rx="1"/>
+        <rect x="230" y="95" width="7" height="0" rx="1"/>
+        <rect x="238" y="95" width="7" height="0" rx="1"/>
+        <rect x="246" y="95" width="7" height="0" rx="1"/>
+        <rect x="254" y="95" width="7" height="0" rx="1"/>
+        <rect x="262" y="95" width="7" height="0" rx="1"/>
+      </g>
+    </svg>
+              <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.6rem;">Các pixel bị dồn cục ở dải hẹp trung tâm. Ảnh bị mờ xám, thiếu độ sắc nét.</p>
+            </div>
+
+            <!-- d -->
+            <div class="histo-card-item">
+              <p style="font-weight: 700; color: #0284c7; margin-bottom: 0.5rem;">d) Trải đều &rarr; Tương phản cao</p>
+              <svg viewBox="0 0 280 130" style="width: 100%; height: auto; display: block; border-radius: 6px; background: #0f172a; padding: 10px;">
+      <!-- Grid lines -->
+      <line x1="30" y1="20" x2="270" y2="20" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="55" x2="270" y2="55" stroke="#334155" stroke-dasharray="2 2"/>
+      <line x1="30" y1="90" x2="270" y2="90" stroke="#334155" stroke-dasharray="2 2"/>
+      <!-- Axes -->
+      <line x1="30" y1="10" x2="30" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="30" y1="95" x2="270" y2="95" stroke="#94a3b8" stroke-width="1.5"/>
+      <!-- Axis Labels -->
+      <text x="30" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">0</text>
+      <text x="90" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">64</text>
+      <text x="150" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">128</text>
+      <text x="210" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">192</text>
+      <text x="270" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">255</text>
+      <!-- Bars -->
+      <g fill="#38bdf8">
+        <rect x="30" y="53" width="7" height="42" rx="1"/>
+        <rect x="38" y="50" width="7" height="45" rx="1"/>
+        <rect x="46" y="55" width="7" height="40" rx="1"/>
+        <rect x="54" y="47" width="7" height="48" rx="1"/>
+        <rect x="62" y="52" width="7" height="43" rx="1"/>
+        <rect x="70" y="49" width="7" height="46" rx="1"/>
+        <rect x="78" y="54" width="7" height="41" rx="1"/>
+        <rect x="86" y="48" width="7" height="47" rx="1"/>
+        <rect x="94" y="51" width="7" height="44" rx="1"/>
+        <rect x="102" y="53" width="7" height="42" rx="1"/>
+        <rect x="110" y="50" width="7" height="45" rx="1"/>
+        <rect x="118" y="52" width="7" height="43" rx="1"/>
+        <rect x="126" y="49" width="7" height="46" rx="1"/>
+        <rect x="134" y="51" width="7" height="44" rx="1"/>
+        <rect x="142" y="47" width="7" height="48" rx="1"/>
+        <rect x="150" y="53" width="7" height="42" rx="1"/>
+        <rect x="158" y="50" width="7" height="45" rx="1"/>
+        <rect x="166" y="54" width="7" height="41" rx="1"/>
+        <rect x="174" y="49" width="7" height="46" rx="1"/>
+        <rect x="182" y="52" width="7" height="43" rx="1"/>
+        <rect x="190" y="48" width="7" height="47" rx="1"/>
+        <rect x="198" y="51" width="7" height="44" rx="1"/>
+        <rect x="206" y="53" width="7" height="42" rx="1"/>
+        <rect x="214" y="50" width="7" height="45" rx="1"/>
+        <rect x="222" y="52" width="7" height="43" rx="1"/>
+        <rect x="230" y="49" width="7" height="46" rx="1"/>
+        <rect x="238" y="53" width="7" height="42" rx="1"/>
+        <rect x="246" y="51" width="7" height="44" rx="1"/>
+        <rect x="254" y="50" width="7" height="45" rx="1"/>
+        <rect x="262" y="54" width="7" height="41" rx="1"/>
+      </g>
+    </svg>
+              <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.6rem;">Các pixel dàn đều trên toàn bộ dải mức xám ($0 \to 255$). Ảnh rất rõ nét và nổi bật.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.3 -->
+        <div class="formula-card">
+          <div class="formula-title">3. Histogram Stretching (Kéo Dãn Histogram)</div>
+          <p><strong>Mục tiêu:</strong> Tăng độ tương phản bằng cách kéo dãn dải mức xám hẹp $[r_{\min}, r_{\max}]$ ra toàn bộ dải $[0, 255]$.</p>
+          <p><strong>Công thức tính toán:</strong></p>
+          <div class="math-block">$$s = \frac{r - r_{\min}}{r_{\max} - r_{\min}} \times 255$$</div>
+          
+          <div class="diagram-box" style="margin-top: 1.25rem; background: #0f172a; padding: 1.25rem; border-radius: 8px; text-align: center; break-inside: avoid; page-break-inside: avoid;">
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.75rem; font-weight: 600;">SƠ ĐỒ TRỰC QUAN PHÉP KÉO DÃN HISTOGRAM (HISTOGRAM STRETCHING)</p>
+            <svg viewBox="0 0 540 120" style="width: 100%; max-width: 540px; height: auto; display: inline-block;">
+              <!-- Original Narrow Histogram (Left) -->
+              <g fill="#a855f7">
+                <rect x="70" y="75" width="5" height="15" rx="1"/>
+                <rect x="76" y="55" width="5" height="35" rx="1"/>
+                <rect x="82" y="30" width="5" height="60" rx="1"/>
+                <rect x="88" y="20" width="5" height="70" rx="1"/>
+                <rect x="94" y="40" width="5" height="50" rx="1"/>
+                <rect x="100" y="65" width="5" height="25" rx="1"/>
+              </g>
+              <line x1="30" y1="90" x2="150" y2="90" stroke="#64748b" stroke-width="1.5"/>
+              <text x="30" y="105" fill="#94a3b8" font-size="9">0</text>
+              <text x="70" y="105" fill="#c084fc" font-size="9">r_min</text>
+              <text x="105" y="105" fill="#c084fc" font-size="9">r_max</text>
+              <text x="150" y="105" fill="#94a3b8" font-size="9">255</text>
+              <text x="90" y="15" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Histogram gốc (Hẹp)</text>
+
+              <!-- Arrow -->
+              <path d="M 185 55 L 235 55 M 225 48 L 235 55 L 225 62" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <text x="210" y="42" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Stretching</text>
+
+              <!-- Stretched Wide Histogram (Right) -->
+              <g fill="#38bdf8">
+                <rect x="270" y="75" width="7" height="15" rx="1"/>
+                <rect x="305" y="55" width="7" height="35" rx="1"/>
+                <rect x="340" y="30" width="7" height="60" rx="1"/>
+                <rect x="375" y="20" width="7" height="70" rx="1"/>
+                <rect x="410" y="40" width="7" height="50" rx="1"/>
+                <rect x="445" y="65" width="7" height="25" rx="1"/>
+              </g>
+              <line x1="270" y1="90" x2="450" y2="90" stroke="#64748b" stroke-width="1.5"/>
+              <text x="270" y="105" fill="#38bdf8" font-size="9">0</text>
+              <text x="450" y="105" fill="#38bdf8" font-size="9">255</text>
+              <text x="360" y="15" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Histogram sau kéo dãn (Toàn dải)</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 1.4 -->
+        <div class="formula-card">
+          <div class="formula-title">4. Histogram Equalization (Cân Bằng Histogram)</div>
+          <p><strong>Mục tiêu:</strong> Biến đổi histogram của ảnh sao cho phân bố của nó gần đạt mức phân bố đều nhất.</p>
+
+          <div class="step-box">
+            <strong>📋 Quy trình 4 bước tính toán chuẩn mực:</strong>
+            <ol style="margin-top: 0.5rem; padding-left: 1.2rem; line-height: 1.7;">
+              <li><strong>Bước 1 (Tính Histogram):</strong> Đếm số lượng pixel $n_k$ cho mỗi mức xám $r_k$.</li>
+              <li><strong>Bước 2 (Chuẩn hóa PDF):</strong> Tính xác suất $p(r_k) = \frac{n_k}{MN}$ (với $MN$ là tổng số pixel của ảnh).</li>
+              <li><strong>Bước 3 (Tính CDF):</strong> Tính hàm phân phối tích lũy $CDF(k) = \sum_{i=0}^{k} p(r_i)$.</li>
+              <li><strong>Bước 4 (Tính mức xám mới $s_k$):</strong> $s_k = \text{round}\left((L-1) \times CDF(k)\right)$ với $L = 256$ (ảnh 8-bit).</li>
+            </ol>
+          </div>
+          
+          <div class="diagram-box" style="margin-top: 1.25rem; background: #0f172a; padding: 1.25rem; border-radius: 8px; text-align: center; break-inside: avoid; page-break-inside: avoid;">
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0.75rem; font-weight: 600;">SƠ ĐỒ TRỰC QUAN PHÉP CÂN BẰNG HISTOGRAM (HISTOGRAM EQUALIZATION)</p>
+            <svg viewBox="0 0 540 120" style="width: 100%; max-width: 540px; height: auto; display: inline-block;">
+              <!-- Clustered Histogram (Left) -->
+              <g fill="#f43f5e">
+                <rect x="50" y="70" width="6" height="20" rx="1"/>
+                <rect x="58" y="30" width="6" height="60" rx="1"/>
+                <rect x="66" y="15" width="6" height="75" rx="1"/>
+                <rect x="74" y="25" width="6" height="65" rx="1"/>
+                <rect x="82" y="50" width="6" height="40" rx="1"/>
+                <rect x="90" y="80" width="6" height="10" rx="1"/>
+              </g>
+              <line x1="30" y1="90" x2="150" y2="90" stroke="#64748b" stroke-width="1.5"/>
+              <text x="30" y="105" fill="#94a3b8" font-size="9">0</text>
+              <text x="150" y="105" fill="#94a3b8" font-size="9">255</text>
+              <text x="90" y="15" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Histogram không đều (Dồn dải)</text>
+
+              <!-- Arrow -->
+              <path d="M 185 55 L 235 55 M 225 48 L 235 55 L 225 62" stroke="#4ade80" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <text x="210" y="42" fill="#4ade80" font-size="10" font-weight="bold" text-anchor="middle">Equalization</text>
+
+              <!-- Equalized Uniform Histogram (Right) -->
+              <g fill="#4ade80">
+                <rect x="270" y="45" width="6" height="45" rx="1"/>
+                <rect x="282" y="42" width="6" height="48" rx="1"/>
+                <rect x="294" y="46" width="6" height="44" rx="1"/>
+                <rect x="306" y="43" width="6" height="47" rx="1"/>
+                <rect x="318" y="45" width="6" height="45" rx="1"/>
+                <rect x="330" y="44" width="6" height="46" rx="1"/>
+                <rect x="342" y="42" width="6" height="48" rx="1"/>
+                <rect x="354" y="45" width="6" height="45" rx="1"/>
+                <rect x="366" y="43" width="6" height="47" rx="1"/>
+                <rect x="378" y="46" width="6" height="44" rx="1"/>
+                <rect x="390" y="44" width="6" height="46" rx="1"/>
+                <rect x="402" y="45" width="6" height="45" rx="1"/>
+                <rect x="414" y="43" width="6" height="47" rx="1"/>
+                <rect x="426" y="45" width="6" height="45" rx="1"/>
+                <rect x="438" y="44" width="6" height="46" rx="1"/>
+                <rect x="450" y="46" width="6" height="44" rx="1"/>
+              </g>
+              <line x1="265" y1="90" x2="465" y2="90" stroke="#64748b" stroke-width="1.5"/>
+              <text x="265" y="105" fill="#4ade80" font-size="9">0</text>
+              <text x="465" y="105" fill="#4ade80" font-size="9">255</text>
+              <text x="365" y="15" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Histogram dàn đều (Phân bố xấp xỉ đều)</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 1.5 -->
+        <div class="formula-card">
+          <div class="formula-title">5. Histogram Matching / Specification (Khớp Histogram)</div>
+          <p><strong>Mục tiêu:</strong> Biến đổi histogram của ảnh gốc thành một hình dạng histogram mục tiêu cho trước.</p>
+          <p><strong>Các bước thực hiện:</strong></p>
+          <ol style="padding-left: 1.2rem; line-height: 1.6;">
+            <li>Cân bằng histogram (Equalization) đối với ảnh gốc &rarr; Tìm ánh xạ $s_k = T(r_k)$.</li>
+            <li>Cân bằng histogram (Equalization) đối với histogram mục tiêu &rarr; Tìm ánh xạ $v_q = G(z_q)$.</li>
+            <li>Ghép hai hàm &rarr; Tìm ánh xạ ngược $z_q = G^{-1}(s_k)$.</li>
+          </ol>
+        </div>
+
+        <!-- 1.6 -->
+        <div class="formula-card">
+          <div class="formula-title">6. Nhận Dạng Các Phép Biến Đổi Histogram Qua Ảnh (Rất Dễ Ra Thi)</div>
+          <p style="color: var(--text-light); margin-bottom: 0.75rem;">Đây là dạng câu hỏi nhận biết qua hình ảnh xuất hiện với tần suất rất cao trong đề thi:</p>
+
+          <ul style="line-height: 1.7; padding-left: 1.2rem;">
+            <li><strong>Histogram Stretching:</strong> Ảnh rõ nét hơn hẳn nhưng không làm thay đổi sáng tối quá nhiều.</li>
+            <li><strong>Equalization (Cân bằng):</strong> Tăng độ tương phản rất mạnh, histogram phân bố dàn đều hơn hẳn.</li>
+            <li><strong>Matching (Khớp histogram):</strong> Bức ảnh kết quả mang sắc thái và phong cách ánh sáng giống hệt ảnh mẫu.</li>
+            <li><strong>Log Transform ($s = c \cdot \log(1+r)$):</strong> Làm sáng rõ các vùng tối (nén dải sáng cao, dãn dải tối).</li>
+            <li><strong>Gamma Transform ($s = c \cdot r^\gamma$):</strong>
+              <br>- Khi $\gamma &lt; 1 \rightarrow$ Ảnh trở nên <strong>sáng hơn</strong>.
+              <br>- Khi $\gamma &gt; 1 \rightarrow$ Ảnh trở nên <strong>tối hơn</strong>.
+            </li>
+            <li><strong>Negative (Âm bản - $s = 255 - r$):</strong> Đảo ngược hoàn toàn độ sáng (trắng thành đen, đen thành trắng).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- CHƯƠNG 2 -->
+      <section id="ch2-filtering" style="margin-top: 3rem;">
+        <h2>CHƯƠNG 2. LỌC ẢNH (IMAGE FILTERING)</h2>
+
+        <div class="exam-tip-box">
+          <strong>💡 Dấu hiệu bài tập thi đặc thù:</strong><br>
+          Nếu đề bài cho: <em>$\gamma = 2$ (hoặc $\sigma = 2$), $k = 1$, ma trận ảnh $8 \times 8$</em> &rarr; <strong>Chắc chắn yêu cầu tính ma trận lọc Gaussian rồi thực hiện phép Tích Chập (Convolution).</strong>
+        </div>
+
+        <!-- 2.1 -->
+        <div class="formula-card">
+          <div class="formula-title">1. Convolution (Phép Tích Chập)</div>
+          <p>Cho Kernel lọc $K$ (ví dụ bộ lọc $3 \times 3$):</p>
+          <div class="math-block">$$K = \frac{1}{16} \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 2 &amp; 4 &amp; 2 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</div>
+          <p>Giá trị điểm ảnh mới tại tọa độ $(x,y)$: $g(x,y) = \sum f(i,j) K(i,j)$.</p>
+
+          <div class="step-box">
+            <strong>📋 Quy trình tính toán tích chập 3 bước:</strong>
+            <ol style="margin-top: 0.25rem; padding-left: 1.2rem;">
+              <li>Lấy cửa sổ ma trận ảnh kích thước $3 \times 3$ quanh điểm $(x,y)$.</li>
+              <li>Nhân từng phần tử tương ứng của cửa sổ ảnh với phần tử của Kernel $K$.</li>
+              <li>Cộng tất cả các tích lại với nhau để ra kết quả điểm ảnh mới.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- 2.2 -->
+        <div class="formula-card">
+          <div class="formula-title">2. Gaussian Filter (Bộ Lọc Gaussian)</div>
+          <p><strong>Công thức tổng quát tính giá trị Kernel:</strong></p>
+          <div class="math-block">$$G(x,y) = k \cdot e^{-\frac{x^2+y^2}{2\sigma^2}}$$</div>
+
+          <p style="margin-top: 0.75rem;"><strong>Ví dụ tính toán cụ thể theo đề thi ($\sigma = 2, k = 1$):</strong></p>
+          <ul style="padding-left: 1.2rem; line-height: 1.6;">
+            <li>Tại gốc $(0,0) \rightarrow G(0,0) = 1 \cdot e^0 = 1$.</li>
+            <li>Tại điểm $(1,0) \rightarrow G(1,0) = e^{-\frac{1^2+0^2}{2(2^2)}} = e^{-1/8}$.</li>
+            <li>Tại điểm $(1,1) \rightarrow G(1,1) = e^{-\frac{1^2+1^2}{2(2^2)}} = e^{-2/8}$.</li>
+          </ul>
+          <p style="margin-top: 0.5rem;"><strong>Lưu ý bắt buộc:</strong> Sau khi tính xong tất cả các giá trị $G(x,y)$, phải thực hiện <strong>Chuẩn hóa</strong> chia cho tổng tất cả các phần tử sao cho <strong>Tổng Kernel = 1</strong>.</p>
+
+          <hr style="margin: 1rem 0; border: none; border-top: 1px dashed var(--border-color);">
+
+          <p><strong>Các Kernel Gaussian chuẩn thường gặp trong đề thi:</strong></p>
+          <ul>
+            <li><strong>Khi $\sigma = 1$:</strong> Ma trận $3 \times 3$ có hệ số chuẩn hóa $\frac{1}{16}$:
+              <div class="math-block">$$\frac{1}{16} \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 2 &amp; 4 &amp; 2 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</div>
+            </li>
+            <li><strong>Khi $\sigma \approx 2$:</strong> Ma trận $5 \times 5$ có hệ số chuẩn hóa $\frac{1}{273}$:
+              <div class="math-block">$$\frac{1}{273} \begin{bmatrix} 1 &amp; 4 &amp; 7 &amp; 4 &amp; 1 \\ 4 &amp; 16 &amp; 26 &amp; 16 &amp; 4 \\ 7 &amp; 26 &amp; 41 &amp; 26 &amp; 7 \\ 4 &amp; 16 &amp; 26 &amp; 16 &amp; 4 \\ 1 &amp; 4 &amp; 7 &amp; 4 &amp; 1 \end{bmatrix}$$</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2.3 -->
+        <div class="formula-card">
+          <div class="formula-title">3. Median Filter (Bộ Lọc Trung Vị)</div>
+          <p><strong>Đặc điểm:</strong> Bộ lọc phi tuyến (Không sử dụng phép tích chập ma trận).</p>
+          <div class="step-box">
+            <strong>📋 Các bước thực hiện:</strong>
+            <ol style="margin-top: 0.25rem; padding-left: 1.2rem;">
+              <li>Lấy cửa sổ $3 \times 3$ chứa 9 giá trị pixel xung quanh.</li>
+              <li>Sắp xếp 9 giá trị đó theo thứ tự tăng dần.</li>
+              <li>Lấy giá trị đứng ở vị trí chính giữa (trung vị - phần tử thứ 5).</li>
+            </ol>
+          </div>
+          <p><strong>Ứng dụng cốt lõi:</strong> Khử <strong>nhiễu muối tiêu (Salt &amp; Pepper Noise)</strong> cực kỳ hiệu quả.</p>
+        </div>
+
+        <!-- 2.4 -->
+        <div class="formula-card">
+          <div class="formula-title">4. Mean Filter (Bộ Lọc Trung Bình)</div>
+          <div class="math-block">$$\frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</div>
+          <p><strong>Tác dụng:</strong> Làm mờ ảnh (Smoothing) và giảm nhiễu ngẫu nhiên.</p>
+        </div>
+
+        <!-- 2.5 -->
+        <div class="formula-card">
+          <div class="formula-title">5. Laplacian</div>
+          <p><strong>Tác dụng:</strong> Tăng cường đường biên và chi tiết sắc nét của ảnh (Sharpening).</p>
+          <p><strong>Ma trận chuẩn:</strong></p>
+          <div class="math-block">$$\begin{bmatrix} 0 &amp; -1 &amp; 0 \\ -1 &amp; 4 &amp; -1 \\ 0 &amp; -1 &amp; 0 \end{bmatrix}$$</div>
+        </div>
+
+        <!-- 2.6 -->
+        <div class="formula-card">
+          <div class="formula-title">6. Sobel (Phát Hiện Biên Sobel)</div>
+          <p><strong>Toán tử biên ngang $G_x$:</strong></p>
+          <div class="math-block">$$G_x = \begin{bmatrix} -1 &amp; -2 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 2 &amp; 1 \end{bmatrix}$$</div>
+
+          <p><strong>Toán tử biên dọc $G_y$:</strong></p>
+          <div class="math-block">$$G_y = \begin{bmatrix} 1 &amp; 0 &amp; -1 \\ 2 &amp; 0 &amp; -2 \\ 1 &amp; 0 &amp; -1 \end{bmatrix}$$</div>
+
+          <p><strong>Độ lớn Gradient tổng hợp:</strong></p>
+          <div class="math-block">$$G = \sqrt{G_x^2 + G_y^2}$$</div>
+        </div>
+      </section>
+
+      <!-- CHƯƠNG 3 -->
+      <section id="ch3-thresholding" style="margin-top: 3rem;">
+        <h2>CHƯƠNG 3. PHÂN NGƯỠNG (THRESHOLDING)</h2>
+
+        <div class="formula-card">
+          <div class="formula-title">1. Phân Ngưỡng Toàn Cục (Global Thresholding)</div>
+          <p>Đề cho ngưỡng $T = 200$.</p>
+          <p><strong>Công thức ánh xạ nhị phân:</strong></p>
+          <div class="math-block">$$g(x,y) = \begin{cases} 255, &amp; \text{nếu } f(x,y) \ge T \\ 0, &amp; \text{nếu } f(x,y) &lt; T \end{cases}$$</div>
+
+          <div class="callout" style="background: var(--highlight-bg); border-left-color: var(--secondary-color); margin-top: 1rem;">
+            <strong>📐 Ví dụ biến đổi trực quan (với $T = 200$):</strong>
+            <div class="math-block">$$\begin{bmatrix} 120 &amp; 190 \\ 220 &amp; 250 \end{bmatrix} \xrightarrow{T=200} \begin{bmatrix} 0 &amp; 0 \\ 255 &amp; 255 \end{bmatrix}$$</div>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2. Phương Pháp Otsu (Otsu's Thresholding)</div>
+          <p>Tự động tìm ngưỡng phân vùng tối ưu mà không cần nhập tay $T$.</p>
+          
+          <div class="exam-tip-box">
+            <strong>Mẹo nhớ thi trắc nghiệm Otsu (Không cần thuộc công thức dài):</strong><br>
+            - <strong>Tối đa phương sai giữa các lớp (Maximize Between-class Variance $\sigma_B^2$).</strong><br>
+            - <strong>Tối thiểu phương sai trong nội bộ lớp (Minimize Within-class Variance $\sigma_W^2$).</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHƯƠNG 4 -->
+      <section id="ch4-morphology" style="margin-top: 3rem;">
+        <h2>CHƯƠNG 4. MORPHOLOGY (XỬ LÝ HÌNH THÁI HỌC)</h2>
+        <p>Phép toán hình thái học áp dụng chủ yếu trên <strong>ảnh nhị phân</strong> cùng với <strong>Phần tử cấu trúc (Structuring Element - $B$)</strong>.</p>
+        <p>Ví dụ phần tử cấu trúc vuông $3 \times 3$ toàn 1:</p>
+        <div class="math-block">$$B = \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}$$</div>
+
+        <div class="formula-card">
+          <div class="formula-title">1. Erosion (Phép Ăn Mòn)</div>
+          <p><strong>Ký hiệu:</strong> $A \ominus B$</p>
+          <p><strong>Tác dụng:</strong> Làm đối tượng vật thể nhỏ lại, thu hẹp đường viền và xóa các nhiễu trắng nhỏ lẻ.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2. Dilation (Phép Giãn Nở)</div>
+          <p><strong>Ký hiệu:</strong> $A \oplus B$</p>
+          <p><strong>Tác dụng:</strong> Làm đối tượng vật thể mở rộng to ra, làm đầy các lỗ rỗng nhỏ bên trong.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">3. Opening (Phép Mở)</div>
+          <p><strong>Công thức:</strong> $A \circ B = (A \ominus B) \oplus B$ (Ăn mòn trước, Giãn nở sau).</p>
+          <p><strong>Tác dụng:</strong> Loại bỏ nhiễu nhỏ xung quanh nhưng vẫn giữ nguyên kích thước vật thể lớn.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">4. Closing (Phép Đóng)</div>
+          <p><strong>Công thức:</strong> $A \bullet B = (A \oplus B) \ominus B$ (Giãn nở trước, Ăn mòn sau).</p>
+          <p><strong>Tác dụng:</strong> Lấp các lỗ rỗng nhỏ bên trong vật thể và hàn nối các khe hở bị đứt gãy.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">5. Morphological Gradient (Biên Hình Thái)</div>
+          <p><strong>Công thức:</strong> $\text{Gradient} = (A \oplus B) - (A \ominus B)$</p>
+          <p><strong>Tác dụng:</strong> Trích xuất đường biên của đối tượng.</p>
+        </div>
+      </section>
+
+      <!-- CHƯƠNG 5 -->
+      <section id="ch5-geometry" style="margin-top: 3rem;">
+        <h2>CHƯƠNG 5. BIẾN ĐỔI HÌNH HỌC (GEOMETRIC TRANSFORMATIONS)</h2>
+
+        <div class="exam-tip-box">
+          <strong>💡 Dấu hiệu bài tập thi đặc trưng:</strong> Đề cho 1 ảnh gốc và 2 ảnh kết quả &rarr; Yêu cầu xác định tên phép biến đổi hình học đã được áp dụng.
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">1. Translation (Tịnh Tiến)</div>
+          <div class="math-block">$$x' = x + t_x, \quad y' = y + t_y$$</div>
+          <p>Dấu hiệu: Bức ảnh bị dịch chuyển vị trí (sang trái, sang phải, lên trên hoặc xuống dưới).</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">2. Rotation (Phép Quay)</div>
+          <div class="math-block">$$\begin{bmatrix} x' \\ y' \end{bmatrix} = \begin{bmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix}$$</div>
+          <p>Dấu hiệu: Bức ảnh bị xoay một góc $\theta$ quanh tâm.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">3. Scaling (Co Dãn)</div>
+          <p>Dấu hiệu: Bức ảnh bị phóng to hơn hoặc thu nhỏ lại.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">4. Reflection (Lật Gương)</div>
+          <p>Dấu hiệu: Bức ảnh bị lật ngược theo trục ngang, trục dọc hoặc đường chéo.</p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">5. Shear (Phép Nghiêng)</div>
+          <p>Dấu hiệu: Bức ảnh bị xiêu nghiêng sang một phía.</p>
+          <p>Ma trận biến đổi nghiêng theo trục $x$ hoặc $y$:</p>
+          <div class="math-block">$$\begin{bmatrix} 1 &amp; 0 \\ k &amp; 1 \end{bmatrix} \quad \text{hoặc} \quad \begin{bmatrix} 1 &amp; k \\ 0 &amp; 1 \end{bmatrix}$$</div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">6. Affine Transform (Biến Đổi Affine)</div>
+          <p>Dấu hiệu: Kết hợp đồng thời nhiều phép biến đổi (quay, tịnh tiến, co giãn, nghiêng shear).</p>
+        </div>
+      </section>
+
+      <!-- BẢNG TRA CỨU DẤU HIỆU NHẬN BIẾT CÁC PHÉP BIẾN ĐỔI (QUAN TRỌNG) -->
+      <section id="sec-lookup-table" style="margin-top: 3.5rem;">
+        <div style="background: var(--bg-card); border: 2px solid var(--secondary-color); border-radius: 10px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);">
+          <h2 style="color: var(--secondary-color); font-size: 1.35rem; margin-top: 0; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            ⭐ DẤU HIỆU NHẬN BIẾT CÁC PHÉP BIẾN ĐỔI (BẢNG TRA CỨU THI)
+          </h2>
+          <p style="color: var(--text-light); margin-bottom: 1.25rem;">Bảng tổng hợp nhanh dấu hiệu biến đổi từ hình ảnh sang thuật toán tương ứng trong đề thi trắc nghiệm:</p>
+
+          <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: var(--highlight-bg);">
+                <th style="width: 55%; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--border-color);">Dấu hiệu đặc trưng trên ảnh kết quả</th>
+                <th style="width: 45%; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--border-color);">Phép biến đổi / Thuật toán tương ứng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dịch sang trái / phải / lên / xuống</td>
+                <td><strong>Translation (Tịnh tiến)</strong></td>
+              </tr>
+              <tr>
+                <td>Quay quanh tâm một góc $\theta$</td>
+                <td><strong>Rotation (Phép quay)</strong></td>
+              </tr>
+              <tr>
+                <td>Kích thước to hơn hoặc nhỏ hơn</td>
+                <td><strong>Scaling (Co dãn)</strong></td>
+              </tr>
+              <tr>
+                <td>Lật đối xứng qua trục (lật gương)</td>
+                <td><strong>Reflection (Lật gương)</strong></td>
+              </tr>
+              <tr>
+                <td>Bức ảnh bị xiêu nghiêng sang một phía</td>
+                <td><strong>Shear (Phép nghiêng)</strong></td>
+              </tr>
+              <tr>
+                <td>Kết hợp đồng thời nhiều phép biến đổi</td>
+                <td><strong>Affine Transform</strong></td>
+              </tr>
+              <tr>
+                <td>Ảnh chuyển sang dạng Đen / Trắng rõ rệt theo ngưỡng $T$</td>
+                <td><strong>Thresholding (Phân ngưỡng)</strong></td>
+              </tr>
+              <tr>
+                <td>Kích thước vật thể nhỏ lại, xóa chấm trắng lẻ</td>
+                <td><strong>Erosion (Phép ăn mòn)</strong></td>
+              </tr>
+              <tr>
+                <td>Kích thước vật thể lớn lên, làm đầy lỗ rỗng</td>
+                <td><strong>Dilation (Phép giãn nở)</strong></td>
+              </tr>
+              <tr>
+                <td>Mất hẳn các mồi nhiễu nhỏ xung quanh</td>
+                <td><strong>Opening (Phép mở)</strong></td>
+              </tr>
+              <tr>
+                <td>Lấp kín các lỗ rỗng nhỏ, hàn nối khe hở</td>
+                <td><strong>Closing (Phép đóng)</strong></td>
+              </tr>
+              <tr>
+                <td>Bức ảnh trở nên mượt mờ hơn</td>
+                <td><strong>Gaussian / Mean Filter (Làm mờ)</strong></td>
+              </tr>
+              <tr>
+                <td>Khử triệt để nhiễu muối tiêu (hạt đen trắng)</td>
+                <td><strong>Median Filter (Bộ lọc trung vị)</strong></td>
+              </tr>
+              <tr>
+                <td>Nét biên đường viền hiện rõ hơn, sắc nét hơn</td>
+                <td><strong>Laplacian / Sobel (Tăng nét biên)</strong></td>
+              </tr>
+              <tr>
+                <td>Tương phản tăng mạnh, histogram dàn đều toàn dải</td>
+                <td><strong>Histogram Equalization (Cân bằng)</strong></td>
+              </tr>
+              <tr>
+                <td>Tương phản tăng vừa phải, ảnh rõ nét hơn</td>
+                <td><strong>Histogram Stretching (Kéo dãn)</strong></td>
+              </tr>
+              <tr>
+                <td>Vùng tối trên ảnh trở nên sáng rõ hơn</td>
+                <td><strong>Gamma ($\gamma &lt; 1$) hoặc Log Transform</strong></td>
+              </tr>
+              <tr>
+                <td>Toàn bộ bức ảnh trở nên tối hơn</td>
+                <td><strong>Gamma ($\gamma &gt; 1$)</strong></td>
+              </tr>
+              <tr>
+                <td>Ảnh đảo ngược sáng tối hoàn toàn (Âm bản)</td>
+                <td><strong>Negative (Ảnh âm bản)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 Học liệu điện tử cá nhân. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

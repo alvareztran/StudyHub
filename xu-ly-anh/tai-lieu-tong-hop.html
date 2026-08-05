@@ -43,6 +43,57 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+  
+  /* Tight 10mm PDF Page Margins for printing */
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  @media print {
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-size: 13px !important;
+    }
+    .container {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    header {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      margin-bottom: 0.75rem !important;
+    }
+    header h1 {
+      font-size: 1.4rem !important;
+      margin-bottom: 0.2rem !important;
+    }
+    section {
+      margin-top: 1rem !important;
+    }
+    .formula-card, .summary-section {
+      margin-bottom: 0.85rem !important;
+      padding: 0.85rem 1rem !important;
+    }
+    .step-box {
+      margin: 0.5rem 0 !important;
+      padding: 0.5rem 0.75rem !important;
+    }
+    .no-print, .header-actions, .breadcrumb {
+      display: none !important;
+    }
+    h1, h2, h3, h4, .formula-title {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+    .formula-card, .step-box, table, figure, svg {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+  }
+
   </style>
 </head>
 <body>
@@ -59,6 +110,9 @@
     </header>
 
     <div class="header-actions no-print">
+      <a href="on-tap-trong-tam.html" class="btn-pdf" style="background: #eab308; color: #713f12; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600;">
+        ⭐ Ôn Tập Trọng Tâm Thi
+      </a>
       <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>

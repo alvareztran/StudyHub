@@ -77,6 +77,57 @@
     #page-content *, #page-content {
       font-style: normal !important;
     }
+  
+  /* Tight 10mm PDF Page Margins for printing */
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  @media print {
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-size: 13px !important;
+    }
+    .container {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    header {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      margin-bottom: 0.75rem !important;
+    }
+    header h1 {
+      font-size: 1.4rem !important;
+      margin-bottom: 0.2rem !important;
+    }
+    section {
+      margin-top: 1rem !important;
+    }
+    .formula-card, .summary-section {
+      margin-bottom: 0.85rem !important;
+      padding: 0.85rem 1rem !important;
+    }
+    .step-box {
+      margin: 0.5rem 0 !important;
+      padding: 0.5rem 0.75rem !important;
+    }
+    .no-print, .header-actions, .breadcrumb {
+      display: none !important;
+    }
+    h1, h2, h3, h4, .formula-title {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+    .formula-card, .step-box, table, figure, svg {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+  }
+
   </style>
 </head>
 <body>
