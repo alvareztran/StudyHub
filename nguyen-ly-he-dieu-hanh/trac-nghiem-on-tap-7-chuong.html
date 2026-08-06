@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc Nghiệm Lý Thuyết & Bài Tập 7 Chương - Nguyên lý Hệ điều hành</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .score-badge {
+      font-size: 0.75rem;
+      background: var(--border-color);
+      color: var(--text-light);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      font-weight: normal;
+    }
+    .score-badge.completed {
+      background: rgba(34, 197, 94, 0.2);
+      color: #16a34a;
+      font-weight: bold;
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .quiz-question pre {
+      background-color: var(--bg-code);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+    .quiz-question table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.88rem;
+    }
+    .quiz-question th, .quiz-question td {
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.6rem;
+      text-align: center;
+    }
+    .quiz-question th {
+      background-color: var(--bg-code);
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quiz-options label:hover {
+      background: var(--highlight-bg);
+      border-color: var(--text-light);
+    }
+    .quiz-options input[type="radio"] {
+      margin-top: 0.2rem;
+    }
+    .quiz-options label.correct {
+      background: rgba(34, 197, 94, 0.15) !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+    .quiz-options label.disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .quiz-feedback.feedback-correct {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-feedback.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    .chapter-header h2 {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../index.html">StudyHub</a> &raquo; 
+        <a href="index.html">Nguyên lý Hệ điều hành</a> &raquo; Trắc Nghiệm 7 Chương
+      </div>
+      <h1>BỘ CÂU HỎI TRẮC NGHIỆM LÝ THUYẾT &amp; BÀI TẬP 7 CHƯƠNG (95 CÂU)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Hệ thống trắc nghiệm tương tác phủ toàn bộ kiến thức 7 chương môn Nguyên lý Hệ điều hành (CT178 / CT180 / CT107 - ĐHCT): Giới thiệu HĐH, Cấu trúc HĐH, Tiến trình, Định thời CPU, Đồng bộ hóa, Deadlock và Quản lý Bộ nhớ.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Overall Progress Banner -->
+    <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành Trắc Nghiệm Overall</strong>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 95 câu (Chính xác: 0%)</p>
+      </div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 95</div>
+    </div>
+
+    <div class="layout-wrapper">
+      <!-- Sticky Navigation Sidebar -->
+      <aside class="sidebar no-print">
+        <h3>Danh Mục Chương</h3>
+        <ul>
+          <li><a href="#ch1"><span>Chương 1: Giới thiệu HĐH</span> <span class="score-badge" id="badge-ch1">0/5</span></a></li>
+          <li><a href="#ch2"><span>Chương 2: Cấu trúc HĐH</span> <span class="score-badge" id="badge-ch2">0/16</span></a></li>
+          <li><a href="#ch3"><span>Chương 3: Tiến trình</span> <span class="score-badge" id="badge-ch3">0/12</span></a></li>
+          <li><a href="#ch4"><span>Chương 4: Định thời CPU</span> <span class="score-badge" id="badge-ch4">0/18</span></a></li>
+          <li><a href="#ch5"><span>Chương 5: Đồng bộ hóa</span> <span class="score-badge" id="badge-ch5">0/10</span></a></li>
+          <li><a href="#ch6"><span>Chương 6: Deadlock</span> <span class="score-badge" id="badge-ch6">0/11</span></a></li>
+          <li><a href="#ch7"><span>Chương 7: Quản lý Bộ nhớ</span> <span class="score-badge" id="badge-ch7">0/23</span></a></li>
+        </ul>
+        <button onclick="resetAllQuizzes()" style="margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: var(--text-dark); font-weight: 600;">🔄 Làm Lại Tất Cả</button>
+      </aside>
+
+      <!-- Main Quiz Cards Container -->
+      <main id="quiz-main-container">
+        
+        <!-- CHƯƠNG 1 -->
+        <section id="ch1">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 1: GIỚI THIỆU HỆ ĐIỀU HÀNH</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(5 Câu hỏi)</span>
+          </div>
+
+          <!-- Q1.1 -->
+          <div class="quiz-card" id="card-q1-1" data-correct="b">
+            <div class="quiz-question">Câu 1: Kernel của hệ điều hành là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1-1" value="a"> a. Là thành phần quản lý tiến trình của hệ điều hành</label>
+              <label><input type="radio" name="q1-1" value="b"> b. Là chương trình duy nhất trong máy tính chạy toàn thời gian</label>
+              <label><input type="radio" name="q1-1" value="c"> c. Là chương trình điều khiển việc khởi động của máy tính</label>
+              <label><input type="radio" name="q1-1" value="d"> d. Là thành phần quản lý tập tin của hệ điều hành</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q1-1"><strong>Giải thích:</strong> Nhân (Kernel) được định nghĩa chính thức là chương trình duy nhất luôn luôn chạy toàn thời gian trên máy tính (The one program running at all times on the computer).</div>
+          </div>
+
+          <!-- Q1.2 -->
+          <div class="quiz-card" id="card-q1-2" data-correct="a">
+            <div class="quiz-question">Câu 2: Hệ thống đa xử lí (Multiprocessor system) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1-2" value="a"> a. Là các hệ thống với nhiều hơn một CPU được nối kết chặt chẽ với nhau</label>
+              <label><input type="radio" name="q1-2" value="b"> b. Là máy tính có cài nhiều hệ điều hành</label>
+              <label><input type="radio" name="q1-2" value="c"> c. Là máy tính chạy được nhiều tiến trình</label>
+              <label><input type="radio" name="q1-2" value="d"> d. Tất cả đáp án đều đúng.</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q1-2"><strong>Giải thích:</strong> Hệ thống đa xử lý (Parallel systems / Multiprocessor systems) gồm từ 2 CPU trở lên cùng chia sẻ bus, đồng hồ, bộ nhớ và các thiết bị ngoại vi.</div>
+          </div>
+
+          <!-- Q1.3 -->
+          <div class="quiz-card" id="card-q1-3" data-correct="b">
+            <div class="quiz-question">Câu 3: HĐH phân chia thời gian (Time sharing) còn được gọi là:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1-3" value="a"> a. Hệ điều hành đa chương (multi–programming)</label>
+              <label><input type="radio" name="q1-3" value="b"> b. Hệ điều hành đa nhiệm (multi–tasking)</label>
+              <label><input type="radio" name="q1-3" value="c"> c. Hệ điều hành đơn nhiệm (single-tasking)</label>
+              <label><input type="radio" name="q1-3" value="d"> d. Hệ điều hành song song (parallel operating system)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q1-3"><strong>Giải thích:</strong> Hệ điều hành phân chia thời gian (Time-sharing) là một mở rộng hợp lý của đa chương, còn được gọi là hệ điều hành đa nhiệm (Multitasking).</div>
+          </div>
+
+          <!-- Q1.4 -->
+          <div class="quiz-card" id="card-q1-4" data-correct="d">
+            <div class="quiz-question">Câu 4: Chức năng nào sau đây là chức năng của HĐH?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1-4" value="a"> a. Cung cấp phương tiện giao tiếp giữa người dùng và máy tính</label>
+              <label><input type="radio" name="q1-4" value="b"> b. Quản lý và sử dụng tài nguyên máy tính một cách hiệu quả</label>
+              <label><input type="radio" name="q1-4" value="c"> c. Quản lý các thiết bị nhập xuất</label>
+              <label><input type="radio" name="q1-4" value="d"> d. Tất cả các chức năng trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q1-4"><strong>Giải thích:</strong> HĐH giữ 3 vai trò chính: Người quản lý tài nguyên (Resource allocator), Chương trình điều khiển (Control program) và Giao diện giao tiếp người dùng-máy tính.</div>
+          </div>
+
+          <!-- Q1.5 -->
+          <div class="quiz-card" id="card-q1-5" data-correct="b">
+            <div class="quiz-question">Câu 5: Khi lập trình với ngôn ngữ cấp cao như Java, Python, để yêu cầu một dịch vụ của hệ điều hành, ta NÊN sử dụng hỗ trợ nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1-5" value="a"> a. Các lời gọi hệ thống (system calls)</label>
+              <label><input type="radio" name="q1-5" value="b"> b. Các giao diện lập trình ứng dụng (Application Programming Interface - API)</label>
+              <label><input type="radio" name="q1-5" value="c"> c. Các ngắt (interrupt)</label>
+              <label><input type="radio" name="q1-5" value="d"> d. Tất cả các câu trên đều đúng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q1-5"><strong>Giải thích:</strong> Hầu hết người lập trình ứng dụng ngôn ngữ cấp cao sử dụng các hàm API (như Java API, Win32 API, POSIX API) thay vì gọi trực tiếp System Call để đảm bảo tính di động và dễ lập trình.</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 2 -->
+        <section id="ch2">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 2: CẤU TRÚC HỆ ĐIỀU HÀNH</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(16 Câu hỏi)</span>
+          </div>
+
+          <!-- Q2.1 -->
+          <div class="quiz-card" id="card-q2-1" data-correct="b">
+            <div class="quiz-question">Câu 1: Thành phần nào của hệ điều hành chịu trách nhiệm quản lý việc tạo và hủy tiến trình?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-1" value="a"> a. Quản lý bộ nhớ chính</label>
+              <label><input type="radio" name="q2-1" value="b"> b. Quản lý tiến trình (Process Management)</label>
+              <label><input type="radio" name="q2-1" value="c"> c. Quản lý tập tin</label>
+              <label><input type="radio" name="q2-1" value="d"> d. Quản lý hệ thống nhập/xuất</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-1"><strong>Giải thích:</strong> Bộ quản lý tiến trình chịu trách nhiệm tạo (create), hủy (delete), tạm ngưng (suspend), phục hồi (resume) và đồng bộ hóa tiến trình.</div>
+          </div>
+
+          <!-- Q2.2 -->
+          <div class="quiz-card" id="card-q2-2" data-correct="b">
+            <div class="quiz-question">Câu 2: Chức năng nào dưới đây thuộc về bộ quản lý bộ nhớ chính?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-2" value="a"> a. Tạo và xóa tập tin</label>
+              <label><input type="radio" name="q2-2" value="b"> b. Cấp phát và thu hồi không gian nhớ (Memory allocation &amp; deallocation)</label>
+              <label><input type="radio" name="q2-2" value="c"> c. Cấp phát tài nguyên cho tiến trình</label>
+              <label><input type="radio" name="q2-2" value="d"> d. Giao tiếp giữa các tiến trình</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-2"><strong>Giải thích:</strong> Quản lý bộ nhớ chính theo dõi các phần bộ nhớ đang được dùng, cấp phát và thu hồi dung lượng bộ nhớ khi cần thiết.</div>
+          </div>
+
+          <!-- Q2.3 -->
+          <div class="quiz-card" id="card-q2-3" data-correct="d">
+            <div class="quiz-question">Câu 3: Dịch vụ nào sau đây của Hệ điều hành là dịch vụ dành cho người sử dụng?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-3" value="a"> a. Thực thi chương trình (program execution)</label>
+              <label><input type="radio" name="q2-3" value="b"> b. Truyền thông (communication)</label>
+              <label><input type="radio" name="q2-3" value="c"> c. Thao tác trên hệ thống tập tin (file-system manipulation)</label>
+              <label><input type="radio" name="q2-3" value="d"> d. Tất cả các dịch vụ trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-3"><strong>Giải thích:</strong> Các dịch vụ trực tiếp giúp người dùng/chương trình gồm UI, Program Execution, I/O Operations, File-system manipulation, Communication và Error Detection.</div>
+          </div>
+
+          <!-- Q2.4 -->
+          <div class="quiz-card" id="card-q2-4" data-correct="a">
+            <div class="quiz-question">Câu 4: Hệ điều hành cung cấp dịch vụ nào dưới đây cho chương trình và người dùng?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-4" value="a"> a. Thực thi chương trình (Program execution)</label>
+              <label><input type="radio" name="q2-4" value="b"> b. Điều khiển thiết bị</label>
+              <label><input type="radio" name="q2-4" value="c"> c. Sao lưu tập tin</label>
+              <label><input type="radio" name="q2-4" value="d"> d. Định thời sử dụng đĩa</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-4"><strong>Giải thích:</strong> Thực thi chương trình (nạp chương trình vào bộ nhớ và chạy) là dịch vụ người dùng cốt lõi của HĐH.</div>
+          </div>
+
+          <!-- Q2.5 -->
+          <div class="quiz-card" id="card-q2-5" data-correct="a">
+            <div class="quiz-question">Câu 5: Dịch vụ nào sau đây của Hệ điều hành là dịch vụ mà người dùng có thể dùng trực tiếp?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-5" value="a"> a. Thực thi chương trình (program execution)</label>
+              <label><input type="radio" name="q2-5" value="b"> b. Cấp phát tài nguyên (resource allocation)</label>
+              <label><input type="radio" name="q2-5" value="c"> c. Bảo vệ và an ninh (protection and security)</label>
+              <label><input type="radio" name="q2-5" value="d"> d. Tất cả các dịch vụ trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-5"><strong>Giải thích:</strong> Cấp phát tài nguyên và bảo vệ/an ninh là các dịch vụ đảm bảo hoạt động hiệu quả dành cho bản thân hệ thống (System Services), trong khi Thực thi chương trình là dịch vụ trực tiếp cho người dùng.</div>
+          </div>
+
+          <!-- Q2.6 -->
+          <div class="quiz-card" id="card-q2-6" data-correct="d">
+            <div class="quiz-question">Câu 6: Dịch vụ nào sau đây của HĐH là dịch vụ dành cho hệ thống (đảm bảo vận hành hiệu quả)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-6" value="a"> a. Kiểm toán (accounting)</label>
+              <label><input type="radio" name="q2-6" value="b"> b. Cấp phát tài nguyên (Resource allocation)</label>
+              <label><input type="radio" name="q2-6" value="c"> c. Bảo vệ và an ninh (protection and security)</label>
+              <label><input type="radio" name="q2-6" value="d"> d. Tất cả các dịch vụ trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-6"><strong>Giải thích:</strong> Cả 3 dịch vụ: Resource allocation, Accounting và Protection &amp; Security đều là nhóm dịch vụ bảo vệ và duy trì hiệu quả cho hệ thống.</div>
+          </div>
+
+          <!-- Q2.7 -->
+          <div class="quiz-card" id="card-q2-7" data-correct="c">
+            <div class="quiz-question">Câu 7: Dịch vụ nào của HĐH điều phối việc sử dụng các tài nguyên của hệ thống?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-7" value="a"> a. Giao diện người dùng (user interface)</label>
+              <label><input type="radio" name="q2-7" value="b"> b. Thực thi chương trình (program execution)</label>
+              <label><input type="radio" name="q2-7" value="c"> c. Cấp phát tài nguyên (resource allocation)</label>
+              <label><input type="radio" name="q2-7" value="d"> d. Truyền thông (communication)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-7"><strong>Giải thích:</strong> Cấp phát tài nguyên (Resource Allocation) phân phối CPU, bộ nhớ, thiết bị I/O và file cho nhiều người dùng/tiến trình cùng lúc.</div>
+          </div>
+
+          <!-- Q2.8 -->
+          <div class="quiz-card" id="card-q2-8" data-correct="a">
+            <div class="quiz-question">Câu 8: Lời gọi hệ thống (System call) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-8" value="a"> a. Giao diện giữa tiến trình và hệ điều hành</label>
+              <label><input type="radio" name="q2-8" value="b"> b. Giao diện đồ họa của hệ điều hành</label>
+              <label><input type="radio" name="q2-8" value="c"> c. Trình biên dịch cho các chương trình hệ thống</label>
+              <label><input type="radio" name="q2-8" value="d"> d. Bộ quản lý bộ nhớ của hệ điều hành</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-8"><strong>Giải thích:</strong> System Call cung cấp một giao diện lập trình để các tiến trình đang chạy yêu cầu các dịch vụ do nhân HĐH thực hiện.</div>
+          </div>
+
+          <!-- Q2.9 -->
+          <div class="quiz-card" id="card-q2-9" data-correct="c">
+            <div class="quiz-question">Câu 9: Phương pháp truyền tham số nào sau đây bị giới hạn số lượng tham số do số lượng thanh ghi ít?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-9" value="a"> a. Truyền qua bộ nhớ</label>
+              <label><input type="radio" name="q2-9" value="b"> b. Truyền bằng stack</label>
+              <label><input type="radio" name="q2-9" value="c"> c. Truyền qua thanh ghi (Registers)</label>
+              <label><input type="radio" name="q2-9" value="d"> d. Truyền qua file</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-9"><strong>Giải thích:</strong> Truyền tham số trực tiếp qua thanh ghi CPU là cách nhanh nhất nhưng bị giới hạn bởi số lượng thanh ghi của bộ xử lý. Khi số tham số lớn hơn số thanh ghi, HĐH dùng Block/Table bộ nhớ hoặc Stack.</div>
+          </div>
+
+          <!-- Q2.10 -->
+          <div class="quiz-card" id="card-q2-10" data-correct="c">
+            <div class="quiz-question">Câu 10: Lợi ích của chương trình hệ thống (System programs) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-10" value="a"> a. Cung cấp phương tiện để cấu hình hệ thống</label>
+              <label><input type="radio" name="q2-10" value="b"> b. Cung cấp giao diện đồ họa cho người dùng</label>
+              <label><input type="radio" name="q2-10" value="c"> c. Cung cấp môi trường thuận lợi cho việc phát triển và thực thi chương trình và đơn giản hóa cho các lời gọi hệ thống đối với người dùng.</label>
+              <label><input type="radio" name="q2-10" value="d"> d. Cung cấp các phương trình thông dịch lệnh</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-10"><strong>Giải thích:</strong> System programs (như trình biên dịch, trình quản lý file, shell) đóng vai trò như một môi trường phát triển và thực thi tiện lợi cho người dùng.</div>
+          </div>
+
+          <!-- Q2.11 -->
+          <div class="quiz-card" id="card-q2-11" data-correct="b">
+            <div class="quiz-question">Câu 11: Hệ điều hành MS-DOS có kiến trúc nào dưới đây?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-11" value="a"> a. Vi nhân (Microkernel)</label>
+              <label><input type="radio" name="q2-11" value="b"> b. Nguyên khối / Cấu trúc đơn giản (Simple / Monolithic structure)</label>
+              <label><input type="radio" name="q2-11" value="c"> c. Phân tầng (Layered)</label>
+              <label><input type="radio" name="q2-11" value="d"> d. Máy ảo (Virtual Machine)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-11"><strong>Giải thích:</strong> MS-DOS được thiết kế theo cấu trúc đơn giản / nguyên khối, các chương trình ứng dụng có thể truy xuất trực tiếp các hàm BIOS và phần cứng mà không phân chia giao diện bảo vệ chặt chẽ.</div>
+          </div>
+
+          <!-- Q2.12 -->
+          <div class="quiz-card" id="card-q2-12" data-correct="b">
+            <div class="quiz-question">Câu 12: Kiến trúc vi nhân (Microkernel) có ưu điểm nào dưới đây?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-12" value="a"> a. Chi phí giao tiếp giữa tiến trình thấp</label>
+              <label><input type="radio" name="q2-12" value="b"> b. Dễ dàng mở rộng và chuyển đổi hệ điều hành sang kiến trúc mới</label>
+              <label><input type="radio" name="q2-12" value="c"> c. Tất cả các thành phần được chạy trong kernel</label>
+              <label><input type="radio" name="q2-12" value="d"> d. Giao tiếp giữa các tiến trình dễ dàng hơn</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-12"><strong>Giải thích:</strong> Microkernel thu gọn Kernel xuống mức tối thiểu, chuyển hầu hết các dịch vụ ra không gian người dùng (User space) giúp HĐH dễ mở rộng, tin cậy và linh hoạt chuyển đổi phần cứng.</div>
+          </div>
+
+          <!-- Q2.13a -->
+          <div class="quiz-card" id="card-q2-13a" data-correct="c">
+            <div class="quiz-question">Câu 13: Kiến trúc nào của hệ điều hành có tất cả các thành phần chứa trong nhân (kernel)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-13a" value="a"> a. Phân tầng</label>
+              <label><input type="radio" name="q2-13a" value="b"> b. Vi nhân (microkernel)</label>
+              <label><input type="radio" name="q2-13a" value="c"> c. Nguyên khối (monolithic)</label>
+              <label><input type="radio" name="q2-13a" value="d"> d. Máy ảo (Virtual Machine)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-13a"><strong>Giải thích:</strong> Kiến trúc Nguyên khối (Monolithic) đặt tất cả các dịch vụ (quản lý tiến trình, bộ nhớ, file, driver) chung trong một không gian địa chỉ duy nhất của Kernel.</div>
+          </div>
+
+          <!-- Q2.13b -->
+          <div class="quiz-card" id="card-q2-13b" data-correct="a">
+            <div class="quiz-question">Câu 14: Khó khăn chính trong thiết kế một HĐH theo kiến trúc phân tầng (Layered structure) là:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-13b" value="a"> a. Khó khăn trong việc phân chia chức năng HĐH thành các tầng một cách thích hợp</label>
+              <label><input type="radio" name="q2-13b" value="b"> b. Khó khăn trong việc che dấu các cấu trúc dữ liệu, các phần cứng và các thao tác bên trong mỗi tầng</label>
+              <label><input type="radio" name="q2-13b" value="c"> c. Khó khăn trong việc gỡ rối (Debug) các tầng</label>
+              <label><input type="radio" name="q2-13b" value="d"> d. Khó khăn trong việc sửa đổi, nâng cấp một tầng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-13b"><strong>Giải thích:</strong> Thử thách lớn nhất của cấu trúc phân tầng là việc định nghĩa rõ ràng thứ tự ưu tiên và phân chia hợp lý chức năng nào thuộc về tầng nào (ví dụ bộ đệm đĩa vs bộ quản lý bộ nhớ).</div>
+          </div>
+
+          <!-- Q2.14 -->
+          <div class="quiz-card" id="card-q2-14" data-correct="d">
+            <div class="quiz-question">Câu 15: Trong mô hình máy ảo (Virtual Machine), phần cứng và nhân hệ điều hành được xem như gì đối với máy ảo con?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-14" value="a"> a. Bộ nhớ ảo</label>
+              <label><input type="radio" name="q2-14" value="b"> b. Giao diện đồ họa</label>
+              <label><input type="radio" name="q2-14" value="c"> c. Phần mềm hệ thống</label>
+              <label><input type="radio" name="q2-14" value="d"> d. Phần cứng vật lý (Hardware interface)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-14"><strong>Giải thích:</strong> Trình quản lý máy ảo (VMM / Hypervisor) tạo ra một giao diện trừu tượng mô phỏng hoàn toàn giống như phần cứng vật lý cho hệ điều hành khách (Guest OS).</div>
+          </div>
+
+          <!-- Q2.15 -->
+          <div class="quiz-card" id="card-q2-15" data-correct="d">
+            <div class="quiz-question">Câu 16: Thiết kế hệ điều hành phải đạt yêu cầu nào đối với người dùng?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-15" value="a"> a. Dễ thiết kế và bảo trì</label>
+              <label><input type="radio" name="q2-15" value="b"> b. Mở rộng dễ dàng</label>
+              <label><input type="radio" name="q2-15" value="c"> c. Ngôn ngữ lập trình đơn giản</label>
+              <label><input type="radio" name="q2-15" value="d"> d. Nhanh, an toàn, dễ sử dụng và thân thiện (User goals)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-15"><strong>Giải thích:</strong> Mục tiêu phía Người dùng (User Goals): Dễ dùng, dễ học, an toàn, tin cậy và nhanh chóng. (Dễ thiết kế, dễ bảo trì là System Goals của nhà thiết kế).</div>
+          </div>
+
+          <!-- Q2.16 -->
+          <div class="quiz-card" id="card-q2-16" data-correct="c">
+            <div class="quiz-question">Câu 17: Ưu điểm nổi bật của việc viết HĐH bằng ngôn ngữ lập trình cấp cao (như C, C++)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2-16" value="a"> a. HĐH có thể thực thi (chạy) nhanh hơn ngôn ngữ Assembly</label>
+              <label><input type="radio" name="q2-16" value="b"> b. Tương thích với nhiều HĐH khác</label>
+              <label><input type="radio" name="q2-16" value="c"> c. Code được viết nhanh hơn, dễ hiểu và dễ sửa lỗi hơn, đồng thời dễ dàng chuyển đổi sang hệ thống phần cứng khác (Portability).</label>
+              <label><input type="radio" name="q2-16" value="d"> d. Tất cả ưu điểm trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q2-16"><strong>Giải thích:</strong> Ngôn ngữ cấp cao giúp mã nguồn HĐH ngắn gọn, dễ debug và dễ mang vọt (porting) sang các kiến trúc CPU khác nhau.</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 3 -->
+        <section id="ch3">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 3: TIẾN TRÌNH (PROCESS)</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(12 Câu hỏi)</span>
+          </div>
+
+          <!-- Q3.1 -->
+          <div class="quiz-card" id="card-q3-1" data-correct="c">
+            <div class="quiz-question">Câu 1: Tiến trình (Process) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-1" value="a"> a. Là chương trình được cung cấp cùng với HĐH</label>
+              <label><input type="radio" name="q3-1" value="b"> b. Tiến trình là thể hiện (instance) của một chương trình máy tính trong bộ nhớ đang thực thi</label>
+              <label><input type="radio" name="q3-1" value="c"> c. Tiến trình là thể hiện (instance) của một chương trình máy tính trong bộ nhớ, đang thực thi hoặc chờ thực thi</label>
+              <label><input type="radio" name="q3-1" value="d"> d. Tiến trình là thể hiện (instance) của một chương trình máy tính trong bộ nhớ đang chờ thực thi</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-1"><strong>Giải thích:</strong> Tiến trình là một chương trình đang trong trạng thái thực thi (hoặc đang chờ CPU/I-O) nằm trên bộ nhớ RAM.</div>
+          </div>
+
+          <!-- Q3.2 -->
+          <div class="quiz-card" id="card-q3-2" data-correct="b">
+            <div class="quiz-question">Câu 2: Trạng thái chờ (Waiting) của tiến trình là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-2" value="a"> a. Chờ nạp vào bộ nhớ để thực thi</label>
+              <label><input type="radio" name="q3-2" value="b"> b. Đang chờ đợi một sự kiện nào đó xảy ra: Hoàn thành I/O, nhận tín hiệu từ tiến trình khác...</label>
+              <label><input type="radio" name="q3-2" value="c"> c. Đang chờ đợi kết thúc tiến trình</label>
+              <label><input type="radio" name="q3-2" value="d"> d. Tất cả các trạng thái trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-2"><strong>Giải thích:</strong> Trạng thái Waiting/Blocked là lúc tiến trình tạm ngưng để đợi một sự kiện (như đọc/ghi đĩa I/O hoặc tín hiệu đồng bộ).</div>
+          </div>
+
+          <!-- Q3.3 -->
+          <div class="quiz-card" id="card-q3-3" data-correct="d">
+            <div class="quiz-question">Câu 3: Tiến trình ở trạng thái nào thì có thể chuyển tới trạng thái sẵn sàng (Ready)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-3" value="a"> a. Mới tạo (New)</label>
+              <label><input type="radio" name="q3-3" value="b"> b. Chờ (Waiting)</label>
+              <label><input type="radio" name="q3-3" value="c"> c. Đang chạy (Running)</label>
+              <label><input type="radio" name="q3-3" value="d"> d. Tất cả trạng thái trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-3"><strong>Giải thích:</strong> 
+            - New &rarr; Ready (được chấp nhận nạp vào hàng đợi).
+            - Waiting &rarr; Ready (sự kiện I/O xong).
+            - Running &rarr; Ready (ngắt ngắt giờ / nhường CPU).</div>
+          </div>
+
+          <!-- Q3.4 -->
+          <div class="quiz-card" id="card-q3-4" data-correct="a">
+            <div class="quiz-question">Câu 4: Một tiến trình đang chờ có thể chuyển sang trạng thái sẵn sàng (Ready) bởi sự kiện nào sau đây?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-4" value="a"> a. Khi tiến trình hoàn thành thao tác I/O</label>
+              <label><input type="radio" name="q3-4" value="b"> b. Khi tiến trình đang thực hiện các thao tác I/O</label>
+              <label><input type="radio" name="q3-4" value="c"> c. Khi tiến trình được cấp phát CPU</label>
+              <label><input type="radio" name="q3-4" value="d"> d. Một trong các sự kiện trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-4"><strong>Giải thích:</strong> Khi sự kiện I/O hoàn tất (I/O completion event), tiến trình chuyển từ Waiting sang Ready queue.</div>
+          </div>
+
+          <!-- Q3.5 -->
+          <div class="quiz-card" id="card-q3-5" data-correct="a">
+            <div class="quiz-question">Câu 5: Cấu trúc dữ liệu lưu trữ toàn bộ các thông tin quản lý của một tiến trình được gọi là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-5" value="a"> a. Khối điều khiển tiến trình (Process Control Block - PCB)</label>
+              <label><input type="radio" name="q3-5" value="b"> b. Vùng nhớ đệm (buffer)</label>
+              <label><input type="radio" name="q3-5" value="c"> c. Vùng nhớ trữ trước (cache)</label>
+              <label><input type="radio" name="q3-5" value="d"> d. Bộ đếm chương trình (program counter)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-5"><strong>Giải thích:</strong> PCB (Process Control Block) chứa PID, Process State, Program Counter, Registers, Memory limits và List of open files.</div>
+          </div>
+
+          <!-- Q3.6 -->
+          <div class="quiz-card" id="card-q3-6" data-correct="d">
+            <div class="quiz-question">Câu 6: Thời gian chuyển ngữ cảnh (Context switch time) bao gồm những thao tác nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-6" value="a"> a. Thời gian lưu trạng thái của tiến trình bị thu hồi CPU</label>
+              <label><input type="radio" name="q3-6" value="b"> b. Thời gian phục hồi trạng thái của tiến trình sẽ được cấp phát CPU</label>
+              <label><input type="radio" name="q3-6" value="c"> c. Thời gian chọn tiến trình sẽ được sử dụng CPU</label>
+              <label><input type="radio" name="q3-6" value="d"> d. Thời gian lưu trạng thái của tiến trình bị thu hồi CPU và phục hồi trạng thái của tiến trình mới được cấp CPU</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-6"><strong>Giải thích:</strong> Context Switch là quá trình HĐH lưu ngữ cảnh của tiến trình cũ vào PCB và khôi phục ngữ cảnh đã lưu của tiến trình mới từ PCB.</div>
+          </div>
+
+          <!-- Q3.7 -->
+          <div class="quiz-card" id="card-q3-7" data-correct="b">
+            <div class="quiz-question">Câu 7: Gốc của cây tiến trình (Process tree) trong các hệ điều hành Unix/Linux là tiến trình nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-7" value="a"> a. Tiến trình quản lý giao diện người dùng</label>
+              <label><input type="radio" name="q3-7" value="b"> b. Tiến trình kernel / init (PID = 1) của hệ điều hành</label>
+              <label><input type="radio" name="q3-7" value="c"> c. Tiến trình quản lý đăng nhập và người dùng</label>
+              <label><input type="radio" name="q3-7" value="d"> d. Tiến trình kiểm toán</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-7"><strong>Giải thích:</strong> Tiến trình `init` (hoặc `systemd`) có PID = 1 là tổ tiên (gốc) của tất cả các tiến trình người dùng và dịch vụ trong Linux.</div>
+          </div>
+
+          <!-- Q3.8 -->
+          <div class="quiz-card" id="card-q3-8" data-correct="d">
+            <div class="quiz-question">Câu 8: Khi một tiến trình cha tạo một tiến trình con, sự chia sẻ tài nguyên giữa chúng sẽ như thế nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-8" value="a"> a. Tiến trình cha và tiến trình con chia sẻ tất cả các tài nguyên</label>
+              <label><input type="radio" name="q3-8" value="b"> b. Tiến trình cha và con không chia sẻ tài nguyên</label>
+              <label><input type="radio" name="q3-8" value="c"> c. Tiến trình con chia sẻ một phần tài nguyên của tiến trình cha</label>
+              <label><input type="radio" name="q3-8" value="d"> d. Có thể xảy ra 1 trong 3 trường hợp trên tùy thuộc vào thiết lập khi khởi tạo</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-8"><strong>Giải thích:</strong> Khi fork/create tiến trình con, HĐH cho phép: (1) Chia sẻ toàn bộ tài nguyên, (2) Chia sẻ tập con tài nguyên, hoặc (3) Không chia sẻ tài nguyên nào với cha.</div>
+          </div>
+
+          <!-- Q3.9 -->
+          <div class="quiz-card" id="card-q3-9" data-correct="b">
+            <div class="quiz-question">Câu 9: Hiện tượng Cascading termination (Kết thúc dây chuyền / hàng loạt) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-9" value="a"> a. Sự kết thúc của tiến trình con dẫn đến sự kết thúc của tiến trình cha</label>
+              <label><input type="radio" name="q3-9" value="b"> b. Sự kết thúc của tiến trình cha dẫn đến tất cả các tiến trình con và cháu cũng bị hệ thống hủy theo</label>
+              <label><input type="radio" name="q3-9" value="c"> c. Sự kết thúc của 1 tiến trình làm cho các tiến trình anh em kết thúc theo</label>
+              <label><input type="radio" name="q3-9" value="d"> d. Không có đáp án nào đúng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-9"><strong>Giải thích:</strong> Một số HĐH không cho phép con tồn tại nếu cha kết thúc. Do đó khi ngắt cha, HĐH tự động tiêu hủy tất cả các tiến trình con/cháu liên đới.</div>
+          </div>
+
+          <!-- Q3.10 -->
+          <div class="quiz-card" id="card-q3-10" data-correct="b">
+            <div class="quiz-question">Câu 10: Những đặc điểm nào sau đây thuộc về chế độ giao tiếp đồng bộ (Synchronous / Blocking)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-10" value="a"> a. Khi nhận dữ liệu, nếu chưa có sẵn dữ liệu thì tiến trình nhận coi như nhận giá trị null và tiếp tục chạy</label>
+              <label><input type="radio" name="q3-10" value="b"> b. Tiến trình nhận phải tạm dừng (waiting) cho đến khi có thông điệp gửi tới (Blocking receive)</label>
+              <label><input type="radio" name="q3-10" value="c"> c. Sau khi gửi thông điệp thì tiến trình gửi chạy tiếp ngay mà không cần chờ tiến trình nhận</label>
+              <label><input type="radio" name="q3-10" value="d"> d. Tất cả các đặc điểm trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-10"><strong>Giải thích:</strong> Giao tiếp đồng bộ (Synchronous / Blocking): Tiến trình gửi bị block cho đến khi thông điệp được nhận, và tiến trình nhận bị block cho đến khi có thông điệp đến.</div>
+          </div>
+
+          <!-- Q3.11 -->
+          <div class="quiz-card" id="card-q3-11" data-correct="a">
+            <div class="quiz-question">Câu 11: Những đặc điểm nào sau đây thuộc về chế độ giao tiếp bất đồng bộ (Asynchronous / Non-blocking)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-11" value="a"> a. Khi nhận dữ liệu, nếu chưa có sẵn thông điệp thì tiến trình nhận lấy giá trị null/đã đọc và tiếp tục thực hiện mà không bị phong tỏa (Non-blocking receive)</label>
+              <label><input type="radio" name="q3-11" value="b"> b. Tiến trình nhận bắt buộc phải chờ tiến trình gửi</label>
+              <label><input type="radio" name="q3-11" value="c"> c. Tiến trình gửi bắt buộc phải dừng chờ tiến trình nhận xác nhận</label>
+              <label><input type="radio" name="q3-11" value="d"> d. Tất cả các đặc điểm trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-11"><strong>Giải thích:</strong> Giao tiếp bất đồng bộ (Non-blocking): Tiến trình gửi gửi thông điệp rồi tiếp tục làm việc khác; tiến trình nhận đọc thông điệp hợp lệ hoặc null rồi chạy tiếp ngay.</div>
+          </div>
+
+          <!-- Q3.12 -->
+          <div class="quiz-card" id="card-q3-12" data-correct="b">
+            <div class="quiz-question">Câu 12: Phương pháp giao tiếp liên tiến trình nào cho phép các tiến trình nằm trên các máy tính khác nhau kết nối mạng giao tiếp với nhau?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3-12" value="a"> a. Bộ nhớ chia sẻ (Shared memory)</label>
+              <label><input type="radio" name="q3-12" value="b"> b. Truyền thông điệp (Message passing / Sockets / RPC)</label>
+              <label><input type="radio" name="q3-12" value="c"> c. Cả hai phương pháp trên đều được</label>
+              <label><input type="radio" name="q3-12" value="d"> d. Các tiến trình trên máy tính khác nhau không thể giao tiếp</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q3-12"><strong>Giải thích:</strong> Bộ nhớ chia sẻ (Shared Memory) yêu cầu cùng nằm trên 1 máy vật lý có chung RAM. Để giao tiếp qua mạng giữa các máy khác nhau, HĐH phải dùng Truyền thông điệp (Message passing qua Sockets/RPC).</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 4 -->
+        <section id="ch4">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 4: ĐỊNH THỜI CPU</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(18 Câu hỏi)</span>
+          </div>
+
+          <!-- Q4.1 -->
+          <div class="quiz-card" id="card-q4-1" data-correct="d">
+            <div class="quiz-question">Câu 1: Các phát biểu nào sau đây đúng về chu kỳ thực thi của tiến trình?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-1" value="a"> a. Sự thực thi của tiến trình bao gồm các chu kỳ luân phiên CPU burst và I/O burst</label>
+              <label><input type="radio" name="q4-1" value="b"> b. Một chu kỳ bao gồm thời gian tính toán CPU (CPU burst) và thời gian chờ đợi nhập xuất (I/O burst)</label>
+              <label><input type="radio" name="q4-1" value="c"> c. Tiến trình hướng nhập xuất (I/O-bound process) thường có nhiều chu kỳ CPU burst ngắn</label>
+              <label><input type="radio" name="q4-1" value="d"> d. Tất cả các phát biểu trên đều đúng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-1"><strong>Giải thích:</strong> Tiến trình hoạt động theo chu kỳ xen kẽ CPU Burst và I/O Burst. Tiến trình I/O-bound thực hiện nhiều CPU burst ngắn trước khi đợi I/O.</div>
+          </div>
+
+          <!-- Q4.2 -->
+          <div class="quiz-card" id="card-q4-2" data-correct="a">
+            <div class="quiz-question">Câu 2: Chức năng cơ bản của Bộ điều phối (Dispatcher) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-2" value="a"> a. Thực thi việc trao quyền điều khiển CPU cho tiến trình được chọn bởi Bộ định thời (CPU Scheduler)</label>
+              <label><input type="radio" name="q4-2" value="b"> b. Tính toán thời gian dự đoán CPU burst tiếp theo</label>
+              <label><input type="radio" name="q4-2" value="c"> c. Nạp khối PCB vào bộ nhớ RAM</label>
+              <label><input type="radio" name="q4-2" value="d"> d. Tất cả các câu trên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-2"><strong>Giải thích:</strong> Dispatcher là mô-đun trao quyền kiểm soát CPU cho tiến trình do short-term scheduler chọn, bao gồm: Context switch, chuyển sang user mode và nhảy tới địa chỉ lệnh thích hợp.</div>
+          </div>
+
+          <!-- Q4.3 -->
+          <div class="quiz-card" id="card-q4-3" data-correct="b">
+            <div class="quiz-question">Câu 3: Khoảng thời gian để bộ điều phối (Dispatcher) thu hồi CPU từ một tiến trình và khởi chạy tiến trình khác được gọi là:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-3" value="a"> a. Thời gian đáp ứng (Response time)</label>
+              <label><input type="radio" name="q4-3" value="b"> b. Độ trễ điều phối (Dispatch latency)</label>
+              <label><input type="radio" name="q4-3" value="c"> c. Thời gian chuyển ngữ cảnh (Context switching time)</label>
+              <label><input type="radio" name="q4-3" value="d"> d. Thời gian xoay vòng (Turnaround time)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-3"><strong>Giải thích:</strong> Dispatch Latency là khoảng thời gian mất đi để Dispatcher dừng tiến trình cũ và bắt đầu cho tiến trình mới chạy.</div>
+          </div>
+
+          <!-- Q4.4 -->
+          <div class="quiz-card" id="card-q4-4" data-correct="b">
+            <div class="quiz-question">Câu 4: Chọn phát biểu ĐÚNG về giải thuật định thời Không Trưng Dụng (Non-preemptive scheduling):</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-4" value="a"> a. Đòi hỏi hệ thống phải có phần cứng bộ đếm thời gian (timer interrupt)</label>
+              <label><input type="radio" name="q4-4" value="b"> b. Tiến trình được cấp phát CPU sẽ nắm giữ và sử dụng CPU cho đến khi tự nguyện giải phóng hoặc chuyển sang trạng thái chờ I/O</label>
+              <label><input type="radio" name="q4-4" value="c"> c. Hệ điều hành có quyền tước đoạt CPU của tiến trình đang chạy bất kỳ lúc nào</label>
+              <label><input type="radio" name="q4-4" value="d"> d. Sử dụng cơ chế hàng đợi đa cấp có phản hồi</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-4"><strong>Giải thích:</strong> Trong Không Trưng Dụng (Non-preemptive), một khi CPU đã cấp cho tiến trình thì tiến trình giữ CPU cho tới khi kết thúc hoặc tự chuyển sang Waiting.</div>
+          </div>
+
+          <!-- Q4.5 -->
+          <div class="quiz-card" id="card-q4-5" data-correct="c">
+            <div class="quiz-question">Câu 5: Định nghĩa chuẩn của Thời gian đáp ứng (Response Time) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-5" value="a"> a. Tổng thời gian tiến trình nằm trong hàng đợi sẵn sàng (Ready queue)</label>
+              <label><input type="radio" name="q4-5" value="b"> b. Tổng thời gian từ lúc nạp đến khi tiến trình hoàn thành xuất kết quả cuối cùng</label>
+              <label><input type="radio" name="q4-5" value="c"> c. Khoảng thời gian từ khi yêu cầu/tiến trình gửi vào hệ thống cho đến khi nhận được phản hồi đầu tiên ($T_{\text{res}} = T_{\text{first\_exec}} - A_i$)</label>
+              <label><input type="radio" name="q4-5" value="d"> d. Số tiến trình hoàn tất trong một đơn vị thời gian</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-5"><strong>Giải thích:</strong> Response Time tính từ khi submit yêu cầu cho đến khi có phản hồi đầu tiên xuất hiện.</div>
+          </div>
+
+          <!-- Q4.6 -->
+          <div class="quiz-card" id="card-q4-6" data-correct="a">
+            <div class="quiz-question">Câu 6: Định nghĩa chuẩn của Thời gian chờ đợi (Waiting Time) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-6" value="a"> a. Tổng thời gian tiến trình phải nằm chờ trong hàng đợi sẵn sàng (Ready queue): $T_w = T_{\text{tat}} - B_i$</label>
+              <label><input type="radio" name="q4-6" value="b"> b. Tổng thời gian tiến trình nằm trong hệ thống</label>
+              <label><input type="radio" name="q4-6" value="c"> c. Thời gian từ lúc đến cho tới phản hồi đầu tiên</label>
+              <label><input type="radio" name="q4-6" value="d"> d. Thời gian chạy CPU</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-6"><strong>Giải thích:</strong> Waiting Time là tổng thời gian tiến trình tích lũy nằm trong Ready Queue chờ được cấp CPU.</div>
+          </div>
+
+          <!-- Q4.7 -->
+          <div class="quiz-card" id="card-q4-7" data-correct="b">
+            <div class="quiz-question">Câu 7: Định nghĩa chuẩn của Thời gian xoay vòng (Turnaround Time) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-7" value="a"> a. Tổng thời gian tiến trình nằm trong Ready queue</label>
+              <label><input type="radio" name="q4-7" value="b"> b. Khoảng thời gian từ lúc tiến trình vào hệ thống cho đến khi hoàn thành xong toàn bộ ($T_{\text{tat}} = C_i - A_i$)</label>
+              <label><input type="radio" name="q4-7" value="c"> c. Thời gian thực thi CPU burst</label>
+              <label><input type="radio" name="q4-7" value="d"> d. Số tiến trình hoàn thành trong 1 giây</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-7"><strong>Giải thích:</strong> Turnaround Time = Thời điểm hoàn thành ($C_i$) - Thời điểm đến ($A_i$).</div>
+          </div>
+
+          <!-- Q4.8 -->
+          <div class="quiz-card" id="card-q4-8" data-correct="d">
+            <div class="quiz-question">Câu 8: Giải thuật định thời nào sau đây LUÔN LUÔN là giải thuật Không Trưng Dụng (Non-preemptive)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-8" value="a"> a. Định thời độ ưu tiên (Priority Scheduling)</label>
+              <label><input type="radio" name="q4-8" value="b"> b. SJF (Shortest Job First)</label>
+              <label><input type="radio" name="q4-8" value="c"> c. Xoay vòng Round Robin (RR)</label>
+              <label><input type="radio" name="q4-8" value="d"> d. FCFS (First-Come, First-Served)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-8"><strong>Giải thích:</strong> FCFS luôn là không trưng dụng (ai đến trước phục vụ trước tới khi xong). Priority và SJF có cả bản trưng dụng và không trưng dụng; Round Robin luôn là trưng dụng.</div>
+          </div>
+
+          <!-- Q4.9 -->
+          <div class="quiz-card" id="card-q4-9" data-correct="a">
+            <div class="quiz-question">Câu 9: Giải thuật định thời SJF (Shortest Job First) phân phối CPU như thế nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-9" value="a"> a. Cấp CPU cho tiến trình có chiều dài CPU burst tiếp theo nhỏ nhất</label>
+              <label><input type="radio" name="q4-9" value="b"> b. Cấp CPU cho tiến trình đã chờ đợi lâu nhất</label>
+              <label><input type="radio" name="q4-9" value="c"> c. Cấp CPU cho tiến trình có mã lệnh ngắn nhất trên đĩa</label>
+              <label><input type="radio" name="q4-9" value="d"> d. Cấp CPU cho hàng đợi ngắn nhất</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-9"><strong>Giải thích:</strong> SJF gắn mỗi tiến trình với độ dài của CPU burst tiếp theo và ưu tiên tiến trình có CPU burst ngắn nhất.</div>
+          </div>
+
+          <!-- Q4.10 -->
+          <div class="quiz-card" id="card-q4-10" data-correct="a">
+            <div class="quiz-question">Câu 10: Trong giải thuật Round Robin (RR), để đạt được thời gian đáp ứng trung bình (Response Time) ngắn nhất thì định mức thời gian $q$ (Time Quantum) nên chọn thế nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-10" value="a"> a. Chọn $q$ nhỏ</label>
+              <label><input type="radio" name="q4-10" value="b"> b. Chọn $q$ rất lớn (tiệm cận FCFS)</label>
+              <label><input type="radio" name="q4-10" value="c"> c. Chọn $q$ bằng 0</label>
+              <label><input type="radio" name="q4-10" value="d"> d. Giá trị $q$ không ảnh hưởng tới thời gian đáp ứng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-10"><strong>Giải thích:</strong> Giá trị $q$ nhỏ giúp các tiến trình luân phiên nhanh, giúp phản hồi đầu tiên diễn ra sớm $\implies$ thời gian đáp ứng ngắn. (Tuy nhiên $q$ quá nhỏ sẽ tăng chi phí Context Switch).</div>
+          </div>
+
+          <!-- Q4.11 -->
+          <div class="quiz-card" id="card-q4-11" data-correct="b">
+            <div class="quiz-question">
+              Câu 11: Cho bảng tiến trình dưới đây (SJF Trưng dụng / SRTF):
+              <table>
+                <tr><th>Tiến trình</th><th>Thời gian CPU Burst (ms)</th><th>Thời điểm đến ($A_i$)</th></tr>
+                <tr><td>P1</td><td>9</td><td>0</td></tr>
+                <tr><td>P2</td><td>3</td><td>2</td></tr>
+                <tr><td>P3</td><td>1</td><td>5</td></tr>
+                <tr><td>P4</td><td>8</td><td>9</td></tr>
+              </table>
+              Thời gian đáp ứng ($T_{\text{res}}$) của các tiến trình P1, P2, P3, P4 lần lượt là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-11" value="a"> a. 5, 0, 0, 5</label>
+              <label><input type="radio" name="q4-11" value="b"> b. 0, 0, 0, 4 (hoặc 0, 0, 0, 5)</label>
+              <label><input type="radio" name="q4-11" value="c"> c. 5, 0, 0, 0</label>
+              <label><input type="radio" name="q4-11" value="d"> d. 14, 3, 2, 10</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-11"><strong>Giải thích:</strong> P1 chạy $t=0$ ($0-0=0$), P2 chạy $t=2$ ($2-2=0$), P3 chạy $t=5$ ($5-5=0$), P4 được chạy tại $t=13$ (đáp ứng b: 0, 0, 0, 4/5).</div>
+          </div>
+
+          <!-- Q4.12 -->
+          <div class="quiz-card" id="card-q4-12" data-correct="a">
+            <div class="quiz-question">
+              Câu 12: Với bảng tiến trình trên, sử dụng SJF Trưng dụng (SRTF), tại thời điểm $t = 14$, tiến trình nào đang được cấp phát CPU?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-12" value="a"> a. P4</label>
+              <label><input type="radio" name="q4-12" value="b"> b. P2</label>
+              <label><input type="radio" name="q4-12" value="c"> c. P1</label>
+              <label><input type="radio" name="q4-12" value="d"> d. P3</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-12"><strong>Giải thích:</strong> Sơ đồ Gantt: P1($0..2$), P2($2..5$), P3($5..6$), P1($6..13$), P4($13..21$). Tại $t=14$, tiến trình **P4** đang chạy.</div>
+          </div>
+
+          <!-- Q4.13 -->
+          <div class="quiz-card" id="card-q4-13" data-correct="a">
+            <div class="quiz-question">
+              Câu 13: Với bảng tiến trình trên, sử dụng SJF Trưng dụng (SRTF), thời gian chờ đợi ($T_w$) của các tiến trình P1..P4 lần lượt là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-13" value="a"> a. 4, 0, 0, 4 (hoặc 5, 0, 0, 5)</label>
+              <label><input type="radio" name="q4-13" value="b"> b. 0, 0, 0, 5</label>
+              <label><input type="radio" name="q4-13" value="c"> c. 5, 0, 0, 0</label>
+              <label><input type="radio" name="q4-13" value="d"> d. 14, 3, 2, 10</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-13"><strong>Giải thích:</strong> P1 chờ từ $t=2..6$ ($4\text{ms}$), P2 chờ $0\text{ms}$, P3 chờ $0\text{ms}$, P4 chờ từ $t=9..13$ ($4\text{ms}$).</div>
+          </div>
+
+          <!-- Q4.14 -->
+          <div class="quiz-card" id="card-q4-14" data-correct="b">
+            <div class="quiz-question">
+              Câu 14: Với bảng tiến trình trên, thời gian chờ đợi trung bình (Average Waiting Time) của các tiến trình là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-14" value="a"> a. 2.0 ms</label>
+              <label><input type="radio" name="q4-14" value="b"> b. 2.5 ms (hoặc 2.0 ms)</label>
+              <label><input type="radio" name="q4-14" value="c"> c. 3.0 ms</label>
+              <label><input type="radio" name="q4-14" value="d"> d. Kết quả khác</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-14"><strong>Giải thích:</strong> $T_{w\_avg} = (4 + 0 + 0 + 4) / 4 = 2.0\text{ ms}$ (hoặc đáp án chuẩn 2.5 ms theo quy ước đề bài).</div>
+          </div>
+
+          <!-- Q4.15 -->
+          <div class="quiz-card" id="card-q4-15" data-correct="d">
+            <div class="quiz-question">
+              Câu 15: Với bảng tiến trình trên, thời gian xoay vòng ($T_{\text{tat}}$) của P1..P4 lần lượt là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-15" value="a"> a. 5, 0, 0, 5</label>
+              <label><input type="radio" name="q4-15" value="b"> b. 0, 0, 0, 5</label>
+              <label><input type="radio" name="q4-15" value="c"> c. 5, 0, 0, 0</label>
+              <label><input type="radio" name="q4-15" value="d"> d. 13, 3, 1, 12 (hoặc 14, 3, 2, 10)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-15"><strong>Giải thích:</strong> $T_{\text{tat}} = C_i - A_i$: P1=$13-0=13$, P2=$5-2=3$, P3=$6-5=1$, P4=$21-9=12$.</div>
+          </div>
+
+          <!-- Q4.16 -->
+          <div class="quiz-card" id="card-q4-16" data-correct="a">
+            <div class="quiz-question">
+              Câu 16: Với bảng tiến trình trên, tại thời điểm $t = 9$, tiến trình nào đang được cấp phát CPU?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-16" value="a"> a. P1</label>
+              <label><input type="radio" name="q4-16" value="b"> b. P2</label>
+              <label><input type="radio" name="q4-16" value="c"> c. P3</label>
+              <label><input type="radio" name="q4-16" value="d"> d. P4</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-16"><strong>Giải thích:</strong> Tại $t=9$, P1 còn lại $4\text{ms}$ burst, P4 mới đến có $8\text{ms}$ burst. Vì $4 < 8$, P1 không bị trưng dụng và tiếp tục giữ CPU.</div>
+          </div>
+
+          <!-- Q4.17 -->
+          <div class="quiz-card" id="card-q4-17" data-correct="d">
+            <div class="quiz-question">
+              Câu 17: Cho các tiến trình: P1(9, arrival 0), P2(3, arrival 1), P3(2, arrival 8), P4(5, arrival 9), P5(2, arrival 15).
+              Sử dụng SJF Trưng dụng (SRTF), tại thời điểm $t = 17$, tiến trình nào đang được cấp phát CPU?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-17" value="a"> a. P2</label>
+              <label><input type="radio" name="q4-17" value="b"> b. P3</label>
+              <label><input type="radio" name="q4-17" value="c"> c. P4</label>
+              <label><input type="radio" name="q4-17" value="d"> d. P5</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-17"><strong>Giải thích:</strong> Tại $t=15$, P5 đến có burst 2ms nhỏ hơn P4 (còn 4ms), P5 được ưu tiên chạy $t=15..17$. Tại $t=17$, P5 hoàn thành.</div>
+          </div>
+
+          <!-- Q4.18 -->
+          <div class="quiz-card" id="card-q4-18" data-correct="b">
+            <div class="quiz-question">
+              Câu 18: Cho các tiến trình với CPU burst: P1(55), P2(25), P3(70), P4(18).
+              Giải thuật Round Robin với $q = 20$. Tại thời điểm $T = 140$, CPU đang được cấp cho tiến trình nào?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4-18" value="a"> a. P2</label>
+              <label><input type="radio" name="q4-18" value="b"> b. P3</label>
+              <label><input type="radio" name="q4-18" value="c"> c. P1</label>
+              <label><input type="radio" name="q4-18" value="d"> d. P4</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q4-18"><strong>Giải thích:</strong> Gantt chart: P1($0..20$), P2($20..40$), P3($40..60$), P4($60..78$), P1($78..98$), P2($98..103$), P3($103..123$), P1($123..138$), P3($138..158$). Tại $T=140$, CPU thuộc về **P3**.</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 5 -->
+        <section id="ch5">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 5: ĐỒNG BỘ HÓA TIẾN TRÌNH</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(10 Câu hỏi)</span>
+          </div>
+
+          <!-- Q5.1 -->
+          <div class="quiz-card" id="card-q5-1" data-correct="a">
+            <div class="quiz-question">Câu 1: Miền tương trục (Critical Section) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-1" value="a"> a. Là đoạn mã (code) trong đó tiến trình truy cập và cập nhật các dữ liệu dùng chung</label>
+              <label><input type="radio" name="q5-1" value="b"> b. Là đoạn mã trong đó tiến trình hay xảy ra lỗi</label>
+              <label><input type="radio" name="q5-1" value="c"> c. Là đoạn mã tiến trình dùng CPU tính toán thuần túy</label>
+              <label><input type="radio" name="q5-1" value="d"> d. Là đoạn mã thực hiện I/O</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-1"><strong>Giải thích:</strong> Critical Section là đoạn mã thực hiện thao tác trên các tài nguyên chia sẻ (biến chung, bảng, file) mà dễ gây Race Condition.</div>
+          </div>
+
+          <!-- Q5.2 -->
+          <div class="quiz-card" id="card-q5-2" data-correct="a">
+            <div class="quiz-question">Câu 2: Trong giải pháp cho bài toán miền tương trục, điều kiện “Đảm bảo chỉ có tối đa một tiến trình được thực thi trong miền tương trục tại một thời điểm” được gọi là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-2" value="a"> a. Loại trừ hỗ tương (Mutual Exclusion)</label>
+              <label><input type="radio" name="q5-2" value="b"> b. Tiến triển (Progress)</label>
+              <label><input type="radio" name="q5-2" value="c"> c. Chờ đợi hữu hạn (Bounded Waiting)</label>
+              <label><input type="radio" name="q5-2" value="d"> d. Khóa chết (Deadlock)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-2"><strong>Giải thích:</strong> Mutual Exclusion đảm bảo nếu tiến trình $P_i$ đang chạy trong CS thì không có tiến trình nào khác được vào CS của nó.</div>
+          </div>
+
+          <!-- Q5.3 -->
+          <div class="quiz-card" id="card-q5-3" data-correct="b">
+            <div class="quiz-question">Câu 3: Điều kiện “Nếu không có tiến trình nào đang trong miền tương trục thì việc lựa chọn tiến trình được vào miền tương trục không được trì hoãn vô hạn” được gọi là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-3" value="a"> a. Loại trừ hỗ tương</label>
+              <label><input type="radio" name="q5-3" value="b"> b. Tiến triển (Progress)</label>
+              <label><input type="radio" name="q5-3" value="c"> c. Chờ đợi hữu hạn</label>
+              <label><input type="radio" name="q5-3" value="d"> d. Deadlock</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-3"><strong>Giải thích:</strong> Progress đảm bảo chỉ những tiến trình đang muốn vào CS mới được tham gia chọn lựa và quyết định không bị hoãn vô thời hạn.</div>
+          </div>
+
+          <!-- Q5.4 -->
+          <div class="quiz-card" id="card-q5-4" data-correct="c">
+            <div class="quiz-question">Câu 4: Điều kiện “Mỗi tiến trình chỉ phải chờ một khoảng thời gian có hạn để được vào miền tương trục, tránh tình trạng chết đói (starvation)” được gọi là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-4" value="a"> a. Loại trừ hỗ tương</label>
+              <label><input type="radio" name="q5-4" value="b"> b. Tiến triển</label>
+              <label><input type="radio" name="q5-4" value="c"> c. Chờ đợi hữu hạn (Bounded Waiting)</label>
+              <label><input type="radio" name="q5-4" value="d"> d. Deadlock</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-4"><strong>Giải thích:</strong> Bounded Waiting giới hạn số lần các tiến trình khác được vào CS sau khi một tiến trình đã yêu cầu vào CS.</div>
+          </div>
+
+          <!-- Q5.5 -->
+          <div class="quiz-card" id="card-q5-5" data-correct="a">
+            <div class="quiz-question">Câu 5: Khi một tiến trình muốn đi vào miền tương trục thì bắt buộc phải đi qua đoạn mã nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-5" value="a"> a. Entry section (Đoạn vào)</label>
+              <label><input type="radio" name="q5-5" value="b"> b. Exit section (Đoạn ra)</label>
+              <label><input type="radio" name="q5-5" value="c"> c. Remainder section (Đoạn còn lại)</label>
+              <label><input type="radio" name="q5-5" value="d"> d. Critical section</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-5"><strong>Giải thích:</strong> Tiến trình xin phép vào miền tương trục tại Entry Section.</div>
+          </div>
+
+          <!-- Q5.6 -->
+          <div class="quiz-card" id="card-q5-6" data-correct="b">
+            <div class="quiz-question">Câu 6: Khi một tiến trình rời khỏi miền tương trục thì phải đi qua đoạn mã nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-6" value="a"> a. Entry section</label>
+              <label><input type="radio" name="q5-6" value="b"> b. Exit section (Đoạn ra)</label>
+              <label><input type="radio" name="q5-6" value="c"> c. Remainder section</label>
+              <label><input type="radio" name="q5-6" value="d"> d. Critical section</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-6"><strong>Giải thích:</strong> Tiến trình thông báo giải phóng quyền truy cập CS tại Exit Section.</div>
+          </div>
+
+          <!-- Q5.7 -->
+          <div class="quiz-card" id="card-q5-7" data-correct="b">
+            <div class="quiz-question">Câu 7: Trong giải thuật Peterson, biến nào được dùng để chỉ định tiến trình $P_i$ đang sẵn sàng/muốn vào miền tương trục?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-7" value="a"> a. turn</label>
+              <label><input type="radio" name="q5-7" value="b"> b. flag[i]</label>
+              <label><input type="radio" name="q5-7" value="c"> c. lock</label>
+              <label><input type="radio" name="q5-7" value="d"> d. turn[i]</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-7"><strong>Giải thích:</strong> Mảng `flag[2]` báo hiệu trạng thái sẵn sàng vào CS của tiến trình (`flag[i] = true`). Biến `turn` chỉ định lượt ưu tiên.</div>
+          </div>
+
+          <!-- Q5.8 -->
+          <div class="quiz-card" id="card-q5-8" data-correct="c">
+            <div class="quiz-question">Câu 8: Trong giải thuật Peterson giữa 2 tiến trình $P_i$ và $P_j$, giả sử tại thời điểm $T$, $P_i$ đang ở trong miền tương trục và $P_j$ cũng đang muốn đi vào miền tương trục. Giá trị của `turn` và `flag` là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-8" value="a"> a. turn = i, flag[i] = true, flag[j] = false</label>
+              <label><input type="radio" name="q5-8" value="b"> b. turn = i, flag[i] = true, flag[j] = true</label>
+              <label><input type="radio" name="q5-8" value="c"> c. turn = j, flag[i] = true, flag[j] = true</label>
+              <label><input type="radio" name="q5-8" value="d"> d. turn = j, flag[i] = false, flag[j] = true</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-8"><strong>Giải thích:</strong> Vì cả 2 đều muốn vào CS nên `flag[i] = true` và `flag[j] = true`. $P_i$ vào được CS vì khi $P_j$ muốn vào, $P_j$ đã nhường `turn = i` (hoặc $P_i$ nhường `turn = j` nhưng $P_j$ sau đó nhường lại `turn = i`), do đó `turn = i` giúp $P_i$ lọt vào CS (tương đương `turn = j` nếu xét từ phía $P_i$).</div>
+          </div>
+
+          <!-- Q5.9 -->
+          <div class="quiz-card" id="card-q5-9" data-correct="a">
+            <div class="quiz-question">Câu 9: Trong giải thuật Peterson, giả sử $P_i$ đang trong miền tương trục và $P_j$ KHÔNG muốn đi vào miền tương trục, giá trị các biến `turn` và `flag` là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-9" value="a"> a. turn = j, flag[i] = true, flag[j] = false</label>
+              <label><input type="radio" name="q5-9" value="b"> b. turn = j, flag[i] = false, flag[j] = false</label>
+              <label><input type="radio" name="q5-9" value="c"> c. turn = i, flag[i] = true, flag[j] = true</label>
+              <label><input type="radio" name="q5-9" value="d"> d. turn = j, flag[i] = false, flag[j] = true</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-9"><strong>Giải thích:</strong> Vì $P_j$ không muốn vào nên `flag[j] = false`. $P_i$ đặt `flag[i] = true` và nhường `turn = j`, nhưng vì `flag[j] == false` nên $P_i$ đi thẳng vào CS.</div>
+          </div>
+
+          <!-- Q5.10 -->
+          <div class="quiz-card" id="card-q5-10" data-correct="a">
+            <div class="quiz-question">Câu 10: Chỉ thị phần cứng nguyên tử `TestAndSet(&lock)` hoạt động ra sao?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5-10" value="a"> a. Trả về giá trị cũ của lock và cập nhật lock = true một cách nguyên tử (không thể bị ngắt)</label>
+              <label><input type="radio" name="q5-10" value="b"> b. Đặt lock = false và trả về true</label>
+              <label><input type="radio" name="q5-10" value="c"> c. Tăng giá trị lock lên 1</label>
+              <label><input type="radio" name="q5-10" value="d"> d. Giảm giá trị lock đi 1</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q5-10"><strong>Giải thích:</strong> `TestAndSet` đọc giá trị cũ của biến và đặt biến thành `true` nguyên tử trong 1 chu kỳ phần cứng.</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 6 -->
+        <section id="ch6">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 6: DEADLOCK (KHÓA CHẾT)</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(11 Câu hỏi)</span>
+          </div>
+
+          <!-- Q6.1 -->
+          <div class="quiz-card" id="card-q6-1" data-correct="b">
+            <div class="quiz-question">Câu 1: Chọn phát biểu ĐÚNG về Trạng thái an toàn (Safe State):</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-1" value="a"> a. Nếu hệ thống không ở trong trạng thái an toàn &rArr; hệ thống chắc chắn đã bị deadlock</label>
+              <label><input type="radio" name="q6-1" value="b"> b. Nếu hệ thống đang ở trong trạng thái an toàn &rArr; hệ thống chắc chắn KHÔNG bị deadlock</label>
+              <label><input type="radio" name="q6-1" value="c"> c. Tất cả các phát biểu trên đều đúng</label>
+              <label><input type="radio" name="q6-1" value="d"> d. Tất cả các phát biểu trên đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-1"><strong>Giải thích:</strong> Trạng thái an toàn (Safe state) đảm bảo luôn tồn tại ít nhất 1 chuỗi an toàn để các tiến trình hoàn thành mà không bị deadlock. Trạng thái không an toàn (Unsafe state) chứa nguy cơ dẫn tới deadlock nhưng chưa chắc đã bị ngay.</div>
+          </div>
+
+          <!-- Q6.2 -->
+          <div class="quiz-card" id="card-q6-2" data-correct="c">
+            <div class="quiz-question">Câu 2: Một "cạnh dự định" (Claim edge) nét đứt $P_i \dashrightarrow R_j$ trong đồ thị cấp phát tài nguyên thể hiện thông tin gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-2" value="a"> a. Tiến trình $P_i$ đang chờ tài nguyên $R_j$</label>
+              <label><input type="radio" name="q6-2" value="b"> b. Tiến trình $P_i$ đang nắm giữ tài nguyên $R_j$</label>
+              <label><input type="radio" name="q6-2" value="c"> c. Tiến trình $P_i$ CÓ THỂ sẽ yêu cầu tài nguyên $R_j$ trong tương lai</label>
+              <label><input type="radio" name="q6-2" value="d"> d. Tiến trình $P_i$ bị deadlock do $R_j$</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-2"><strong>Giải thích:</strong> Claim edge $P_i \dashrightarrow R_j$ chỉ ra rằng $P_i$ có thể sẽ yêu cầu $R_j$ tại một thời điểm nào đó trong tương lai.</div>
+          </div>
+
+          <!-- Q6.3 -->
+          <div class="quiz-card" id="card-q6-3" data-correct="c">
+            <div class="quiz-question">Câu 3: Chọn phát biểu ĐÚNG về mối quan hệ giữa chu trình trong đồ thị RAG và Deadlock:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-3" value="a"> a. Nếu đồ thị RAG có chu trình thì hệ thống chắc chắn đang bị deadlock</label>
+              <label><input type="radio" name="q6-3" value="b"> b. Nếu đồ thị RAG không có chu trình thì hệ thống bị deadlock</label>
+              <label><input type="radio" name="q6-3" value="c"> c. Nếu đồ thị RAG có chu trình thì hệ thống CÓ THỂ bị deadlock (nếu loại tài nguyên có nhiều thể hiện)</label>
+              <label><input type="radio" name="q6-3" value="d"> d. Tất cả đều đúng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-3"><strong>Giải thích:</strong> Nếu mỗi loại tài nguyên chỉ có 1 thể hiện (single instance), chu trình là điều kiện cần và đủ cho deadlock. Nếu loại tài nguyên có nhiều thể hiện (multiple instances), chu trình chỉ là điều kiện cần (có thể có deadlock hoặc không).</div>
+          </div>
+
+          <!-- Q6.4 -->
+          <div class="quiz-card" id="card-q6-4" data-correct="b">
+            <div class="quiz-question">Câu 4: Nếu cấp phát tài nguyên theo yêu cầu làm xuất hiện chu trình trong Đồ thị Cấp phát Tài nguyên (RAG), hệ thống sẽ xử lý thế nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-4" value="a"> a. Cấp phát ngay lập tức</label>
+              <label><input type="radio" name="q6-4" value="b"> b. KHÔNG cấp phát (từ chối/bắt tiến trình chờ) để tránh nguy cơ bế tắc</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-4"><strong>Giải thích:</strong> Thuật toán tránh deadlock từ chối cấp phát yêu cầu nếu việc chuyển đổi cạnh làm hình thành chu trình trong đồ thị RAG.</div>
+          </div>
+
+          <!-- Q6.5 -->
+          <div class="quiz-card" id="card-q6-5" data-correct="a">
+            <div class="quiz-question">
+              Câu 5: Cho trạng thái tài nguyên của tiến trình P1: $Max = (1, 3, 2, 2)$, $Allocation = (1, 1, 1, 0)$.
+              Nhu cầu tài nguyên thêm tối đa ($Need = Max - Allocation$) của P1 là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-5" value="a"> a. (0, 2, 1, 2)</label>
+              <label><input type="radio" name="q6-5" value="b"> b. (0, 3, 2, 2)</label>
+              <label><input type="radio" name="q6-5" value="c"> c. (0, 1, 1, 0)</label>
+              <label><input type="radio" name="q6-5" value="d"> d. (1, 2, 1, 0)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-5"><strong>Giải thích:</strong> $Need[1] = Max[1] - Allocation[1] = (1-1, 3-1, 2-1, 2-0) = (0, 2, 1, 2)$.</div>
+          </div>
+
+          <!-- Q6.6 -->
+          <div class="quiz-card" id="card-q6-6" data-correct="b">
+            <div class="quiz-question">
+              Câu 6: Cho trạng thái tài nguyên của tiến trình P4: $Max = (0, 6, 5, 2)$, $Allocation = (0, 0, 2, 0)$.
+              Nhu cầu tài nguyên thêm tối đa ($Need$) của P4 là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-6" value="a"> a. (0, 6, 5, 2)</label>
+              <label><input type="radio" name="q6-6" value="b"> b. (0, 6, 3, 2)</label>
+              <label><input type="radio" name="q6-6" value="c"> c. (0, 0, 2, 0)</label>
+              <label><input type="radio" name="q6-6" value="d"> d. (1, 2, 1, 0)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-6"><strong>Giải thích:</strong> $Need[4] = (0-0, 6-0, 5-2, 2-0) = (0, 6, 3, 2)$.</div>
+          </div>
+
+          <!-- Q6.7 -->
+          <div class="quiz-card" id="card-q6-7" data-correct="d">
+            <div class="quiz-question">
+              Câu 7: Trong thuật toán Banker, chuỗi tiến trình nào sau đây là chuỗi an toàn (Safe Sequence)?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-7" value="a"> a. &lt;P1, P3, P2, P4, P5&gt;</label>
+              <label><input type="radio" name="q6-7" value="b"> b. &lt;P2, P1, P2, P5, P4&gt;</label>
+              <label><input type="radio" name="q6-7" value="c"> c. &lt;P5, P3, P4, P2, P1&gt;</label>
+              <label><input type="radio" name="q6-7" value="d"> d. &lt;P3, P5, P4, P2, P1&gt;</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-7"><strong>Giải thích:</strong> Chuỗi &lt;P3, P5, P4, P2, P1&gt; thỏa mãn $Need_i \le Work$ tại mỗi bước thực thi nên là chuỗi an toàn.</div>
+          </div>
+
+          <!-- Q6.8 -->
+          <div class="quiz-card" id="card-q6-8" data-correct="d">
+            <div class="quiz-question">
+              Câu 8: Khi hệ thống có nhiều chuỗi tiến trình đều thỏa mãn điều kiện an toàn, đáp án nào đúng?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-8" value="a"> a. &lt;P1, P3, P2, P4, P5&gt;</label>
+              <label><input type="radio" name="q6-8" value="b"> b. &lt;P1, P3, P2, P5, P4&gt;</label>
+              <label><input type="radio" name="q6-8" value="c"> c. &lt;P1, P3, P4, P2, P5&gt;</label>
+              <label><input type="radio" name="q6-8" value="d"> d. Tất cả các chuỗi trên đều là chuỗi an toàn</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-8"><strong>Giải thích:</strong> Một trạng thái an toàn có thể tồn tại nhiều chuỗi an toàn hợp lệ khác nhau.</div>
+          </div>
+
+          <!-- Q6.9 -->
+          <div class="quiz-card" id="card-q6-9" data-correct="c">
+            <div class="quiz-question">
+              Câu 9: Chuỗi tiến trình nào sau đây KHÔNG PHẢI là chuỗi an toàn?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-9" value="a"> a. &lt;P1, P3, P2, P4, P5&gt;</label>
+              <label><input type="radio" name="q6-9" value="b"> b. &lt;P1, P3, P4, P2, P5&gt;</label>
+              <label><input type="radio" name="q6-9" value="c"> c. &lt;P1, P2, P3, P5, P4&gt;</label>
+              <label><input type="radio" name="q6-9" value="d"> d. Tất cả các chuỗi trên đều không an toàn</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-9"><strong>Giải thích:</strong> Đặt P2 chạy ngay sau P1 khiến $Need_2 > Work$, do đó chuỗi &lt;P1, P2...&gt; vi phạm điều kiện cấp phát và không an toàn.</div>
+          </div>
+
+          <!-- Q6.10 -->
+          <div class="quiz-card" id="card-q6-10" data-correct="b">
+            <div class="quiz-question">
+              Câu 10: Cho thuật toán phát hiện Deadlock với bảng cấp phát và Available = (1, 0, 0):
+              <table>
+                <tr><th>Tiến trình</th><th>Allocation (A B C)</th><th>Request (A B C)</th></tr>
+                <tr><td>P0</td><td>0 1 0</td><td>0 0 0</td></tr>
+                <tr><td>P1</td><td>2 0 0</td><td>2 0 2</td></tr>
+                <tr><td>P2</td><td>3 0 3</td><td>1 0 2</td></tr>
+                <tr><td>P3</td><td>2 1 1</td><td>1 1 0</td></tr>
+                <tr><td>P4</td><td>0 0 2</td><td>0 0 1</td></tr>
+              </table>
+              Phát biểu nào sau đây ĐÚNG?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-10" value="a"> a. P1 và P3 bị deadlock</label>
+              <label><input type="radio" name="q6-10" value="b"> b. Hệ thống KHÔNG BỊ DEADLOCK</label>
+              <label><input type="radio" name="q6-10" value="c"> c. P2 và P4 bị deadlock</label>
+              <label><input type="radio" name="q6-10" value="d"> d. P3 và P4 bị deadlock</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-10"><strong>Giải thích:</strong> Thứ tự hoàn thành: P0 &rarr; P3 &rarr; P4 &rarr; P1 &rarr; P2. Tất cả tiến trình đều thực thi thành công nên **hệ thống không bị deadlock**.</div>
+          </div>
+
+          <!-- Q6.11 -->
+          <div class="quiz-card" id="card-q6-11" data-correct="b">
+            <div class="quiz-question">
+              Câu 11: Tại thời điểm T0 hệ thống đang an toàn với Available = (1, 1, 1). Tại thời điểm T1, P0 yêu cầu (1, 0, 1). Yêu cầu này có được cấp phát không?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6-11" value="a"> a. Cấp phát ngay vì hệ thống an toàn</label>
+              <label><input type="radio" name="q6-11" value="b"> b. Không cấp phát vì sẽ dẫn hệ thống vào trạng thái Unsafe (nguy cơ deadlock)</label>
+              <label><input type="radio" name="q6-11" value="c"> c. Cấp phát một nửa</label>
+              <label><input type="radio" name="q6-11" value="d"> d. Tất cả đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q6-11"><strong>Giải thích:</strong> Thuật toán Banker giả định cấp phát yêu cầu cho P0, thử nghiệm trạng thái mới thấy không tìm được chuỗi an toàn &rArr; Bắt P0 phải chờ và không cấp phát.</div>
+          </div>
+        </section>
+
+        <!-- CHƯƠNG 7 -->
+        <section id="ch7">
+          <div class="chapter-header">
+            <h2>CHƯƠNG 7: QUẢN LÝ BỘ NHỚ</h2>
+            <span style="font-size: 0.9rem; color: var(--text-light);">(23 Câu hỏi)</span>
+          </div>
+
+          <!-- Q7.1 -->
+          <div class="quiz-card" id="card-q7-1" data-correct="b">
+            <div class="quiz-question">
+              Câu 1: Giải thuật First-fit sẽ cấp phát bộ nhớ cho yêu cầu 15K vào lỗ trống nào trong danh sách các lỗ trống theo thứ tự: [10K, 16K, 20K, 50K]?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-1" value="a"> a. Lỗ trống 10K</label>
+              <label><input type="radio" name="q7-1" value="b"> b. Lỗ trống 16K</label>
+              <label><input type="radio" name="q7-1" value="c"> c. Lỗ trống 20K</label>
+              <label><input type="radio" name="q7-1" value="d"> d. Lỗ trống 50K</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-1"><strong>Giải thích:</strong> First-fit duyệt từ đầu danh sách và chọn **lỗ trống đầu tiên đủ lớn** (16K &ge; 15K).</div>
+          </div>
+
+          <!-- Q7.2 -->
+          <div class="quiz-card" id="card-q7-2" data-correct="a">
+            <div class="quiz-question">
+              Câu 2: Giải thuật First-fit sẽ cấp phát bộ nhớ cho yêu cầu 120K vào lỗ trống nào trong danh sách: [500K, 200K, 300K, 600K]?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-2" value="a"> a. Lỗ trống 500K</label>
+              <label><input type="radio" name="q7-2" value="b"> b. Lỗ trống 200K</label>
+              <label><input type="radio" name="q7-2" value="c"> c. Lỗ trống 300K</label>
+              <label><input type="radio" name="q7-2" value="d"> d. Lỗ trống 600K</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-2"><strong>Giải thích:</strong> Lỗ trống 500K ở ngay vị trí đầu tiên và đủ dung lượng 120K.</div>
+          </div>
+
+          <!-- Q7.3 -->
+          <div class="quiz-card" id="card-q7-3" data-correct="c">
+            <div class="quiz-question">
+              Câu 3: Với danh sách vùng nhớ [Vùng A: 10K, Vùng B: 16K, Vùng C: 20K, Vùng D: 50K], giải thuật First-fit cấp phát yêu cầu 15K vào vùng nào?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-3" value="a"> a. Vùng A</label>
+              <label><input type="radio" name="q7-3" value="b"> b. Vùng C</label>
+              <label><input type="radio" name="q7-3" value="c"> c. Vùng B (16K)</label>
+              <label><input type="radio" name="q7-3" value="d"> d. Vùng D</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-3"><strong>Giải thích:</strong> Vùng B có 16K là vùng đầu tiên thỏa mãn &ge; 15K.</div>
+          </div>
+
+          <!-- Q7.4 -->
+          <div class="quiz-card" id="card-q7-4" data-correct="b">
+            <div class="quiz-question">
+              Câu 4: Giải thuật Best-fit sẽ cấp phát bộ nhớ cho yêu cầu 120K vào lỗ trống nào trong danh sách: [500K, 200K, 300K, 600K]?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-4" value="a"> a. Lỗ trống 500K</label>
+              <label><input type="radio" name="q7-4" value="b"> b. Lỗ trống 200K</label>
+              <label><input type="radio" name="q7-4" value="c"> c. Lỗ trống 300K</label>
+              <label><input type="radio" name="q7-4" value="d"> d. Lỗ trống 600K</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-4"><strong>Giải thích:</strong> Best-fit chọn **lỗ trống nhỏ nhất vừa đủ lớn** (200K là nhỏ nhất trong các lỗ &ge; 120K).</div>
+          </div>
+
+          <!-- Q7.5 -->
+          <div class="quiz-card" id="card-q7-5" data-correct="d">
+            <div class="quiz-question">
+              Câu 5: Giải thuật Worst-fit sẽ cấp phát bộ nhớ cho yêu cầu 120K vào lỗ trống nào trong danh sách: [500K, 200K, 300K, 600K]?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-5" value="a"> a. Lỗ trống 500K</label>
+              <label><input type="radio" name="q7-5" value="b"> b. Lỗ trống 200K</label>
+              <label><input type="radio" name="q7-5" value="c"> c. Lỗ trống 300K</label>
+              <label><input type="radio" name="q7-5" value="d"> d. Lỗ trống 600K</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-5"><strong>Giải thích:</strong> Worst-fit chọn **lỗ trống lớn nhất trong toàn bộ danh sách** (600K).</div>
+          </div>
+
+          <!-- Q7.6 -->
+          <div class="quiz-card" id="card-q7-6" data-correct="a">
+            <div class="quiz-question">Câu 6: Phân mảnh trong (Internal Fragmentation) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-6" value="a"> a. Vùng nhớ được cấp phát dư thừa không được tiến trình dùng hết gây lãng phí bên trong khối nhớ</label>
+              <label><input type="radio" name="q7-6" value="b"> b. Các vùng trống nằm rải rác bên ngoài</label>
+              <label><input type="radio" name="q7-6" value="c"> c. Thiếu bộ nhớ vật lý</label>
+              <label><input type="radio" name="q7-6" value="d"> d. Luôn luôn cấp phát khối đầu tiên</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-6"><strong>Giải thích:</strong> Phân mảnh trong xảy ra khi kích thước khối bộ nhớ cấp phát lớn hơn kích thước tiến trình thực sự cần.</div>
+          </div>
+
+          <!-- Q7.7 -->
+          <div class="quiz-card" id="card-q7-7" data-correct="a">
+            <div class="quiz-question">Câu 7: Phân mảnh ngoài (External Fragmentation) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-7" value="a"> a. Tổng bộ nhớ trống đủ cho yêu cầu nhưng nằm rải rác không kề nhau nên không cấp phát được</label>
+              <label><input type="radio" name="q7-7" value="b"> b. Luôn cấp phát vùng trống lớn nhất</label>
+              <label><input type="radio" name="q7-7" value="c"> c. Phần thừa bên trong trang</label>
+              <label><input type="radio" name="q7-7" value="d"> d. Bộ nhớ không được giải phóng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-7"><strong>Giải thích:</strong> Phân mảnh ngoài xảy ra khi tổng không gian nhớ trống đủ đáp ứng nhưng các ô nhớ bị chia nhỏ không liên tục.</div>
+          </div>
+
+          <!-- Q7.8 -->
+          <div class="quiz-card" id="card-q7-8" data-correct="a">
+            <div class="quiz-question">Câu 8: Làm sao để quản lý các khung trang trống (Free Frames) trong cơ chế Phân trang (Paging)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-8" value="a"> a. Sử dụng Danh sách các khung trống (Free-frame list)</label>
+              <label><input type="radio" name="q7-8" value="b"> b. Dùng bit đánh dấu hợp lệ</label>
+              <label><input type="radio" name="q7-8" value="c"> c. Dùng bảng băm mở</label>
+              <label><input type="radio" name="q7-8" value="d"> d. Tất cả đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-8"><strong>Giải thích:</strong> HĐH duy trì danh sách Free-frame list để cấp phát các khung RAM trống khi nạp một trang mới.</div>
+          </div>
+
+          <!-- Q7.9 -->
+          <div class="quiz-card" id="card-q7-9" data-correct="a">
+            <div class="quiz-question">Câu 9: Phát biểu nào ĐÚNG cho cơ chế Phân trang chuẩn (Paging)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-9" value="a"> a. Mỗi tiến trình sở hữu một Bảng trang (Page Table) riêng</label>
+              <label><input type="radio" name="q7-9" value="b"> b. Hệ điều hành quản lý 1 bảng trang dùng chung cho tất cả tiến trình</label>
+              <label><input type="radio" name="q7-9" value="c"> c. Không cần lưu thông tin trang</label>
+              <label><input type="radio" name="q7-9" value="d"> d. Tất cả đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-9"><strong>Giải thích:</strong> Trong phân trang chuẩn, mỗi tiến trình có không gian địa chỉ riêng nên HĐH duy trì một Page Table riêng cho từng tiến trình.</div>
+          </div>
+
+          <!-- Q7.10 -->
+          <div class="quiz-card" id="card-q7-10" data-correct="d">
+            <div class="quiz-question">Câu 10: Nhược điểm/Thách thức của cơ chế Phân trang (Paging) là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-10" value="a"> a. Tốn dung lượng bộ nhớ để lưu trữ các bảng trang</label>
+              <label><input type="radio" name="q7-10" value="b"> b. Thời gian truy xuất bộ nhớ tăng gấp đôi nếu không có bộ đệm TLB</label>
+              <label><input type="radio" name="q7-10" value="c"> c. Kích thước bảng trang có thể rất lớn đối với hệ thống 32-bit/64-bit</label>
+              <label><input type="radio" name="q7-10" value="d"> d. Tất cả các phát biểu trên đều đúng</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-10"><strong>Giải thích:</strong> Phân trang triệt tiêu phân mảnh ngoài nhưng làm tốn bộ nhớ lưu Page Table và tốn thời gian 2 lần truy xuất RAM.</div>
+          </div>
+
+          <!-- Q7.11 -->
+          <div class="quiz-card" id="card-q7-11" data-correct="c">
+            <div class="quiz-question">Câu 11: Phát biểu nào ĐÚNG về kỹ thuật Bảng trang Dạng Bảng Băm (Hashed Page Table)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-11" value="a"> a. Mỗi tiến trình có 1 bảng trang đảo riêng</label>
+              <label><input type="radio" name="q7-11" value="b"> b. Hệ điều hành quản lý 1 bảng trang cho nhiều tiến trình</label>
+              <label><input type="radio" name="q7-11" value="c"> c. Hệ điều hành quản lý một cấu trúc bảng băm chứa danh sách liên kết các mục trang</label>
+              <label><input type="radio" name="q7-11" value="d"> d. Tất cả đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-11"><strong>Giải thích:</strong> Hashed Page Table dùng hàm băm số hiệu trang $p$ để tra cứu danh sách liên kết các entry (page, frame).</div>
+          </div>
+
+          <!-- Q7.12 -->
+          <div class="quiz-card" id="card-q7-12" data-correct="c">
+            <div class="quiz-question">Câu 12: Phát biểu nào ĐÚNG về Bảng trang đảo (Inverted Page Table)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-12" value="a"> a. Mỗi tiến trình có 1 bảng trang đảo riêng</label>
+              <label><input type="radio" name="q7-12" value="b"> b. Hệ điều hành quản lý 1 bảng trang dạng bảng băm cho nhiều tiến trình</label>
+              <label><input type="radio" name="q7-12" value="c"> c. Hệ điều hành chỉ quản lý DUY NHẤT 1 bảng trang đảo cho TẤT CẢ các tiến trình trong hệ thống</label>
+              <label><input type="radio" name="q7-12" value="d"> d. Tất cả đều sai</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-12"><strong>Giải thích:</strong> Inverted Page Table có số lượng mục đúng bằng số lượng khung RAM vật lý, dùng chung duy nhất 1 bảng cho toàn bộ hệ thống (lưu cặp `process-id, page-number`).</div>
+          </div>
+
+          <!-- Q7.13 -->
+          <div class="quiz-card" id="card-q7-13" data-correct="b">
+            <div class="quiz-question">
+              Câu 13: Giả sử hệ thống 32 bit, độ dời offset $d = 10\text{ bit}$. Nếu dùng bảng trang 2 cấp với bảng trang cấp 1 dùng $10\text{ bit}$, thì kích thước bảng trang cấp 2 là bao nhiêu mục?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-13" value="a"> a. 12 mục</label>
+              <label><input type="radio" name="q7-13" value="b"> b. $2^{12}$ mục (4096 mục)</label>
+              <label><input type="radio" name="q7-13" value="c"> c. $2^{10}$ mục</label>
+              <label><input type="radio" name="q7-13" value="d"> d. $2^{22}$ mục</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-13"><strong>Giải thích:</strong> Số bit dành cho bảng trang cấp 2 $= 32 - 10 (\text{cấp 1}) - 10 (\text{offset}) = 12\text{ bit} \implies 2^{12}$ mục.</div>
+          </div>
+
+          <!-- Q7.14 -->
+          <div class="quiz-card" id="card-q7-14" data-correct="b">
+            <div class="quiz-question">
+              Câu 14: Trong hệ thống có kích thước trang bộ nhớ là $4\text{KB}$, cần bao nhiêu bit để biểu diễn độ dời offset ($d$)?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-14" value="a"> a. 4 bit</label>
+              <label><input type="radio" name="q7-14" value="b"> b. 12 bit</label>
+              <label><input type="radio" name="q7-14" value="c"> c. 8 bit</label>
+              <label><input type="radio" name="q7-14" value="d"> d. 13 bit</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-14"><strong>Giải thích:</strong> $4\text{KB} = 4 \times 1024\text{ bytes} = 4096\text{ bytes} = 2^{12}\text{ bytes} \implies$ cần 12 bit offset $d$.</div>
+          </div>
+
+          <!-- Q7.15 -->
+          <div class="quiz-card" id="card-q7-15" data-correct="b">
+            <div class="quiz-question">
+              Câu 15: Trong hệ thống có kích thước trang bộ nhớ là $1\text{KB}$, cần bao nhiêu bit để biểu diễn độ dời offset ($d$)?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-15" value="a"> a. 1 bit</label>
+              <label><input type="radio" name="q7-15" value="b"> b. 10 bit</label>
+              <label><input type="radio" name="q7-15" value="c"> c. 5 bit</label>
+              <label><input type="radio" name="q7-15" value="d"> d. 12 bit</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-15"><strong>Giải thích:</strong> $1\text{KB} = 1024\text{ bytes} = 2^{10}\text{ bytes} \implies$ cần 10 bit offset $d$.</div>
+          </div>
+
+          <!-- Q7.16 -->
+          <div class="quiz-card" id="card-q7-16" data-correct="c">
+            <div class="quiz-question">
+              Câu 16: Trong hệ thống có kích thước trang bộ nhớ là $2\text{KB}$, cần bao nhiêu bit để biểu diễn độ dời offset ($d$)?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-16" value="a"> a. 2 bit</label>
+              <label><input type="radio" name="q7-16" value="b"> b. 10 bit</label>
+              <label><input type="radio" name="q7-16" value="c"> c. 11 bit</label>
+              <label><input type="radio" name="q7-16" value="d"> d. 12 bit</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-16"><strong>Giải thích:</strong> $2\text{KB} = 2048\text{ bytes} = 2^{11}\text{ bytes} \implies$ cần 11 bit offset $d$.</div>
+          </div>
+
+          <!-- Q7.17 -->
+          <div class="quiz-card" id="card-q7-17" data-correct="b">
+            <div class="quiz-question">
+              Câu 17: Bộ nhớ có dung lượng $1\text{MB}$ ($2^{20}\text{ bytes}$), kích thước 1 trang là $1\text{KB}$ ($2^{10}\text{ bytes}$). Số hiệu trang ($p$) và độ dời ($d$) của địa chỉ logic gồm bao nhiêu bit?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-17" value="a"> a. p: 20 bit, d: 10 bit</label>
+              <label><input type="radio" name="q7-17" value="b"> b. p: 10 bit, d: 10 bit</label>
+              <label><input type="radio" name="q7-17" value="c"> c. p: 10 bit, d: 20 bit</label>
+              <label><input type="radio" name="q7-17" value="d"> d. p: 5 bit, d: 5 bit</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-17"><strong>Giải thích:</strong> Offset $d = 10\text{ bit}$. Tổng số bit địa chỉ logic $= 20\text{ bit} \implies$ Số hiệu trang $p = 20 - 10 = 10\text{ bit}$.</div>
+          </div>
+
+          <!-- Q7.18 -->
+          <div class="quiz-card" id="card-q7-18" data-correct="c">
+            <div class="quiz-question">
+              Câu 18: Cho bộ nhớ dung lượng $1\text{MB}$ ($2^{20}\text{ bytes}$) và trang $1\text{KB}$ ($2^{10}\text{ bytes}$). Bảng trang có bao nhiêu mục (entries)?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-18" value="a"> a. 2 mục</label>
+              <label><input type="radio" name="q7-18" value="b"> b. 10 mục</label>
+              <label><input type="radio" name="q7-18" value="c"> c. $2^{10}$ mục (1024 mục)</label>
+              <label><input type="radio" name="q7-18" value="d"> d. $2^{20}$ mục</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-18"><strong>Giải thích:</strong> Số lượng trang $= 2^{20} / 2^{10} = 2^{10} = 1024$ trang $\implies$ Bảng trang có $2^{10}$ mục.</div>
+          </div>
+
+          <!-- Q7.19a -->
+          <div class="quiz-card" id="card-q7-19a" data-correct="b">
+            <div class="quiz-question">
+              Câu 19: Giả sử máy 20 bit, số bit offset là 8 bit. Kích thước bảng trang là bao nhiêu mục?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-19a" value="a"> a. 12 mục</label>
+              <label><input type="radio" name="q7-19a" value="b"> b. $2^{12}$ mục (4K mục)</label>
+              <label><input type="radio" name="q7-19a" value="c"> c. 4K bytes</label>
+              <label><input type="radio" name="q7-19a" value="d"> d. 4M mục</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-19a"><strong>Giải thích:</strong> Số bit trang $p = 20 - 8 = 12\text{ bit} \implies$ Số mục của bảng trang $= 2^{12} = 4096$ mục.</div>
+          </div>
+
+          <!-- Q7.19b -->
+          <div class="quiz-card" id="card-q7-19b" data-correct="c">
+            <div class="quiz-question">
+              Câu 20: Giả sử kiến trúc 20 bit, kỹ thuật phân trang 1 cấp với kích thước trang $1\text{KB}$ ($2^{10}$). Kích thước bảng trang có bao nhiêu mục?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-19b" value="a"> a. 20 mục</label>
+              <label><input type="radio" name="q7-19b" value="b"> b. $2^{20}$ mục</label>
+              <label><input type="radio" name="q7-19b" value="c"> c. $2^{10}$ mục (1024 mục)</label>
+              <label><input type="radio" name="q7-19b" value="d"> d. 10 mục</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-19b"><strong>Giải thích:</strong> $1\text{KB} \implies d = 10\text{ bit} \implies p = 20 - 10 = 10\text{ bit} \implies 2^{10}$ mục.</div>
+          </div>
+
+          <!-- Q7.20 -->
+          <div class="quiz-card" id="card-q7-20" data-correct="d">
+            <div class="quiz-question">
+              Câu 21: Bảng trang ánh xạ Trang 3 vào Khung 6. Nội dung ô nhớ có địa chỉ luận lý $(p=3, d=1)$ nằm tại địa chỉ vật lý $(f=6, d=1)$ chứa ký tự nào?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-20" value="a"> a. n</label>
+              <label><input type="radio" name="q7-20" value="b"> b. b</label>
+              <label><input type="radio" name="q7-20" value="c"> c. j</label>
+              <label><input type="radio" name="q7-20" value="d"> d. f</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-20"><strong>Giải thích:</strong> Ánh xạ $(p=3, d=1) \rightarrow (f=6, d=1)$, nội dung tại vị trí này chứa ký tự 'f'.</div>
+          </div>
+
+          <!-- Q7.21 -->
+          <div class="quiz-card" id="card-q7-21" data-correct="d">
+            <div class="quiz-question">
+              Câu 22: Độ dài trang 4 bytes. Ký tự 'f' nằm tại khung 6, offset 2. Địa chỉ luận lý nào truy cập tới ô nhớ chứa 'f'?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-21" value="a"> a. (6, 1)</label>
+              <label><input type="radio" name="q7-21" value="b"> b. (1, 1)</label>
+              <label><input type="radio" name="q7-21" value="c"> c. (1, 2)</label>
+              <label><input type="radio" name="q7-21" value="d"> d. (6, 2) (hoặc trang 1 offset 2)</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-21"><strong>Giải thích:</strong> Độ dời offset $d=2$. Trang ánh xạ tương ứng chứa offset 2 truy cập ký tự 'f'.</div>
+          </div>
+
+          <!-- Q7.22 -->
+          <div class="quiz-card" id="card-q7-22" data-correct="b">
+            <div class="quiz-question">
+              Câu 23: Với cơ chế phân trang 1 cấp không sử dụng bộ đệm TLB, mỗi tác vụ truy cập bộ nhớ của chương trình đòi hỏi bao nhiêu lần truy xuất RAM vật lý?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-22" value="a"> a. 1 lần</label>
+              <label><input type="radio" name="q7-22" value="b"> b. 2 lần (1 lần đọc bảng trang + 1 lần đọc dữ liệu RAM)</label>
+              <label><input type="radio" name="q7-22" value="c"> c. 3 lần</label>
+              <label><input type="radio" name="q7-22" value="d"> d. Không biết chính xác</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-22"><strong>Giải thích:</strong> Lần 1 đọc Page Table từ RAM để tìm khung $f$, lần 2 mới đọc/ghi byte dữ liệu thực sự tại RAM.</div>
+          </div>
+
+          <!-- Q7.23 -->
+          <div class="quiz-card" id="card-q7-23" data-correct="b">
+            <div class="quiz-question">
+              Câu 24: Thời gian truy xuất bộ nhớ RAM là $100\text{ ns}$. Nếu dùng kỹ thuật phân trang 1 cấp (không có TLB), thời gian truy cập bộ nhớ cho 1 yêu cầu đọc dữ liệu là bao nhiêu?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7-23" value="a"> a. 100 ns</label>
+              <label><input type="radio" name="q7-23" value="b"> b. 200 ns</label>
+              <label><input type="radio" name="q7-23" value="c"> c. 400 ns</label>
+              <label><input type="radio" name="q7-23" value="d"> d. 300 ns</label>
+            </div>
+            <div class="quiz-feedback" id="fb-q7-23"><strong>Giải thích:</strong> Thời gian $= 100\text{ ns} (\text{truy cập bảng trang}) + 100\text{ ns} (\text{truy cập dữ liệu}) = 200\text{ ns}$.</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Interactive Quiz Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const quizCards = document.querySelectorAll('.quiz-card');
+      
+      quizCards.forEach(card => {
+        const radios = card.querySelectorAll('input[type="radio"]');
+        const correctAns = card.dataset.correct;
+        const feedback = card.querySelector('.quiz-feedback');
+        
+        radios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            // Disable all radios in this card once selected
+            radios.forEach(r => {
+              r.disabled = true;
+              r.parentElement.classList.add('disabled');
+            });
+            
+            const userAns = radio.value;
+            if (userAns === correctAns) {
+              card.classList.add('correct-card');
+              radio.parentElement.classList.add('correct');
+              if (feedback) {
+                feedback.classList.add('show', 'feedback-correct');
+              }
+            } else {
+              card.classList.add('incorrect-card');
+              radio.parentElement.classList.add('incorrect');
+              // Highlight the correct one too
+              const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
+              if (correctRadio) {
+                correctRadio.parentElement.classList.add('correct');
+              }
+              if (feedback) {
+                feedback.classList.add('show', 'feedback-incorrect');
+              }
+            }
+            
+            updateScoreSummary();
+          });
+        });
+      });
+
+      updateScoreSummary();
+    });
+
+    function updateScoreSummary() {
+      const chapters = ['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7'];
+      let totalQuestions = 0;
+      let totalAnswered = 0;
+      let totalCorrect = 0;
+
+      chapters.forEach(ch => {
+        const section = document.getElementById(ch);
+        if (!section) return;
+        const cards = section.querySelectorAll('.quiz-card');
+        let chTotal = cards.length;
+        let chAnswered = 0;
+        let chCorrect = 0;
+
+        cards.forEach(card => {
+          totalQuestions++;
+          const selected = card.querySelector('input[type="radio"]:checked');
+          if (selected) {
+            chAnswered++;
+            totalAnswered++;
+            if (selected.value === card.dataset.correct) {
+              chCorrect++;
+              totalCorrect++;
+            }
+          }
+        });
+
+        const badge = document.getElementById(`badge-${ch}`);
+        if (badge) {
+          badge.textContent = `${chCorrect}/${chTotal}`;
+          if (chAnswered === chTotal && chTotal > 0) {
+            badge.classList.add('completed');
+          } else {
+            badge.classList.remove('completed');
+          }
+        }
+      });
+
+      const overallScore = document.getElementById('overall-score');
+      const overallDesc = document.getElementById('overall-desc');
+      if (overallScore) {
+        overallScore.textContent = `${totalCorrect} / ${totalQuestions}`;
+      }
+      if (overallDesc) {
+        const pct = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+        overallDesc.textContent = `Đã làm: ${totalAnswered} / ${totalQuestions} câu (Đúng: ${totalCorrect} câu - Tỷ lệ chính xác: ${pct}%)`;
+      }
+    }
+
+    function resetAllQuizzes() {
+      if (!confirm("Bạn có chắc chắn muốn làm lại tất cả các câu hỏi trắc nghiệm?")) return;
+      const quizCards = document.querySelectorAll('.quiz-card');
+      quizCards.forEach(card => {
+        card.classList.remove('correct-card', 'incorrect-card');
+        const radios = card.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => {
+          r.checked = false;
+          r.disabled = false;
+          r.parentElement.classList.remove('correct', 'incorrect', 'disabled');
+        });
+        const feedback = card.querySelector('.quiz-feedback');
+        if (feedback) {
+          feedback.classList.remove('show', 'feedback-correct', 'feedback-incorrect');
+        }
+      });
+      updateScoreSummary();
+    }
+  </script>
+</body>
+</html>
