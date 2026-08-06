@@ -105,8 +105,10 @@ Học liệu số hóa chi tiết và ngân hàng trắc nghiệm phục vụ ri
 * **Bảng ôn thi tổng hợp (Chuyên đề rút gọn):** So sánh các Cương lĩnh (1930, 1951, 1991, 2011), hệ thống 8 Mặt trận, so sánh chiến lược chiến tranh, Hiệp định Sơ bộ/Giơnevơ/Paris, sơ đồ các chiến dịch lớn, nhân vật lịch sử và bài văn mẫu nguyên nhân thắng lợi.
 * **Trắc nghiệm tự động:** Ngân hàng 33 câu hỏi trắc nghiệm ôn tập chính thức có chấm điểm và giải thích chi tiết.
 
-### 13. Cơ sở văn hóa Việt Nam (CSVH)
-* **Nội dung:** Khái luận về văn hóa học, tiến trình lịch sử văn hóa bản địa qua các thời kỳ và cấu trúc thành tố văn hóa (ứng xử tự nhiên, xã hội, nhận thức triết lý âm dương).
+### 14. APTECH - Java OOP (APTECH-OOP)
+* **Giáo trình Chuẩn Aptech Quốc Tế (ACCP / ADSE):** Hệ thống 7 chương lý thuyết & bài tập chuẩn thi trực tiện Aptech Online Exam.
+* **Nội dung:** Lịch sử Java, JVM/JRE/JDK, Lớp & Đối tượng, 4 tính chất OOP (Encapsulation, Inheritance, Polymorphism, Abstraction), Access Modifiers, Exception Handling (Checked/Unchecked Exception, Custom Exception), Java Collections Framework (List, Set, Map, Comparable vs Comparator), Java I/O Streams, Serialization, transient và Java Swing GUI.
+* **Ngân hàng trắc nghiệm:** 60 câu trắc nghiệm tương tác chấm điểm tức thì.
 
 ---
 

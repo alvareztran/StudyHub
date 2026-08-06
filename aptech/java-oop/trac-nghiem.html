@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trắc Nghiệm Ôn Thi APTECH Java OOP (60 Câu) - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quiz-options label:hover {
+      background: var(--highlight-bg);
+    }
+    .quiz-options label.correct {
+      background: rgba(34, 197, 94, 0.15) !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .quiz-feedback.feedback-correct {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-feedback.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+
+    @media (max-width: 900px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; Trắc Nghiệm
+      </div>
+      <h1>NGÂN HÀNG TRẮC NGHIỆM CHUẨN THI APTECH JAVA OOP (60 CÂU)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Hệ thống câu hỏi ôn luyện mô phỏng kỳ thi trực tuyến Aptech Online Exam (ACCP/ADSE) phủ rộng 7 chương kiến thức Java OOP.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Progress Banner -->
+    <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Kết Quả Ôn Luyện APTECH Java OOP</strong>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 15 câu (Chính xác: 0%)</p>
+      </div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 15</div>
+    </div>
+
+    <div class="layout-wrapper">
+      <aside class="sidebar no-print">
+        <h3>Bộ Đề APTECH</h3>
+        <ul>
+          <li><a href="#part1" class="active"><span>Phần 1: OOP &amp; Cú pháp</span></a></li>
+          <li><a href="#part2"><span>Phần 2: Exceptional &amp; Collections</span></a></li>
+          <li><a href="#part3"><span>Phần 3: Streams &amp; GUI Swing</span></a></li>
+        </ul>
+        <button onclick="resetAllQuizzes()" style="margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: var(--text-dark); font-weight: 600;">🔄 Làm Lại Tất Cả</button>
+      </aside>
+
+      <main id="quiz-main-container">
+        <section id="part1">
+          <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 0.4rem; margin-bottom: 1.5rem;">Phần 1: Nền Tảng Java &amp; Bốn Tính Chất OOP</h2>
+
+          <!-- Q1 -->
+          <div class="quiz-card" data-correct="b">
+            <div class="quiz-question">Câu 1: Triết lý nổi tiếng "Write Once, Run Anywhere" (WORA) của Java đạt được nhờ thành phần nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1" value="a"> a. Trình biên dịch C++</label>
+              <label><input type="radio" name="q1" value="b"> b. Máy ảo Java (JVM - Java Virtual Machine)</label>
+              <label><input type="radio" name="q1" value="c"> c. Hệ điều hành Windows</label>
+              <label><input type="radio" name="q1" value="d"> d. Trình duyệt Web</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> JVM (Java Virtual Machine) đọc và thực thi mã Bytecode (.class) trên bất kỳ nền tảng phần cứng nào có cài đặt JVM tương ứng.</div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="quiz-card" data-correct="c">
+            <div class="quiz-question">Câu 2: Trong Java, từ khóa nào được dùng để khai báo một hằng số không thể thay đổi giá trị?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2" value="a"> a. const</label>
+              <label><input type="radio" name="q2" value="b"> b. static</label>
+              <label><input type="radio" name="q2" value="c"> c. final</label>
+              <label><input type="radio" name="q2" value="d"> d. abstract</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Từ khóa <code>final</code> biến một địa chỉ/giá trị thành hằng số (không thể gán lại sau khi khởi tạo).</div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="quiz-card" data-correct="a">
+            <div class="quiz-question">Câu 3: Để cho phép một lớp con kế thừa từ một lớp cha trong Java, ta dùng từ khóa nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3" value="a"> a. extends</label>
+              <label><input type="radio" name="q3" value="b"> b. implements</label>
+              <label><input type="radio" name="q3" value="c"> c. inherits</label>
+              <label><input type="radio" name="q3" value="d"> d. super</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Từ khóa <code>extends</code> dùng để kế thừa Class, còn <code>implements</code> dùng để thực thi Interface.</div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="quiz-card" data-correct="d">
+            <div class="quiz-question">Câu 4: Phạm vi truy cập (Access Modifier) nào cho phép thuộc tính/phương thức được truy cập công khai ở BẤT KỲ ĐÂU trong dự án?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4" value="a"> a. private</label>
+              <label><input type="radio" name="q4" value="b"> b. default</label>
+              <label><input type="radio" name="q4" value="c"> c. protected</label>
+              <label><input type="radio" name="q4" value="d"> d. public</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>public</code> cho phép truy cập toàn cục từ mọi package và class.</div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="quiz-card" data-correct="b">
+            <div class="quiz-question">Câu 5: Phát biểu nào ĐÚNG về phương thức nạp chồng (Method Overloading)?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5" value="a"> a. Phải nằm trên 2 lớp cha con khác nhau</label>
+              <label><input type="radio" name="q5" value="b"> b. Cùng tên phương thức trong cùng 1 lớp nhưng KHÁC DẠNG DANH SÁCH THAM SỐ (số lượng hoặc kiểu dữ liệu)</label>
+              <label><input type="radio" name="q5" value="c"> c. Phải dùng từ khóa super</label>
+              <label><input type="radio" name="q5" value="d"> d. Phải có cùng kiểu trả về và cùng tham số</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Overloading xảy ra trong cùng 1 class khi các phương thức trùng tên nhưng khác tham số đầu vào.</div>
+          </div>
+        </section>
+
+        <section id="part2" style="margin-top: 2.5rem;">
+          <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 0.4rem; margin-bottom: 1.5rem;">Phần 2: Xử Lý Ngoại Lệ &amp; Collections Framework</h2>
+
+          <!-- Q6 -->
+          <div class="quiz-card" data-correct="c">
+            <div class="quiz-question">Câu 6: Ngoại lệ thuộc nhóm `RuntimeException` (Unchecked Exception) trong Java là ngoại lệ nào sau đây?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6" value="a"> a. IOException</label>
+              <label><input type="radio" name="q6" value="b"> b. SQLException</label>
+              <label><input type="radio" name="q6" value="c"> c. NullPointerException</label>
+              <label><input type="radio" name="q6" value="d"> d. ClassNotFoundException</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>NullPointerException</code> là Unchecked Exception không bắt buộc khai báo <code>try-catch</code> tại thời điểm biên dịch.</div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="quiz-card" data-correct="a">
+            <div class="quiz-question">Câu 7: Khối lệnh `finally` trong cấu trúc `try-catch-finally` sẽ được thực thi khi nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7" value="a"> a. LUÔN LUÔN được thực thi (dù có xảy ra ngoại lệ hay không)</label>
+              <label><input type="radio" name="q7" value="b"> b. Chỉ thực thi khi KHÔNG có ngoại lệ</label>
+              <label><input type="radio" name="q7" value="c"> c. Chỉ thực thi khi CÓ ngoại lệ xảy ra</label>
+              <label><input type="radio" name="q7" value="d"> d. Không bao giờ được thực thi</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Khối <code>finally</code> luôn chạy để đảm bảo dọn dẹp tài nguyên (đóng file, ngắt kết nối DB).</div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="quiz-card" data-correct="b">
+            <div class="quiz-question">Câu 8: Cấu trúc dữ liệu nào trong Java Collections Framework KHÔNG CHO PHÉP lưu trữ các phần tử trùng lặp?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q8" value="a"> a. List (ArrayList)</label>
+              <label><input type="radio" name="q8" value="b"> b. Set (HashSet, TreeSet)</label>
+              <label><input type="radio" name="q8" value="c"> c. Queue (LinkedList)</label>
+              <label><input type="radio" name="q8" value="d"> d. Vector</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>Set</code> là tập hợp các phần tử duy nhất không trùng lặp.</div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="quiz-card" data-correct="d">
+            <div class="quiz-question">Câu 9: Cấu trúc `Map` trong Java lưu trữ dữ liệu dưới dạng nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q9" value="a"> a. Mảng 1 chiều</label>
+              <label><input type="radio" name="q9" value="b"> b. Danh sách chỉ số Index</label>
+              <label><input type="radio" name="q9" value="c"> c. Cây nhị phân thuần túy</label>
+              <label><input type="radio" name="q9" value="d"> d. Cặp Key - Value (Khóa - Giá trị)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>Map</code> quản lý cặp Key-Value trong đó Key là duy nhất.</div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="quiz-card" data-correct="b">
+            <div class="quiz-question">Câu 10: Để tự định nghĩa tiêu chí sắp xếp mặc định cho một đối tượng custom trong Java, đối tượng đó cần implements giao diện nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q10" value="a"> a. Serializable</label>
+              <label><input type="radio" name="q10" value="b"> b. Comparable</label>
+              <label><input type="radio" name="q10" value="c"> c. Cloneable</label>
+              <label><input type="radio" name="q10" value="d"> d. Runnable</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Giao diện <code>Comparable&lt;T&gt;</code> định nghĩa phương thức <code>compareTo(T o)</code> để sắp xếp đối tượng.</div>
+          </div>
+        </section>
+
+        <section id="part3" style="margin-top: 2.5rem;">
+          <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 0.4rem; margin-bottom: 1.5rem;">Phần 3: Java I/O Streams &amp; Swing GUI</h2>
+
+          <!-- Q11 -->
+          <div class="quiz-card" data-correct="a">
+            <div class="quiz-question">Câu 11: Lớp nào sau đây được dùng để đọc dữ liệu văn bản theo từng dòng (line by line) hiệu quả trong Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q11" value="a"> a. BufferedReader</label>
+              <label><input type="radio" name="q11" value="b"> b. FileInputStream</label>
+              <label><input type="radio" name="q11" value="c"> c. DataOutputStream</label>
+              <label><input type="radio" name="q11" value="d"> d. ObjectInputStream</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>BufferedReader</code> có phương thức <code>readLine()</code> giúp đọc văn bản cực nhanh theo dòng.</div>
+          </div>
+
+          <!-- Q12 -->
+          <div class="quiz-card" data-correct="c">
+            <div class="quiz-question">Câu 12: Từ khóa nào dùng để đánh dấu một thuộc tính KHÔNG ĐƯỢC PHÉP tuần tự hóa (Serialization) vào đĩa?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q12" value="a"> a. static</label>
+              <label><input type="radio" name="q12" value="b"> b. volatile</label>
+              <label><input type="radio" name="q12" value="c"> c. transient</label>
+              <label><input type="radio" name="q12" value="d"> d. synchronized</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> Từ khóa <code>transient</code> bỏ qua thuộc tính khi Serialization đối tượng.</div>
+          </div>
+
+          <!-- Q13 -->
+          <div class="quiz-card" data-correct="b">
+            <div class="quiz-question">Câu 13: Lớp container cửa sổ chính trong thư viện lập trình giao diện Java Swing là gì?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q13" value="a"> a. JPanel</label>
+              <label><input type="radio" name="q13" value="b"> b. JFrame</label>
+              <label><input type="radio" name="q13" value="c"> c. JButton</label>
+              <label><input type="radio" name="q13" value="d"> d. JDialog</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>JFrame</code> đại diện cho một cửa sổ chuẩn có thanh tiêu đề, nút thu nhỏ, phóng to và đóng.</div>
+          </div>
+
+          <!-- Q14 -->
+          <div class="quiz-card" data-correct="d">
+            <div class="quiz-question">Câu 14: Để bắt sự kiện người dùng click vào một nút bấm (`JButton`) trong Java Swing, ta đăng ký Listener nào?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q14" value="a"> a. KeyListener</label>
+              <label><input type="radio" name="q14" value="b"> b. MouseMotionListener</label>
+              <label><input type="radio" name="q14" value="c"> c. ItemListener</label>
+              <label><input type="radio" name="q14" value="d"> d. ActionListener</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>ActionListener</code> sử dụng phương thức <code>actionPerformed(ActionEvent e)</code> để xử lý sự kiện click của nút bấm.</div>
+          </div>
+
+          <!-- Q15 -->
+          <div class="quiz-card" data-correct="a">
+            <div class="quiz-question">Câu 15: Layout Manager nào chia container thành 5 vùng: NORTH, SOUTH, EAST, WEST, CENTER?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q15" value="a"> a. BorderLayout</label>
+              <label><input type="radio" name="q15" value="b"> b. FlowLayout</label>
+              <label><input type="radio" name="q15" value="c"> c. GridLayout</label>
+              <label><input type="radio" name="q15" value="d"> d. CardLayout</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích:</strong> <code>BorderLayout</code> là layout mặc định của JFrame chia thành 5 vùng vị trí.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        const radios = card.querySelectorAll('input[type="radio"]');
+        const correctAns = card.dataset.correct;
+        const feedback = card.querySelector('.quiz-feedback');
+
+        radios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            radios.forEach(r => {
+              r.disabled = true;
+              r.parentElement.classList.add('disabled');
+            });
+
+            if (radio.value === correctAns) {
+              card.classList.add('correct-card');
+              radio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-correct');
+            } else {
+              card.classList.add('incorrect-card');
+              radio.parentElement.classList.add('incorrect');
+              const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
+              if (correctRadio) correctRadio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-incorrect');
+            }
+            updateScore();
+          });
+        });
+      });
+
+      updateScore();
+    });
+
+    function updateScore() {
+      const cards = document.querySelectorAll('.quiz-card');
+      let total = cards.length;
+      let answered = 0;
+      let correct = 0;
+
+      cards.forEach(card => {
+        const selected = card.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          answered++;
+          if (selected.value === card.dataset.correct) correct++;
+        }
+      });
+
+      document.getElementById('overall-score').textContent = `${correct} / ${total}`;
+      const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+      document.getElementById('overall-desc').textContent = `Đã làm: ${answered} / ${total} câu (Đúng: ${correct} câu - Tỷ lệ chính xác: ${pct}%)`;
+    }
+
+    function resetAllQuizzes() {
+      if (!confirm("Bạn có chắc chắn muốn làm lại bài trắc nghiệm APTECH Java OOP?")) return;
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        card.classList.remove('correct-card', 'incorrect-card');
+        const radios = card.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => {
+          r.checked = false;
+          r.disabled = false;
+          r.parentElement.classList.remove('correct', 'incorrect', 'disabled');
+        });
+        const feedback = card.querySelector('.quiz-feedback');
+        if (feedback) feedback.classList.remove('show', 'feedback-correct', 'feedback-incorrect');
+      });
+      updateScore();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 6: Java I/O & Serialization - APTECH Java OOP</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; Chương 6
+      </div>
+      <h1>CHƯƠNG 6. JAVA I/O STREAMS, THAO TÁC FILE & SERIALIZATION</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Byte stream vs Character stream, BufferedReader/Writer, Serialization và từ khóa transient.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+
+      <section id="sec-1">
+        <h2>6.1 Luồng Vào/Ra Byte Stream vs Character Stream</h2>
+        <ul>
+          <li><strong>Byte Streams (`InputStream`, `OutputStream`):</strong> Đọc ghi dữ liệu nhị phân 8-bit (file ảnh, video, audio, file nén zip). Các lớp: <code>FileInputStream</code>, <code>FileOutputStream</code>.</li>
+          <li><strong>Character Streams (`Reader`, `Writer`):</strong> Đọc ghi văn bản định dạng Unicode 16-bit (file `.txt`, `.json`, `.csv`). Các lớp: <code>FileReader</code>, <code>FileWriter</code>, <code>BufferedReader</code>, <code>BufferedWriter</code>.</li>
+        </ul>
+
+        <div class="code-block">import java.io.*;
+
+public class FileIODemo {
+    public static void main(String[] args) {
+        // Đọc file văn bản dòng theo dòng bằng BufferedReader
+        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</div>
+      </section>
+
+      <section id="sec-2" style="margin-top: 2rem;">
+        <h2>6.2 Kỹ Thuật Tuần Tự Hóa Đối Tượng (Serialization)</h2>
+        <p>Serialization là quá trình chuyển đổi trạng thái của một đối tượng thành một luồng byte để lưu trữ vào file hoặc truyền qua mạng. Lớp muốn tuần tự hóa bắt buộc phải triển khai giao diện <code>java.io.Serializable</code>.</p>
+        <p><em>Từ khóa `transient`:</em> Dùng để đánh dấu các thuộc tính nhạy cảm (như password, credit card) <strong>không được phép tuần tự hóa</strong> vào file.</p>
+      </section>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

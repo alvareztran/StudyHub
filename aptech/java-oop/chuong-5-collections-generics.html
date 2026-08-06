@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 5: Java Collections - APTECH Java OOP</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; Chương 5
+      </div>
+      <h1>CHƯƠNG 5. JAVA COLLECTIONS FRAMEWORK & GENERICS</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Phân tích List, Set, Map, Comparable vs Comparator và Kỹ thuật Generics.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+
+      <section id="sec-1">
+        <h2>5.1 Cấu Trúc Khung Bộ Sưu Tập Java Collections Framework</h2>
+        <p>Java Collections cung cấp các cấu trúc dữ liệu tối ưu có sẵn thuộc gói <code>java.util</code>:</p>
+
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Giao diện (Interface)</th>
+              <th>Lớp triển khai phổ biến</th>
+              <th>Đặc điểm cấu trúc &amp; Hành vi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>List</code></td>
+              <td><code>ArrayList</code>, <code>LinkedList</code></td>
+              <td>Danh sách có thứ tự, cho phép lưu trữ các phần tử trùng lặp, truy cập theo chỉ số index.</td>
+            </tr>
+            <tr>
+              <td><code>Set</code></td>
+              <td><code>HashSet</code>, <code>TreeSet</code></td>
+              <td>Tập hợp **KHÔNG chứa phần tử trùng lặp**. TreeSet tự động sắp xếp phần tử.</td>
+            </tr>
+            <tr>
+              <td><code>Map</code></td>
+              <td><code>HashMap</code>, <code>TreeMap</code></td>
+              <td>Lưu trữ dữ liệu dạng cặp **Key - Value**. Key là duy nhất không trùng lặp.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="sec-2" style="margin-top: 2rem;">
+        <h2>5.2 Ví Dụ Lập Trình Với List, Map &amp; Comparable / Comparator</h2>
+
+        <div class="code-block">import java.util.*;
+
+// Lớp Student thực thi Comparable để tự định nghĩa tiêu chuẩn sắp xếp mặc định
+class Student implements Comparable<Student> {
+    String name;
+    double gpa;
+
+    public Student(String name, double gpa) {
+        this.name = name;
+        this.gpa = gpa;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        return Double.compare(o.gpa, this.gpa); // Sắp xếp giảm dần theo GPA
+    }
+}
+
+public class CollectionDemo {
+    public static void main(String[] args) {
+        List<Student> list = new ArrayList<>();
+        list.add(new Student("An", 3.8));
+        list.add(new Student("Bình", 3.2));
+        list.add(new Student("Cường", 3.9));
+
+        Collections.sort(list); // Sắp xếp theo compareTo
+
+        for (Student s : list) {
+            System.out.println(s.name + " - GPA: " + s.gpa);
+        }
+    }
+}</div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

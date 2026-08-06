@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APTECH - Java OOP (Lập trình Hướng đối tượng) - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .aptech-header-badge {
+      background: linear-gradient(135deg, #ea580c, #ca8a04);
+      color: #ffffff;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; Java OOP
+      </div>
+      <div class="aptech-header-badge">Giáo trình Chuẩn Aptech Quốc Tế (ACCP / ADSE)</div>
+      <h1>LẬP TRÌNH HƯỚNG ĐỐI TƯỢNG VỚI JAVA (JAVA OOP)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Hệ thống bài giảng, cẩm nang lập trình, mẫu thiết kế đối tượng và ngân hàng câu hỏi trắc nghiệm chuẩn kỳ thi Aptech Quốc tế.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section style="margin-top: 1rem;">
+        <h2>Danh Mục Bài Học &amp; Tài Liệu Ôn Tập</h2>
+        <p>Chọn chương bài giảng bên dưới để bắt đầu học tập và luyện tập lập trình Java OOP:</p>
+
+        <ul class="index-list" style="margin-top: 1.5rem;">
+          <!-- English Review Card -->
+          <li class="index-item" style="border: 2px solid #2563eb; background-color: var(--highlight-bg);">
+            <h3 class="index-title">
+              <a href="on-tap-tieng-anh.html" style="color: #2563eb; font-weight: 700;">🇬🇧 Java OOP - English Review &amp; Practice Question Bank</a>
+            </h3>
+            <p class="index-desc">Trang ôn tập tổng hợp các câu hỏi trắc nghiệm &amp; bài tập lập trình bằng Tiếng Anh giữ nguyên bản 100% chuẩn giáo trình Aptech Quốc tế.</p>
+          </li>
+          <!-- Special Card: Trắc nghiệm -->
+          <li class="index-item" style="border: 2px solid #f59e0b; background-color: var(--highlight-bg);">
+            <h3 class="index-title">
+              <a href="trac-nghiem.html" style="color: #d97706; font-weight: 700;">🎯 Ngân Hàng Trắc Nghiệm Ôn Thi APTECH Java OOP (60 Câu)</a>
+            </h3>
+            <p class="index-desc">Bộ câu hỏi trắc nghiệm chọn lọc mô phỏng đề thi Aptech Online Exam: OOP 4 trụ cột, Exception handling, Collections Framework, Streams I/O và Java Swing với đáp án &amp; giải thích tức thì.</p>
+          </li>
+
+          <!-- Chapter 1 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-1-gioi-thieu-java-co-ban.html">Chương 1: Tổng quan Ngôn ngữ Java &amp; Nền tảng Cú pháp APTECH</a>
+            </h3>
+            <p class="index-desc">Lịch sử phát triển Java, kiến trúc máy ảo JVM, JRE, JDK, quy trình biên dịch bytecode, kiểu dữ liệu nguyên thủy vs tham chiếu, biến, toán tử và cấu trúc điều khiển rẽ nhánh, vòng lặp.</p>
+          </li>
+
+          <!-- Chapter 2 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-2-lop-doi-tuong-constructor.html">Chương 2: Lớp (Class), Đối Tượng (Object) &amp; Constructor</a>
+            </h3>
+            <p class="index-desc">Phương pháp luận thiết kế Lớp và Đối tượng, thuộc tính, phương thức, Constructor Overloading, từ khóa <code>this</code>, phạm vi truy cập Access Modifiers và biến/phương thức tĩnh <code>static</code>.</p>
+          </li>
+
+          <!-- Chapter 3 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-3-bon-tinh-chat-oop.html">Chương 3: Bốn Tính Chất Cốt Lõi Của OOP (4 Core OOP Pillars)</a>
+            </h3>
+            <p class="index-desc">Phân tích chi tiết 4 trụ cột OOP: Đóng gói (Encapsulation), Kế thừa (Inheritance - <code>extends</code>, <code>super</code>), Đa hình (Polymorphism - Overloading vs Overriding, Dynamic Binding) và Trừu tượng (Abstraction - <code>abstract class</code> vs <code>interface</code>).</p>
+          </li>
+
+          <!-- Chapter 4 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-4-ngoai-le-exception.html">Chương 4: Xử Lý Ngoại Lệ (Exception Handling) trong Java</a>
+            </h3>
+            <p class="index-desc">Cấu trúc cây <code>Throwable</code> (Checked Exception vs Unchecked Exception), khối <code>try-catch-finally</code>, từ khóa <code>throw</code>, <code>throws</code> và quy trình xây dựng Custom Exception cho dự án Aptech eProject.</p>
+          </li>
+
+          <!-- Chapter 5 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-5-collections-generics.html">Chương 5: Java Collections Framework &amp; Generics</a>
+            </h3>
+            <p class="index-desc">Khám phá bộ sưu tập dữ liệu Java: <code>List</code> (ArrayList, LinkedList), <code>Set</code> (HashSet, TreeSet), <code>Map</code> (HashMap, TreeMap), giao diện <code>Comparable</code> vs <code>Comparator</code> và Kỹ thuật Generics <code>&lt;T&gt;</code>.</p>
+          </li>
+
+          <!-- Chapter 6 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-6-java-io-file-serialization.html">Chương 6: Java I/O Streams, Thao Tác File &amp; Serialization</a>
+            </h3>
+            <p class="index-desc">Xử lý luồng dữ liệu Byte Stream vs Character Stream, đọc ghi tập tin văn bản/nhị phân với <code>BufferedReader</code>, <code>BufferedWriter</code>, giao diện <code>Serializable</code> và từ khóa <code>transient</code>.</p>
+          </li>
+
+          <!-- Chapter 7 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a href="chuong-7-gui-swing-event-handling.html">Chương 7: Lập Trình Giao Diện Đồ Họa Java Swing &amp; Xử Lý Sự Kiện</a>
+            </h3>
+            <p class="index-desc">Xây dựng ứng dụng Desktop GUI với Java Swing: <code>JFrame</code>, <code>JPanel</code>, <code>JButton</code>, <code>JTable</code>, các Layout Manager (BorderLayout, FlowLayout, GridLayout) và mô hình Event-Driven Programming với <code>ActionListener</code>.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

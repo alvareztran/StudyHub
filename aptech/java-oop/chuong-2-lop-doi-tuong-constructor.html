@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 2: Lớp & Đối Tượng - APTECH Java OOP</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; Chương 2
+      </div>
+      <h1>CHƯƠNG 2. LỚP (CLASS), ĐỐI TƯỢNG (OBJECT) & CONSTRUCTOR</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Phương pháp luận thiết kế Lớp/Đối tượng, Constructor, Access Modifiers, từ khóa this & static.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+
+      <section id="sec-1">
+        <h2>2.1 Khái Niệm Lớp (Class) Và Đối Tượng (Object)</h2>
+        <p>Trong lập trình hướng đối tượng (OOP):</p>
+        <ul>
+          <li><strong>Lớp (Class):</strong> Là bản thiết kế (blueprint/template) định nghĩa các thuộc tính (attribute) và hành vi (method) chung của một nhóm đối tượng.</li>
+          <li><strong>Đối tượng (Object):</strong> Là một thực thể cụ thể (instance) được tạo ra từ bản thiết kế lớp, chiếm giữ vùng nhớ trong RAM.</li>
+        </ul>
+
+        <div class="code-block">// Định nghĩa lớp SinhVien trong chuẩn Aptech
+public class SinhVien {
+    // Thuộc tính (Instance variables)
+    private String maSV;
+    private String hoTen;
+    private double diemTB;
+
+    // Constructor mặc định (No-arg constructor)
+    public SinhVien() {
+        this.maSV = "SV000";
+        this.hoTen = "Chưa cập nhật";
+        this.diemTB = 0.0;
+    }
+
+    // Constructor có tham số (Parameterized constructor)
+    public SinhVien(String maSV, String hoTen, double diemTB) {
+        this.maSV = maSV;
+        this.hoTen = hoTen;
+        this.diemTB = diemTB;
+    }
+
+    // Phương thức hiển thị thông tin
+    public void hienThiThongTin() {
+        System.out.println("MSSV: " + this.maSV + " | Họ tên: " + this.hoTen + " | ĐTB: " + this.diemTB);
+    }
+}</div>
+      </section>
+
+      <section id="sec-2" style="margin-top: 2rem;">
+        <h2>2.2 Phạm Vi Truy Cập (Access Modifiers) trong Java</h2>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Access Modifier</th>
+              <th>Trong cùng Class</th>
+              <th>Trong cùng Package</th>
+              <th>Lớp con (Subclass khác Package)</th>
+              <th>Khắp mọi nơi (Global)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>private</code></td>
+              <td>Có (YES)</td>
+              <td>Không (NO)</td>
+              <td>Không (NO)</td>
+              <td>Không (NO)</td>
+            </tr>
+            <tr>
+              <td><code>default</code> (không ghi)</td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+              <td>Không (NO)</td>
+              <td>Không (NO)</td>
+            </tr>
+            <tr>
+              <td><code>protected</code></td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+              <td>Không (NO)</td>
+            </tr>
+            <tr>
+              <td><code>public</code></td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+              <td>Có (YES)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="sec-3" style="margin-top: 2rem;">
+        <h2>2.3 Thành Phần Tĩnh (Static Members) &amp; Từ khóa `this`</h2>
+        <ul>
+          <li><strong>Từ khóa `this`:</strong> Tham chiếu đến chính đối tượng hiện tại đang thực thi phương thức/constructor. Dùng để phân biệt thuộc tính lớp và tham số trùng tên.</li>
+          <li><strong>Từ khóa `static`:</strong> Thuộc tính hoặc phương thức tĩnh thuộc về cấp độ Lớp (Class level), được chia sẻ chung cho tất cả các đối tượng mà không cần khởi tạo `new`.</li>
+        </ul>
+
+        <div class="code-block">public class StudentCounter {
+    public static int totalStudents = 0; // Biến static đếm số sinh viên
+
+    public StudentCounter() {
+        totalStudents++; // Tăng biến tĩnh mỗi khi tạo 1 instance mới
+    }
+
+    public static void displayTotal() {
+        System.out.println("Tổng số sinh viên đã khởi tạo: " + totalStudents);
+    }
+}</div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

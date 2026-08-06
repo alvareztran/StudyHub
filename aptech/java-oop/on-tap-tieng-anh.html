@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java OOP - English Review Questions (Aptech Sessions 1 - 12) - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-question pre, .quiz-question code {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.88rem;
+      display: block;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quiz-options label:hover {
+      background: var(--highlight-bg);
+    }
+    .quiz-options label.correct {
+      background: rgba(34, 197, 94, 0.15) !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .quiz-feedback.feedback-correct {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-feedback.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+    .session-title {
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.4rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .match-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+    }
+    .match-table th, .match-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    .match-table th {
+      background-color: var(--highlight-bg);
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; English Review Questions
+      </div>
+      <h1>JAVA OOP - APTECH OFFICIAL ENGLISH REVIEW QUESTION BANK</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Complete, verbatim English review questions from official Aptech curriculum (Check Your Progress - Sessions 1 to 12) with interactive choice checking and detailed explanations.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Progress Banner -->
+    <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Overall Progress &amp; Score</strong>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Completed: 0 / 63 questions (Accuracy: 0%)</p>
+      </div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 63</div>
+    </div>
+
+    <div class="layout-wrapper">
+      <aside class="sidebar no-print">
+        <h3>Question Sessions</h3>
+        <ul>
+          <li><a href="#session1" class="active"><span>Session 1: Intro to Java</span></a></li>
+          <li><a href="#session2"><span>Session 2: Variables &amp; Operators</span></a></li>
+          <li><a href="#session3"><span>Session 3: Decision &amp; Loops</span></a></li>
+          <li><a href="#session4"><span>Session 4: Classes &amp; Methods</span></a></li>
+          <li><a href="#session5"><span>Session 5: Arrays &amp; Strings</span></a></li>
+          <li><a href="#session6"><span>Session 6: Modifiers &amp; Packages</span></a></li>
+          <li><a href="#session7"><span>Session 7: Inheritance &amp; Polymorphism</span></a></li>
+          <li><a href="#session8"><span>Session 8: Interfaces &amp; Nested Classes</span></a></li>
+          <li><a href="#session9"><span>Session 9: Exceptions</span></a></li>
+          <li><a href="#session10"><span>Session 10: Date &amp; Time API</span></a></li>
+          <li><a href="#session11"><span>Session 11: Additional Features</span></a></li>
+          <li><a href="#session12"><span>Session 12: JDK 20 Features</span></a></li>
+        </ul>
+        <button onclick="resetAllQuizzes()" style="margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: var(--text-dark); font-weight: 600;">🔄 Reset All Answers</button>
+      </aside>
+
+      <main id="english-questions-container">
+        <!-- SESSION 1 -->
+        <section id="session1">
+          <h2 class="session-title">Session 1: Introduction to Java (1.13 Check Your Progress)</h2>
+
+          <!-- Q1.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. Which of the following features of Java programming languages allows to execute multiple tasks concurrently?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q1" value="A"> (A) Portability</label>
+              <label><input type="radio" name="s1-q1" value="B"> (B) Multithreading</label>
+              <label><input type="radio" name="s1-q1" value="C"> (C) Garbage Collection</label>
+              <label><input type="radio" name="s1-q1" value="D"> (D) Exception Handling</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Multithreading</strong> in Java enables a program to execute multiple threads concurrently for maximum CPU utilization and responsive multitasking.</div>
+          </div>
+
+          <!-- Q1.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              2. Match the following terms against their corresponding description:
+              <table class="match-table">
+                <tr><th>Term</th><th>Description</th></tr>
+                <tr><td>a. Object</td><td>1. Represents behavior of an object</td></tr>
+                <tr><td>b. Class</td><td>2. Represents state of an object</td></tr>
+                <tr><td>c. Field</td><td>3. Template or blueprint</td></tr>
+                <tr><td>d. Method</td><td>4. Instance of class</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q2" value="A"> (A) a-1, b-2, c-3, d-4</label>
+              <label><input type="radio" name="s1-q2" value="B"> (B) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s1-q2" value="C"> (C) a-2, b-1, c-4, d-3</label>
+              <label><input type="radio" name="s1-q2" value="D"> (D) a-3, b-4, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Object</strong> is an instance of a class (a-4), <strong>Class</strong> is a template/blueprint (b-3), <strong>Field</strong> represents state (c-2), and <strong>Method</strong> represents behavior (d-1).</div>
+          </div>
+
+          <!-- Q1.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              3. Which of the following statements are true regarding Java platform and its components?
+              <br>a. Java platform provides an environment for developing applications that can be executed only on Java hardware and OS
+              <br>b. Java API is a large collection of ready-made software components
+              <br>c. JVM is a comprehensive set of development tools used for developing applications
+              <br>d. There are different implementations of JVM available for different platforms
+              <br>e. Java APIs are used to run a Java program
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q3" value="A"> (A) c and d</label>
+              <label><input type="radio" name="s1-q3" value="B"> (B) a and e</label>
+              <label><input type="radio" name="s1-q3" value="C"> (C) b, c, and d (or b and d)</label>
+              <label><input type="radio" name="s1-q3" value="D"> (D) a, b, and c</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statement <strong>b</strong> is true (Java API is a collection of prebuilt packages) and statement <strong>d</strong> is true (different JVM implementations exist for Windows, Linux, macOS).</div>
+          </div>
+
+          <!-- Q1.4 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              4. Which of these statements about compiling and executing a Java program are true?
+              <br>a. The <code>javac</code> tool invokes the Java compiler
+              <br>b. The <code>java</code> tool invokes the Java interpreter
+              <br>c. The <code>.class</code> files contain bytecodes
+              <br>d. The Java interpreter checks for the syntax, grammar, and data types of the program
+              <br>e. The Java interpreter compiles the code
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q4" value="A"> (A) c and d</label>
+              <label><input type="radio" name="s1-q4" value="B"> (B) a, b, and c</label>
+              <label><input type="radio" name="s1-q4" value="C"> (C) b, c, and d</label>
+              <label><input type="radio" name="s1-q4" value="D"> (D) c, d, and e</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (<code>javac</code> compiles), <strong>b</strong> (<code>java</code> interprets/runs), and <strong>c</strong> (<code>.class</code> contains bytecode) are correct. Syntax/grammar checks are done by <code>javac</code> during compilation, not runtime.</div>
+          </div>
+
+          <!-- Q1.5 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">5. _______ defines a namespace that stores classes with similar functionalities in them.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q5" value="A"> (A) Package</label>
+              <label><input type="radio" name="s1-q5" value="B"> (B) Object</label>
+              <label><input type="radio" name="s1-q5" value="C"> (C) Constructor</label>
+              <label><input type="radio" name="s1-q5" value="D"> (D) Method</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A <strong>Package</strong> in Java is used to group related classes and interfaces, acting as a unique namespace container.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 2 -->
+        <section id="session2">
+          <h2 class="session-title">Session 2: Variables, Data Types, and Operators (2.10 Check Your Progress)</h2>
+
+          <!-- Q2.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              1. Match the following operators in Java against their corresponding description:
+              <table class="match-table">
+                <tr><th>Operator</th><th>Description</th></tr>
+                <tr><td>a. Conditional</td><td>1. Requires two operands to operate</td></tr>
+                <tr><td>b. Arithmetic</td><td>2. Tests the relationship between two operands</td></tr>
+                <tr><td>c. Logical</td><td>3. Requires only one operand</td></tr>
+                <tr><td>d. Unary</td><td>4. Works on boolean expressions</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q1" value="A"> (A) a-1, b-2, c-3, d-4</label>
+              <label><input type="radio" name="s2-q1" value="B"> (B) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s2-q1" value="C"> (C) a-2, b-1, c-4, d-3</label>
+              <label><input type="radio" name="s2-q1" value="D"> (D) a-3, b-4, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Conditional tests relationship (a-2), Arithmetic needs 2 operands (b-1), Logical works on boolean expressions (c-4), Unary needs 1 operand (d-3).</div>
+          </div>
+
+          <!-- Q2.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. Which of the following operators is used to change the order of evaluation while evaluating an expression?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q2" value="A"> (A) Unary</label>
+              <label><input type="radio" name="s2-q2" value="B"> (B) Parentheses</label>
+              <label><input type="radio" name="s2-q2" value="C"> (C) Arithmetic</label>
+              <label><input type="radio" name="s2-q2" value="D"> (D) Relational</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Parentheses `()`</strong> override normal operator precedence to enforce explicit order of evaluation.</div>
+          </div>
+
+          <!-- Q2.3 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              3. Which of these statements about escape sequences are true?
+              <br>a. The escape sequence character <code>\n</code> represents a new line character
+              <br>b. The <code>\u</code> escape sequence represents a Unicode character
+              <br>c. The escape sequence character <code>\r</code> represents a backslash character
+              <br>d. The escape sequence character <code>\\</code> represents a new line character
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q3" value="A"> (A) a, b, and c</label>
+              <label><input type="radio" name="s2-q3" value="B"> (B) c and d</label>
+              <label><input type="radio" name="s2-q3" value="C"> (C) b, c, and d</label>
+              <label><input type="radio" name="s2-q3" value="D"> (D) a and b</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (<code>\n</code> is newline) and <strong>b</strong> (<code>\u</code> is Unicode) are true. <code>\r</code> is carriage return and <code>\\</code> is backslash.</div>
+          </div>
+
+          <!-- Q2.4 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              4. Match the following data types with the values that can optimally fit in that data type:
+              <table class="match-table">
+                <tr><th>Data Type</th><th>Value</th></tr>
+                <tr><td>a. byte</td><td>1. 5000</td></tr>
+                <tr><td>b. char</td><td>2. 48999.988</td></tr>
+                <tr><td>c. double</td><td>3. 'F'</td></tr>
+                <tr><td>d. int</td><td>4. 256</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q4" value="A"> (A) a-1, b-2, c-3, d-4</label>
+              <label><input type="radio" name="s2-q4" value="B"> (B) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s2-q4" value="C"> (C) a-2, b-1, c-4, d-3</label>
+              <label><input type="radio" name="s2-q4" value="D"> (D) a-3, b-4, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Matching: <code>byte</code> &rArr; 256 (a-4), <code>char</code> &rArr; 'F' (b-3), <code>double</code> &rArr; 48999.988 (c-2), <code>int</code> &rArr; 5000 (d-1).</div>
+          </div>
+
+          <!-- Q2.5 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">
+              5. You want the output to be displayed as, 'floatTest=1.0', 'dblTest=1.0', and 'sum=2'. Can you arrange the steps in sequence to achieve the same?
+              <br>a. <code>System.out.println("dblTest=" + dblTest); int sum = (int)(dblTest + floatTest);</code>
+              <br>b. <code>System.out.println("sum=" + sum);</code>
+              <br>c. <code>boolean boolTest = true; float floatTest = 3.14f;</code>
+              <br>d. <code>System.out.println("floatTest=" + floatTest); dblTest = (double)( boolTest?1:0);</code>
+              <br>e. <code>double dblTest = 0.000000000000053; floatTest = (float)(boolTest?1:0);</code>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q5" value="A"> (A) c, e, d, a, b</label>
+              <label><input type="radio" name="s2-q5" value="B"> (B) e, c, d, a, b</label>
+              <label><input type="radio" name="s2-q5" value="C"> (C) c, d, e, b, a</label>
+              <label><input type="radio" name="s2-q5" value="D"> (D) e, c, b, a, d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Sequence: <strong>c</strong> (initializes vars) &rarr; <strong>e</strong> (sets floatTest=1.0) &rarr; <strong>d</strong> (prints floatTest=1.0 &amp; sets dblTest=1.0) &rarr; <strong>a</strong> (prints dblTest=1.0 &amp; sum=2) &rarr; <strong>b</strong> (prints sum=2).</div>
+          </div>
+        </section>
+
+        <!-- SESSION 3 -->
+        <section id="session3">
+          <h2 class="session-title">Session 3: Decision-Making Constructs and Loops (3.11 Check Your Progress)</h2>
+
+          <!-- Q3.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              1. You are using a Code Snippet to print the value of sum as '6'. Which of the following Code Snippet will help you to achieve this?
+            </div>
+            <div class="quiz-options">
+              <label>
+                <input type="radio" name="s3-q1" value="A">
+                <div>
+                  <strong>(A)</strong>
+                  <code>int sum = 0; int number = 1;
+do {
+    number++;
+    sum += number;
+    if (sum > 4) break;
+} while (number < 5);
+System.out.println(sum);</code>
+                </div>
+              </label>
+              <label>
+                <input type="radio" name="s3-q1" value="B">
+                <div>
+                  <strong>(B)</strong>
+                  <code>int sum = 0; int number = 0;
+do {
+    number++;
+    sum += number;
+    if (sum > 6) break;
+} while (number < 5);
+System.out.println(sum);</code>
+                </div>
+              </label>
+              <label>
+                <input type="radio" name="s3-q1" value="C">
+                <div>
+                  <strong>(C)</strong>
+                  <code>int sum = 0; int number = 0;
+do {
+    number++;
+    sum += number;
+    if (sum > 4) break;
+} while (number < 5);
+System.out.println(sum);</code>
+                </div>
+              </label>
+              <label>
+                <input type="radio" name="s3-q1" value="D">
+                <div>
+                  <strong>(D)</strong>
+                  <code>int sum = 0; int number = 0;
+do {
+    number++;
+    sum += number;
+    if (sum > 4) break;
+} while (number == 5);
+System.out.println(sum);</code>
+                </div>
+              </label>
+            </div>
+            <div class="quiz-feedback">
+              <strong>Explanation:</strong> Tracing Option (C):
+              <br>&bull; Iteration 1: <code>number = 1</code>, <code>sum = 1</code>. Condition <code>sum > 4</code> is false.
+              <br>&bull; Iteration 2: <code>number = 2</code>, <code>sum = 1 + 2 = 3</code>. Condition <code>sum > 4</code> is false.
+              <br>&bull; Iteration 3: <code>number = 3</code>, <code>sum = 3 + 3 = 6</code>. Condition <code>sum > 4</code> (6 > 4) is <strong>TRUE</strong> &rArr; <code>break</code> executes, printing <strong>6</strong>!
+            </div>
+          </div>
+
+          <!-- Q3.2 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">
+              2. You want the output to be displayed as '95 91 87 83'. Can you arrange the steps in sequence to achieve the same?
+              <br>a. <code>System.out.println(i);</code>
+              <br>b. <code>i++; }</code>
+              <br>c. <code>int i = 100;</code>
+              <br>d. <code>i -= 5;</code>
+              <br>e. <code>while(i >= 85) {</code>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q2" value="A"> (A) c, e, d, a, b</label>
+              <label><input type="radio" name="s3-q2" value="B"> (B) a, c, d, e, b</label>
+              <label><input type="radio" name="s3-q2" value="C"> (C) e, c, a, d, b</label>
+              <label><input type="radio" name="s3-q2" value="D"> (D) d, e, c, a, b</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Sequence: <strong>c</strong> (init 100) &rarr; <strong>e</strong> (while loop) &rarr; <strong>d</strong> (i -= 5) &rarr; <strong>a</strong> (print i) &rarr; <strong>b</strong> (i++). Iteration steps: 100-5=95 (print 95, ++=96) &rarr; 96-5=91 (print 91, ++=92) &rarr; 92-5=87 (print 87, ++=88) &rarr; 88-5=83 (print 83, ++=84, terminates).</div>
+          </div>
+
+          <!-- Q3.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              3. Which of the following statements about do-while statements are true?
+              <br>a. do-while statement tests the condition after the first iteration of the loop
+              <br>b. In do-while, if the condition is true, the control passes back to the top of the loop
+              <br>c. In do-while, if the condition is true, the loop terminates
+              <br>d. do-while statements is executed at least once
+              <br>e. do-while tests the condition at the beginning of the loop
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q3" value="A"> (A) a, b, and c</label>
+              <label><input type="radio" name="s3-q3" value="B"> (B) a, b, and d</label>
+              <label><input type="radio" name="s3-q3" value="C"> (C) b, c, and d</label>
+              <label><input type="radio" name="s3-q3" value="D"> (D) c, d, and e</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (tests condition at the end), <strong>b</strong> (true condition loops back), and <strong>d</strong> (always executes at least once) are true.</div>
+          </div>
+
+          <!-- Q3.4 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              4. Correct description against the loop:
+              <table class="match-table">
+                <tr><th>Description</th><th>Loop</th></tr>
+                <tr><td>a. Executed at least once before the condition is checked at the end of the loop</td><td>1. while</td></tr>
+                <tr><td>b. Used when the user is sure about the number of iterations required</td><td>2. continue</td></tr>
+                <tr><td>c. Variable used in the expression is initialized before the loop starts</td><td>3. for</td></tr>
+                <tr><td>d. Skip statements within a loop and proceed to the next iteration of the loop</td><td>4. do-while</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q4" value="A"> (A) a-3, b-4, c-1, d-2</label>
+              <label><input type="radio" name="s3-q4" value="B"> (B) a-1, b-2, c-3, d-4</label>
+              <label><input type="radio" name="s3-q4" value="C"> (C) a-2, b-1, c-3, d-4</label>
+              <label><input type="radio" name="s3-q4" value="D"> (D) a-4, b-3, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Matching: <code>do-while</code> (a-4), <code>for</code> (b-3), <code>while</code> (c-1), <code>continue</code> (d-2).</div>
+          </div>
+
+          <!-- Q3.5 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">5. One or more initialization or increment expressions used in for statement are separated by the ____ operator.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q5" value="A"> (A) ;</label>
+              <label><input type="radio" name="s3-q5" value="B"> (B) &amp;&amp;</label>
+              <label><input type="radio" name="s3-q5" value="C"> (C) ,</label>
+              <label><input type="radio" name="s3-q5" value="D"> (D) |</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong>comma (<code>,</code>) operator</strong> separates multiple initialization or increment expressions inside a <code>for</code> loop header.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 4 -->
+        <section id="session4">
+          <h2 class="session-title">Session 4: Classes, Objects, and Methods (4.12 Check Your Progress)</h2>
+
+          <!-- Q4.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              1. Which of the following statements stating the characteristics of classes are true?
+              <br>a. Class names cannot be a keyword in Java
+              <br>b. Class names can be in mixed case
+              <br>c. Declaration of the class are not required to be preceded with the keyword class
+              <br>d. Class names can begin with a digit
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q1" value="A"> (A) a and c</label>
+              <label><input type="radio" name="s4-q1" value="B"> (B) c and d</label>
+              <label><input type="radio" name="s4-q1" value="C"> (C) a and b</label>
+              <label><input type="radio" name="s4-q1" value="D"> (D) All of these</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Class names cannot be reserved keywords (a) and can use mixed case / PascalCase naming convention (b).</div>
+          </div>
+
+          <!-- Q4.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. Which of the following methods have the same name as class name?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q2" value="A"> (A) Main</label>
+              <label><input type="radio" name="s4-q2" value="B"> (B) Constructor</label>
+              <label><input type="radio" name="s4-q2" value="C"> (C) Instance Method</label>
+              <label><input type="radio" name="s4-q2" value="D"> (D) Destructor</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A <strong>Constructor</strong> must have the exact same name as the class in which it is defined and has no return type.</div>
+          </div>
+
+          <!-- Q4.4 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">4. In Java, ________ provides a way to create an object and initialize its fields, before the constructor methods are invoked.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q4" value="A"> (A) Instance variables</label>
+              <label><input type="radio" name="s4-q4" value="B"> (B) Class Initializers</label>
+              <label><input type="radio" name="s4-q4" value="C"> (C) Instance Methods</label>
+              <label><input type="radio" name="s4-q4" value="D"> (D) Object Initializers</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Object Initializers</strong> (Instance Initializer Blocks <code>{ ... }</code>) run when an object is instantiated, right before the constructor is executed.</div>
+          </div>
+
+          <!-- Q4.5 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">5. Which of the following options specifies a feature of OOP language that hides the instance variables within the class?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q5" value="A"> (A) Abstraction</label>
+              <label><input type="radio" name="s4-q5" value="B"> (B) Inheritance</label>
+              <label><input type="radio" name="s4-q5" value="C"> (C) Data Encapsulation</label>
+              <label><input type="radio" name="s4-q5" value="D"> (D) Polymorphism</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Data Encapsulation</strong> hides field variables inside the class (by making them <code>private</code>) and exposes public getter/setter methods for controlled access.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 5 -->
+        <section id="session5">
+          <h2 class="session-title">Session 5: Arrays and Strings (5.5 Check Your Progress)</h2>
+
+          <!-- Q5.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">1. ________ objects are similar to String objects, except that they are mutable.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q1" value="A"> (A) StringTokenizer</label>
+              <label><input type="radio" name="s5-q1" value="B"> (B) StringEditor</label>
+              <label><input type="radio" name="s5-q1" value="C"> (C) StringBuilder</label>
+              <label><input type="radio" name="s5-q1" value="D"> (D) StringDesigner</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>StringBuilder</strong> objects represent mutable sequences of characters, whereas standard <code>String</code> objects are immutable.</div>
+          </div>
+
+          <!-- Q5.2 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">
+              2. Which of the following statements about an array are true?
+              <br>a. An array is a container object that can hold a fixed number of values of a single type
+              <br>b. The first index begins with zero and the index of last element is always equal to the length
+              <br>c. After creation of the array, its length becomes fixed
+              <br>d. Values of an array are stored at scattered locations in memory
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q2" value="A"> (A) a, c</label>
+              <label><input type="radio" name="s5-q2" value="B"> (B) a, d</label>
+              <label><input type="radio" name="s5-q2" value="C"> (C) b, d</label>
+              <label><input type="radio" name="s5-q2" value="D"> (D) b, c</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (holds fixed number of same type) and <strong>c</strong> (fixed length after creation) are true. Last index is <code>length - 1</code> and elements are stored contiguously.</div>
+          </div>
+
+          <!-- Q5.3 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              3. Match the following String method Code Snippets with the corresponding outputs with respect to the statement, <code>String str="Java";</code>
+              <table class="match-table">
+                <tr><th>Code Snippet</th><th>Output</th></tr>
+                <tr><td>a. System.out.println(str.compareTo("World"));</td><td>1. v</td></tr>
+                <tr><td>b. System.out.println(str.concat("World"));</td><td>2. -13</td></tr>
+                <tr><td>c. System.out.println(str.indexOf("e"));</td><td>3. JavaWorld</td></tr>
+                <tr><td>d. System.out.println(str.charAt(2));</td><td>4. -1</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q3" value="A"> (A) a-3, b-4, c-1, d-2</label>
+              <label><input type="radio" name="s5-q3" value="B"> (B) a-2, b-4, c-3, d-1</label>
+              <label><input type="radio" name="s5-q3" value="C"> (C) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s5-q3" value="D"> (D) a-2, b-3, c-4, d-1</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <code>compareTo</code> &rArr; -13 (a-2), <code>concat</code> &rArr; "JavaWorld" (b-3), <code>indexOf("e")</code> &rArr; -1 (c-4), <code>charAt(2)</code> &rArr; 'v' (d-1).</div>
+          </div>
+
+          <!-- Q5.4 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">4. Which of the following options will declare and initialize a single-dimensional array?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q4" value="A"> (A) int marks = {65, 47, 75, 50};</label>
+              <label><input type="radio" name="s5-q4" value="B"> (B) int[ ] marks = {65, 47, 75, 50};</label>
+              <label><input type="radio" name="s5-q4" value="C"> (C) int[ ] marks = {"65", "47", "75", "50"};</label>
+              <label><input type="radio" name="s5-q4" value="D"> (D) int[ ] marks = {65},{47},{75},{50};</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Option <strong>(B)</strong> is the valid shorthand array literal syntax for declaring and initializing an <code>int[]</code> array.</div>
+          </div>
+
+          <!-- Q5.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              5. Consider the following Code Snippet:
+              <code>Integer x = 10; // line 1
+int y = x; // line 2
+int x1 = 10;
+float z = x1; // line 3
+int w = (int)z; // line 4</code>
+              Match the Code Snippet at following lines with the corresponding Java feature:
+              <table class="match-table">
+                <tr><th>Line Number</th><th>Output / Feature</th></tr>
+                <tr><td>a. line 1</td><td>1. Implicit Type Casting</td></tr>
+                <tr><td>b. line 2</td><td>2. Autoboxing</td></tr>
+                <tr><td>c. line 3</td><td>3. Explicit Type Casting</td></tr>
+                <tr><td>d. line 4</td><td>4. Unboxing</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q5" value="A"> (A) a-3, b-4, c-1, d-2</label>
+              <label><input type="radio" name="s5-q5" value="B"> (B) a-2, b-4, c-1, d-3</label>
+              <label><input type="radio" name="s5-q5" value="C"> (C) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s5-q5" value="D"> (D) a-2, b-3, c-4, d-1</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Line 1: Autoboxing (primitive to Integer) (a-2), Line 2: Unboxing (Integer object to int) (b-4), Line 3: Implicit Type Casting (widening int to float) (c-1), Line 4: Explicit Type Casting (narrowing float to int) (d-3).</div>
+          </div>
+        </section>
+
+        <!-- SESSION 6 -->
+        <section id="session6">
+          <h2 class="session-title">Session 6: Modifiers and Packages (6.5 Check Your Progress)</h2>
+
+          <!-- Q6.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. Every Java application or applet has access to the ________ core package in the Java API.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q1" value="A"> (A) java.util</label>
+              <label><input type="radio" name="s6-q1" value="B"> (B) java.lang</label>
+              <label><input type="radio" name="s6-q1" value="C"> (C) java.io</label>
+              <label><input type="radio" name="s6-q1" value="D"> (D) java.awt</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong><code>java.lang</code></strong> package is automatically imported by default into all Java compilation units.</div>
+          </div>
+
+          <!-- Q6.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              2. Which of the following statements about the final modifier are true?
+              <br>a. The final modifier is used when modification of a class or data member is to be restricted
+              <br>b. A method declared final must be overridden
+              <br>c. A class declared final must be inherited or subclassed
+              <br>d. A variable declared final is a constant whose value cannot be modified
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q2" value="A"> (A) b, c</label>
+              <label><input type="radio" name="s6-q2" value="B"> (B) a, d</label>
+              <label><input type="radio" name="s6-q2" value="C"> (C) a, c</label>
+              <label><input type="radio" name="s6-q2" value="D"> (D) b, d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (restricts modification) and <strong>d</strong> (final variable is constant) are true. Final methods cannot be overridden and final classes cannot be inherited.</div>
+          </div>
+
+          <!-- Q6.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              3. Match following method/field modifiers with the corresponding description:
+              <table class="match-table">
+                <tr><th>Modifier</th><th>Description</th></tr>
+                <tr><td>a. volatile</td><td>1. Used with a variable, method, and class</td></tr>
+                <tr><td>b. native</td><td>2. Applied only to fields</td></tr>
+                <tr><td>c. final</td><td>3. Used only with instance variables</td></tr>
+                <tr><td>d. transient</td><td>4. Used only with methods</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q3" value="A"> (A) a-3, b-2, c-4, d-1</label>
+              <label><input type="radio" name="s6-q3" value="B"> (B) a-2, b-3, c-4, d-1</label>
+              <label><input type="radio" name="s6-q3" value="C"> (C) a-2, b-4, c-1, d-3</label>
+              <label><input type="radio" name="s6-q3" value="D"> (D) a-3, b-4, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Matching: <code>volatile</code> (applied to fields, a-2), <code>native</code> (used with C/C++ methods, b-4), <code>final</code> (variable, method, class, c-1), <code>transient</code> (instance variables, d-3).</div>
+          </div>
+
+          <!-- Q6.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              4. Which of the following option represents the correct command for generating a .jar file using an existing manifest file and displaying a verbose output? (Assumption: jar file - MyJar.jar, Manifest file - Manifest.txt, class file - MyClass.class, package - mypkg).
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q4" value="A"> (A) jar cvfm Manifest.txt MyJar.jar mypkg/MyClass.class</label>
+              <label><input type="radio" name="s6-q4" value="B"> (B) jar cfvm Manifest.txt MyJar.jar mypkg/MyClass.class</label>
+              <label><input type="radio" name="s6-q4" value="C"> (C) jar cvmf Manifest.txt MyJar.jar mypkg/MyClass.class</label>
+              <label><input type="radio" name="s6-q4" value="D"> (D) jar cmf Manifest.txt MyJar.jar mypkg/MyClass.class</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> In <code>jar cvmf</code>, options <code>m</code> and <code>f</code> map to the argument order: <code>m</code> &rArr; <code>Manifest.txt</code> and <code>f</code> &rArr; <code>MyJar.jar</code>.</div>
+          </div>
+
+          <!-- Q6.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              5. Consider following code to check the number of users logged in to a system:
+              <code>package myPkg;
+public class UserLogin {
+    public int userNo = 0; // line 1
+    public void displayUserCount() {
+        userNo++;
+        System.out.println("User number is:" + userNo);
+    }
+    public static void main(String[] args) {
+        UserLogin objUser1 = new UserLogin();
+        objUser1.displayUserCount();
+        UserLogin objUser2 = new UserLogin();
+        objUser2.displayUserCount();
+    }
+}</code>
+              The code is executing properly without any error. However, the value of variable, userNo is displaying 1 for every new object that is created. What change must be made in line 1 to ensure that userNo is incremented when a new object is created?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q5" value="A"> (A) public transient int userNo=0;</label>
+              <label><input type="radio" name="s6-q5" value="B"> (B) public final int userNo=0;</label>
+              <label><input type="radio" name="s6-q5" value="C"> (C) public volatile int userNo=0;</label>
+              <label><input type="radio" name="s6-q5" value="D"> (D) public static int userNo=0;</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Changing line 1 to <strong><code>public static int userNo=0;</code></strong> shares the single counter across all instances, accumulating increments properly.</div>
+          </div>
+
+          <!-- Q6.6 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">6. Identify the correct command to execute the .jar file myJar.jar at the command prompt.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q6" value="A"> (A) jar myJar.jar</label>
+              <label><input type="radio" name="s6-q6" value="B"> (B) java -jar myJar.jar</label>
+              <label><input type="radio" name="s6-q6" value="C"> (C) javac -jar myJar.jar</label>
+              <label><input type="radio" name="s6-q6" value="D"> (D) java -jar myJar</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The standard command to run an executable JAR file is <strong><code>java -jar myJar.jar</code></strong>.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 7 -->
+        <section id="session7">
+          <h2 class="session-title">Session 7: Inheritance and Polymorphism (7.5 Check Your Progress)</h2>
+
+          <!-- Q7.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">1. ________ keyword is used to access parent class constructor and methods from child class.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q1" value="A"> (A) virtual</label>
+              <label><input type="radio" name="s7-q1" value="B"> (B) extends</label>
+              <label><input type="radio" name="s7-q1" value="C"> (C) super</label>
+              <label><input type="radio" name="s7-q1" value="D"> (D) base</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong><code>super</code></strong> keyword is used to access superclass constructors (`super(...)`) and methods (`super.method()`).</div>
+          </div>
+
+          <!-- Q7.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              2. Which of the following statements about static and dynamic binding are true?
+              <br>a. Overridden methods are bounded using static binding
+              <br>b. Static binding occurs at compile time and dynamic binding occurs at runtime
+              <br>c. Private, static, and final methods and variables use static binding and are bounded by compiler
+              <br>d. Virtual methods are bounded at compile time based upon the runtime object
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q2" value="A"> (A) a, c</label>
+              <label><input type="radio" name="s7-q2" value="B"> (B) b, c</label>
+              <label><input type="radio" name="s7-q2" value="C"> (C) b, d</label>
+              <label><input type="radio" name="s7-q2" value="D"> (D) a, d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>b</strong> (static binding at compile time, dynamic at runtime) and <strong>c</strong> (private/static/final use static binding) are true. Overridden methods use dynamic binding.</div>
+          </div>
+
+          <!-- Q7.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              3. Match the following inheritance type with the corresponding description:
+              <table class="match-table">
+                <tr><th>Inheritance Type</th><th>Description</th></tr>
+                <tr><td>a. Hierarchical</td><td>1. A child class derives from more than one parent class</td></tr>
+                <tr><td>b. Single</td><td>2. A parent class has more than one child classes at different levels</td></tr>
+                <tr><td>c. Multiple</td><td>3. A child class derives from a parent that itself is a child of another class</td></tr>
+                <tr><td>d. Multilevel</td><td>4. A child class inherits from one and only one parent class</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q3" value="A"> (A) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s7-q3" value="B"> (B) a-2, b-3, c-4, d-1</label>
+              <label><input type="radio" name="s7-q3" value="C"> (C) a-2, b-4, c-1, d-3</label>
+              <label><input type="radio" name="s7-q3" value="D"> (D) a-4, b-1, c-3, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Hierarchical (a-2), Single (b-4), Multiple (c-1), Multilevel (d-3).</div>
+          </div>
+
+          <!-- Q7.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              4. Consider following code:
+              <code>class Furniture {
+    String ID; float price;
+    public Furniture(String ID, float price){ this.ID = ID; this.price = price; }
+    public void displayDetails() { System.out.println("ID: "+ID); System.out.println("Price: "+price); }
+}
+public class Table extends Furniture {
+    String type;  
+    public Table(String ID, float price, String type) { super(ID,price); this.type = type; }
+    public void displayDetails(){ super.displayDetails(); System.out.println("Type: "+type); }
+    public static void main(String[] args){   
+        Furniture obj = new Table("F001 ", 2000F, "Wooden ");
+        obj.displayDetails();
+    }
+}</code>
+              What will be the output of the code?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q4" value="A"> (A) ID: F001 Price: 2000.0</label>
+              <label><input type="radio" name="s7-q4" value="B"> (B) Compilation Error</label>
+              <label><input type="radio" name="s7-q4" value="C"> (C) ID: F001 Price: 2000.0 Type: Wooden</label>
+              <label><input type="radio" name="s7-q4" value="D"> (D) Runtime Error</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Polymorphism invokes <code>Table</code>'s <code>displayDetails()</code>, which calls <code>super.displayDetails()</code> (prints ID and Price) and then prints Type: Wooden.</div>
+          </div>
+
+          <!-- Q7.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              5. Consider following code:
+              <code>Car objCar = new Car();
+Vehicle objVehicle = objCar;</code>
+              Which concept of object-oriented programming is used in the code?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q5" value="A"> (A) Downcasting</label>
+              <label><input type="radio" name="s7-q5" value="B"> (B) Overriding</label>
+              <label><input type="radio" name="s7-q5" value="C"> (C) Abstraction</label>
+              <label><input type="radio" name="s7-q5" value="D"> (D) Upcasting</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Assigning a subclass reference (<code>Car</code>) to a superclass reference variable (<code>Vehicle</code>) is called <strong>Upcasting</strong>.</div>
+          </div>
+
+          <!-- Q7.6 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              6. Consider following code:
+              <code>class Animal { ... }
+class Herbivore extends Animal { ... }
+class Deer extends Herbivore { ... }</code>
+              Which type of inheritance is used in the code?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q6" value="A"> (A) Single</label>
+              <label><input type="radio" name="s7-q6" value="B"> (B) Multilevel</label>
+              <label><input type="radio" name="s7-q6" value="C"> (C) Multiple</label>
+              <label><input type="radio" name="s7-q6" value="D"> (D) Hierarchical</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A class extending a derived class (`Animal` &rarr; `Herbivore` &rarr; `Deer`) forms a <strong>Multilevel inheritance</strong> chain.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 8 -->
+        <section id="session8">
+          <h2 class="session-title">Session 8: Interfaces and Nested Classes (8.4 Check Your Progress)</h2>
+
+          <!-- Q8.1 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">1. An interface is saved with a _______ extension.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q1" value="A"> (A) .interface</label>
+              <label><input type="radio" name="s8-q1" value="B"> (B) .exe</label>
+              <label><input type="radio" name="s8-q1" value="C"> (C) .jar</label>
+              <label><input type="radio" name="s8-q1" value="D"> (D) .java</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Source files declaring an interface are saved with the standard <strong><code>.java</code></strong> file extension.</div>
+          </div>
+
+          <!-- Q8.2 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              2. Which of the following statements about an interface are true?
+              <br>a. An interface can contain multiple methods
+              <br>b. An interface can be instantiated
+              <br>c. All the methods of an interface are implicitly abstract
+              <br>d. An interface can have constructors
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q2" value="A"> (A) b, c</label>
+              <label><input type="radio" name="s8-q2" value="B"> (B) a, d</label>
+              <label><input type="radio" name="s8-q2" value="C"> (C) b, d</label>
+              <label><input type="radio" name="s8-q2" value="D"> (D) a, c</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (can contain multiple methods) and <strong>c</strong> (methods are implicitly abstract) are true. Interfaces cannot be instantiated directly and cannot have constructors.</div>
+          </div>
+
+          <!-- Q8.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              3. Match following description with the corresponding nested class type:
+              <table class="match-table">
+                <tr><th>Description</th><th>Nested Class Type</th></tr>
+                <tr><td>a. A non-static inner class declared as a member of the outer class</td><td>1. Local Inner Class</td></tr>
+                <tr><td>b. An inner class declared without a name within a code block</td><td>2. Member Class</td></tr>
+                <tr><td>c. An inner class defined within a code block such as body of a method</td><td>3. Static Nested Class</td></tr>
+                <tr><td>d. Cannot directly refer to instance variables of outer class except through object ref</td><td>4. Anonymous Class</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q3" value="A"> (A) a-3, b-4, c-1, d-2</label>
+              <label><input type="radio" name="s8-q3" value="B"> (B) a-2, b-4, c-1, d-3</label>
+              <label><input type="radio" name="s8-q3" value="C"> (C) a-4, b-3, c-2, d-1</label>
+              <label><input type="radio" name="s8-q3" value="D"> (D) a-2, b-3, c-4, d-1</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Member Class (a-2), Anonymous Class (b-4), Local Inner Class (c-1), Static Nested Class (d-3).</div>
+          </div>
+
+          <!-- Q8.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              4. Consider following code:
+              <code>public interface Publisher { public void addContact(); public void getRoyaltyAmt(); }
+public class Book implements Publisher {
+    String ID; String type;
+    public Book(String ID, String type) { this.ID = ID; this.type = type; }
+    @Override public void addContact() { System.out.println("Storing contact ....."); }
+    @Override public void getRoyaltyAmt() { System.out.println("Royalty amount is $2000"); }
+    public void displayDetails() { System.out.println("Book ID: " + ID); System.out.println("Book Type.: " + type); }
+    public static void main(String[] args) { 
+        if (args.length == 2) {
+            Book objBook1 = new Book(args[0], args[1]);
+            objBook1.displayDetails(); objBook1.addContact(); objBook1.getRoyaltyAmt();
+        } else {
+            System.out.println("Usage: java Book <ID> <Type>");
+        }
+    }
+}</code>
+              What will be the output of the code when user passes 'B001' as the command line argument?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q4" value="A"> (A) Compilation Error</label>
+              <label><input type="radio" name="s8-q4" value="B"> (B) Book ID: B001...</label>
+              <label><input type="radio" name="s8-q4" value="C"> (C) Usage: java Book &lt;ID&gt; &lt;Type&gt;</label>
+              <label><input type="radio" name="s8-q4" value="D"> (D) Runtime Error</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Passing only 1 argument makes <code>args.length == 1</code>. Since <code>args.length == 2</code> evaluates to false, it executes the <code>else</code> block printing: <strong>Usage: java Book &lt;ID&gt; &lt;Type&gt;</strong>.</div>
+          </div>
+
+          <!-- Q8.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. Identify the correct syntax to implement multiple interfaces in a class.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q5" value="A"> (A) class &lt;class-name&gt; implements &lt;Interface1&gt; &lt;Interface2&gt; ...</label>
+              <label><input type="radio" name="s8-q5" value="B"> (B) class &lt;class-name&gt; implements &lt;Interface1&gt;, &lt;Interface2&gt;, ...</label>
+              <label><input type="radio" name="s8-q5" value="C"> (C) class &lt;class-name&gt; implements &lt;Interface1&gt;: &lt;Interface2&gt;: ...</label>
+              <label><input type="radio" name="s8-q5" value="D"> (D) class &lt;class-name&gt; implements &lt;Interface1&gt;&amp; &lt;Interface2&gt;&amp; ...</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Multiple interfaces implemented by a class are separated by <strong>commas</strong>: <code>implements A, B</code>.</div>
+          </div>
+
+          <!-- Q8.6 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">
+              6. Consider following code:
+              <code>class Bird { 
+    public void moveBird() {
+        Object o = new Fly() {
+            public void flightSpeed(int speed) {
+                System.out.println("Flying at "+ speed + "kmph");
+            }
+        };
+    }
+}
+class Fly { public void flightSpeed(int speed) {} }</code>
+              Which type of nested class is used in the code?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q6" value="A"> (A) Anonymous class</label>
+              <label><input type="radio" name="s8-q6" value="B"> (B) Local Inner class</label>
+              <label><input type="radio" name="s8-q6" value="C"> (C) Member class</label>
+              <label><input type="radio" name="s8-q6" value="D"> (D) Static Nested class</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <code>new Fly() { ... }</code> instantiates an inline <strong>Anonymous inner class</strong> extending `Fly`.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 9 -->
+        <section id="session9">
+          <h2 class="session-title">Session 9: Exceptions (9.5 Check Your Progress)</h2>
+
+          <!-- Q9.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. _______ are exceptions that are external to the application that it cannot anticipate nor recover from.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q1" value="A"> (A) Exception</label>
+              <label><input type="radio" name="s9-q1" value="B"> (B) Error</label>
+              <label><input type="radio" name="s9-q1" value="C"> (C) Interrupt</label>
+              <label><input type="radio" name="s9-q1" value="D"> (D) Fault</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong><code>Error</code></strong> (such as `OutOfMemoryError`) indicates serious hardware/JVM problems external to application logic.</div>
+          </div>
+
+          <!-- Q9.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">
+              2. Which of the following statements about exceptions are true?
+              <br>a. An exception can occur due to programming errors, client code errors, or errors beyond control
+              <br>b. The exception object holds information about the type of error and state of the program
+              <br>c. An appropriate exception handler is one that handles all types of exceptions
+              <br>d. If a handler is not found in the method, the runtime proceeds through the call stack...
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q2" value="A"> (A) a, d</label>
+              <label><input type="radio" name="s9-q2" value="B"> (B) a, b</label>
+              <label><input type="radio" name="s9-q2" value="C"> (C) b, c</label>
+              <label><input type="radio" name="s9-q2" value="D"> (D) b, d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statements <strong>a</strong> (reasons for exception) and <strong>b</strong> (exception object holds state &amp; type info) are true.</div>
+          </div>
+
+          <!-- Q9.3 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">
+              3. Match following exception types with their corresponding description:
+              <table class="match-table">
+                <tr><th>Exception</th><th>Description</th></tr>
+                <tr><td>a. ArrayIndexOutOfBoundsException</td><td>1. Occurs on access to a null object member</td></tr>
+                <tr><td>b. IllegalArgumentException</td><td>2. Occurs upon attempt to create instance of an abstract class</td></tr>
+                <tr><td>c. NullPointerException</td><td>3. Occurs if array index is less than zero or &gt;= length</td></tr>
+                <tr><td>d. InstantiationException</td><td>4. Occurs if method receives an illegal argument</td></tr>
+              </table>
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q3" value="A"> (A) a-2, b-4, c-1, d-3</label>
+              <label><input type="radio" name="s9-q3" value="B"> (B) a-4, b-1, c-3, d-2</label>
+              <label><input type="radio" name="s9-q3" value="C"> (C) a-2, b-3, c-4, d-1</label>
+              <label><input type="radio" name="s9-q3" value="D"> (D) a-3, b-4, c-1, d-2</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> ArrayIndexOutOfBoundsException (a-3), IllegalArgumentException (b-4), NullPointerException (c-1), InstantiationException (d-2).</div>
+          </div>
+
+          <!-- Q9.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">
+              4. Consider following code:
+              <code>public class Book {
+    String bookId; String type; String author;    
+    public Book(String bookId, String type, String author) {
+        this.bookId = bookId; this.type = type; this.author = author;
+    }
+    public void displayDetails(){
+        System.out.println("Book Id: "+bookId); System.out.println("Book Type: "+type); System.out.println("Author: "+author);
+    }
+    public static void main(String[] args) {
+        Book objBook1= new Book(args[1],args[2],args[3]);
+        objBook1.displayDetails();
+    }
+}</code>
+              What will be the output of the code when user passes 'B001', 'Thriller', and 'James-Hadley' as the command line arguments?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q4" value="A"> (A) Compilation Error</label>
+              <label><input type="radio" name="s9-q4" value="B"> (B) Book Id: B001...</label>
+              <label><input type="radio" name="s9-q4" value="C"> (C) java.lang.ArrayIndexOutOfBoundsException</label>
+              <label><input type="radio" name="s9-q4" value="D"> (D) Book Id: null...</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Passing 3 arguments provides indices `args[0]`, `args[1]`, `args[2]`. Accessing `args[3]` causes an <strong><code>ArrayIndexOutOfBoundsException</code></strong>.</div>
+          </div>
+
+          <!-- Q9.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">5. Identify the method of Exception class that returns the result of getMessage() along with the name of the exception class concatenated to it.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q5" value="A"> (A) public Throwable getCause()</label>
+              <label><input type="radio" name="s9-q5" value="B"> (B) public String getMessage()</label>
+              <label><input type="radio" name="s9-q5" value="C"> (C) public void printStackTrace()</label>
+              <label><input type="radio" name="s9-q5" value="D"> (D) public String toString()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong><code>public String toString()</code></strong> method of `Throwable` returns the exception class name concatenated with `getMessage()`.</div>
+          </div>
+
+          <!-- Q9.6 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">
+              6. Consider following code:
+              <code>public class Cart {
+    public static void main(String[] args) {
+        String[] shopCart = new String[4];
+        System.out.println(shopCart[1].charAt(1));
+    }
+}</code>
+              Which type of exception will be raised when the code is executed?
+            </div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s9-q6" value="A"> (A) java.lang.NullPointerException</label>
+              <label><input type="radio" name="s9-q6" value="B"> (B) java.lang.ArrayIndexOutOfBoundsException</label>
+              <label><input type="radio" name="s9-q6" value="C"> (C) java.lang.StringIndexOutOfBoundsException</label>
+              <label><input type="radio" name="s9-q6" value="D"> (D) java.lang.IllegalArgumentException</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Elements of new <code>String[4]</code> array default to `null`. Invoking `.charAt(1)` on `shopCart[1]` (null) throws <strong><code>NullPointerException</code></strong>.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 10 -->
+        <section id="session10">
+          <h2 class="session-title">Session 10: Date and Time API (10.9 Check Your Progress)</h2>
+
+          <!-- Q10.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. Which of the following APIs represents a specialized Date-Time API to deal with various time-zones?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s10-q1" value="A"> (A) Local</label>
+              <label><input type="radio" name="s10-q1" value="B"> (B) Zoned</label>
+              <label><input type="radio" name="s10-q1" value="C"> (C) International</label>
+              <label><input type="radio" name="s10-q1" value="D"> (D) Continental</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong>Zoned Date-Time API</strong> (<code>ZonedDateTime</code> / <code>ZoneId</code>) handles date and time in a specified time-zone.</div>
+          </div>
+
+          <!-- Q10.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. Which of following options does the Instant class represent?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s10-q2" value="A"> (A) Day time</label>
+              <label><input type="radio" name="s10-q2" value="B"> (B) Specific time</label>
+              <label><input type="radio" name="s10-q2" value="C"> (C) Approximate time</label>
+              <label><input type="radio" name="s10-q2" value="D"> (D) Fixed time</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> An <strong><code>Instant</code></strong> represents an instantaneous point / specific time on the timeline (nanoseconds from 1970-01-01T00:00:00Z epoch).</div>
+          </div>
+
+          <!-- Q10.3 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">3. Which of these two methods can be used to perform Duration calculations?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s10-q3" value="A"> (A) plusNanos()</label>
+              <label><input type="radio" name="s10-q3" value="B"> (B) toNanos()</label>
+              <label><input type="radio" name="s10-q3" value="C"> (C) toMillis()</label>
+              <label><input type="radio" name="s10-q3" value="D"> (D) minusMillis()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Methods like <strong><code>plusNanos()</code></strong> and <code>minusNanos()</code> perform duration addition/subtraction calculations on <code>Duration</code> objects.</div>
+          </div>
+
+          <!-- Q10.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">4. Which of the following are three types of offsets?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s10-q4" value="A"> (A) Simple, Odd, and Even</label>
+              <label><input type="radio" name="s10-q4" value="B"> (B) plusDays(), plusNanos(), and plusMillis()</label>
+              <label><input type="radio" name="s10-q4" value="C"> (C) Normal, Gap, and Overlap</label>
+              <label><input type="radio" name="s10-q4" value="D"> (D) toNanos(), toMillis(), and toSeconds()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Time-zone offset transitions during Daylight Saving Time are categorized into <strong>Normal</strong>, <strong>Gap</strong> (spring forward), and <strong>Overlap</strong> (fall back).</div>
+          </div>
+
+          <!-- Q10.5 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">5. Which among the following methods comes under the class java.time.temporal.TemporalAdjusters?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s10-q5" value="A"> (A) plusDays() (or firstDayOfMonth)</label>
+              <label><input type="radio" name="s10-q5" value="B"> (B) ofInstant()</label>
+              <label><input type="radio" name="s10-q5" value="C"> (C) getDayofMonth()</label>
+              <label><input type="radio" name="s10-q5" value="D"> (D) toNanos()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <code>TemporalAdjusters</code> provides helper adjusters like <code>firstDayOfMonth()</code>, <code>lastDayOfMonth()</code>, and adjustment transformers.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 11 -->
+        <section id="session11">
+          <h2 class="session-title">Session 11: Additional Features of Java (11.4 Check Your Progress)</h2>
+
+          <!-- Q11.1 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">1. What is the purpose of the @Override annotation in Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s11-q1" value="A"> (A) It indicates that a method is overriding a superclass method</label>
+              <label><input type="radio" name="s11-q1" value="B"> (B) It helps the compiler to detect errors in overriding methods</label>
+              <label><input type="radio" name="s11-q1" value="C"> (C) It improves the readability and maintainability of code</label>
+              <label><input type="radio" name="s11-q1" value="D"> (D) All of these</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <code>@Override</code> documents intent, enables compile-time safety check for correct method signatures, and enhances readability.</div>
+          </div>
+
+          <!-- Q11.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. Which of these features were introduced in recent versions of Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s11-q2" value="A"> (A) Applets</label>
+              <label><input type="radio" name="s11-q2" value="B"> (B) Sealed Class</label>
+              <label><input type="radio" name="s11-q2" value="C"> (C) Lambda Expression</label>
+              <label><input type="radio" name="s11-q2" value="D"> (D) Enhanced Java Virtual Machine (JVM)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Sealed Classes</strong> were introduced in recent Java versions (Java 15/17) to restrict which classes can extend or implement them.</div>
+          </div>
+
+          <!-- Q11.3 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">3. What is the advantage of using generics in Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s11-q3" value="A"> (A) They will make the code more type-safe and reduce the necessity for type casting</label>
+              <label><input type="radio" name="s11-q3" value="B"> (B) They increase the performance and efficiency of the code</label>
+              <label><input type="radio" name="s11-q3" value="C"> (C) They allow the code to work with any kind of object</label>
+              <label><input type="radio" name="s11-q3" value="D"> (D) They enable the code to use multiple inheritance</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Generics (e.g. <code>List&lt;String&gt;</code>) provide <strong>compile-time type safety</strong> and eliminate repetitive explicit type casting.</div>
+          </div>
+
+          <!-- Q11.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">4. What is a stream in Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s11-q4" value="A"> (A) A sequence of bytes that can be read from or written to a file, network, or other source, or destination</label>
+              <label><input type="radio" name="s11-q4" value="B"> (B) A sequence of character that can be processed by a scanner, formatter, or other utility class</label>
+              <label><input type="radio" name="s11-q4" value="C"> (C) A sequence of elements that can be processed by applying operations such as filtering, mapping, reducing, or collecting</label>
+              <label><input type="radio" name="s11-q4" value="D"> (D) A sequence of events that can be handled by a listener, observer, or callback function</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A Java Stream (<code>java.util.stream</code>) is a sequence of data elements supporting functional pipelines like <code>filter()</code>, <code>map()</code>, and <code>collect()</code>.</div>
+          </div>
+
+          <!-- Q11.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. What is a module in Java?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s11-q5" value="A"> (A) A collection of related classes and interfaces that can be grouped together and reused in different applications</label>
+              <label><input type="radio" name="s11-q5" value="B"> (B) A self-contained unit of code that can declare its dependencies and exports and can be compiled and run independently</label>
+              <label><input type="radio" name="s11-q5" value="C"> (C) A mechanism for encapsulating data and behavior in a single entity that can be instantiated multiple times</label>
+              <label><input type="radio" name="s11-q5" value="D"> (D) A feature that allows multiple inheritance of state and behavior from more than one superclass</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A Java 9+ Module (JPMS) is a self-contained unit specifying `requires` dependencies and `exports` packages via `module-info.java`.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 12 -->
+        <section id="session12">
+          <h2 class="session-title">Session 12: JDK 20 New Features and Functionalities (12.2 Check Your Progress)</h2>
+
+          <!-- Q12.1 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">1. Which of the following statements is true for virtual threads?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s12-q1" value="A"> (A) Virtual threads are tied to a specific operating system thread and cannot be suspended or resumed by the JVM</label>
+              <label><input type="radio" name="s12-q1" value="B"> (B) Virtual threads have a deep call stack, which increases the memory consumption and reduces the performance</label>
+              <label><input type="radio" name="s12-q1" value="C"> (C) Virtual threads do not support thread-local variables, which limits the sharing of data across threads</label>
+              <label><input type="radio" name="s12-q1" value="D"> (D) Virtual threads are managed by the JVM and can run on a small stack and be suspended or resumed by the JVM</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Virtual Threads</strong> (Project Loom) are lightweight JVM-managed user threads that run on shallow stacks and suspend/resume efficiently.</div>
+          </div>
+
+          <!-- Q12.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. What is the main purpose of Vector API in Java 20?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s12-q2" value="A"> (A) To provide a way to create and manipulate vectors of different shapes and species</label>
+              <label><input type="radio" name="s12-q2" value="B"> (B) To provide a way to express vector computations that can be compiled and optimized for various CPU architectures</label>
+              <label><input type="radio" name="s12-q2" value="C"> (C) To provide a way to access and process vector data from native libraries and memory</label>
+              <label><input type="radio" name="s12-q2" value="D"> (D) To provide a way to support vector graphics and animations in Java applications</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The Vector API expresses vector calculations compiled into SIMD vector instructions on supported CPU architectures.</div>
+          </div>
+
+          <!-- Q12.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">3. What is the main class of structured concurrency API in Java 20?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s12-q3" value="A"> (A) StructuredTask</label>
+              <label><input type="radio" name="s12-q3" value="B"> (B) StructuredExecutor</label>
+              <label><input type="radio" name="s12-q3" value="C"> (C) StructuredTaskScope</label>
+              <label><input type="radio" name="s12-q3" value="D"> (D) StructuredFuture</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong><code>StructuredTaskScope</code></strong> manages concurrent subtasks as a single unit of work.</div>
+          </div>
+
+          <!-- Q12.4 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">4. What is the main difference between scoped values and thread-local variables in Java 20?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s12-q4" value="A"> (A) Scoped values are automatically removed from the thread when the scope ends and thread-local variables are retained until explicitly removed</label>
+              <label><input type="radio" name="s12-q4" value="B"> (B) Scoped values are mutable and thread-local variables are immutable</label>
+              <label><input type="radio" name="s12-q4" value="C"> (C) Scoped values can only be accessed by the thread that created them and thread-local variables can be accessed by any thread within the same scope</label>
+              <label><input type="radio" name="s12-q4" value="D"> (D) Scoped values are declared as private instance fields and thread-local variables are declared as public static fields</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Scoped Values are immutable, bound to a bounded dynamic scope, and automatically cleaned up when the scope exits.</div>
+          </div>
+
+          <!-- Q12.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">5. Which of the following statements is false about record patterns in Java 20?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s12-q5" value="A"> (A) Record patterns can test whether a value is an instance of a record class type and extract its component values</label>
+              <label><input type="radio" name="s12-q5" value="B"> (B) Record patterns can be used in the instanceof operator, the switch expression, and the switch statement</label>
+              <label><input type="radio" name="s12-q5" value="C"> (C) Record patterns can be nested with other patterns, such as type patterns and constant patterns, to create more complex patterns</label>
+              <label><input type="radio" name="s12-q5" value="D"> (D) Record patterns can match any value, including the null value</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Statement <strong>(D) is FALSE</strong> because record patterns do not match `null` values (matching against null evaluates to false or throws NPE in switch).</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Author:</strong> Alvarez Tran (Trần Vũ Bằng)</p>
+      <p style="margin-top: 0.25rem;">Computer Science &bull; Can Tho University (CTU) &bull; APTECH Curriculum</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initQuizListeners();
+    });
+
+    function initQuizListeners() {
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        const radios = card.querySelectorAll('input[type="radio"]');
+        const correctAns = card.dataset.correct;
+        const feedback = card.querySelector('.quiz-feedback');
+
+        radios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            radios.forEach(r => {
+              r.disabled = true;
+              r.parentElement.classList.add('disabled');
+            });
+
+            if (radio.value === correctAns) {
+              card.classList.add('correct-card');
+              radio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-correct');
+            } else {
+              card.classList.add('incorrect-card');
+              radio.parentElement.classList.add('incorrect');
+              const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
+              if (correctRadio) correctRadio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-incorrect');
+            }
+            updateScore();
+          });
+        });
+      });
+
+      updateScore();
+    }
+
+    function updateScore() {
+      const cards = document.querySelectorAll('.quiz-card');
+      let total = cards.length;
+      let answered = 0;
+      let correct = 0;
+
+      cards.forEach(card => {
+        const selected = card.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          answered++;
+          if (selected.value === card.dataset.correct) correct++;
+        }
+      });
+
+      document.getElementById('overall-score').textContent = `${correct} / ${total}`;
+      const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+      document.getElementById('overall-desc').textContent = `Completed: ${answered} / ${total} questions (Correct: ${correct} - Accuracy: ${pct}%)`;
+    }
+
+    function resetAllQuizzes() {
+      if (!confirm("Are you sure you want to reset all answers?")) return;
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        card.classList.remove('correct-card', 'incorrect-card');
+        const radios = card.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => {
+          r.checked = false;
+          r.disabled = false;
+          r.parentElement.classList.remove('correct', 'incorrect', 'disabled');
+        });
+        const feedback = card.querySelector('.quiz-feedback');
+        if (feedback) feedback.classList.remove('show', 'feedback-correct', 'feedback-incorrect');
+      });
+      updateScore();
+    }
+  </script>
+</body>
+</html>

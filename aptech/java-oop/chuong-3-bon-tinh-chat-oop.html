@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chương 3: 4 Tính Chất OOP - APTECH Java OOP</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">Java OOP</a> &raquo; Chương 3
+      </div>
+      <h1>CHƯƠNG 3. BỐN TÍNH CHẤT CỐT LÕI CỦA OOP (4 CORE OOP PILLARS)</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Phân tích Đóng gói, Kế thừa, Đa hình và Trừu tượng (Abstract Class vs Interface).</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+
+      <section id="sec-1">
+        <h2>3.1 Tính Đóng Gói (Encapsulation)</h2>
+        <p>Đóng gói là kỹ thuật che giấu dữ liệu bên trong lớp (dùng <code>private</code>) và chỉ cho phép truy cập/sửa đổi thông qua các phương thức công khai (Getters &amp; Setters) có kiểm tra tính hợp lệ.</p>
+
+        <div class="code-block">public class Account {
+    private double balance; // Che giấu thuộc tính
+
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            this.balance += amount;
+        } else {
+            System.out.println("Số tiền nạp không hợp lệ!");
+        }
+    }
+}</div>
+      </section>
+
+      <section id="sec-2" style="margin-top: 2rem;">
+        <h2>3.2 Tính Kế Thừa (Inheritance)</h2>
+        <p>Cho phép một lớp con (Subclass/Derived Class) thừa hưởng các thuộc tính và phương thức từ lớp cha (Superclass/Base Class) bằng từ khóa <code>extends</code>. Sử dụng từ khóa <code>super</code> để gọi constructor hoặc phương thức của lớp cha.</p>
+
+        <div class="code-block">// Lớp cha
+public class NhanVien {
+    protected String ten;
+    protected double luongCoBan;
+
+    public NhanVien(String ten, double luongCoBan) {
+        this.ten = ten;
+        this.luongCoBan = luongCoBan;
+    }
+
+    public double tinhLuong() {
+        return this.luongCoBan;
+    }
+}
+
+// Lớp con kế thừa từ NhanVien
+public class NhanVienKhoaHoc extends NhanVien {
+    private double phuCap;
+
+    public NhanVienKhoaHoc(String ten, double luongCoBan, double phuCap) {
+        super(ten, luongCoBan); // Gọi constructor lớp cha
+        this.phuCap = phuCap;
+    }
+
+    @Override
+    public double tinhLuong() { // Ghi đè phương thức (Method Overriding)
+        return super.tinhLuong() + this.phuCap;
+    }
+}</div>
+      </section>
+
+      <section id="sec-3" style="margin-top: 2rem;">
+        <h2>3.3 Tính Đa Hình (Polymorphism)</h2>
+        <p>Cho phép một hành vi có thể thể hiện dưới nhiều hình thức khác nhau:</p>
+        <ul>
+          <li><strong>Đa hình thời gian biên dịch (Compile-time Polymorphism):</strong> Thực hiện thông qua <em>Method Overloading</em> (nạp chồng phương thức cùng tên nhưng khác tham số trong cùng 1 class).</li>
+          <li><strong>Đa hình thời gian chạy (Runtime Polymorphism):</strong> Thực hiện thông qua <em>Method Overriding</em> (ghi đè phương thức lớp con) và cơ chế <em>Dynamic Binding</em>.</li>
+        </ul>
+      </section>
+
+      <section id="sec-4" style="margin-top: 2rem;">
+        <h2>3.4 Tính Trừu Tượng (Abstraction): Abstract Class vs Interface</h2>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Tiêu chí so sánh</th>
+              <th>Lớp trừu tượng (Abstract Class)</th>
+              <th>Giao diện (Interface)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Từ khóa sử dụng</td>
+              <td><code>abstract class</code> (Kế thừa dùng <code>extends</code>)</td>
+              <td><code>interface</code> (Thực thi dùng <code>implements</code>)</td>
+            </tr>
+            <tr>
+              <td>Đa kế thừa</td>
+              <td>Không (Chỉ đơn kế thừa 1 lớp cha)</td>
+              <td>Có (1 lớp có thể thực thi nhiều Interface)</td>
+            </tr>
+            <tr>
+              <td>Các loại phương thức</td>
+              <td>Chứa được cả phương thức trừu tượng và phương thức thường có body.</td>
+              <td>Chứa phương thức trừu tượng, `default` method và `static` method (Java 8+).</td>
+            </tr>
+            <tr>
+              <td>Thuộc tính biến</td>
+              <td>Chứa được biến thường, biến static, final.</td>
+              <td>Mặc định mọi biến đều là <code>public static final</code> (hằng số).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">// Ví dụ định nghĩa Interface trong Java
+public interface Drawable {
+    void draw(); // Phương thức trừu tượng
+}
+
+public class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Vẽ hình tròn.");
+    }
+}</div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
