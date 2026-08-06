@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APTECH XML - English Review &amp; Exam Questions (Sessions 1 - 8) - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+
+  <style>
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.25rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+    }
+    .sidebar a.active {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      border-left-color: var(--secondary-color);
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .quiz-card.correct-card {
+      border-left: 5px solid #22c55e;
+    }
+    .quiz-card.incorrect-card {
+      border-left: 5px solid #ef4444;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .quiz-question pre, .quiz-question code {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.88rem;
+      display: block;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-options label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quiz-options label:hover {
+      background: var(--highlight-bg);
+    }
+    .quiz-options label.correct {
+      background: rgba(34, 197, 94, 0.15) !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      font-weight: 600;
+    }
+    .quiz-options label.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .quiz-feedback.show {
+      display: block;
+    }
+    .quiz-feedback.feedback-correct {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      border-left: 4px solid #22c55e;
+    }
+    .quiz-feedback.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+    .session-title {
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.4rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .match-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+    }
+    .match-table th, .match-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    .match-table th {
+      background-color: var(--highlight-bg);
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">XML &amp; Web Technologies</a> &raquo; English Review Questions
+      </div>
+      <h1>APTECH XML - OFFICIAL ENGLISH PRACTICE &amp; EXAM QUESTION BANK</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Complete, verbatim English review questions from official Aptech curriculum (Check Your Progress - Sessions 1 to 8) with interactive choice checking and detailed explanations.
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <!-- Progress Banner -->
+    <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Overall Progress &amp; Score</strong>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Completed: 0 / 40 questions (Accuracy: 0%)</p>
+      </div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 40</div>
+    </div>
+
+    <div class="layout-wrapper">
+      <aside class="sidebar no-print">
+        <h3>Question Sessions</h3>
+        <ul>
+          <li><a href="#session1" class="active"><span>Session 1: Intro to XML</span></a></li>
+          <li><a href="#session2"><span>Session 2: XML Parsing &amp; DOM</span></a></li>
+          <li><a href="#session3"><span>Session 3: XPath Navigation</span></a></li>
+          <li><a href="#session4"><span>Session 4: XSLT Transformations</span></a></li>
+          <li><a href="#session5"><span>Session 5: JSON Representation</span></a></li>
+          <li><a href="#session6"><span>Session 6: Working with JSON</span></a></li>
+          <li><a href="#session7"><span>Session 7: Web APIs &amp; Transmission</span></a></li>
+          <li><a href="#session8"><span>Session 8: CORS &amp; SOP Protocol</span></a></li>
+        </ul>
+        <button onclick="resetAllQuizzes()" style="margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: var(--text-dark); font-weight: 600;">🔄 Reset All Answers</button>
+      </aside>
+
+      <main id="english-questions-container">
+        <!-- SESSION 1 -->
+        <section id="session1">
+          <h2 class="session-title">Session 1: Introduction to XML (Check Your Progress)</h2>
+
+          <!-- Q1.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. What does XML stand for?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q1" value="A"> (A) Extra Markup Language</label>
+              <label><input type="radio" name="s1-q1" value="B"> (B) Extensible Markup Language</label>
+              <label><input type="radio" name="s1-q1" value="C"> (C) Expressive Markup Language</label>
+              <label><input type="radio" name="s1-q1" value="D"> (D) Extended Markup Language</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XML</strong> stands for <strong>Extensible Markup Language</strong>, designed to store and transport data in a self-descriptive text format.</div>
+          </div>
+
+          <!-- Q1.2 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">2. Which XML technology is used to transform XML data into different formats, such as HTML or PDF?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q2" value="A"> (A) XPath</label>
+              <label><input type="radio" name="s1-q2" value="B"> (B) XQuery</label>
+              <label><input type="radio" name="s1-q2" value="C"> (C) XSLT</label>
+              <label><input type="radio" name="s1-q2" value="D"> (D) XSD</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XSLT (Extensible Stylesheet Language Transformations)</strong> transforms XML documents into HTML, XHTML, plain text, or PDF documents.</div>
+          </div>
+
+          <!-- Q1.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">3. In DTD, the "element" Keyword is used to:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q3" value="A"> (A) Define attributes within an XML document</label>
+              <label><input type="radio" name="s1-q3" value="B"> (B) Define data types / elements for XML documents</label>
+              <label><input type="radio" name="s1-q3" value="C"> (C) Define complex types for elements</label>
+              <label><input type="radio" name="s1-q3" value="D"> (D) Define the root element of an XML document</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> In a Document Type Definition (DTD), <code>&lt;!ELEMENT&gt;</code> rules declare elements and specify allowed child elements or data content models.</div>
+          </div>
+
+          <!-- Q1.4 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">4. Which technology is commonly used to validate XML documents against an XML schema?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q4" value="A"> (A) XMLSchema</label>
+              <label><input type="radio" name="s1-q4" value="B"> (B) XQuery</label>
+              <label><input type="radio" name="s1-q4" value="C"> (C) XSLT</label>
+              <label><input type="radio" name="s1-q4" value="D"> (D) XSD</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XSD (XML Schema Definition)</strong> specifies rules, data types, and structural validation constraints for XML files.</div>
+          </div>
+
+          <!-- Q1.5 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">5. XML Schema is used to:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s1-q5" value="A"> (A) Query and retrieve data from XML documents</label>
+              <label><input type="radio" name="s1-q5" value="B"> (B) Navigate through XML documents and select specific elements</label>
+              <label><input type="radio" name="s1-q5" value="C"> (C) Validate the structure and data types of XML documents</label>
+              <label><input type="radio" name="s1-q5" value="D"> (D) Transform XML data into different formats</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> An XML Schema defines the structure, element hierarchy, attributes, and data types to ensure valid XML documents.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 2 -->
+        <section id="session2">
+          <h2 class="session-title">Session 2: XML Parsing and Processing (Check Your Progress)</h2>
+
+          <!-- Q2.1 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">1. ______________ is used to read, examine, and comprehend XML documents.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q1" value="A"> (A) APIs</label>
+              <label><input type="radio" name="s2-q1" value="B"> (B) DOM Tree</label>
+              <label><input type="radio" name="s2-q1" value="C"> (C) XML Parser</label>
+              <label><input type="radio" name="s2-q1" value="D"> (D) SAX</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> An <strong>XML Parser</strong> reads XML files, verifies syntax rules, and provides API access to extract data.</div>
+          </div>
+
+          <!-- Q2.2 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">2. Which of the following depicts the hierarchical organization of the XML text?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q2" value="A"> (A) Event-driven parsing</label>
+              <label><input type="radio" name="s2-q2" value="B"> (B) Document Type Definition</label>
+              <label><input type="radio" name="s2-q2" value="C"> (C) Document Object Model (DOM)</label>
+              <label><input type="radio" name="s2-q2" value="D"> (D) XML schema</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong>Document Object Model (DOM)</strong> loads an entire XML file in memory as a tree hierarchy of nodes.</div>
+          </div>
+
+          <!-- Q2.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">3. What is used by an XML document to represent a tree-like structure using a programming interface?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q3" value="A"> (A) Lxml</label>
+              <label><input type="radio" name="s2-q3" value="B"> (B) XML Input Factory</label>
+              <label><input type="radio" name="s2-q3" value="C"> (C) XML DOM</label>
+              <label><input type="radio" name="s2-q3" value="D"> (D) XML Reader</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XML DOM</strong> presents an XML document as a tree structure of nodes (elements, attributes, text) accessible via standard APIs.</div>
+          </div>
+
+          <!-- Q2.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">4. What do programming languages such as Java and Python employ to modify and interact with XML document?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q4" value="A"> (A) XML data querying</label>
+              <label><input type="radio" name="s2-q4" value="B"> (B) Get Tag Name</label>
+              <label><input type="radio" name="s2-q4" value="C"> (C) XML DOM / Parsers</label>
+              <label><input type="radio" name="s2-q4" value="D"> (D) XML Reader</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> Languages use <strong>XML DOM Parsers</strong> to inspect, mutate, create, or modify nodes in XML document trees.</div>
+          </div>
+
+          <!-- Q2.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">5. Which type of XML databases store and manage XML data in its original format?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s2-q5" value="A"> (A) XML-enabled databases</label>
+              <label><input type="radio" name="s2-q5" value="B"> (B) Hybrid databases</label>
+              <label><input type="radio" name="s2-q5" value="C"> (C) eXist-db databases</label>
+              <label><input type="radio" name="s2-q5" value="D"> (D) Native XML databases</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Native XML databases (NXD)</strong> store XML documents in native hierarchical format without converting them to relational tables.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 3 -->
+        <section id="session3">
+          <h2 class="session-title">Session 3: XPath Navigation (3.8 Check Your Progress)</h2>
+
+          <!-- Q3.1 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">1. The hierarchy of the elements or attributes in the XML document is represented by a sequence of path steps separated by __________.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q1" value="A"> (A) Colon (:)</label>
+              <label><input type="radio" name="s3-q1" value="B"> (B) Semicolon (;)</label>
+              <label><input type="radio" name="s3-q1" value="C"> (C) Backward Slash (\)</label>
+              <label><input type="radio" name="s3-q1" value="D"> (D) Forward Slash (/)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> XPath uses forward slashes (<code>/</code>) to separate step navigation through document hierarchy (e.g. <code>/catalog/book/title</code>).</div>
+          </div>
+
+          <!-- Q3.2 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">2. Which language is used to pick out specific elements from an XML document?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q2" value="A"> (A) XPath</label>
+              <label><input type="radio" name="s3-q2" value="B"> (B) XML Reader</label>
+              <label><input type="radio" name="s3-q2" value="C"> (C) XML DOM</label>
+              <label><input type="radio" name="s3-q2" value="D"> (D) XML schema</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XPath (XML Path Language)</strong> is the query language for selecting and filtering nodes in an XML document.</div>
+          </div>
+
+          <!-- Q3.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">3. _______________ determine where items or attributes should be located within an XML document.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q3" value="A"> (A) XSLT</label>
+              <label><input type="radio" name="s3-q3" value="B"> (B) XPath Expressions</label>
+              <label><input type="radio" name="s3-q3" value="C"> (C) XML Axis</label>
+              <label><input type="radio" name="s3-q3" value="D"> (D) XML predicates</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>XPath Expressions</strong> pinpoint exact location steps, axes, and matching nodes inside an XML document.</div>
+          </div>
+
+          <!-- Q3.4 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">4. Which of the following is NOT a primary node type in XPath?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q4" value="A"> (A) Element nodes</label>
+              <label><input type="radio" name="s3-q4" value="B"> (B) Attribute nodes</label>
+              <label><input type="radio" name="s3-q4" value="C"> (C) Comment nodes</label>
+              <label><input type="radio" name="s3-q4" value="D"> (D) Parsing nodes</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> XPath node types include Element, Attribute, Text, Namespace, Processing-Instruction, Comment, and Root nodes. <em>Parsing nodes</em> do not exist in XPath.</div>
+          </div>
+
+          <!-- Q3.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. What is used to describe the direction of navigation?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s3-q5" value="A"> (A) Predicates</label>
+              <label><input type="radio" name="s3-q5" value="B"> (B) Axes</label>
+              <label><input type="radio" name="s3-q5" value="C"> (C) Functions</label>
+              <label><input type="radio" name="s3-q5" value="D"> (D) Logical Operators</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Axes</strong> (such as <code>parent::</code>, <code>child::</code>, <code>ancestor::</code>, <code>following-sibling::</code>) define tree navigation direction relative to the context node.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 4 -->
+        <section id="session4">
+          <h2 class="session-title">Session 4: XSLT Transformations (4.5 Check Your Progress)</h2>
+
+          <!-- Q4.1 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">1. To indicate where nodes are located within an XML document, XSLT uses __________.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q1" value="A"> (A) XPath</label>
+              <label><input type="radio" name="s4-q1" value="B"> (B) Labels</label>
+              <label><input type="radio" name="s4-q1" value="C"> (C) Variables</label>
+              <label><input type="radio" name="s4-q1" value="D"> (D) Pointers</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> XSLT relies heavily on <strong>XPath</strong> to navigate, select, and match target elements in the source XML file.</div>
+          </div>
+
+          <!-- Q4.2 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">2. XSLT has a wide range of built-in __________ that can be used to manipulate XML data.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q2" value="A"> (A) steps</label>
+              <label><input type="radio" name="s4-q2" value="B"> (B) commands</label>
+              <label><input type="radio" name="s4-q2" value="C"> (C) functions</label>
+              <label><input type="radio" name="s4-q2" value="D"> (D) tags</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> XSLT includes built-in <strong>functions</strong> (for string manipulation, numbers, dates, and node set processing).</div>
+          </div>
+
+          <!-- Q4.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">3. XSLT allows for control over how the ________ is formatted and presented.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q3" value="A"> (A) input</label>
+              <label><input type="radio" name="s4-q3" value="B"> (B) output</label>
+              <label><input type="radio" name="s4-q3" value="C"> (C) message</label>
+              <label><input type="radio" name="s4-q3" value="D"> (D) files</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> XSLT transforms input XML into customized <strong>output</strong> presentations (like HTML tables, text, or XML).</div>
+          </div>
+
+          <!-- Q4.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">4. The _____________ element defines a template.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q4" value="A"> (A) &lt;xsl:select&gt;</label>
+              <label><input type="radio" name="s4-q4" value="B"> (B) &lt;xsl:value-of&gt;</label>
+              <label><input type="radio" name="s4-q4" value="C"> (C) &lt;xsl:template&gt;</label>
+              <label><input type="radio" name="s4-q4" value="D"> (D) &lt;xsl:for-each&gt;</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong><code>&lt;xsl:template&gt;</code></strong> element defines transformation rules matched against specific XPath pattern nodes.</div>
+          </div>
+
+          <!-- Q4.5 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">5. ____________ are used to simplify complex expressions or hold interim results.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s4-q5" value="A"> (A) &lt;xsl:select&gt;</label>
+              <label><input type="radio" name="s4-q5" value="B"> (B) &lt;xsl:value-of&gt;</label>
+              <label><input type="radio" name="s4-q5" value="C"> (C) &lt;xsl:variable&gt; (or &lt;xsl:template&gt;)</label>
+              <label><input type="radio" name="s4-q5" value="D"> (D) &lt;xsl:for-each&gt;</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong><code>&lt;xsl:variable&gt;</code></strong> elements store evaluation results to simplify complex expressions and avoid redundant computations.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 5 -->
+        <section id="session5">
+          <h2 class="session-title">Session 5: JSON &amp; Data Representation (5.8 Check Your Progress)</h2>
+
+          <!-- Q5.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. _________ are collections of characters encased in double-quotes.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q1" value="A"> (A) Booleans</label>
+              <label><input type="radio" name="s5-q1" value="B"> (B) Strings</label>
+              <label><input type="radio" name="s5-q1" value="C"> (C) Numbers</label>
+              <label><input type="radio" name="s5-q1" value="D"> (D) Arrays</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> In JSON, <strong>Strings</strong> are character sequences surrounded by double quotes (e.g. <code>"name": "Aptech"</code>).</div>
+          </div>
+
+          <!-- Q5.2 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">2. A JSON ______________ is a collection of key-value pairs.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q2" value="A"> (A) Object</label>
+              <label><input type="radio" name="s5-q2" value="B"> (B) Boolean</label>
+              <label><input type="radio" name="s5-q2" value="C"> (C) Array</label>
+              <label><input type="radio" name="s5-q2" value="D"> (D) String</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A JSON <strong>Object</strong> is an unordered set of name/value pairs enclosed in curly braces <code>{}</code>.</div>
+          </div>
+
+          <!-- Q5.3 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">3. _________ is an ordered group of values enclosed in square brackets and separated by commas.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q3" value="A"> (A) Object</label>
+              <label><input type="radio" name="s5-q3" value="B"> (B) Number</label>
+              <label><input type="radio" name="s5-q3" value="C"> (C) String</label>
+              <label><input type="radio" name="s5-q3" value="D"> (D) Array</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A JSON <strong>Array</strong> is an ordered list of values enclosed in square brackets <code>[ ]</code>.</div>
+          </div>
+
+          <!-- Q5.4 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">4. _________ braces surround the JSON objects.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q4" value="A"> (A) Square - []</label>
+              <label><input type="radio" name="s5-q4" value="B"> (B) Curly – {}</label>
+              <label><input type="radio" name="s5-q4" value="C"> (C) Angle - &lt;&gt;</label>
+              <label><input type="radio" name="s5-q4" value="D"> (D) Round – ()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> JSON objects begin and end with <strong>Curly braces <code>{}</code></strong>.</div>
+          </div>
+
+          <!-- Q5.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. ____________ has one or more JSON objects as values for its attributes.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s5-q5" value="A"> (A) Array</label>
+              <label><input type="radio" name="s5-q5" value="B"> (B) Nested JSON</label>
+              <label><input type="radio" name="s5-q5" value="C"> (C) Key</label>
+              <label><input type="radio" name="s5-q5" value="D"> (D) Object</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A <strong>Nested JSON</strong> structure contains child JSON objects inside parent object properties.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 6 -->
+        <section id="session6">
+          <h2 class="session-title">Session 6: Working with JSON Data (6.6 Check Your Progress)</h2>
+
+          <!-- Q6.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. Which JSON data structure is used for an unordered collection of key-value pairs?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q1" value="A"> (A) Array</label>
+              <label><input type="radio" name="s6-q1" value="B"> (B) Object</label>
+              <label><input type="radio" name="s6-q1" value="C"> (C) String</label>
+              <label><input type="radio" name="s6-q1" value="D"> (D) Number</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A JSON <strong>Object</strong> represents an unordered collection of key-value pairs.</div>
+          </div>
+
+          <!-- Q6.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. What is the primary purpose of a JSON schema?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q2" value="A"> (A) Adding comments to JSON data</label>
+              <label><input type="radio" name="s6-q2" value="B"> (B) Validating the structure and data types of JSON</label>
+              <label><input type="radio" name="s6-q2" value="C"> (C) Storing metadata in JSON</label>
+              <label><input type="radio" name="s6-q2" value="D"> (D) Creating JSON data</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>JSON Schema</strong> defines the format, required fields, and allowed data types to validate JSON payloads.</div>
+          </div>
+
+          <!-- Q6.3 -->
+          <div class="quiz-card" data-correct="A">
+            <div class="quiz-question">3. In JavaScript, which method is used to convert a JavaScript object to a JSON string?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q3" value="A"> (A) JSON.stringify()</label>
+              <label><input type="radio" name="s6-q3" value="B"> (B) JSON.parse()</label>
+              <label><input type="radio" name="s6-q3" value="C"> (C) JSON.convert()</label>
+              <label><input type="radio" name="s6-q3" value="D"> (D) object.toJSON()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong><code>JSON.stringify()</code></strong> serializes a JavaScript object into a JSON formatted string.</div>
+          </div>
+
+          <!-- Q6.4 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">4. When parsing a JSON string with JavaScript, which of the following will throw an error if JSON is invalid?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q4" value="A"> (A) JSON.stringify()</label>
+              <label><input type="radio" name="s6-q4" value="B"> (B) JSON.parse()</label>
+              <label><input type="radio" name="s6-q4" value="C"> (C) JSON.check()</label>
+              <label><input type="radio" name="s6-q4" value="D"> (D) JSON.load()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong><code>JSON.parse()</code></strong> parses a JSON text string and throws a <code>SyntaxError</code> if the string is malformed.</div>
+          </div>
+
+          <!-- Q6.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. Which of the following is NOT a valid JSON data type?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s6-q5" value="A"> (A) String</label>
+              <label><input type="radio" name="s6-q5" value="B"> (B) Integer (or Function)</label>
+              <label><input type="radio" name="s6-q5" value="C"> (C) Boolean</label>
+              <label><input type="radio" name="s6-q5" value="D"> (D) NULL</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> JSON defines <code>Number</code> (floating-point/decimal), but does not have a separate <strong>Integer</strong> or <em>Function</em> data type.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 7 -->
+        <section id="session7">
+          <h2 class="session-title">Session 7: Web APIs and JSON Transmission (7.8 Check Your Progress)</h2>
+
+          <!-- Q7.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. Which HTTP method typically sends JSON data in an HTTP request?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q1" value="A"> (A) GET</label>
+              <label><input type="radio" name="s7-q1" value="B"> (B) POST</label>
+              <label><input type="radio" name="s7-q1" value="C"> (C) PUT</label>
+              <label><input type="radio" name="s7-q1" value="D"> (D) DELETE</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>POST</strong> (and PUT) HTTP methods carry request body payloads containing JSON structured data.</div>
+          </div>
+
+          <!-- Q7.2 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">2. In which programming language is the JSON module commonly used for handling JSON data?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q2" value="A"> (A) JavaScript</label>
+              <label><input type="radio" name="s7-q2" value="B"> (B) Python</label>
+              <label><input type="radio" name="s7-q2" value="C"> (C) Java</label>
+              <label><input type="radio" name="s7-q2" value="D"> (D) Ruby</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> In <strong>Python</strong>, the standard built-in <code>json</code> library is imported (`import json`) for parsing and serializing JSON.</div>
+          </div>
+
+          <!-- Q7.3 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">3. Which of the following is NOT an essential aspect of Web APIs?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q3" value="A"> (A) Data interchange in JSON format</label>
+              <label><input type="radio" name="s7-q3" value="B"> (B) MIME type for JSON</label>
+              <label><input type="radio" name="s7-q3" value="C"> (C) Rate limiting</label>
+              <label><input type="radio" name="s7-q3" value="D"> (D) Authentication and authorization</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> While rate limiting is a traffic management strategy, it is not an essential structural component of API data interchange standards.</div>
+          </div>
+
+          <!-- Q7.4 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">4. Which characteristic makes JSON an excellent choice for data transmission over the Web?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q4" value="A"> (A) Strict data type enforcement</label>
+              <label><input type="radio" name="s7-q4" value="B"> (B) Complexity of syntax</label>
+              <label><input type="radio" name="s7-q4" value="C"> (C) Human-readability</label>
+              <label><input type="radio" name="s7-q4" value="D"> (D) Limited programming language support</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>Human-readability</strong>, lightweight syntax, and universal language parsing make JSON optimal for web APIs.</div>
+          </div>
+
+          <!-- Q7.5 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">5. Which of the following is NOT a consideration for data portability when working with JSON data?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s7-q5" value="A"> (A) Data serialization</label>
+              <label><input type="radio" name="s7-q5" value="B"> (B) Data schema evolution</label>
+              <label><input type="radio" name="s7-q5" value="C"> (C) Data type compatibility</label>
+              <label><input type="radio" name="s7-q5" value="D"> (D) API rate limiting</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>API rate limiting</strong> is a operational network throttling mechanism, not a data portability issue.</div>
+          </div>
+        </section>
+
+        <!-- SESSION 8 -->
+        <section id="session8">
+          <h2 class="session-title">Session 8: CORS &amp; Same-Origin Policy (8.7 Check Your Progress)</h2>
+
+          <!-- Q8.1 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">1. What does CORS stand for in Web development?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q1" value="A"> (A) Cross-Origin Request Sharing</label>
+              <label><input type="radio" name="s8-q1" value="B"> (B) Cross-Origin Resource Sharing</label>
+              <label><input type="radio" name="s8-q1" value="C"> (C) Cross-Origin Resource Search</label>
+              <label><input type="radio" name="s8-q1" value="D"> (D) Cross-Origin Request Security</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>CORS</strong> stands for <strong>Cross-Origin Resource Sharing</strong>.</div>
+          </div>
+
+          <!-- Q8.2 -->
+          <div class="quiz-card" data-correct="C">
+            <div class="quiz-question">2. Which community is responsible for defining the CORS protocol as part of the Fetch standard?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q2" value="A"> (A) W3C</label>
+              <label><input type="radio" name="s8-q2" value="B"> (B) IETF</label>
+              <label><input type="radio" name="s8-q2" value="C"> (C) WHATWG</label>
+              <label><input type="radio" name="s8-q2" value="D"> (D) ECMA International</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> <strong>WHATWG</strong> maintains the Fetch standard which defines modern CORS protocols.</div>
+          </div>
+
+          <!-- Q8.3 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">3. When does a CORS-preflight request occur?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q3" value="A"> (A) When the request is for an HTML page</label>
+              <label><input type="radio" name="s8-q3" value="B"> (B) When requests involve complex operations</label>
+              <label><input type="radio" name="s8-q3" value="C"> (C) When cookies are involved</label>
+              <label><input type="radio" name="s8-q3" value="D"> (D) When the server does not support CORS</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> A preflight <code>OPTIONS</code> request occurs when cross-origin HTTP requests use non-simple methods (PUT, DELETE) or custom headers.</div>
+          </div>
+
+          <!-- Q8.4 -->
+          <div class="quiz-card" data-correct="D">
+            <div class="quiz-question">4. What does the Same-Origin Policy (SOP) primarily authorize a browser to do?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q4" value="A"> (A) Block Cell Request</label>
+              <label><input type="radio" name="s8-q4" value="B"> (B) Retrieve resources from Cross Region Servers</label>
+              <label><input type="radio" name="s8-q4" value="C"> (C) Retrieve resources from any origin</label>
+              <label><input type="radio" name="s8-q4" value="D"> (D) Retrieve resources from the same origin</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> The <strong>Same-Origin Policy (SOP)</strong> restricts web scripts from reading resources unless they match the same origin (protocol, host, port).</div>
+          </div>
+
+          <!-- Q8.5 -->
+          <div class="quiz-card" data-correct="B">
+            <div class="quiz-question">5. What is an 'Origin' composed of in a CORS context?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="s8-q5" value="A"> (A) IP address and port</label>
+              <label><input type="radio" name="s8-q5" value="B"> (B) URI scheme, hostname, and port</label>
+              <label><input type="radio" name="s8-q5" value="C"> (C) Domain name and cookies</label>
+              <label><input type="radio" name="s8-q5" value="D"> (D) URI scheme, path, and query parameters</label>
+            </div>
+            <div class="quiz-feedback"><strong>Explanation:</strong> An <strong>Origin</strong> tuple consists of the <strong>URI scheme (protocol)</strong>, <strong>hostname (domain)</strong>, and <strong>port number</strong>.</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <footer>
+      <p><strong>Author:</strong> Alvarez Tran (Trần Vũ Bằng)</p>
+      <p style="margin-top: 0.25rem;">Computer Science &bull; Can Tho University (CTU) &bull; APTECH Curriculum</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initQuizListeners();
+    });
+
+    function initQuizListeners() {
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        const radios = card.querySelectorAll('input[type="radio"]');
+        const correctAns = card.dataset.correct;
+        const feedback = card.querySelector('.quiz-feedback');
+
+        radios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            radios.forEach(r => {
+              r.disabled = true;
+              r.parentElement.classList.add('disabled');
+            });
+
+            if (radio.value === correctAns) {
+              card.classList.add('correct-card');
+              radio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-correct');
+            } else {
+              card.classList.add('incorrect-card');
+              radio.parentElement.classList.add('incorrect');
+              const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
+              if (correctRadio) correctRadio.parentElement.classList.add('correct');
+              if (feedback) feedback.classList.add('show', 'feedback-incorrect');
+            }
+            updateScore();
+          });
+        });
+      });
+
+      updateScore();
+    }
+
+    function updateScore() {
+      const cards = document.querySelectorAll('.quiz-card');
+      let total = cards.length;
+      let answered = 0;
+      let correct = 0;
+
+      cards.forEach(card => {
+        const selected = card.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          answered++;
+          if (selected.value === card.dataset.correct) correct++;
+        }
+      });
+
+      document.getElementById('overall-score').textContent = `${correct} / ${total}`;
+      const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+      document.getElementById('overall-desc').textContent = `Completed: ${answered} / ${total} questions (Correct: ${correct} - Accuracy: ${pct}%)`;
+    }
+
+    function resetAllQuizzes() {
+      if (!confirm("Are you sure you want to reset all answers?")) return;
+      const cards = document.querySelectorAll('.quiz-card');
+      cards.forEach(card => {
+        card.classList.remove('correct-card', 'incorrect-card');
+        const radios = card.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => {
+          r.checked = false;
+          r.disabled = false;
+          r.parentElement.classList.remove('correct', 'incorrect', 'disabled');
+        });
+        const feedback = card.querySelector('.quiz-feedback');
+        if (feedback) feedback.classList.remove('show', 'feedback-correct', 'feedback-incorrect');
+      });
+      updateScore();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng quan Công nghệ XML - APTECH XML</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .code-block {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem 0;
+    }
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .op-table th, .op-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .op-table th {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; 
+        <a href="index.html">XML &amp; Web Technologies</a> &raquo; Tổng quan XML
+      </div>
+      <h1>TỔNG QUAN CÔNG NGHỆ XML &amp; CÁC CHUẨN ĐỊNH DẠNG APTECH</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Lý thuyết nền tảng XML, Well-formed XML, DTD, XML Schema (XSD), XPath, XSLT, DOM và SAX Parser.</p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section id="sec-1">
+        <h2>1.1 Giới Thiệu Ngôn Ngữ Đánh Dấu Mở Rộng XML</h2>
+        <p>XML (eXtensible Markup Language) là ngôn ngữ đánh dấu dạng văn bản dùng để mô tả, lưu trữ và trao đổi dữ liệu có cấu trúc giữa các hệ thống không cùng nền tảng phần cứng hay hệ điều hành.</p>
+
+        <div class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;catalog&gt;
+    &lt;book id="B001"&gt;
+        &lt;title&gt;Java Programming&lt;/title&gt;
+        &lt;author&gt;Aptech Press&lt;/author&gt;
+        &lt;price&gt;29.99&lt;/price&gt;
+    &lt;/book&gt;
+&lt;/catalog&gt;</div>
+      </section>
+
+      <section id="sec-2" style="margin-top: 2rem;">
+        <h2>1.2 Phân Biệt DTD vs XML Schema (XSD)</h2>
+        <table class="op-table">
+          <thead>
+            <tr>
+              <th>Tiêu chí so sánh</th>
+              <th>DTD (Document Type Definition)</th>
+              <th>XML Schema (XSD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cú pháp</td>
+              <td>Cú pháp phi-XML ngắn gọn kiểu EBNF.</td>
+              <td>Cú pháp XML chuẩn (&lt;xs:schema&gt;).</td>
+            </tr>
+            <tr>
+              <td>Kiểu dữ liệu</td>
+              <td>Chỉ hỗ trợ dữ liệu chuỗi văn bản (#PCDATA, CDATA).</td>
+              <td>Hỗ trợ hơn 40 kiểu dữ liệu chuẩn (int, float, date, string...).</td>
+            </tr>
+            <tr>
+              <td>Không gian tên (Namespace)</td>
+              <td>Không hỗ trợ Namespace.</td>
+              <td>Hỗ trợ đầy đủ XML Namespaces.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>

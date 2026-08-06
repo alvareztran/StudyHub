@@ -176,3 +176,11 @@ Học liệu số hóa chi tiết và ngân hàng trắc nghiệm phục vụ ri
 ## 📄 Giấy Phép (License)
 
 Dự án này được phân phối dưới giấy phép **MIT License**. Bạn hoàn toàn có thể sử dụng và chia sẻ cho mục đích học tập phi thương mại.
+
+
+## 25. Môn học APTECH XML Technologies (`/aptech/xml/`)
+
+Cung cấp đầy đủ giáo trình chuẩn Aptech Quốc Tế về XML:
+- **Trang chủ học phần (`index.html`)**: Tổng quan chương trình và lộ trình học XML.
+- **Trang bài giảng (`chuong-1-gioi-thieu-xml.html`)**: XML Syntax, Well-formed XML, DTD, XML Schema (XSD), XPath, XSLT, DOM & SAX Parsers.
+- **Trang ôn tập tiếng Anh (`on-tap-tieng-anh.html`)**: Ngân hàng câu hỏi trắc nghiệm Tiếng Anh chuẩn thi Aptech cho môn XML với đầy đủ tính năng kiểm tra đáp án tự động và tính điểm realtime.
