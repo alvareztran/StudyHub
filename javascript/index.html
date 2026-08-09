@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Complete Guide - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout for JavaScript Guide */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #eab308;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.35rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .sidebar a:hover {
+      color: #ca8a04;
+      background-color: rgba(234, 179, 8, 0.1);
+      transform: translateX(3px);
+    }
+    .sidebar .mod-num {
+      background-color: #fef08a;
+      color: #854d0e;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+    }
+    body.dark-mode .sidebar .mod-num {
+      background-color: #854d0e;
+      color: #fef08a;
+    }
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+    /* Infographic Overview Grid */
+    .infographic-banner {
+      background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      margin: 2rem 0 3rem 0;
+      border: 1px solid #27272a;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+    .infographic-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .js-logo-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7df1e;
+      color: #000000;
+      font-weight: 900;
+      font-size: 2.2rem;
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 4px 14px rgba(247, 223, 30, 0.4);
+    }
+    .infographic-title {
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .infographic-subtitle {
+      color: #f7df1e;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1rem;
+    }
+    .mod-card {
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: #e4e4e7;
+    }
+    .mod-card:hover {
+      transform: translateY(-4px);
+      border-color: #f7df1e;
+      box-shadow: 0 6px 20px rgba(247, 223, 30, 0.15);
+      background: #3f3f46;
+    }
+    .mod-card-header {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #f7df1e;
+      margin-bottom: 0.5rem;
+    }
+    .mod-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .mod-card-icon {
+      font-size: 1.8rem;
+      margin: 0.4rem 0;
+      text-align: center;
+    }
+    .mod-card-desc {
+      font-size: 0.78rem;
+      color: #a1a1aa;
+      line-height: 1.4;
+      margin-top: auto;
+    }
+
+    /* Section & Code Styling */
+    .module-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      scroll-margin-top: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .module-badge-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .module-number-tag {
+      background: #f7df1e;
+      color: #000;
+      font-weight: 900;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .module-title {
+      font-size: 1.75rem;
+      margin: 0;
+      border: none;
+      padding: 0;
+      color: var(--primary-color);
+    }
+    
+    /* Code Box with Run Button */
+    .code-editor-container {
+      position: relative;
+      margin: 1.25rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      background: #0f172a;
+    }
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+      padding: 0.4rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #94a3b8;
+      border-bottom: 1px solid #334155;
+    }
+    .btn-run-code {
+      background: #22c55e;
+      color: #000;
+      border: none;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+    .btn-run-code:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+    .code-editor-container pre {
+      margin: 0;
+      background: transparent;
+      border: none;
+      padding: 1rem;
+      color: #f8fafc;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Code Playground Box */
+    .playground-wrapper {
+      background: #0f172a;
+      border: 1.5px solid #38bdf8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 3rem 0;
+      color: #f8fafc;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
+    }
+    .playground-title {
+      font-size: 1.4rem;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .playground-input {
+      width: 100%;
+      height: 160px;
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .playground-input:focus {
+      border-color: #38bdf8;
+    }
+    .playground-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .btn-pg-exec {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-pg-exec:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+    .btn-pg-clear {
+      background: #475569;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .console-output {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      min-height: 80px;
+      max-height: 250px;
+      overflow-y: auto;
+      color: #4ade80;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <!-- Navigation Header -->
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; JavaScript Complete Guide</div>
+      <h1>JAVASCRIPT - CẨM NANG TOÀN DIỆN TỪ CƠ BẢN ĐẾN NÂNG CAO</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Bộ học liệu tổng hợp toàn bộ 20 Module kiến thức cốt lõi của JavaScript: từ Cú pháp, Biến, Hàm, DOM, Lập trình bất đồng bộ (Promise/Async-Await) cho tới ES6+ và Local Storage.</p>
+    </header>
+
+    <!-- Top Action Buttons -->
+    <div class="header-actions no-print" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf" style="background: var(--secondary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất PDF
+      </button>
+      <a href="#js-playground" class="btn-pdf" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+        ⚡ Trình chạy Code JS
+      </a>
+    </div>
+
+    <!-- INFOGRAPHIC OVERVIEW GRID (20 MODULES) -->
+    <div class="infographic-banner">
+      <div class="infographic-header">
+        <div class="js-logo-badge">JS</div>
+        <h2 class="infographic-title">JavaScript</h2>
+        <div class="infographic-subtitle">— Complete Guide —</div>
+      </div>
+
+      <div class="modules-grid">
+        <!-- 01 -->
+        <a href="#mod-01" class="mod-card">
+          <div class="mod-card-header">01. Introduction</div>
+          <div class="mod-card-icon">⚡</div>
+          <div class="mod-card-title">Giới thiệu JS</div>
+          <div class="mod-card-desc">JavaScript là ngôn ngữ lập trình mạnh mẽ cho Web & Server.</div>
+        </a>
+        <!-- 02 -->
+        <a href="#mod-02" class="mod-card">
+          <div class="mod-card-header">02. Syntax</div>
+          <div class="mod-card-icon">&lt;/&gt;</div>
+          <div class="mod-card-title">Cú pháp chuẩn</div>
+          <div class="mod-card-desc">Nắm vững cú pháp cơ bản và các quy tắc viết mã trong JS.</div>
+        </a>
+        <!-- 03 -->
+        <a href="#mod-03" class="mod-card">
+          <div class="mod-card-header">03. Variables</div>
+          <div class="mod-card-icon">📦</div>
+          <div class="mod-card-title">Khai báo biến</div>
+          <div class="mod-card-desc">Lưu trữ dữ liệu bằng var, let và const linh hoạt.</div>
+        </a>
+        <!-- 04 -->
+        <a href="#mod-04" class="mod-card">
+          <div class="mod-card-header">04. Data Types</div>
+          <div class="mod-card-icon">🔢</div>
+          <div class="mod-card-title">Kiểu dữ liệu</div>
+          <div class="mod-card-desc">Bao gồm number, string, boolean, null, undefined...</div>
+        </a>
+        <!-- 05 -->
+        <a href="#mod-05" class="mod-card">
+          <div class="mod-card-header">05. Operators</div>
+          <div class="mod-card-icon">➕</div>
+          <div class="mod-card-title">Toán tử</div>
+          <div class="mod-card-desc">Thực hiện phép tính trên giá trị và biến số.</div>
+        </a>
+        <!-- 06 -->
+        <a href="#mod-06" class="mod-card">
+          <div class="mod-card-header">06. Conditional</div>
+          <div class="mod-card-icon">🔀</div>
+          <div class="mod-card-title">Câu lệnh điều kiện</div>
+          <div class="mod-card-desc">Rẽ nhánh quyết định bằng if, else if, else & switch.</div>
+        </a>
+        <!-- 07 -->
+        <a href="#mod-07" class="mod-card">
+          <div class="mod-card-header">07. Loops</div>
+          <div class="mod-card-icon">🔄</div>
+          <div class="mod-card-title">Vòng lặp</div>
+          <div class="mod-card-desc">Lặp mã bằng for, while và do...while tiện lợi.</div>
+        </a>
+        <!-- 08 -->
+        <a href="#mod-08" class="mod-card">
+          <div class="mod-card-header">08. Functions</div>
+          <div class="mod-card-icon"><i>f</i>()</div>
+          <div class="mod-card-title">Hàm (Function)</div>
+          <div class="mod-card-desc">Khối mã tái sử dụng để thực thi các tác vụ.</div>
+        </a>
+        <!-- 09 -->
+        <a href="#mod-09" class="mod-card">
+          <div class="mod-card-header">09. Arrays</div>
+          <div class="mod-card-icon">[≡]</div>
+          <div class="mod-card-title">Mảng (Array)</div>
+          <div class="mod-card-desc">Lưu trữ danh sách nhiều giá trị trong một biến.</div>
+        </a>
+        <!-- 10 -->
+        <a href="#mod-10" class="mod-card">
+          <div class="mod-card-header">10. Objects</div>
+          <div class="mod-card-icon">{ : }</div>
+          <div class="mod-card-title">Đối tượng (Object)</div>
+          <div class="mod-card-desc">Lưu trữ dữ liệu dạng cặp key-value linh hoạt.</div>
+        </a>
+        <!-- 11 -->
+        <a href="#mod-11" class="mod-card">
+          <div class="mod-card-header">11. DOM</div>
+          <div class="mod-card-icon">🖥️</div>
+          <div class="mod-card-title">Thao tác DOM</div>
+          <div class="mod-card-desc">Truy xuất và biến đổi HTML & CSS bằng JavaScript.</div>
+        </a>
+        <!-- 12 -->
+        <a href="#mod-12" class="mod-card">
+          <div class="mod-card-header">12. Events</div>
+          <div class="mod-card-icon">🖱️</div>
+          <div class="mod-card-title">Sự kiện (Events)</div>
+          <div class="mod-card-desc">Phản hồi hành động của người dùng: click, input, submit.</div>
+        </a>
+        <!-- 13 -->
+        <a href="#mod-13" class="mod-card">
+          <div class="mod-card-header">13. Methods</div>
+          <div class="mod-card-icon">.()</div>
+          <div class="mod-card-title">Phương thức built-in</div>
+          <div class="mod-card-desc">Các hàm tích hợp sẵn cho String, Array và Object.</div>
+        </a>
+        <!-- 14 -->
+        <a href="#mod-14" class="mod-card">
+          <div class="mod-card-header">14. Scope</div>
+          <div class="mod-card-icon">🎯</div>
+          <div class="mod-card-title">Phạm vi (Scope)</div>
+          <div class="mod-card-desc">Xác định phạm vi truy cập và tầm tồn tại của biến.</div>
+        </a>
+        <!-- 15 -->
+        <a href="#mod-15" class="mod-card">
+          <div class="mod-card-header">15. Hoisting</div>
+          <div class="mod-card-icon">↑</div>
+          <div class="mod-card-title">Hoisting</div>
+          <div class="mod-card-desc">Cơ chế đưa khai báo biến & hàm lên đầu phạm vi.</div>
+        </a>
+        <!-- 16 -->
+        <a href="#mod-16" class="mod-card">
+          <div class="mod-card-header">16. Callbacks</div>
+          <div class="mod-card-icon">&lt;/&gt;↩️</div>
+          <div class="mod-card-title">Callback Functions</div>
+          <div class="mod-card-desc">Truyền hàm như một tham số vào hàm khác.</div>
+        </a>
+        <!-- 17 -->
+        <a href="#mod-17" class="mod-card">
+          <div class="mod-card-header">17. Promises</div>
+          <div class="mod-card-icon">☑️</div>
+          <div class="mod-card-title">Promise</div>
+          <div class="mod-card-desc">Xử lý các tác vụ bất đồng bộ hiệu quả và rõ ràng.</div>
+        </a>
+        <!-- 18 -->
+        <a href="#mod-18" class="mod-card">
+          <div class="mod-card-header">18. Async / Await</div>
+          <div class="mod-card-icon">⏳</div>
+          <div class="mod-card-title">Async / Await</div>
+          <div class="mod-card-desc">Viết mã bất đồng bộ phẳng và sạch như đồng bộ.</div>
+        </a>
+        <!-- 19 -->
+        <a href="#mod-19" class="mod-card">
+          <div class="mod-card-header">19. Local Storage</div>
+          <div class="mod-card-icon">🔒</div>
+          <div class="mod-card-title">Local Storage</div>
+          <div class="mod-card-desc">Lưu trữ dữ liệu bền vững ngay trên trình duyệt.</div>
+        </a>
+        <!-- 20 -->
+        <a href="#mod-20" class="mod-card">
+          <div class="mod-card-header">20. ES6+ Features</div>
+          <div class="mod-card-icon">🚀</div>
+          <div class="mod-card-title">Tính năng ES6+</div>
+          <div class="mod-card-desc">Cú pháp hiện đại: arrow fn, destructuring, spread...</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT LAYOUT WITH SIDEBAR -->
+    <div class="layout-wrapper">
+      <!-- Sticky Sidebar Navigation -->
+      <aside class="sidebar no-print">
+        <h3>Mục Lục 20 Modules</h3>
+        <ul>
+          <li><a href="#mod-01"><span class="mod-num">01</span> Introduction</a></li>
+          <li><a href="#mod-02"><span class="mod-num">02</span> Syntax</a></li>
+          <li><a href="#mod-03"><span class="mod-num">03</span> Variables</a></li>
+          <li><a href="#mod-04"><span class="mod-num">04</span> Data Types</a></li>
+          <li><a href="#mod-05"><span class="mod-num">05</span> Operators</a></li>
+          <li><a href="#mod-06"><span class="mod-num">06</span> Conditionals</a></li>
+          <li><a href="#mod-07"><span class="mod-num">07</span> Loops</a></li>
+          <li><a href="#mod-08"><span class="mod-num">08</span> Functions</a></li>
+          <li><a href="#mod-09"><span class="mod-num">09</span> Arrays</a></li>
+          <li><a href="#mod-10"><span class="mod-num">10</span> Objects</a></li>
+          <li><a href="#mod-11"><span class="mod-num">11</span> DOM</a></li>
+          <li><a href="#mod-12"><span class="mod-num">12</span> Events</a></li>
+          <li><a href="#mod-13"><span class="mod-num">13</span> Methods</a></li>
+          <li><a href="#mod-14"><span class="mod-num">14</span> Scope</a></li>
+          <li><a href="#mod-15"><span class="mod-num">15</span> Hoisting</a></li>
+          <li><a href="#mod-16"><span class="mod-num">16</span> Callbacks</a></li>
+          <li><a href="#mod-17"><span class="mod-num">17</span> Promises</a></li>
+          <li><a href="#mod-18"><span class="mod-num">18</span> Async / Await</a></li>
+          <li><a href="#mod-19"><span class="mod-num">19</span> Local Storage</a></li>
+          <li><a href="#mod-20"><span class="mod-num">20</span> ES6+ Features</a></li>
+        </ul>
+        <h3>Công cụ tương tác</h3>
+        <ul>
+          <li><a href="#js-playground" style="color: #0284c7; font-weight: 700;">⚡ Trình chạy Code JS</a></li>
+        </ul>
+      </aside>
+
+      <!-- Detailed Knowledge Content -->
+      <main class="main-content">
+
+        <!-- INTERACTIVE PLAYGROUND BOX -->
+        <section id="js-playground" class="playground-wrapper">
+          <h3 class="playground-title">⚡ Interactive JavaScript Playground</h3>
+          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">Nhập mã JavaScript bất kỳ hoặc nhấn <b>"▶ Chạy Code"</b> ở các ví dụ bên dưới để kiểm tra kết quả tức thì trong Terminal:</p>
+          <textarea id="pg-editor" class="playground-input" spellcheck="false">// Viết code JavaScript tại đây:
+const user = { name: "Alvarez Tran", role: "Fullstack Engineer" };
+console.log("Welcome to StudyHub JavaScript Playground!");
+console.log(`Hello, ${user.name} (${user.role})`);
+</textarea>
+          <div class="playground-actions">
+            <button class="btn-pg-exec" onclick="runCustomCode()">▶ Chạy Code (Ctrl + Enter)</button>
+            <button class="btn-pg-clear" onclick="clearConsole()">🧹 Xóa Console</button>
+          </div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem; font-family: var(--font-mono);">TERMINAL OUTPUT:</div>
+          <div id="pg-output" class="console-output">Ready to execute JavaScript code...</div>
+        </section>
+
+        <!-- MODULE 01 -->
+        <section id="mod-01" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">01</span>
+            <h2 class="module-title">Introduction (Giới thiệu JavaScript)</h2>
+          </div>
+          <p><strong>JavaScript (JS)</strong> là ngôn ngữ lập trình kịch bản đa mô hình (multi-paradigm), thông dịch (interpreted) hoặc biên dịch Just-In-Time (JIT), đóng vai trò là trụ cột cốt lõi của phát triển Web hiện đại bên cạnh HTML và CSS.</p>
+
+          <div class="callout">
+            <div class="callout-title">💡 Cơ chế hoạt động của JavaScript Engine</div>
+            <p>Trình duyệt sử dụng các engine siêu tốc (như <strong>V8 Engine</strong> trên Chrome/Node.js, <strong>SpiderMonkey</strong> trên Firefox) để parse mã nguồn JS thành AST (Abstract Syntax Tree), sau đó JIT Compiler chuyển đổi trực tiếp thành mã máy (Machine Code) để thực thi với hiệu năng tối ưu.</p>
+          </div>
+
+          <h4>Cách nhúng JavaScript vào HTML</h4>
+          <p>Bạn có thể chèn JS trực tiếp bằng thẻ <code>&lt;script&gt;</code> hoặc liên kết tệp tin <code>.js</code> bên ngoài với thuộc tính <code>async</code> hoặc <code>defer</code>:</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>HTML / JavaScript Integration</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('Xin chào từ StudyHub JS Guide!');`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>&lt;!-- Nhúng file bên ngoài với defer (Khuyên dùng để tối ưu nạp DOM) --&gt;
+&lt;script src="app.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- Code inline trực tiếp --&gt;
+&lt;script&gt;
+  console.log("Xin chào từ StudyHub JS Guide!");
+&lt;/script&gt;</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 02 -->
+        <section id="mod-02" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">02</span>
+            <h2 class="module-title">Syntax (Cú pháp cơ bản & Quy tắc)</h2>
+          </div>
+          <p>JavaScript có cú pháp ảnh hưởng lớn từ C/C++ và Java. Mã JS bao gồm các câu lệnh (statements), biến, toán tử, khối lệnh nằm trong cặp dấu ngoặc nhọn <code>{ }</code>.</p>
+
+          <h4>Các quy tắc cú pháp quan trọng:</h4>
+          <ul>
+            <li><strong>Case-sensitivity:</strong> JS phân biệt rõ ràng chữ hoa và chữ thường (ví dụ: <code>myVar</code> và <code>myvar</code> là 2 biến hoàn toàn khác nhau).</li>
+            <li><strong>CamelCase Naming:</strong> Quy chuẩn đặt tên biến/hàm trong JS là <code>camelCase</code> (ví dụ: <code>studentName</code>, <code>calculateTotal</code>).</li>
+            <li><strong>Semicolons (Dấu ;):</strong> Mặc dù JS có cơ chế ASI (Automatic Semicolon Insertion), viết dấu chấm phẩy <code>;</code> ở cuối câu lệnh giúp tránh các lỗi không mong muốn.</li>
+            <li><strong>Strict Mode:</strong> Sử dụng dòng đầu tiên <code>'use strict';</code> để bắt lỗi cú pháp nghiêm ngặt, ngăn chặn việc dùng biến chưa khai báo.</li>
+          </ul>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Syntax Demo</span>
+              <button class="btn-run-code" onclick="executeSnippet(`'use strict';\nlet message = 'Hello Syntax';\nconsole.log(message);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>'use strict'; // Kích hoạt chế độ nghiêm ngặt
+
+// Khai báo biến chuẩn camelCase
+let courseTitle = "JavaScript Complete Guide";
+let lessonCount = 20;
+
+/* Comment nhiều dòng:
+   Hàm hiển thị thông tin học phần */
+function showInfo() {
+  console.log(courseTitle + " bao gồm " + lessonCount + " bài học.");
+}
+
+showInfo();</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 03 -->
+        <section id="mod-03" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">03</span>
+            <h2 class="module-title">Variables (Khai báo biến: var, let & const)</h2>
+          </div>
+          <p>JavaScript cung cấp 3 từ khóa để khai báo biến: <code>var</code> (truyền thống), <code>let</code> và <code>const</code> (ra mắt từ ES6).</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Từ khóa</th>
+                <th>Phạm vi (Scope)</th>
+                <th>Hoisting</th>
+                <th>Khai báo lại</th>
+                <th>Gán lại giá trị</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>var</code></td>
+                <td>Function Scope</td>
+                <td>Có (khởi tạo <code>undefined</code>)</td>
+                <td>Có</td>
+                <td>Có</td>
+              </tr>
+              <tr>
+                <td><code>let</code></td>
+                <td>Block Scope <code>{ }</code></td>
+                <td>Có (vào TDZ -Temporal Dead Zone)</td>
+                <td>Không</td>
+                <td>Có</td>
+              </tr>
+              <tr>
+                <td><code>const</code></td>
+                <td>Block Scope <code>{ }</code></td>
+                <td>Có (vào TDZ)</td>
+                <td>Không</td>
+                <td>Không (Hằng số)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Variables Usage</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const PI = 3.14159;\nlet score = 100;\nscore += 50;\nconsole.log('PI:', PI, 'Score:', score);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const PI = 3.14159; // Không thể gán lại giá trị mới
+let score = 100;    // Biến thay đổi được giá trị
+score += 50;
+
+if (true) {
+  let blockScoped = "Chỉ tồn tại trong khối if này";
+  var functionScoped = "Tồn tại ngoài khối if";
+}
+
+console.log("PI:", PI);
+console.log("Score:", score);
+console.log("var out of block:", functionScoped);</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 04 -->
+        <section id="mod-04" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">04</span>
+            <h2 class="module-title">Data Types (Các kiểu dữ liệu trong JS)</h2>
+          </div>
+          <p>Dữ liệu trong JavaScript được chia thành 2 nhóm chính: <strong>Primitive Types (Kiểu nguyên thủy)</strong> và <strong>Reference Types (Kiểu tham chiếu)</strong>.</p>
+
+          <div class="matrix">
+            Primitive Types: String, Number, Boolean, Null, Undefined, Symbol, BigInt<br>
+            Reference Types: Object, Array, Function, Date, RegExp
+          </div>
+
+          <div class="callout">
+            <div class="callout-title">⚠️ Đặc biệt với typeof null và Type Coercion</div>
+            <p>Trong JS, <code>typeof null</code> trả về <code>"object"</code> (đây là một bug lịch sử của ngôn ngữ). Ngoài ra, JS tự động ép kiểu (Implicit Coercion) khi dùng phép toán cộng chuỗi: <code>"5" + 2 === "52"</code> nhưng <code>"5" - 2 === 3</code>.</p>
+          </div>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Data Types Inspector</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('Type of 42:', typeof 42);\nconsole.log('Type of Hello:', typeof 'Hello');\nconsole.log('Type of true:', typeof true);\nconsole.log('Type of null:', typeof null);\nconsole.log('Type of undefined:', typeof undefined);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>let num = 42;             // Number
+let str = "StudyHub";     // String
+let isActive = true;      // Boolean
+let emptyVal = null;      // Null (Giá trị rỗng cố ý)
+let unassigned;           // Undefined (Chưa gán giá trị)
+let bigIntNum = 9007199254740991n; // BigInt
+
+console.log(typeof num);       // "number"
+console.log(typeof str);       // "string"
+console.log(typeof emptyVal);  // "object" (Bug thiết kế JS)
+console.log(typeof unassigned);// "undefined"</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 05 -->
+        <section id="mod-05" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">05</span>
+            <h2 class="module-title">Operators (Toán tử trong JavaScript)</h2>
+          </div>
+          <p>Các toán tử cho phép thực thi tính toán toán học, so sánh và xử lý logic trên các giá trị dữ liệu.</p>
+
+          <ul>
+            <li><strong>Số học (Arithmetic):</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> (chia lấy dư), <code>**</code> (lũy thừa).</li>
+            <li><strong>So sánh (Comparison):</strong> <code>==</code> (so sánh giá trị ép kiểu), <code>===</code> (so sánh nghiêm ngặt giá trị & kiểu dữ liệu), <code>!=</code>, <code>!==</code>, <code>&gt;</code>, <code>&lt;</code>.</li>
+            <li><strong>Logic:</strong> <code>&amp;&amp;</code> (AND), <code>||</code> (OR), <code>!</code> (NOT), <code>??</code> (Nullish Coalescing - lấy giá trị khác null/undefined).</li>
+            <li><strong>Optional Chaining (<code>?.</code>):</strong> Truy cập an toàn thuộc tính lồng nhau mà không gây lỗi crash.</li>
+          </ul>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Operators Example</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('5 == \"5\":', 5 == '5');\nconsole.log('5 === \"5\":', 5 === '5');\nlet user = { profile: { name: 'Alvarez' } };\nconsole.log('User age optional:', user?.profile?.age ?? 'N/A');`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// So sánh nghiêm ngặt vs So sánh lỏng lẻo
+console.log(5 == "5");  // true (đã bị ép kiểu)
+console.log(5 === "5"); // false (khác kiểu dữ liệu)
+
+// Nullish Coalescing (??) & Optional Chaining (?.)
+let userConfig = { theme: null };
+let selectedTheme = userConfig.theme ?? "dark-mode"; // Lấy "dark-mode" nếu null/undefined
+
+console.log("Theme:", selectedTheme);
+console.log("Zipcode:", userConfig?.address?.zipcode); // undefined (không bị crash lỗi)</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 06 -->
+        <section id="mod-06" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">06</span>
+            <h2 class="module-title">Conditional Statements (Câu lệnh điều kiện)</h2>
+          </div>
+          <p>Câu lệnh điều kiện điều hướng luôn luồng thực thi của chương trình dựa trên kết quả đúng (true) hoặc sai (false).</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Conditionals & Guard Clauses</span>
+              <button class="btn-run-code" onclick="executeSnippet(`let score = 85;\nif (score >= 90) console.log('Grade A');\nelse if (score >= 80) console.log('Grade B');\nelse console.log('Grade C');`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>let score = 85;
+
+// Cấu trúc if...else if...else
+if (score >= 90) {
+  console.log("Xuất sắc (A)");
+} else if (score >= 80) {
+  console.log("Giỏi (B)");
+} else {
+  console.log("Trung bình / Khá");
+}
+
+// Toán tử ba ngôi (Ternary Operator)
+let result = score >= 50 ? "Đậu" : "Rớt";
+console.log("Kết quả:", result);
+
+// Mẫu thiết kế Guard Clause (Viết code sạch)
+function checkAccess(user) {
+  if (!user) return "Vui lòng đăng nhập!";
+  if (!user.isAdmin) return "Bạn không có quyền truy cập!";
+  return "Chào mừng Admin!";
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 07 -->
+        <section id="mod-07" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">07</span>
+            <h2 class="module-title">Loops (Vòng lặp trong JavaScript)</h2>
+          </div>
+          <p>Vòng lặp giúp lặp đi lặp lại một đoạn mã cho đến khi thỏa mãn điều kiện dừng.</p>
+
+          <ul>
+            <li><code>for</code>: Vòng lặp cơ bản với biến đếm chỉ số.</li>
+            <li><code>while</code>: Lặp khi điều kiện còn đúng.</li>
+            <li><code>do...while</code>: Thực thi khối lệnh ít nhất 1 lần trước khi kiểm tra điều kiện.</li>
+            <li><code>for...of</code>: Duyệt qua các phần tử của tập hợp lặp được (Array, String, Set, Map).</li>
+            <li><code>for...in</code>: Duyệt qua các tên thuộc tính (keys) của một Object.</li>
+          </ul>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Loops Demo</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const fruits = ['Apple', 'Banana', 'Orange'];\nfor (let fruit of fruits) {\n  console.log('Fruit:', fruit);\n}`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const fruits = ["Táo", "Chuối", "Cam"];
+
+// Vòng lặp for...of cho Mảng
+for (let fruit of fruits) {
+  console.log("Trái cây:", fruit);
+}
+
+// Vòng lặp for...in cho Đối tượng
+const student = { name: "Trần Vũ Bằng", age: 21, major: "CNTT" };
+for (let key in student) {
+  console.log(`${key}: ${student[key]}`);
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 08 -->
+        <section id="mod-08" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">08</span>
+            <h2 class="module-title">Functions (Hàm & Arrow Functions)</h2>
+          </div>
+          <p>Hàm là các khối mã có thể tái sử dụng để thực hiện một tác vụ cụ thể. JS hỗ trợ nhiều cách định nghĩa hàm khác nhau.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Functions & Rest Parameters</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const multiply = (a, b = 1) => a * b;\nconsole.log('5 * 4 =', multiply(5, 4));\nconsole.log('5 * default =', multiply(5));\nconst sumAll = (...nums) => nums.reduce((a, b) => a + b, 0);\nconsole.log('Sum:', sumAll(1, 2, 3, 4, 5));`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// 1. Function Declaration (Hỗ trợ Hoisting)
+function add(a, b) {
+  return a + b;
+}
+
+// 2. Arrow Function (Cú pháp ES6 ngắn gọn)
+const multiply = (a, b = 1) => a * b; // Default Parameter
+
+// 3. Rest Parameters (...args) để nhận vô số tham số
+const sumAll = (...numbers) => {
+  return numbers.reduce((total, n) => total + n, 0);
+};
+
+console.log("Multiply:", multiply(6, 7));
+console.log("Sum All:", sumAll(10, 20, 30, 40));</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 09 -->
+        <section id="mod-09" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">09</span>
+            <h2 class="module-title">Arrays (Cấu trúc dữ liệu Mảng)</h2>
+          </div>
+          <p>Mảng là danh sách có thứ tự các giá trị, được đánh chỉ số (index) bắt đầu từ 0. Mảng trong JS có thể chứa mixed data types.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Array & Destructuring</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const colors = ['Red', 'Green', 'Blue'];\nconst [first, second] = colors;\nconsole.log('First color:', first);\nconst newColors = [...colors, 'Yellow'];\nconsole.log('New Colors:', newColors);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const colors = ["Đỏ", "Xanh lá", "Xanh dương"];
+
+// Truy cập phần tử
+console.log(colors[0]); // "Đỏ"
+
+// Phá cấu trúc mảng (Array Destructuring)
+const [firstColor, secondColor] = colors;
+console.log("First:", firstColor, "Second:", secondColor);
+
+// Toán tử Spread (...) nối mảng
+const moreColors = [...colors, "Vàng", "Tím"];
+console.log("More colors:", moreColors);</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 10 -->
+        <section id="mod-10" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">10</span>
+            <h2 class="module-title">Objects (Đối tượng Key-Value)</h2>
+          </div>
+          <p>Đối tượng (Object) trong JS là tập hợp các cặp khóa - giá trị (key-value pairs), dùng để mô hình hóa thực thể thực tế.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Object Operations</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const laptop = { brand: 'Apple', model: 'MacBook Pro', year: 2024 };\nconst { brand, model } = laptop;\nconsole.log(\`Laptop: \${brand} \${model}\`);\nconsole.log('Object Keys:', Object.keys(laptop));`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const course = {
+  id: "JS-COMP",
+  title: "JavaScript Guide",
+  author: "Alvarez Tran",
+  lessons: 20,
+  getSummary() {
+    return `${this.title} bởi ${this.author}`;
+  }
+};
+
+// Object Destructuring
+const { title, author } = course;
+console.log("Summary:", course.getSummary());
+
+// Tiện ích Object tích hợp sẵn
+console.log("Keys:", Object.keys(course));
+console.log("Values:", Object.values(course));</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 11 -->
+        <section id="mod-11" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">11</span>
+            <h2 class="module-title">DOM (Document Object Model)</h2>
+          </div>
+          <p>DOM là giao diện lập trình đại diện cho cấu trúc tài liệu HTML dưới dạng cây đối tượng (Node Tree), cho phép JS truy xuất và thay đổi nội dung, thuộc tính, CSS của trang web.</p>
+
+          <div class="flowchart">
+            <div class="flow-node">document</div>
+            <span class="flow-arrow">➔</span>
+            <div class="flow-node">querySelector()</div>
+            <span class="flow-arrow">➔</span>
+            <div class="flow-node">textContent / classList</div>
+            <span class="flow-arrow">➔</span>
+            <div class="flow-node">Update UI</div>
+          </div>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>DOM Manipulation Example</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('Document title:', document.title);\nconsole.log('Heading count on page:', document.querySelectorAll('h2').length);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// Chọn phần tử bằng querySelector
+const mainHeader = document.querySelector(".infographic-title");
+
+// Đổi nội dung văn bản & CSS class
+if (mainHeader) {
+  mainHeader.textContent = "JavaScript Masterclass";
+  mainHeader.classList.add("highlighted");
+}
+
+// Tạo phần tử HTML mới và chèn vào DOM
+const newDiv = document.createElement("div");
+newDiv.innerHTML = "&lt;p&gt;Thẻ mới được tạo bằng JS!&lt;/p&gt;";
+document.body.appendChild(newDiv);</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 12 -->
+        <section id="mod-12" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">12</span>
+            <h2 class="module-title">Events (Xử lý sự kiện người dùng)</h2>
+          </div>
+          <p>Events là các hành động tương tác do người dùng thực hiện (click chuột, nhập bàn phím, cuộn trang, submit form) hoặc do hệ thống phát ra.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Event Listener Demo</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('Listening to click events via addEventListener demo...');`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const btn = document.querySelector("#theme-toggle");
+
+// Lắng nghe sự kiện click
+btn?.addEventListener("click", (event) => {
+  console.log("Đã click nút đổi giao diện!", event.target);
+});
+
+// Event Delegation (Ủy quyền sự kiện tối ưu bộ nhớ)
+document.querySelector(".modules-grid")?.addEventListener("click", (e) => {
+  const card = e.target.closest(".mod-card");
+  if (card) {
+    console.log("Người dùng chọn module:", card.querySelector(".mod-card-header")?.textContent);
+  }
+});</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 13 -->
+        <section id="mod-13" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">13</span>
+            <h2 class="module-title">Methods (Các phương thức Array & String cốt lõi)</h2>
+          </div>
+          <p>JavaScript cung cấp bộ hàm xử lý dữ liệu mạnh mẽ tích hợp sẵn trong kiểu dữ liệu String và Array.</p>
+
+          <h4>Phương thức Array nâng cao:</h4>
+          <ul>
+            <li><code>map()</code>: Biến đổi từng phần tử và trả về mảng mới.</li>
+            <li><code>filter()</code>: Lọc các phần tử thỏa điều kiện.</li>
+            <li><code>reduce()</code>: Tích tụ các phần tử thành một giá trị duy nhất.</li>
+            <li><code>find()</code> / <code>findIndex()</code>: Tìm phần tử đầu tiên khớp điều kiện.</li>
+          </ul>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Array & String Methods</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const nums = [1, 2, 3, 4, 5, 6];\nconst evens = nums.filter(n => n % 2 === 0);\nconsole.log('Evens:', evens);\nconst squared = nums.map(n => n * n);\nconsole.log('Squared:', squared);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const numbers = [10, 20, 30, 40, 50];
+
+// map: Nhân đôi từng số
+const doubled = numbers.map(n => n * 2);
+console.log("Doubled:", doubled);
+
+// filter: Lọc các số >= 30
+const filtered = numbers.filter(n => n >= 30);
+console.log("Filtered:", filtered);
+
+// reduce: Tính tổng mảng
+const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+console.log("Sum:", sum);
+
+// String Methods
+let text = "   JavaScript Fullstack   ";
+console.log(text.trim().toLowerCase().replaceAll("a", "@"));</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 14 -->
+        <section id="mod-14" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">14</span>
+            <h2 class="module-title">Scope & Closure (Phạm vi & Closure)</h2>
+          </div>
+          <p><strong>Scope</strong> quyết định tính ẩn/hiện và phạm vi truy cập của biến (Global Scope, Function Scope, Block Scope). <strong>Closure</strong> là một hàm có khả năng "ghi nhớ" và truy cập các biến ở phạm vi bên ngoài (Lexical Scope) ngay cả khi hàm ngoài đã kết thúc thực thi.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Closure Counter Pattern</span>
+              <button class="btn-run-code" onclick="executeSnippet(`function createCounter() {\n  let count = 0;\n  return {\n    increment: () => ++count,\n    getCount: () => count\n  };\n}\nconst counter = createCounter();\nconsole.log(counter.increment());\nconsole.log(counter.increment());\nconsole.log('Current Count:', counter.getCount());`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>function createCounter() {
+  let count = 0; // Biến tư nhân (private variable) nhờ Closure
+
+  return {
+    increment() {
+      count++;
+      return count;
+    },
+    decrement() {
+      count--;
+      return count;
+    },
+    getValue() {
+      return count;
+    }
+  };
+}
+
+const myCounter = createCounter();
+console.log(myCounter.increment()); // 1
+console.log(myCounter.increment()); // 2
+console.log(myCounter.getValue());   // 2 (Biến count được bảo vệ)</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 15 -->
+        <section id="mod-15" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">15</span>
+            <h2 class="module-title">Hoisting (Cơ chế Hoisting trong JS)</h2>
+          </div>
+          <p><strong>Hoisting</strong> là hành vi của JavaScript Engine đưa các khai báo biến và hàm lên đầu phạm vi chứa nó trong giai đoạn biên dịch (Creation Phase) trước khi thực thi mã.</p>
+
+          <div class="callout">
+            <div class="callout-title">⚠️ Sự khác biệt Hoisting giữa var vs let/const</div>
+            <p><code>var</code> được hoist và khởi tạo ngay giá trị <code>undefined</code>. Ngược lại, <code>let</code> và <code>const</code> cũng được hoist nhưng nằm trong vùng <strong>Temporal Dead Zone (TDZ)</strong> - truy cập biến trước dòng khai báo sẽ gây lỗi <code>ReferenceError</code>.</p>
+          </div>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Hoisting Test</span>
+              <button class="btn-run-code" onclick="executeSnippet(`console.log('varHoisted:', typeof varHoisted);\nvar varHoisted = 'I am var';\nsayHi();\nfunction sayHi() { console.log('Hi from hoisted function!'); }`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// 1. Function Declaration được hoist hoàn toàn
+sayHello(); // Hoạt động bình thường!
+function sayHello() {
+  console.log("Xin chào!");
+}
+
+// 2. var được hoist nhưng khởi tạo undefined
+console.log(x); // undefined (không bị crash lỗi)
+var x = 10;
+
+// 3. let vào Temporal Dead Zone (TDZ)
+try {
+  console.log(y); // ReferenceError!
+  let y = 20;
+} catch (e) {
+  console.log("Lỗi TDZ:", e.message);
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 16 -->
+        <section id="mod-16" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">16</span>
+            <h2 class="module-title">Callbacks (Hàm Callback & Callback Hell)</h2>
+          </div>
+          <p>Callback là một hàm được truyền dưới dạng đối số vào một hàm khác để được gọi lại thực thi sau khi một tác vụ hoàn tất.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Callback Pattern</span>
+              <button class="btn-run-code" onclick="executeSnippet(`function fetchData(callback) {\n  setTimeout(() => {\n    callback('Dữ liệu từ Server');\n  }, 500);\n}\nfetchData(res => console.log('Nhận kết quả:', res));`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// Hàm nhận callback làm tham số
+function processUser(name, callback) {
+  console.log("Đang xử lý người dùng: " + name);
+  callback(name);
+}
+
+processUser("Alvarez", function(userName) {
+  console.log("Xử lý hoàn tất cho: " + userName);
+});
+
+// Vấn đề Callback Hell (Hình tháp Pyramid of Doom)
+/*
+getData(1, function(a) {
+  getMoreData(a, function(b) {
+    getMoreData(b, function(c) {
+      // Code bị lồng quá sâu, khó duy trì!
+    });
+  });
+});
+*/</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 17 -->
+        <section id="mod-17" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">17</span>
+            <h2 class="module-title">Promises (Xử lý bất đồng bộ chuẩn xác)</h2>
+          </div>
+          <p><strong>Promise</strong> là đối tượng đại diện cho kết quả hoàn thành hoặc thất bại của một tác vụ bất đồng bộ trong tương lai, giải quyết hoàn toàn vấn đề Callback Hell.</p>
+
+          <div class="matrix">
+            Promise States: Pending (Đang chờ) ➔ Fulfilled (Thành công - resolve) OR Rejected (Thất bại - reject)
+          </div>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Promise Example</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const checkOrder = new Promise((resolve, reject) => {\n  const success = true;\n  if (success) resolve('Đơn hàng thành công!');\n  else reject('Hết hàng!');\n});\ncheckOrder.then(res => console.log(res)).catch(err => console.log(err));`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const fakeApiFetch = () => {
+  return new Promise((resolve, reject) => {
+    let success = true;
+    setTimeout(() => {
+      if (success) resolve({ status: 200, data: "Dữ liệu bài học" });
+      else reject("Lỗi kết nối Server!");
+    }, 800);
+  });
+};
+
+// Chaining .then() .catch() .finally()
+fakeApiFetch()
+  .then(response => {
+    console.log("Thành công:", response.data);
+    return response.status;
+  })
+  .then(status => console.log("Status Code:", status))
+  .catch(error => console.error("Lỗi:", error))
+  .finally(() => console.log("Hoàn tất tác vụ Promise."));</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 18 -->
+        <section id="mod-18" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">18</span>
+            <h2 class="module-title">Async / Await (Cú pháp bất đồng bộ hiện đại)</h2>
+          </div>
+          <p><code>async/await</code> là cú pháp Syntactic Sugar xây dựng trên nền tảng Promise, giúp lập trình viên viết mã bất đồng bộ phẳng và tự nhiên như mã đồng bộ (synchronous).</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Async / Await with try...catch</span>
+              <button class="btn-run-code" onclick="executeSnippet(`async function runDemo() {\n  const getNumber = () => new Promise(res => setTimeout(() => res(42), 300));\n  console.log('Đang chờ kết quả...');\n  const num = await getNumber();\n  console.log('Kết quả nhận được:', num);\n}\nrunDemo();`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+// Khai báo hàm async
+async function fetchCourseData() {
+  try {
+    console.log("Đang tải dữ liệu...");
+    await delay(1000); // Tạm dừng thực thi không gây nghẽn UI
+    
+    const data = { id: 101, title: "JavaScript Complete Guide" };
+    console.log("Kết quả nhận được:", data);
+    return data;
+  } catch (error) {
+    console.error("Xử lý ngoại lệ:", error);
+  }
+}
+
+fetchCourseData();</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 19 -->
+        <section id="mod-19" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">19</span>
+            <h2 class="module-title">Local Storage (Lưu trữ dữ liệu Trình duyệt)</h2>
+          </div>
+          <p><strong>localStorage</strong> cho phép lưu trữ dữ liệu dạng cặp key-value không có thời gian hết hạn ngay trên trình duyệt client của người dùng (tối đa ~5MB).</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Phương thức</th>
+                <th>Mô tả tác dụng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>localStorage.setItem(key, value)</code></td>
+                <td>Lưu dữ liệu vào bộ nhớ local.</td>
+              </tr>
+              <tr>
+                <td><code>localStorage.getItem(key)</code></td>
+                <td>Đọc dữ liệu theo key (trả về chuỗi String).</td>
+              </tr>
+              <tr>
+                <td><code>localStorage.removeItem(key)</code></td>
+                <td>Xóa phần tử theo key chỉ định.</td>
+              </tr>
+              <tr>
+                <td><code>localStorage.clear()</code></td>
+                <td>Xóa toàn bộ dữ liệu trong domain.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Local Storage JSON Serialization</span>
+              <button class="btn-run-code" onclick="executeSnippet(`const settings = { theme: 'dark', fontSize: 16 };\nlocalStorage.setItem('sh_settings', JSON.stringify(settings));\nconst saved = JSON.parse(localStorage.getItem('sh_settings'));\nconsole.log('Saved settings:', saved);`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// 1. Lưu trữ Object bằng JSON.stringify()
+const userPreferences = {
+  theme: "dark",
+  fontSize: "16px",
+  autoSave: true
+};
+
+localStorage.setItem("user_config", JSON.stringify(userPreferences));
+
+// 2. Đọc và parse Object bằng JSON.parse()
+const savedConfigStr = localStorage.getItem("user_config");
+if (savedConfigStr) {
+  const savedConfig = JSON.parse(savedConfigStr);
+  console.log("Giao diện đã lưu:", savedConfig.theme);
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- MODULE 20 -->
+        <section id="mod-20" class="module-section">
+          <div class="module-badge-header">
+            <span class="module-number-tag">20</span>
+            <h2 class="module-title">ES6+ Features (Các tính năng JavaScript hiện đại)</h2>
+          </div>
+          <p>Phiên bản ES6 (ECMAScript 2015) và các bản cập nhật hàng năm mang đến sự đột phá hoàn toàn cho ngôn ngữ JavaScript.</p>
+
+          <h4>Các tính năng ES6+ vượt trội:</h4>
+          <ul>
+            <li><strong>Template Literals:</strong> Chuỗi nội suy bằng cặp dấu backtick <code>`Hello ${name}`</code>.</li>
+            <li><strong>Classes &amp; OOP:</strong> Cú pháp hướng đối tượng sạch hơn <code>class Student { ... }</code>.</li>
+            <li><strong>Private Fields (<code>#field</code>):</strong> Khai báo thuộc tính tư nhân ẩn trong Class.</li>
+            <li><strong>ES Modules:</strong> Chia tách và xuất nhập module với <code>export</code> và <code>import</code>.</li>
+          </ul>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>ES6+ Class & Private Fields</span>
+              <button class="btn-run-code" onclick="executeSnippet(`class Person {\n  #secret = 'TopSecret123';\n  constructor(name) { this.name = name; }\n  getSecret() { return this.#secret; }\n}\nconst p = new Person('Alvarez');\nconsole.log('Person name:', p.name);\nconsole.log('Secret access:', p.getSecret());`)">▶ Chạy Code</button>
+            </div>
+            <pre><code>// ES6 Class với Private Field (#)
+class Developer {
+  #salary = 2000; // Private field (không thể truy cập từ bên ngoài)
+
+  constructor(name, stack) {
+    this.name = name;
+    this.stack = stack;
+  }
+
+  getDetails() {
+    return `${this.name} làm ${this.stack} với mức lương bảo mật.`;
+  }
+}
+
+const dev = new Developer("Trần Vũ Bằng", "JavaScript / React");
+console.log(dev.getDetails());
+console.log("Name:", dev.name);
+// console.log(dev.#salary); // Lỗi SyntaxError! Thâm nhập bị chặn.</code></pre>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE PLAYGROUND LOGIC -->
+  <script>
+    // Execute custom user code from the playground box
+    function runCustomCode() {
+      const editor = document.getElementById("pg-editor");
+      const output = document.getElementById("pg-output");
+      if (!editor || !output) return;
+
+      output.textContent = "";
+      const logs = [];
+
+      // Intercept console.log
+      const originalLog = console.log;
+      const originalError = console.error;
+      const originalWarn = console.warn;
+
+      console.log = function(...args) {
+        logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        originalLog.apply(console, args);
+      };
+      console.error = function(...args) {
+        logs.push("[ERROR] " + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        originalError.apply(console, args);
+      };
+      console.warn = function(...args) {
+        logs.push("[WARN] " + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        originalWarn.apply(console, args);
+      };
+
+      try {
+        const result = eval(editor.value);
+        if (logs.length === 0) {
+          output.textContent = result !== undefined ? `[Return Value]: ${result}` : "Code executed cleanly (no console output).";
+        } else {
+          output.textContent = logs.join('\n');
+        }
+      } catch (err) {
+        output.textContent = `❌ Runtime Exception: ${err.name} - ${err.message}`;
+      } finally {
+        console.log = originalLog;
+        console.error = originalError;
+        console.warn = originalWarn;
+      }
+    }
+
+    // Load snippet into playground and run it
+    function executeSnippet(codeString) {
+      const editor = document.getElementById("pg-editor");
+      if (editor) {
+        editor.value = codeString;
+        document.getElementById("js-playground")?.scrollIntoView({ behavior: 'smooth' });
+        runCustomCode();
+      }
+    }
+
+    // Clear console output
+    function clearConsole() {
+      const output = document.getElementById("pg-output");
+      if (output) output.textContent = "Console cleared.";
+    }
+
+    // Keyboard shortcut (Ctrl + Enter) to run code in playground
+    document.getElementById("pg-editor")?.addEventListener("keydown", function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        runCustomCode();
+      }
+    });
+  </script>
+</body>
+</html>
