@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng dẫn xây dựng Hệ thống Nền tảng Học tập Trực tuyến sử dụng Hybrid Recommendation - StudyHub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
+  <script src="../js/theme.js"></script>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ] });"></script>
+
+  <style>
+    /* Custom layout for Architecture Guide */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--secondary-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.35rem;
+    }
+    .sidebar h3:first-of-type {
+      margin-top: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 0;
+    }
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      display: block;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .sidebar a:hover {
+      color: var(--secondary-color);
+      background-color: var(--highlight-bg);
+      transform: translateX(3px);
+    }
+
+    /* System Architecture Interactive Diagram Container */
+    .architecture-container {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0 3rem 0;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+    .architecture-title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .arch-main-heading {
+      color: #38bdf8;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .arch-sub-heading {
+      color: #f1f5f9;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    .arch-subtitle-en {
+      color: #94a3b8;
+      font-style: italic;
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    /* Diagram Grids & Boxes */
+    .arch-grid-top {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch-grid-middle {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch-grid-bottom {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-box {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid #475569;
+      border-radius: 10px;
+      padding: 1.25rem;
+      position: relative;
+    }
+    .arch-box-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .badge-blue { color: #38bdf8; border-bottom: 2px solid #38bdf8; padding-bottom: 0.25rem; }
+    .badge-green { color: #4ade80; border-bottom: 2px solid #4ade80; padding-bottom: 0.25rem; }
+    .badge-purple { color: #c084fc; border-bottom: 2px solid #c084fc; padding-bottom: 0.25rem; }
+    .badge-orange { color: #fb923c; border-bottom: 2px solid #fb923c; padding-bottom: 0.25rem; }
+
+    .role-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.82rem;
+    }
+    .role-title { font-weight: 800; font-size: 0.88rem; margin-bottom: 0.3rem; }
+    .role-student { color: #60a5fa; }
+    .role-instructor { color: #f472b6; }
+    .role-admin { color: #facc15; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .service-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 0.6rem;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    .service-card strong { display: block; color: #38bdf8; font-size: 0.8rem; margin-bottom: 0.2rem; }
+
+    .ml-sub-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 0.65rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.78rem;
+    }
+    .ml-sub-box strong { display: block; color: #c084fc; font-size: 0.82rem; margin-bottom: 0.2rem; }
+
+    /* Code Block & Callout Customization */
+    .guide-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      scroll-margin-top: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .section-badge {
+      display: inline-block;
+      background: var(--highlight-bg);
+      color: var(--secondary-color);
+      border: 1px solid var(--highlight-border);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .tech-stack-table td strong {
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <!-- Navigation Header -->
+    <header>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; Niên luận cơ sở &raquo; Learning Platform &amp; Recommendation Engine</div>
+      <h1 style="font-size: 1.9rem; line-height: 1.35;">HƯỚNG DẪN XÂY DỰNG HỆ THỐNG NỀN TẢNG HỌC TẬP TRỰC TUYẾN SỬ DỤNG HYBRID RECOMMENDATION</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Cẩm nang chi tiết hướng dẫn Sinh viên năm 2 ngành Khoa học Máy tính phân tích kiến thức, thiết kế cơ sở dữ liệu, xây dựng RESTful API với Node.js/Express, thuật toán gợi ý lai (Hybrid Recommendation) bằng Python và đóng gói hệ thống với Docker.</p>
+    </header>
+
+    <!-- Top Action Buttons -->
+    <div class="header-actions no-print" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf" style="background: var(--secondary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất PDF Niên luận
+      </button>
+    </div>
+
+    <!-- INTERACTIVE ARCHITECTURE DIAGRAM CONTAINER -->
+    <div class="architecture-container">
+      <div class="architecture-title">
+        <h2 class="arch-main-heading">SƠ ĐỒ KIẾN TRÚC HỆ THỐNG</h2>
+        <div class="arch-sub-heading">NỀN TẢNG HỌC TẬP TRỰC TUYẾN SỬ DỤNG HYBRID RECOMMENDATION</div>
+        <div class="arch-subtitle-en">(Learning Platform – Personalized Course Recommendation)</div>
+      </div>
+
+      <!-- Top Row: Users & Frontend -->
+      <div class="arch-grid-top">
+        <div class="arch-box">
+          <div class="arch-box-title badge-blue">👤 NGƯỜI DÙNG</div>
+          <div class="role-card">
+            <div class="role-title role-student">STUDENT (Sinh viên)</div>
+            <ul>
+              <li>Tìm kiếm khóa học</li>
+              <li>Đăng ký học &amp; xem tiến độ</li>
+              <li>Đánh giá, yêu thích</li>
+              <li>Nhận gợi ý khóa học</li>
+            </ul>
+          </div>
+          <div class="role-card">
+            <div class="role-title role-instructor">INSTRUCTOR (Giảng viên)</div>
+            <ul>
+              <li>Tạo khóa học &amp; bài học</li>
+              <li>Quản lý nội dung</li>
+              <li>Xem thống kê lượt học</li>
+            </ul>
+          </div>
+          <div class="role-card">
+            <div class="role-title role-admin">ADMIN (Quản trị)</div>
+            <ul>
+              <li>Duyệt khóa học</li>
+              <li>Quản lý người dùng</li>
+              <li>Thống kê toàn hệ thống</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arch-box">
+          <div class="arch-box-title badge-blue">💻 CLIENT (FRONTEND - ReactJS)</div>
+          <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.75rem;">Giao diện Web SPA kết nối RESTful API (JSON over HTTP/HTTPS)</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem;">
+            <div class="service-card"><strong>Trang chủ</strong>Landing page &amp; Banners</div>
+            <div class="service-card"><strong>Khóa học</strong>Danh sách &amp; bộ lọc</div>
+            <div class="service-card"><strong>Chi tiết khóa học</strong>Thông tin &amp; Đánh giá</div>
+            <div class="service-card"><strong>Học bài</strong>Video, Text &amp; Quiz</div>
+            <div class="service-card"><strong>Dashboard</strong>Tiến độ &amp; Thống kê</div>
+            <div class="service-card" style="border-color: #38bdf8; background: rgba(56, 189, 248, 0.1);"><strong>Đề xuất cho bạn</strong>Personalized Feed</div>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.78rem; color: #cbd5e1; background: #0f172a; padding: 0.5rem; border-radius: 4px;">
+            <strong style="color: #61dafbaa;">Tech Stack Frontend:</strong> ReactJS, Redux Toolkit, Axios, Tailwind CSS
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Row: Backend API & Recommendation Engine -->
+      <div class="arch-grid-middle">
+        <!-- Backend API Server -->
+        <div class="arch-box">
+          <div class="arch-box-title badge-green">⚙️ BACKEND (API SERVER - Node.js &amp; Express.js)</div>
+          
+          <div class="services-grid">
+            <div class="service-card">
+              <strong>AUTH SERVICE</strong>
+              Đăng ký, Đăng nhập, JWT, Refresh Token, RBAC, Bcrypt
+            </div>
+            <div class="service-card">
+              <strong>USER SERVICE</strong>
+              Hồ sơ, Kỹ năng, Sở thích, Tiến độ học tập
+            </div>
+            <div class="service-card">
+              <strong>COURSE SERVICE</strong>
+              Quản lý khóa học, Danh mục, Kỹ năng, Tìm kiếm
+            </div>
+            <div class="service-card">
+              <strong>LESSON SERVICE</strong>
+              Bài học, Video, Text, Code, Quiz, Thứ tự chương
+            </div>
+            <div class="service-card">
+              <strong>INTERACTION SERVICE</strong>
+              Lượt xem, Yêu thích, Đánh giá, Đăng ký, Completion
+            </div>
+            <div class="service-card">
+              <strong>NOTIFICATION SERVICE</strong>
+              Thông báo hệ thống, Email, Cá nhân
+            </div>
+          </div>
+
+          <div style="background: #0f172a; border: 1px dashed #4ade80; border-radius: 6px; padding: 0.6rem; font-size: 0.78rem; margin-top: 0.5rem;">
+            <strong style="color: #4ade80;">COMMON / SHARED LAYERS:</strong>
+            <span style="color: #cbd5e1; margin-left: 0.5rem;">✔ Validation &nbsp;|&nbsp; ✔ Middleware &nbsp;|&nbsp; ⚠️ Exception Filter &nbsp;|&nbsp; 📝 Logger (Winston) &nbsp;|&nbsp; ⚡ Caching (Redis Client)</span>
+          </div>
+        </div>
+
+        <!-- Recommendation Engine -->
+        <div class="arch-box" style="border-color: #c084fc;">
+          <div class="arch-box-title badge-purple">🤖 RECOMMENDATION ENGINE (Python ML)</div>
+          
+          <div class="ml-sub-box">
+            <strong>1. DATA PROCESSING</strong>
+            Thu thập tương tác, Tiền xử lý, Tạo ma trận User-Item &amp; Vector nội dung.
+          </div>
+          <div class="ml-sub-box">
+            <strong>2. CONTENT-BASED FILTERING</strong>
+            TF-IDF, Cosine Similarity, Tính điểm khớp nội dung.
+          </div>
+          <div class="ml-sub-box">
+            <strong>3. COLLABORATIVE FILTERING</strong>
+            User-Based CF &amp; Item-Based CF (Cosine / Pearson).
+          </div>
+          <div class="ml-sub-box" style="background: rgba(192, 132, 252, 0.15); border-color: #c084fc;">
+            <strong>4. HYBRID RECOMMENDATION</strong>
+            Weighted Sum ($Score = \alpha Score_{CB} + (1-\alpha) Score_{CF}$), Top-K.
+          </div>
+          <div class="ml-sub-box">
+            <strong>5. EVALUATION MODULE</strong>
+            Precision@K, Recall@K, NDCG@K, MAP@K Offline evaluation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Database, Cache, Storage Row -->
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+        <div class="arch-box">
+          <div class="arch-box-title badge-orange">🗄️ DATABASE (PostgreSQL)</div>
+          <ul style="font-size: 0.78rem; padding-left: 1rem; color: #cbd5e1;">
+            <li>Users, Roles, Auth credentials</li>
+            <li>Courses, Chapters, Lessons</li>
+            <li>Enrollments, Student Progress</li>
+            <li>Ratings, Reviews, Interactions</li>
+            <li>Categories, Skills, Instructors</li>
+          </ul>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title badge-orange">⚡ CACHE (Redis)</div>
+          <ul style="font-size: 0.78rem; padding-left: 1rem; color: #cbd5e1;">
+            <li>Lưu trữ User Sessions</li>
+            <li>Cache khóa học phổ biến</li>
+            <li>Cache kết quả gợi ý Top-K</li>
+            <li>Rate limiting chống DDOS</li>
+          </ul>
+        </div>
+        <div class="arch-box">
+          <div class="arch-box-title badge-orange">📁 FILE STORAGE (Cloudinary / Local)</div>
+          <ul style="font-size: 0.78rem; padding-left: 1rem; color: #cbd5e1;">
+            <li>Video bài giảng, hình ảnh khóa học</li>
+            <li>Tài liệu đính kèm (PDF, Code zip)</li>
+            <li>Avatar &amp; Media người dùng</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Row: Infrastructure & Deployment -->
+      <div class="arch-box" style="background: rgba(15, 23, 42, 0.9);">
+        <div class="arch-box-title" style="color: #cbd5e1;">🚀 DEPLOYMENT &amp; INFRASTRUCTURE</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.78rem;">
+          <div><strong style="color: #38bdf8;">🐙 GIT &amp; CI/CD:</strong> Code Repository, GitHub Actions CI/CD Pipeline, Auto Deploy</div>
+          <div><strong style="color: #38bdf8;">🐳 DOCKER:</strong> Containerization, Docker Compose đa dịch vụ, Môi trường nhất quán</div>
+          <div><strong style="color: #38bdf8;">☁️ SERVER / CLOUD:</strong> AWS EC2 / VPS Linux, Nginx Reverse Proxy, SSL / HTTPS</div>
+          <div><strong style="color: #38bdf8;">📊 MONITORING:</strong> Winston Centralized Logs, Error Tracking, Performance Monitoring</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT LAYOUT WITH STICKY SIDEBAR -->
+    <div class="layout-wrapper">
+      <aside class="sidebar no-print">
+        <h3>Các phần hướng dẫn</h3>
+        <ul>
+          <li><a href="#sec-1">Phần 1: Giới thiệu &amp; Mục tiêu Niên luận</a></li>
+          <li><a href="#sec-2">Phần 2: Phân tích Kiến trúc Hệ thống</a></li>
+          <li><a href="#sec-3">Phần 3: Thiết kế Database &amp; Redis Cache</a></li>
+          <li><a href="#sec-4">Phần 4: Xây dựng Backend Node.js API</a></li>
+          <li><a href="#sec-5">Phần 5: Engine Gợi ý Hybrid (Python ML)</a></li>
+          <li><a href="#sec-6">Phần 6: Xây dựng Frontend React Client</a></li>
+          <li><a href="#sec-7">Phần 7: Đóng gói Docker &amp; Triển khai</a></li>
+          <li><a href="#sec-8">Phần 8: Lộ trình 8 Tuần cho Sinh viên</a></li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+
+        <!-- SECTION 1 -->
+        <section id="sec-1" class="guide-section">
+          <span class="section-badge">Phần 1</span>
+          <h2>Giới thiệu &amp; Mục tiêu Đề tài Niên luận Cơ sở</h2>
+          <p>Đối với sinh viên năm 2 ngành <strong>Khoa học Máy tính (Computer Science)</strong>, bài tập Niên luận cơ sở đòi hỏi sinh viên nắm vững tư duy thiết kế phần mềm, mô hình hóa dữ liệu quan hệ, phát triển RESTful API và đặc biệt là áp dụng được <strong>giải thuật học máy (Machine Learning)</strong> giải quyết bài toán thực tế.</p>
+
+          <div class="callout">
+            <div class="callout-title">🎯 Đặt bài toán thực tế (Problem Statement)</div>
+            <p>Trong các nền tảng E-learning hiện nay, sinh viên thường bị quá tải thông tin khi có hàng ngàn khóa học. Hệ thống <strong>Personalized Course Recommendation</strong> giúp phân tích các hành vi (lượt xem, đánh giá, đăng ký) và đặc trưng khóa học (danh mục, kỹ năng) để tự động đề xuất Top-K khóa học phù hợp nhất cho từng cá nhân.</p>
+          </div>
+
+          <h3>3 Phân quyền Người dùng (Role-Based Access Control - RBAC)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Vai trò (Role)</th>
+                <th>Chức năng cốt lõi</th>
+                <th>Quyền hạn trên Hệ thống</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>STUDENT</strong></td>
+                <td>Tìm kiếm, lọc khóa học, học bài, làm bài quiz, đánh giá, nhận gợi ý.</td>
+                <td>Xem bài học công khai, tạo tương tác cá nhân (like, review, rating).</td>
+              </tr>
+              <tr>
+                <td><strong>INSTRUCTOR</strong></td>
+                <td>Tạo và chỉnh sửa nội dung bài giảng (Video, Text, Quiz), theo dõi số học viên.</td>
+                <td>Quản lý tài nguyên khóa học do chính mình tạo ra.</td>
+              </tr>
+              <tr>
+                <td><strong>ADMIN</strong></td>
+                <td>Duyệt kiểm duyệt khóa học, quản lý tài khoản người dùng, xem báo cáo doanh thu/lượt truy cập.</td>
+                <td>Toàn quyền truy cập (Full Privileges) trên tất cả các tài nguyên.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section id="sec-2" class="guide-section">
+          <span class="section-badge">Phần 2</span>
+          <h2>Phân tích Chi tiết Các Tầng Kiến trúc Hệ thống</h2>
+          <p>Hệ thống được thiết kế theo kiến trúc <strong>Modular Monolith kết hợp Recommendation Microservice</strong>, tách biệt rõ ràng trách nhiệm giữa xử lý nghiệp vụ web (Web Server) và xử lý tính toán số học nặng (Machine Learning Engine).</p>
+
+          <table class="tech-stack-table">
+            <thead>
+              <tr>
+                <th>Tầng Kiến trúc</th>
+                <th>Công nghệ &amp; Thư viện</th>
+                <th>Vai trò &amp; Nhiệm vụ chính</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Frontend Client</strong></td>
+                <td>ReactJS 18, Redux Toolkit, Axios, Tailwind CSS</td>
+                <td>Xây dựng Single Page Application (SPA), quản lý State toàn cục, render giao diện mượt mà và gọi REST APIs.</td>
+              </tr>
+              <tr>
+                <td><strong>Backend API Server</strong></td>
+                <td>Node.js, Express.js, JWT, Bcrypt, Multer, Winston</td>
+                <td>Tiếp nhận và xử lý nghiệp vụ (Business Logic), xác thực người dùng, ủy quyền API, ghi log và điều hướng dữ liệu.</td>
+              </tr>
+              <tr>
+                <td><strong>Database &amp; Cache</strong></td>
+                <td>PostgreSQL 15, Redis 7</td>
+                <td>Lưu trữ dữ liệu quan hệ có cấu trúc bền vững và cache bộ nhớ đệm tốc độ cao cho kết quả gợi ý.</td>
+              </tr>
+              <tr>
+                <td><strong>Recommendation Engine</strong></td>
+                <td>Python 3.10, FastAPI, Pandas, NumPy, Scikit-learn, SciPy</td>
+                <td>Nhận yêu cầu tính toán gợi ý, xử lý ma trận tương tác, chạy giải thuật Content-based, Collaborative Filtering &amp; Hybrid.</td>
+              </tr>
+              <tr>
+                <td><strong>Infrastructure</strong></td>
+                <td>Docker, Docker Compose, Nginx, GitHub Actions</td>
+                <td>Đóng gói containerization môi trường chuẩn hóa, định tuyến reverse proxy và tự động hóa quy trình CI/CD.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section id="sec-3" class="guide-section">
+          <span class="section-badge">Phần 3</span>
+          <h2>Thiết kế Cơ sở Dữ liệu PostgreSQL &amp; Redis Cache</h2>
+          <p>Một thiết kế CSDL quan hệ chuẩn (Normalized Relational Schema) là yếu tố quyết định sự thành bại của đề tài niên luận. Dưới đây là lược đồ các bảng cốt lõi:</p>
+
+          <div class="code-editor-container" style="border-color: #475569; background: #0f172a;">
+            <div class="code-header">
+              <span>PostgreSQL Schema DDl (Core Tables)</span>
+            </div>
+            <pre><code>-- Bảng Người dùng
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(20) DEFAULT 'STUDENT', -- STUDENT, INSTRUCTOR, ADMIN
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng Khóa học
+CREATE TABLE courses (
+    id SERIAL PRIMARY KEY,
+    instructor_id INT REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    category_id INT,
+    price DECIMAL(10, 2) DEFAULT 0.00,
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng Tương tác Người dùng - Khóa học (Phục vụ ML Recommendation)
+CREATE TABLE interactions (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    course_id INT REFERENCES courses(id) ON DELETE CASCADE,
+    interaction_type VARCHAR(30) NOT NULL, -- 'VIEW', 'LIKE', 'ENROLL', 'RATE'
+    rating NUMERIC(2, 1) CHECK (rating >= 1.0 AND rating <= 5.0),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+          </div>
+
+          <h3>Chiến lược Caching với Redis</h3>
+          <p>Hệ thống sử dụng **Redis** để lưu trữ bộ nhớ tạm thời với 3 mục đích chính:</p>
+          <ul>
+            <li><strong>User Session Cache:</strong> Lưu token xác thực và thông tin profile của người dùng active.</li>
+            <li><strong>Recommendation Top-K Cache:</strong> Kết quả tính toán gợi ý bởi Python Engine được cache trong 1 giờ (Key format: <code>user:recommendations:{user_id}</code>).</li>
+            <li><strong>API Rate Limiting:</strong> Giới hạn số lượng request tối đa 100 req/phút để bảo vệ hệ thống khỏi các đợt tấn công từ chối dịch vụ.</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 4 -->
+        <section id="sec-4" class="guide-section">
+          <span class="section-badge">Phần 4</span>
+          <h2>Xây dựng Backend Server với Node.js &amp; Express.js</h2>
+          <p>Backend được thiết kế theo mô hình **Modular Architecture**, trong đó từng miền chức năng (Domain) được cô lập sạch sẽ thành các Controller, Service và Repository.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Node.js Express Controller Example (Course Recommendation Fetch)</span>
+            </div>
+            <pre><code>const express = require('express');
+const router = express.Router();
+const redisClient = require('../config/redis');
+const axios = require('axios');
+const authMiddleware = require('../middlewares/auth');
+
+// GET /api/courses/recommendations
+router.get('/recommendations', authMiddleware, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const cacheKey = `user:recommendations:${userId}`;
+
+    // 1. Kiểm tra cache Redis trước
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      return res.json({ success: true, source: 'cache', data: JSON.parse(cachedData) });
+    }
+
+    // 2. Gọi microservice Python Recommendation Engine nếu miss cache
+    const response = await axios.post('http://recommendation-engine:8000/api/recommend', {
+      user_id: userId,
+      top_k: 6
+    });
+
+    const recommendedCourses = response.data.courses;
+
+    // 3. Cache kết quả trong 3600 giây (1 giờ)
+    await redisClient.setEx(cacheKey, 3600, JSON.stringify(recommendedCourses));
+
+    return res.json({ success: true, source: 'engine', data: recommendedCourses });
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = router;</code></pre>
+          </div>
+        </section>
+
+        <!-- SECTION 5 -->
+        <section id="sec-5" class="guide-section">
+          <span class="section-badge">Phần 5</span>
+          <h2>Xây dựng Recommendation Engine (Python &amp; Machine Learning)</h2>
+          <p>Đây là trái tim của đề tài niên luận. Hệ thống sử dụng kỹ thuật **Hybrid Recommendation (Gợi ý lai)** kết hợp hai trường phái phổ biến: **Content-Based Filtering** và **Collaborative Filtering**.</p>
+
+          <h3>1. Content-Based Filtering (Lọc dựa trên nội dung)</h3>
+          <p>Sử dụng thuật toán **TF-IDF (Term Frequency - Inverse Document Frequency)** để mã hóa văn bản mô tả khóa học thành các vector đặc trưng, sau đó dùng **Cosine Similarity** để đo độ tương đồng giữa các khóa học với sở thích sinh viên:</p>
+
+          $$\text{TF}(t, d) = \frac{f_{t,d}}{\sum_{t' \in d} f_{t',d}}, \quad \text{IDF}(t, D) = \ln\left(\frac{|D|}{|\{d \in D : t \in d\}|}\right)$$
+
+          $$\text{Cosine Similarity}(\mathbf{A}, \mathbf{B}) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \|\mathbf{B}\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}$$
+
+          <h3>2. Collaborative Filtering (Lọc cộng tác User-Based / Item-Based)</h3>
+          <p>Sử dụng chỉ số hệ số tương quan **Pearson Correlation** để đo độ tương đồng hành vi giữa các người dùng có cùng gu học tập:</p>
+
+          $$r_{u, v} = \frac{\sum_{i \in I_{uv}} (R_{u,i} - \bar{R}_u)(R_{v,i} - \bar{R}_v)}{\sqrt{\sum_{i \in I_{uv}} (R_{u,i} - \bar{R}_u)^2} \sqrt{\sum_{i \in I_{uv}} (R_{v,i} - \bar{R}_v)^2}}$$
+
+          <h3>3. Hybrid Recommendation &amp; Offline Evaluation</h3>
+          <p>Điểm số gợi ý cuối cùng là tổng có trọng số ($\alpha = 0.4$, $1-\alpha = 0.6$):</p>
+
+          $$\text{Score}_{\text{hybrid}}(u, i) = \alpha \cdot \text{Score}_{\text{CB}}(u, i) + (1 - \alpha) \cdot \text{Score}_{\text{CF}}(u, i)$$
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>Python Scikit-Learn Hybrid Recommendation Implementation</span>
+            </div>
+            <pre><code>import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+class HybridRecommender:
+    def __init__(self, alpha=0.4):
+        self.alpha = alpha
+        self.tfidf = TfidfVectorizer(stop_words='english')
+        
+    def fit_content_based(self, course_df):
+        # Kết hợp tiêu đề và mô tả khóa học
+        course_df['features'] = course_df['title'] + " " + course_df['description']
+        self.tfidf_matrix = self.tfidf.fit_transform(course_df['features'])
+        self.cb_sim_matrix = cosine_similarity(self.tfidf_matrix, self.tfidf_matrix)
+        self.course_df = course_df
+        
+    def predict_hybrid(self, user_profile_vector, cf_scores_array):
+        # 1. Tính toán điểm Content-Based
+        cb_scores = cosine_similarity(user_profile_vector, self.tfidf_matrix).flatten()
+        
+        # 2. Chuẩn hóa điểm Min-Max về khoảng [0, 1]
+        cb_norm = (cb_scores - np.min(cb_scores)) / (np.max(cb_scores) - np.min(cb_scores) + 1e-9)
+        cf_norm = (cf_scores_array - np.min(cf_scores_array)) / (np.max(cf_scores_array) - np.min(cf_scores_array) + 1e-9)
+        
+        # 3. Kết hợp có trọng số Weighted Sum
+        hybrid_scores = self.alpha * cb_norm + (1 - self.alpha) * cf_norm
+        
+        # Lấy Top-K index có điểm số cao nhất
+        top_k_indices = np.argsort(hybrid_scores)[::-1][:6]
+        return self.course_df.iloc[top_k_indices]</code></pre>
+          </div>
+        </section>
+
+        <!-- SECTION 6 -->
+        <section id="sec-6" class="guide-section">
+          <span class="section-badge">Phần 6</span>
+          <h2>Xây dựng Frontend Client (ReactJS &amp; Redux Toolkit)</h2>
+          <p>Frontend được tổ chức giao diện theo component linh hoạt, kết nối trực tiếp đến backend APIs để cập nhật giao diện theo thời gian thực.</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>React Redux Recommendation Fetch Component</span>
+            </div>
+            <pre><code>import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRecommendedCourses } from '../redux/slices/recommendationSlice';
+
+export const RecommendationFeed = () => {
+  const dispatch = useDispatch();
+  const { courses, loading } = useSelector((state) => state.recommendation);
+
+  useEffect(() => {
+    dispatch(fetchRecommendedCourses());
+  }, [dispatch]);
+
+  if (loading) return &lt;div className="animate-pulse"&gt;Đang tính toán khóa học gợi ý...&lt;/div&gt;;
+
+  return (
+    &lt;section className="my-8"&gt;
+      &lt;h2 className="text-2xl font-bold mb-4 text-blue-600"&gt;✨ Đề Xuất Dành Riêng Cho Bạn&lt;/h2&gt;
+      &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
+        {courses.map((course) => (
+          &lt;div key={course.id} className="border rounded-lg p-4 shadow-sm hover:shadow-md transition"&gt;
+            &lt;h3 className="font-semibold text-lg"&gt;{course.title}&lt;/h3&gt;
+            &lt;p className="text-sm text-gray-600 line-clamp-2 mt-2"&gt;{course.description}&lt;/p&gt;
+            &lt;div className="mt-4 flex justify-between items-center"&gt;
+              &lt;span className="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded"&gt;
+                Độ khớp: {(course.score * 100).toFixed(0)}%
+              &lt;/span&gt;
+              &lt;a href={`/courses/${course.id}`} className="text-blue-500 hover:underline text-sm font-semibold"&gt;
+                Xem ngay &rarr;
+              &lt;/a&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+};</code></pre>
+          </div>
+        </section>
+
+        <!-- SECTION 7 -->
+        <section id="sec-7" class="guide-section">
+          <span class="section-badge">Phần 7</span>
+          <h2>Triển khai Đóng gói Hệ thống với Docker Compose</h2>
+          <p>Sinh viên sử dụng **Docker Compose** để đóng gói 5 containers dịch vụ độc lập giúp môi trường chạy nhất quán trên cả máy cá nhân lẫn server đám mây:</p>
+
+          <div class="code-editor-container">
+            <div class="code-header">
+              <span>docker-compose.yml (Multi-Container Deployment)</span>
+            </div>
+            <pre><code>version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: learning_platform
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_password
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend-api:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - PYTHON_ENGINE_URL=http://recommendation-engine:8000
+    depends_on:
+      - postgres
+      - redis
+
+  recommendation-engine:
+    build: ./ml-engine
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-api</code></pre>
+          </div>
+        </section>
+
+        <!-- SECTION 8 -->
+        <section id="sec-8" class="guide-section">
+          <span class="section-badge">Phần 8</span>
+          <h2>Lộ trình 8 Tuần Thực hiện Niên luận Cơ sở ngành KHMT</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Tuần thực hiện</th>
+                <th>Nhiệm vụ trọng tâm</th>
+                <th>Sản phẩm bàn giao (Deliverables)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tuần 1 - 2</strong></td>
+                <td>Phân tích yêu cầu, xác định Use Case, thiết kế ERD CSDL PostgreSQL và chọn công nghệ.</td>
+                <td>Bản tả sơ đồ Use Case, ERD Diagram, File khởi tạo SQL Script.</td>
+              </tr>
+              <tr>
+                <td><strong>Tuần 3 - 4</strong></td>
+                <td>Xây dựng Backend Server với Node.js/Express, viết API Auth (JWT), User, Course &amp; tương tác.</td>
+                <td>Bộ REST APIs hoàn chỉnh test trên Postman, kết nối PostgreSQL &amp; Redis.</td>
+              </tr>
+              <tr>
+                <td><strong>Tuần 5 - 6</strong></td>
+                <td>Xây dựng Python Recommendation Engine (Content-Based, CF &amp; Hybrid) và API FastAPI.</td>
+                <td>Module gợi ý Python chạy đúng thuật toán, trả về JSON Top-K chuẩn xác.</td>
+              </tr>
+              <tr>
+                <td><strong>Tuần 7</strong></td>
+                <td>Xây dựng Frontend ReactJS Client, tích hợp Redux Toolkit và kết nối toàn bộ hệ thống API.</td>
+                <td>Giao diện Web SPA chạy mượt trên trình duyệt, kết nối hoàn chỉnh Backend &amp; ML.</td>
+              </tr>
+              <tr>
+                <td><strong>Tuần 8</strong></td>
+                <td>Đóng gói Docker Compose, chạy kiểm thử toàn hệ thống, đánh giá offline và hoàn thiện báo cáo.</td>
+                <td>Bản báo cáo Niên luận PDF, File docker-compose.yml và Slide thuyết minh.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
