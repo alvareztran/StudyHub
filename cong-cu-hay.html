@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Công cụ hay & Kho đường dẫn - StudyHub</title>
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+  <script src="js/theme.js"></script>
+  <style>
+    /* Custom page styling for Bookmarks & Tools */
+    .tool-category-header {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 2.5rem 0 1.25rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    .add-bookmark-btn {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+    .add-bookmark-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+    }
+    /* Modal Dialog */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+      transform: translateY(20px);
+      transition: all 0.25s ease;
+    }
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--text-primary);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: var(--accent-cyan);
+    }
+    .btn-delete-custom {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      float: right;
+    }
+  </style>
+</head>
+<body class="landing-page">
+  <div class="landing-container">
+    <!-- Header & Navigation -->
+    <header class="landing-header">
+      <div class="brand-wrapper" style="cursor: pointer;" onclick="window.location.href='index.html'">
+        <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
+        <span class="brand-name">StudyHub</span>
+      </div>
+      <nav class="landing-nav no-print">
+        <a href="index.html" class="nav-item">Trang chủ</a>
+        <a href="tai-lieu-khac.html" class="nav-item">Tài liệu khác</a>
+        <a href="cong-cu-hay.html" class="nav-item active">Công cụ hay 🛠️</a>
+        <a href="flappy-bird.html" class="nav-item">Giải trí 🎮</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="meta-info">
+          Trần Vũ Bằng &bull; Alvarez Tran
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero/Header Section -->
+      <section style="padding: 3.5rem 0 2rem 0; text-align: center;">
+        <h1 class="hero-title" style="font-size: 2.75rem; margin-bottom: 1rem; line-height: 1.2;">
+          Thư viện Đường dẫn &amp; <span>Công cụ hay</span>
+        </h1>
+        <p class="hero-desc" style="margin: 0 auto 2rem auto; max-width: 720px; font-size: 1.05rem;">
+          Tổng hợp các trang web hữu ích, tiện ích lập trình, công cụ AI, thiết kế UI/UX, tài nguyên học tập và trình quản lý Bookmark cá nhân giúp bạn tối ưu năng suất làm việc.
+        </p>
+
+        <!-- Search & Action Bar -->
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center;">
+          <!-- Search Input -->
+          <div style="position: relative; width: 100%; max-width: 520px;">
+            <input type="text" id="tool-search-input" placeholder="Tìm kiếm trang web, công cụ, AI, UI/UX..." style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.6rem; border-radius: 10px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: all 0.2s;" />
+            <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 1rem; opacity: 0.7;">🔍</span>
+          </div>
+
+          <!-- Add Custom Bookmark Button -->
+          <button class="add-bookmark-btn" onclick="openBookmarkModal()">
+            <span>➕</span> Thêm đường dẫn cá nhân
+          </button>
+
+          <!-- Filter Tabs -->
+          <div class="filter-tabs-wrapper" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="dev">⚡ Lập trình &amp; Dev</button>
+            <button class="filter-tab" data-filter="ai">🤖 AI &amp; Machine Learning</button>
+            <button class="filter-tab" data-filter="design">🎨 UI/UX &amp; Design</button>
+            <button class="filter-tab" data-filter="learn">📚 Học tập &amp; Sách</button>
+            <button class="filter-tab" data-filter="cloud">🚀 DevOps &amp; Cloud</button>
+            <button class="filter-tab" data-filter="utility">🛠️ Tiện ích</button>
+            <button class="filter-tab" data-filter="custom">⭐ Bookmark của tôi</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tools Grid Section -->
+      <section style="padding-bottom: 5rem;">
+        <div class="course-grid" id="tools-grid">
+
+          <!-- ==================== LẬP TRÌNH & DEV TOOLS ==================== -->
+          
+          <!-- ITEM 1: LeetCode -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #ea580c; color: white;">Dev Platform</div>
+              <h3 class="course-title">LeetCode</h3>
+              <p class="course-desc">Nền tảng luyện tập Cấu trúc dữ liệu và Giải thuật (DSA) hàng đầu thế giới dành cho lập trình viên chuẩn bị phỏng vấn vào các tập đoàn công nghệ lớn (FAANG).</p>
+              <ul class="course-highlights">
+                <li>Hơn 3,000+ bài tập thuật toán phong phú</li>
+                <li>Cuộc thi lập trình hàng tuần (Weekly Contests)</li>
+                <li>Thảo luận &amp; Lời giải tối ưu từ cộng đồng</li>
+              </ul>
+            </div>
+            <a href="https://leetcode.com/" target="_blank" class="course-action-btn">
+              Mở LeetCode
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 2: GitHub -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #24292e; color: white;">Git Repo</div>
+              <h3 class="course-title">GitHub</h3>
+              <p class="course-desc">Nền tảng lưu trữ mã nguồn, quản lý phiên bản Git và hợp tác phát triển phần mềm lớn nhất thế giới, hỗ trợ CI/CD GitHub Actions &amp; GitHub Copilot AI.</p>
+              <ul class="course-highlights">
+                <li>Quản lý kho mã nguồn (Repository) công khai &amp; riêng tư</li>
+                <li>Tự động hóa CI/CD với GitHub Actions</li>
+                <li>Tích hợp GitHub Student Developer Pack miễn phí</li>
+              </ul>
+            </div>
+            <a href="https://github.com/" target="_blank" class="course-action-btn">
+              Truy cập GitHub
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 3: DevDocs.io -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #0d9488; color: white;">Documentation</div>
+              <h3 class="course-title">DevDocs.io</h3>
+              <p class="course-desc">Trang tra cứu tài liệu API tổng hợp tốc độ cao cho hầu hết các ngôn ngữ lập trình, framework và thư viện phổ biến. Hỗ trợ tìm kiếm siêu tốc và đọc offline.</p>
+              <ul class="course-highlights">
+                <li>Gom nhóm tài liệu JS, Python, React, Docker...</li>
+                <li>Tìm kiếm từ khóa tức thì không quảng cáo</li>
+                <li>Khả năng lưu tài liệu hoạt động Offline</li>
+              </ul>
+            </div>
+            <a href="https://devdocs.io/" target="_blank" class="course-action-btn">
+              Mở DevDocs
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 4: RegEx101 -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #0284c7; color: white;">Utility Tool</div>
+              <h3 class="course-title">RegEx101</h3>
+              <p class="course-desc">Công cụ kiểm thử và giải thích chi tiết Biểu thức chính quy (Regular Expressions) trực quan theo thời gian thực cho JavaScript, Python, PHP, PCRE và Golang.</p>
+              <ul class="course-highlights">
+                <li>Giải thích từng token mẫu biểu thức theo cây</li>
+                <li>Kiểm thử khớp chuỗi thực tế tức thì</li>
+                <li>Thư viện mẫu Regex phong phú từ cộng đồng</li>
+              </ul>
+            </div>
+            <a href="https://regex101.com/" target="_blank" class="course-action-btn">
+              Mở RegEx101
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 5: Carbon.now.sh -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #7c3aed; color: white;">Image Generator</div>
+              <h3 class="course-title">Carbon (Code Snippet Generator)</h3>
+              <p class="course-desc">Tạo và chia sẻ những bức ảnh chụp đoạn mã nguồn đẹp mắt với tùy chỉnh theme màu, font chữ monospace và khung cửa sổ macOS sang trọng.</p>
+              <ul class="course-highlights">
+                <li>Tự động highlight cú pháp theo ngôn ngữ</li>
+                <li>Xuất ảnh chất lượng cao PNG/SVG</li>
+                <li>Tùy chỉnh giao diện cửa sổ &amp; nền gradient</li>
+              </ul>
+            </div>
+            <a href="https://carbon.now.sh/" target="_blank" class="course-action-btn">
+              Tạo ảnh Code Carbon
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 6: CanIUse -->
+          <div class="course-card" data-category="dev">
+            <div>
+              <div class="course-badge" style="background: #b91c1c; color: white;">Browser Compatibility</div>
+              <h3 class="course-title">Can I Use?</h3>
+              <p class="course-desc">Bảng tra cứu độ tương thích của các tính năng HTML5, CSS3, SVG và Web APIs trên tất cả các trình duyệt di động và máy tính hiện nay.</p>
+              <ul class="course-highlights">
+                <li>Tra cứu tính năng CSS Flexbox, Grid, WebGL...</li>
+                <li>Bảng thống kê tỷ lệ phần trăm người dùng toàn cầu</li>
+                <li>Gợi ý giải pháp Fallback / Prefix</li>
+              </ul>
+            </div>
+            <a href="https://caniuse.com/" target="_blank" class="course-action-btn">
+              Tra cứu CanIUse
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ==================== AI & MACHINE LEARNING ==================== -->
+
+          <!-- ITEM 7: ChatGPT -->
+          <div class="course-card" data-category="ai">
+            <div>
+              <div class="course-badge" style="background: #10a37f; color: white;">OpenAI AI</div>
+              <h3 class="course-title">ChatGPT (OpenAI)</h3>
+              <p class="course-desc">Trợ lý Trí tuệ Nhân tạo đa năng mạnh mẽ, hỗ trợ lập trình viên giải quyết bug, giải thích thuật toán, viết tài liệu và tối ưu hóa mã nguồn.</p>
+              <ul class="course-highlights">
+                <li>Mô hình ngôn ngữ GPT-4o thế hệ mới</li>
+                <li>Khả năng đọc hiểu mã nguồn &amp; sửa lỗi bug</li>
+                <li>Hỗ trợ phân tích dữ liệu &amp; sinh mã tự động</li>
+              </ul>
+            </div>
+            <a href="https://chatgpt.com/" target="_blank" class="course-action-btn">
+              Ghé thăm ChatGPT
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 8: Claude AI -->
+          <div class="course-card" data-category="ai">
+            <div>
+              <div class="course-badge" style="background: #d97706; color: white;">Anthropic AI</div>
+              <h3 class="course-title">Claude AI (Anthropic)</h3>
+              <p class="course-desc">Mô hình AI nổi tiếng với khả năng tư duy logic xuất sắc, đọc hiểu ngữ cảnh tài liệu cực dài và hỗ trợ lập trình chính xác cao.</p>
+              <ul class="course-highlights">
+                <li>Khả năng đọc hiểu văn bản &amp; codebase lớn</li>
+                <li>Phong cách trả lời tự nhiên, logic chuẩn mực</li>
+                <li>Tạo Artifacts tương tác trực tiếp</li>
+              </ul>
+            </div>
+            <a href="https://claude.ai/" target="_blank" class="course-action-btn">
+              Truy cập Claude AI
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 9: Google Gemini -->
+          <div class="course-card" data-category="ai">
+            <div>
+              <div class="course-badge" style="background: #2563eb; color: white;">Google AI</div>
+              <h3 class="course-title">Google Gemini</h3>
+              <p class="course-desc">Mô hình AI đa phương thức (Multimodal) tiên tiến của Google DeepMind, tích hợp dữ liệu thời gian thực và hệ sinh thái Google Workspace.</p>
+              <ul class="course-highlights">
+                <li>Xử lý đồng thời Văn bản, Hình ảnh &amp; Code</li>
+                <li>Kết nối dữ liệu Google Search thực tế</li>
+                <li>Context Window siêu lớn 1M+ tokens</li>
+              </ul>
+            </div>
+            <a href="https://gemini.google.com/" target="_blank" class="course-action-btn">
+              Khám phá Gemini
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 10: Hugging Face -->
+          <div class="course-card" data-category="ai">
+            <div>
+              <div class="course-badge" style="background: #ca8a04; color: white;">ML Community</div>
+              <h3 class="course-title">Hugging Face</h3>
+              <p class="course-desc">Cộng đồng và nền tảng lưu trữ các mô hình Học máy, AI mã nguồn mở (Open Source Models), Datasets và Spaces chạy Demo trực tuyến lớn nhất thế giới.</p>
+              <ul class="course-highlights">
+                <li>Hàng ngàn Pre-trained Models (LLMs, Diffusion, Vision)</li>
+                <li>Kho Datasets nghiên cứu học thuật phong phú</li>
+                <li>Thư viện Transformers Python nổi tiếng</li>
+              </ul>
+            </div>
+            <a href="https://huggingface.co/" target="_blank" class="course-action-btn">
+              Ghé thăm Hugging Face
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 11: Papers With Code -->
+          <div class="course-card" data-category="ai">
+            <div>
+              <div class="course-badge" style="background: #0284c7; color: white;">AI Research</div>
+              <h3 class="course-title">Papers With Code</h3>
+              <p class="course-desc">Trang tổng hợp bài báo khoa học về Machine Learning và Deep Learning hàng đầu thế giới gắn liền với mã nguồn cài đặt thực nghiệm trên GitHub.</p>
+              <ul class="course-highlights">
+                <li>Bảng xếp hạng SOTA (State-of-the-art) theo tác vụ</li>
+                <li>Liên kết bài báo ArXiv với GitHub Code</li>
+                <li>Tra cứu giải thuật AI tiên tiến nhanh chóng</li>
+              </ul>
+            </div>
+            <a href="https://paperswithcode.com/" target="_blank" class="course-action-btn">
+              Xem Papers With Code
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ==================== UI/UX & DESIGN ==================== -->
+
+          <!-- ITEM 12: Figma -->
+          <div class="course-card" data-category="design">
+            <div>
+              <div class="course-badge" style="background: #a855f7; color: white;">UI/UX Design</div>
+              <h3 class="course-title">Figma</h3>
+              <p class="course-desc">Công cụ thiết kế giao diện người dùng (UI/UX) và tạo mẫu tương tác (Prototype) dựa trên nền tảng Web cho phép làm việc nhóm trực tiếp.</p>
+              <ul class="course-highlights">
+                <li>Thiết kế hệ thống Component &amp; Auto-Layout</li>
+                <li>Chế độ Dev Mode xem CSS / Code snippet</li>
+                <li>Cộng đồng Figma Community với vô số template</li>
+              </ul>
+            </div>
+            <a href="https://www.figma.com/" target="_blank" class="course-action-btn">
+              Mở Figma
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 13: Excalidraw -->
+          <div class="course-card" data-category="design">
+            <div>
+              <div class="course-badge" style="background: #6366f1; color: white;">Whiteboard Tool</div>
+              <h3 class="course-title">Excalidraw</h3>
+              <p class="course-desc">Bảng vẽ phác thảo sơ đồ trực tuyến với nét vẽ tay độc đáo, lý tưởng cho việc thiết kế sơ đồ kiến trúc hệ thống, flowchart và mindmap.</p>
+              <ul class="course-highlights">
+                <li>Phong cách vẽ tay (Hand-drawn look) tối giản</li>
+                <li>Bảo mật cao, dữ liệu lưu trực tiếp trình duyệt</li>
+                <li>Xuất ảnh PNG, SVG vector cực nét</li>
+              </ul>
+            </div>
+            <a href="https://excalidraw.com/" target="_blank" class="course-action-btn">
+              Vẽ sơ đồ Excalidraw
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 14: Iconify -->
+          <div class="course-card" data-category="design">
+            <div>
+              <div class="course-badge" style="background: #0ea5e9; color: white;">Icon Library</div>
+              <h3 class="course-title">Iconify</h3>
+              <p class="course-desc">Thư viện tổng hợp hơn 100,000+ biểu tượng vector (SVG Icons) từ các bộ icon nổi tiếng (Lucide, Material Icons, FontAwesome, Tabler).</p>
+              <ul class="course-highlights">
+                <li>Tìm kiếm icon tập trung nhanh chóng</li>
+                <li>Copy mã SVG / React Component / HTML 1-click</li>
+                <li>Miễn phí sử dụng thương mại</li>
+              </ul>
+            </div>
+            <a href="https://iconify.design/" target="_blank" class="course-action-btn">
+              Tìm Iconify
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ==================== HỌC TẬP & SÁCH ==================== -->
+
+          <!-- ITEM 15: Roadmap.sh -->
+          <div class="course-card" data-category="learn">
+            <div>
+              <div class="course-badge" style="background: #f43f5e; color: white;">Developer Roadmap</div>
+              <h3 class="course-title">Roadmap.sh</h3>
+              <p class="course-desc">Trang web cung cấp bản đồ lộ trình học tập lập trình tương tác theo từng vị trí ngành nghề: Frontend, Backend, DevOps, Computer Science, AI...</p>
+              <ul class="course-highlights">
+                <li>Lộ trình được đóng góp bởi các chuyên gia</li>
+                <li>Định hướng từng kỹ năng cần học từ dễ đến khó</li>
+                <li>Gợi ý tài liệu học tập chuẩn xác</li>
+              </ul>
+            </div>
+            <a href="https://roadmap.sh/" target="_blank" class="course-action-btn">
+              Xem Lộ trình Roadmap.sh
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 16: Refactoring Guru -->
+          <div class="course-card" data-category="learn">
+            <div>
+              <div class="course-badge" style="background: #10b981; color: white;">Design Patterns</div>
+              <h3 class="course-title">Refactoring.guru</h3>
+              <p class="course-desc">Trang web giải thích minh họa tuyệt đẹp về các Mẫu thiết kế phần mềm (Design Patterns: Singleton, Factory, Observer...) và kỹ thuật Tối ưu mã (Refactoring).</p>
+              <ul class="course-highlights">
+                <li>Minh họa trực quan hình ảnh dễ hiểu</li>
+                <li>Mã nguồn ví dụ Java, C++, Python, JS</li>
+                <li>Giải thích lý do tại sao nên dùng Design Pattern</li>
+              </ul>
+            </div>
+            <a href="https://refactoring.guru/" target="_blank" class="course-action-btn">
+              Học Design Patterns
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ==================== DEVOPS & CLOUD ==================== -->
+
+          <!-- ITEM 17: Vercel -->
+          <div class="course-card" data-category="cloud">
+            <div>
+              <div class="course-badge" style="background: #000000; color: white;">Cloud Hosting</div>
+              <h3 class="course-title">Vercel</h3>
+              <p class="course-desc">Nền tảng đám mây ưu việt cho phép triển khai (Deploy) ứng dụng Frontend (React, Next.js, Vue) tự động qua Git với tốc độ phản hồi Serverless Edge cực nhanh.</p>
+              <ul class="course-highlights">
+                <li>Tự động Deploy khi git push</li>
+                <li>Hỗ trợ SSL / Domain tùy chỉnh miễn phí</li>
+                <li>Hệ thống Serverless Functions &amp; Analytics</li>
+              </ul>
+            </div>
+            <a href="https://vercel.com/" target="_blank" class="course-action-btn">
+              Truy cập Vercel
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 18: Supabase -->
+          <div class="course-card" data-category="cloud">
+            <div>
+              <div class="course-badge" style="background: #16a34a; color: white;">BaaS / Database</div>
+              <h3 class="course-title">Supabase</h3>
+              <p class="course-desc">Giải pháp thay thế Firebase mã nguồn mở, cung cấp CSDL PostgreSQL đám mây, Authentication, Realtime Subscription, Storage và Edge Functions.</p>
+              <ul class="course-highlights">
+                <li>Nền tảng CSDL PostgreSQL mạnh mẽ</li>
+                <li>Tạo RESTful &amp; GraphQL API tự động</li>
+                <li>Hệ thống xác thực Auth mã hóa sẵn</li>
+              </ul>
+            </div>
+            <a href="https://supabase.com/" target="_blank" class="course-action-btn">
+              Khám phá Supabase
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ==================== TIỆN ÍCH ==================== -->
+
+          <!-- ITEM 19: TinyPNG -->
+          <div class="course-card" data-category="utility">
+            <div>
+              <div class="course-badge" style="background: #059669; color: white;">Image Compressor</div>
+              <h3 class="course-title">TinyPNG / TinyJPG</h3>
+              <p class="course-desc">Công cụ tối ưu hóa và nén hình ảnh Web (PNG, JPEG, WebP) thông minh bằng thuật toán nén có tổn hao nhẹ, giúp giảm 60-80% dung lượng ảnh mà mắt thường không nhận ra.</p>
+              <ul class="course-highlights">
+                <li>Nén đồng thời nhiều ảnh nhanh chóng</li>
+                <li>Tăng tốc độ tải trang web tối đa</li>
+                <li>Giữ nguyên độ trong suốt (Alpha transparency)</li>
+              </ul>
+            </div>
+            <a href="https://tinypng.com/" target="_blank" class="course-action-btn">
+              Nén ảnh TinyPNG
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- ITEM 20: PDF24 Tools -->
+          <div class="course-card" data-category="utility">
+            <div>
+              <div class="course-badge" style="background: #dc2626; color: white;">PDF Toolkit</div>
+              <h3 class="course-title">PDF24 Tools</h3>
+              <p class="course-desc">Bộ công cụ chỉnh sửa file PDF hoàn toàn miễn phí không giới hạn: ghép file, tách trang, nén dung lượng, chuyển đổi định dạng Word/PDF, đặt mật khẩu bảo mật.</p>
+              <ul class="course-highlights">
+                <li>Ghép &amp; Tách file PDF cực kỳ nhanh chóng</li>
+                <li>Nén giảm dung lượng PDF chuẩn in ấn</li>
+                <li>Hoàn toàn miễn phí không có quảng cáo độc hại</li>
+              </ul>
+            </div>
+            <a href="https://tools.pdf24.org/" target="_blank" class="course-action-btn">
+              Sử dụng PDF24
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal Form: Add Custom Bookmark -->
+    <div id="bookmark-modal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">⭐ Thêm Bookmark Cá Nhân</div>
+          <button class="modal-close" onclick="closeBookmarkModal()">&times;</button>
+        </div>
+        <form id="add-bookmark-form">
+          <div class="form-group">
+            <label for="bm-title">Tên trang web / công cụ *</label>
+            <input type="text" id="bm-title" class="form-control" placeholder="Ví dụ: Stack Overflow" required>
+          </div>
+          <div class="form-group">
+            <label for="bm-url">Đường dẫn URL *</label>
+            <input type="url" id="bm-url" class="form-control" placeholder="https://example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="bm-category">Danh mục phân loại</label>
+            <select id="bm-category" class="form-control">
+              <option value="dev">⚡ Lập trình & Dev</option>
+              <option value="ai">🤖 AI & Machine Learning</option>
+              <option value="design">🎨 UI/UX & Design</option>
+              <option value="learn">📚 Học tập & Sách</option>
+              <option value="cloud">🚀 DevOps & Cloud</option>
+              <option value="utility">🛠️ Tiện ích</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bm-desc">Ghi chú mô tả ngắn</label>
+            <textarea id="bm-desc" class="form-control" rows="3" placeholder="Mô tả công dụng của công cụ này..."></textarea>
+          </div>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+            <button type="button" class="btn-secondary" onclick="closeBookmarkModal()" style="padding: 0.5rem 1rem; border-radius: 6px;">Hủy</button>
+            <button type="submit" class="btn-primary" style="padding: 0.5rem 1.25rem; border-radius: 6px;">Lưu Bookmark</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thư viện đường dẫn &amp; công cụ hữu ích.</p>
+    </footer>
+  </div>
+
+  <!-- Interactive Filtering & LocalStorage Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("tool-search-input");
+      const filterTabs = document.querySelectorAll(".filter-tab");
+      const toolsGrid = document.getElementById("tools-grid");
+
+      let activeFilter = "all";
+      let searchQuery = "";
+
+      // Helper to remove accents for smart search
+      function removeVietnameseTones(str) {
+        return str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d")
+          .replace(/Đ/g, "D");
+      }
+
+      // Filter Logic
+      function filterTools() {
+        const allCards = document.querySelectorAll("#tools-grid .course-card");
+        const cleanQuery = removeVietnameseTones(searchQuery.toLowerCase().trim());
+
+        allCards.forEach(card => {
+          const category = card.getAttribute("data-category");
+          const cardText = removeVietnameseTones(card.innerText.toLowerCase());
+
+          const matchesCategory = (activeFilter === "all") || (category === activeFilter);
+          const matchesSearch = cleanQuery === "" || cardText.includes(cleanQuery);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
+      // Filter Tabs Event Listeners
+      filterTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          filterTabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          activeFilter = tab.getAttribute("data-filter");
+          filterTools();
+        });
+      });
+
+      // Search Event Listener
+      searchInput?.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        filterTools();
+      });
+
+      // Render Custom Bookmarks from LocalStorage
+      function loadCustomBookmarks() {
+        const saved = JSON.parse(localStorage.getItem("studyhub_custom_bookmarks") || "[]");
+        
+        // Remove existing custom cards before re-rendering
+        document.querySelectorAll(".custom-bookmark-card").forEach(el => el.remove());
+
+        saved.forEach((item, index) => {
+          const cardHtml = document.createElement("div");
+          cardHtml.className = "course-card custom-bookmark-card";
+          cardHtml.setAttribute("data-category", "custom");
+          cardHtml.innerHTML = `
+            <div>
+              <button class="btn-delete-custom" onclick="deleteBookmark(${index})" title="Xóa bookmark này">&times; Xóa</button>
+              <div class="course-badge" style="background: linear-gradient(135deg, #eab308, #ca8a04); color: black;">⭐ Custom Bookmark</div>
+              <h3 class="course-title">${escapeHtml(item.title)}</h3>
+              <p class="course-desc">${escapeHtml(item.desc || 'Đường dẫn cá nhân đã lưu.')}</p>
+            </div>
+            <a href="${escapeHtml(item.url)}" target="_blank" class="course-action-btn" style="margin-top: 1rem;">
+              Truy cập trang web
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          `;
+          toolsGrid.appendChild(cardHtml);
+        });
+
+        filterTools();
+      }
+
+      // Add Bookmark Form Handler
+      document.getElementById("add-bookmark-form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = document.getElementById("bm-title").value;
+        const url = document.getElementById("bm-url").value;
+        const category = document.getElementById("bm-category").value;
+        const desc = document.getElementById("bm-desc").value;
+
+        const saved = JSON.parse(localStorage.getItem("studyhub_custom_bookmarks") || "[]");
+        saved.push({ title, url, category, desc, createdAt: new Date().toISOString() });
+        localStorage.setItem("studyhub_custom_bookmarks", JSON.stringify(saved));
+
+        closeBookmarkModal();
+        document.getElementById("add-bookmark-form").reset();
+        loadCustomBookmarks();
+      });
+
+      // Escape HTML helper to prevent XSS
+      function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      window.deleteBookmark = function(index) {
+        if (confirm("Bạn có chắc chắn muốn xóa đường dẫn này khỏi bookmark cá nhân?")) {
+          const saved = JSON.parse(localStorage.getItem("studyhub_custom_bookmarks") || "[]");
+          saved.splice(index, 1);
+          localStorage.setItem("studyhub_custom_bookmarks", JSON.stringify(saved));
+          loadCustomBookmarks();
+        }
+      };
+
+      // Initial Load
+      loadCustomBookmarks();
+    });
+
+    // Modal Control Functions
+    function openBookmarkModal() {
+      document.getElementById("bookmark-modal")?.classList.add("active");
+    }
+    function closeBookmarkModal() {
+      document.getElementById("bookmark-modal")?.classList.remove("active");
+    }
+  </script>
+</body>
+</html>
