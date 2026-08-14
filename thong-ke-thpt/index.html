@@ -347,109 +347,425 @@
     </div>
 
     <!-- MAIN REPORT APP CONTAINER -->
-    <div class="report-app-container">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 1rem 0;">
+      <!-- SPECIAL SECTION: UI/UX FORM DESIGN - XUẤT BẢNG ĐIỂM NĂM HỌC -->
+        <section id="sec-ui-design" class="guide-section" style="border: 1px solid #1e3a8a; padding: 0; overflow: hidden; background: #f8fafc;">
+          <div style="background: #1e3a8a; color: #ffffff; padding: 0.85rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Thiết kế Giao diện: Xuất Bảng Điểm Năm Học (CT296 Systems Analysis &amp; Design)</span>
+            <span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700;">Mẫu Form Chuẩn 100% Theo Yêu Cầu</span>
+          </div>
 
-      <!-- A. TIÊU ĐỀ BÁO CÁO -->
-      <div class="report-header-card">
-        <div>
-          <h2 class="report-title">BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO XẾP LOẠI NĂM HỌC</h2>
-          <div style="font-size: 0.85rem; color: var(--slate-muted); margin-top: 0.25rem;">Hệ thống Quản lý Trường THPT — Phân hệ Báo cáo Thống kê</div>
+          <!-- FULL SYSTEM DASHBOARD MOCKUP CONTAINER -->
+          <div style="display: flex; min-height: 720px; font-family: 'K2D', sans-serif; background: #f4f6f9; border-top: 1px solid #cbd5e1;">
+
+            <!-- 1. LEFT SIDEBAR NAVIGATION MENU -->
+            <aside style="width: 240px; background: #1b365d; color: #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <!-- Brand Header -->
+                <div style="padding: 1.25rem 1rem; display: flex; align-items: center; gap: 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ffffff;">
+                  <div style="width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏫</div>
+                  <div style="font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px;">TRƯỜNG THPT</div>
+                </div>
+
+                <!-- Nav Menu Items -->
+                <div style="padding: 0.85rem 0.6rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; font-weight: 600;">
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📊</span> <span>Tổng quan</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>👨‍🎓</span> <span>Học sinh</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>👨‍🏫</span> <span>Giáo viên</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>🏫</span> <span>Lớp học</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>☑️</span> <span>Điểm danh</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📈</span> <span>Kết quả học tập</span>
+                  </div>
+
+                  <!-- ACTIVE EXPANDED CATEGORY: BÁO CÁO -->
+                  <div>
+                    <div style="padding: 0.6rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.08); color: #ffffff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 700;">
+                      <div style="display: flex; align-items: center; gap: 0.65rem;">
+                        <span>📊</span> <span>Báo cáo</span>
+                      </div>
+                      <span style="font-size: 0.7rem;">▲</span>
+                    </div>
+
+                    <div style="padding-left: 1.5rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.8rem;">
+                      <div style="padding: 0.45rem 0.6rem; color: #cbd5e1; cursor: pointer;">Danh sách báo cáo</div>
+                      <div style="padding: 0.5rem 0.75rem; background: #2563eb; color: #ffffff; border-radius: 6px; font-weight: 700; cursor: pointer;">Xuất bảng điểm năm học</div>
+                    </div>
+                  </div>
+
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📁</span> <span>Danh mục</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>⚙️</span> <span>Hệ thống</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Collapse Arrow -->
+              <div style="padding: 0.85rem 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: left; cursor: pointer;">
+                <span style="display: inline-block; background: rgba(255,255,255,0.1); padding: 0.3rem 0.5rem; border-radius: 4px; color: #ffffff; font-weight: 700;">&lt;</span>
+              </div>
+            </aside>
+
+            <!-- 2. MAIN CONTENT AREA -->
+            <div style="flex: 1; display: flex; flex-direction: column; background: #f4f6f9;">
+
+              <!-- TOP NAVBAR / HEADER -->
+              <header style="height: 56px; background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <button style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #334155;">☰</button>
+                  <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a; border: none; padding: 0;">Xuất bảng điểm năm học</h3>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 1.25rem;">
+                  <!-- Notification bell -->
+                  <div style="position: relative; cursor: pointer;">
+                    <span style="font-size: 1.1rem;">🔔</span>
+                    <span style="position: absolute; top: -4px; right: -6px; background: #dc2626; color: white; font-size: 0.65rem; font-weight: 800; padding: 1px 4px; border-radius: 10px;">3</span>
+                  </div>
+
+                  <!-- User profile -->
+                  <div style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+                    <div style="width: 32px; height: 32px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #334155; font-size: 0.85rem;">👤</div>
+                    <div style="text-align: left; line-height: 1.2;">
+                      <div style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">Nguyễn Văn An</div>
+                      <div style="font-size: 0.72rem; color: #64748b;">Quản trị viên</div>
+                    </div>
+                    <span style="font-size: 0.65rem; color: #64748b;">▼</span>
+                  </div>
+                </div>
+              </header>
+
+              <!-- BREADCRUMB NAVIGATION -->
+              <div style="padding: 0.75rem 1.5rem 0.25rem 1.5rem; display: flex; justify-content: flex-end; font-size: 0.78rem; color: #64748b;">
+                <span>Trang chủ</span> &nbsp;&gt;&nbsp; <span>Báo cáo</span> &nbsp;&gt;&nbsp; <strong style="color: #2563eb;">Xuất bảng điểm năm học</strong>
+              </div>
+
+              <!-- MAIN FORM CARD WORKSPACE -->
+              <div style="padding: 0.75rem 1.5rem 1.5rem 1.5rem; flex: 1;">
+                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+
+                  <!-- FORM HEADER TITLE -->
+                  <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f1f5f9;">
+                    <div style="width: 28px; height: 28px; background: #eff6ff; color: #2563eb; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800;">📥</div>
+                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #1e3a8a; border: none; padding: 0; text-transform: uppercase;">THÔNG TIN XUẤT BẢNG ĐIỂM NĂM HỌC</h3>
+                  </div>
+
+                  <form id="form-export-transcript" onsubmit="event.preventDefault(); triggerTranscriptPreview();">
+
+                    <!-- ROW 1: 4 FILTER DROPDOWNS -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Năm học <span style="color: #dc2626;">*</span></label>
+                        <select id="ts-namhoc" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="2025-2026" selected>Chọn năm học</option>
+                          <option value="2025-2026">2025 - 2026</option>
+                          <option value="2024-2025">2024 - 2025</option>
+                          <option value="2023-2024">2023 - 2024</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Khối</label>
+                        <select id="ts-khoi" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="K10">Khối 10</option>
+                          <option value="K11">Khối 11</option>
+                          <option value="K12">Khối 12</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Nhóm lớp</label>
+                        <select id="ts-nhom" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="A">Nhóm A</option>
+                          <option value="B">Nhóm B</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Lớp</label>
+                        <select id="ts-lop" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="10A1">10A1</option>
+                          <option value="10A2">10A2</option>
+                          <option value="11A1">11A1</option>
+                          <option value="12A1">12A1</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- ROW 2: 2-COLUMN OPTIONS GRID (HÌNH THỨC XUẤT & NỘI DUNG HIỂN THỊ) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.25rem;">
+                      
+                      <!-- Left: HÌNH THỨC XUẤT -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">HÌNH THỨC XUẤT</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hinh_thuc" value="hoc_sinh" checked style="margin-top: 0.2rem;">
+                            <div>
+                              <div style="font-size: 0.85rem; font-weight: 700; color: #0f172a;">Bảng điểm năm học (theo học sinh)</div>
+                              <div style="font-size: 0.75rem; color: #64748b;">Xuất bảng điểm năm học của từng học sinh.</div>
+                            </div>
+                          </label>
+
+                          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hinh_thuc" value="lop" style="margin-top: 0.2rem;">
+                            <div>
+                              <div style="font-size: 0.85rem; font-weight: 700; color: #0f172a;">Bảng điểm năm học (theo lớp)</div>
+                              <div style="font-size: 0.75rem; color: #64748b;">Xuất bảng điểm năm học của cả lớp trên cùng một trang.</div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Right: NỘI DUNG HIỂN THỊ -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">NỘI DUNG HIỂN THỊ</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-tt-student" checked>
+                            <span>Thông tin học sinh</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-kq-mon" checked>
+                            <span>Kết quả học tập các môn (TB môn HK1, HK2, Cả năm)</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-tong-ket" checked>
+                            <span>Tổng kết kết quả học tập (TB chung, xếp hạng)</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-nhan-xet">
+                            <span>Nhận xét của giáo viên chủ nhiệm</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ROW 3: 2-COLUMN SETTINGS GRID (SẮP XẾP THEO & ĐƠN VỊ HIỂN THỊ) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.25rem;">
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.4rem;">SẮP XẾP THEO</div>
+                        <select id="ts-sapxep" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="AZ" selected>Họ và tên (A - Z)</option>
+                          <option value="MA">Mã học sinh</option>
+                          <option value="GPA">Điểm trung bình (Cao - Thấp)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.4rem;">ĐƠN VỊ HIỂN THỊ</div>
+                        <select id="ts-donvi" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="T10" selected>Điểm (thang 10)</option>
+                          <option value="T4">Điểm (thang 4)</option>
+                          <option value="LETTER">Điểm chữ (A, B, C, D, F)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- ROW 4: 2-COLUMN ADDITIONAL OPTIONS (TÙY CHỌN BỔ SUNG & TRANG BÌA) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                      <!-- Left: TÙY CHỌN BỔ SUNG -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">TÙY CHỌN BỔ SUNG</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-signature" checked>
+                            <span>Hiển thị chữ ký của Giáo viên chủ nhiệm và Hiệu trưởng</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-date" checked>
+                            <span>Hiển thị ngày xuất báo cáo</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-rank" checked>
+                            <span>Hiển thị xếp hạng</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Right: TRANG BÌA (TÙY CHỌN) -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">TRANG BÌA (TÙY CHỌN)</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                            <input type="checkbox" id="chk-cover">
+                            <span>Thêm trang bìa</span>
+                          </label>
+
+                          <input type="text" placeholder="Tiêu đề trang bìa (không bắt buộc)" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ROW 5: ACTION BUTTON TOOLBAR (5 ACTION BUTTONS) -->
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; border-top: 1px solid #f1f5f9; padding-top: 1.25rem;">
+                      
+                      <!-- 1. Đặt lại -->
+                      <button type="reset" style="background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); color: #334155; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;">
+                        🔄 Đặt lại
+                      </button>
+
+                      <!-- 2. Xem trước (PRIMARY BLUE GRADIENT) -->
+                      <button type="button" onclick="triggerTranscriptPreview()" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); transition: 0.2s;">
+                        🔍 Xem trước
+                      </button>
+
+                      <!-- 3. Xuất Excel (GREEN GRADIENT) -->
+                      <button type="button" onclick="alert('Đã xuất thành công file Excel Bảng điểm năm học (.xlsx)!');" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); transition: 0.2s;">
+                        📊 Xuất Excel
+                      </button>
+
+                      <!-- 4. Xuất PDF (RED GRADIENT) -->
+                      <button type="button" onclick="triggerTranscriptPreview()" style="background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); transition: 0.2s;">
+                        📄 Xuất PDF
+                      </button>
+
+                      <!-- 5. In trực tiếp -->
+                      <button type="button" onclick="window.print()" style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); color: #0f172a; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;">
+                        🖨️ In trực tiếp
+                      </button>
+                    </div>
+
+                    <!-- ROW 6: BLUE INSTRUCTION CALLOUT BOX -->
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem 1.25rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+                      <div style="width: 24px; height: 24px; background: #2563eb; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">i</div>
+                      <div style="font-size: 0.82rem; color: #1e3a8a; line-height: 1.6;">
+                        <strong style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Hướng dẫn</strong>
+                        • Chọn các tiêu chí lọc và nội dung cần hiển thị.<br>
+                        • Bạn có thể xem trước để kiểm tra trước khi xuất file Excel, PDF hoặc in trực tiếp.
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- INTERACTIVE PREVIEW MODAL FOR TRANSCRIPT -->
+        <div id="transcript-preview-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+          <div style="background: #ffffff; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);">
+            
+            <!-- Modal Header -->
+            <div style="background: #1e3a8a; color: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+              <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; font-family: 'K2D', sans-serif;">XEM TRƯỚC BẢNG ĐIỂM HỌC SINH (A4 PREVIEW)</h4>
+              <button onclick="document.getElementById('transcript-preview-modal').style.display='none';" style="background: none; border: none; color: white; font-size: 1.3rem; cursor: pointer; font-weight: 800;">✕</button>
+            </div>
+
+            <!-- Modal Body (Print Sheet) -->
+            <div style="padding: 2rem; overflow-y: auto; background: #f8fafc; font-family: 'K2D', sans-serif; flex: 1;">
+              <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 2.5rem; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; color: #0f172a;">
+                
+                <!-- School & Country Header -->
+                <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #1e3a8a; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">SỞ GIÁO DỤC VÀ ĐÀO TẠO</div>
+                    <div style="font-weight: 800; font-size: 1.05rem; color: #1e3a8a;">TRƯỜNG THPT NGUYỄN TRÃI</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                    <div style="font-style: italic; font-size: 0.82rem; color: #64748b;">Độc lập - Tự do - Hạnh phúc</div>
+                  </div>
+                </div>
+
+                <!-- Document Title -->
+                <div style="text-align: center; margin-bottom: 1.75rem;">
+                  <h2 style="color: #1e3a8a; font-size: 1.4rem; font-weight: 800; margin: 0; text-transform: uppercase;">BẢNG ĐIỂM TỔNG HỢP KẾT QUẢ HỌC TẬP NĂM HỌC</h2>
+                  <div style="font-style: italic; font-size: 0.9rem; color: #64748b; margin-top: 0.25rem;">Năm học: 2025 - 2026</div>
+                </div>
+
+                <!-- Student Personal Info -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.9rem; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                  <div><strong>Họ và tên học sinh:</strong> Trần Vũ Bằng</div>
+                  <div><strong>Mã số học sinh:</strong> HS202510A101</div>
+                  <div><strong>Lớp:</strong> 10A1 (Khối 10 - Nhóm A)</div>
+                  <div><strong>Ngày sinh:</strong> 15/08/2009</div>
+                </div>
+
+                <!-- Subjects Score Table -->
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 1.5rem; border: 1px solid #cbd5e1;">
+                  <thead>
+                    <tr style="background: #1e3a8a; color: white;">
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">STT</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: left;">Môn Học</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">TB HK1</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">TB HK2</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center; background: #1e40af;">TB CẢ NĂM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Toán Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.2</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.5</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.4</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Ngữ Văn</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.5</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.8</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.7</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">3</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Tiếng Anh</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.0</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.1</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">4</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Vật Lý</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.8</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.9</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">5</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Hóa Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.7</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.9</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">6</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Tin Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.8</td><td style="text-align: center; border: 1px solid #cbd5e1;">10.0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.9</td></tr>
+                  </tbody>
+                </table>
+
+                <!-- Summary Performance -->
+                <div style="background: #1e3a8a; color: white; padding: 1rem; border-radius: 6px; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 0.5rem; margin-bottom: 1.75rem;">
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">ĐIỂM TB CHUNG</div><div style="font-size: 1.25rem; font-weight: 800;">9.15</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">XẾP LOẠI HỌC LỰC</div><div style="font-size: 1.25rem; font-weight: 800; color: #60a5fa;">Xuất Sắc</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">HẠNH KIỂM</div><div style="font-size: 1.25rem; font-weight: 800;">Tốt</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">XẾP HẠNG LỚP</div><div style="font-size: 1.25rem; font-weight: 800; color: #4ade80;">Hạng 01/42</div></div>
+                </div>
+
+                <!-- Signatures Section -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 2rem;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 0.88rem; font-weight: 700;">GIÁO VIÊN CHỦ NHIỆM</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 3rem;">(Ký và ghi rõ họ tên)</div>
+                    <div style="font-weight: 800; margin-top: 0.5rem; color: #1e3a8a;">Phạm Thị Mai</div>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="font-size: 0.82rem; color: #64748b; font-style: italic;">Ngày 14 tháng 08 năm 2026</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; margin-top: 0.2rem;">HIỆU TRƯỜNG</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2.3rem;">(Ký tên và đóng dấu)</div>
+                    <div style="font-weight: 800; margin-top: 0.5rem; color: #1e3a8a;">TS. Nguyễn Văn Hùng</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="background: #ffffff; padding: 0.85rem 1.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+              <button onclick="document.getElementById('transcript-preview-modal').style.display='none';" style="padding: 0.55rem 1.1rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; font-weight: 700; font-family: 'K2D', sans-serif; cursor: pointer;">Đóng</button>
+              <button onclick="window.print()" style="padding: 0.55rem 1.25rem; background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; border: none; border-radius: 6px; font-weight: 700; font-family: 'K2D', sans-serif; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">🖨️ In Bảng Điểm Ngay</button>
+            </div>
+
+          </div>
         </div>
-        <div class="report-academic-year-badge">
-          Năm học: <span id="lbl-academic-year">2025 - 2026</span>
-        </div>
-      </div>
 
-      <!-- B. KHU VỰC BỘ LỌC (FILTER TOOLBAR) -->
-      <div class="filter-toolbar-box no-print">
-        <div class="filter-group">
-          <label for="f-nam-hoc">Năm học</label>
-          <select id="f-nam-hoc" class="filter-select" onchange="onFilterChange()">
-            <option value="2025-2026" selected>2025 - 2026</option>
-            <option value="2024-2025">2024 - 2025</option>
-            <option value="2023-2024">2023 - 2024</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="f-khoi">Khối học</label>
-          <select id="f-khoi" class="filter-select" onchange="updateLopFilterOptions(); onFilterChange();">
-            <option value="ALL" selected>Tất cả các khối</option>
-            <option value="K10">Khối 10</option>
-            <option value="K11">Khối 11</option>
-            <option value="K12">Khối 12</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="f-nhom">Nhóm lớp</label>
-          <select id="f-nhom" class="filter-select" onchange="updateLopFilterOptions(); onFilterChange();">
-            <option value="ALL" selected>Tất cả nhóm</option>
-            <option value="A">Nhóm A</option>
-            <option value="B">Nhóm B</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="f-lop">Lớp học</label>
-          <select id="f-lop" class="filter-select" onchange="onFilterChange()">
-            <option value="ALL" selected>Tất cả các lớp</option>
-            <!-- Populated dynamically -->
-          </select>
-        </div>
-
-        <button class="btn-filter-submit" onclick="applyReportFilter()"> Xem báo cáo</button>
-        <button class="btn-filter-reset" onclick="resetReportFilter()"> Đặt lại</button>
-      </div>
-
-      <!-- C. TỔNG QUAN THỐNG KÊ (SUMMARY STAT CARDS) -->
-      <div class="stat-cards-grid" id="summary-cards-container">
-        <!-- Rendered dynamically -->
-      </div>
-
-      <!-- D. BẢNG BÁO CÁO CHÍNH (MAIN DATA TABLE) -->
-      <div class="table-card-container">
-        <div class="table-header-title">
-          <span> BẢNG CHI TIẾT SỐ LƯỢNG HỌC SINH THEO TỪNG LỚP</span>
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--slate-muted);">Đơn vị tính: Học sinh</span>
-        </div>
-
-        <div class="table-scroll-wrapper">
-          <table class="academic-data-table">
-            <thead>
-              <tr>
-                <th style="width: 100px;">Khối</th>
-                <th style="width: 110px;">Lớp</th>
-                <th>Xuất Sắc</th>
-                <th>Giỏi</th>
-                <th>Khá</th>
-                <th>Trung Bình</th>
-                <th>Yếu</th>
-                <th style="width: 120px; background: #1e40af;">Tổng Số</th>
-              </tr>
-            </thead>
-            <tbody id="report-table-body">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- E. BIỂU ĐỒ TRỰC QUAN (VISUALIZATION CHARTS) -->
-      <div class="charts-grid-2col no-print">
-        <div class="chart-box-card">
-          <div class="chart-box-title"> Biểu đồ Cột Nhóm: So sánh Mức Xếp loại giữa các Lớp</div>
-          <div class="chart-canvas-holder"><canvas id="chart-grouped-bar"></canvas></div>
-        </div>
-
-        <div class="chart-box-card">
-          <div class="chart-box-title"> Biểu đồ Tổng hợp theo Khối (Khối 10, 11, 12)</div>
-          <div class="chart-canvas-holder"><canvas id="chart-stacked-grade"></canvas></div>
-        </div>
-      </div>
-
+        <script>
+          function triggerTranscriptPreview() {
+            document.getElementById('transcript-preview-modal').style.display = 'flex';
+          }
+        </script>
     </div>
-  </div>
 
   <!-- COMPLETE REPORT ENGINE SCRIPT -->
   <script>

@@ -352,132 +352,422 @@
           </ul>
         </section>
 
-        <!-- SPECIAL SECTION: UI/UX FORM & REPORT DESIGN FRAMEWORK -->
-        <section id="sec-ui-design" class="guide-section" style="border: 1px solid #1e3a8a;">
-          <span class="section-badge" style="background: #1e3a8a; color: white;">Khung Báo cáo Học thuật</span>
-          <h2 style="color: #1e3a8a;"> BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO XẾP LOẠI NĂM HỌC</h2>
-          <p>Mẫu Báo cáo Thống kê chuẩn mực cho phân hệ Quản lý Trường THPT: Theo dõi <strong>15 lớp (Khối 10, 11, 12)</strong> và <strong>5 mức xếp loại năm học</strong> theo phong cách Khoa học - Tối giản.</p>
+        <!-- SPECIAL SECTION: UI/UX FORM DESIGN - XUẤT BẢNG ĐIỂM NĂM HỌC -->
+        <section id="sec-ui-design" class="guide-section" style="border: 1px solid #1e3a8a; padding: 0; overflow: hidden; background: #f8fafc;">
+          <div style="background: #1e3a8a; color: #ffffff; padding: 0.85rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Thiết kế Giao diện: Xuất Bảng Điểm Năm Học (CT296 Systems Analysis &amp; Design)</span>
+            <span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700;">Mẫu Form Chuẩn 100% Theo Yêu Cầu</span>
+          </div>
 
-          <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.75rem; color: #0f172a; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-top: 1.25rem;">
-            <!-- Header Paper -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1e3a8a; padding-bottom: 0.85rem; margin-bottom: 1.25rem;">
+          <!-- FULL SYSTEM DASHBOARD MOCKUP CONTAINER -->
+          <div style="display: flex; min-height: 720px; font-family: 'K2D', sans-serif; background: #f4f6f9; border-top: 1px solid #cbd5e1;">
+
+            <!-- 1. LEFT SIDEBAR NAVIGATION MENU -->
+            <aside style="width: 240px; background: #1b365d; color: #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <div style="font-weight: 700; font-size: 0.82rem; color: #475569;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</div>
-                <div style="font-weight: 800; font-size: 1rem; color: #1e3a8a;">TRƯỜNG THPT CHUYÊN NGUYỄN TRÃI</div>
+                <!-- Brand Header -->
+                <div style="padding: 1.25rem 1rem; display: flex; align-items: center; gap: 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ffffff;">
+                  <div style="width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏫</div>
+                  <div style="font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px;">TRƯỜNG THPT</div>
+                </div>
+
+                <!-- Nav Menu Items -->
+                <div style="padding: 0.85rem 0.6rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; font-weight: 600;">
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📊</span> <span>Tổng quan</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>👨‍🎓</span> <span>Học sinh</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>👨‍🏫</span> <span>Giáo viên</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>🏫</span> <span>Lớp học</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>☑️</span> <span>Điểm danh</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📈</span> <span>Kết quả học tập</span>
+                  </div>
+
+                  <!-- ACTIVE EXPANDED CATEGORY: BÁO CÁO -->
+                  <div>
+                    <div style="padding: 0.6rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.08); color: #ffffff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 700;">
+                      <div style="display: flex; align-items: center; gap: 0.65rem;">
+                        <span>📊</span> <span>Báo cáo</span>
+                      </div>
+                      <span style="font-size: 0.7rem;">▲</span>
+                    </div>
+
+                    <div style="padding-left: 1.5rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.8rem;">
+                      <div style="padding: 0.45rem 0.6rem; color: #cbd5e1; cursor: pointer;">Danh sách báo cáo</div>
+                      <div style="padding: 0.5rem 0.75rem; background: #2563eb; color: #ffffff; border-radius: 6px; font-weight: 700; cursor: pointer;">Xuất bảng điểm năm học</div>
+                    </div>
+                  </div>
+
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>📁</span> <span>Danh mục</span>
+                  </div>
+                  <div style="padding: 0.6rem 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: 0.2s;">
+                    <span>⚙️</span> <span>Hệ thống</span>
+                  </div>
+                </div>
               </div>
-              <div style="text-align: right;">
-                <div style="font-weight: 700; font-size: 0.82rem; color: #475569;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-                <div style="font-style: italic; font-size: 0.82rem; color: #64748b;">Độc lập - Tự do - Hạnh phúc</div>
+
+              <!-- Bottom Collapse Arrow -->
+              <div style="padding: 0.85rem 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: left; cursor: pointer;">
+                <span style="display: inline-block; background: rgba(255,255,255,0.1); padding: 0.3rem 0.5rem; border-radius: 4px; color: #ffffff; font-weight: 700;">&lt;</span>
+              </div>
+            </aside>
+
+            <!-- 2. MAIN CONTENT AREA -->
+            <div style="flex: 1; display: flex; flex-direction: column; background: #f4f6f9;">
+
+              <!-- TOP NAVBAR / HEADER -->
+              <header style="height: 56px; background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <button style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #334155;">☰</button>
+                  <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a; border: none; padding: 0;">Xuất bảng điểm năm học</h3>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 1.25rem;">
+                  <!-- Notification bell -->
+                  <div style="position: relative; cursor: pointer;">
+                    <span style="font-size: 1.1rem;">🔔</span>
+                    <span style="position: absolute; top: -4px; right: -6px; background: #dc2626; color: white; font-size: 0.65rem; font-weight: 800; padding: 1px 4px; border-radius: 10px;">3</span>
+                  </div>
+
+                  <!-- User profile -->
+                  <div style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+                    <div style="width: 32px; height: 32px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #334155; font-size: 0.85rem;">👤</div>
+                    <div style="text-align: left; line-height: 1.2;">
+                      <div style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">Nguyễn Văn An</div>
+                      <div style="font-size: 0.72rem; color: #64748b;">Quản trị viên</div>
+                    </div>
+                    <span style="font-size: 0.65rem; color: #64748b;">▼</span>
+                  </div>
+                </div>
+              </header>
+
+              <!-- BREADCRUMB NAVIGATION -->
+              <div style="padding: 0.75rem 1.5rem 0.25rem 1.5rem; display: flex; justify-content: flex-end; font-size: 0.78rem; color: #64748b;">
+                <span>Trang chủ</span> &nbsp;&gt;&nbsp; <span>Báo cáo</span> &nbsp;&gt;&nbsp; <strong style="color: #2563eb;">Xuất bảng điểm năm học</strong>
+              </div>
+
+              <!-- MAIN FORM CARD WORKSPACE -->
+              <div style="padding: 0.75rem 1.5rem 1.5rem 1.5rem; flex: 1;">
+                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+
+                  <!-- FORM HEADER TITLE -->
+                  <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f1f5f9;">
+                    <div style="width: 28px; height: 28px; background: #eff6ff; color: #2563eb; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800;">📥</div>
+                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #1e3a8a; border: none; padding: 0; text-transform: uppercase;">THÔNG TIN XUẤT BẢNG ĐIỂM NĂM HỌC</h3>
+                  </div>
+
+                  <form id="form-export-transcript" onsubmit="event.preventDefault(); triggerTranscriptPreview();">
+
+                    <!-- ROW 1: 4 FILTER DROPDOWNS -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Năm học <span style="color: #dc2626;">*</span></label>
+                        <select id="ts-namhoc" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="2025-2026" selected>2025 - 2026</option>
+                          <option value="2024-2025">2024 - 2025</option>
+                          <option value="2023-2024">2023 - 2024</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Khối</label>
+                        <select id="ts-khoi" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="K10">Khối 10</option>
+                          <option value="K11">Khối 11</option>
+                          <option value="K12">Khối 12</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Nhóm lớp</label>
+                        <select id="ts-nhom" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="A">Nhóm A</option>
+                          <option value="B">Nhóm B</option>
+                        </select>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Lớp</label>
+                        <select id="ts-lop" style="padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="ALL" selected>Tất cả</option>
+                          <option value="10A1">10A1</option>
+                          <option value="10A2">10A2</option>
+                          <option value="11A1">11A1</option>
+                          <option value="12A1">12A1</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- ROW 2: 2-COLUMN OPTIONS GRID (HÌNH THỨC XUẤT & NỘI DUNG HIỂN THỊ) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.25rem;">
+                      
+                      <!-- Left: HÌNH THỨC XUẤT -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">HÌNH THỨC XUẤT</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hinh_thuc" value="hoc_sinh" checked style="margin-top: 0.2rem;">
+                            <div>
+                              <div style="font-size: 0.85rem; font-weight: 700; color: #0f172a;">Bảng điểm năm học (theo học sinh)</div>
+                              <div style="font-size: 0.75rem; color: #64748b;">Xuất bảng điểm năm học của từng học sinh.</div>
+                            </div>
+                          </label>
+
+                          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hinh_thuc" value="lop" style="margin-top: 0.2rem;">
+                            <div>
+                              <div style="font-size: 0.85rem; font-weight: 700; color: #0f172a;">Bảng điểm năm học (theo lớp)</div>
+                              <div style="font-size: 0.75rem; color: #64748b;">Xuất bảng điểm năm học của cả lớp trên cùng một trang.</div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Right: NỘI DUNG HIỂN THỊ -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">NỘI DUNG HIỂN THỊ</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-tt-student" checked>
+                            <span>Thông tin học sinh</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-kq-mon" checked>
+                            <span>Kết quả học tập các môn (TB môn HK1, HK2, Cả năm)</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-tong-ket" checked>
+                            <span>Tổng kết kết quả học tập (TB chung, xếp hạng)</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-nhan-xet">
+                            <span>Nhận xét của giáo viên chủ nhiệm</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ROW 3: 2-COLUMN SETTINGS GRID (SẮP XẾP THEO & ĐƠN VỊ HIỂN THỊ) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.25rem;">
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.4rem;">SẮP XẾP THEO</div>
+                        <select id="ts-sapxep" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="AZ" selected>Họ và tên (A - Z)</option>
+                          <option value="MA">Mã học sinh</option>
+                          <option value="GPA">Điểm trung bình (Cao - Thấp)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.4rem;">ĐƠN VỊ HIỂN THỊ</div>
+                        <select id="ts-donvi" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                          <option value="T10" selected>Điểm (thang 10)</option>
+                          <option value="T4">Điểm (thang 4)</option>
+                          <option value="LETTER">Điểm chữ (A, B, C, D, F)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- ROW 4: 2-COLUMN ADDITIONAL OPTIONS (TÙY CHỌN BỔ SUNG & TRANG BÌA) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                      <!-- Left: TÙY CHỌN BỔ SUNG -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">TÙY CHỌN BỔ SUNG</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-signature" checked>
+                            <span>Hiển thị chữ ký của Giáo viên chủ nhiệm và Hiệu trưởng</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-date" checked>
+                            <span>Hiển thị ngày xuất báo cáo</span>
+                          </label>
+
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk-rank" checked>
+                            <span>Hiển thị xếp hạng</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Right: TRANG BÌA (TÙY CHỌN) -->
+                      <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 0.65rem;">TRANG BÌA (TÙY CHỌN)</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #0f172a; font-weight: 600;">
+                            <input type="checkbox" id="chk-cover">
+                            <span>Thêm trang bìa</span>
+                          </label>
+
+                          <input type="text" placeholder="Tiêu đề trang bìa (không bắt buộc)" style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: 'K2D', sans-serif; font-size: 0.85rem; outline: none; background: #ffffff;">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ROW 5: ACTION BUTTON TOOLBAR (5 ACTION BUTTONS) -->
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; border-top: 1px solid #f1f5f9; padding-top: 1.25rem;">
+                      
+                      <!-- 1. Đặt lại -->
+                      <button type="reset" style="background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); color: #334155; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;">
+                        🔄 Đặt lại
+                      </button>
+
+                      <!-- 2. Xem trước (PRIMARY BLUE GRADIENT) -->
+                      <button type="button" onclick="triggerTranscriptPreview()" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); transition: 0.2s;">
+                        🔍 Xem trước
+                      </button>
+
+                      <!-- 3. Xuất Excel (GREEN GRADIENT) -->
+                      <button type="button" onclick="alert('Đã xuất thành công file Excel Bảng điểm năm học (.xlsx)!');" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); transition: 0.2s;">
+                        📊 Xuất Excel
+                      </button>
+
+                      <!-- 4. Xuất PDF (RED GRADIENT) -->
+                      <button type="button" onclick="triggerTranscriptPreview()" style="background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); color: #ffffff; border: none; padding: 0.6rem 1.35rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); transition: 0.2s;">
+                        📄 Xuất PDF
+                      </button>
+
+                      <!-- 5. In trực tiếp -->
+                      <button type="button" onclick="window.print()" style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); color: #0f172a; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 6px; font-family: 'K2D', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;">
+                        🖨️ In trực tiếp
+                      </button>
+                    </div>
+
+                    <!-- ROW 6: BLUE INSTRUCTION CALLOUT BOX -->
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem 1.25rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+                      <div style="width: 24px; height: 24px; background: #2563eb; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">i</div>
+                      <div style="font-size: 0.82rem; color: #1e3a8a; line-height: 1.6;">
+                        <strong style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Hướng dẫn</strong>
+                        • Chọn các tiêu chí lọc và nội dung cần hiển thị.<br>
+                        • Bạn có thể xem trước để kiểm tra trước khi xuất file Excel, PDF hoặc in trực tiếp.
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- INTERACTIVE PREVIEW MODAL FOR TRANSCRIPT -->
+        <div id="transcript-preview-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 9999; justify-content: center; align-items: center; padding: 1.5rem;">
+          <div style="background: #ffffff; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);">
+            
+            <!-- Modal Header -->
+            <div style="background: #1e3a8a; color: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+              <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; font-family: 'K2D', sans-serif;">XEM TRƯỚC BẢNG ĐIỂM HỌC SINH (A4 PREVIEW)</h4>
+              <button onclick="document.getElementById('transcript-preview-modal').style.display='none';" style="background: none; border: none; color: white; font-size: 1.3rem; cursor: pointer; font-weight: 800;">✕</button>
+            </div>
+
+            <!-- Modal Body (Print Sheet) -->
+            <div style="padding: 2rem; overflow-y: auto; background: #f8fafc; font-family: 'K2D', sans-serif; flex: 1;">
+              <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 2.5rem; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; color: #0f172a;">
+                
+                <!-- School & Country Header -->
+                <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #1e3a8a; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">SỞ GIÁO DỤC VÀ ĐÀO TẠO</div>
+                    <div style="font-weight: 800; font-size: 1.05rem; color: #1e3a8a;">TRƯỜNG THPT NGUYỄN TRÃI</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                    <div style="font-style: italic; font-size: 0.82rem; color: #64748b;">Độc lập - Tự do - Hạnh phúc</div>
+                  </div>
+                </div>
+
+                <!-- Document Title -->
+                <div style="text-align: center; margin-bottom: 1.75rem;">
+                  <h2 style="color: #1e3a8a; font-size: 1.4rem; font-weight: 800; margin: 0; text-transform: uppercase;">BẢNG ĐIỂM TỔNG HỢP KẾT QUẢ HỌC TẬP NĂM HỌC</h2>
+                  <div style="font-style: italic; font-size: 0.9rem; color: #64748b; margin-top: 0.25rem;">Năm học: 2025 - 2026</div>
+                </div>
+
+                <!-- Student Personal Info -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.9rem; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                  <div><strong>Họ và tên học sinh:</strong> Trần Vũ Bằng</div>
+                  <div><strong>Mã số học sinh:</strong> HS202510A101</div>
+                  <div><strong>Lớp:</strong> 10A1 (Khối 10 - Nhóm A)</div>
+                  <div><strong>Ngày sinh:</strong> 15/08/2009</div>
+                </div>
+
+                <!-- Subjects Score Table -->
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 1.5rem; border: 1px solid #cbd5e1;">
+                  <thead>
+                    <tr style="background: #1e3a8a; color: white;">
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">STT</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: left;">Môn Học</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">TB HK1</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center;">TB HK2</th>
+                      <th style="padding: 0.6rem; border: 1px solid #334155; text-align: center; background: #1e40af;">TB CẢ NĂM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Toán Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.2</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.5</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.4</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Ngữ Văn</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.5</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.8</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.7</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">3</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Tiếng Anh</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.0</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.1</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">4</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Vật Lý</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.8</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.9</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">5</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Hóa Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">8.7</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">8.9</td></tr>
+                    <tr><td style="text-align: center; border: 1px solid #cbd5e1;">6</td><td style="border: 1px solid #cbd5e1; font-weight: 700;">Tin Học</td><td style="text-align: center; border: 1px solid #cbd5e1;">9.8</td><td style="text-align: center; border: 1px solid #cbd5e1;">10.0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 800; color: #1e3a8a;">9.9</td></tr>
+                  </tbody>
+                </table>
+
+                <!-- Summary Performance -->
+                <div style="background: #1e3a8a; color: white; padding: 1rem; border-radius: 6px; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 0.5rem; margin-bottom: 1.75rem;">
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">ĐIỂM TB CHUNG</div><div style="font-size: 1.25rem; font-weight: 800;">9.15</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">XẾP LOẠI HỌC LỰC</div><div style="font-size: 1.25rem; font-weight: 800; color: #60a5fa;">Xuất Sắc</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">HẠNH KIỂM</div><div style="font-size: 1.25rem; font-weight: 800;">Tốt</div></div>
+                  <div><div style="font-size: 0.75rem; opacity: 0.8;">XẾP HẠNG LỚP</div><div style="font-size: 1.25rem; font-weight: 800; color: #4ade80;">Hạng 01/42</div></div>
+                </div>
+
+                <!-- Signatures Section -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 2rem;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 0.88rem; font-weight: 700;">GIÁO VIÊN CHỦ NHIỆM</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 3rem;">(Ký và ghi rõ họ tên)</div>
+                    <div style="font-weight: 800; margin-top: 0.5rem; color: #1e3a8a;">Phạm Thị Mai</div>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="font-size: 0.82rem; color: #64748b; font-style: italic;">Ngày 14 tháng 08 năm 2026</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; margin-top: 0.2rem;">HIỆU TRƯỜNG</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2.3rem;">(Ký tên và đóng dấu)</div>
+                    <div style="font-weight: 800; margin-top: 0.5rem; color: #1e3a8a;">TS. Nguyễn Văn Hùng</div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-              <h3 style="color: #1e3a8a; font-size: 1.3rem; font-weight: 800; margin: 0; text-transform: uppercase; border: none; padding: 0;">BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO XẾP LOẠI NĂM HỌC</h3>
-              <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.3rem; font-style: italic;">Năm học: 2025 - 2026</div>
-            </div>
-
-            <!-- Summary KPI 7 Cards -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.65rem; margin-bottom: 1.25rem;">
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #1e3a8a;">595</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">TỔNG HS</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #1e3a8a;">15</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">TỔNG LỚP</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #1e40af;">228</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">XUẤT SẮC</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #2563eb;">216</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">GIỎI</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #0284c7;">124</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">KHÁ</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #475569;">23</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">TRUNG BÌNH</div>
-              </div>
-              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem; text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 800; color: #64748b;">5</div>
-                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">YẾU</div>
-              </div>
-            </div>
-
-            <!-- Table Matrix 15 Classes -->
-            <div style="overflow-x: auto; margin-bottom: 1.25rem;">
-              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; border: 1px solid #cbd5e1;">
-                <thead>
-                  <tr style="background: #1e3a8a; color: #ffffff;">
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Khối</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Lớp</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Xuất Sắc</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Giỏi</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Khá</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Trung Bình</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center;">Yếu</th>
-                    <th style="padding: 0.55rem; border: 1px solid #334155; text-align: center; background: #1e40af;">Tổng Số</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- KHỐI 10 -->
-                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="8" style="padding: 0.45rem 0.65rem;"> KHỐI 10 (5 LỚP)</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">10A1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">14</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">10A2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">12</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">10A3</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">14</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">10B1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">10</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">11</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">10B2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">11</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">3</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr style="background: rgba(30, 58, 138, 0.06); font-weight: 800; color: #1e3a8a;"><td colspan="2" style="text-align: center;">TỔNG KHỐI 10</td><td style="text-align: center;">63</td><td style="text-align: center;">76</td><td style="text-align: center;">47</td><td style="text-align: center;">11</td><td style="text-align: center;">3</td><td style="text-align: center;">200</td></tr>
-
-                  <!-- KHỐI 11 -->
-                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="8" style="padding: 0.45rem 0.65rem;"> KHỐI 11 (5 LỚP)</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">11A1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">20</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">12</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">7</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">11A2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">11A3</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">14</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">14</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">11B1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">12</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">11B2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">13</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr style="background: rgba(30, 58, 138, 0.06); font-weight: 800; color: #1e3a8a;"><td colspan="2" style="text-align: center;">TỔNG KHỐI 11</td><td style="text-align: center;">74</td><td style="text-align: center;">72</td><td style="text-align: center;">44</td><td style="text-align: center;">8</td><td style="text-align: center;">2</td><td style="text-align: center;">200</td></tr>
-
-                  <!-- KHỐI 12 -->
-                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="8" style="padding: 0.45rem 0.65rem;"> KHỐI 12 (5 LỚP)</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">12A1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">24</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">11</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">5</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">12A2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">20</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">13</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">6</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">12A3</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">17</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">7</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">12B1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">15</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; text-align: center; color: #1e3a8a;">12B2</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">16</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">14</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">40</td></tr>
-                  <tr style="background: rgba(30, 58, 138, 0.06); font-weight: 800; color: #1e3a8a;"><td colspan="2" style="text-align: center;">TỔNG KHỐI 12</td><td style="text-align: center;">92</td><td style="text-align: center;">69</td><td style="text-align: center;">35</td><td style="text-align: center;">4</td><td style="text-align: center;">0</td><td style="text-align: center;">200</td></tr>
-
-                  <!-- TỔNG CỘNG TOÀN TRƯỜNG -->
-                  <tr style="background: #0f172a; color: #ffffff; font-weight: 800; font-size: 0.92rem;">
-                    <td colspan="2" style="text-align: center; padding: 0.65rem;">TỔNG CỘNG TOÀN TRƯỜNG</td>
-                    <td style="text-align: center; color: #60a5fa;">229</td>
-                    <td style="text-align: center;">217</td>
-                    <td style="text-align: center;">126</td>
-                    <td style="text-align: center;">23</td>
-                    <td style="text-align: center;">5</td>
-                    <td style="text-align: center; color: #4ade80;">600</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Signatures -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 1.5rem; border-top: 1px solid #cbd5e1; padding-top: 1rem;">
-              <div style="font-size: 0.78rem; color: #64748b; line-height: 1.5;">
-                <strong>Nơi nhận:</strong> Ban Giám hiệu, Phòng Đào tạo, Lưu VP.
-              </div>
-              <div style="text-align: center;">
-                <div style="font-size: 0.85rem; font-weight: 800; color: #1e3a8a;">HIỆU TRƯỜNG PHÊ DUYỆT</div>
-                <div style="font-size: 0.75rem; color: #64748b; margin-top: 2.25rem;">(Ký tên và đóng dấu)</div>
-              </div>
+            <!-- Modal Footer -->
+            <div style="background: #ffffff; padding: 0.85rem 1.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+              <button onclick="document.getElementById('transcript-preview-modal').style.display='none';" style="padding: 0.55rem 1.1rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; font-weight: 700; font-family: 'K2D', sans-serif; cursor: pointer;">Đóng</button>
+              <button onclick="window.print()" style="padding: 0.55rem 1.25rem; background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; border: none; border-radius: 6px; font-weight: 700; font-family: 'K2D', sans-serif; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">🖨️ In Bảng Điểm Ngay</button>
             </div>
 
           </div>
-        </section>
+        </div>
+
+        <script>
+          function triggerTranscriptPreview() {
+            document.getElementById('transcript-preview-modal').style.display = 'flex';
+          }
+        </script>
 
         <!-- CHAPTER 6 -->
         <section id="sec-6" class="guide-section">
