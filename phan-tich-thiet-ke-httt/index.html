@@ -349,154 +349,25 @@
           </ul>
         </section>
 
-        <!-- SPECIAL SECTION: UI/UX FORM & REPORT DESIGN GUIDE FOR COURSE REPORT -->
-        <section id="sec-ui-design" class="guide-section" style="border: 2px solid #0284c7;">
-          <span class="section-badge" style="background: #0284c7; color: white;">Trọng tâm Báo cáo</span>
-          <h2 style="color: #0284c7;">🎨 HƯỚNG DẪN THIẾT KẾ GIAO DIỆN FORM NHẬP LIỆU &amp; BÁO CÁO ĐẦU RA</h2>
-          <p>Trong báo cáo đề tài môn **CT296**, sinh viên bắt buộc phải thiết kế hai dạng giao diện chính: **Form Nhập liệu (Input Form)** để thu thập dữ liệu và **Báo cáo/Dashboard (Output Report)** để hiển thị thông tin tổng hợp cho người quản lý.</p>
+        <!-- SPECIAL SECTION: UI/UX FORM & REPORT DESIGN FRAMEWORK -->
+        <section id="sec-ui-design" class="guide-section" style="border: 1px solid #1e3a8a;">
+          <span class="section-badge" style="background: #1e3a8a; color: white;">Khung Thiết kế Giao diện</span>
+          <h2 style="color: #1e3a8a;">🎨 HƯỚNG DẪN THIẾT KẾ GIAO DIỆN FORM NHẬP LIỆU &amp; BÁO CÁO</h2>
+          <p>Phân vùng này dành riêng để khởi tạo các mẫu <strong>Form Nhập liệu (Input Form)</strong> và <strong>Báo cáo / Thống kê (Output Report)</strong> theo chuẩn phong cách <strong>Khoa học, Tối giản, Xanh - Trắng Học thuật (Academic Minimalist)</strong>.</p>
 
-          <div class="callout">
-            <div class="callout-title">💡 5 Nguyên tắc Thiết kế Giao diện Chuẩn (UI/UX Principles)</div>
-            <p>1. <strong>Đồng nhất (Consistency):</strong> Sử dụng chung bảng màu, font chữ, kích thước nút trên toàn hệ thống.<br>
-            2. <strong>Rõ ràng &amp; Phân cấp thị giác (Visual Hierarchy):</strong> Tiêu đề chính to rõ, nút quan trọng (Primary action) có màu sắc nổi bật.<br>
-            3. <strong>Kiểm soát &amp; Bắt lỗi (Input Validation):</strong> Đánh dấu trường bắt buộc nhập `(*)`, hiển thị cảnh báo lỗi cụ thể ngay bên dưới input.<br>
-            4. <strong>Phản hồi người dùng (Feedback):</strong> Có thông báo thành công hoặc trạng thái Loading khi nhấn Submit.<br>
-            5. <strong>Phù hợp thiết bị in ấn/xuất file (Print-friendly):</strong> Báo cáo phải gọn gàng, định dạng chuẩn A4 khi xuất PDF.</p>
+          <div class="callout" style="background: #f8fafc; border-left: 4px solid #1e3a8a;">
+            <div class="callout-title" style="color: #1e3a8a;">📌 Quy chuẩn Thiết kế Giao diện Học thuật (Scientific UI/UX Standards)</div>
+            <p>1. <strong>Tông màu học thuật (Academic Palette):</strong> Xanh Navy (`#1e3a8a`), Xanh Dương (`#2563eb`), Nền Trắng Off-white (`#ffffff`, `#f8fafc`), Viền mỏng Slate (`#e2e8f0`).<br>
+            2. <strong>Tính tối giản (Minimalism):</strong> Loại bỏ các chi tiết màu sắc sặc sỡ không cần thiết, ưu tiên tính tương phản rõ ràng và độ đọc cao.<br>
+            3. <strong>Bố cục lưới chuẩn mực (Grid Layout):</strong> Căn chỉnh Form và Báo cáo theo tỷ lệ chuẩn văn bản hành chính / nghiên cứu khoa học.<br>
+            4. <strong>Định dạng Báo cáo A4:</strong> Chuẩn hóa cấu trúc Tiêu ngữ, Tên cơ quan, Tiêu đề báo cáo, Bảng dữ liệu viền mảnh và Khung ký tên.</p>
           </div>
 
-          <!-- MOCKUP 1: INPUT FORM DEMO -->
-          <div class="mockup-showcase">
-            <div class="mockup-header">
-              <div class="mockup-title">📝 MẪU 1: GIAO DIỆN FORM NHẬP LIỆU (INPUT FORM MOCKUP)</div>
-              <span style="font-size: 0.8rem; background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">Form Đăng ký / Cập nhật Sinh viên</span>
-            </div>
-
-            <div class="sample-form-box">
-              <form id="demo-student-form" onsubmit="event.preventDefault(); handleFormSubmit();">
-                <div class="form-grid-2col">
-                  <div class="ui-field-group">
-                    <label for="f-student-id">Mã số sinh viên <span class="req">*</span></label>
-                    <input type="text" id="f-student-id" class="ui-input" placeholder="Ví dụ: B2101234" required>
-                  </div>
-                  <div class="ui-field-group">
-                    <label for="f-student-name">Họ và tên sinh viên <span class="req">*</span></label>
-                    <input type="text" id="f-student-name" class="ui-input" placeholder="Ví dụ: Trần Vũ Bằng" required>
-                  </div>
-                </div>
-
-                <div class="form-grid-2col">
-                  <div class="ui-field-group">
-                    <label for="f-major">Chuyên ngành học <span class="req">*</span></label>
-                    <select id="f-major" class="ui-input" required>
-                      <option value="">-- Chọn ngành học --</option>
-                      <option value="KHMT" selected>Khoa học máy tính</option>
-                      <option value="CNTT">Công nghệ thông tin</option>
-                      <option value="KTPM">Kỹ thuật phần mềm</option>
-                      <option value="HTTT">Hệ thống thông tin</option>
-                    </select>
-                  </div>
-                  <div class="ui-field-group">
-                    <label for="f-email">Địa chỉ Email <span class="req">*</span></label>
-                    <input type="email" id="f-email" class="ui-input" placeholder="student@ctu.edu.vn" required>
-                  </div>
-                </div>
-
-                <div class="ui-field-group">
-                  <label for="f-notes">Ghi chú thông tin bổ sung</label>
-                  <textarea id="f-notes" class="ui-input" rows="3" placeholder="Nhập nguyện vọng hoặc ghi chú cá nhân..."></textarea>
-                </div>
-
-                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem;">
-                  <button type="reset" class="ui-btn-secondary">🧹 Nhập lại</button>
-                  <button type="submit" class="ui-btn-primary">💾 Lưu Hồ Sơ</button>
-                </div>
-              </form>
-              <div id="form-feedback" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #dcfce7; border: 1px solid #86efac; color: #166534; border-radius: 6px; font-size: 0.88rem; font-weight: 600;">
-                ✔ Đã lưu thông tin form nhập liệu thành công!
-              </div>
-            </div>
-          </div>
-
-          <!-- MOCKUP 2: OUTPUT REPORT DEMO -->
-          <div class="mockup-showcase">
-            <div class="mockup-header">
-              <div class="mockup-title">📊 MẪU 2: GIAO DIỆN BÁO CÁO &amp; DASHBOARD (OUTPUT REPORT MOCKUP)</div>
-              <span style="font-size: 0.8rem; background: #fef3c7; color: #92400e; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">Báo cáo Thống kê Tổng hợp</span>
-            </div>
-
-            <div class="report-paper">
-              <div class="report-title-head">
-                <h3>BÁO CÁO THỐNG KÊ KẾT QUẢ HỌC TẬP &amp; HỌC PHẦN</h3>
-                <p>Học kỳ I - Năm học 2025 - 2026 | Ngày xuất báo cáo: 14/08/2026</p>
-              </div>
-
-              <div class="stat-cards-row">
-                <div class="stat-box">
-                  <div class="num">1,240</div>
-                  <div class="lbl">Tổng sinh viên</div>
-                </div>
-                <div class="stat-box">
-                  <div class="num">48</div>
-                  <div class="lbl">Lớp học phần</div>
-                </div>
-                <div class="stat-box">
-                  <div class="num" style="color: #16a34a;">94.2%</div>
-                  <div class="lbl">Tỷ lệ đạt chuẩn</div>
-                </div>
-                <div class="stat-box">
-                  <div class="num" style="color: #d97706;">3.42</div>
-                  <div class="lbl">Điểm GPA trung bình</div>
-                </div>
-              </div>
-
-              <!-- Report Data Table -->
-              <table style="margin: 1rem 0; width: 100%; border-collapse: collapse;">
-                <thead>
-                  <tr style="background: #f1f5f9;">
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">STT</th>
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Mã Học Phần</th>
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Tên Học Phần</th>
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; text-align: center;">Số TC</th>
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; text-align: center;">Đăng Ký</th>
-                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; text-align: center;">Trạng Thái</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">1</td>
-                    <td style="border: 1px solid #cbd5e1; font-weight: 700;">CT296</td>
-                    <td style="border: 1px solid #cbd5e1;">Phân tích và Thiết kế HTTT</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">3</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">145</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1; color: #16a34a; font-weight: 700;">Đang mở class</td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">2</td>
-                    <td style="border: 1px solid #cbd5e1; font-weight: 700;">CT178</td>
-                    <td style="border: 1px solid #cbd5e1;">Nguyên lý Hệ điều hành</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">3</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">120</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1; color: #16a34a; font-weight: 700;">Đang mở class</td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">3</td>
-                    <td style="border: 1px solid #cbd5e1; font-weight: 700;">CT316</td>
-                    <td style="border: 1px solid #cbd5e1;">Xử lý ảnh số</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">3</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1;">98</td>
-                    <td style="text-align: center; border: 1px solid #cbd5e1; color: #2563eb; font-weight: 700;">Hoàn thành</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
-                <div style="font-size: 0.8rem; color: #64748b;">Nơi nhận: Ban Giám hiệu, Trưởng khoa, Lưu VP</div>
-                <div style="text-align: center;">
-                  <div style="font-size: 0.85rem; font-weight: 700; color: #0f172a;">NGƯỜI LẬP BÁO CÁO</div>
-                  <div style="font-size: 0.78rem; color: #64748b; margin-top: 2rem;">(Ký và ghi rõ họ tên)</div>
-                </div>
-              </div>
-            </div>
+          <!-- CONTAINER READY FOR USER'S STEP-BY-STEP FORM & REPORT INSTRUCTIONS -->
+          <div id="ui-custom-builder-container" style="background: #ffffff; border: 1.5px dashed #1e3a8a; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 1.5rem;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📐</div>
+            <h3 style="color: #1e3a8a; font-size: 1.2rem; margin-bottom: 0.5rem; border: none; padding: 0;">Khung Giao diện Sẵn sàng Xây dựng theo Yêu cầu</h3>
+            <p style="color: #64748b; font-size: 0.9rem; max-width: 600px; margin: 0 auto;">Đã dọn dẹp toàn bộ form và báo cáo demo tạm thời. Vui lòng nhập hướng dẫn chi tiết của bạn để khởi tạo chính xác các Form Nhập liệu và Báo cáo Đầu ra theo ý muốn.</p>
           </div>
         </section>
 
