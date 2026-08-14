@@ -351,23 +351,126 @@
 
         <!-- SPECIAL SECTION: UI/UX FORM & REPORT DESIGN FRAMEWORK -->
         <section id="sec-ui-design" class="guide-section" style="border: 1px solid #1e3a8a;">
-          <span class="section-badge" style="background: #1e3a8a; color: white;">Khung Thiết kế Giao diện</span>
-          <h2 style="color: #1e3a8a;">🎨 HƯỚNG DẪN THIẾT KẾ GIAO DIỆN FORM NHẬP LIỆU &amp; BÁO CÁO</h2>
-          <p>Phân vùng này dành riêng để khởi tạo các mẫu <strong>Form Nhập liệu (Input Form)</strong> và <strong>Báo cáo / Thống kê (Output Report)</strong> theo chuẩn phong cách <strong>Khoa học, Tối giản, Xanh - Trắng Học thuật (Academic Minimalist)</strong>.</p>
+          <span class="section-badge" style="background: #1e3a8a; color: white;">Khung Báo cáo Học thuật</span>
+          <h2 style="color: #1e3a8a;">📊 BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO TỪNG MỨC XẾP LOẠI NĂM HỌC</h2>
+          <p>Báo cáo tổng hợp kết quả phân loại học lực năm học của học sinh toàn trường, phân rã theo <strong>12 lớp thuộc 3 khối (10, 11, 12)</strong> và <strong>5 mức xếp loại học thuật</strong>.</p>
 
-          <div class="callout" style="background: #f8fafc; border-left: 4px solid #1e3a8a;">
-            <div class="callout-title" style="color: #1e3a8a;">📌 Quy chuẩn Thiết kế Giao diện Học thuật (Scientific UI/UX Standards)</div>
-            <p>1. <strong>Tông màu học thuật (Academic Palette):</strong> Xanh Navy (`#1e3a8a`), Xanh Dương (`#2563eb`), Nền Trắng Off-white (`#ffffff`, `#f8fafc`), Viền mỏng Slate (`#e2e8f0`).<br>
-            2. <strong>Tính tối giản (Minimalism):</strong> Loại bỏ các chi tiết màu sắc sặc sỡ không cần thiết, ưu tiên tính tương phản rõ ràng và độ đọc cao.<br>
-            3. <strong>Bố cục lưới chuẩn mực (Grid Layout):</strong> Căn chỉnh Form và Báo cáo theo tỷ lệ chuẩn văn bản hành chính / nghiên cứu khoa học.<br>
-            4. <strong>Định dạng Báo cáo A4:</strong> Chuẩn hóa cấu trúc Tiêu ngữ, Tên cơ quan, Tiêu đề báo cáo, Bảng dữ liệu viền mảnh và Khung ký tên.</p>
+          <div class="callout" style="background: #f8fafc; border-left: 4px solid #1e3a8a; margin-bottom: 1.5rem;">
+            <div class="callout-title" style="color: #1e3a8a;">📌 Quy chuẩn Thông số Báo cáo (Report Specifications)</div>
+            <p>• <strong>5 Mức xếp loại năm học:</strong> Xuất sắc | Giỏi | Khá | Trung bình | Yếu<br>
+            • <strong>12 Lớp chia đều 3 Khối:</strong> Khối 10 (10A1, 10A2, 10A3, 10A4) | Khối 11 (11A1, 11A2, 11A3, 11A4) | Khối 12 (12A1, 12A2, 12A3, 12A4)<br>
+            • <strong>Phong cách thiết kế:</strong> Tối giản, Xanh - Trắng Khoa học, chuẩn mực văn bản hành chính &amp; báo cáo nghiên cứu.</p>
           </div>
 
-          <!-- CONTAINER READY FOR USER'S STEP-BY-STEP FORM & REPORT INSTRUCTIONS -->
-          <div id="ui-custom-builder-container" style="background: #ffffff; border: 1.5px dashed #1e3a8a; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 1.5rem;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📐</div>
-            <h3 style="color: #1e3a8a; font-size: 1.2rem; margin-bottom: 0.5rem; border: none; padding: 0;">Khung Giao diện Sẵn sàng Xây dựng theo Yêu cầu</h3>
-            <p style="color: #64748b; font-size: 0.9rem; max-width: 600px; margin: 0 auto;">Đã dọn dẹp toàn bộ form và báo cáo demo tạm thời. Vui lòng nhập hướng dẫn chi tiết của bạn để khởi tạo chính xác các Form Nhập liệu và Báo cáo Đầu ra theo ý muốn.</p>
+          <!-- ACADEMIC REPORT PAPER CONTAINER -->
+          <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 2rem; color: #0f172a; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+            
+            <!-- Report Academic Administrative Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1e3a8a; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+              <div>
+                <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</div>
+                <div style="font-weight: 800; font-size: 1.05rem; color: #1e3a8a;">TRƯỜNG THPT CHUYÊN NGUYỄN TRÃI</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 700; font-size: 0.85rem; color: #475569;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                <div style="font-style: italic; font-size: 0.85rem; color: #64748b;">Độc lập - Tự do - Hạnh phúc</div>
+              </div>
+            </div>
+
+            <!-- Report Main Title -->
+            <div style="text-align: center; margin-bottom: 1.75rem;">
+              <h3 style="color: #1e3a8a; font-size: 1.4rem; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; border: none; padding: 0;">BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO TỪNG MỨC XẾP LOẠI NĂM HỌC</h3>
+              <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.35rem; font-style: italic;">Năm học: 2025 - 2026 | Ngày xuất báo cáo: 14/08/2026</div>
+            </div>
+
+            <!-- KPI Academic Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #1e3a8a;">12</div>
+                <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">TỔNG SỐ LỚP</div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #1e3a8a;">480</div>
+                <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">TỔNG SỐ HỌC SINH</div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #2563eb;">328</div>
+                <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">XUẤT SẮC &amp; GIỎI (68.3%)</div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: #0284c7;">98.5%</div>
+                <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">TỶ LỆ ĐẠT CHUẨN</div>
+              </div>
+            </div>
+
+            <!-- Main Data Table (12 Classes x 5 Ratings) -->
+            <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; border: 1px solid #cbd5e1;">
+                <thead>
+                  <tr style="background: #1e3a8a; color: #ffffff;">
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center;">STT</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center;">Khối</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155;">Tên Lớp</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center;">Sĩ Số</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center; background: #1e40af;">Xuất Sắc</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center; background: #1d4ed8;">Giỏi</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center; background: #2563eb;">Khá</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center; background: #475569;">Trung Bình</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center; background: #64748b;">Yếu</th>
+                    <th style="padding: 0.65rem; border: 1px solid #334155; text-align: center;">Tỷ Lệ Đạt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- KHỐI 10 -->
+                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="10" style="padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1;">KHỐI 10 (4 LỚP - NHÓM A)</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">10A1</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">18</td><td style="text-align: center; border: 1px solid #cbd5e1;">12</td><td style="text-align: center; border: 1px solid #cbd5e1;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">10A2</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">14</td><td style="text-align: center; border: 1px solid #cbd5e1;">15</td><td style="text-align: center; border: 1px solid #cbd5e1;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">97.5%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">3</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">10A3</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">15</td><td style="text-align: center; border: 1px solid #cbd5e1;">14</td><td style="text-align: center; border: 1px solid #cbd5e1;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">4</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 10</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">10A4</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">12</td><td style="text-align: center; border: 1px solid #cbd5e1;">16</td><td style="text-align: center; border: 1px solid #cbd5e1;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">97.5%</td></tr>
+
+                  <!-- KHỐI 11 -->
+                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="10" style="padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1;">KHỐI 11 (4 LỚP - NHÓM A)</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">5</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">11A1</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">22</td><td style="text-align: center; border: 1px solid #cbd5e1;">11</td><td style="text-align: center; border: 1px solid #cbd5e1;">6</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">6</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">11A2</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">16</td><td style="text-align: center; border: 1px solid #cbd5e1;">14</td><td style="text-align: center; border: 1px solid #cbd5e1;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">7</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">11A3</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">15</td><td style="text-align: center; border: 1px solid #cbd5e1;">13</td><td style="text-align: center; border: 1px solid #cbd5e1;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">97.5%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 11</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">11A4</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">13</td><td style="text-align: center; border: 1px solid #cbd5e1;">16</td><td style="text-align: center; border: 1px solid #cbd5e1;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">2</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+
+                  <!-- KHỐI 12 -->
+                  <tr style="background: #f1f5f9; font-weight: 700; color: #1e3a8a;"><td colspan="10" style="padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1;">KHỐI 12 (4 LỚP - NHÓM A)</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">9</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">12A1</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">26</td><td style="text-align: center; border: 1px solid #cbd5e1;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">4</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">10</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">12A2</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">21</td><td style="text-align: center; border: 1px solid #cbd5e1;">12</td><td style="text-align: center; border: 1px solid #cbd5e1;">6</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">11</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">12A3</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">18</td><td style="text-align: center; border: 1px solid #cbd5e1;">14</td><td style="text-align: center; border: 1px solid #cbd5e1;">7</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+                  <tr><td style="text-align: center; border: 1px solid #cbd5e1;">12</td><td style="text-align: center; border: 1px solid #cbd5e1;">Khối 12</td><td style="font-weight: 700; border: 1px solid #cbd5e1; color: #1e3a8a;">12A4</td><td style="text-align: center; border: 1px solid #cbd5e1;">40</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700;">17</td><td style="text-align: center; border: 1px solid #cbd5e1;">14</td><td style="text-align: center; border: 1px solid #cbd5e1;">8</td><td style="text-align: center; border: 1px solid #cbd5e1;">1</td><td style="text-align: center; border: 1px solid #cbd5e1;">0</td><td style="text-align: center; border: 1px solid #cbd5e1; font-weight: 700; color: #2563eb;">100.0%</td></tr>
+
+                  <!-- TỔNG CỘNG TOÀN TRƯỜNG -->
+                  <tr style="background: #0f172a; color: #ffffff; font-weight: 800; font-size: 0.95rem;">
+                    <td colspan="3" style="padding: 0.75rem; border: 1px solid #334155; text-align: center;">TỔNG CỘNG TOÀN TRƯỜNG (12 LỚP)</td>
+                    <td style="text-align: center; border: 1px solid #334155;">480</td>
+                    <td style="text-align: center; border: 1px solid #334155; color: #60a5fa;">207</td>
+                    <td style="text-align: center; border: 1px solid #334155;">160</td>
+                    <td style="text-align: center; border: 1px solid #334155;">98</td>
+                    <td style="text-align: center; border: 1px solid #334155;">15</td>
+                    <td style="text-align: center; border: 1px solid #334155;">3</td>
+                    <td style="text-align: center; border: 1px solid #334155; color: #4ade80;">99.4%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Report Formal Signatures -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 2rem; border-top: 1px solid #cbd5e1; padding-top: 1.25rem;">
+              <div style="font-size: 0.8rem; color: #64748b; line-height: 1.6;">
+                <strong>Nơi nhận:</strong><br>
+                • Ban Giám hiệu (để báo cáo)<br>
+                • Phòng Đào tạo &amp; Khảo thí<br>
+                • Lưu: Văn thư nhà trường
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 0.85rem; font-weight: 800; color: #1e3a8a;">HIỆU TRƯỞNG PHO TRUYỆN</div>
+                <div style="font-size: 0.78rem; color: #64748b; margin-top: 2.5rem;">(Duyệt và ký tên đóng dấu)</div>
+              </div>
+            </div>
+
           </div>
         </section>
 
