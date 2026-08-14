@@ -3,453 +3,738 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Báo cáo - Thống kê Trường THPT - StudyHub (Ban Giám Hiệu)</title>
+  <title>Báo cáo Thống kê Học sinh theo Xếp loại Năm học - Quản lý THPT</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" type="image/jpeg" href="../images/logo.jpg">
   <script src="../js/theme.js"></script>
-  <!-- Chart.js for data visualization -->
+  <!-- Chart.js CDN for academic visualization -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* Modern High School Admin Dashboard UI Design System */
+    /* ACADEMIC SCIENTIFIC BLUE-AND-WHITE DESIGN SYSTEM */
     :root {
-      --thpt-navy: #0f172a;
-      --thpt-blue: #1e3a8a;
-      --thpt-accent: #2563eb;
-      --thpt-cyan: #0284c7;
-      --thpt-bg: #f8fafc;
-      --thpt-card: #ffffff;
-      --thpt-border: #e2e8f0;
-      --thpt-text: #1e293b;
-      --thpt-muted: #64748b;
+      --navy-primary: #1e3a8a;
+      --blue-accent: #2563eb;
+      --blue-subtle: #eff6ff;
+      --slate-dark: #0f172a;
+      --slate-text: #334155;
+      --slate-muted: #64748b;
+      --slate-border: #cbd5e1;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+
+      /* Subtle Rating Status Colors */
+      --rate-xuat-sac: #1e40af;
+      --rate-gioi: #2563eb;
+      --rate-kha: #0284c7;
+      --rate-tb: #475569;
+      --rate-yeu: #64748b;
     }
 
     body.dark-mode {
-      --thpt-bg: #0f172a;
-      --thpt-card: #1e293b;
-      --thpt-border: #334155;
-      --thpt-text: #f8fafc;
-      --thpt-muted: #94a3b8;
+      --bg-light: #0f172a;
+      --card-bg: #1e293b;
+      --slate-border: #334155;
+      --slate-text: #f8fafc;
+      --slate-muted: #94a3b8;
+      --blue-subtle: #1e293b;
     }
 
-    .thpt-app-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      min-height: calc(100vh - 4rem);
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    @media (max-width: 1024px) {
-      .thpt-app-container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Sidebar Navigation */
-    .thpt-sidebar {
-      background: var(--thpt-card);
-      border: 1px solid var(--thpt-border);
-      border-radius: 12px;
-      padding: 1.25rem;
-      position: sticky;
-      top: 1.5rem;
-      height: fit-content;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
-    }
-
-    .sidebar-user-card {
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-      color: white;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-    }
-    .user-role-badge {
-      font-size: 0.72rem;
-      font-weight: 800;
-      background: rgba(255,255,255,0.2);
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .user-name {
-      font-weight: 800;
-      font-size: 1.05rem;
-      margin-top: 0.35rem;
-    }
-
-    .nav-menu-title {
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--thpt-muted);
-      margin: 1.25rem 0 0.5rem 0.5rem;
-    }
-
-    .thpt-nav-list {
-      list-style: none;
-      padding: 0;
+    body {
+      background-color: var(--bg-light);
+      color: var(--slate-text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
+      padding: 0;
+    }
+
+    .report-app-container {
+      max-width: 1240px;
+      margin: 1.5rem auto 3rem auto;
+      padding: 0 1rem;
+    }
+
+    /* SECTION A: HEADER TRANG */
+    .report-header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-border);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .report-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--navy-primary);
+      margin: 0;
+      line-height: 1.25;
+    }
+    body.dark-mode .report-title { color: #60a5fa; }
+
+    .report-academic-year-badge {
+      background: var(--blue-subtle);
+      color: var(--navy-primary);
+      border: 1px solid #bfdbfe;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    /* SECTION B: BỘ LỌC (FILTER TOOLBAR) */
+    .filter-toolbar-box {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) auto auto;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .filter-group {
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
     }
 
-    .thpt-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.6rem 0.85rem;
-      border-radius: 8px;
-      color: var(--thpt-text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.88rem;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .thpt-nav-item:hover {
-      background: rgba(37, 99, 235, 0.08);
-      color: var(--thpt-accent);
-      transform: translateX(3px);
-    }
-
-    .thpt-nav-item.active {
-      background: var(--thpt-accent);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-
-    /* Main Dashboard View Container */
-    .thpt-main-view {
-      background: var(--thpt-card);
-      border: 1px solid var(--thpt-border);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
-    }
-
-    .view-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.75rem;
-      border-bottom: 1px solid var(--thpt-border);
-      padding-bottom: 1rem;
-    }
-
-    .view-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--thpt-blue);
-      margin: 0;
-      line-height: 1.25;
-    }
-    body.dark-mode .view-title { color: #60a5fa; }
-
-    .view-desc {
-      color: var(--thpt-muted);
-      font-size: 0.9rem;
-      margin-top: 0.35rem;
-    }
-
-    /* Filter Form Toolbar */
-    .filter-toolbar {
-      background: var(--thpt-bg);
-      border: 1px solid var(--thpt-border);
-      border-radius: 10px;
-      padding: 1.25rem;
-      margin-bottom: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) auto;
-      gap: 1rem;
-      align-items: end;
-    }
-
     .filter-group label {
-      display: block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      color: var(--thpt-muted);
-      margin-bottom: 0.35rem;
+      color: var(--slate-muted);
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .filter-select, .filter-input {
+    .filter-select {
       width: 100%;
-      padding: 0.6rem 0.85rem;
+      padding: 0.55rem 0.75rem;
       border-radius: 6px;
-      border: 1px solid var(--thpt-border);
-      background: var(--thpt-card);
-      color: var(--thpt-text);
-      font-size: 0.9rem;
+      border: 1px solid var(--slate-border);
+      background: var(--card-bg);
+      color: var(--slate-text);
+      font-size: 0.88rem;
       font-weight: 600;
       outline: none;
+      transition: border-color 0.2s;
     }
-    .filter-select:focus, .filter-input:focus {
-      border-color: var(--thpt-accent);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    .filter-select:focus {
+      border-color: var(--blue-accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    .btn-submit-filter {
-      background: var(--thpt-accent);
-      color: white;
+    .btn-filter-submit {
+      background: var(--navy-primary);
+      color: #ffffff;
       border: none;
-      padding: 0.65rem 1.25rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-    }
-    .btn-submit-filter:hover { background: #1d4ed8; }
-
-    /* Stat Cards KPI Grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2rem;
-    }
-
-    .kpi-card {
-      background: var(--thpt-card);
-      border: 1px solid var(--thpt-border);
-      border-radius: 10px;
-      padding: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-
-    .kpi-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .kpi-blue { background: #eff6ff; color: #2563eb; }
-    .kpi-green { background: #f0fdf4; color: #16a34a; }
-    .kpi-purple { background: #faf5ff; color: #9333ea; }
-    .kpi-amber { background: #fffbeb; color: #d97706; }
-
-    .kpi-val { font-size: 1.6rem; font-weight: 800; color: var(--thpt-text); line-height: 1; }
-    .kpi-lbl { font-size: 0.8rem; color: var(--thpt-muted); font-weight: 600; margin-top: 0.35rem; }
-
-    /* Chart & Table Grid Layout */
-    .dashboard-grid-2col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    @media (max-width: 900px) {
-      .dashboard-grid-2col { grid-template-columns: 1fr; }
-    }
-
-    .chart-card {
-      background: var(--thpt-card);
-      border: 1px solid var(--thpt-border);
-      border-radius: 10px;
-      padding: 1.25rem;
-    }
-
-    .chart-card-header {
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--thpt-text);
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .chart-container-box {
-      position: relative;
-      height: 280px;
-      width: 100%;
-    }
-
-    /* Modal / Drawer UI */
-    .modal-backdrop {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.25s ease;
-    }
-    .modal-backdrop.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content-box {
-      background: var(--thpt-card);
-      border: 1px solid var(--thpt-border);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 650px;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 1.75rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-
-    /* Action Buttons (Export & Print) */
-    .btn-action-group {
-      display: flex;
-      gap: 0.75rem;
-    }
-    .btn-action-secondary {
-      background: var(--thpt-bg);
-      border: 1px solid var(--thpt-border);
-      color: var(--thpt-text);
-      padding: 0.5rem 0.85rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      transition: background 0.2s;
     }
-    .btn-action-secondary:hover {
-      background: rgba(37, 99, 235, 0.1);
-      color: var(--thpt-accent);
+    .btn-filter-submit:hover { background: #1d4ed8; }
+
+    .btn-filter-reset {
+      background: transparent;
+      color: var(--slate-muted);
+      border: 1px solid var(--slate-border);
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-filter-reset:hover {
+      background: var(--bg-light);
+      color: var(--slate-text);
     }
 
-    /* PRINT SPECIFIC STYLES (@media print) */
+    /* SECTION C: TỔNG QUAN THỐNG KÊ (STAT CARDS) */
+    .stat-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card-item {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 0.9rem 0.75rem;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+
+    .stat-card-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--navy-primary);
+      line-height: 1.1;
+    }
+    body.dark-mode .stat-card-value { color: #60a5fa; }
+
+    .stat-card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--slate-muted);
+      margin-top: 0.3rem;
+      text-transform: uppercase;
+    }
+
+    /* SECTION D: BẢNG BÁO CÁO CHÍNH (MAIN DATA TABLE) */
+    .table-card-container {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .table-header-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--navy-primary);
+      margin: 0 0 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-scroll-wrapper {
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid var(--slate-border);
+    }
+
+    .academic-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .academic-data-table th {
+      background: var(--navy-primary);
+      color: #ffffff;
+      padding: 0.7rem 0.6rem;
+      font-weight: 700;
+      border: 1px solid #334155;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .academic-data-table td {
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--slate-border);
+    }
+
+    .academic-data-table tbody tr:hover {
+      background: rgba(37, 99, 235, 0.04);
+    }
+
+    .row-group-header {
+      background: var(--bg-light);
+      font-weight: 800;
+      color: var(--navy-primary);
+    }
+
+    .row-grade-subtotal {
+      background: rgba(30, 58, 138, 0.06);
+      font-weight: 800;
+      color: var(--navy-primary);
+    }
+
+    .row-grand-total {
+      background: var(--slate-dark);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+    .row-grand-total td {
+      border-color: #334155;
+    }
+
+    /* SECTION E: BIỂU ĐỒ TRỰC QUAN (CHARTS) */
+    .charts-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .charts-grid-2col { grid-template-columns: 1fr; }
+    }
+
+    .chart-box-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .chart-box-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 1rem;
+    }
+
+    .chart-canvas-holder {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+
+    /* PRINT SPECIFIC STYLES */
     @media print {
       body { background: white !important; color: black !important; }
-      .no-print, header, .breadcrumb, .header-actions, .thpt-sidebar, .filter-toolbar, .btn-action-group { display: none !important; }
-      .thpt-app-container { display: block !important; margin: 0 !important; }
-      .thpt-main-view { border: none !important; box-shadow: none !important; padding: 0 !important; }
-      .print-header { display: block !important; margin-bottom: 2rem; text-align: center; }
-      table { width: 100% !important; border-collapse: collapse !important; }
-      th, td { border: 1px solid #000 !important; padding: 6px !important; font-size: 11pt !important; }
+      .no-print, header, .breadcrumb, .header-actions, .filter-toolbar-box { display: none !important; }
+      .report-app-container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      .table-card-container, .chart-box-card { border: none !important; box-shadow: none !important; }
+      .academic-data-table th, .academic-data-table td { border: 1px solid #000 !important; font-size: 10pt !important; }
     }
-    .print-header { display: none; }
   </style>
 </head>
 <body>
-  <div class="container" style="max-width: 1280px;">
+
+  <div class="container" style="max-width: 1240px;">
     <!-- Navigation Header -->
     <header class="no-print">
-      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; Hệ thống THPT &raquo; Phân hệ Báo cáo - Thống kê (1.3)</div>
-      <h1 style="font-size: 1.9rem; line-height: 1.3;">HỆ THỐNG QUẢN LÝ TRƯỜNG THPT - PHÂN HỆ BÁO CÁO &amp; THỐNG KÊ (MODULE 1.3)</h1>
-      <p style="color: var(--text-light); margin-top: 0.5rem;">Cổng thông tin báo cáo tổng hợp dành riêng cho <strong>Ban Giám Hiệu</strong>: Theo dõi sĩ số học sinh theo lớp/khối, thống kê đội ngũ giáo viên, kết quả xếp loại năm học và phân tích điểm trung bình học kỳ theo đúng mô hình CDM &amp; DFD 1.3.</p>
+      <div class="breadcrumb"><a href="../index.html">StudyHub</a> &raquo; Thống kê THPT &raquo; Báo cáo Xếp loại Năm học</div>
+      <h1 style="font-size: 1.8rem; line-height: 1.3;">BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO XẾP LOẠI NĂM HỌC</h1>
+      <p style="color: var(--text-light); margin-top: 0.35rem;">Module báo cáo thống kê chính thức: Theo dõi chi tiết 15 lớp (Khối 10, 11, 12), bộ lọc liên kết, thẻ chỉ số tổng quan và biểu đồ so sánh học lực.</p>
     </header>
 
-    <!-- Top Action Bar -->
-    <div class="header-actions no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <div style="display: flex; gap: 0.75rem;">
-        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
-          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
-          <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </button>
-      </div>
-
-      <div class="btn-action-group">
-        <button class="btn-action-secondary" onclick="exportData('excel')">📊 Xuất File Excel</button>
-        <button class="btn-action-secondary" onclick="exportData('pdf')">📄 Xuất Báo Cáo PDF</button>
-        <button class="btn-action-secondary" onclick="window.print()" style="background: var(--secondary-color); color: white;">🖨️ In Báo Cáo A4</button>
-      </div>
+    <div class="header-actions no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" style="background: var(--navy-primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+        🖨️ In Báo Cáo A4
+      </button>
     </div>
 
-    <!-- MAIN APP CONTAINER LAYOUT -->
-    <div class="thpt-app-container">
-      
-      
+    <!-- MAIN REPORT APP CONTAINER -->
+    <div class="report-app-container">
 
-      <!-- DYNAMIC CONTENT VIEW -->
-      <main id="main-view-container" class="thpt-main-view">
-        <!-- Rendered dynamically by JavaScript -->
-      </main>
+      <!-- A. TIÊU ĐỀ BÁO CÁO -->
+      <div class="report-header-card">
+        <div>
+          <h2 class="report-title">BÁO CÁO THỐNG KÊ SỐ LƯỢNG HỌC SINH THEO XẾP LOẠI NĂM HỌC</h2>
+          <div style="font-size: 0.85rem; color: var(--slate-muted); margin-top: 0.25rem;">Hệ thống Quản lý Trường THPT — Phân hệ Báo cáo Thống kê</div>
+        </div>
+        <div class="report-academic-year-badge">
+          Năm học: <span id="lbl-academic-year">2025 - 2026</span>
+        </div>
+      </div>
+
+      <!-- B. KHU VỰC BỘ LỌC (FILTER TOOLBAR) -->
+      <div class="filter-toolbar-box no-print">
+        <div class="filter-group">
+          <label for="f-nam-hoc">Năm học</label>
+          <select id="f-nam-hoc" class="filter-select" onchange="onFilterChange()">
+            <option value="2025-2026" selected>2025 - 2026</option>
+            <option value="2024-2025">2024 - 2025</option>
+            <option value="2023-2024">2023 - 2024</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="f-khoi">Khối học</label>
+          <select id="f-khoi" class="filter-select" onchange="updateLopFilterOptions(); onFilterChange();">
+            <option value="ALL" selected>Tất cả các khối</option>
+            <option value="K10">Khối 10</option>
+            <option value="K11">Khối 11</option>
+            <option value="K12">Khối 12</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="f-nhom">Nhóm lớp</label>
+          <select id="f-nhom" class="filter-select" onchange="updateLopFilterOptions(); onFilterChange();">
+            <option value="ALL" selected>Tất cả nhóm</option>
+            <option value="A">Nhóm A</option>
+            <option value="B">Nhóm B</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="f-lop">Lớp học</label>
+          <select id="f-lop" class="filter-select" onchange="onFilterChange()">
+            <option value="ALL" selected>Tất cả các lớp</option>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <button class="btn-filter-submit" onclick="applyReportFilter()"><span>🔍</span> Xem báo cáo</button>
+        <button class="btn-filter-reset" onclick="resetReportFilter()"><span>🔄</span> Đặt lại</button>
+      </div>
+
+      <!-- C. TỔNG QUAN THỐNG KÊ (SUMMARY STAT CARDS) -->
+      <div class="stat-cards-grid" id="summary-cards-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- D. BẢNG BÁO CÁO CHÍNH (MAIN DATA TABLE) -->
+      <div class="table-card-container">
+        <div class="table-header-title">
+          <span>📋 BẢNG CHI TIẾT SỐ LƯỢNG HỌC SINH THEO TỪNG LỚP</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--slate-muted);">Đơn vị tính: Học sinh</span>
+        </div>
+
+        <div class="table-scroll-wrapper">
+          <table class="academic-data-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">Khối</th>
+                <th style="width: 110px;">Lớp</th>
+                <th>Xuất Sắc</th>
+                <th>Giỏi</th>
+                <th>Khá</th>
+                <th>Trung Bình</th>
+                <th>Yếu</th>
+                <th style="width: 120px; background: #1e40af;">Tổng Số</th>
+              </tr>
+            </thead>
+            <tbody id="report-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- E. BIỂU ĐỒ TRỰC QUAN (VISUALIZATION CHARTS) -->
+      <div class="charts-grid-2col no-print">
+        <div class="chart-box-card">
+          <div class="chart-box-title">📊 Biểu đồ Cột Nhóm: So sánh Mức Xếp loại giữa các Lớp</div>
+          <div class="chart-canvas-holder"><canvas id="chart-grouped-bar"></canvas></div>
+        </div>
+
+        <div class="chart-box-card">
+          <div class="chart-box-title">🏛️ Biểu đồ Tổng hợp theo Khối (Khối 10, 11, 12)</div>
+          <div class="chart-canvas-holder"><canvas id="chart-stacked-grade"></canvas></div>
+        </div>
+      </div>
 
     </div>
   </div>
 
-  <!-- PRINT HEADER TEMPLATE (Visible only in print mode) -->
-  <div class="print-header">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
-      <div>
-        <div style="font-weight: bold; font-size: 12pt;">SỞ GIÁO DỤC VÀ ĐÀO TẠO</div>
-        <div style="font-weight: bold; font-size: 13pt;">TRƯỜNG THPT CHUYÊN NGUYỄN TRÃI</div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-weight: bold; font-size: 12pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-        <div style="font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</div>
-      </div>
-    </div>
-    <h2 id="print-doc-title" style="text-align: center; text-transform: uppercase; font-size: 16pt; margin: 15px 0;">BÁO CÁO THỐNG KÊ THPT</h2>
-    <div id="print-doc-subtitle" style="text-align: center; font-style: italic; font-size: 11pt; margin-bottom: 20px;"></div>
-  </div>
-
-  <!-- MODAL DRAWER DIALOG FOR DETAIL VIEW -->
-  <div id="thpt-modal" class="modal-backdrop">
-    <div class="modal-content-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--thpt-border); padding-bottom: 0.75rem; margin-bottom: 1rem;">
-        <h3 id="modal-title-text" style="font-size: 1.2rem; font-weight: 800; color: var(--thpt-blue); margin: 0;"></h3>
-        <button onclick="closeModal()" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--thpt-muted);">&times;</button>
-      </div>
-      <div id="modal-body-content"></div>
-    </div>
-  </div>
-
-  <!-- CORE MOCK DATA ENGINE & CLIENT SIDE ROUTER SCRIPT -->
+  <!-- COMPLETE REPORT ENGINE SCRIPT -->
   <script>
-    let activeView = "dashboard";
+    // 15 CLASSES FULL DATA ENGINE (3 GRADES x 5 CLASSES EACH)
+    const RAW_CLASS_DATA = [
+      // KHỐI 10
+      { khoiId: "K10", khoiName: "Khối 10", lopName: "10A1", nhom: "A", xuatSac: 16, gioi: 14, kha: 8, tb: 2, yeu: 0 },
+      { khoiId: "K10", khoiName: "Khối 10", lopName: "10A2", nhom: "A", xuatSac: 12, gioi: 16, kha: 9, tb: 2, yeu: 1 },
+      { khoiId: "K10", khoiName: "Khối 10", lopName: "10A3", nhom: "A", xuatSac: 14, gioi: 15, kha: 9, tb: 2, yeu: 0 },
+      { khoiId: "K10", khoiName: "Khối 10", lopName: "10B1", nhom: "B", xuatSac: 10, gioi: 16, kha: 11, tb: 2, yeu: 1 },
+      { khoiId: "K10", khoiName: "Khối 10", lopName: "10B2", nhom: "B", xuatSac: 11, gioi: 15, kha: 10, tb: 3, yeu: 1 },
 
-    function switchView(viewId) {
-      activeView = viewId;
-      document.querySelectorAll(".thpt-nav-item").forEach(el => {
-        el.classList.toggle("active", el.getAttribute("data-view") === viewId);
-      });
-      renderView();
+      // KHỐI 11
+      { khoiId: "K11", khoiName: "Khối 11", lopName: "11A1", nhom: "A", xuatSac: 20, gioi: 12, kha: 7, tb: 1, yeu: 0 },
+      { khoiId: "K11", khoiName: "Khối 11", lopName: "11A2", nhom: "A", xuatSac: 15, gioi: 15, kha: 8, tb: 2, yeu: 0 },
+      { khoiId: "K11", khoiName: "Khối 11", lopName: "11A3", nhom: "A", xuatSac: 14, gioi: 14, kha: 10, tb: 1, yeu: 1 },
+      { khoiId: "K11", khoiName: "Khối 11", lopName: "11B1", nhom: "B", xuatSac: 12, gioi: 16, kha: 9, tb: 2, yeu: 1 },
+      { khoiId: "K11", khoiName: "Khối 11", lopName: "11B2", nhom: "B", xuatSac: 13, gioi: 15, kha: 10, tb: 2, yeu: 0 },
+
+      // KHỐI 12
+      { khoiId: "K12", khoiName: "Khối 12", lopName: "12A1", nhom: "A", xuatSac: 24, gioi: 11, kha: 5, tb: 0, yeu: 0 },
+      { khoiId: "K12", khoiName: "Khối 12", lopName: "12A2", nhom: "A", xuatSac: 20, gioi: 13, kha: 6, tb: 1, yeu: 0 },
+      { khoiId: "K12", khoiName: "Khối 12", lopName: "12A3", nhom: "A", xuatSac: 17, gioi: 15, kha: 7, tb: 1, yeu: 0 },
+      { khoiId: "K12", khoiName: "Khối 12", lopName: "12B1", nhom: "B", xuatSac: 15, gioi: 16, kha: 8, tb: 1, yeu: 0 },
+      { khoiId: "K12", khoiName: "Khối 12", lopName: "12B2", nhom: "B", xuatSac: 16, gioi: 14, kha: 9, tb: 1, yeu: 0 }
+    ];
+
+    let chartGroupedInstance = null;
+    let chartStackedInstance = null;
+
+    // Initialize Page
+    document.addEventListener("DOMContentLoaded", () => {
+      updateLopFilterOptions();
+      applyReportFilter();
+    });
+
+    // Dynamic Filter Interlinking
+    function updateLopFilterOptions() {
+      const selectedKhoi = document.getElementById("f-khoi").value;
+      const selectedNhom = document.getElementById("f-nhom").value;
+      const lopSelect = document.getElementById("f-lop");
+
+      let filtered = RAW_CLASS_DATA;
+      if (selectedKhoi !== "ALL") filtered = filtered.filter(item => item.khoiId === selectedKhoi);
+      if (selectedNhom !== "ALL") filtered = filtered.filter(item => item.nhom === selectedNhom);
+
+      const currentVal = lopSelect.value;
+      lopSelect.innerHTML = `<option value="ALL">Tất cả các lớp</option>` + 
+        filtered.map(item => `<option value="${item.lopName}">${item.lopName}</option>`).join('');
+
+      if (filtered.some(i => i.lopName === currentVal)) {
+        lopSelect.value = currentVal;
+      } else {
+        lopSelect.value = "ALL";
+      }
     }
 
-    function renderView() {
-      const container = document.getElementById("main-view-container");
-      if (!container) return;
+    function onFilterChange() {
+      const year = document.getElementById("f-nam-hoc").value.replace('-', ' - ');
+      document.getElementById("lbl-academic-year").textContent = year;
+    }
 
-      container.innerHTML = `
-        <div style="background: var(--thpt-card); border: 1.5px dashed var(--thpt-border); border-radius: 12px; padding: 4rem 2rem; text-align: center; margin-top: 1rem;">
-          <div style="font-size: 2.8rem; margin-bottom: 0.75rem;">📄</div>
-          <h2 style="color: var(--thpt-blue); font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;">GIAO DIỆN ĐÃ ĐƯỢC LÀM SẠCH HOÀN TOÀN</h2>
-          <p style="color: var(--thpt-muted); font-size: 0.95rem; max-width: 500px; margin: 0 auto;">Vui lòng nhập hướng dẫn chi tiết của bạn, tôi sẽ khởi tạo chính xác các Form Nhập liệu và Báo cáo theo đúng yêu cầu!</p>
+    function resetReportFilter() {
+      document.getElementById("f-nam-hoc").value = "2025-2026";
+      document.getElementById("f-khoi").value = "ALL";
+      document.getElementById("f-nhom").value = "ALL";
+      updateLopFilterOptions();
+      document.getElementById("f-lop").value = "ALL";
+      onFilterChange();
+      applyReportFilter();
+    }
+
+    function applyReportFilter() {
+      const fKhoi = document.getElementById("f-khoi").value;
+      const fNhom = document.getElementById("f-nhom").value;
+      const fLop = document.getElementById("f-lop").value;
+
+      let data = RAW_CLASS_DATA;
+
+      if (fKhoi !== "ALL") data = data.filter(i => i.khoiId === fKhoi);
+      if (fNhom !== "ALL") data = data.filter(i => i.nhom === fNhom);
+      if (fLop !== "ALL") data = data.filter(i => i.lopName === fLop);
+
+      renderSummaryCards(data);
+      renderReportTable(data);
+      renderReportCharts(data);
+    }
+
+    // C. RENDER TỔNG QUAN THỐNG KÊ (7 STAT CARDS)
+    function renderSummaryCards(data) {
+      const totalClasses = data.length;
+      const totalStudents = data.reduce((sum, item) => sum + item.xuatSac + item.gioi + item.kha + item.tb + item.yeu, 0);
+      const totalXuatSac = data.reduce((sum, item) => sum + item.xuatSac, 0);
+      const totalGioi = data.reduce((sum, item) => sum + item.gioi, 0);
+      const totalKha = data.reduce((sum, item) => sum + item.kha, 0);
+      const totalTB = data.reduce((sum, item) => sum + item.tb, 0);
+      const totalYeu = data.reduce((sum, item) => sum + item.yeu, 0);
+
+      const cardsContainer = document.getElementById("summary-cards-container");
+      cardsContainer.innerHTML = `
+        <div class="stat-card-item">
+          <div class="stat-card-value">${totalStudents}</div>
+          <div class="stat-card-label">TỔNG SỐ HS</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value">${totalClasses}</div>
+          <div class="stat-card-label">TỔNG SỐ LỚP</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value" style="color: var(--rate-xuat-sac);">${totalXuatSac}</div>
+          <div class="stat-card-label">XUẤT SẮC</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value" style="color: var(--rate-gioi);">${totalGioi}</div>
+          <div class="stat-card-label">GIỎI</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value" style="color: var(--rate-kha);">${totalKha}</div>
+          <div class="stat-card-label">KHÁ</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value" style="color: var(--rate-tb);">${totalTB}</div>
+          <div class="stat-card-label">TRUNG BÌNH</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="stat-card-value" style="color: var(--rate-yeu);">${totalYeu}</div>
+          <div class="stat-card-label">YẾU</div>
         </div>
       `;
     }
 
-    function closeModal() {
-      document.getElementById("thpt-modal").classList.remove("active");
+    // D. RENDER BẢNG BÁO CÁO CHÍNH (MAIN TABLE WITH GRADE SUB-TOTALS)
+    function renderReportTable(data) {
+      const tbody = document.getElementById("report-table-body");
+
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem; color: var(--slate-muted); font-style: italic;">
+              Không tìm thấy dữ liệu báo cáo thống kê phù hợp với điều kiện lọc.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      // Group data by grade
+      const grades = ["K10", "K11", "K12"];
+      let html = '';
+
+      let grandTotalHS = 0, grandTotalXS = 0, grandTotalG = 0, grandTotalK = 0, grandTotalTB = 0, grandTotalY = 0;
+
+      grades.forEach(gradeKey => {
+        const gradeItems = data.filter(item => item.khoiId === gradeKey);
+        if (gradeItems.length === 0) return;
+
+        const gradeName = gradeItems[0].khoiName;
+        html += `<tr class="row-group-header"><td colspan="8" style="padding: 0.55rem 0.85rem;">📌 ${gradeName.toUpperCase()} (${gradeItems.length} Lớp)</td></tr>`;
+
+        let subTotalHS = 0, subTotalXS = 0, subTotalG = 0, subTotalK = 0, subTotalTB = 0, subTotalY = 0;
+
+        gradeItems.forEach(item => {
+          const totalLop = item.xuatSac + item.gioi + item.kha + item.tb + item.yeu;
+          subTotalHS += totalLop;
+          subTotalXS += item.xuatSac;
+          subTotalG += item.gioi;
+          subTotalK += item.kha;
+          subTotalTB += item.tb;
+          subTotalY += item.yeu;
+
+          html += `
+            <tr>
+              <td style="text-align: center; color: var(--slate-muted); font-size: 0.85rem;">${item.khoiName}</td>
+              <td style="font-weight: 800; color: var(--navy-primary); text-align: center;">${item.lopName}</td>
+              <td style="text-align: center; font-weight: 700; color: var(--rate-xuat-sac);">${item.xuatSac}</td>
+              <td style="text-align: center; font-weight: 700; color: var(--rate-gioi);">${item.gioi}</td>
+              <td style="text-align: center; font-weight: 700; color: var(--rate-kha);">${item.kha}</td>
+              <td style="text-align: center; font-weight: 600; color: var(--rate-tb);">${item.tb}</td>
+              <td style="text-align: center; font-weight: 600; color: var(--rate-yeu);">${item.yeu}</td>
+              <td style="text-align: center; font-weight: 800; background: rgba(30, 58, 138, 0.03); color: var(--navy-primary);">${totalLop}</td>
+            </tr>
+          `;
+        });
+
+        // Grade Subtotal Row
+        html += `
+          <tr class="row-grade-subtotal">
+            <td colspan="2" style="text-align: center;">TỔNG ${gradeName.toUpperCase()}</td>
+            <td style="text-align: center;">${subTotalXS}</td>
+            <td style="text-align: center;">${subTotalG}</td>
+            <td style="text-align: center;">${subTotalK}</td>
+            <td style="text-align: center;">${subTotalTB}</td>
+            <td style="text-align: center;">${subTotalY}</td>
+            <td style="text-align: center;">${subTotalHS}</td>
+          </tr>
+        `;
+
+        grandTotalHS += subTotalHS;
+        grandTotalXS += subTotalXS;
+        grandTotalG += subTotalG;
+        grandTotalK += subTotalK;
+        grandTotalTB += subTotalTB;
+        grandTotalY += subTotalY;
+      });
+
+      // Grand Total Row
+      html += `
+        <tr class="row-grand-total">
+          <td colspan="2" style="text-align: center; padding: 0.75rem;">TỔNG CỘNG TOÀN TRƯỜNG</td>
+          <td style="text-align: center; color: #60a5fa;">${grandTotalXS}</td>
+          <td style="text-align: center;">${grandTotalG}</td>
+          <td style="text-align: center;">${grandTotalK}</td>
+          <td style="text-align: center;">${grandTotalTB}</td>
+          <td style="text-align: center;">${grandTotalY}</td>
+          <td style="text-align: center; font-size: 1.05rem; color: #4ade80;">${grandTotalHS}</td>
+        </tr>
+      `;
+
+      tbody.innerHTML = html;
     }
 
-    function exportData(type) {
-      alert(`Đã xuất báo cáo thành công dưới dạng file ${type.toUpperCase()}!`);
-    }
+    // E. RENDER CHARTS (GROUPED BAR & STACKED GRADE BAR)
+    function renderReportCharts(data) {
+      if (chartGroupedInstance) chartGroupedInstance.destroy();
+      if (chartStackedInstance) chartStackedInstance.destroy();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      renderView();
-    });
+      if (data.length === 0) return;
+
+      // Chart 1: Grouped Bar Chart by Class
+      const ctx1 = document.getElementById("chart-grouped-bar")?.getContext("2d");
+      if (ctx1) {
+        chartGroupedInstance = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: data.map(item => item.lopName),
+            datasets: [
+              { label: 'Xuất Sắc', data: data.map(i => i.xuatSac), backgroundColor: '#1e40af' },
+              { label: 'Giỏi', data: data.map(i => i.gioi), backgroundColor: '#2563eb' },
+              { label: 'Khá', data: data.map(i => i.kha), backgroundColor: '#0284c7' },
+              { label: 'Trung Bình', data: data.map(i => i.tb), backgroundColor: '#475569' },
+              { label: 'Yếu', data: data.map(i => i.yeu), backgroundColor: '#94a3b8' }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11, weight: '600' } } },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+              x: { grid: { display: false } },
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      // Chart 2: Stacked Bar Chart by Grade (Khối 10, 11, 12)
+      const ctx2 = document.getElementById("chart-stacked-grade")?.getContext("2d");
+      if (ctx2) {
+        const grades = ["K10", "K11", "K12"];
+        const gradeLabels = ["Khối 10", "Khối 11", "Khối 12"];
+
+        const gradeAgg = grades.map(gId => {
+          const items = RAW_CLASS_DATA.filter(i => i.khoiId === gId);
+          return {
+            xs: items.reduce((s, i) => s + i.xuatSac, 0),
+            g: items.reduce((s, i) => s + i.gioi, 0),
+            k: items.reduce((s, i) => s + i.kha, 0),
+            tb: items.reduce((s, i) => s + i.tb, 0),
+            y: items.reduce((s, i) => s + i.yeu, 0)
+          };
+        });
+
+        chartStackedInstance = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: gradeLabels,
+            datasets: [
+              { label: 'Xuất Sắc', data: gradeAgg.map(a => a.xs), backgroundColor: '#1e40af' },
+              { label: 'Giỏi', data: gradeAgg.map(a => a.g), backgroundColor: '#2563eb' },
+              { label: 'Khá', data: gradeAgg.map(a => a.k), backgroundColor: '#0284c7' },
+              { label: 'Trung Bình', data: gradeAgg.map(a => a.tb), backgroundColor: '#475569' },
+              { label: 'Yếu', data: gradeAgg.map(a => a.y), backgroundColor: '#94a3b8' }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11, weight: '600' } } }
+            },
+            scales: {
+              x: { stacked: true, grid: { display: false } },
+              y: { stacked: true, beginAtZero: true }
+            }
+          }
+        });
+      }
+    }
   </script>
 </body>
 </html>
