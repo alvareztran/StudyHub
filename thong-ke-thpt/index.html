@@ -134,10 +134,10 @@
     }
 
     .btn-filter-submit {
-      background: var(--navy-primary);
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
       color: #ffffff;
       border: none;
-      padding: 0.6rem 1.2rem;
+      padding: 0.65rem 1.35rem;
       border-radius: 6px;
       font-weight: 700;
       font-size: 0.88rem;
@@ -145,20 +145,32 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      transition: background 0.2s;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.22);
+      transition: all 0.2s ease;
+    }
+    .btn-filter-submit:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.32);
+      transform: translateY(-1px);
     }
     .btn-filter-submit:hover { background: #1d4ed8; }
 
     .btn-filter-reset {
-      background: transparent;
-      color: var(--slate-muted);
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      color: var(--slate-text);
       border: 1px solid var(--slate-border);
-      padding: 0.6rem 1rem;
+      padding: 0.65rem 1.1rem;
       border-radius: 6px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.88rem;
       cursor: pointer;
-      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s ease;
+    }
+    .btn-filter-reset:hover {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-color: #94a3b8;
+      transform: translateY(-1px);
     }
     .btn-filter-reset:hover {
       background: var(--bg-light);
@@ -329,7 +341,7 @@
         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
-      <button onclick="window.print()" style="background: var(--navy-primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+      <button onclick="window.print()" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: white; border: none; padding: 0.55rem 1.1rem; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); font-family: 'K2D', sans-serif;">
          In Báo Cáo A4
       </button>
     </div>
