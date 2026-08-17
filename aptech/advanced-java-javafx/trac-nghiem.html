@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, Multithreading, Race Condition, Synchronization, Deadlock, Executors, I/O Streams, File Handling và JavaFX GUI.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, Multithreading, JDBC Architecture, Driver Types, ResultSet, RowSet, Design Patterns và JavaFX GUI.
       </p>
     </header>
 
@@ -234,14 +234,14 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 28 câu (Chính xác: 0%)</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 42 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 28</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 42</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: Race condition, Deadlock, wait-notify, Executor, Monitor, Thread, Generics)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: JDBC, ResultSet, RowSet, Driver, Factory, Singleton, Thread, Generics)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
@@ -277,6 +277,20 @@
           <li><a href="#question-26"><span>Câu 26: Which one of the following b...</span></a></li>
           <li><a href="#question-27"><span>Câu 27: Which of the following optio...</span></a></li>
           <li><a href="#question-28"><span>Câu 28: A ________ is a piece of cod...</span></a></li>
+          <li><a href="#question-29"><span>Câu 29: Which of these statements ab...</span></a></li>
+          <li><a href="#question-30"><span>Câu 30: Match the properties of driv...</span></a></li>
+          <li><a href="#question-31"><span>Câu 31: Choose the correct code to c...</span></a></li>
+          <li><a href="#question-32"><span>Câu 32: Identify the correct syntax ...</span></a></li>
+          <li><a href="#question-33"><span>Câu 33: To which file do you require...</span></a></li>
+          <li><a href="#question-34"><span>Câu 34: Which of these statements ab...</span></a></li>
+          <li><a href="#question-35"><span>Câu 35: Which of these statements ab...</span></a></li>
+          <li><a href="#question-36"><span>Câu 36: Which of the following state...</span></a></li>
+          <li><a href="#question-37"><span>Câu 37: Which of these statements ab...</span></a></li>
+          <li><a href="#question-38"><span>Câu 38: Identify the component requi...</span></a></li>
+          <li><a href="#question-39"><span>Câu 39: Which of the following state...</span></a></li>
+          <li><a href="#question-40"><span>Câu 40: Which of the statements are ...</span></a></li>
+          <li><a href="#question-41"><span>Câu 41: Which one of the following d...</span></a></li>
+          <li><a href="#question-42"><span>Câu 42: Which of the following optio...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -597,6 +611,160 @@
               <label><input type="radio" name="q28" value="D"> D. Lock</label>
             </div>
             <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Monitor (hoặc Critical Section/Mutex)</strong><br>• Trong lập trình song song Java, <strong>Monitor</strong> là một vùng mã nguồn (hoặc cơ chế bảo vệ) được bảo vệ bởi chương trình loại trừ tương hỗ (mutual-exclusion), đảm bảo tại một thời điểm chỉ có duy nhất một luồng được phép thực thi khối mã đó.</div>
+          </div>
+          <!-- Question 29 -->
+          <div class="quiz-card" id="question-29" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 29: Which of these statements about JDBC are true?<br>A. The implementation of the software API for database connectivity varies as per the programming languages, underlying database systems, and operating systems.<br>B. JDBC is the software API for database connectivity, which provides a set of classes and interfaces written in machine level languages to access any kind of database.<br>C. JDBC is independent of the underlying database management software.<br>D. In a two-tier model, the JDBC API is used to translate and send the client request to a local or remote database on the network.<br>E. In a three-tier model, a 'middle tier' of services, a third server is employed to send the client request to the database server.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q29" value="A"> A. A, C, E</label>
+              <label><input type="radio" name="q29" value="B"> B. B, C, D</label>
+              <label><input type="radio" name="q29" value="C"> C. C, D, E</label>
+              <label><input type="radio" name="q29" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, D, E</strong><br>• <strong>C đúng:</strong> JDBC độc lập với hệ quản trị CSDL bên dưới (DBMS independent) nhờ kiến trúc Driver Manager.<br>• <strong>D đúng:</strong> Mô hình 2 tầng (2-tier model): JDBC kết nối trực tiếp client tới máy chủ CSDL.<br>• <strong>E đúng:</strong> Mô hình 3 tầng (3-tier model): JDBC tương tác qua tầng trung gian (Application Server / Middle tier).<br>• <strong>B sai:</strong> JDBC được viết bằng ngôn ngữ Java, không phải ngôn ngữ máy (machine level).</div>
+          </div>
+          <!-- Question 30 -->
+          <div class="quiz-card" id="question-30" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 30: Match the properties of drivers with the corresponding descriptions:<br>a. Converts JDBC calls into a network protocol translated by middle tier -> Type-3 (2)<br>b. Interprets JDBC calls to database-specific native call interface -> Type-2 (5)<br>c. Core of JDBC API converting client request to database native format -> Database drivers (4)<br>d. Uses bridging technology providing JDBC access via ODBC drivers -> Type-1 (1)<br>e. Communicates directly with database engine using Java sockets -> Type-4 (3)</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q30" value="A"> A. a-2, b-4, c-5, d-1, e-3</label>
+              <label><input type="radio" name="q30" value="B"> B. a-2, b-5, c-1, d-3, e-4</label>
+              <label><input type="radio" name="q30" value="C"> C. a-2, b-1, c-5, d-1, e-4</label>
+              <label><input type="radio" name="q30" value="D"> D. a-2, b-5, c-4, d-1, e-3</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) a-2, b-5, c-4, d-1, e-3</strong><br>• <strong>a-2 (Type-3):</strong> Net-protocol pure Java driver (chuyển đổi qua Middle-tier server).<br>• <strong>b-5 (Type-2):</strong> Native-API driver (dùng thư viện C/C++ Native CAPI của CSDL).<br>• <strong>c-4 (Database drivers):</strong> Nhân điều khiển CSDL.<br>• <strong>d-1 (Type-1):</strong> JDBC-ODBC Bridge driver (dùng cầu nối ODBC).<br>• <strong>e-3 (Type-4):</strong> Native-protocol pure Java driver (kết nối trực tiếp qua Sockets mà không cần thư viện trung gian).</div>
+          </div>
+          <!-- Question 31 -->
+          <div class="quiz-card" id="question-31" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 31: Choose the correct code to create a JDBC connection.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q31" value="A"> A. Connection cn = DriverManager.getDatabaseConnection(url, "sa", "playware");</label>
+              <label><input type="radio" name="q31" value="B"> B. Connection cn = DriverManager.getConnection(url, "sa", "playware"); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery("SELECT BookName FROM Books"); while(rs.next()){ String name=rs.getString("BookName"); System.out.println(name); } catch (SQLException ce) {...}</label>
+              <label><input type="radio" name="q31" value="C"> C. Code with syntax error tch (SQLException ce)</label>
+              <label><input type="radio" name="q31" value="D"> D. Statement st = cn.executeQuery(...)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B)</strong><br>• Đoạn mã <strong>B</strong> khởi tạo kết nối JDBC chuẩn:<br>1. Gọi `DriverManager.getConnection(url, user, password)`.<br>2. Tạo `Statement`: `cn.createStatement()`.<br>3. Thực thi truy vấn: `st.executeQuery("SELECT...")`.<br>4. Lặp qua `ResultSet`: `rs.next()` và lấy dữ liệu bằng `rs.getString(...)`.</div>
+          </div>
+          <!-- Question 32 -->
+          <div class="quiz-card" id="question-32" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 32: Identify the correct syntax of connecting to a SQL Server database using Type 4 driver.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q32" value="A"> A. jdbc:sql://serverName; instanceName: portNumber; property=value[;property=value]</label>
+              <label><input type="radio" name="q32" value="B"> B. jdbc:sqlserver://serverName; instanceName:portNumber; [property=value[;property=value]]</label>
+              <label><input type="radio" name="q32" value="C"> C. jdbc:sqlserver://instanceName:portNumber; property=value[; property=value]</label>
+              <label><input type="radio" name="q32" value="D"> D. jdbc:sqlserver://serverName; instanceName; property=value[; property=value]</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Cú pháp chuẩn kết nối SQL Server JDBC Type-4 Driver: <code>jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;property=value[;property=value]]</code>.</div>
+          </div>
+          <!-- Question 33 -->
+          <div class="quiz-card" id="question-33" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 33: To which file do you require to add a dependency for database libraries in an Apache NetBeans Maven project?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q33" value="A"> A. config.xml</label>
+              <label><input type="radio" name="q33" value="B"> B. database.xml</label>
+              <label><input type="radio" name="q33" value="C"> C. manifest.xml</label>
+              <label><input type="radio" name="q33" value="D"> D. pom.xml</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. pom.xml</strong><br>• Trong dự án Maven (Apache NetBeans / Eclipse / IntelliJ), file <strong>pom.xml</strong> (Project Object Model) là nơi duy nhất chứa các thông số cấu hình và khai báo thư viện phụ thuộc (`<dependency>`) như JDBC Driver.</div>
+          </div>
+          <!-- Question 34 -->
+          <div class="quiz-card" id="question-34" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 34: Which of these statements about Scrollable ResultSet are true?<br>(A) In Scrollable ResultSet, the cursor is positioned on the first row.<br>(B) A default ResultSet object is not updatable and has a cursor that moves forward only.<br>(C) The ResultSet should be compulsorily closed after a COMMIT statement.<br>(D) Holdability refers to the ability to check whether the cursor stays open after a COMMIT.<br>(E) The createStatement method has two arguments namely, resultSetType and resultSetConcurrency.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q34" value="A"> A. A, B, and C</label>
+              <label><input type="radio" name="q34" value="B"> B. B, D, and E</label>
+              <label><input type="radio" name="q34" value="C"> C. B, C, and E</label>
+              <label><input type="radio" name="q34" value="D"> D. A, D, and E</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, và E</strong><br>• <strong>B đúng:</strong> ResultSet mặc định là `TYPE_FORWARD_ONLY` (chỉ duy trì con trỏ di chuyển tiến) và `CONCUR_READ_ONLY` (không sửa đổi được).<br>• <strong>D đúng:</strong> Holdability (`HOLD_CURSORS_OVER_COMMIT`) kiểm tra xem con trỏ ResultSet có tiếp tục mở sau lệnh COMMIT hay không.<br>• <strong>E đúng:</strong> Phương thức `createStatement(int resultSetType, int resultSetConcurrency)` nhận 2 tham số cấu hình.<br>• <strong>A sai:</strong> Khi vừa tạo, con trỏ ResultSet mặc định nằm TRƯỚC dòng đầu tiên (`beforeFirst()`), không phải nằm TRÊN dòng đầu tiên.</div>
+          </div>
+          <!-- Question 35 -->
+          <div class="quiz-card" id="question-35" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 35: Which of these statements about ResultSet constant values are true?<br>(A) TYPE_SCROLL_INSENSITIVE is the default type of result set.<br>(B) In TYPE_FORWARD_ONLY result set, the cursor can only be used to process from the beginning of a ResultSet to the end of it.<br>(C) In TYPE_SCROLL_INSENSITIVE result set, the SQL queries applied on a particular field will have a direct impact on the ResultSet.<br>(D) The TYPE_SCROLL_SENSITIVE type of cursor is sensitive to changes made to the database while it is open.<br>(E) The TYPE_FORWARD_ONLY type of result set is not scrollable, not positionable, and not sensitive.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q35" value="A"> A. A, B, and C</label>
+              <label><input type="radio" name="q35" value="B"> B. B, D, and E</label>
+              <label><input type="radio" name="q35" value="C"> C. B, C, and E</label>
+              <label><input type="radio" name="q35" value="D"> D. A, D, and E</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, và E</strong><br>• <strong>B đúng:</strong> `TYPE_FORWARD_ONLY` chỉ cho phép con trỏ đi từ đầu đến cuối.<br>• <strong>D đúng:</strong> `TYPE_SCROLL_SENSITIVE` sẽ nhạy cảm và cập nhật các thay đổi dữ liệu trong CSDL trong khi ResultSet đang mở.<br>• <strong>E đúng:</strong> `TYPE_FORWARD_ONLY` không hỗ trợ cuộn (not scrollable) hay đặt vị trí con trỏ tự do.<br>• <strong>A sai:</strong> Default loại ResultSet là `TYPE_FORWARD_ONLY`.</div>
+          </div>
+          <!-- Question 36 -->
+          <div class="quiz-card" id="question-36" data-correct="D" data-all-correct="A,D">
+            <div class="quiz-question">Câu 36: Which of the following statements about RowSet are true?<br>(A) A RowSet contains a set of rows of data.<br>(B) A RowSet has to be made scrollable and updatable at the time of creation.<br>(C) A connected RowSet can read data from a non-relational database source also.<br>(D) Scrollability and Updatability of a RowSet is independent of the JDBC driver.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q36" value="A"> A. A, C</label>
+              <label><input type="radio" name="q36" value="B"> B. B, D</label>
+              <label><input type="radio" name="q36" value="C"> C. C, D</label>
+              <label><input type="radio" name="q36" value="D"> D. A, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, D</strong><br>• <strong>A đúng:</strong> `RowSet` là một tập hợp các dòng dữ liệu (chứa JavaBeans component).<br>• <strong>D đúng:</strong> Tính năng cuộn (Scrollability) và cập nhật (Updatability) của `RowSet` (như CachedRowSet) hoạt động trong bộ nhớ nên hoàn toàn độc lập với JDBC Driver.</div>
+          </div>
+          <!-- Question 37 -->
+          <div class="quiz-card" id="question-37" data-correct="C" data-all-correct="C,E">
+            <div class="quiz-question">Câu 37: Which of these statements about Updatable ResultSet are true?<br>(A) Updatable ResultSet is the ability to update rows in a result set using SQL commands, rather than using methods...<br>(B) The UpdateXXX() method of ResultSet is used to change the data in an existing row.<br>(C) Updatability in a result set is associated with concurrency in database access because you cannot have multiple write locks concurrently.<br>(D) In CONCURRENCY.READ_ONLY type of result set, the updates, inserts, and deletes can be performed...<br>(E) The concurrency type of a result set determines whether it is updatable or not.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q37" value="A"> A. A, C</label>
+              <label><input type="radio" name="q37" value="B"> B. B</label>
+              <label><input type="radio" name="q37" value="C"> C. C, E</label>
+              <label><input type="radio" name="q37" value="D"> D. D, E</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, E (hoặc B, C, E)</strong><br>• <strong>B đúng:</strong> Các phương thức `updateString()`, `updateInt()` được dùng để cập nhật giá trị cột.<br>• <strong>C đúng:</strong> Kha năng cập nhật liên quan chặt chẽ tới cơ chế Concurrency quản lý khóa ghi.<br>• <strong>E đúng:</strong> Loại concurrency (`CONCUR_UPDATABLE` vs `CONCUR_READ_ONLY`) quyết định ResultSet có cho phép cập nhật hay không.</div>
+          </div>
+          <!-- Question 38 -->
+          <div class="quiz-card" id="question-38" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 38: Identify the component required to create a hash function.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q38" value="A"> A. a (The instanceof operator)</label>
+              <label><input type="radio" name="q38" value="B"> B. b (String)</label>
+              <label><input type="radio" name="q38" value="C"> C. c (Non zero integer constant)</label>
+              <label><input type="radio" name="q38" value="D"> D. d (Design pattern)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. Non zero integer constant</strong><br>• Theo chuẩn thuật toán thiết kế `hashCode()` trong Java (như quy tắc Joshua Bloch), một <strong>số nguyên hằng số khác 0</strong> (Non-zero integer constant như 31 hoặc 17) được dùng làm hệ số nhân để xây dựng hàm băm băm đều các giá trị.</div>
+          </div>
+          <!-- Question 39 -->
+          <div class="quiz-card" id="question-39" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 39: Which of the following statements are true for the logical equality?<br>a. When physical memory locations of the two strings are same, this is called logical equality.<br>b. When data of the objects are same, it is called logical equality.<br>c. The equality operator (==) is used to check for logical equality.<br>d. The equals() method that is used to check for logical equality is inherited from the Object class.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q39" value="A"> A. a, d</label>
+              <label><input type="radio" name="q39" value="B"> B. b, d</label>
+              <label><input type="radio" name="q39" value="C"> C. a, c</label>
+              <label><input type="radio" name="q39" value="D"> D. d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, d</strong><br>• <strong>b đúng:</strong> Bằng nhau về mặt logic (Logical equality) xảy ra khi dữ liệu/trạng thái bên trong hai đối tượng giống hệt nhau.<br>• <strong>d đúng:</strong> Phương thức <code>equals()</code> dùng để kiểm tra bằng nhau về logic được kế thừa từ lớp <code>Object</code>.<br>• <strong>a &amp; c sai:</strong> Kiểm tra vị trí địa chỉ ô nhớ vật lý được gọi là Reference equality và dùng toán tử <code>==</code>.</div>
+          </div>
+          <!-- Question 40 -->
+          <div class="quiz-card" id="question-40" data-correct="B" data-all-correct="B,C">
+            <div class="quiz-question">Câu 40: Which of the statements are true for Factory design pattern?<br>a. Prevents the application from being tightly coupled to a specific DAO implementation<br>b. Does not depend on concrete DAO classes<br>c. Uses a common interface to refer to the newly created object<br>d. Not used to implement the DAO pattern</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q40" value="A"> A. a</label>
+              <label><input type="radio" name="q40" value="B"> B. b, c</label>
+              <label><input type="radio" name="q40" value="C"> C. a, c</label>
+              <label><input type="radio" name="q40" value="D"> D. b, d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, c (hoặc C. a, c)</strong><br>• <strong>b &amp; c đúng:</strong> Factory Pattern ẩn đi việc khởi tạo các lớp cụ thể (concrete classes) và trả về đối tượng thông qua một Interface dùng chung, giúp mã nguồn linh hoạt và giảm phụ thuộc trực tiếp (loose coupling).</div>
+          </div>
+          <!-- Question 41 -->
+          <div class="quiz-card" id="question-41" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 41: Which one of the following design patterns provides complete information on class implementations that can be instantiated only once?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q41" value="A"> A. a (Factory)</label>
+              <label><input type="radio" name="q41" value="B"> B. b (Singleton)</label>
+              <label><input type="radio" name="q41" value="C"> C. c (Adapter)</label>
+              <label><input type="radio" name="q41" value="D"> D. d (Proxy)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b. Singleton Pattern</strong><br>• <strong>Singleton Pattern</strong> đảm bảo một lớp chỉ được phép khởi tạo duy nhất một thể hiện (single instance) trong suốt quá trình chạy ứng dụng và cung cấp một điểm truy cập toàn cục tới thể hiện đó.</div>
+          </div>
+          <!-- Question 42 -->
+          <div class="quiz-card" id="question-42" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 42: Which of the following option represents the default properties file?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q42" value="A"> A. System.out.println</label>
+              <label><input type="radio" name="q42" value="B"> B. MessagesBundle</label>
+              <label><input type="radio" name="q42" value="C"> C. MessagesBundle.properties</label>
+              <label><input type="radio" name="q42" value="D"> D. System.out</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) MessagesBundle.properties</strong><br>• Tệp tin thuộc tính mặc định chứa các chuỗi văn bản bản địa hóa (ResourceBundle Properties file) có phần mở rộng bắt buộc là <code>.properties</code> (ví dụ: <code>MessagesBundle.properties</code>).</div>
           </div>
         </section>
       </main>
