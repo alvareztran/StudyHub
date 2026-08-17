@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Java &amp; JavaFX - StudyHub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" type="image/jpeg" href="../../images/logo.jpg">
+  <script src="../../js/theme.js"></script>
+  <style>
+    .aptech-header-badge {
+      background: linear-gradient(135deg, #2563eb, #0284c7);
+      color: #ffffff;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="breadcrumb">
+        <a href="../../index.html">StudyHub</a> &raquo; 
+        <span>APTECH</span> &raquo; Advanced Java &amp; JavaFX
+      </div>
+      <div class="aptech-header-badge">Giáo trình Chuẩn Lập Trình Java Nâng Cao &amp; JavaFX GUI</div>
+      <h1>ADVANCED JAVA AND JAVAFX</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">
+        Hệ thống học liệu tổng hợp Lập trình Java Nâng cao (Generics, Collections, Streams, Multithreading, Concurrency, JDBC) và Thiết kế Giao diện Đồ họa Hiện đại JavaFX (Scene Builder, FXML, Properties, Data Binding, Concurrent Task, CSS Styling).
+      </p>
+    </header>
+
+    <div class="header-actions no-print">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Đổi giao diện">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button onclick="window.print()" class="btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Xuất file PDF
+      </button>
+    </div>
+
+    <main>
+      <section style="margin-top: 1rem;">
+        <h2>Danh Mục Bài Học &amp; Trắc Nghiệm Tương Tác</h2>
+        <p>Khám phá các chuyên đề lý thuyết nâng cao và hệ thống trắc nghiệm tương tác chuẩn bị cho môn Advanced Java &amp; JavaFX:</p>
+
+        <ul class="index-list" style="margin-top: 1.5rem;">
+          <!-- Special Quiz Card -->
+          <li class="index-item" style="border: 2px solid #2563eb; background-color: var(--highlight-bg);">
+            <h3 class="index-title">
+              <a href="trac-nghiem.html" style="color: #2563eb; font-weight: 700;">🎯 Ngân Hàng Trắc Nghiệm Tương Tác Advanced Java &amp; JavaFX</a>
+            </h3>
+            <p class="index-desc">Trang trắc nghiệm tương tác thông minh (Tự động chấm điểm, hiển thị lời giải chi tiết, tìm kiếm từ khóa, xuất PDF). Đang sẵn sàng cập nhật bộ câu hỏi trắc nghiệm từ người dùng!</p>
+          </li>
+
+          <!-- Chapter 1 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 1: Advanced Java Core, Generics &amp; Functional Programming</a>
+            </h3>
+            <p class="index-desc">Generics <code>&lt;T&gt;</code>, Wildcards (<code>? extends T</code>, <code>? super T</code>), Lambda Expressions, Functional Interfaces (<code>Function</code>, <code>Predicate</code>, <code>Consumer</code>, <code>Supplier</code>), Stream API (<code>map</code>, <code>filter</code>, <code>collect</code>, <code>reduce</code>) và <code>Optional</code> Class.</p>
+          </li>
+
+          <!-- Chapter 2 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 2: Java Multithreading &amp; Concurrency Framework</a>
+            </h3>
+            <p class="index-desc">Vòng đời Thread, Synchronization, Lock API (<code>ReentrantLock</code>), <code>ExecutorService</code>, Thread Pool, <code>Callable</code> &amp; <code>Future</code>, <code>CompletableFuture</code> và Concurrent Collections (<code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code>).</p>
+          </li>
+
+          <!-- Chapter 3 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 3: Java Database Connectivity (JDBC) &amp; DAO Pattern</a>
+            </h3>
+            <p class="index-desc">Kiến trúc JDBC Driver Manager, <code>Connection</code>, <code>PreparedStatement</code>, <code>CallableStatement</code>, <code>ResultSet</code>, Transaction Management (<code>commit</code>, <code>rollback</code>) và thiết kế kiến trúc chuẩn DAO Pattern tích hợp Cơ sở dữ liệu.</p>
+          </li>
+
+          <!-- Chapter 4 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 4: Kiến Trúc JavaFX Platform &amp; Layout Panes</a>
+            </h3>
+            <p class="index-desc">Tổng quan JavaFX Platform Architecture (Prism, Glass Windowing toolkit), cấu trúc ứng dụng JavaFX (<code>Application</code>, <code>Stage</code>, <code>Scene</code>, <code>Node</code> Graph) và tổ chức bố cục giao diện với các Layout Panes (<code>VBox</code>, <code>HBox</code>, <code>BorderPane</code>, <code>GridPane</code>, <code>AnchorPane</code>, <code>StackPane</code>).</p>
+          </li>
+
+          <!-- Chapter 5 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 5: JavaFX Controls, Properties &amp; Data Binding</a>
+            </h3>
+            <p class="index-desc">Thành phần điều khiển UI (<code>Button</code>, <code>TextField</code>, <code>ComboBox</code>, <code>DatePicker</code>, <code>TableView</code>, <code>ListView</code>, <code>TreeView</code>), Mô hình Observable Pattern, JavaFX Properties (<code>StringProperty</code>, <code>IntegerProperty</code>) và kỹ thuật Data Binding (Unidirectional &amp; Bidirectional Binding).</p>
+          </li>
+
+          <!-- Chapter 6 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 6: FXML, Scene Builder &amp; Controller Architecture</a>
+            </h3>
+            <p class="index-desc">Thiết kế UI trực quan với JavaFX Scene Builder, khai báo cấu trúc XML trong FXML, kết nối Controller với annotation <code>@FXML</code>, giao diện <code>Initializable</code> và cơ chế xử lý sự kiện Event Driven Programming (ActionEvent, MouseEvent, KeyEvent).</p>
+          </li>
+
+          <!-- Chapter 7 -->
+          <li class="index-item">
+            <h3 class="index-title">
+              <a>Chương 7: CSS Styling, Animations &amp; JavaFX Concurrent Task</a>
+            </h3>
+            <p class="index-desc">Tùy biến giao diện với JavaFX CSS (<code>-fx-</code> properties), hiệu ứng Animation &amp; Transitions (<code>TranslateTransition</code>, <code>FadeTransition</code>, <code>Timeline</code>), 2D Graphics Canvas và xử lý tác vụ bất đồng bộ đa luồng an toàn với <code>Task&lt;V&gt;</code>, <code>Service&lt;V&gt;</code> và <code>Platform.runLater()</code>.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
+      <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
+      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light);">&copy; 2026 StudyHub. Thiết kế khoa học &amp; tối giản.</p>
+    </footer>
+  </div>
+</body>
+</html>
