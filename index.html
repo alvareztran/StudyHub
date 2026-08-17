@@ -7,113 +7,8 @@
   <link rel="stylesheet" href="css/landing.css">
   <link rel="icon" type="image/jpeg" href="images/logo.jpg">
   <script src="js/theme.js"></script>
-  <!-- Leaflet Map library for visitor map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <style>
-    @keyframes ping {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: scale(1.8); opacity: 0; }
-    }
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.1); }
-    }
-    .ops-panel-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-top: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    .ops-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid var(--border-color);
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .ops-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #10b981;
-      padding: 0.35rem 0.85rem;
-      border-radius: 50px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .ops-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #10b981;
-      box-shadow: 0 0 10px #10b981;
-      animation: pulseGlow 1.5s infinite;
-    }
-    .ops-metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      margin: 1.5rem 0;
-    }
-    @media (max-width: 900px) {
-      .ops-metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (max-width: 480px) {
-      .ops-metrics-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .ops-metric-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.15rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .ops-metric-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 3px; height: 100%;
-      background: var(--gradient-primary);
-    }
-    .ops-metric-num {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      font-weight: 800;
-      background: var(--gradient-text);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-top: 0.25rem;
-    }
-    .ops-metric-title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-secondary);
-    }
-    .visitor-grid {
-      display: grid; 
-      grid-template-columns: 1.1fr 1.9fr; 
-      gap: 1.5rem; 
-      align-items: stretch; 
-      margin-top: 1.25rem;
-    }
-    @media (max-width: 850px) {
-      .visitor-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-    }
-  </style>
+  <!-- Three.js 3D WebGL Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body class="landing-page">
   <div class="landing-container">
@@ -129,6 +24,7 @@
       <nav class="landing-nav no-print">
         <a href="index.html" class="nav-item active">Trang chủ</a>
         <a href="#courses" class="nav-item">Kho môn học</a>
+        <a href="#ai-3d-experience" class="nav-item">Trải nghiệm 3D AI</a>
         <a href="cong-cu-hay.html" class="nav-item">Công cụ hay</a>
         <a href="tai-lieu-khac.html" class="nav-item">Tài liệu khác</a>
         <a href="flappy-bird.html" class="nav-item">Giải trí</a>
@@ -591,102 +487,25 @@
         </div>
       </section>
 
-      <!-- World-Class Real-Time System Operations & Analytics Panel -->
-      <section id="visitor-stats" style="margin-top: 3rem; margin-bottom: 2rem;">
-        <div class="ops-panel-container">
-          <!-- Ops Panel Header -->
-          <div class="ops-header">
-            <div>
-              <h2 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: var(--text-primary);">
-                🌐 Live System Operations &amp; Real-time Analytics
-              </h2>
-              <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.2rem;">
-                Bảng theo dõi trạng thái vận hành hệ thống &amp; định vị truy cập nút mạng Edge toàn cầu.
-              </p>
+      <!-- 3D WebGL Dynamic Interactive AI Neural Experience -->
+      <section id="ai-3d-experience" class="ai-3d-container">
+        <div class="ai-3d-header">
+          <div class="badge-3d">WebGL 3D Interactive Canvas</div>
+          <h2 class="title-3d">Quantum Neural Matrix &amp; Cybernetic Core</h2>
+          <p class="subtitle-3d">Trải nghiệm không gian 3D tương tác mô phỏng mạng thần kinh nhân tạo (Neural Network) và lõi điện toán lượng tử (Quantum Core).</p>
+        </div>
+
+        <div class="canvas-3d-wrapper">
+          <canvas id="webgl-canvas"></canvas>
+
+          <div class="canvas-overlay">
+            <div class="control-badge">
+              <span class="pulse-green"></span> WebGL 3D Active | Di chuột &amp; Kéo để xoay góc nhìn 360&deg;
             </div>
 
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <div class="ops-status-badge">
-                <span class="ops-dot"></span>
-                ALL SYSTEMS OPERATIONAL
-              </div>
-            </div>
-          </div>
-
-          <!-- Real-Time Metrics Grid -->
-          <div class="ops-metrics-grid">
-            <!-- Metric 1: System Requests -->
-            <div class="ops-metric-card">
-              <div class="ops-metric-title">Tổng Lượt Yêu Cầu (Hits)</div>
-              <div class="ops-metric-num" id="total-hits">1,842</div>
-              <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem; font-weight: 600;">
-                &uarr; Live Sync Active
-              </div>
-            </div>
-
-            <!-- Metric 2: Network Latency -->
-            <div class="ops-metric-card">
-              <div class="ops-metric-title">Độ Trễ Nút Mạng (Edge Latency)</div>
-              <div class="ops-metric-num" style="background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">&lt; 14 ms</div>
-              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Region: SGN-CTU Edge
-              </div>
-            </div>
-
-            <!-- Metric 3: Active Course Materials -->
-            <div class="ops-metric-card">
-              <div class="ops-metric-title">Học Liệu &amp; Bài Học</div>
-              <div class="ops-metric-num" style="background: linear-gradient(135deg, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">17 Modules</div>
-              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                1,500+ Câu trắc nghiệm
-              </div>
-            </div>
-
-            <!-- Metric 4: System Availability -->
-            <div class="ops-metric-card">
-              <div class="ops-metric-title">Tỷ Lệ Sẵn Sàng (SLA)</div>
-              <div class="ops-metric-num" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">99.99%</div>
-              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                HTTP/3 TLS 1.3
-              </div>
-            </div>
-          </div>
-
-          <!-- Geolocation Map & Live Network Connection Details -->
-          <div class="visitor-grid">
-            <!-- Left: User Connection Card -->
-            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
-              <div style="font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem; margin-bottom: 0.85rem;">
-                📡 Thông Tin Kết Nối Nút Mạng Của Bạn
-              </div>
-
-              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.88rem;">
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Thành phố:</span>
-                  <strong id="user-city" style="color: var(--text-primary);">Đang định vị...</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Quốc gia / Vùng:</span>
-                  <strong id="user-country" style="color: var(--text-primary);">...</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Địa chỉ IP:</span>
-                  <strong id="user-ip" style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.84rem;">...</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Trình duyệt:</span>
-                  <strong style="color: var(--text-primary);">Chrome / Webkit Engine</strong>
-                </div>
-              </div>
-
-              <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-color); font-size: 0.78rem; color: var(--text-secondary);">
-                🔒 Kết nối bảo mật hóa với SSL/TLS Certificate.
-              </div>
-            </div>
-
-            <!-- Right: Interactive Leaflet Map -->
-            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.75rem; width: 100%;">
-              <div id="live-map" style="height: 235px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color);"></div>
+            <div class="interactive-controls">
+              <button id="btn-toggle-mesh" class="btn-3d-control">🕸️ Chế Độ Neural Synapses</button>
+              <button id="btn-toggle-speed" class="btn-3d-control">⚡ Tăng Tốc Xoay AI Core</button>
             </div>
           </div>
         </div>
@@ -701,89 +520,16 @@
     </footer>
   </div>
 
+  <!-- 3D Three.js WebGL Script -->
   <script>
-    // Live Stats & Map Tracking Script
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Local & Global Visit Counter logic
-      let visits = parseInt(localStorage.getItem('studyhub-visits') || '0');
-      visits++;
-      localStorage.setItem('studyhub-visits', visits.toString());
-
-      const baseHits = 1840 + visits;
-      document.getElementById('total-hits').innerText = baseHits.toLocaleString();
-
-      fetch('https://api.counterapi.dev/v1/studyhub-landing/main-counter/up')
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.count) {
-            document.getElementById('total-hits').innerText = (data.count + 500).toLocaleString();
-          }
-        })
-        .catch(err => {
-          console.warn("Counter API fallback active:", err);
-        });
-
-      // 2. Leaflet Map setup
-      const defaultLat = 10.045162;
-      const defaultLng = 105.746857;
-      
-      if (typeof L === 'undefined') {
-        document.getElementById('live-map').innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);font-size:0.9rem;'>Không thể tải thư viện bản đồ (Offline Mode).</div>";
-        return;
-      }
-
-      const map = L.map('live-map').setView([15.9, 107.5], 5);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      const userIcon = L.divIcon({
-        className: 'custom-div-icon',
-        html: "<div style='background-color:#10b981;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 0 12px rgba(16,185,129,0.8);position:relative;'><span style='position:absolute;top:-4px;left:-4px;width:20px;height:20px;border-radius:50%;background-color:rgba(16,185,129,0.4);animation:ping 1.5s infinite;'></span></div>",
-        iconSize: [14, 14],
-        iconAnchor: [7, 7]
-      });
-
-      fetch('https://ipapi.co/json/')
-        .then(res => res.json())
-        .then(data => {
-          const lat = parseFloat(data.latitude) || defaultLat;
-          const lng = parseFloat(data.longitude) || defaultLng;
-          const city = data.city || "Cần Thơ";
-          const country = data.country_name || "Việt Nam";
-          const ip = data.ip || "127.0.0.1";
-
-          document.getElementById('user-city').innerText = city;
-          document.getElementById('user-country').innerText = country;
-          document.getElementById('user-ip').innerText = ip;
-
-          L.marker([lat, lng], { icon: userIcon })
-            .addTo(map)
-            .bindPopup(`<b>Nút mạng truy cập: ${city}, ${country}</b><br>IP: ${ip}`)
-            .openPopup();
-          
-          map.setView([lat, lng], 6);
-        })
-        .catch(err => {
-          console.warn("IP Geolocation API fallback active:", err);
-          document.getElementById('user-city').innerText = "Cần Thơ";
-          document.getElementById('user-country').innerText = "Việt Nam";
-          document.getElementById('user-ip').innerText = "113.161.xx.xx";
-          
-          L.marker([defaultLat, defaultLng], { icon: userIcon })
-            .addTo(map)
-            .bindPopup("<b>Nút mạng mặc định: Cần Thơ, Việt Nam</b>")
-            .openPopup();
-        });
-
-      // Filter & Search Logic
+      // 1. Course Filter Logic
       const searchInput = document.getElementById('course-search-input');
       const filterTabs = document.querySelectorAll('.filter-tab');
       const courseCards = document.querySelectorAll('.course-card');
 
       function removeTones(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
+        return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D") : '';
       }
 
       function filterCourses() {
@@ -806,9 +552,7 @@
         });
       }
 
-      if (searchInput) {
-        searchInput.addEventListener('input', filterCourses);
-      }
+      if (searchInput) searchInput.addEventListener('input', filterCourses);
 
       filterTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -816,6 +560,181 @@
           tab.classList.add('active');
           filterCourses();
         });
+      });
+
+      // 2. Three.js 3D WebGL Neural Core Animation
+      const canvasWrapper = document.querySelector('.canvas-3d-wrapper');
+      const canvas = document.getElementById('webgl-canvas');
+      if (!canvas || !window.THREE) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, canvasWrapper.clientWidth / canvasWrapper.clientHeight, 0.1, 1000);
+      camera.position.z = 18;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(canvasWrapper.clientWidth, canvasWrapper.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Quantum Core - Spinning Central Wireframe Icosahedron
+      const coreGeometry = new THREE.IcosahedronGeometry(4, 2);
+      const coreMaterial = new THREE.MeshBasicMaterial({
+        color: 0x06b6d4,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.7
+      });
+      const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+      scene.add(coreMesh);
+
+      // Inner Core Glow Sphere
+      const innerGeo = new THREE.IcosahedronGeometry(2.2, 1);
+      const innerMat = new THREE.MeshBasicMaterial({
+        color: 0x6366f1,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.85
+      });
+      const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+      scene.add(innerMesh);
+
+      // Particle Cloud Neural Nodes
+      const particleCount = 220;
+      const particlePositions = new Float32Array(particleCount * 3);
+      const particleVelocity = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        const u = Math.random();
+        const v = Math.random();
+        const theta = u * 2.0 * Math.PI;
+        const phi = Math.acos(2.0 * v - 1.0);
+        const r = 6.5 + Math.random() * 5.0;
+
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+
+        particlePositions[i * 3] = x;
+        particlePositions[i * 3 + 1] = y;
+        particlePositions[i * 3 + 2] = z;
+
+        particleVelocity.push({
+          x: (Math.random() - 0.5) * 0.02,
+          y: (Math.random() - 0.5) * 0.02,
+          z: (Math.random() - 0.5) * 0.02
+        });
+      }
+
+      const particlesGeo = new THREE.BufferGeometry();
+      particlesGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+      const particleMat = new THREE.PointsMaterial({
+        color: 0x38bdf8,
+        size: 0.28,
+        transparent: true,
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending
+      });
+
+      const particleSystem = new THREE.Points(particlesGeo, particleMat);
+      scene.add(particleSystem);
+
+      // Synapse Connecting Lines
+      const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x818cf8,
+        transparent: true,
+        opacity: 0.25
+      });
+
+      let lineMesh = null;
+      function updateNeuralLines() {
+        if (lineMesh) scene.remove(lineMesh);
+
+        const linePositions = [];
+        const pos = particlesGeo.attributes.position.array;
+
+        for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+            const dx = pos[i * 3] - pos[j * 3];
+            const dy = pos[i * 3 + 1] - pos[j * 3 + 1];
+            const dz = pos[i * 3 + 2] - pos[j * 3 + 2];
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            if (dist < 3.2) {
+              linePositions.push(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
+              linePositions.push(pos[j * 3], pos[j * 3 + 1], pos[j * 3 + 2]);
+            }
+          }
+        }
+
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+        lineMesh = new THREE.LineSegments(lineGeo, lineMaterial);
+        scene.add(lineMesh);
+      }
+
+      updateNeuralLines();
+
+      // Mouse Drag & Cursor Parallax
+      let mouseX = 0, mouseY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      let speedMultiplier = 1.0;
+      let meshMode = true;
+
+      canvasWrapper.addEventListener('mousemove', (e) => {
+        const rect = canvasWrapper.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / canvasWrapper.clientWidth - 0.5) * 2;
+        mouseY = ((e.clientY - rect.top) / canvasWrapper.clientHeight - 0.5) * 2;
+
+        targetRotY = mouseX * 0.8;
+        targetRotX = mouseY * 0.8;
+      });
+
+      // Controls
+      const btnToggleMesh = document.getElementById('btn-toggle-mesh');
+      const btnToggleSpeed = document.getElementById('btn-toggle-speed');
+
+      if (btnToggleMesh) {
+        btnToggleMesh.addEventListener('click', () => {
+          meshMode = !meshMode;
+          if (lineMesh) lineMesh.visible = meshMode;
+          btnToggleMesh.innerText = meshMode ? "🕸️ Chế Độ Neural Synapses" : "✨ Chế Độ Spark Points";
+        });
+      }
+
+      if (btnToggleSpeed) {
+        btnToggleSpeed.addEventListener('click', () => {
+          speedMultiplier = speedMultiplier === 1.0 ? 3.0 : 1.0;
+          btnToggleSpeed.innerText = speedMultiplier === 3.0 ? "⚡ Đang Tăng Tốc x3" : "⚡ Tăng Tốc Xoay AI Core";
+        });
+      }
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        coreMesh.rotation.x += 0.004 * speedMultiplier;
+        coreMesh.rotation.y += 0.006 * speedMultiplier;
+
+        innerMesh.rotation.x -= 0.008 * speedMultiplier;
+        innerMesh.rotation.y -= 0.005 * speedMultiplier;
+
+        particleSystem.rotation.y += 0.002 * speedMultiplier;
+
+        scene.rotation.y += (targetRotY - scene.rotation.y) * 0.05;
+        scene.rotation.x += (targetRotX - scene.rotation.x) * 0.05;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Responsive Resize
+      window.addEventListener('resize', () => {
+        const w = canvasWrapper.clientWidth;
+        const h = canvasWrapper.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
       });
     });
   </script>
