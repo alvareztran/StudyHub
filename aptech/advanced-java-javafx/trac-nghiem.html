@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Java Collections, Generics, Wildcards, Multithreading, Concurrency, JDBC và JavaFX GUI.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, I/O Streams, File Handling, Persistence và JavaFX GUI.
       </p>
     </header>
 
@@ -234,14 +234,14 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 11 câu (Chính xác: 0%)</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 16 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 11</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 16</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: Generics, Wildcards, Erasure, Binary compatibility, Collection, Vector, HashSet)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: InputStream, FileDescriptor, sync, Persistence, Generics, Stream)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
@@ -249,17 +249,22 @@
       <aside class="sidebar no-print">
         <h3>Danh Mục Câu Hỏi</h3>
         <ul>
-          <li><a href="#question-1"><span>Câu 1: Which of these statements rela...</span></a></li>
-          <li><a href="#question-2"><span>Câu 2: Which of these statements rega...</span></a></li>
-          <li><a href="#question-3"><span>Câu 3: The getFirst() method ________...</span></a></li>
-          <li><a href="#question-4"><span>Câu 4: Which of these statements abou...</span></a></li>
-          <li><a href="#question-5"><span>Câu 5: Which of these statements rela...</span></a></li>
-          <li><a href="#question-6"><span>Câu 6: Which of these statements stat...</span></a></li>
-          <li><a href="#question-7"><span>Câu 7: Which of the following stateme...</span></a></li>
-          <li><a href="#question-8"><span>Câu 8: Which of the following stateme...</span></a></li>
-          <li><a href="#question-9"><span>Câu 9: When an existing piece of code...</span></a></li>
-          <li><a href="#question-10"><span>Câu 10: In the generic class declarati...</span></a></li>
-          <li><a href="#question-11"><span>Câu 11: Which one of the following pre...</span></a></li>
+          <li><a href="#question-1"><span>Câu 1: Which of these statements re...</span></a></li>
+          <li><a href="#question-2"><span>Câu 2: Which of these statements re...</span></a></li>
+          <li><a href="#question-3"><span>Câu 3: The getFirst() method ______...</span></a></li>
+          <li><a href="#question-4"><span>Câu 4: Which of these statements ab...</span></a></li>
+          <li><a href="#question-5"><span>Câu 5: Which of these statements re...</span></a></li>
+          <li><a href="#question-6"><span>Câu 6: Which of these statements st...</span></a></li>
+          <li><a href="#question-7"><span>Câu 7: Which of the following state...</span></a></li>
+          <li><a href="#question-8"><span>Câu 8: Which of the following state...</span></a></li>
+          <li><a href="#question-9"><span>Câu 9: When an existing piece of co...</span></a></li>
+          <li><a href="#question-10"><span>Câu 10: In the generic class declara...</span></a></li>
+          <li><a href="#question-11"><span>Câu 11: Which one of the following p...</span></a></li>
+          <li><a href="#question-12"><span>Câu 12: Which of the following are t...</span></a></li>
+          <li><a href="#question-13"><span>Câu 13: The File(String dirpath) con...</span></a></li>
+          <li><a href="#question-14"><span>Câu 14: Which of the following class...</span></a></li>
+          <li><a href="#question-15"><span>Câu 15: The sync method ________ ....</span></a></li>
+          <li><a href="#question-16"><span>Câu 16: What is the process of savin...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -393,6 +398,61 @@
               <label><input type="radio" name="q11" value="D"> D. 0B</label>
             </div>
             <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Từ Java 7 trở đi, Java hỗ trợ hằng số nhị phân (Binary Literals).<br>• Để khai báo một số nguyên dưới dạng nhị phân, ta thêm tiền tố <code>0b</code> hoặc <code>0B</code> vào trước chuỗi chữ số 0 và 1 (ví dụ: <code>int byteVal = 0B1010;</code> đại diện cho giá trị 10 trong hệ thập phân).</div>
+          </div>
+          <!-- Question 12 -->
+          <div class="quiz-card" id="question-12" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 12: Which of the following are true about stream classes?<br>a. They help read input from a stream.<br>b. Input and Output streams are used for reading and writing of structured sequence of bytes.<br>c. They help manage disk files.<br>d. All classes that work on streams directly works with files and the file system.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q12" value="A"> A. a, c</label>
+              <label><input type="radio" name="q12" value="B"> B. b</label>
+              <label><input type="radio" name="q12" value="C"> C. c</label>
+              <label><input type="radio" name="q12" value="D"> D. d</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b</strong><br>• Phát biểu <strong>b</strong> định nghĩa chính xác nhất về các lớp Byte Stream (<code>InputStream</code> và <code>OutputStream</code>): Dùng để đọc và ghi một chuỗi các byte có cấu trúc (structured sequence of bytes).<br>• Phát biểu <strong>d</strong> sai vì không phải tất cả các stream đều làm việc trực tiếp với file/hệ thống tập tin (ví dụ <code>ByteArrayInputStream</code>, <code>PipedInputStream</code>, Socket stream...).</div>
+          </div>
+          <!-- Question 13 -->
+          <div class="quiz-card" id="question-13" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 13: The File(String dirpath) constructor ___________________.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q13" value="A"> A. a (Creates a File object with pathname of the file specified by the String variable dirpath into an abstract pathname)</label>
+              <label><input type="radio" name="q13" value="B"> B. b (Creates a File object with pathname of the file specified by the String variables parent and child)</label>
+              <label><input type="radio" name="q13" value="C"> C. c (Creates a new File instance from another File object specified by the variable fileObj)</label>
+              <label><input type="radio" name="q13" value="D"> D. d (Converts the given file URI into an abstract pathname and creates a new File instance)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) a</strong><br>• Constructor <code>File(String pathname)</code> (hoặc <code>dirpath</code>) khởi tạo một đối tượng <code>File</code> mới bằng cách chuyển đổi chuỗi đường dẫn (String path) thành một đường dẫn trừu tượng (abstract pathname).</div>
+          </div>
+          <!-- Question 14 -->
+          <div class="quiz-card" id="question-14" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 14: Which of the following classes create a FileInputStream or FileOutputStream to contain it?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q14" value="A"> A. a (System)</label>
+              <label><input type="radio" name="q14" value="B"> B. b (File)</label>
+              <label><input type="radio" name="q14" value="C"> C. c (FileDescriptor)</label>
+              <label><input type="radio" name="q14" value="D"> D. d (FilenameFilter)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. FileDescriptor</strong><br>• <code>FileDescriptor</code> đóng vai trò là một tay cầm (handle) trỏ tới cấu trúc bên dưới hệ điều hành của một tệp tin đang mở.<br>• Cả <code>FileInputStream</code> và <code>FileOutputStream</code> đều tự động khởi tạo một đối tượng <code>FileDescriptor</code> bên trong để quản lý kết nối luồng dữ liệu xuống phần cứng.</div>
+          </div>
+          <!-- Question 15 -->
+          <div class="quiz-card" id="question-15" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 15: The sync method ________ .</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q15" value="A"> A. a (Creates an invalid FileDescriptor object)</label>
+              <label><input type="radio" name="q15" value="B"> B. b (Checks whether the file descriptor is valid)</label>
+              <label><input type="radio" name="q15" value="C"> C. c (Reads bytes from a binary stream)</label>
+              <label><input type="radio" name="q15" value="D"> D. d (Clears the system buffers and writes the content that they contain to the actual hardware)</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) d</strong><br>• Phương thức <code>sync()</code> của <code>FileDescriptor</code> bắt buộc tất cả các bộ đệm của hệ thống (system buffers) phải đồng bộ dữ liệu xuống thiết bị phần cứng thực sự bên dưới (flushes and writes content to the actual hardware device) trước khi trả về.</div>
+          </div>
+          <!-- Question 16 -->
+          <div class="quiz-card" id="question-16" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 16: What is the process of saving data to some permanent storage called?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q16" value="A"> A. Serialization</label>
+              <label><input type="radio" name="q16" value="B"> B. Persistence</label>
+              <label><input type="radio" name="q16" value="C"> C. Deserialization</label>
+              <label><input type="radio" name="q16" value="D"> D. Append mode</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• <strong>Persistence</strong> (Tính lưu trữ bền vững / Lưu trữ vĩnh viễn) là thuật ngữ chung chỉ quá trình ghi và bảo lưu trạng thái dữ liệu vào các thiết bị lưu trữ cố định (như Ổ đĩa cứng, Cơ sở dữ liệu, File hệ thống) để dữ liệu không bị mất đi khi ứng dụng kết thúc.<br>• <i>Serialization</i> là cơ chế chuyển đổi đối tượng thành chuỗi byte để thực hiện Persistence.</div>
           </div>
         </section>
       </main>
