@@ -9,9 +9,12 @@
   <script src="../../js/theme.js"></script>
 
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     .layout-wrapper {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 310px 1fr;
       gap: 2rem;
       align-items: start;
       margin-top: 2rem;
@@ -27,36 +30,33 @@
       overflow-y: auto;
     }
     .sidebar h3 {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       color: var(--secondary-color);
-      margin-top: 1.2rem;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      border-bottom: 1.5px solid var(--secondary-color);
-      padding-bottom: 0.25rem;
-    }
-    .sidebar h3:first-of-type {
       margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--secondary-color);
+      padding-bottom: 0.35rem;
     }
     .sidebar ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.45rem;
     }
     .sidebar a {
       color: var(--text-dark);
       text-decoration: none;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       transition: all 0.2s;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 0.35rem 0.55rem;
-      border-radius: 4px;
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
       border-left: 3px solid transparent;
+      line-height: 1.4;
     }
     .sidebar a:hover {
       color: var(--secondary-color);
@@ -152,6 +152,7 @@
       padding-bottom: 0.5rem;
       margin-top: 2.5rem;
       margin-bottom: 0.4rem;
+      scroll-margin-top: 2rem;
     }
     .section-desc {
       font-size: 0.92rem;
@@ -284,105 +285,15 @@
 
     <div class="layout-wrapper">
       <aside class="sidebar no-print">
-        <h3>Chương 1</h3>
+        <h3>Mục Lục Các Chương</h3>
         <ul>
-          <li><a href="#question-1"><span>Câu 1: Which of these statements relate...</span></a></li>
-          <li><a href="#question-2"><span>Câu 2: Which of these statements regard...</span></a></li>
-          <li><a href="#question-3"><span>Câu 3: The getFirst() method ________ ....</span></a></li>
-          <li><a href="#question-4"><span>Câu 4: Which of these statements about ...</span></a></li>
-          <li><a href="#question-5"><span>Câu 5: Which of these statements relate...</span></a></li>
-          <li><a href="#question-6"><span>Câu 6: Which of these statements statin...</span></a></li>
-          <li><a href="#question-7"><span>Câu 7: Which of the following statement...</span></a></li>
-          <li><a href="#question-8"><span>Câu 8: Which of the following statement...</span></a></li>
-          <li><a href="#question-9"><span>Câu 9: When an existing piece of code w...</span></a></li>
-          <li><a href="#question-10"><span>Câu 10: In the generic class declaration...</span></a></li>
-          <li><a href="#question-11"><span>Câu 11: Which one of the following prefi...</span></a></li>
-          <li><a href="#question-38"><span>Câu 38: Identify the component required ...</span></a></li>
-          <li><a href="#question-39"><span>Câu 39: Which of the following statement...</span></a></li>
-          <li><a href="#question-40"><span>Câu 40: Which of the statements are true...</span></a></li>
-          <li><a href="#question-41"><span>Câu 41: Which one of the following desig...</span></a></li>
-          <li><a href="#question-42"><span>Câu 42: Which of the following option re...</span></a></li>
-          <li><a href="#question-43"><span>Câu 43: Which element of Enumeration ret...</span></a></li>
-          <li><a href="#question-44"><span>Câu 44: Which of the following code snip...</span></a></li>
-          <li><a href="#question-45"><span>Câu 45: Which method of the Stack class ...</span></a></li>
-          <li><a href="#question-46"><span>Câu 46: Which of the following Hashtable...</span></a></li>
-          <li><a href="#question-47"><span>Câu 47: Which method adds a key-value pa...</span></a></li>
-          <li><a href="#question-48"><span>Câu 48: How are records different from o...</span></a></li>
-          <li><a href="#question-49"><span>Câu 49: Which class is CompactNumberForm...</span></a></li>
-          <li><a href="#question-50"><span>Câu 50: Which class do you use for forma...</span></a></li>
-          <li><a href="#question-51"><span>Câu 51: Which of these methods helps to ...</span></a></li>
-          <li><a href="#question-52"><span>Câu 52: Which basic interface does Flow ...</span></a></li>
-        </ul>
-        <h3>Chương 2</h3>
-        <ul>
-          <li><a href="#question-17"><span>Câu 17: Which of these statements relate...</span></a></li>
-          <li><a href="#question-18"><span>Câu 18: Which of the following code snip...</span></a></li>
-          <li><a href="#question-19"><span>Câu 19: Which of these statements regard...</span></a></li>
-          <li><a href="#question-20"><span>Câu 20: Which of the following method de...</span></a></li>
-          <li><a href="#question-21"><span>Câu 21: Which of these statements regard...</span></a></li>
-          <li><a href="#question-22"><span>Câu 22: Which of these statements about ...</span></a></li>
-          <li><a href="#question-23"><span>Câu 23: Which one of the following can c...</span></a></li>
-          <li><a href="#question-24"><span>Câu 24: Which of the following statement...</span></a></li>
-          <li><a href="#question-25"><span>Câu 25: Which one of the following acts ...</span></a></li>
-          <li><a href="#question-26"><span>Câu 26: Which one of the following bring...</span></a></li>
-          <li><a href="#question-27"><span>Câu 27: Which of the following options d...</span></a></li>
-          <li><a href="#question-28"><span>Câu 28: A ________ is a piece of code th...</span></a></li>
-        </ul>
-        <h3>Chương 3</h3>
-        <ul>
-          <li><a href="#question-29"><span>Câu 29: Which of these statements about ...</span></a></li>
-          <li><a href="#question-30"><span>Câu 30: Match the properties of drivers ...</span></a></li>
-          <li><a href="#question-31"><span>Câu 31: Choose the correct code to creat...</span></a></li>
-          <li><a href="#question-32"><span>Câu 32: Identify the correct syntax of c...</span></a></li>
-          <li><a href="#question-33"><span>Câu 33: To which file do you require to ...</span></a></li>
-          <li><a href="#question-34"><span>Câu 34: Which of these statements about ...</span></a></li>
-          <li><a href="#question-35"><span>Câu 35: Which of these statements about ...</span></a></li>
-          <li><a href="#question-36"><span>Câu 36: Which of the following statement...</span></a></li>
-          <li><a href="#question-37"><span>Câu 37: Which of these statements about ...</span></a></li>
-        </ul>
-        <h3>Chương 4</h3>
-        <ul>
-          <li><a href="#question-12"><span>Câu 12: Which of the following are true ...</span></a></li>
-          <li><a href="#question-13"><span>Câu 13: The File(String dirpath) constru...</span></a></li>
-          <li><a href="#question-14"><span>Câu 14: Which of the following classes c...</span></a></li>
-          <li><a href="#question-15"><span>Câu 15: The sync() method of FileDescrip...</span></a></li>
-          <li><a href="#question-16"><span>Câu 16: What is the process of saving da...</span></a></li>
-        </ul>
-        <h3>Chương 5</h3>
-        <ul>
-          <li><a href="#question-53"><span>Câu 53: What was the primary focus of Ja...</span></a></li>
-          <li><a href="#question-54"><span>Câu 54: Which Java version was JavaFX 8 ...</span></a></li>
-          <li><a href="#question-55"><span>Câu 55: What is the primary function of ...</span></a></li>
-          <li><a href="#question-56"><span>Câu 56: Which JavaFX component represent...</span></a></li>
-          <li><a href="#question-57"><span>Câu 57: What is the purpose of FXML in J...</span></a></li>
-          <li><a href="#question-58"><span>Câu 58: Which JavaFX feature allows deve...</span></a></li>
-          <li><a href="#question-59"><span>Câu 59: What does CSS provide in JavaFX?...</span></a></li>
-          <li><a href="#question-65"><span>Câu 65: Which JavaFX layout manager is s...</span></a></li>
-        </ul>
-        <h3>Chương 6</h3>
-        <ul>
-          <li><a href="#question-60"><span>Câu 60: What does JavaFX text allow deve...</span></a></li>
-          <li><a href="#question-61"><span>Câu 61: Which of the following is a prop...</span></a></li>
-          <li><a href="#question-63"><span>Câu 63: Identify the property of a 2D sh...</span></a></li>
-          <li><a href="#question-67"><span>Câu 67: What is the primary purpose of a...</span></a></li>
-          <li><a href="#question-68"><span>Câu 68: What are JavaFX UI properties?...</span></a></li>
-          <li><a href="#question-69"><span>Câu 69: When is a line chart in JavaFX t...</span></a></li>
-        </ul>
-        <h3>Chương 7</h3>
-        <ul>
-          <li><a href="#question-62"><span>Câu 62: Which JavaFX transformation allo...</span></a></li>
-          <li><a href="#question-64"><span>Câu 64: Which of these JavaFX classes is...</span></a></li>
-          <li><a href="#question-66"><span>Câu 66: What is the primary purpose of u...</span></a></li>
-          <li><a href="#question-70"><span>Câu 70: What is an EventHandler in JavaF...</span></a></li>
-          <li><a href="#question-71"><span>Câu 71: Which method in JavaFX is typica...</span></a></li>
-          <li><a href="#question-72"><span>Câu 72: When are event filters in JavaFX...</span></a></li>
-          <li><a href="#question-73"><span>Câu 73: Event handlers in JavaFX are use...</span></a></li>
-          <li><a href="#question-74"><span>Câu 74: What is the purpose of the setOn...</span></a></li>
-          <li><a href="#question-75"><span>Câu 75: What is the primary JavaFX class...</span></a></li>
-          <li><a href="#question-76"><span>Câu 76: Which JavaFX class represents th...</span></a></li>
-          <li><a href="#question-77"><span>Câu 77: How can you play media in JavaFX...</span></a></li>
-          <li><a href="#question-78"><span>Câu 78: Which method is used to set an e...</span></a></li>
-          <li><a href="#question-79"><span>Câu 79: In JavaFX, what is the purpose o...</span></a></li>
+          <li><a href="#chapter-1"><span>📌 Chương 1: Java Collections Framework, Generics & Core Language Enhancements (26 câu)</span></a></li>
+          <li><a href="#chapter-2"><span>📌 Chương 2: Java Multithreading, Concurrency & Thread Synchronization (12 câu)</span></a></li>
+          <li><a href="#chapter-3"><span>📌 Chương 3: Java Database Connectivity (JDBC) & Software Architecture (9 câu)</span></a></li>
+          <li><a href="#chapter-4"><span>📌 Chương 4: Java I/O Streams, File Handling & Persistence (5 câu)</span></a></li>
+          <li><a href="#chapter-5"><span>📌 Chương 5: JavaFX Platform Architecture, FXML & Layout Managers (8 câu)</span></a></li>
+          <li><a href="#chapter-6"><span>📌 Chương 6: JavaFX UI Controls, Properties, Data Binding & Charts (6 câu)</span></a></li>
+          <li><a href="#chapter-7"><span>📌 Chương 7: JavaFX Event Handling, Transformations, 2D/3D & Media Framework (13 câu)</span></a></li>
         </ul>
         <h3 style="margin-top: 1.5rem;">Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
