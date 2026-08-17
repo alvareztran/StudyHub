@@ -296,6 +296,7 @@
           <li><a href="#chapter-7"><span>📌 Chương 7: JavaFX Event Handling, Transformations, 2D/3D & Media Framework (13 câu)</span></a></li>
         </ul>
         <h3 style="margin-top: 1.5rem;">Tùy Chọn Luyện Tập</h3>
+        <button onclick="toggleAllExplanations()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: rgba(6, 182, 212, 0.12); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">💡 Hiện/Ẩn Tất Cả Lời Giải Chi Tiết</button>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
         <button onclick="resetAllQuizzes()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: var(--text-dark); font-weight: 600;">🔄 Reset Bài Làm</button>
       </aside>
@@ -314,7 +315,10 @@
               <label><input type="radio" name="q1" value="C"> C. Collections Framework was developed to have low degree of interoperability.</label>
               <label><input type="radio" name="q1" value="D"> D. Collections Framework does not contain Collection interface at the top of the hierarchy.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br><ul><li><strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.</li><li><strong>B đúng:</strong> Collections Framework cung cấp tập hợp các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) được chuẩn hóa để quản lý đối tượng.</li><li><strong>C sai:</strong> Collections Framework được thiết kế với độ tương thích và chuyển đổi cao (high degree of interoperability).</li><li><strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(1)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-1"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br><ul><li><strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.</li><li><strong>B đúng:</strong> Collections Framework cung cấp tập hợp các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) được chuẩn hóa để quản lý đối tượng.</li><li><strong>C sai:</strong> Collections Framework được thiết kế với độ tương thích và chuyển đổi cao (high degree of interoperability).</li><li><strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp.</li></ul></div>
           </div>
           <!-- Question 2 -->
           <div class="quiz-card" id="question-2" data-correct="A" data-all-correct="A,D">
@@ -325,7 +329,10 @@
               <label><input type="radio" name="q2" value="C"> C. ArrayList() creates an empty array.</label>
               <label><input type="radio" name="q2" value="D"> D. In a Vector, the size of the vector can be increased or decreased.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br><ul><li><strong>A đúng:</strong> <code>List</code> hỗ trợ truy cập phần tử dựa trên vị trí chỉ số index (ví dụ: <code>list.get(index)</code>).</li><li><strong>D đúng:</strong> <code>Vector</code> là mảng động có khả năng tự động tăng hoặc thu nhỏ kích thước khi thêm/bớt phần tử.</li><li><strong>B sai:</strong> List có các phương thức tìm kiếm như <code>indexOf()</code>, <code>contains()</code>.</li><li><strong>C sai:</strong> <code>ArrayList()</code> khởi tạo danh sách với dung lượng mặc định (capacity = 10), không tạo mảng cố định.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(2)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-2"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br><ul><li><strong>A đúng:</strong> <code>List</code> hỗ trợ truy cập phần tử dựa trên vị trí chỉ số index (ví dụ: <code>list.get(index)</code>).</li><li><strong>D đúng:</strong> <code>Vector</code> là mảng động có khả năng tự động tăng hoặc thu nhỏ kích thước khi thêm/bớt phần tử.</li><li><strong>B sai:</strong> List có các phương thức tìm kiếm như <code>indexOf()</code>, <code>contains()</code>.</li><li><strong>C sai:</strong> <code>ArrayList()</code> khởi tạo danh sách với dung lượng mặc định (capacity = 10), không tạo mảng cố định.</li></ul></div>
           </div>
           <!-- Question 3 -->
           <div class="quiz-card" id="question-3" data-correct="B" data-all-correct="B">
@@ -336,7 +343,10 @@
               <label><input type="radio" name="q3" value="C"> C. Removes and returns the first element of the list.</label>
               <label><input type="radio" name="q3" value="D"> D. Removes and returns the last element of the list.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Phương thức <code>getFirst()</code> trong <code>LinkedList</code> / <code>Deque</code> lấy ra (retrieve) phần tử đầu tiên mà <strong>không xóa</strong> (does NOT remove) nó khỏi danh sách.<br>• Nếu muốn lấy ra và xóa, ta sử dụng <code>removeFirst()</code> hoặc <code>pop()</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(3)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-3"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Phương thức <code>getFirst()</code> trong <code>LinkedList</code> / <code>Deque</code> lấy ra (retrieve) phần tử đầu tiên mà <strong>không xóa</strong> (does NOT remove) nó khỏi danh sách.<br>• Nếu muốn lấy ra và xóa, ta sử dụng <code>removeFirst()</code> hoặc <code>pop()</code>.</div>
           </div>
           <!-- Question 4 -->
           <div class="quiz-card" id="question-4" data-correct="A" data-all-correct="A,D">
@@ -347,7 +357,10 @@
               <label><input type="radio" name="q4" value="C"> C. HashSet class guarantee the order of elements.</label>
               <label><input type="radio" name="q4" value="D"> D. LinkedHashSet maintains the order of the items added to the Set.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br><ul><li><strong>A đúng:</strong> Giao diện <code>Set</code> tuyệt đối không cho phép chứa phần tử trùng lặp (duplicate elements).</li><li><strong>D đúng:</strong> <code>LinkedHashSet</code> duy trì đúng thứ tự chèn phần tử (Insertion Order) nhờ kết hợp Hash Table và Doubly-Linked List.</li><li><strong>B sai:</strong> <code>SortedSet</code> cũng không chấp nhận trùng lặp.</li><li><strong>C sai:</strong> <code>HashSet</code> không đảm bảo bất kỳ thứ tự nào.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(4)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-4"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br><ul><li><strong>A đúng:</strong> Giao diện <code>Set</code> tuyệt đối không cho phép chứa phần tử trùng lặp (duplicate elements).</li><li><strong>D đúng:</strong> <code>LinkedHashSet</code> duy trì đúng thứ tự chèn phần tử (Insertion Order) nhờ kết hợp Hash Table và Doubly-Linked List.</li><li><strong>B sai:</strong> <code>SortedSet</code> cũng không chấp nhận trùng lặp.</li><li><strong>C sai:</strong> <code>HashSet</code> không đảm bảo bất kỳ thứ tự nào.</li></ul></div>
           </div>
           <!-- Question 5 -->
           <div class="quiz-card" id="question-5" data-correct="A" data-all-correct="A,C,D,E">
@@ -359,7 +372,10 @@
               <label><input type="radio" name="q5" value="D"> D. LinkedHashMap is a combination of hash map and linked list.</label>
               <label><input type="radio" name="q5" value="E"> E. LinkedHashMap returns values in the order they were added to the Map.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br><ul><li><strong>A &amp; C đúng:</strong> <code>TreeMap</code> lưu dữ liệu dạng Cây Đỏ-Đen (Red-Black Tree) và tự động sắp xếp các Keys theo thứ tự.</li><li><strong>D &amp; E đúng:</strong> <code>LinkedHashMap</code> kết hợp Bảng băm và Danh sách liên kết để duy trì thứ tự xuất ra trùng với thứ tự thêm vào Map.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(5)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-5"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br><ul><li><strong>A &amp; C đúng:</strong> <code>TreeMap</code> lưu dữ liệu dạng Cây Đỏ-Đen (Red-Black Tree) và tự động sắp xếp các Keys theo thứ tự.</li><li><strong>D &amp; E đúng:</strong> <code>LinkedHashMap</code> kết hợp Bảng băm và Danh sách liên kết để duy trì thứ tự xuất ra trùng với thứ tự thêm vào Map.</li></ul></div>
           </div>
           <!-- Question 6 -->
           <div class="quiz-card" id="question-6" data-correct="C" data-all-correct="C,E">
@@ -371,7 +387,10 @@
               <label><input type="radio" name="q6" value="D"> D. A local variable cannot be declared where the key and value types are different from each other.</label>
               <label><input type="radio" name="q6" value="E"> E. The code reviews are simpler in Generics as the ambiguity is less between containers.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C &amp; E</strong><br><ul><li><strong>C đúng:</strong> Ưu điểm lớn nhất của Generics là phát hiện lỗi kiểu dữ liệu ở thời điểm biên dịch (Compile-time), giúp sửa lỗi nhanh hơn so với lỗi thực thi (Runtime Exception như <code>ClassCastException</code>).</li><li><strong>E đúng:</strong> Generics giúp mã nguồn minh bạch, quá trình code review đơn giản hơn do giảm bớt tính mơ hồ giữa các container.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(6)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-6"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C &amp; E</strong><br><ul><li><strong>C đúng:</strong> Ưu điểm lớn nhất của Generics là phát hiện lỗi kiểu dữ liệu ở thời điểm biên dịch (Compile-time), giúp sửa lỗi nhanh hơn so với lỗi thực thi (Runtime Exception như <code>ClassCastException</code>).</li><li><strong>E đúng:</strong> Generics giúp mã nguồn minh bạch, quá trình code review đơn giản hơn do giảm bớt tính mơ hồ giữa các container.</li></ul></div>
           </div>
           <!-- Question 7 -->
           <div class="quiz-card" id="question-7" data-correct="A" data-all-correct="A,B,C,E">
@@ -383,7 +402,10 @@
               <label><input type="radio" name="q7" value="D"> D. "? super Type" denotes a family of supertypes which is a subtype of "Type".</label>
               <label><input type="radio" name="q7" value="E"> E. "? super Type" denotes a family of supertypes of type "Type".</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, B, C, E</strong><br><ul><li><code>?</code> là <i>Unbounded Wildcard</i> đại diện cho bất kỳ kiểu dữ liệu nào.</li><li><code>? extends Type</code> là <i>Upper Bounded Wildcard</i> đại diện cho tập hợp các lớp con (subtypes) kế thừa từ <code>Type</code>.</li><li><code>? super Type</code> là <i>Lower Bounded Wildcard</i> đại diện cho tập hợp các lớp cha (supertypes) của <code>Type</code>.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(7)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-7"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, B, C, E</strong><br><ul><li><code>?</code> là <i>Unbounded Wildcard</i> đại diện cho bất kỳ kiểu dữ liệu nào.</li><li><code>? extends Type</code> là <i>Upper Bounded Wildcard</i> đại diện cho tập hợp các lớp con (subtypes) kế thừa từ <code>Type</code>.</li><li><code>? super Type</code> là <i>Lower Bounded Wildcard</i> đại diện cho tập hợp các lớp cha (supertypes) của <code>Type</code>.</li></ul></div>
           </div>
           <!-- Question 8 -->
           <div class="quiz-card" id="question-8" data-correct="A" data-all-correct="A,C,D,E">
@@ -395,7 +417,10 @@
               <label><input type="radio" name="q8" value="D"> D. Erasure removes all generic type information.</label>
               <label><input type="radio" name="q8" value="E"> E. The change in method signature can be performed by making minimal change or by creating a skeleton.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br><ul><li><strong>A &amp; C đúng:</strong> Khai báo Collection không kèm tham số kiểu gọi là <code>Raw Type</code> (ví dụ: <code>List list = new ArrayList();</code>) và sẽ phát ra cảnh báo <i>Unchecked warning</i> khi truyền dữ liệu.</li><li><strong>D đúng:</strong> Cơ chế <strong>Type Erasure</strong> xóa bỏ thông tin kiểu Generic khi biên dịch để giữ tính tương thích với Bytecode phiên bản Java cũ.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(8)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-8"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br><ul><li><strong>A &amp; C đúng:</strong> Khai báo Collection không kèm tham số kiểu gọi là <code>Raw Type</code> (ví dụ: <code>List list = new ArrayList();</code>) và sẽ phát ra cảnh báo <i>Unchecked warning</i> khi truyền dữ liệu.</li><li><strong>D đúng:</strong> Cơ chế <strong>Type Erasure</strong> xóa bỏ thông tin kiểu Generic khi biên dịch để giữ tính tương thích với Bytecode phiên bản Java cũ.</li></ul></div>
           </div>
           <!-- Question 9 -->
           <div class="quiz-card" id="question-9" data-correct="C" data-all-correct="C">
@@ -406,7 +431,10 @@
               <label><input type="radio" name="q9" value="C"> C. Binary compatibility</label>
               <label><input type="radio" name="q9" value="D"> D. Parameterized type</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Binary compatibility</strong><br>• Khả năng giúp mã nguồn đã biên dịch trước đó vẫn tiếp tục thực thi bình thường khi nâng cấp thư viện lên phiên bản có Generics mà không bắt buộc biên dịch lại.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(9)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-9"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Binary compatibility</strong><br>• Khả năng giúp mã nguồn đã biên dịch trước đó vẫn tiếp tục thực thi bình thường khi nâng cấp thư viện lên phiên bản có Generics mà không bắt buộc biên dịch lại.</div>
           </div>
           <!-- Question 10 -->
           <div class="quiz-card" id="question-10" data-correct="C" data-all-correct="C">
@@ -417,7 +445,10 @@
               <label><input type="radio" name="q10" value="C"> C. Type parameter section</label>
               <label><input type="radio" name="q10" value="D"> D. Numeric literals</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Type parameter section</strong><br>• Cú pháp khai báo lớp Generic: <pre><code>public class ClassName&lt;T, E&gt; { ... }</code></pre> Theo sau tên lớp là phần khai báo tham số kiểu trong cặp ngoặc <code>&lt;&gt;</code> (<i>Type parameter section</i>).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(10)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-10"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Type parameter section</strong><br>• Cú pháp khai báo lớp Generic: <pre><code>public class ClassName&lt;T, E&gt; { ... }</code></pre> Theo sau tên lớp là phần khai báo tham số kiểu trong cặp ngoặc <code>&lt;&gt;</code> (<i>Type parameter section</i>).</div>
           </div>
           <!-- Question 11 -->
           <div class="quiz-card" id="question-11" data-correct="D" data-all-correct="D">
@@ -428,7 +459,10 @@
               <label><input type="radio" name="q11" value="C"> C. 0BL</label>
               <label><input type="radio" name="q11" value="D"> D. 0B</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Từ Java 7+, tiền tố <code>0b</code> hoặc <code>0B</code> được dùng để khai báo số nguyên ở dạng hằng nhị phân (Binary Literal). Ví dụ: <pre><code>int val = 0B1010; // Giá trị 10 trong hệ 10</code></pre></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(11)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-11"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Từ Java 7+, tiền tố <code>0b</code> hoặc <code>0B</code> được dùng để khai báo số nguyên ở dạng hằng nhị phân (Binary Literal). Ví dụ: <pre><code>int val = 0B1010; // Giá trị 10 trong hệ 10</code></pre></div>
           </div>
           <!-- Question 38 -->
           <div class="quiz-card" id="question-38" data-correct="C" data-all-correct="C">
@@ -439,7 +473,10 @@
               <label><input type="radio" name="q38" value="C"> C. Non zero integer constant</label>
               <label><input type="radio" name="q38" value="D"> D. Design pattern</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Non zero integer constant</strong><br>• Trong thiết kế hàm <code>hashCode()</code>, một số nguyên hằng số khác 0 (như 31 hoặc 17) được dùng làm hệ số nhân băm.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(38)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-38"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Non zero integer constant</strong><br>• Trong thiết kế hàm <code>hashCode()</code>, một số nguyên hằng số khác 0 (như 31 hoặc 17) được dùng làm hệ số nhân băm.</div>
           </div>
           <!-- Question 39 -->
           <div class="quiz-card" id="question-39" data-correct="B" data-all-correct="B">
@@ -450,7 +487,10 @@
               <label><input type="radio" name="q39" value="C"> C. a, c</label>
               <label><input type="radio" name="q39" value="D"> D. d</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b, d</strong><br>• Bằng nhau về logic là khi dữ liệu bên trong hai đối tượng giống hệt nhau, được kiểm tra thông qua phương thức <code>equals()</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(39)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-39"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b, d</strong><br>• Bằng nhau về logic là khi dữ liệu bên trong hai đối tượng giống hệt nhau, được kiểm tra thông qua phương thức <code>equals()</code>.</div>
           </div>
           <!-- Question 40 -->
           <div class="quiz-card" id="question-40" data-correct="B" data-all-correct="B,C">
@@ -461,7 +501,10 @@
               <label><input type="radio" name="q40" value="C"> C. a, c</label>
               <label><input type="radio" name="q40" value="D"> D. b, d</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b, c</strong><br>• **Factory Pattern** ẩn đi việc khởi tạo các lớp cụ thể và trả về đối tượng thông qua một Interface dùng chung để giảm sự phụ thuộc trực tiếp (loosely coupled).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(40)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-40"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b, c</strong><br>• **Factory Pattern** ẩn đi việc khởi tạo các lớp cụ thể và trả về đối tượng thông qua một Interface dùng chung để giảm sự phụ thuộc trực tiếp (loosely coupled).</div>
           </div>
           <!-- Question 41 -->
           <div class="quiz-card" id="question-41" data-correct="B" data-all-correct="B">
@@ -472,7 +515,10 @@
               <label><input type="radio" name="q41" value="C"> C. Adapter</label>
               <label><input type="radio" name="q41" value="D"> D. Proxy</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Singleton</strong><br>• **Singleton Pattern** đảm bảo một lớp chỉ khởi tạo duy nhất 1 instance trong suốt vòng đời ứng dụng.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(41)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-41"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Singleton</strong><br>• **Singleton Pattern** đảm bảo một lớp chỉ khởi tạo duy nhất 1 instance trong suốt vòng đời ứng dụng.</div>
           </div>
           <!-- Question 42 -->
           <div class="quiz-card" id="question-42" data-correct="C" data-all-correct="C">
@@ -483,7 +529,10 @@
               <label><input type="radio" name="q42" value="C"> C. MessagesBundle.properties</label>
               <label><input type="radio" name="q42" value="D"> D. System.out</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) MessagesBundle.properties</strong><br>• Tệp thuộc tính bản địa hóa mặc định của ResourceBundle có phần mở rộng <code>.properties</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(42)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-42"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) MessagesBundle.properties</strong><br>• Tệp thuộc tính bản địa hóa mặc định của ResourceBundle có phần mở rộng <code>.properties</code>.</div>
           </div>
           <!-- Question 43 -->
           <div class="quiz-card" id="question-43" data-correct="A" data-all-correct="A">
@@ -494,7 +543,10 @@
               <label><input type="radio" name="q43" value="C"> C. iterate()</label>
               <label><input type="radio" name="q43" value="D"> D. getNext()</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) nextElement()</strong><br>• Phương thức <code>nextElement()</code> của giao diện <code>Enumeration</code> lấy ra phần tử tiếp theo.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(43)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-43"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) nextElement()</strong><br>• Phương thức <code>nextElement()</code> của giao diện <code>Enumeration</code> lấy ra phần tử tiếp theo.</div>
           </div>
           <!-- Question 44 -->
           <div class="quiz-card" id="question-44" data-correct="D" data-all-correct="D">
@@ -505,7 +557,10 @@
               <label><input type="radio" name="q44" value="C"> C. bitSetObject.push(1);</label>
               <label><input type="radio" name="q44" value="D"> D. bitSetObject.set(1);</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) bitSetObject.set(1);</strong><br>• Lớp <code>BitSet</code> dùng phương thức <code>set(index)</code> để bật bit tại vị trí đó thành <code>true</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(44)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-44"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) bitSetObject.set(1);</strong><br>• Lớp <code>BitSet</code> dùng phương thức <code>set(index)</code> để bật bit tại vị trí đó thành <code>true</code>.</div>
           </div>
           <!-- Question 45 -->
           <div class="quiz-card" id="question-45" data-correct="C" data-all-correct="C">
@@ -516,7 +571,10 @@
               <label><input type="radio" name="q45" value="C"> C. pop()</label>
               <label><input type="radio" name="q45" value="D"> D. peek()</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) pop()</strong><br>• Phương thức <code>pop()</code> của <code>Stack</code> xóa và lấy ra phần tử ở đỉnh ngăn xếp.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(45)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-45"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) pop()</strong><br>• Phương thức <code>pop()</code> của <code>Stack</code> xóa và lấy ra phần tử ở đỉnh ngăn xếp.</div>
           </div>
           <!-- Question 46 -->
           <div class="quiz-card" id="question-46" data-correct="A" data-all-correct="A">
@@ -527,7 +585,10 @@
               <label><input type="radio" name="q46" value="C"> C. next()</label>
               <label><input type="radio" name="q46" value="D"> D. getEnumeration()</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) elements()</strong><br>• <code>Hashtable.elements()</code> trả về một <code>Enumeration</code> chứa danh sách các giá trị trong bảng băm.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(46)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-46"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) elements()</strong><br>• <code>Hashtable.elements()</code> trả về một <code>Enumeration</code> chứa danh sách các giá trị trong bảng băm.</div>
           </div>
           <!-- Question 47 -->
           <div class="quiz-card" id="question-47" data-correct="D" data-all-correct="D">
@@ -538,7 +599,10 @@
               <label><input type="radio" name="q47" value="C"> C. push()</label>
               <label><input type="radio" name="q47" value="D"> D. setProperty()</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) setProperty()</strong><br>• Phương thức <code>setProperty(key, value)</code> dùng để gán cặp khóa-giá trị vào đối tượng Properties.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(47)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-47"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) setProperty()</strong><br>• Phương thức <code>setProperty(key, value)</code> dùng để gán cặp khóa-giá trị vào đối tượng Properties.</div>
           </div>
           <!-- Question 48 -->
           <div class="quiz-card" id="question-48" data-correct="A" data-all-correct="A">
@@ -549,7 +613,10 @@
               <label><input type="radio" name="q48" value="C"> C. Records do not contain methods</label>
               <label><input type="radio" name="q48" value="D"> D. Objects do not have instances</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Lớp <code>record</code> (từ Java 14+) là container chứa dữ liệu bất biến (immutable data carrier) tự động sinh các phương thức phụ trợ.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(48)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-48"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Lớp <code>record</code> (từ Java 14+) là container chứa dữ liệu bất biến (immutable data carrier) tự động sinh các phương thức phụ trợ.</div>
           </div>
           <!-- Question 49 -->
           <div class="quiz-card" id="question-49" data-correct="A" data-all-correct="A">
@@ -560,7 +627,10 @@
               <label><input type="radio" name="q49" value="C"> C. Integer</label>
               <label><input type="radio" name="q49" value="D"> D. Decimal</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) NumberFormat</strong><br>• Lớp <code>CompactNumberFormat</code> kế thừa trực tiếp từ <code>NumberFormat</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(49)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-49"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) NumberFormat</strong><br>• Lớp <code>CompactNumberFormat</code> kế thừa trực tiếp từ <code>NumberFormat</code>.</div>
           </div>
           <!-- Question 50 -->
           <div class="quiz-card" id="question-50" data-correct="B" data-all-correct="B">
@@ -571,7 +641,10 @@
               <label><input type="radio" name="q50" value="C"> C. GeoLocal</label>
               <label><input type="radio" name="q50" value="D"> D. GPS</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) NumberFormat</strong><br>• Lớp <code>NumberFormat</code> định dạng và phân tích con số theo quốc gia/vùng miền (Locale).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(50)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-50"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) NumberFormat</strong><br>• Lớp <code>NumberFormat</code> định dạng và phân tích con số theo quốc gia/vùng miền (Locale).</div>
           </div>
           <!-- Question 51 -->
           <div class="quiz-card" id="question-51" data-correct="D" data-all-correct="D">
@@ -582,7 +655,10 @@
               <label><input type="radio" name="q51" value="C"> C. LineString</label>
               <label><input type="radio" name="q51" value="D"> D. toString</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) toString</strong><br>• <code>toString()</code> trong Lớp Record trả về chuỗi biểu diễn tên thuộc tính và giá trị tương ứng.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(51)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-51"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) toString</strong><br>• <code>toString()</code> trong Lớp Record trả về chuỗi biểu diễn tên thuộc tính và giá trị tương ứng.</div>
           </div>
           <!-- Question 52 -->
           <div class="quiz-card" id="question-52" data-correct="A" data-all-correct="A">
@@ -593,7 +669,10 @@
               <label><input type="radio" name="q52" value="C"> C. Source</label>
               <label><input type="radio" name="q52" value="D"> D. Destination</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) Publisher</strong><br>• Java 9 Reactive Streams <code>Flow</code> API gồm các giao diện: <code>Flow.Publisher</code>, <code>Subscriber</code>, <code>Subscription</code>, <code>Processor</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(52)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-52"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) Publisher</strong><br>• Java 9 Reactive Streams <code>Flow</code> API gồm các giao diện: <code>Flow.Publisher</code>, <code>Subscriber</code>, <code>Subscription</code>, <code>Processor</code>.</div>
           </div>
           <!-- Chương 2: Java Multithreading, Concurrency & Thread Synchronization -->
           <h2 class="section-banner" id="chapter-2">Chương 2: Java Multithreading, Concurrency & Thread Synchronization</h2>
@@ -607,7 +686,10 @@
               <label><input type="radio" name="q17" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q17" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) A, B, D</strong><br><ul><li><strong>A đúng:</strong> Tiến trình (Process) có môi trường bộ nhớ thực thi riêng biệt độc lập.</li><li><strong>B đúng:</strong> Luồng (Thread) là đơn vị thi hành nhỏ nhất của chương trình.</li><li><strong>D đúng:</strong> Tiến trình chứa một hoặc nhiều luồng chạy bên trong nó.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(17)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-17"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) A, B, D</strong><br><ul><li><strong>A đúng:</strong> Tiến trình (Process) có môi trường bộ nhớ thực thi riêng biệt độc lập.</li><li><strong>B đúng:</strong> Luồng (Thread) là đơn vị thi hành nhỏ nhất của chương trình.</li><li><strong>D đúng:</strong> Tiến trình chứa một hoặc nhiều luồng chạy bên trong nó.</li></ul></div>
           </div>
           <!-- Question 18 -->
           <div class="quiz-card" id="question-18" data-correct="A" data-all-correct="A">
@@ -643,7 +725,10 @@ class TestThread {
   public void run() { /* Implementation */ }
 }</code></pre></label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Đoạn mã A thực hiện đầy đủ 4 bước chuẩn: Triển khai <code>Runnable</code> &rarr; Override <code>run()</code> &rarr; Truyền đối tượng vào <code>Thread</code> &rarr; Gọi <code>thObj.start()</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(18)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-18"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Đoạn mã A thực hiện đầy đủ 4 bước chuẩn: Triển khai <code>Runnable</code> &rarr; Override <code>run()</code> &rarr; Truyền đối tượng vào <code>Thread</code> &rarr; Gọi <code>thObj.start()</code>.</div>
           </div>
           <!-- Question 19 -->
           <div class="quiz-card" id="question-19" data-correct="A" data-all-correct="A">
@@ -654,7 +739,10 @@ class TestThread {
               <label><input type="radio" name="q19" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q19" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) A, C, E</strong><br><ul><li><strong>A đúng:</strong> Luồng ở trạng thái <code>WAITING</code> vẫn sống (alive) nhưng đang tạm ngưng.</li><li><strong>C đúng:</strong> Luồng <code>BLOCKED</code> khi chờ cấp Monitor Lock.</li><li><strong>E đúng:</strong> Luồng <code>NEW</code> chưa được hệ điều hành cấp phát tài nguyên thực thi.</li></ul></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(19)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-19"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) A, C, E</strong><br><ul><li><strong>A đúng:</strong> Luồng ở trạng thái <code>WAITING</code> vẫn sống (alive) nhưng đang tạm ngưng.</li><li><strong>C đúng:</strong> Luồng <code>BLOCKED</code> khi chờ cấp Monitor Lock.</li><li><strong>E đúng:</strong> Luồng <code>NEW</code> chưa được hệ điều hành cấp phát tài nguyên thực thi.</li></ul></div>
           </div>
           <!-- Question 20 -->
           <div class="quiz-card" id="question-20" data-correct="C" data-all-correct="C">
@@ -665,7 +753,10 @@ class TestThread {
               <label><input type="radio" name="q20" value="C"> C. A, C, E</label>
               <label><input type="radio" name="q20" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) A, C, E</strong><br>• <code>interrupt()</code>, <code>run()</code> và <code>getName()</code> là các khai báo phương thức hợp lệ trong lớp <code>Thread</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(20)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-20"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) A, C, E</strong><br>• <code>interrupt()</code>, <code>run()</code> và <code>getName()</code> là các khai báo phương thức hợp lệ trong lớp <code>Thread</code>.</div>
           </div>
           <!-- Question 21 -->
           <div class="quiz-card" id="question-21" data-correct="B" data-all-correct="B">
@@ -676,7 +767,10 @@ class TestThread {
               <label><input type="radio" name="q21" value="C"> C. A, C, D, E</label>
               <label><input type="radio" name="q21" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) A, B, C, D</strong><br>• Giá trị ưu tiên nằm trong khoảng từ 1 (MIN) đến 10 (MAX). Số nguyên càng lớn thì độ ưu tiên CÀNG CAO.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(21)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-21"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) A, B, C, D</strong><br>• Giá trị ưu tiên nằm trong khoảng từ 1 (MIN) đến 10 (MAX). Số nguyên càng lớn thì độ ưu tiên CÀNG CAO.</div>
           </div>
           <!-- Question 22 -->
           <div class="quiz-card" id="question-22" data-correct="B" data-all-correct="B">
@@ -687,7 +781,10 @@ class TestThread {
               <label><input type="radio" name="q22" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q22" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, C, D</strong><br>• <strong>Daemon Thread</strong> phục vụ ngầm dưới nền cho ứng dụng (như Garbage Collection). Được thiết lập bằng phương thức <code>setDaemon(true)</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(22)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-22"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, C, D</strong><br>• <strong>Daemon Thread</strong> phục vụ ngầm dưới nền cho ứng dụng (như Garbage Collection). Được thiết lập bằng phương thức <code>setDaemon(true)</code>.</div>
           </div>
           <!-- Question 23 -->
           <div class="quiz-card" id="question-23" data-correct="A" data-all-correct="A">
@@ -698,7 +795,10 @@ class TestThread {
               <label><input type="radio" name="q23" value="C"> C. Releasing the intrinsic lock</label>
               <label><input type="radio" name="q23" value="D"> D. Interleaving the atomic actions</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A</strong><br>• <strong>Race Condition</strong> xuất hiện khi nhiều luồng cùng truy cập và chỉnh sửa dữ liệu dùng chung (shared data) mà không có sự đồng bộ hóa.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(23)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-23"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A</strong><br>• <strong>Race Condition</strong> xuất hiện khi nhiều luồng cùng truy cập và chỉnh sửa dữ liệu dùng chung (shared data) mà không có sự đồng bộ hóa.</div>
           </div>
           <!-- Question 24 -->
           <div class="quiz-card" id="question-24" data-correct="D" data-all-correct="A,C,D">
@@ -709,7 +809,10 @@ class TestThread {
               <label><input type="radio" name="q24" value="C"> C. Multithreading is a specialized form of multitasking</label>
               <label><input type="radio" name="q24" value="D"> D. In a multithreaded program, two or more threads can run concurrently</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D</strong><br>• Đa luồng tiêu tốn ít tài nguyên hơn đa tiến trình, là hình thức đa nhiệm theo luồng cho phép các luồng chạy đồng thời.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(24)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-24"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, C, D</strong><br>• Đa luồng tiêu tốn ít tài nguyên hơn đa tiến trình, là hình thức đa nhiệm theo luồng cho phép các luồng chạy đồng thời.</div>
           </div>
           <!-- Question 25 -->
           <div class="quiz-card" id="question-25" data-correct="C" data-all-correct="C">
@@ -720,7 +823,10 @@ class TestThread {
               <label><input type="radio" name="q25" value="C"> C. The wait-notify mechanism</label>
               <label><input type="radio" name="q25" value="D"> D. Atomic variables</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. The wait-notify mechanism</strong><br>• Cơ chế <code>wait()</code> / <code>notify()</code> đóng vai trò điều phối luồng giống như hệ thống tín hiệu đèn giao thông.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(25)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-25"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. The wait-notify mechanism</strong><br>• Cơ chế <code>wait()</code> / <code>notify()</code> đóng vai trò điều phối luồng giống như hệ thống tín hiệu đèn giao thông.</div>
           </div>
           <!-- Question 26 -->
           <div class="quiz-card" id="question-26" data-correct="D" data-all-correct="D">
@@ -731,7 +837,10 @@ class TestThread {
               <label><input type="radio" name="q26" value="C"> C. Race condition</label>
               <label><input type="radio" name="q26" value="D"> D. Deadlock</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. Deadlock</strong><br>• <strong>Deadlock</strong> (Khóa chết) khiến các luồng đóng băng vĩnh viễn vì chờ đợi tài nguyên của nhau, làm chương trình dừng hoạt động.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(26)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-26"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. Deadlock</strong><br>• <strong>Deadlock</strong> (Khóa chết) khiến các luồng đóng băng vĩnh viễn vì chờ đợi tài nguyên của nhau, làm chương trình dừng hoạt động.</div>
           </div>
           <!-- Question 27 -->
           <div class="quiz-card" id="question-27" data-correct="A" data-all-correct="A,B,D">
@@ -742,7 +851,10 @@ class TestThread {
               <label><input type="radio" name="q27" value="C"> C. Collections interface</label>
               <label><input type="radio" name="q27" value="D"> D. ScheduledExecutorService interface</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, B, D</strong><br>• Executor Framework sử dụng các giao diện <code>ExecutorService</code>, <code>ScheduledExecutorService</code> và thực thi tác vụ <code>Runnable</code>/<code>Callable</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(27)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-27"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A, B, D</strong><br>• Executor Framework sử dụng các giao diện <code>ExecutorService</code>, <code>ScheduledExecutorService</code> và thực thi tác vụ <code>Runnable</code>/<code>Callable</code>.</div>
           </div>
           <!-- Question 28 -->
           <div class="quiz-card" id="question-28" data-correct="B" data-all-correct="B">
@@ -753,7 +865,10 @@ class TestThread {
               <label><input type="radio" name="q28" value="C"> C. The synchronized keyword</label>
               <label><input type="radio" name="q28" value="D"> D. Lock</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Monitor</strong><br>• Trong Java Concurrency, <strong>Monitor</strong> là vùng mã nguồn được bảo vệ bởi cơ chế loại trừ tương hỗ (mutual-exclusion).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(28)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-28"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Monitor</strong><br>• Trong Java Concurrency, <strong>Monitor</strong> là vùng mã nguồn được bảo vệ bởi cơ chế loại trừ tương hỗ (mutual-exclusion).</div>
           </div>
           <!-- Chương 3: Java Database Connectivity (JDBC) & Software Architecture -->
           <h2 class="section-banner" id="chapter-3">Chương 3: Java Database Connectivity (JDBC) & Software Architecture</h2>
@@ -767,7 +882,10 @@ class TestThread {
               <label><input type="radio" name="q29" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q29" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) C, D, E</strong><br>• JDBC độc lập với hệ quản trị CSDL bên dưới, hỗ trợ kiến trúc 2 tầng (client-database) và 3 tầng (qua Middle Tier server).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(29)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-29"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) C, D, E</strong><br>• JDBC độc lập với hệ quản trị CSDL bên dưới, hỗ trợ kiến trúc 2 tầng (client-database) và 3 tầng (qua Middle Tier server).</div>
           </div>
           <!-- Question 30 -->
           <div class="quiz-card" id="question-30" data-correct="D" data-all-correct="D">
@@ -778,7 +896,10 @@ class TestThread {
               <label><input type="radio" name="q30" value="C"> C. a-2, b-1, c-5, d-1, e-4</label>
               <label><input type="radio" name="q30" value="D"> D. a-2, b-5, c-4, d-1, e-3</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) a-2, b-5, c-4, d-1, e-3</strong><br>• Type-1 (ODBC Bridge), Type-2 (Native-API), Type-3 (Network-Protocol), Type-4 (Direct Native-Protocol Sockets).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(30)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-30"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) a-2, b-5, c-4, d-1, e-3</strong><br>• Type-1 (ODBC Bridge), Type-2 (Native-API), Type-3 (Network-Protocol), Type-4 (Direct Native-Protocol Sockets).</div>
           </div>
           <!-- Question 31 -->
           <div class="quiz-card" id="question-31" data-correct="B" data-all-correct="B">
@@ -812,7 +933,10 @@ class TestThread {
   while(rs.next()) { System.out.println(rs.getString("BookName")); }
 } catch (SQLException ce) { System.out.println(ce.getMessage()); }</code></pre></label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B)</strong><br>• Gọi <code>DriverManager.getConnection()</code> khởi tạo kết nối, dùng <code>cn.createStatement()</code> tạo Statement và <code>st.executeQuery()</code> thực thi truy vấn.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(31)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-31"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B)</strong><br>• Gọi <code>DriverManager.getConnection()</code> khởi tạo kết nối, dùng <code>cn.createStatement()</code> tạo Statement và <code>st.executeQuery()</code> thực thi truy vấn.</div>
           </div>
           <!-- Question 32 -->
           <div class="quiz-card" id="question-32" data-correct="B" data-all-correct="B">
@@ -823,7 +947,10 @@ class TestThread {
               <label><input type="radio" name="q32" value="C"> C. jdbc:sqlserver://instanceName:portNumber; property=value[; property=value]</label>
               <label><input type="radio" name="q32" value="D"> D. jdbc:sqlserver://serverName; instanceName; property=value[; property=value]</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Cú pháp chuẩn kết nối SQL Server JDBC Type-4 URL: <pre><code>jdbc:sqlserver://serverName;instanceName:portNumber;[property=value]</code></pre></div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(32)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-32"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Cú pháp chuẩn kết nối SQL Server JDBC Type-4 URL: <pre><code>jdbc:sqlserver://serverName;instanceName:portNumber;[property=value]</code></pre></div>
           </div>
           <!-- Question 33 -->
           <div class="quiz-card" id="question-33" data-correct="D" data-all-correct="D">
@@ -834,7 +961,10 @@ class TestThread {
               <label><input type="radio" name="q33" value="C"> C. manifest.xml</label>
               <label><input type="radio" name="q33" value="D"> D. pom.xml</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. pom.xml</strong><br>• Trong dự án Maven, tệp <code>pom.xml</code> chứa các thông số khai báo thư viện phụ thuộc <code>&lt;dependency&gt;</code>.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(33)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-33"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D. pom.xml</strong><br>• Trong dự án Maven, tệp <code>pom.xml</code> chứa các thông số khai báo thư viện phụ thuộc <code>&lt;dependency&gt;</code>.</div>
           </div>
           <!-- Question 34 -->
           <div class="quiz-card" id="question-34" data-correct="B" data-all-correct="B">
@@ -845,7 +975,10 @@ class TestThread {
               <label><input type="radio" name="q34" value="C"> C. B, C, and E</label>
               <label><input type="radio" name="q34" value="D"> D. A, D, and E</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• ResultSet mặc định là <code>TYPE_FORWARD_ONLY</code>; Holdability quy định việc mở con trỏ sau khi COMMIT; phương thức <code>createStatement(type, concurrency)</code> nhận 2 tham số.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(34)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-34"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• ResultSet mặc định là <code>TYPE_FORWARD_ONLY</code>; Holdability quy định việc mở con trỏ sau khi COMMIT; phương thức <code>createStatement(type, concurrency)</code> nhận 2 tham số.</div>
           </div>
           <!-- Question 35 -->
           <div class="quiz-card" id="question-35" data-correct="B" data-all-correct="B">
@@ -856,7 +989,10 @@ class TestThread {
               <label><input type="radio" name="q35" value="C"> C. B, C, and E</label>
               <label><input type="radio" name="q35" value="D"> D. A, D, and E</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• <code>TYPE_FORWARD_ONLY</code> chỉ đi từ đầu đến cuối; <code>TYPE_SCROLL_SENSITIVE</code> lắng nghe thay đổi trong CSDL khi ResultSet đang mở.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(35)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-35"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• <code>TYPE_FORWARD_ONLY</code> chỉ đi từ đầu đến cuối; <code>TYPE_SCROLL_SENSITIVE</code> lắng nghe thay đổi trong CSDL khi ResultSet đang mở.</div>
           </div>
           <!-- Question 36 -->
           <div class="quiz-card" id="question-36" data-correct="D" data-all-correct="A,D">
@@ -867,7 +1003,10 @@ class TestThread {
               <label><input type="radio" name="q36" value="C"> C. C, D</label>
               <label><input type="radio" name="q36" value="D"> D. A, D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) A, D</strong><br>• <code>RowSet</code> chứa các dòng dữ liệu và tính năng cuộn/sửa đổi trên bộ nhớ của <code>CachedRowSet</code> độc lập với JDBC Driver.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(36)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-36"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) A, D</strong><br>• <code>RowSet</code> chứa các dòng dữ liệu và tính năng cuộn/sửa đổi trên bộ nhớ của <code>CachedRowSet</code> độc lập với JDBC Driver.</div>
           </div>
           <!-- Question 37 -->
           <div class="quiz-card" id="question-37" data-correct="C" data-all-correct="C,E">
@@ -878,7 +1017,10 @@ class TestThread {
               <label><input type="radio" name="q37" value="C"> C. C, E</label>
               <label><input type="radio" name="q37" value="D"> D. D, E</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) C, E</strong><br>• Khả năng cập nhật liên quan đến quản lý khóa ghi Concurrency và loại Concurrency (<code>CONCUR_UPDATABLE</code>) quyết định ResultSet có thể chỉnh sửa được hay không.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(37)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-37"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) C, E</strong><br>• Khả năng cập nhật liên quan đến quản lý khóa ghi Concurrency và loại Concurrency (<code>CONCUR_UPDATABLE</code>) quyết định ResultSet có thể chỉnh sửa được hay không.</div>
           </div>
           <!-- Chương 4: Java I/O Streams, File Handling & Persistence -->
           <h2 class="section-banner" id="chapter-4">Chương 4: Java I/O Streams, File Handling & Persistence</h2>
@@ -892,7 +1034,10 @@ class TestThread {
               <label><input type="radio" name="q12" value="C"> C. c</label>
               <label><input type="radio" name="q12" value="D"> D. d</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b</strong><br>• Các luồng <code>InputStream</code> và <code>OutputStream</code> được định nghĩa chuẩn để đọc và ghi chuỗi các byte có cấu trúc (structured sequence of bytes).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(12)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-12"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) b</strong><br>• Các luồng <code>InputStream</code> và <code>OutputStream</code> được định nghĩa chuẩn để đọc và ghi chuỗi các byte có cấu trúc (structured sequence of bytes).</div>
           </div>
           <!-- Question 13 -->
           <div class="quiz-card" id="question-13" data-correct="A" data-all-correct="A">
@@ -903,7 +1048,10 @@ class TestThread {
               <label><input type="radio" name="q13" value="C"> C. Creates a new File instance from another File object specified by fileObj.</label>
               <label><input type="radio" name="q13" value="D"> D. Converts the given file URI into an abstract pathname and creates a new File instance.</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Hàm khởi tạo <code>File(String dirpath)</code> chuyển đổi chuỗi đường dẫn thành đối tượng đường dẫn trừu tượng (abstract pathname) trong Java.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(13)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-13"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Hàm khởi tạo <code>File(String dirpath)</code> chuyển đổi chuỗi đường dẫn thành đối tượng đường dẫn trừu tượng (abstract pathname) trong Java.</div>
           </div>
           <!-- Question 14 -->
           <div class="quiz-card" id="question-14" data-correct="C" data-all-correct="C">
@@ -914,7 +1062,10 @@ class TestThread {
               <label><input type="radio" name="q14" value="C"> C. FileDescriptor</label>
               <label><input type="radio" name="q14" value="D"> D. FilenameFilter</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) FileDescriptor</strong><br>• Cả <code>FileInputStream</code> và <code>FileOutputStream</code> đều tự động khởi tạo và chứa một đối tượng <code>FileDescriptor</code> bên trong làm tay cầm quản lý kết nối file của HĐH.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(14)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-14"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) FileDescriptor</strong><br>• Cả <code>FileInputStream</code> và <code>FileOutputStream</code> đều tự động khởi tạo và chứa một đối tượng <code>FileDescriptor</code> bên trong làm tay cầm quản lý kết nối file của HĐH.</div>
           </div>
           <!-- Question 15 -->
           <div class="quiz-card" id="question-15" data-correct="D" data-all-correct="D">
@@ -925,7 +1076,10 @@ class TestThread {
               <label><input type="radio" name="q15" value="C"> C. Reads bytes from a binary stream</label>
               <label><input type="radio" name="q15" value="D"> D. Clears the system buffers and writes the content that they contain to the actual hardware</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D)</strong><br>• Phương thức <code>sync()</code> bắt buộc đẩy toàn bộ dữ liệu từ bộ đệm hệ thống (system buffers) xuống ghi vào thiết bị phần cứng thực sự bên dưới trước khi hoàn tất.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(15)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-15"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D)</strong><br>• Phương thức <code>sync()</code> bắt buộc đẩy toàn bộ dữ liệu từ bộ đệm hệ thống (system buffers) xuống ghi vào thiết bị phần cứng thực sự bên dưới trước khi hoàn tất.</div>
           </div>
           <!-- Question 16 -->
           <div class="quiz-card" id="question-16" data-correct="B" data-all-correct="B">
@@ -936,7 +1090,10 @@ class TestThread {
               <label><input type="radio" name="q16" value="C"> C. Deserialization</label>
               <label><input type="radio" name="q16" value="D"> D. Append mode</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• <strong>Persistence</strong> (Tính lưu trữ vĩnh viễn) là khái niệm chỉ việc lưu dữ liệu vào các thiết bị lưu trữ bền vững (Ổ đĩa, Database) để bảo toàn dữ liệu khi ứng dụng kết thúc.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(16)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-16"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• <strong>Persistence</strong> (Tính lưu trữ vĩnh viễn) là khái niệm chỉ việc lưu dữ liệu vào các thiết bị lưu trữ bền vững (Ổ đĩa, Database) để bảo toàn dữ liệu khi ứng dụng kết thúc.</div>
           </div>
           <!-- Chương 5: JavaFX Platform Architecture, FXML & Layout Managers -->
           <h2 class="section-banner" id="chapter-5">Chương 5: JavaFX Platform Architecture, FXML & Layout Managers</h2>
@@ -950,7 +1107,10 @@ class TestThread {
               <label><input type="radio" name="q53" value="C"> C. 3D graphics</label>
               <label><input type="radio" name="q53" value="D"> D. Game development</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Web-based and mobile applications</strong><br>• Ban đầu năm 2008, JavaFX 1.0 tập trung chính vào xây dựng ứng dụng RIA trên Web và Thiết bị di động.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(53)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-53"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Web-based and mobile applications</strong><br>• Ban đầu năm 2008, JavaFX 1.0 tập trung chính vào xây dựng ứng dụng RIA trên Web và Thiết bị di động.</div>
           </div>
           <!-- Question 54 -->
           <div class="quiz-card" id="question-54" data-correct="B" data-all-correct="B">
@@ -961,7 +1121,10 @@ class TestThread {
               <label><input type="radio" name="q54" value="C"> C. Java 11</label>
               <label><input type="radio" name="q54" value="D"> D. Java 14</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Java 8</strong><br>• JavaFX 8 được đi kèm và tích hợp trực tiếp bên trong JDK 8.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(54)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-54"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Java 8</strong><br>• JavaFX 8 được đi kèm và tích hợp trực tiếp bên trong JDK 8.</div>
           </div>
           <!-- Question 55 -->
           <div class="quiz-card" id="question-55" data-correct="C" data-all-correct="C">
@@ -972,7 +1135,10 @@ class TestThread {
               <label><input type="radio" name="q55" value="C"> C. UI organization</label>
               <label><input type="radio" name="q55" value="D"> D. Database management</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. UI organization</strong><br>• **Scene Graph** là mô hình cây chứa tất cả các phần tử đồ họa (Nodes) để tổ chức cấu trúc giao diện UI.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(55)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-55"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. UI organization</strong><br>• **Scene Graph** là mô hình cây chứa tất cả các phần tử đồ họa (Nodes) để tổ chức cấu trúc giao diện UI.</div>
           </div>
           <!-- Question 56 -->
           <div class="quiz-card" id="question-56" data-correct="C" data-all-correct="C">
@@ -983,7 +1149,10 @@ class TestThread {
               <label><input type="radio" name="q56" value="C"> C. Stage</label>
               <label><input type="radio" name="q56" value="D"> D. Controller</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Stage</strong><br>• <code>Stage</code> đại diện cho cửa sổ ứng dụng cấp cao nhất (Top-level Window).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(56)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-56"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Stage</strong><br>• <code>Stage</code> đại diện cho cửa sổ ứng dụng cấp cao nhất (Top-level Window).</div>
           </div>
           <!-- Question 57 -->
           <div class="quiz-card" id="question-57" data-correct="B" data-all-correct="B">
@@ -994,7 +1163,10 @@ class TestThread {
               <label><input type="radio" name="q57" value="C"> C. Implementing business logic</label>
               <label><input type="radio" name="q57" value="D"> D. Managing database connections</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Defining UI layout</strong><br>• **FXML** là tệp cấu trúc XML dùng để khai báo bố cục giao diện tách biệt khỏi mã logic Java.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(57)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-57"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B. Defining UI layout</strong><br>• **FXML** là tệp cấu trúc XML dùng để khai báo bố cục giao diện tách biệt khỏi mã logic Java.</div>
           </div>
           <!-- Question 58 -->
           <div class="quiz-card" id="question-58" data-correct="C" data-all-correct="C">
@@ -1005,7 +1177,10 @@ class TestThread {
               <label><input type="radio" name="q58" value="C"> C. CSS styling</label>
               <label><input type="radio" name="q58" value="D"> D. Layout managers</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. CSS styling</strong><br>• Tính năng **CSS Styling** giúp trang trí giao diện UI rực rỡ, thẩm mỹ và chuyên nghiệp.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(58)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-58"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. CSS styling</strong><br>• Tính năng **CSS Styling** giúp trang trí giao diện UI rực rỡ, thẩm mỹ và chuyên nghiệp.</div>
           </div>
           <!-- Question 59 -->
           <div class="quiz-card" id="question-59" data-correct="C" data-all-correct="C">
@@ -1016,7 +1191,10 @@ class TestThread {
               <label><input type="radio" name="q59" value="C"> C. Styling for UI elements</label>
               <label><input type="radio" name="q59" value="D"> D. Animation support</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Styling for UI elements</strong><br>• CSS trong JavaFX định kiểu trang trí cho các điều khiển phần tử UI.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(59)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-59"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C. Styling for UI elements</strong><br>• CSS trong JavaFX định kiểu trang trí cho các điều khiển phần tử UI.</div>
           </div>
           <!-- Question 65 -->
           <div class="quiz-card" id="question-65" data-correct="D" data-all-correct="D">
@@ -1027,7 +1205,10 @@ class TestThread {
               <label><input type="radio" name="q65" value="C"> C. GridPane</label>
               <label><input type="radio" name="q65" value="D"> D. BorderPane</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) BorderPane</strong><br>• <strong>BorderPane</strong> chia bố cục giao diện thành 5 khu vực: Top, Bottom, Left, Right và Center.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(65)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-65"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) BorderPane</strong><br>• <strong>BorderPane</strong> chia bố cục giao diện thành 5 khu vực: Top, Bottom, Left, Right và Center.</div>
           </div>
           <!-- Chương 6: JavaFX UI Controls, Properties, Data Binding & Charts -->
           <h2 class="section-banner" id="chapter-6">Chương 6: JavaFX UI Controls, Properties, Data Binding & Charts</h2>
@@ -1041,7 +1222,10 @@ class TestThread {
               <label><input type="radio" name="q60" value="C"> C. Apply transformations to objects</label>
               <label><input type="radio" name="q60" value="D"> D. Create colorful gradients</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Display text in JavaFX applications</strong><br>• Thành phần <code>Text</code> dùng để trình bày chữ/văn bản trên màn hình JavaFX.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(60)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-60"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Display text in JavaFX applications</strong><br>• Thành phần <code>Text</code> dùng để trình bày chữ/văn bản trên màn hình JavaFX.</div>
           </div>
           <!-- Question 61 -->
           <div class="quiz-card" id="question-61" data-correct="A" data-all-correct="A">
@@ -1052,7 +1236,10 @@ class TestThread {
               <label><input type="radio" name="q61" value="C"> C. Rotation</label>
               <label><input type="radio" name="q61" value="D"> D. Scaling factor</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) Fill color</strong><br>• Thuộc tính <code>fill</code> quyết định màu sắc tô chữ của đối tượng Text.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(61)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-61"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (A) Fill color</strong><br>• Thuộc tính <code>fill</code> quyết định màu sắc tô chữ của đối tượng Text.</div>
           </div>
           <!-- Question 63 -->
           <div class="quiz-card" id="question-63" data-correct="D" data-all-correct="D">
@@ -1063,7 +1250,10 @@ class TestThread {
               <label><input type="radio" name="q63" value="C"> C. Height</label>
               <label><input type="radio" name="q63" value="D"> D. Stroke color</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) Stroke color</strong><br>• Thuộc tính <code>stroke</code> định nghĩa màu sắc đường nét viền bao quanh hình dạng 2D.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(63)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-63"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) Stroke color</strong><br>• Thuộc tính <code>stroke</code> định nghĩa màu sắc đường nét viền bao quanh hình dạng 2D.</div>
           </div>
           <!-- Question 67 -->
           <div class="quiz-card" id="question-67" data-correct="B" data-all-correct="B">
@@ -1074,7 +1264,10 @@ class TestThread {
               <label><input type="radio" name="q67" value="C"> C. Managing layouts and alignment</label>
               <label><input type="radio" name="q67" value="D"> D. Creating interactive charts</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Displaying text or non-editable information</strong><br>• Thành phần <code>Label</code> hiển thị các văn bản/thông báo cố định không cho sửa trực tiếp.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(67)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-67"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Displaying text or non-editable information</strong><br>• Thành phần <code>Label</code> hiển thị các văn bản/thông báo cố định không cho sửa trực tiếp.</div>
           </div>
           <!-- Question 68 -->
           <div class="quiz-card" id="question-68" data-correct="B" data-all-correct="B">
@@ -1085,7 +1278,10 @@ class TestThread {
               <label><input type="radio" name="q68" value="C"> C. External resources used in UI design</label>
               <label><input type="radio" name="q68" value="D"> D. User interface layout managers</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Observable and bindable attributes of UI components</strong><br>• JavaFX Properties là các thuộc tính đặc biệt hỗ trợ quan sát sự thay đổi (Observable) và liên kết dữ liệu tự động (Data Binding).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(68)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-68"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Observable and bindable attributes of UI components</strong><br>• JavaFX Properties là các thuộc tính đặc biệt hỗ trợ quan sát sự thay đổi (Observable) và liên kết dữ liệu tự động (Data Binding).</div>
           </div>
           <!-- Question 69 -->
           <div class="quiz-card" id="question-69" data-correct="C" data-all-correct="C">
@@ -1096,7 +1292,10 @@ class TestThread {
               <label><input type="radio" name="q69" value="C"> C. To visualize trends and changes over time</label>
               <label><input type="radio" name="q69" value="D"> D. To create pie-shaped data representations</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To visualize trends and changes over time</strong><br>• Biểu đồ đường (<strong>LineChart</strong>) trực quan hóa xu hướng và sự biến động dữ liệu theo thời gian.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(69)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-69"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To visualize trends and changes over time</strong><br>• Biểu đồ đường (<strong>LineChart</strong>) trực quan hóa xu hướng và sự biến động dữ liệu theo thời gian.</div>
           </div>
           <!-- Chương 7: JavaFX Event Handling, Transformations, 2D/3D & Media Framework -->
           <h2 class="section-banner" id="chapter-7">Chương 7: JavaFX Event Handling, Transformations, 2D/3D & Media Framework</h2>
@@ -1110,7 +1309,10 @@ class TestThread {
               <label><input type="radio" name="q62" value="C"> C. Translation</label>
               <label><input type="radio" name="q62" value="D"> D. Shearing</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Translation</strong><br>• Phép biến đổi **Translation** (<code>Translate</code>) dịch chuyển vị trí tọa độ của đối tượng đồ họa.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(62)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-62"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Translation</strong><br>• Phép biến đổi **Translation** (<code>Translate</code>) dịch chuyển vị trí tọa độ của đối tượng đồ họa.</div>
           </div>
           <!-- Question 64 -->
           <div class="quiz-card" id="question-64" data-correct="B" data-all-correct="B">
@@ -1121,7 +1323,10 @@ class TestThread {
               <label><input type="radio" name="q64" value="C"> C. Rectangle3D</label>
               <label><input type="radio" name="q64" value="D"> D. Circle3D</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Box</strong><br>• Lớp <code>Box</code> (kế thừa từ <code>Shape3D</code>) dùng để tạo hình hộp khối 3D.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(64)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-64"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) Box</strong><br>• Lớp <code>Box</code> (kế thừa từ <code>Shape3D</code>) dùng để tạo hình hộp khối 3D.</div>
           </div>
           <!-- Question 66 -->
           <div class="quiz-card" id="question-66" data-correct="C" data-all-correct="C">
@@ -1132,7 +1337,10 @@ class TestThread {
               <label><input type="radio" name="q66" value="C"> C. Styling user interface components</label>
               <label><input type="radio" name="q66" value="D"> D. Performing mathematical calculations</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Styling user interface components</strong><br>• Mục đích cốt lõi của CSS là trang trí và định dạng giao diện UI.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(66)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-66"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) Styling user interface components</strong><br>• Mục đích cốt lõi của CSS là trang trí và định dạng giao diện UI.</div>
           </div>
           <!-- Question 70 -->
           <div class="quiz-card" id="question-70" data-correct="C" data-all-correct="C">
@@ -1143,7 +1351,10 @@ class TestThread {
               <label><input type="radio" name="q70" value="C"> C. To handle events when they occur</label>
               <label><input type="radio" name="q70" value="D"> D. To specify event filters</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To handle events when they occur</strong><br>• <code>EventHandler</code> chứa mã logic xử lý sự kiện khi hành động phát ra từ người dùng.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(70)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-70"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To handle events when they occur</strong><br>• <code>EventHandler</code> chứa mã logic xử lý sự kiện khi hành động phát ra từ người dùng.</div>
           </div>
           <!-- Question 71 -->
           <div class="quiz-card" id="question-71" data-correct="C" data-all-correct="C">
@@ -1154,7 +1365,10 @@ class TestThread {
               <label><input type="radio" name="q71" value="C"> C. setOnAction()</label>
               <label><input type="radio" name="q71" value="D"> D. setOnEventHandler()</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) setOnAction()</strong><br>• Phương thức <code>setOnAction()</code> bắt sự kiện click nút bấm (Button).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(71)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-71"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) setOnAction()</strong><br>• Phương thức <code>setOnAction()</code> bắt sự kiện click nút bấm (Button).</div>
           </div>
           <!-- Question 72 -->
           <div class="quiz-card" id="question-72" data-correct="B" data-all-correct="B">
@@ -1165,7 +1379,10 @@ class TestThread {
               <label><input type="radio" name="q72" value="C"> C. Only when there is a mouse event</label>
               <label><input type="radio" name="q72" value="D"> D. When the event source is a text field</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) During event capturing, before events reach their target node</strong><br>• **Event Filters** chạy trong giai đoạn Event Capturing (đi từ node gốc xuống), trước khi tới Node mục tiêu.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(72)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-72"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (B) During event capturing, before events reach their target node</strong><br>• **Event Filters** chạy trong giai đoạn Event Capturing (đi từ node gốc xuống), trước khi tới Node mục tiêu.</div>
           </div>
           <!-- Question 73 -->
           <div class="quiz-card" id="question-73" data-correct="D" data-all-correct="D">
@@ -1176,7 +1393,10 @@ class TestThread {
               <label><input type="radio" name="q73" value="C"> C. Define convenience methods for event handling</label>
               <label><input type="radio" name="q73" value="D"> D. Handle events after they have reached their target node</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) Handle events after they have reached their target node</strong><br>• **Event Handlers** xử lý sự kiện tại Node mục tiêu và trong giai đoạn Event Bubbling (đi ngược từ con lên cha).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(73)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-73"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (D) Handle events after they have reached their target node</strong><br>• **Event Handlers** xử lý sự kiện tại Node mục tiêu và trong giai đoạn Event Bubbling (đi ngược từ con lên cha).</div>
           </div>
           <!-- Question 74 -->
           <div class="quiz-card" id="question-74" data-correct="C" data-all-correct="C">
@@ -1187,7 +1407,10 @@ class TestThread {
               <label><input type="radio" name="q74" value="C"> C. To specify an event handler for mouse clicks</label>
               <label><input type="radio" name="q74" value="D"> D. To add a filter for mouse events</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To specify an event handler for mouse clicks</strong><br>• Phương thức <code>setOnMouseClicked()</code> gán bộ xử lý sự kiện click chuột.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(74)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-74"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: (C) To specify an event handler for mouse clicks</strong><br>• Phương thức <code>setOnMouseClicked()</code> gán bộ xử lý sự kiện click chuột.</div>
           </div>
           <!-- Question 75 -->
           <div class="quiz-card" id="question-75" data-correct="B" data-all-correct="B">
@@ -1198,7 +1421,10 @@ class TestThread {
               <label><input type="radio" name="q75" value="C"> C. MediaContent</label>
               <label><input type="radio" name="q75" value="D"> D. MediaStream</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B) MediaPlayer</strong><br>• <code>MediaPlayer</code> là lớp điều khiển chính quản lý phát/dừng âm thanh và video.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(75)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-75"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: B) MediaPlayer</strong><br>• <code>MediaPlayer</code> là lớp điều khiển chính quản lý phát/dừng âm thanh và video.</div>
           </div>
           <!-- Question 76 -->
           <div class="quiz-card" id="question-76" data-correct="D" data-all-correct="D">
@@ -1209,7 +1435,10 @@ class TestThread {
               <label><input type="radio" name="q76" value="C"> C. MediaFile</label>
               <label><input type="radio" name="q76" value="D"> D. Media</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D) Media</strong><br>• Lớp <code>Media</code> đại diện cho nguồn tập tin media (Audio/Video URL).</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(76)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-76"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: D) Media</strong><br>• Lớp <code>Media</code> đại diện cho nguồn tập tin media (Audio/Video URL).</div>
           </div>
           <!-- Question 77 -->
           <div class="quiz-card" id="question-77" data-correct="A" data-all-correct="A">
@@ -1220,7 +1449,10 @@ class TestThread {
               <label><input type="radio" name="q77" value="C"> C. media.playMedia();</label>
               <label><input type="radio" name="q77" value="D"> D. mediaPlayer.playMedia();</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A) mediaPlayer.play();</strong><br>• Gọi <code>mediaPlayer.play()</code> để bắt đầu phát media.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(77)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-77"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: A) mediaPlayer.play();</strong><br>• Gọi <code>mediaPlayer.play()</code> để bắt đầu phát media.</div>
           </div>
           <!-- Question 78 -->
           <div class="quiz-card" id="question-78" data-correct="C" data-all-correct="C">
@@ -1231,7 +1463,10 @@ class TestThread {
               <label><input type="radio" name="q78" value="C"> C. setOnReady</label>
               <label><input type="radio" name="q78" value="D"> D. setOnPause</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C) setOnReady</strong><br>• <code>setOnReady()</code> kích hoạt khi luồng media đã sẵn sàng phát.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(78)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-78"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C) setOnReady</strong><br>• <code>setOnReady()</code> kích hoạt khi luồng media đã sẵn sàng phát.</div>
           </div>
           <!-- Question 79 -->
           <div class="quiz-card" id="question-79" data-correct="C" data-all-correct="C">
@@ -1242,7 +1477,10 @@ class TestThread {
               <label><input type="radio" name="q79" value="C"> C. To display media content in the UI</label>
               <label><input type="radio" name="q79" value="D"> D. To handle media events</label>
             </div>
-            <div class="quiz-feedback"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C) To display media content in the UI</strong><br>• Lớp <code>MediaView</code> là một <code>Node</code> đồ họa hiển thị video lên giao diện.</div>
+            <div style="margin-top: 0.65rem;" class="no-print">
+              <button type="button" onclick="toggleSingleExp(79)" style="background: transparent; border: 1px solid var(--border-color); color: var(--secondary-color); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 600;">💡 Lời Giải Chi Tiết</button>
+            </div>
+            <div class="quiz-feedback" id="feedback-79"><strong>💡 Phân Tích &amp; Lời Giải Chi Tiết:</strong><br><strong>Đáp án đúng: C) To display media content in the UI</strong><br>• Lớp <code>MediaView</code> là một <code>Node</code> đồ họa hiển thị video lên giao diện.</div>
           </div>
         </section>
       </main>
@@ -1317,6 +1555,25 @@ class TestThread {
       if (total > 0) {
         document.getElementById('overall-desc').textContent = `Đã làm ${answered} / ${total} câu (Chính xác: ${correct} câu - ${pct}%)`;
       }
+    }
+
+    function toggleSingleExp(qid) {
+      const fb = document.getElementById('feedback-' + qid);
+      if (fb) {
+        fb.classList.toggle('show');
+      }
+    }
+
+    function toggleAllExplanations() {
+      const feedbacks = document.querySelectorAll('.quiz-feedback');
+      const anyHidden = Array.from(feedbacks).some(fb => !fb.classList.contains('show'));
+      feedbacks.forEach(fb => {
+        if (anyHidden) {
+          fb.classList.add('show');
+        } else {
+          fb.classList.remove('show');
+        }
+      });
     }
 
     function revealAllAnswers() {
