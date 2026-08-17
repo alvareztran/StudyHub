@@ -487,12 +487,12 @@
         </div>
       </section>
 
-      <!-- 3D WebGL Dynamic Interactive AI & Tech Orbit Universe -->
+      <!-- 3D WebGL Dense Colorful Big-Tech Orbit Universe -->
       <section id="ai-3d-experience" class="ai-3d-container">
         <div class="ai-3d-header">
-          <div class="badge-3d">WebGL 3D Tech Cosmos</div>
-          <h2 class="title-3d">Vũ Trụ Công Nghệ &amp; AI Tương Tác 3D</h2>
-          <p class="subtitle-3d">Rê chuột hoặc di chuyển con trỏ để xoay vũ trụ 360&deg; và tương tác với các công nghệ hàng đầu: Java Spring, NodeJS, Python, VSCode, Docker, Kubernetes, ASP.NET Core, OpenCV...</p>
+          <div class="badge-3d">Dense Neural Mesh &bull; Big-Tech Standard</div>
+          <h2 class="title-3d">Mạng Thần Kinh Công Nghệ &amp; AI Siêu Dày Đặt 3D</h2>
+          <p class="subtitle-3d">Hơn 32+ công nghệ hàng đầu thế giới (Java Spring, NodeJS, Python, VSCode, Docker, Kubernetes, ASP.NET Core, OpenCV, PyTorch, C++...) chuyển động tương tác đa chiều trong dải ngân hà rực rỡ.</p>
         </div>
 
         <div class="canvas-3d-wrapper">
@@ -500,12 +500,12 @@
 
           <div class="canvas-overlay">
             <div class="control-badge">
-              <span class="pulse-green"></span> 3D Tech Universe &bull; Di chuột để điều khiển quỹ đạo 3D
+              <span class="pulse-green"></span> 3D Dense Neural Cosmos Active &bull; Rê chuột để tương tác
             </div>
 
             <div class="interactive-controls">
-              <button id="btn-toggle-mesh" class="btn-3d-control">🕸️ Hiện/Ẩn Quỹ Đạo Mạng Thần Kinh</button>
-              <button id="btn-toggle-speed" class="btn-3d-control">⚡ Tăng Tốc Quỹ Đạo Vòng Xoay</button>
+              <button id="btn-toggle-mesh" class="btn-3d-control">🕸️ Hiện/Ẩn Mạng Thần Kinh Dày Đặt</button>
+              <button id="btn-toggle-speed" class="btn-3d-control">⚡ Tăng Tốc Xoay 3D Core</button>
             </div>
           </div>
         </div>
@@ -562,87 +562,147 @@
         });
       });
 
-      // 2. Three.js 3D WebGL Floating Tech Icons Cosmos Scene
+      // 2. Three.js Dense Colorful Big-Tech 3D Cosmos Scene
       const canvasWrapper = document.querySelector('.canvas-3d-wrapper');
       const canvas = document.getElementById('webgl-canvas');
       if (!canvas || !window.THREE) return;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(55, canvasWrapper.clientWidth / canvasWrapper.clientHeight, 0.1, 1000);
-      camera.position.z = 24;
+      camera.position.z = 26;
 
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setSize(canvasWrapper.clientWidth, canvasWrapper.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // Starry Space Background Particles
-      const starCount = 600;
+      // Dynamic Volumetric Point Lights (Cyan, Purple, Rose Gold)
+      const lightCyan = new THREE.PointLight(0x06b6d4, 2.5, 50);
+      lightCyan.position.set(15, 10, 10);
+      scene.add(lightCyan);
+
+      const lightPurple = new THREE.PointLight(0xa855f7, 2.5, 50);
+      lightPurple.position.set(-15, -10, 10);
+      scene.add(lightPurple);
+
+      const lightEmerald = new THREE.PointLight(0x10b981, 2, 40);
+      lightEmerald.position.set(0, 15, -10);
+      scene.add(lightEmerald);
+
+      // Starry Space Background Particles with Vibrant Colors
+      const starCount = 800;
       const starGeo = new THREE.BufferGeometry();
       const starPositions = new Float32Array(starCount * 3);
+      const starColors = new Float32Array(starCount * 3);
+
+      const palette = [
+        new THREE.Color(0x38bdf8),
+        new THREE.Color(0xc084fc),
+        new THREE.Color(0x34d399),
+        new THREE.Color(0xfbbf24),
+        new THREE.Color(0xf43f5e)
+      ];
 
       for (let i = 0; i < starCount; i++) {
-        starPositions[i * 3] = (Math.random() - 0.5) * 120;
-        starPositions[i * 3 + 1] = (Math.random() - 0.5) * 120;
-        starPositions[i * 3 + 2] = (Math.random() - 0.5) * 120;
+        starPositions[i * 3] = (Math.random() - 0.5) * 140;
+        starPositions[i * 3 + 1] = (Math.random() - 0.5) * 140;
+        starPositions[i * 3 + 2] = (Math.random() - 0.5) * 140;
+
+        const c = palette[Math.floor(Math.random() * palette.length)];
+        starColors[i * 3] = c.r;
+        starColors[i * 3 + 1] = c.g;
+        starColors[i * 3 + 2] = c.b;
       }
       starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-      const starMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.15, transparent: true, opacity: 0.75 });
+      starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+
+      const starMat = new THREE.PointsMaterial({
+        size: 0.18,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
+      });
       const starField = new THREE.Points(starGeo, starMat);
       scene.add(starField);
 
-      // Central Quantum Core - Wireframe Core
-      const coreGeo = new THREE.IcosahedronGeometry(3.5, 2);
-      const coreMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.6 });
+      // Central Quantum Core - Wireframe Core with Glowing Rings
+      const coreGeo = new THREE.IcosahedronGeometry(4.0, 2);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x38bdf8,
+        wireframe: true,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.8,
+        transparent: true,
+        opacity: 0.75
+      });
       const coreMesh = new THREE.Mesh(coreGeo, coreMat);
       scene.add(coreMesh);
 
-      const innerCoreGeo = new THREE.IcosahedronGeometry(2.0, 1);
-      const innerCoreMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.85 });
+      const innerCoreGeo = new THREE.IcosahedronGeometry(2.4, 1);
+      const innerCoreMat = new THREE.MeshStandardMaterial({
+        color: 0xc084fc,
+        wireframe: true,
+        emissive: 0x9333ea,
+        emissiveIntensity: 0.9,
+        transparent: true,
+        opacity: 0.9
+      });
       const innerCoreMesh = new THREE.Mesh(innerCoreGeo, innerCoreMat);
       scene.add(innerCoreMesh);
 
-      // 3D Floating Tech Badges / Icons Array
+      // 32+ Expanded Tech Icons List
       const techList = [
-        { name: "Java Spring", color: "#4ade80", category: "Backend" },
-        { name: "NodeJS", color: "#22c55e", category: "Runtime" },
-        { name: "Python", color: "#38bdf8", category: "AI / Data" },
-        { name: "VS Code", color: "#0284c7", category: "IDE" },
-        { name: "Visual Studio", color: "#a855f7", category: "IDE" },
-        { name: "NetBeans", color: "#f97316", category: "IDE" },
-        { name: "ASP.NET Core", color: "#8b5cf6", category: "Backend" },
-        { name: "JakartaEE", color: "#ef4444", category: "Enterprise" },
-        { name: "Docker", color: "#06b6d4", category: "DevOps" },
-        { name: "Kubernetes", color: "#3b82f6", category: "Cloud" },
-        { name: "Postman", color: "#f97316", category: "API" },
-        { name: "OpenCV", color: "#eab308", category: "Vision" },
-        { name: "PyTorch", color: "#f43f5e", category: "AI Framework" },
-        { name: "React", color: "#38bdf8", category: "Frontend" },
-        { name: "PostgreSQL", color: "#0284c7", category: "Database" },
-        { name: "Redis", color: "#ef4444", category: "Cache" },
-        { name: "JavaFX", color: "#60a5fa", category: "GUI" },
-        { name: "C++", color: "#6366f1", category: "Core" }
+        { name: "Java Spring", color: "#4ade80" },
+        { name: "NodeJS", color: "#22c55e" },
+        { name: "Python", color: "#38bdf8" },
+        { name: "VS Code", color: "#0284c7" },
+        { name: "Visual Studio", color: "#a855f7" },
+        { name: "NetBeans", color: "#f97316" },
+        { name: "ASP.NET Core", color: "#8b5cf6" },
+        { name: "JakartaEE", color: "#ef4444" },
+        { name: "Docker", color: "#06b6d4" },
+        { name: "Kubernetes", color: "#3b82f6" },
+        { name: "Postman", color: "#f97316" },
+        { name: "OpenCV", color: "#eab308" },
+        { name: "PyTorch", color: "#f43f5e" },
+        { name: "TensorFlow", color: "#ff6f00" },
+        { name: "React", color: "#38bdf8" },
+        { name: "Next.js", color: "#f8fafc" },
+        { name: "TypeScript", color: "#3178c6" },
+        { name: "PostgreSQL", color: "#0284c7" },
+        { name: "Redis", color: "#dc2626" },
+        { name: "JavaFX", color: "#60a5fa" },
+        { name: "C++", color: "#6366f1" },
+        { name: "Golang", color: "#00add8" },
+        { name: "Rust", color: "#f74c00" },
+        { name: "GraphQL", color: "#e535ab" },
+        { name: "Kafka", color: "#38bdf8" },
+        { name: "MongoDB", color: "#47a248" },
+        { name: "Nginx", color: "#009639" },
+        { name: "Linux", color: "#fcc624" },
+        { name: "Git / GitHub", color: "#f05032" },
+        { name: "WebAssembly", color: "#654ff0" },
+        { name: "TailwindCSS", color: "#38bdf8" },
+        { name: "CUDA / GPU", color: "#76b900" }
       ];
 
-      // Dynamic Texture Generator for 3D Sprites
+      // Canvas Texture Generator for High-Res Glowing Sprites
       function createTechBadgeTexture(text, colorHex) {
         const canvas = document.createElement('canvas');
         canvas.width = 256;
         canvas.height = 80;
         const ctx = canvas.getContext('2d');
 
-        // Draw pill background
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+        ctx.fillStyle = 'rgba(12, 18, 34, 0.92)';
         ctx.beginPath();
         ctx.roundRect(10, 10, 236, 60, 30);
         ctx.fill();
 
-        // Draw border
         ctx.strokeStyle = colorHex;
         ctx.lineWidth = 4;
         ctx.stroke();
 
-        // Draw text
-        ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+        ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -652,18 +712,16 @@
       }
 
       const techSprites = [];
-      const orbits = [];
 
       techList.forEach((tech, index) => {
         const texture = createTechBadgeTexture(tech.name, tech.color);
         const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.95 });
         const sprite = new THREE.Sprite(spriteMat);
-        sprite.scale.set(4.2, 1.3, 1);
+        sprite.scale.set(4.0, 1.25, 1);
 
-        // Distribute in 3D orbit spherical radius
-        const radius = 7.5 + (index % 3) * 2.8;
+        const radius = 8.5 + (index % 4) * 2.5;
         const angle = (index / techList.length) * Math.PI * 2;
-        const yOffset = (Math.random() - 0.5) * 8.0;
+        const yOffset = (Math.random() - 0.5) * 11.0;
 
         sprite.position.x = radius * Math.cos(angle);
         sprite.position.y = yOffset;
@@ -676,18 +734,22 @@
           radius: radius,
           angle: angle,
           yInitial: yOffset,
-          speed: 0.003 + (index % 4) * 0.001,
-          name: tech.name
+          speed: 0.0025 + (index % 5) * 0.0008,
+          name: tech.name,
+          color: tech.color
         });
-
-        orbits.push({ x: sprite.position.x, y: sprite.position.y, z: sprite.position.z });
       });
 
-      // Neural Line Mesh Connecting Badges
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.3 });
+      // Dense Interconnected Neural Mesh Lines
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x818cf8,
+        transparent: true,
+        opacity: 0.35,
+        blending: THREE.AdditiveBlending
+      });
       let lineMesh = null;
 
-      function updateSynapses() {
+      function updateDenseSynapses() {
         if (lineMesh) scene.remove(lineMesh);
         const linePositions = [];
 
@@ -697,7 +759,8 @@
             const p2 = techSprites[j].sprite.position;
             const dist = p1.distanceTo(p2);
 
-            if (dist < 8.5) {
+            // Connect nearby nodes within distance threshold
+            if (dist < 9.5) {
               linePositions.push(p1.x, p1.y, p1.z);
               linePositions.push(p2.x, p2.y, p2.z);
             }
@@ -710,9 +773,9 @@
         scene.add(lineMesh);
       }
 
-      updateSynapses();
+      updateDenseSynapses();
 
-      // Mouse Parallax & Interactivity
+      // Mouse Parallax & Dynamic Light Orbit
       let mouseX = 0, mouseY = 0;
       let targetRotX = 0, targetRotY = 0;
       let speedMultiplier = 1.0;
@@ -723,8 +786,8 @@
         mouseX = ((e.clientX - rect.left) / canvasWrapper.clientWidth - 0.5) * 2;
         mouseY = ((e.clientY - rect.top) / canvasWrapper.clientHeight - 0.5) * 2;
 
-        targetRotY = mouseX * 0.7;
-        targetRotX = mouseY * 0.7;
+        targetRotY = mouseX * 0.75;
+        targetRotX = mouseY * 0.75;
       });
 
       const btnToggleMesh = document.getElementById('btn-toggle-mesh');
@@ -734,42 +797,48 @@
         btnToggleMesh.addEventListener('click', () => {
           showMesh = !showMesh;
           if (lineMesh) lineMesh.visible = showMesh;
-          btnToggleMesh.innerText = showMesh ? "🕸️ Hiện/Ẩn Quỹ Đạo Mạng Thần Kinh" : "✨ Chế Độ Tech Stars Only";
+          btnToggleMesh.innerText = showMesh ? "🕸️ Hiện/Ẩn Mạng Thần Kinh Dày Đặt" : "✨ Chế Độ Tech Badges Only";
         });
       }
 
       if (btnToggleSpeed) {
         btnToggleSpeed.addEventListener('click', () => {
-          speedMultiplier = speedMultiplier === 1.0 ? 2.8 : 1.0;
-          btnToggleSpeed.innerText = speedMultiplier === 2.8 ? "⚡ Đang Tăng Tốc Vòng Xoay x2.8" : "⚡ Tăng Tốc Quỹ Đạo Vòng Xoay";
+          speedMultiplier = speedMultiplier === 1.0 ? 3.0 : 1.0;
+          btnToggleSpeed.innerText = speedMultiplier === 3.0 ? "⚡ Đang Tăng Tốc x3" : "⚡ Tăng Tốc Xoay 3D Core";
         });
       }
 
-      // Animation Loop
+      // Animation Loop with Dynamic Light Movement
       let clock = new THREE.Clock();
       function animate() {
         requestAnimationFrame(animate);
 
         const elapsedTime = clock.getElapsedTime();
 
-        // Rotate central core
+        // Orbit point lights for dynamic color reflections
+        lightCyan.position.x = Math.sin(elapsedTime * 0.8) * 20;
+        lightCyan.position.z = Math.cos(elapsedTime * 0.8) * 20;
+
+        lightPurple.position.x = Math.cos(elapsedTime * 0.6) * 20;
+        lightPurple.position.z = Math.sin(elapsedTime * 0.6) * 20;
+
         coreMesh.rotation.x += 0.005 * speedMultiplier;
         coreMesh.rotation.y += 0.007 * speedMultiplier;
 
-        innerCoreMesh.rotation.x -= 0.009 * speedMultiplier;
+        innerCoreMesh.rotation.x -= 0.008 * speedMultiplier;
         innerCoreMesh.rotation.y -= 0.006 * speedMultiplier;
 
-        starField.rotation.y += 0.0005;
+        starField.rotation.y += 0.0006;
 
-        // Animate floating tech badges in orbit
+        // Animate floating tech badges
         techSprites.forEach((item, idx) => {
           item.angle += item.speed * speedMultiplier;
           item.sprite.position.x = item.radius * Math.cos(item.angle);
           item.sprite.position.z = item.radius * Math.sin(item.angle);
-          item.sprite.position.y = item.yInitial + Math.sin(elapsedTime * 1.5 + idx) * 0.6;
+          item.sprite.position.y = item.yInitial + Math.sin(elapsedTime * 1.6 + idx * 0.5) * 0.7;
         });
 
-        if (showMesh) updateSynapses();
+        if (showMesh) updateDenseSynapses();
 
         scene.rotation.y += (targetRotY - scene.rotation.y) * 0.05;
         scene.rotation.x += (targetRotX - scene.rotation.x) * 0.05;
