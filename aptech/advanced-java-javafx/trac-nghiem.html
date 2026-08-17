@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, I/O Streams, File Handling, Persistence và JavaFX GUI.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, Multithreading, Thread Priorities, Daemon Threads, I/O Streams, File Handling và JavaFX GUI.
       </p>
     </header>
 
@@ -234,14 +234,14 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 16 câu (Chính xác: 0%)</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 22 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 16</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 22</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: InputStream, FileDescriptor, sync, Persistence, Generics, Stream)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: Process, Thread, Runnable, BLOCKED, getPriority, Daemon, InputStream, Generics)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
@@ -265,6 +265,12 @@
           <li><a href="#question-14"><span>Câu 14: Which of the following class...</span></a></li>
           <li><a href="#question-15"><span>Câu 15: The sync method ________ ....</span></a></li>
           <li><a href="#question-16"><span>Câu 16: What is the process of savin...</span></a></li>
+          <li><a href="#question-17"><span>Câu 17: Which of these statements re...</span></a></li>
+          <li><a href="#question-18"><span>Câu 18: Which of the following code ...</span></a></li>
+          <li><a href="#question-19"><span>Câu 19: Which of these statements re...</span></a></li>
+          <li><a href="#question-20"><span>Câu 20: Which of the following metho...</span></a></li>
+          <li><a href="#question-21"><span>Câu 21: Which of these statements re...</span></a></li>
+          <li><a href="#question-22"><span>Câu 22: Which of these statements ab...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -453,6 +459,72 @@
               <label><input type="radio" name="q16" value="D"> D. Append mode</label>
             </div>
             <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• <strong>Persistence</strong> (Tính lưu trữ bền vững / Lưu trữ vĩnh viễn) là thuật ngữ chung chỉ quá trình ghi và bảo lưu trạng thái dữ liệu vào các thiết bị lưu trữ cố định (như Ổ đĩa cứng, Cơ sở dữ liệu, File hệ thống) để dữ liệu không bị mất đi khi ứng dụng kết thúc.<br>• <i>Serialization</i> là cơ chế chuyển đổi đối tượng thành chuỗi byte để thực hiện Persistence.</div>
+          </div>
+          <!-- Question 17 -->
+          <div class="quiz-card" id="question-17" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 17: Which of these statements related to characteristics and uses of processes and threads are true?<br>(A) A process has a self-contained execution environment.<br>(B) A thread is the smallest unit of executable code in an application that performs a particular task.<br>(C) A thread has no definite starting point, execution steps and terminating point.<br>(D) A process contains one or more threads inside it.<br>(E) Threads can be used for playing sound and displaying images simultaneously.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q17" value="A"> A. A, C, E</label>
+              <label><input type="radio" name="q17" value="B"> B. B, C, D</label>
+              <label><input type="radio" name="q17" value="C"> C. C, D, E</label>
+              <label><input type="radio" name="q17" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, B, D</strong><br>• <strong>A đúng:</strong> Một Process (Tiến trình) sở hữu một môi trường thực thi độc lập riêng biệt (không gian bộ nhớ, bảng tài nguyên riêng).<br>• <strong>B đúng:</strong> Một Thread (Luồng) là đơn vị thực thi nhỏ nhất của mã nguồn trong một ứng dụng.<br>• <strong>D đúng:</strong> Một Process có thể chứa một hoặc nhiều Thread cùng chạy bên trong nó.<br>• <strong>C sai:</strong> Thread có điểm bắt đầu (khi gọi <code>run()</code>/<code>start()</code>), các bước thực thi và điểm kết thúc xác định.</div>
+          </div>
+          <!-- Question 18 -->
+          <div class="quiz-card" id="question-18" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 18: Which of the following code snippets creates a thread object and makes it runnable?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q18" value="A"> A. class MyRunnable implements Runnable { public void run() {...} } class TestThread { public static void main(String args[]) { Runnable mrObj = new MyRunnable(); Thread thObj = new Thread(mrObj); thObj.start(); } }</label>
+              <label><input type="radio" name="q18" value="B"> B. class MyRunnable implements Runnable { public void run(){...} public static void main(String args[]) { MyRunnable mrObj = new MyRunnable(); MyThread thObj=new MyThread(mrObj); } }</label>
+              <label><input type="radio" name="q18" value="C"> C. class MyThread extends Thread public void run(){...} class TestThread { public static void main(String args[]) { MyThread myThread = new MyThread(); myThread.start(); } }</label>
+              <label><input type="radio" name="q18" value="D"> D. class MyThread extends Thread { public void run() {...} }</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Đoạn mã <strong>A</strong> viết chuẩn quy trình tạo Thread trong Java:<br>1. Triển khai giao diện <code>Runnable</code> và override phương thức <code>run()</code>.<br>2. Khởi tạo đối tượng <code>Runnable</code>: <code>Runnable mrObj = new MyRunnable();</code>.<br>3. Truyền vào đối tượng <code>Thread</code>: <code>Thread thObj = new Thread(mrObj);</code>.<br>4. Kích hoạt luồng chạy: <code>thObj.start();</code>.</div>
+          </div>
+          <!-- Question 19 -->
+          <div class="quiz-card" id="question-19" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 19: Which of these statements regarding different states of a thread are true?<br>(A) A thread in the waiting state is alive but not running.<br>(B) A thread is considered terminated when its run() method starts.<br>(C) A thread is in a blocked state when it is waiting for the lock of another object.<br>(D) The thread comes out of the runnable state when the start() method is invoked on it.<br>(E) A new thread is an empty thread object with no system resources allocated.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q19" value="A"> A. A, C, E</label>
+              <label><input type="radio" name="q19" value="B"> B. B, C, D</label>
+              <label><input type="radio" name="q19" value="C"> C. C, D, E</label>
+              <label><input type="radio" name="q19" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) A, C, E</strong><br>• <strong>A đúng:</strong> Luồng ở trạng thái <code>WAITING</code> vẫn còn sống (alive) nhưng tạm thời ngưng chạy để chờ tín hiệu.<br>• <strong>C đúng:</strong> Luồng ở trạng thái <code>BLOCKED</code> khi nó đang chờ cấp quyền sở hữu Monitor Lock của một đối tượng khác.<br>• <strong>E đúng:</strong> Đối tượng Thread mới khởi tạo (trạng thái <code>NEW</code>) chưa được cấp phát tài nguyên hệ điều hành cho tới khi phương thức <code>start()</code> được gọi.<br>• <strong>B sai:</strong> Thread chỉ kết thúc (terminated) khi phương thức <code>run()</code> chạy xong hoàn toàn.<br>• <strong>D sai:</strong> Phương thức <code>start()</code> đưa Thread VÀO trạng thái <code>RUNNABLE</code>.</div>
+          </div>
+          <!-- Question 20 -->
+          <div class="quiz-card" id="question-20" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 20: Which of the following method declarations of the Thread class are true?<br>(A) public void interrupt()<br>(B) static void Sleep(long millis)<br>(C) public void run()<br>(D) thread.start()<br>(E) public String getName()</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q20" value="A"> A. A, C, D</label>
+              <label><input type="radio" name="q20" value="B"> B. B, C, D</label>
+              <label><input type="radio" name="q20" value="C"> C. A, C, E</label>
+              <label><input type="radio" name="q20" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) A, C, E</strong><br>• <strong>A đúng:</strong> <code>public void interrupt()</code> là phương thức gửi tín hiệu ngắt luồng.<br>• <strong>C đúng:</strong> <code>public void run()</code> là phương thức chứa mã thi hành của luồng.<br>• <strong>E đúng:</strong> <code>public String getName()</code> là phương thức lấy tên gọi của luồng.<br>• <strong>B sai:</strong> Trong Java tên phương thức viết thường chữ cái đầu: <code>public static void sleep(long millis) throws InterruptedException</code>.<br>• <strong>D sai:</strong> <code>thread.start()</code> là câu lệnh gọi phương thức, không phải cú pháp khai báo phương thức.</div>
+          </div>
+          <!-- Question 21 -->
+          <div class="quiz-card" id="question-21" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 21: Which of these statements regarding the priority of threads are true?<br>(A) The getPriority() method retrieves the current priority of any thread.<br>(B) The setPriority() method changes the current priority of any thread.<br>(C) Thread priorities are numbers and range from Thread.MIN_PRIORITY to Thread.MAX_PRIORITY.<br>(D) A newly created thread inherits the priority of its parent thread.<br>(E) The higher the integers, the lower are the priorities.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q21" value="A"> A. A, C, E</label>
+              <label><input type="radio" name="q21" value="B"> B. A, B, C, D</label>
+              <label><input type="radio" name="q21" value="C"> C. A, C, D, E</label>
+              <label><input type="radio" name="q21" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) A, B, C, D</strong><br>• <strong>A đúng:</strong> <code>getPriority()</code> lấy giá trị độ ưu tiên hiện tại của luồng.<br>• <strong>B đúng:</strong> <code>setPriority(int newPriority)</code> thay đổi độ ưu tiên của luồng.<br>• <strong>C đúng:</strong> Mức độ ưu tiên luồng nằm trong khoảng từ <code>Thread.MIN_PRIORITY</code> (1) đến <code>Thread.MAX_PRIORITY</code> (10).<br>• <strong>D đúng:</strong> Luồng mới được tạo tự động thừa hưởng độ ưu tiên của luồng cha đã tạo ra nó.<br>• <strong>E sai:</strong> Số nguyên càng lớn thì độ ưu tiên CÀNG CAO (10 là cao nhất, 1 là thấp nhất).</div>
+          </div>
+          <!-- Question 22 -->
+          <div class="quiz-card" id="question-22" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 22: Which of these statements about daemon threads are true?<br>(A) Daemon threads are service providers for other threads running in different process.<br>(B) Daemon threads are designed as low-level background threads that perform some tasks such as mouse events.<br>(C) The threads that run system code are user threads.<br>(D) The setDaemon() method with the argument as true will convert the user thread to a daemon thread.<br>(E) The isDaemon() method returns true if the thread is a user thread.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q22" value="A"> A. A, C, E</label>
+              <label><input type="radio" name="q22" value="B"> B. B, C, D</label>
+              <label><input type="radio" name="q22" value="C"> C. C, D, E</label>
+              <label><input type="radio" name="q22" value="D"> D. A, B, D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, C, D</strong><br>• <strong>B đúng:</strong> Daemon thread được thiết kế để chạy ngầm dưới nền (background tasks) cung cấp các dịch vụ hệ thống (như Garbage Collection, xử lý sự kiện ngầm).<br>• <strong>D đúng:</strong> Gọi <code>setDaemon(true)</code> trước khi gọi <code>start()</code> sẽ thiết lập luồng trở thành Daemon Thread.<br>• <strong>E sai:</strong> <code>isDaemon()</code> trả về <code>true</code> nếu luồng là Daemon thread, chứ không phải user thread.</div>
           </div>
         </section>
       </main>
