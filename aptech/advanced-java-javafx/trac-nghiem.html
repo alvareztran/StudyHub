@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, JDBC, Multithreading, Concurrency và Thiết kế Giao diện Đồ họa JavaFX.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Java Collections, Multithreading, Concurrency, JDBC và JavaFX GUI.
       </p>
     </header>
 
@@ -234,22 +234,26 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Sẵn sàng tiếp nhận bộ câu hỏi từ bạn!</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 5 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 0</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 5</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa câu hỏi trắc nghiệm (ví dụ: JavaFX, FXML, Scene Builder, Observable, Stream, Thread, JDBC)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa câu hỏi trắc nghiệm (ví dụ: Collection, List, Vector, Set, HashSet, Map, TreeMap, HashMap)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
     <div class="layout-wrapper">
       <aside class="sidebar no-print">
-        <h3>Điều Hướng Môn Học</h3>
+        <h3>Danh Mục Câu Hỏi</h3>
         <ul>
-          <li><a href="#welcome-section" class="active"><span>📌 Trạng Thái Hệ Thống</span></a></li>
+          <li><a href="#question-1"><span>Câu 1: Which of these statements rela...</span></a></li>
+          <li><a href="#question-2"><span>Câu 2: Which of these statements rega...</span></a></li>
+          <li><a href="#question-3"><span>Câu 3: The getFirst() method ________...</span></a></li>
+          <li><a href="#question-4"><span>Câu 4: Which of these statements abou...</span></a></li>
+          <li><a href="#question-5"><span>Câu 5: Which of these statements rela...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -257,17 +261,63 @@
       </aside>
 
       <main id="quiz-main-container">
-        <!-- Ready Section -->
-        <section id="welcome-section">
-          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; text-align: center; margin-bottom: 2rem;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">☕ 🎨</div>
-            <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">Sẵn Sàng Tiếp Nhận Câu Hỏi Trắc Nghiệm Advanced Java &amp; JavaFX!</h2>
-            <p style="color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
-              Môn học <strong>Advanced Java And JavaFX</strong> đã được khởi tạo hoàn chỉnh trên hệ thống StudyHub. Hãy gửi nội dung câu hỏi hoặc file bài tập trắc nghiệm của bạn trong tin nhắn tiếp theo, mình sẽ lập tức biên dịch thành bộ trắc nghiệm tương tác chuẩn sắc nét với lời giải chi tiết!
-            </p>
-            <div style="display: inline-block; padding: 0.5rem 1.25rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 20px; color: var(--secondary-color); font-weight: 600; font-size: 0.9rem;">
-              🚀 Đang chờ bạn gửi câu hỏi...
+        <section id="questions-section">
+          <h2 class="section-banner">CÂU HỎI TRẮC NGHIỆM CHUYÊN ĐỀ JAVA COLLECTIONS FRAMEWORK</h2>
+          <!-- Question 1 -->
+          <div class="quiz-card" id="question-1" data-correct="A" data-all-correct="A,B">
+            <div class="quiz-question">Câu 1: Which of these statements related to java.util package are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1" value="A"> A. Collection is a container that helps to group multiple elements into a single unit.</label>
+              <label><input type="radio" name="q1" value="B"> B. Collections Framework provides classes and interfaces for storing and manipulating groups of objects in a standardized way.</label>
+              <label><input type="radio" name="q1" value="C"> C. Collections Framework was developed to have low degree of interoperability.</label>
+              <label><input type="radio" name="q1" value="D"> D. Collections Framework does not contain Collection interface at the top of the hierarchy.</label>
             </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br>• <strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.<br>• <strong>B đúng:</strong> Java Collections Framework cung cấp tập hợp đồng bộ các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) để lưu trữ và thao tác dữ liệu.<br>• <strong>C sai:</strong> Collections Framework được thiết kế để có tính tương thích và chuyển đổi cao (high interoperability).<br>• <strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp (Collection Hierarchy) cho List, Set, Queue.</div>
+          </div>
+          <!-- Question 2 -->
+          <div class="quiz-card" id="question-2" data-correct="A" data-all-correct="A,D">
+            <div class="quiz-question">Câu 2: Which of these statements regarding Lists are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2" value="A"> A. Lists allow access to elements based on their position.</label>
+              <label><input type="radio" name="q2" value="B"> B. Lists do not have a method to search for a specific element.</label>
+              <label><input type="radio" name="q2" value="C"> C. ArrayList() creates an empty array.</label>
+              <label><input type="radio" name="q2" value="D"> D. In a Vector, the size of the vector can be increased or decreased.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <strong>A đúng:</strong> <code>List</code> là tập hợp có thứ tự (ordered collection), hỗ trợ truy cập phần tử dựa trên chỉ số vị trí (Index-based access: <code>list.get(index)</code>).<br>• <strong>B sai:</strong> <code>List</code> cung cấp các phương thức tìm kiếm như <code>indexOf()</code>, <code>lastIndexOf()</code>, <code>contains()</code>.<br>• <strong>C sai:</strong> <code>ArrayList()</code> khởi tạo một List rỗng với dung lượng mặc định (default capacity = 10), không phải tạo một mảng cố định rỗng.<br>• <strong>D đúng:</strong> <code>Vector</code> là một mảng động (dynamic re-sizable array) có thể tự động tăng hoặc giảm kích thước theo nhu cầu.</div>
+          </div>
+          <!-- Question 3 -->
+          <div class="quiz-card" id="question-3" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 3: The getFirst() method ________ .</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3" value="A"> A. Retrieves, but does not remove the last element of the list.</label>
+              <label><input type="radio" name="q3" value="B"> B. Retrieves, but does not remove the first element of the list.</label>
+              <label><input type="radio" name="q3" value="C"> C. Removes and returns the first element of the list.</label>
+              <label><input type="radio" name="q3" value="D"> D. Removes and returns the last element of the list.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Phương thức <code>getFirst()</code> trong <code>LinkedList</code> / <code>Deque</code> có nhiệm vụ lấy ra (Retrieves) nhưng <strong>không xóa</strong> (does NOT remove) phần tử đầu tiên của danh sách.<br>• Nếu muốn vừa lấy ra vừa xóa phần tử đầu tiên, ta dùng phương thức <code>removeFirst()</code> hoặc <code>pop()</code> / <code>pollFirst()</code>.<br>• Ngược lại, <code>getLast()</code> lấy phần tử cuối mà không xóa.</div>
+          </div>
+          <!-- Question 4 -->
+          <div class="quiz-card" id="question-4" data-correct="A" data-all-correct="A,D">
+            <div class="quiz-question">Câu 4: Which of these statements about different Set classes are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4" value="A"> A. Set class does not permit duplication of elements.</label>
+              <label><input type="radio" name="q4" value="B"> B. SortedSet class allows duplication of elements.</label>
+              <label><input type="radio" name="q4" value="C"> C. HashSet class guarantee the order of elements.</label>
+              <label><input type="radio" name="q4" value="D"> D. LinkedHashSet maintains the order of the items added to the Set.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <strong>A đúng:</strong> <code>Set</code> là giao diện tập hợp không chấp nhận các phần tử trùng lặp (does not permit duplicate elements).<br>• <strong>B sai:</strong> <code>SortedSet</code> kế thừa từ <code>Set</code> nên cũng hoàn toàn KHÔNG cho phép phần tử trùng lặp.<br>• <strong>C sai:</strong> <code>HashSet</code> dựa trên Bảng băm (Hash Table), không đảm bảo bất kỳ thứ tự nào của các phần tử.<br>• <strong>D đúng:</strong> <code>LinkedHashSet</code> duy trì thứ tự chèn phần tử (Insertion Order) nhờ kết hợp Hash Table và Doubly-linked list.</div>
+          </div>
+          <!-- Question 5 -->
+          <div class="quiz-card" id="question-5" data-correct="A" data-all-correct="A,C,D,E">
+            <div class="quiz-question">Câu 5: Which of these statements related to different classes implementing Map interface are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q5" value="A"> A. TreeMap is used to arrange the keys in a sorted order.</label>
+              <label><input type="radio" name="q5" value="B"> B. HashMap allows null values to be used as keys.</label>
+              <label><input type="radio" name="q5" value="C"> C. TreeMap stores elements in a tree structure.</label>
+              <label><input type="radio" name="q5" value="D"> D. LinkedHashMap is a combination of hash map and linked list.</label>
+              <label><input type="radio" name="q5" value="E"> E. LinkedHashMap returns values in the order they were added to the Map.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E (và B nếu tính 1 null key)</strong><br>• <strong>A đúng:</strong> <code>TreeMap</code> sắp xếp các Keys theo thứ tự tự nhiên (Natural ordering) hoặc theo <code>Comparator</code>.<br>• <strong>B đúng/chú ý:</strong> <code>HashMap</code> cho phép 1 key bằng <code>null</code> và nhiều value bằng <code>null</code>.<br>• <strong>C đúng:</strong> <code>TreeMap</code> lưu trữ dữ liệu dưới dạng cấu trúc Cây đỏ-đen (Red-Black Tree).<br>• <strong>D đúng:</strong> <code>LinkedHashMap</code> là sự kết hợp giữa Bảng băm (Hash map) và Danh sách liên kết (Linked list).<br>• <strong>E đúng:</strong> <code>LinkedHashMap</code> duyệt các phần tử theo đúng thứ tự chúng được thêm vào Map (Insertion order).</div>
           </div>
         </section>
       </main>
@@ -291,6 +341,7 @@
       cards.forEach(card => {
         const radios = card.querySelectorAll('input[type="radio"]');
         const correctAns = card.dataset.correct;
+        const allCorrect = (card.dataset.allCorrect || correctAns).split(',');
         const feedback = card.querySelector('.quiz-feedback');
 
         radios.forEach(radio => {
@@ -300,15 +351,17 @@
               r.parentElement.classList.add('disabled');
             });
 
-            if (radio.value === correctAns) {
+            if (allCorrect.includes(radio.value)) {
               card.classList.add('correct-card');
               radio.parentElement.classList.add('correct');
               if (feedback) feedback.classList.add('show', 'feedback-correct');
             } else {
               card.classList.add('incorrect-card');
               radio.parentElement.classList.add('incorrect');
-              const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
-              if (correctRadio) correctRadio.parentElement.classList.add('correct');
+              allCorrect.forEach(cVal => {
+                const correctRadio = card.querySelector(`input[value="${cVal}"]`);
+                if (correctRadio) correctRadio.parentElement.classList.add('correct');
+              });
               if (feedback) feedback.classList.add('show', 'feedback-incorrect');
             }
             updateScore();
@@ -329,7 +382,8 @@
         const selected = card.querySelector('input[type="radio"]:checked');
         if (selected) {
           answered++;
-          if (selected.value === card.dataset.correct) correct++;
+          const allCorrect = (card.dataset.allCorrect || card.dataset.correct).split(',');
+          if (allCorrect.includes(selected.value)) correct++;
         }
       });
 
@@ -344,12 +398,15 @@
       const cards = document.querySelectorAll('.quiz-card');
       cards.forEach(card => {
         const correctAns = card.dataset.correct;
-        const correctRadio = card.querySelector(`input[value="${correctAns}"]`);
-        if (correctRadio) {
-          correctRadio.checked = true;
-          card.classList.add('correct-card');
-          correctRadio.parentElement.classList.add('correct');
-        }
+        const allCorrect = (card.dataset.allCorrect || correctAns).split(',');
+        allCorrect.forEach(cVal => {
+          const correctRadio = card.querySelector(`input[value="${cVal}"]`);
+          if (correctRadio) {
+            correctRadio.checked = true;
+            correctRadio.parentElement.classList.add('correct');
+          }
+        });
+        card.classList.add('correct-card');
         const radios = card.querySelectorAll('input[type="radio"]');
         radios.forEach(r => r.disabled = true);
         const feedback = card.querySelector('.quiz-feedback');
@@ -378,7 +435,7 @@
     function removeVietnameseTones(str) {
       return str
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[̀-ͯ]/g, "")
         .replace(/đ/g, "d")
         .replace(/Đ/g, "D");
     }
