@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, Multithreading, JDBC Architecture, Driver Types, ResultSet, RowSet, Design Patterns và JavaFX GUI.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Collections, Generics, Multithreading, JDBC, Design Patterns và Giao diện Đồ họa JavaFX (Scene Graph, FXML, Layouts, CSS, Controls, Event Handling, Media).
       </p>
     </header>
 
@@ -234,14 +234,14 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 42 câu (Chính xác: 0%)</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 79 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 42</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 79</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: JDBC, ResultSet, RowSet, Driver, Factory, Singleton, Thread, Generics)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: JavaFX, FXML, Stage, Scene, BorderPane, MediaPlayer, Event, Flow API, BitSet)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
@@ -291,6 +291,43 @@
           <li><a href="#question-40"><span>Câu 40: Which of the statements are ...</span></a></li>
           <li><a href="#question-41"><span>Câu 41: Which one of the following d...</span></a></li>
           <li><a href="#question-42"><span>Câu 42: Which of the following optio...</span></a></li>
+          <li><a href="#question-43"><span>Câu 43: Which element of Enumeration...</span></a></li>
+          <li><a href="#question-44"><span>Câu 44: Which of the following code ...</span></a></li>
+          <li><a href="#question-45"><span>Câu 45: Which method of the Stack cl...</span></a></li>
+          <li><a href="#question-46"><span>Câu 46: Which of the following Hasht...</span></a></li>
+          <li><a href="#question-47"><span>Câu 47: Which method adds a key-valu...</span></a></li>
+          <li><a href="#question-48"><span>Câu 48: How are records different fr...</span></a></li>
+          <li><a href="#question-49"><span>Câu 49: Which class is CompactNumber...</span></a></li>
+          <li><a href="#question-50"><span>Câu 50: Which class do you use for f...</span></a></li>
+          <li><a href="#question-51"><span>Câu 51: Which of these methods helps...</span></a></li>
+          <li><a href="#question-52"><span>Câu 52: Which basic interface does F...</span></a></li>
+          <li><a href="#question-53"><span>Câu 53: What was the primary focus o...</span></a></li>
+          <li><a href="#question-54"><span>Câu 54: Which Java version was JavaF...</span></a></li>
+          <li><a href="#question-55"><span>Câu 55: What is the primary function...</span></a></li>
+          <li><a href="#question-56"><span>Câu 56: Which JavaFX component repre...</span></a></li>
+          <li><a href="#question-57"><span>Câu 57: What is the purpose of FXML ...</span></a></li>
+          <li><a href="#question-58"><span>Câu 58: Which JavaFX feature allows ...</span></a></li>
+          <li><a href="#question-59"><span>Câu 59: What does CSS provide in Jav...</span></a></li>
+          <li><a href="#question-60"><span>Câu 60: What does JavaFX text allow ...</span></a></li>
+          <li><a href="#question-61"><span>Câu 61: Which of the following is a ...</span></a></li>
+          <li><a href="#question-62"><span>Câu 62: Which JavaFX transformation ...</span></a></li>
+          <li><a href="#question-63"><span>Câu 63: Identify the property of a 2...</span></a></li>
+          <li><a href="#question-64"><span>Câu 64: Which of these JavaFX classe...</span></a></li>
+          <li><a href="#question-65"><span>Câu 65: Which JavaFX layout manager ...</span></a></li>
+          <li><a href="#question-66"><span>Câu 66: What is the primary purpose ...</span></a></li>
+          <li><a href="#question-67"><span>Câu 67: What is the primary purpose ...</span></a></li>
+          <li><a href="#question-68"><span>Câu 68: What are JavaFX UI propertie...</span></a></li>
+          <li><a href="#question-69"><span>Câu 69: When is a line chart in Java...</span></a></li>
+          <li><a href="#question-70"><span>Câu 70: What is an EventHandler in J...</span></a></li>
+          <li><a href="#question-71"><span>Câu 71: Which method in JavaFX is ty...</span></a></li>
+          <li><a href="#question-72"><span>Câu 72: When are event filters in Ja...</span></a></li>
+          <li><a href="#question-73"><span>Câu 73: Event handlers in JavaFX are...</span></a></li>
+          <li><a href="#question-74"><span>Câu 74: What is the purpose of the s...</span></a></li>
+          <li><a href="#question-75"><span>Câu 75: What is the primary JavaFX c...</span></a></li>
+          <li><a href="#question-76"><span>Câu 76: Which JavaFX class represent...</span></a></li>
+          <li><a href="#question-77"><span>Câu 77: How can you play media in Ja...</span></a></li>
+          <li><a href="#question-78"><span>Câu 78: Which method is used to set ...</span></a></li>
+          <li><a href="#question-79"><span>Câu 79: In JavaFX, what is the purpo...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -309,7 +346,7 @@
               <label><input type="radio" name="q1" value="C"> C. Collections Framework was developed to have low degree of interoperability.</label>
               <label><input type="radio" name="q1" value="D"> D. Collections Framework does not contain Collection interface at the top of the hierarchy.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br>• <strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.<br>• <strong>B đúng:</strong> Collections Framework cung cấp tập hợp đồng bộ các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) để lưu trữ và thao tác dữ liệu.<br>• <strong>C sai:</strong> Collections Framework được thiết kế để có tính tương thích và chuyển đổi cao (high interoperability).<br>• <strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp (Collection Hierarchy) cho List, Set, Queue.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br>• <strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.<br>• <strong>B đúng:</strong> Collections Framework cung cấp tập hợp đồng bộ các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) để lưu trữ và thao tác dữ liệu.</div>
           </div>
           <!-- Question 2 -->
           <div class="quiz-card" id="question-2" data-correct="A" data-all-correct="A,D">
@@ -320,7 +357,7 @@
               <label><input type="radio" name="q2" value="C"> C. ArrayList() creates an empty array.</label>
               <label><input type="radio" name="q2" value="D"> D. In a Vector, the size of the vector can be increased or decreased.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <strong>A đúng:</strong> <code>List</code> là tập hợp có thứ tự (ordered collection), hỗ trợ truy cập phần tử dựa trên chỉ số vị trí (Index-based access: <code>list.get(index)</code>).<br>• <strong>B sai:</strong> <code>List</code> cung cấp các phương thức tìm kiếm như <code>indexOf()</code>, <code>lastIndexOf()</code>, <code>contains()</code>.<br>• <strong>C sai:</strong> <code>ArrayList()</code> khởi tạo một List rỗng với dung lượng mặc định (default capacity = 10), không phải tạo một mảng cố định rỗng.<br>• <strong>D đúng:</strong> <code>Vector</code> là một mảng động (dynamic re-sizable array) có thể tự động tăng hoặc giảm kích thước theo nhu cầu.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <strong>A đúng:</strong> <code>List</code> hỗ trợ truy cập dựa trên chỉ số vị trí.<br>• <strong>D đúng:</strong> <code>Vector</code> là mảng động có thể mở rộng hoặc thu nhỏ kích thước.</div>
           </div>
           <!-- Question 3 -->
           <div class="quiz-card" id="question-3" data-correct="B" data-all-correct="B">
@@ -331,7 +368,7 @@
               <label><input type="radio" name="q3" value="C"> C. Removes and returns the first element of the list.</label>
               <label><input type="radio" name="q3" value="D"> D. Removes and returns the last element of the list.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Phương thức <code>getFirst()</code> trong <code>LinkedList</code> / <code>Deque</code> có nhiệm vụ lấy ra (Retrieves) nhưng <strong>không xóa</strong> (does NOT remove) phần tử đầu tiên của danh sách.<br>• Nếu muốn vừa lấy ra vừa xóa phần tử đầu tiên, ta dùng phương thức <code>removeFirst()</code> hoặc <code>pop()</code> / <code>pollFirst()</code>.<br>• Ngược lại, <code>getLast()</code> lấy phần tử cuối mà không xóa.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Phương thức <code>getFirst()</code> lấy ra (retrieve) phần tử đầu tiên mà không xóa nó khỏi danh sách.</div>
           </div>
           <!-- Question 4 -->
           <div class="quiz-card" id="question-4" data-correct="A" data-all-correct="A,D">
@@ -342,7 +379,7 @@
               <label><input type="radio" name="q4" value="C"> C. HashSet class guarantee the order of elements.</label>
               <label><input type="radio" name="q4" value="D"> D. LinkedHashSet maintains the order of the items added to the Set.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <strong>A đúng:</strong> <code>Set</code> là giao diện tập hợp không chấp nhận các phần tử trùng lặp (does not permit duplicate elements).<br>• <strong>B sai:</strong> <code>SortedSet</code> kế thừa từ <code>Set</code> nên cũng hoàn toàn KHÔNG cho phép phần tử trùng lặp.<br>• <strong>C sai:</strong> <code>HashSet</code> dựa trên Bảng băm (Hash Table), không đảm bảo bất kỳ thứ tự nào của các phần tử.<br>• <strong>D đúng:</strong> <code>LinkedHashSet</code> duy trì thứ tự chèn phần tử (Insertion Order) nhờ kết hợp Hash Table và Doubly-linked list.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; D</strong><br>• <code>Set</code> không cho phép phần tử trùng lặp.<br>• <code>LinkedHashSet</code> duy trì thứ tự chèn phần tử (Insertion Order).</div>
           </div>
           <!-- Question 5 -->
           <div class="quiz-card" id="question-5" data-correct="A" data-all-correct="A,C,D,E">
@@ -354,7 +391,7 @@
               <label><input type="radio" name="q5" value="D"> D. LinkedHashMap is a combination of hash map and linked list.</label>
               <label><input type="radio" name="q5" value="E"> E. LinkedHashMap returns values in the order they were added to the Map.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E (và B nếu tính 1 null key)</strong><br>• <strong>A đúng:</strong> <code>TreeMap</code> sắp xếp các Keys theo thứ tự tự nhiên (Natural ordering) hoặc theo <code>Comparator</code>.<br>• <strong>B đúng/chú ý:</strong> <code>HashMap</code> cho phép 1 key bằng <code>null</code> và nhiều value bằng <code>null</code>.<br>• <strong>C đúng:</strong> <code>TreeMap</code> lưu trữ dữ liệu dưới dạng cấu trúc Cây đỏ-đen (Red-Black Tree).<br>• <strong>D đúng:</strong> <code>LinkedHashMap</code> là sự kết hợp giữa Bảng băm (Hash map) và Danh sách liên kết (Linked list).<br>• <strong>E đúng:</strong> <code>LinkedHashMap</code> duyệt các phần tử theo đúng thứ tự chúng được thêm vào Map (Insertion order).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br>• <code>TreeMap</code> sắp xếp Keys và lưu dạng cây Cây đỏ-đen.<br>• <code>LinkedHashMap</code> kết hợp Hash table và Linked list duy trì thứ tự chèn.</div>
           </div>
           <!-- Question 6 -->
           <div class="quiz-card" id="question-6" data-correct="C" data-all-correct="C,E">
@@ -366,7 +403,7 @@
               <label><input type="radio" name="q6" value="D"> D. A local variable cannot be declared where the key and value types are different from each other.</label>
               <label><input type="radio" name="q6" value="E"> E. The code reviews are simpler in Generics as the ambiguity is less between containers.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C &amp; E</strong><br>• <strong>C đúng:</strong> Ưu điểm cốt lõi của Generics là phát hiện lỗi kiểm tra kiểu dữ liệu ở thời điểm biên dịch (Compile-time type checking), giúp lập trình viên sửa lỗi nhanh hơn rất nhiều so với lỗi thời điểm thực thi (Runtime Exception như <code>ClassCastException</code>).<br>• <strong>E đúng:</strong> Generics giúp code rõ ràng minh bạch hơn, việc đánh giá code (code review) đơn giản hơn vì kiểu dữ liệu của container được chỉ định rõ ràng.<br>• <strong>A sai:</strong> Generics là tính năng kiểm tra kiểu tĩnh (Static Type Checking) ở thời điểm biên dịch, không liên quan đến dynamic binding.<br>• <strong>B sai:</strong> Bạn hoàn toàn có thể tạo Generic Constructor (ví dụ: <code>public &lt;T&gt; MyClass(T item)</code>).<br>• <strong>D sai:</strong> Hoàn toàn khai báo được Key và Value khác kiểu (ví dụ: <code>Map&lt;String, Integer&gt; map</code>).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C &amp; E</strong><br>• Generics giúp kiểm tra kiểu dữ liệu khi biên dịch (Compile-time) và giảm tính mơ hồ trong code review.</div>
           </div>
           <!-- Question 7 -->
           <div class="quiz-card" id="question-7" data-correct="A" data-all-correct="A,B,C,E">
@@ -378,7 +415,7 @@
               <label><input type="radio" name="q7" value="D"> D. "? super Type" denotes a family of supertypes which is a subtype of "Type".</label>
               <label><input type="radio" name="q7" value="E"> E. "? super Type" denotes a family of supertypes of type "Type".</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, B, C, E</strong><br>• <strong>A đúng:</strong> Ký tự đại diện <code>?</code> (Unbounded Wildcard) biểu thị cho bất kỳ kiểu dữ liệu nào.<br>• <strong>B &amp; C đúng:</strong> <code>? extends Type</code> (Upper Bounded Wildcard) đại diện cho tập hợp các kiểu con (subtypes) kế thừa hoặc là chính kiểu <code>Type</code>.<br>• <strong>E đúng:</strong> <code>? super Type</code> (Lower Bounded Wildcard) đại diện cho tập hợp các kiểu cha (supertypes) của <code>Type</code>.<br>• <strong>D sai:</strong> Khái niệm 'supertypes which is a subtype of Type' là mâu thuẫn về mặt thuật ngữ.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, B, C, E</strong><br>• `?` đại diện cho Unbounded Wildcard, `? extends Type` là Upper Bounded, `? super Type` là Lower Bounded Wildcard.</div>
           </div>
           <!-- Question 8 -->
           <div class="quiz-card" id="question-8" data-correct="A" data-all-correct="A,C,D,E">
@@ -390,7 +427,7 @@
               <label><input type="radio" name="q8" value="D"> D. Erasure removes all generic type information.</label>
               <label><input type="radio" name="q8" value="E"> E. The change in method signature can be performed by making minimal change or by creating a skeleton.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br>• <strong>A đúng:</strong> Khi truyền một <code>Raw Type</code> vào nơi yêu cầu <code>Parameterized Type</code>, Trình biên dịch Java sẽ phát ra cảnh báo <i>Unchecked conversion warning</i>.<br>• <strong>C đúng:</strong> Khi sử dụng một Lớp Generic (như Collection) mà không khai báo tham số kiểu (Type parameter), nó được gọi là <code>Raw Type</code> (ví dụ: <code>List list = new ArrayList();</code>).<br>• <strong>D đúng:</strong> Cơ chế <strong>Type Erasure</strong> xóa bỏ tất cả thông tin kiểu Generic trong quá trình biên dịch để tạo ra Bytecode tương thích với các phiên bản Java cũ.<br>• <strong>B sai:</strong> Erasure LÀM XÓA BỎ (removes) thông tin kiểu generic, chứ KHÔNG phải thêm vào (adds).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br>• Type Erasure xóa thông tin kiểu Generic khi biên dịch để tương thích mã nguồn cũ.</div>
           </div>
           <!-- Question 9 -->
           <div class="quiz-card" id="question-9" data-correct="C" data-all-correct="C">
@@ -401,7 +438,7 @@
               <label><input type="radio" name="q9" value="C"> C. Binary compatibility</label>
               <label><input type="radio" name="q9" value="D"> D. Parameterized type</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Binary compatibility</strong><br>• Trong quy chuẩn Java Generics, <strong>Binary compatibility</strong> (Tương thích nhị phân) là khả năng giúp mã nguồn cũ đã biên dịch trước đó vẫn tiếp tục chạy bình thường khi nâng cấp thư viện lên phiên bản có sử dụng Generics mà không cần phải biên dịch lại mã nguồn.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Binary compatibility</strong><br>• Khả năng giúp mã nguồn đã biên dịch trước đó vẫn chạy được khi nâng cấp thư viện lên Generics mà không cần biên dịch lại.</div>
           </div>
           <!-- Question 10 -->
           <div class="quiz-card" id="question-10" data-correct="C" data-all-correct="C">
@@ -412,7 +449,7 @@
               <label><input type="radio" name="q10" value="C"> C. Type parameter section</label>
               <label><input type="radio" name="q10" value="D"> D. Numeric literals</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Type parameter section</strong><br>• Cú pháp khai báo Lớp Generic chuẩn trong Java: <code>public class ClassName&lt;T, E&gt; { ... }</code>.<br>• Trong đó, theo sau tên lớp (class name) là phần khai báo các tham số kiểu dữ liệu được đặt trong cặp dấu ngoặc nhọn <code>&lt;&gt;</code> (gọi là <strong>Type Parameter Section</strong>).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Type parameter section</strong><br>• Theo sau tên lớp Generic là khối khai báo tham số kiểu trong cặp ngoặc `<>` (`Type parameter section`).</div>
           </div>
           <!-- Question 11 -->
           <div class="quiz-card" id="question-11" data-correct="D" data-all-correct="D">
@@ -423,7 +460,7 @@
               <label><input type="radio" name="q11" value="C"> C. 0BL</label>
               <label><input type="radio" name="q11" value="D"> D. 0B</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Từ Java 7 trở đi, Java hỗ trợ hằng số nhị phân (Binary Literals).<br>• Để khai báo một số nguyên dưới dạng nhị phân, ta thêm tiền tố <code>0b</code> hoặc <code>0B</code> vào trước chuỗi chữ số 0 và 1 (ví dụ: <code>int byteVal = 0B1010;</code> đại diện cho giá trị 10 trong hệ thập phân).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Tiền tố `0b` hoặc `0B` dùng để khai báo số nhị phân trong Java 7+.</div>
           </div>
           <!-- Question 12 -->
           <div class="quiz-card" id="question-12" data-correct="B" data-all-correct="B">
@@ -434,18 +471,18 @@
               <label><input type="radio" name="q12" value="C"> C. c</label>
               <label><input type="radio" name="q12" value="D"> D. d</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b</strong><br>• Phát biểu <strong>b</strong> định nghĩa chính xác nhất về các lớp Byte Stream (<code>InputStream</code> và <code>OutputStream</code>): Dùng để đọc và ghi một chuỗi các byte có cấu trúc (structured sequence of bytes).<br>• Phát biểu <strong>d</strong> sai vì không phải tất cả các stream đều làm việc trực tiếp với file/hệ thống tập tin (ví dụ <code>ByteArrayInputStream</code>, <code>PipedInputStream</code>, Socket stream...).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b</strong><br>• `InputStream` và `OutputStream` dùng để thao tác với chuỗi byte có cấu trúc.</div>
           </div>
           <!-- Question 13 -->
           <div class="quiz-card" id="question-13" data-correct="A" data-all-correct="A">
             <div class="quiz-question">Câu 13: The File(String dirpath) constructor ___________________.</div>
             <div class="quiz-options">
               <label><input type="radio" name="q13" value="A"> A. a (Creates a File object with pathname of the file specified by the String variable dirpath into an abstract pathname)</label>
-              <label><input type="radio" name="q13" value="B"> B. b (Creates a File object with pathname of the file specified by the String variables parent and child)</label>
-              <label><input type="radio" name="q13" value="C"> C. c (Creates a new File instance from another File object specified by the variable fileObj)</label>
-              <label><input type="radio" name="q13" value="D"> D. d (Converts the given file URI into an abstract pathname and creates a new File instance)</label>
+              <label><input type="radio" name="q13" value="B"> B. b (Creates a File object with pathname specified by parent and child)</label>
+              <label><input type="radio" name="q13" value="C"> C. c (Creates a new File instance from another File object)</label>
+              <label><input type="radio" name="q13" value="D"> D. d (Converts file URI into abstract pathname)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) a</strong><br>• Constructor <code>File(String pathname)</code> (hoặc <code>dirpath</code>) khởi tạo một đối tượng <code>File</code> mới bằng cách chuyển đổi chuỗi đường dẫn (String path) thành một đường dẫn trừu tượng (abstract pathname).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) a</strong><br>• Chuyển đổi chuỗi đường dẫn thành đối tượng `File` trừu tượng.</div>
           </div>
           <!-- Question 14 -->
           <div class="quiz-card" id="question-14" data-correct="C" data-all-correct="C">
@@ -456,7 +493,7 @@
               <label><input type="radio" name="q14" value="C"> C. c (FileDescriptor)</label>
               <label><input type="radio" name="q14" value="D"> D. d (FilenameFilter)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. FileDescriptor</strong><br>• <code>FileDescriptor</code> đóng vai trò là một tay cầm (handle) trỏ tới cấu trúc bên dưới hệ điều hành của một tệp tin đang mở.<br>• Cả <code>FileInputStream</code> và <code>FileOutputStream</code> đều tự động khởi tạo một đối tượng <code>FileDescriptor</code> bên trong để quản lý kết nối luồng dữ liệu xuống phần cứng.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. FileDescriptor</strong><br>• `FileInputStream` và `FileOutputStream` chứa đối tượng `FileDescriptor` bên trong.</div>
           </div>
           <!-- Question 15 -->
           <div class="quiz-card" id="question-15" data-correct="D" data-all-correct="D">
@@ -467,7 +504,7 @@
               <label><input type="radio" name="q15" value="C"> C. c (Reads bytes from a binary stream)</label>
               <label><input type="radio" name="q15" value="D"> D. d (Clears the system buffers and writes the content that they contain to the actual hardware)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) d</strong><br>• Phương thức <code>sync()</code> của <code>FileDescriptor</code> bắt buộc tất cả các bộ đệm của hệ thống (system buffers) phải đồng bộ dữ liệu xuống thiết bị phần cứng thực sự bên dưới (flushes and writes content to the actual hardware device) trước khi trả về.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) d</strong><br>• `sync()` ép ghi tất cả dữ liệu từ bộ đệm hệ thống xuống thiết bị phần cứng thực sự.</div>
           </div>
           <!-- Question 16 -->
           <div class="quiz-card" id="question-16" data-correct="B" data-all-correct="B">
@@ -478,29 +515,29 @@
               <label><input type="radio" name="q16" value="C"> C. Deserialization</label>
               <label><input type="radio" name="q16" value="D"> D. Append mode</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• <strong>Persistence</strong> (Tính lưu trữ bền vững / Lưu trữ vĩnh viễn) là thuật ngữ chung chỉ quá trình ghi và bảo lưu trạng thái dữ liệu vào các thiết bị lưu trữ cố định (như Ổ đĩa cứng, Cơ sở dữ liệu, File hệ thống) để dữ liệu không bị mất đi khi ứng dụng kết thúc.<br>• <i>Serialization</i> là cơ chế chuyển đổi đối tượng thành chuỗi byte để thực hiện Persistence.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Persistence</strong><br>• Qua trình lưu trữ dữ liệu vĩnh viễn vào bộ nhớ cố định gọi là **Persistence**.</div>
           </div>
           <!-- Question 17 -->
           <div class="quiz-card" id="question-17" data-correct="D" data-all-correct="D">
-            <div class="quiz-question">Câu 17: Which of these statements related to characteristics and uses of processes and threads are true?<br>(A) A process has a self-contained execution environment.<br>(B) A thread is the smallest unit of executable code in an application that performs a particular task.<br>(C) A thread has no definite starting point, execution steps and terminating point.<br>(D) A process contains one or more threads inside it.<br>(E) Threads can be used for playing sound and displaying images simultaneously.</div>
+            <div class="quiz-question">Câu 17: Which of these statements related to characteristics and uses of processes and threads are true?<br>(A) A process has a self-contained execution environment.<br>(B) A thread is the smallest unit of executable code in an application.<br>(C) A thread has no definite starting point.<br>(D) A process contains one or more threads inside it.<br>(E) Threads can be used for playing sound and displaying images simultaneously.</div>
             <div class="quiz-options">
               <label><input type="radio" name="q17" value="A"> A. A, C, E</label>
               <label><input type="radio" name="q17" value="B"> B. B, C, D</label>
               <label><input type="radio" name="q17" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q17" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, B, D</strong><br>• <strong>A đúng:</strong> Một Process (Tiến trình) sở hữu một môi trường thực thi độc lập riêng biệt (không gian bộ nhớ, bảng tài nguyên riêng).<br>• <strong>B đúng:</strong> Một Thread (Luồng) là đơn vị thực thi nhỏ nhất của mã nguồn trong một ứng dụng.<br>• <strong>D đúng:</strong> Một Process có thể chứa một hoặc nhiều Thread cùng chạy bên trong nó.<br>• <strong>C sai:</strong> Thread có điểm bắt đầu (khi gọi <code>run()</code>/<code>start()</code>), các bước thực thi và điểm kết thúc xác định.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, B, D</strong><br>• Process có môi trường độc lập, Thread là đơn vị thực thi nhỏ nhất, và 1 Process chứa 1 hoặc nhiều Thread.</div>
           </div>
           <!-- Question 18 -->
           <div class="quiz-card" id="question-18" data-correct="A" data-all-correct="A">
             <div class="quiz-question">Câu 18: Which of the following code snippets creates a thread object and makes it runnable?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q18" value="A"> A. class MyRunnable implements Runnable { public void run() {...} } class TestThread { public static void main(String args[]) { Runnable mrObj = new MyRunnable(); Thread thObj = new Thread(mrObj); thObj.start(); } }</label>
-              <label><input type="radio" name="q18" value="B"> B. class MyRunnable implements Runnable { public void run(){...} public static void main(String args[]) { MyRunnable mrObj = new MyRunnable(); MyThread thObj=new MyThread(mrObj); } }</label>
-              <label><input type="radio" name="q18" value="C"> C. class MyThread extends Thread public void run(){...} class TestThread { public static void main(String args[]) { MyThread myThread = new MyThread(); myThread.start(); } }</label>
-              <label><input type="radio" name="q18" value="D"> D. class MyThread extends Thread { public void run() {...} }</label>
+              <label><input type="radio" name="q18" value="B"> B. class MyRunnable implements Runnable {...}</label>
+              <label><input type="radio" name="q18" value="C"> C. class MyThread extends Thread...</label>
+              <label><input type="radio" name="q18" value="D"> D. class MyThread extends Thread...</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Đoạn mã <strong>A</strong> viết chuẩn quy trình tạo Thread trong Java:<br>1. Triển khai giao diện <code>Runnable</code> và override phương thức <code>run()</code>.<br>2. Khởi tạo đối tượng <code>Runnable</code>: <code>Runnable mrObj = new MyRunnable();</code>.<br>3. Truyền vào đối tượng <code>Thread</code>: <code>Thread thObj = new Thread(mrObj);</code>.<br>4. Kích hoạt luồng chạy: <code>thObj.start();</code>.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Triển khai `Runnable`, truyền đối tượng vào `Thread` và kích hoạt bằng `start()`.</div>
           </div>
           <!-- Question 19 -->
           <div class="quiz-card" id="question-19" data-correct="A" data-all-correct="A">
@@ -511,7 +548,7 @@
               <label><input type="radio" name="q19" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q19" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) A, C, E</strong><br>• <strong>A đúng:</strong> Luồng ở trạng thái <code>WAITING</code> vẫn còn sống (alive) nhưng tạm thời ngưng chạy để chờ tín hiệu.<br>• <strong>C đúng:</strong> Luồng ở trạng thái <code>BLOCKED</code> khi nó đang chờ cấp quyền sở hữu Monitor Lock của một đối tượng khác.<br>• <strong>E đúng:</strong> Đối tượng Thread mới khởi tạo (trạng thái <code>NEW</code>) chưa được cấp phát tài nguyên hệ điều hành cho tới khi phương thức <code>start()</code> được gọi.<br>• <strong>B sai:</strong> Thread chỉ kết thúc (terminated) khi phương thức <code>run()</code> chạy xong hoàn toàn.<br>• <strong>D sai:</strong> Phương thức <code>start()</code> đưa Thread VÀO trạng thái <code>RUNNABLE</code>.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) A, C, E</strong><br>• WAITING là alive nhưng không running; BLOCKED khi chờ lock; NEW chưa được cấp phát tài nguyên hệ điều hành.</div>
           </div>
           <!-- Question 20 -->
           <div class="quiz-card" id="question-20" data-correct="C" data-all-correct="C">
@@ -522,29 +559,29 @@
               <label><input type="radio" name="q20" value="C"> C. A, C, E</label>
               <label><input type="radio" name="q20" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) A, C, E</strong><br>• <strong>A đúng:</strong> <code>public void interrupt()</code> là phương thức gửi tín hiệu ngắt luồng.<br>• <strong>C đúng:</strong> <code>public void run()</code> là phương thức chứa mã thi hành của luồng.<br>• <strong>E đúng:</strong> <code>public String getName()</code> là phương thức lấy tên gọi của luồng.<br>• <strong>B sai:</strong> Trong Java tên phương thức viết thường chữ cái đầu: <code>public static void sleep(long millis) throws InterruptedException</code>.<br>• <strong>D sai:</strong> <code>thread.start()</code> là câu lệnh gọi phương thức, không phải cú pháp khai báo phương thức.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) A, C, E</strong><br>• `interrupt()`, `run()`, `getName()` là các khai báo phương thức chuẩn của lớp `Thread`.</div>
           </div>
           <!-- Question 21 -->
           <div class="quiz-card" id="question-21" data-correct="B" data-all-correct="B">
-            <div class="quiz-question">Câu 21: Which of these statements regarding the priority of threads are true?<br>(A) The getPriority() method retrieves the current priority of any thread.<br>(B) The setPriority() method changes the current priority of any thread.<br>(C) Thread priorities are numbers and range from Thread.MIN_PRIORITY to Thread.MAX_PRIORITY.<br>(D) A newly created thread inherits the priority of its parent thread.<br>(E) The higher the integers, the lower are the priorities.</div>
+            <div class="quiz-question">Câu 21: Which of these statements regarding the priority of threads are true?<br>(A) The getPriority() method retrieves the current priority of any thread.<br>(B) The setPriority() method changes the current priority of any thread.<br>(C) Thread priorities range from Thread.MIN_PRIORITY to Thread.MAX_PRIORITY.<br>(D) A newly created thread inherits the priority of its parent thread.<br>(E) The higher the integers, the lower are the priorities.</div>
             <div class="quiz-options">
               <label><input type="radio" name="q21" value="A"> A. A, C, E</label>
               <label><input type="radio" name="q21" value="B"> B. A, B, C, D</label>
               <label><input type="radio" name="q21" value="C"> C. A, C, D, E</label>
               <label><input type="radio" name="q21" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) A, B, C, D</strong><br>• <strong>A đúng:</strong> <code>getPriority()</code> lấy giá trị độ ưu tiên hiện tại của luồng.<br>• <strong>B đúng:</strong> <code>setPriority(int newPriority)</code> thay đổi độ ưu tiên của luồng.<br>• <strong>C đúng:</strong> Mức độ ưu tiên luồng nằm trong khoảng từ <code>Thread.MIN_PRIORITY</code> (1) đến <code>Thread.MAX_PRIORITY</code> (10).<br>• <strong>D đúng:</strong> Luồng mới được tạo tự động thừa hưởng độ ưu tiên của luồng cha đã tạo ra nó.<br>• <strong>E sai:</strong> Số nguyên càng lớn thì độ ưu tiên CÀNG CAO (10 là cao nhất, 1 là thấp nhất).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) A, B, C, D</strong><br>• Độ ưu tiên nằm trong khoảng 1 đến 10, kế thừa từ luồng cha, số lớn hơn có độ ưu tiên cao hơn.</div>
           </div>
           <!-- Question 22 -->
           <div class="quiz-card" id="question-22" data-correct="B" data-all-correct="B">
-            <div class="quiz-question">Câu 22: Which of these statements about daemon threads are true?<br>(A) Daemon threads are service providers for other threads running in different process.<br>(B) Daemon threads are designed as low-level background threads that perform some tasks such as mouse events.<br>(C) The threads that run system code are user threads.<br>(D) The setDaemon() method with the argument as true will convert the user thread to a daemon thread.<br>(E) The isDaemon() method returns true if the thread is a user thread.</div>
+            <div class="quiz-question">Câu 22: Which of these statements about daemon threads are true?<br>(A) Daemon threads are service providers for other threads in different process.<br>(B) Daemon threads are designed as low-level background threads.<br>(C) The threads that run system code are user threads.<br>(D) The setDaemon() method with argument true converts user thread to daemon thread.<br>(E) The isDaemon() method returns true if the thread is a user thread.</div>
             <div class="quiz-options">
               <label><input type="radio" name="q22" value="A"> A. A, C, E</label>
               <label><input type="radio" name="q22" value="B"> B. B, C, D</label>
               <label><input type="radio" name="q22" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q22" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, C, D</strong><br>• <strong>B đúng:</strong> Daemon thread được thiết kế để chạy ngầm dưới nền (background tasks) cung cấp các dịch vụ hệ thống (như Garbage Collection, xử lý sự kiện ngầm).<br>• <strong>D đúng:</strong> Gọi <code>setDaemon(true)</code> trước khi gọi <code>start()</code> sẽ thiết lập luồng trở thành Daemon Thread.<br>• <strong>E sai:</strong> <code>isDaemon()</code> trả về <code>true</code> nếu luồng là Daemon thread, chứ không phải user thread.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, C, D</strong><br>• Daemon threads chạy dưới nền làm các tác vụ hệ thống ngầm.</div>
           </div>
           <!-- Question 23 -->
           <div class="quiz-card" id="question-23" data-correct="A" data-all-correct="A">
@@ -555,7 +592,7 @@
               <label><input type="radio" name="q23" value="C"> C. Releasing the intrinsic lock</label>
               <label><input type="radio" name="q23" value="D"> D. Interleaving the atomic actions</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A. When two or more threads share the same data between them</strong><br>• <strong>Race Condition</strong> (Trạng thái tranh chấp dữ liệu) xảy ra khi có hai hoặc nhiều luồng cùng truy cập và sửa đổi dữ liệu dùng chung (shared data) tại cùng một thời điểm mà không được đồng bộ hóa thích hợp.<br>• <i>Synchronized blocks</i> (B) và <i>Atomic actions</i> (D) là các cơ chế ngăn ngừa race condition.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A</strong><br>• Xảy ra khi nhiều luồng cùng thay đổi dữ liệu dùng chung không qua đồng bộ.</div>
           </div>
           <!-- Question 24 -->
           <div class="quiz-card" id="question-24" data-correct="D" data-all-correct="A,C,D">
@@ -566,7 +603,7 @@
               <label><input type="radio" name="q24" value="C"> C. Multithreading is a specialized form of multitasking</label>
               <label><input type="radio" name="q24" value="D"> D. In a multithreaded program, two or more threads can run concurrently</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D (Trong đó D là định nghĩa cốt lõi)</strong><br>• <strong>A đúng:</strong> Đa luồng tốn ít chi phí hệ thống (overhead) hơn đa tiến trình vì các luồng dùng chung không gian bộ nhớ.<br>• <strong>C đúng:</strong> Multithreading là dạng đặc biệt của Đa nhiệm dựa trên luồng (Thread-based multitasking).<br>• <strong>D đúng:</strong> Trong chương trình đa luồng, hai hay nhiều luồng có thể chạy song song/đồng thời (concurrently).<br>• <strong>B sai:</strong> Đa luồng là nhiều luồng (threads) chạy trong 1 tiến trình, chứ không phải nhiều tiến trình (processes).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D</strong><br>• Ít tốn kém tài nguyên hơn, là dạng multitasking theo luồng, cho phép nhiều luồng chạy đồng thời.</div>
           </div>
           <!-- Question 25 -->
           <div class="quiz-card" id="question-25" data-correct="C" data-all-correct="C">
@@ -577,7 +614,7 @@
               <label><input type="radio" name="q25" value="C"> C. The wait-notify mechanism</label>
               <label><input type="radio" name="q25" value="D"> D. Atomic variables</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. The wait-notify mechanism</strong><br>• Cơ chế <strong>wait-notify</strong> (`wait()`, `notify()`, `notifyAll()`) đóng vai trò như hệ thống đèn giao thông (traffic signal system) cho phép các luồng truyền tín hiệu, tạm dừng hoặc tiếp tục chạy khi điều kiện thay đổi.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. The wait-notify mechanism</strong><br>• Cơ chế `wait-notify` đóng vai trò như hệ thống tín hiệu giao thông điều phối luồng.</div>
           </div>
           <!-- Question 26 -->
           <div class="quiz-card" id="question-26" data-correct="D" data-all-correct="D">
@@ -588,7 +625,7 @@
               <label><input type="radio" name="q26" value="C"> C. Race condition</label>
               <label><input type="radio" name="q26" value="D"> D. Deadlock</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. Deadlock</strong><br>• <strong>Deadlock</strong> (Khóa chết) là tình trạng hai hoặc nhiều luồng bị đóng băng vĩnh viễn vì luồng này đang chờ giải phóng khóa do luồng kia giữ và ngược lại, dẫn tới chương trình bị đình trệ ngưng hoạt động (bring execution to a halt).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. Deadlock</strong><br>• Khóa chết (Deadlock) làm ngưng trệ hoàn toàn sự thi hành của chương trình.</div>
           </div>
           <!-- Question 27 -->
           <div class="quiz-card" id="question-27" data-correct="A" data-all-correct="A,B,D">
@@ -599,7 +636,7 @@
               <label><input type="radio" name="q27" value="C"> C. Collections interface</label>
               <label><input type="radio" name="q27" value="D"> D. ScheduledExecutorService interface</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, B, D</strong><br>• Các lớp triển khai Executor trong gói <code>java.util.concurrent</code> (như <code>ThreadPoolExecutor</code>) triển khai các giao diện <code>ExecutorService</code> và <code>ScheduledExecutorService</code> để quản lý và thực thi các tác vụ triển khai từ <code>Runnable</code> hoặc <code>Callable</code>.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, B, D</strong><br>• Executor sử dụng `ExecutorService`, `ScheduledExecutorService` và thực thi các `Runnable`/`Callable`.</div>
           </div>
           <!-- Question 28 -->
           <div class="quiz-card" id="question-28" data-correct="B" data-all-correct="B">
@@ -610,51 +647,51 @@
               <label><input type="radio" name="q28" value="C"> C. The synchronized keyword</label>
               <label><input type="radio" name="q28" value="D"> D. Lock</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Monitor (hoặc Critical Section/Mutex)</strong><br>• Trong lập trình song song Java, <strong>Monitor</strong> là một vùng mã nguồn (hoặc cơ chế bảo vệ) được bảo vệ bởi chương trình loại trừ tương hỗ (mutual-exclusion), đảm bảo tại một thời điểm chỉ có duy nhất một luồng được phép thực thi khối mã đó.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Monitor</strong><br>• **Monitor** là khối mã nguồn được bảo vệ bởi chương trình loại trừ tương hỗ.</div>
           </div>
           <!-- Question 29 -->
           <div class="quiz-card" id="question-29" data-correct="C" data-all-correct="C">
-            <div class="quiz-question">Câu 29: Which of these statements about JDBC are true?<br>A. The implementation of the software API for database connectivity varies as per the programming languages, underlying database systems, and operating systems.<br>B. JDBC is the software API for database connectivity, which provides a set of classes and interfaces written in machine level languages to access any kind of database.<br>C. JDBC is independent of the underlying database management software.<br>D. In a two-tier model, the JDBC API is used to translate and send the client request to a local or remote database on the network.<br>E. In a three-tier model, a 'middle tier' of services, a third server is employed to send the client request to the database server.</div>
+            <div class="quiz-question">Câu 29: Which of these statements about JDBC are true?<br>A. Software API implementation varies...<br>B. Written in machine level languages...<br>C. JDBC is independent of the underlying database management software.<br>D. In a two-tier model, JDBC API sends request directly to database.<br>E. In a three-tier model, a middle tier is employed to send request to database server.</div>
             <div class="quiz-options">
               <label><input type="radio" name="q29" value="A"> A. A, C, E</label>
               <label><input type="radio" name="q29" value="B"> B. B, C, D</label>
               <label><input type="radio" name="q29" value="C"> C. C, D, E</label>
               <label><input type="radio" name="q29" value="D"> D. A, B, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, D, E</strong><br>• <strong>C đúng:</strong> JDBC độc lập với hệ quản trị CSDL bên dưới (DBMS independent) nhờ kiến trúc Driver Manager.<br>• <strong>D đúng:</strong> Mô hình 2 tầng (2-tier model): JDBC kết nối trực tiếp client tới máy chủ CSDL.<br>• <strong>E đúng:</strong> Mô hình 3 tầng (3-tier model): JDBC tương tác qua tầng trung gian (Application Server / Middle tier).<br>• <strong>B sai:</strong> JDBC được viết bằng ngôn ngữ Java, không phải ngôn ngữ máy (machine level).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, D, E</strong><br>• JDBC độc lập với DBMS bên dưới, hỗ trợ cả 2-tier và 3-tier.</div>
           </div>
           <!-- Question 30 -->
           <div class="quiz-card" id="question-30" data-correct="D" data-all-correct="D">
-            <div class="quiz-question">Câu 30: Match the properties of drivers with the corresponding descriptions:<br>a. Converts JDBC calls into a network protocol translated by middle tier -> Type-3 (2)<br>b. Interprets JDBC calls to database-specific native call interface -> Type-2 (5)<br>c. Core of JDBC API converting client request to database native format -> Database drivers (4)<br>d. Uses bridging technology providing JDBC access via ODBC drivers -> Type-1 (1)<br>e. Communicates directly with database engine using Java sockets -> Type-4 (3)</div>
+            <div class="quiz-question">Câu 30: Match the properties of drivers with corresponding descriptions:<br>a-Type 3, b-Type 2, c-Database drivers, d-Type 1, e-Type 4</div>
             <div class="quiz-options">
               <label><input type="radio" name="q30" value="A"> A. a-2, b-4, c-5, d-1, e-3</label>
               <label><input type="radio" name="q30" value="B"> B. a-2, b-5, c-1, d-3, e-4</label>
               <label><input type="radio" name="q30" value="C"> C. a-2, b-1, c-5, d-1, e-4</label>
               <label><input type="radio" name="q30" value="D"> D. a-2, b-5, c-4, d-1, e-3</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) a-2, b-5, c-4, d-1, e-3</strong><br>• <strong>a-2 (Type-3):</strong> Net-protocol pure Java driver (chuyển đổi qua Middle-tier server).<br>• <strong>b-5 (Type-2):</strong> Native-API driver (dùng thư viện C/C++ Native CAPI của CSDL).<br>• <strong>c-4 (Database drivers):</strong> Nhân điều khiển CSDL.<br>• <strong>d-1 (Type-1):</strong> JDBC-ODBC Bridge driver (dùng cầu nối ODBC).<br>• <strong>e-3 (Type-4):</strong> Native-protocol pure Java driver (kết nối trực tiếp qua Sockets mà không cần thư viện trung gian).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) a-2, b-5, c-4, d-1, e-3</strong><br>• Type-1 (Bridge), Type-2 (Native-API), Type-3 (Network-Protocol), Type-4 (Direct Sockets).</div>
           </div>
           <!-- Question 31 -->
           <div class="quiz-card" id="question-31" data-correct="B" data-all-correct="B">
             <div class="quiz-question">Câu 31: Choose the correct code to create a JDBC connection.</div>
             <div class="quiz-options">
-              <label><input type="radio" name="q31" value="A"> A. Connection cn = DriverManager.getDatabaseConnection(url, "sa", "playware");</label>
-              <label><input type="radio" name="q31" value="B"> B. Connection cn = DriverManager.getConnection(url, "sa", "playware"); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery("SELECT BookName FROM Books"); while(rs.next()){ String name=rs.getString("BookName"); System.out.println(name); } catch (SQLException ce) {...}</label>
-              <label><input type="radio" name="q31" value="C"> C. Code with syntax error tch (SQLException ce)</label>
+              <label><input type="radio" name="q31" value="A"> A. DriverManager.getDatabaseConnection(...)</label>
+              <label><input type="radio" name="q31" value="B"> B. Connection cn = DriverManager.getConnection(url, "sa", "playware"); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(...);</label>
+              <label><input type="radio" name="q31" value="C"> C. Code with typo tch</label>
               <label><input type="radio" name="q31" value="D"> D. Statement st = cn.executeQuery(...)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B)</strong><br>• Đoạn mã <strong>B</strong> khởi tạo kết nối JDBC chuẩn:<br>1. Gọi `DriverManager.getConnection(url, user, password)`.<br>2. Tạo `Statement`: `cn.createStatement()`.<br>3. Thực thi truy vấn: `st.executeQuery("SELECT...")`.<br>4. Lặp qua `ResultSet`: `rs.next()` và lấy dữ liệu bằng `rs.getString(...)`.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B)</strong><br>• Khởi tạo đúng bằng `DriverManager.getConnection()`, `createStatement()` và `executeQuery()`.</div>
           </div>
           <!-- Question 32 -->
           <div class="quiz-card" id="question-32" data-correct="B" data-all-correct="B">
             <div class="quiz-question">Câu 32: Identify the correct syntax of connecting to a SQL Server database using Type 4 driver.</div>
             <div class="quiz-options">
-              <label><input type="radio" name="q32" value="A"> A. jdbc:sql://serverName; instanceName: portNumber; property=value[;property=value]</label>
+              <label><input type="radio" name="q32" value="A"> A. jdbc:sql://serverName;...</label>
               <label><input type="radio" name="q32" value="B"> B. jdbc:sqlserver://serverName; instanceName:portNumber; [property=value[;property=value]]</label>
-              <label><input type="radio" name="q32" value="C"> C. jdbc:sqlserver://instanceName:portNumber; property=value[; property=value]</label>
-              <label><input type="radio" name="q32" value="D"> D. jdbc:sqlserver://serverName; instanceName; property=value[; property=value]</label>
+              <label><input type="radio" name="q32" value="C"> C. jdbc:sqlserver://instanceName:portNumber;...</label>
+              <label><input type="radio" name="q32" value="D"> D. jdbc:sqlserver://serverName;...</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Cú pháp chuẩn kết nối SQL Server JDBC Type-4 Driver: <code>jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;property=value[;property=value]]</code>.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B</strong><br>• Cú pháp chuẩn: `jdbc:sqlserver://serverName;instanceName:portNumber;...`</div>
           </div>
           <!-- Question 33 -->
           <div class="quiz-card" id="question-33" data-correct="D" data-all-correct="D">
@@ -665,84 +702,84 @@
               <label><input type="radio" name="q33" value="C"> C. manifest.xml</label>
               <label><input type="radio" name="q33" value="D"> D. pom.xml</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. pom.xml</strong><br>• Trong dự án Maven (Apache NetBeans / Eclipse / IntelliJ), file <strong>pom.xml</strong> (Project Object Model) là nơi duy nhất chứa các thông số cấu hình và khai báo thư viện phụ thuộc (`<dependency>`) như JDBC Driver.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. pom.xml</strong><br>• `pom.xml` quản lý thư viện Maven phụ thuộc.</div>
           </div>
           <!-- Question 34 -->
           <div class="quiz-card" id="question-34" data-correct="B" data-all-correct="B">
-            <div class="quiz-question">Câu 34: Which of these statements about Scrollable ResultSet are true?<br>(A) In Scrollable ResultSet, the cursor is positioned on the first row.<br>(B) A default ResultSet object is not updatable and has a cursor that moves forward only.<br>(C) The ResultSet should be compulsorily closed after a COMMIT statement.<br>(D) Holdability refers to the ability to check whether the cursor stays open after a COMMIT.<br>(E) The createStatement method has two arguments namely, resultSetType and resultSetConcurrency.</div>
+            <div class="quiz-question">Câu 34: Which of these statements about Scrollable ResultSet are true?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q34" value="A"> A. A, B, and C</label>
               <label><input type="radio" name="q34" value="B"> B. B, D, and E</label>
               <label><input type="radio" name="q34" value="C"> C. B, C, and E</label>
               <label><input type="radio" name="q34" value="D"> D. A, D, and E</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, và E</strong><br>• <strong>B đúng:</strong> ResultSet mặc định là `TYPE_FORWARD_ONLY` (chỉ duy trì con trỏ di chuyển tiến) và `CONCUR_READ_ONLY` (không sửa đổi được).<br>• <strong>D đúng:</strong> Holdability (`HOLD_CURSORS_OVER_COMMIT`) kiểm tra xem con trỏ ResultSet có tiếp tục mở sau lệnh COMMIT hay không.<br>• <strong>E đúng:</strong> Phương thức `createStatement(int resultSetType, int resultSetConcurrency)` nhận 2 tham số cấu hình.<br>• <strong>A sai:</strong> Khi vừa tạo, con trỏ ResultSet mặc định nằm TRƯỚC dòng đầu tiên (`beforeFirst()`), không phải nằm TRÊN dòng đầu tiên.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• Default ResultSet là forward-only, Holdability duy trì con trỏ sau commit, createStatement có 2 tham số.</div>
           </div>
           <!-- Question 35 -->
           <div class="quiz-card" id="question-35" data-correct="B" data-all-correct="B">
-            <div class="quiz-question">Câu 35: Which of these statements about ResultSet constant values are true?<br>(A) TYPE_SCROLL_INSENSITIVE is the default type of result set.<br>(B) In TYPE_FORWARD_ONLY result set, the cursor can only be used to process from the beginning of a ResultSet to the end of it.<br>(C) In TYPE_SCROLL_INSENSITIVE result set, the SQL queries applied on a particular field will have a direct impact on the ResultSet.<br>(D) The TYPE_SCROLL_SENSITIVE type of cursor is sensitive to changes made to the database while it is open.<br>(E) The TYPE_FORWARD_ONLY type of result set is not scrollable, not positionable, and not sensitive.</div>
+            <div class="quiz-question">Câu 35: Which of these statements about ResultSet constant values are true?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q35" value="A"> A. A, B, and C</label>
               <label><input type="radio" name="q35" value="B"> B. B, D, and E</label>
               <label><input type="radio" name="q35" value="C"> C. B, C, and E</label>
               <label><input type="radio" name="q35" value="D"> D. A, D, and E</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, và E</strong><br>• <strong>B đúng:</strong> `TYPE_FORWARD_ONLY` chỉ cho phép con trỏ đi từ đầu đến cuối.<br>• <strong>D đúng:</strong> `TYPE_SCROLL_SENSITIVE` sẽ nhạy cảm và cập nhật các thay đổi dữ liệu trong CSDL trong khi ResultSet đang mở.<br>• <strong>E đúng:</strong> `TYPE_FORWARD_ONLY` không hỗ trợ cuộn (not scrollable) hay đặt vị trí con trỏ tự do.<br>• <strong>A sai:</strong> Default loại ResultSet là `TYPE_FORWARD_ONLY`.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) B, D, E</strong><br>• TYPE_FORWARD_ONLY đi từ đầu đến cuối, SENSITIVE lắng nghe CSDL, FORWARD_ONLY không scrollable.</div>
           </div>
           <!-- Question 36 -->
           <div class="quiz-card" id="question-36" data-correct="D" data-all-correct="A,D">
-            <div class="quiz-question">Câu 36: Which of the following statements about RowSet are true?<br>(A) A RowSet contains a set of rows of data.<br>(B) A RowSet has to be made scrollable and updatable at the time of creation.<br>(C) A connected RowSet can read data from a non-relational database source also.<br>(D) Scrollability and Updatability of a RowSet is independent of the JDBC driver.</div>
+            <div class="quiz-question">Câu 36: Which of the following statements about RowSet are true?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q36" value="A"> A. A, C</label>
               <label><input type="radio" name="q36" value="B"> B. B, D</label>
               <label><input type="radio" name="q36" value="C"> C. C, D</label>
               <label><input type="radio" name="q36" value="D"> D. A, D</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, D</strong><br>• <strong>A đúng:</strong> `RowSet` là một tập hợp các dòng dữ liệu (chứa JavaBeans component).<br>• <strong>D đúng:</strong> Tính năng cuộn (Scrollability) và cập nhật (Updatability) của `RowSet` (như CachedRowSet) hoạt động trong bộ nhớ nên hoàn toàn độc lập với JDBC Driver.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) A, D</strong><br>• RowSet chứa tập dữ liệu, tính năng scrollable/updatable độc lập với JDBC Driver.</div>
           </div>
           <!-- Question 37 -->
           <div class="quiz-card" id="question-37" data-correct="C" data-all-correct="C,E">
-            <div class="quiz-question">Câu 37: Which of these statements about Updatable ResultSet are true?<br>(A) Updatable ResultSet is the ability to update rows in a result set using SQL commands, rather than using methods...<br>(B) The UpdateXXX() method of ResultSet is used to change the data in an existing row.<br>(C) Updatability in a result set is associated with concurrency in database access because you cannot have multiple write locks concurrently.<br>(D) In CONCURRENCY.READ_ONLY type of result set, the updates, inserts, and deletes can be performed...<br>(E) The concurrency type of a result set determines whether it is updatable or not.</div>
+            <div class="quiz-question">Câu 37: Which of these statements about Updatable ResultSet are true?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q37" value="A"> A. A, C</label>
               <label><input type="radio" name="q37" value="B"> B. B</label>
               <label><input type="radio" name="q37" value="C"> C. C, E</label>
               <label><input type="radio" name="q37" value="D"> D. D, E</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, E (hoặc B, C, E)</strong><br>• <strong>B đúng:</strong> Các phương thức `updateString()`, `updateInt()` được dùng để cập nhật giá trị cột.<br>• <strong>C đúng:</strong> Kha năng cập nhật liên quan chặt chẽ tới cơ chế Concurrency quản lý khóa ghi.<br>• <strong>E đúng:</strong> Loại concurrency (`CONCUR_UPDATABLE` vs `CONCUR_READ_ONLY`) quyết định ResultSet có cho phép cập nhật hay không.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) C, E</strong><br>• Concurrency liên quan đến khóa ghi, loại Concurrency quyết định tính năng updatable.</div>
           </div>
           <!-- Question 38 -->
           <div class="quiz-card" id="question-38" data-correct="C" data-all-correct="C">
             <div class="quiz-question">Câu 38: Identify the component required to create a hash function.</div>
             <div class="quiz-options">
-              <label><input type="radio" name="q38" value="A"> A. a (The instanceof operator)</label>
+              <label><input type="radio" name="q38" value="A"> A. a (The instance of operator)</label>
               <label><input type="radio" name="q38" value="B"> B. b (String)</label>
               <label><input type="radio" name="q38" value="C"> C. c (Non zero integer constant)</label>
               <label><input type="radio" name="q38" value="D"> D. d (Design pattern)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. Non zero integer constant</strong><br>• Theo chuẩn thuật toán thiết kế `hashCode()` trong Java (như quy tắc Joshua Bloch), một <strong>số nguyên hằng số khác 0</strong> (Non-zero integer constant như 31 hoặc 17) được dùng làm hệ số nhân để xây dựng hàm băm băm đều các giá trị.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) c. Non zero integer constant</strong><br>• Dùng một số nguyên hằng số khác 0 (như 31 hoặc 17) làm hệ số nhân băm.</div>
           </div>
           <!-- Question 39 -->
           <div class="quiz-card" id="question-39" data-correct="B" data-all-correct="B">
-            <div class="quiz-question">Câu 39: Which of the following statements are true for the logical equality?<br>a. When physical memory locations of the two strings are same, this is called logical equality.<br>b. When data of the objects are same, it is called logical equality.<br>c. The equality operator (==) is used to check for logical equality.<br>d. The equals() method that is used to check for logical equality is inherited from the Object class.</div>
+            <div class="quiz-question">Câu 39: Which of the following statements are true for the logical equality?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q39" value="A"> A. a, d</label>
               <label><input type="radio" name="q39" value="B"> B. b, d</label>
               <label><input type="radio" name="q39" value="C"> C. a, c</label>
               <label><input type="radio" name="q39" value="D"> D. d</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, d</strong><br>• <strong>b đúng:</strong> Bằng nhau về mặt logic (Logical equality) xảy ra khi dữ liệu/trạng thái bên trong hai đối tượng giống hệt nhau.<br>• <strong>d đúng:</strong> Phương thức <code>equals()</code> dùng để kiểm tra bằng nhau về logic được kế thừa từ lớp <code>Object</code>.<br>• <strong>a &amp; c sai:</strong> Kiểm tra vị trí địa chỉ ô nhớ vật lý được gọi là Reference equality và dùng toán tử <code>==</code>.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, d</strong><br>• Bằng nhau logic là dữ liệu bên trong hai đối tượng giống hệt nhau, kiểm tra bằng phương thức `equals()`.</div>
           </div>
           <!-- Question 40 -->
           <div class="quiz-card" id="question-40" data-correct="B" data-all-correct="B,C">
-            <div class="quiz-question">Câu 40: Which of the statements are true for Factory design pattern?<br>a. Prevents the application from being tightly coupled to a specific DAO implementation<br>b. Does not depend on concrete DAO classes<br>c. Uses a common interface to refer to the newly created object<br>d. Not used to implement the DAO pattern</div>
+            <div class="quiz-question">Câu 40: Which of the statements are true for Factory design pattern?</div>
             <div class="quiz-options">
               <label><input type="radio" name="q40" value="A"> A. a</label>
               <label><input type="radio" name="q40" value="B"> B. b, c</label>
               <label><input type="radio" name="q40" value="C"> C. a, c</label>
               <label><input type="radio" name="q40" value="D"> D. b, d</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, c (hoặc C. a, c)</strong><br>• <strong>b &amp; c đúng:</strong> Factory Pattern ẩn đi việc khởi tạo các lớp cụ thể (concrete classes) và trả về đối tượng thông qua một Interface dùng chung, giúp mã nguồn linh hoạt và giảm phụ thuộc trực tiếp (loose coupling).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b, c</strong><br>• Không phụ thuộc vào cụ thể lớp DAO và sử dụng Interface chung.</div>
           </div>
           <!-- Question 41 -->
           <div class="quiz-card" id="question-41" data-correct="B" data-all-correct="B">
@@ -753,7 +790,7 @@
               <label><input type="radio" name="q41" value="C"> C. c (Adapter)</label>
               <label><input type="radio" name="q41" value="D"> D. d (Proxy)</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b. Singleton Pattern</strong><br>• <strong>Singleton Pattern</strong> đảm bảo một lớp chỉ được phép khởi tạo duy nhất một thể hiện (single instance) trong suốt quá trình chạy ứng dụng và cung cấp một điểm truy cập toàn cục tới thể hiện đó.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) b. Singleton</strong><br>• Singleton đảm bảo duy nhất 1 instance được khởi tạo.</div>
           </div>
           <!-- Question 42 -->
           <div class="quiz-card" id="question-42" data-correct="C" data-all-correct="C">
@@ -764,7 +801,414 @@
               <label><input type="radio" name="q42" value="C"> C. MessagesBundle.properties</label>
               <label><input type="radio" name="q42" value="D"> D. System.out</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) MessagesBundle.properties</strong><br>• Tệp tin thuộc tính mặc định chứa các chuỗi văn bản bản địa hóa (ResourceBundle Properties file) có phần mở rộng bắt buộc là <code>.properties</code> (ví dụ: <code>MessagesBundle.properties</code>).</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) MessagesBundle.properties</strong><br>• Tệp thuộc tính bản địa hóa có phần mở rộng `.properties`.</div>
+          </div>
+          <!-- Question 43 -->
+          <div class="quiz-card" id="question-43" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 43: Which element of Enumeration returns the next element, if present, in the enumeration?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q43" value="A"> A. nextElement()</label>
+              <label><input type="radio" name="q43" value="B"> B. next()</label>
+              <label><input type="radio" name="q43" value="C"> C. iterate()</label>
+              <label><input type="radio" name="q43" value="D"> D. getNext()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) nextElement()</strong><br>• Phương thức <code>nextElement()</code> của giao diện <code>Enumeration</code> trả về phần tử tiếp theo nếu còn phần tử khả dụng trong tập hợp.</div>
+          </div>
+          <!-- Question 44 -->
+          <div class="quiz-card" id="question-44" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 44: Which of the following code snippets correctly adds an element to a BitSet object named bitSetObject?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q44" value="A"> A. bitSetObject.add(1);</label>
+              <label><input type="radio" name="q44" value="B"> B. bitSetObject.put(1);</label>
+              <label><input type="radio" name="q44" value="C"> C. bitSetObject.push(1);</label>
+              <label><input type="radio" name="q44" value="D"> D. bitSetObject.set(1);</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) bitSetObject.set(1);</strong><br>• Lớp <code>BitSet</code> sử dụng phương thức <code>set(int bitIndex)</code> để bật bit tại vị trí chỉ số tương ứng thành `true`.</div>
+          </div>
+          <!-- Question 45 -->
+          <div class="quiz-card" id="question-45" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 45: Which method of the Stack class removes the object from the top of the stack?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q45" value="A"> A. push()</label>
+              <label><input type="radio" name="q45" value="B"> B. remove()</label>
+              <label><input type="radio" name="q45" value="C"> C. pop()</label>
+              <label><input type="radio" name="q45" value="D"> D. peek()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) pop()</strong><br>• Phương thức <code>pop()</code> của <code>Stack</code> lấy và xóa đối tượng ở đỉnh ngăn xếp.<br>• <i>peek()</i> chỉ xem đỉnh mà không xóa; <i>push()</i> là đẩy thêm phần tử vào đỉnh.</div>
+          </div>
+          <!-- Question 46 -->
+          <div class="quiz-card" id="question-46" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 46: Which of the following Hashtable methods returns an Enumeration for the Hashtable?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q46" value="A"> A. elements()</label>
+              <label><input type="radio" name="q46" value="B"> B. enumeration()</label>
+              <label><input type="radio" name="q46" value="C"> C. next()</label>
+              <label><input type="radio" name="q46" value="D"> D. getEnumeration()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) elements()</strong><br>• Phương thức <code>elements()</code> của <code>Hashtable</code> trả về một <code>Enumeration</code> chứa danh sách các giá trị (values) lưu trong bảng băm.</div>
+          </div>
+          <!-- Question 47 -->
+          <div class="quiz-card" id="question-47" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 47: Which method adds a key-value pair to a Properties object?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q47" value="A"> A. addProperty()</label>
+              <label><input type="radio" name="q47" value="B"> B. add()</label>
+              <label><input type="radio" name="q47" value="C"> C. push()</label>
+              <label><input type="radio" name="q47" value="D"> D. setProperty()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) setProperty()</strong><br>• Phương thức <code>setProperty(String key, String value)</code> được dùng để thêm cặp khóa - giá trị kiểu chuỗi vào đối tượng <code>Properties</code>.</div>
+          </div>
+          <!-- Question 48 -->
+          <div class="quiz-card" id="question-48" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 48: How are records different from objects?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q48" value="A"> A. Records can have multiple values / immutable data carriers</label>
+              <label><input type="radio" name="q48" value="B"> B. Objects can have multiple values</label>
+              <label><input type="radio" name="q48" value="C"> C. Records do not contain methods.</label>
+              <label><input type="radio" name="q48" value="D"> D. Objects do not have instances.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A)</strong><br>• Từ Java 14+, <strong>Record</strong> là một dạng lớp đặc biệt dùng làm container chứa dữ liệu bất biến (immutable data carrier) với các thành phần được định nghĩa sẵn tự động tạo ra constructor, getters, equals, hashCode và toString.</div>
+          </div>
+          <!-- Question 49 -->
+          <div class="quiz-card" id="question-49" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 49: Which class is CompactNumberFormat a subclass of?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q49" value="A"> A. NumberFormat</label>
+              <label><input type="radio" name="q49" value="B"> B. Math</label>
+              <label><input type="radio" name="q49" value="C"> C. Integer</label>
+              <label><input type="radio" name="q49" value="D"> D. Decimal</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) NumberFormat</strong><br>• Lớp <code>java.text.CompactNumberFormat</code> (định dạng số thu gọn dạng K, M, B) kế thừa từ lớp trừu tượng <code>java.text.NumberFormat</code>.</div>
+          </div>
+          <!-- Question 50 -->
+          <div class="quiz-card" id="question-50" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 50: Which class do you use for formatting and parsing numbers for any locale?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q50" value="A"> A. FormatNumber</label>
+              <label><input type="radio" name="q50" value="B"> B. NumberFormat</label>
+              <label><input type="radio" name="q50" value="C"> C. GeoLocal</label>
+              <label><input type="radio" name="q50" value="D"> D. GPS</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) NumberFormat</strong><br>• Lớp <code>java.text.NumberFormat</code> cung cấp các phương thức chuẩn để định dạng (formatting) và phân tích (parsing) con số theo quốc gia/vùng miền (Locale).</div>
+          </div>
+          <!-- Question 51 -->
+          <div class="quiz-card" id="question-51" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 51: Which of these methods helps to represent all of the record components with their names as strings?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q51" value="A"> A. String</label>
+              <label><input type="radio" name="q51" value="B"> B. Strcat</label>
+              <label><input type="radio" name="q51" value="C"> C. LineString</label>
+              <label><input type="radio" name="q51" value="D"> D. toString</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) toString</strong><br>• Phương thức <code>toString()</code> được tự động sinh ra trong Lớp Record biểu diễn chuỗi gồm tất cả tên các thuộc tính component và giá trị của chúng.</div>
+          </div>
+          <!-- Question 52 -->
+          <div class="quiz-card" id="question-52" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 52: Which basic interface does Flow API consist of?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q52" value="A"> A. Publisher</label>
+              <label><input type="radio" name="q52" value="B"> B. Current</label>
+              <label><input type="radio" name="q52" value="C"> C. Source</label>
+              <label><input type="radio" name="q52" value="D"> D. Destination</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) Publisher</strong><br>• Chuẩn Java 9 Reactive Streams <code>java.util.concurrent.Flow</code> bao gồm các giao diện cốt lõi: <code>Flow.Publisher</code>, <code>Flow.Subscriber</code>, <code>Flow.Subscription</code> và <code>Flow.Processor</code>.</div>
+          </div>
+          <!-- Question 53 -->
+          <div class="quiz-card" id="question-53" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 53: What was the primary focus of JavaFX 1.0 when it was initially released in 2008?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q53" value="A"> A. Desktop applications</label>
+              <label><input type="radio" name="q53" value="B"> B. Web-based and mobile applications</label>
+              <label><input type="radio" name="q53" value="C"> C. 3D graphics</label>
+              <label><input type="radio" name="q53" value="D"> D. Game development</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Web-based and mobile applications</strong><br>• Khi ra mắt lần đầu năm 2008 dưới thời Sun Microsystems, JavaFX 1.0 tập trung chính vào xây dựng ứng dụng RIA (Rich Internet Applications) phát trên nền Web và thiết bị di động.</div>
+          </div>
+          <!-- Question 54 -->
+          <div class="quiz-card" id="question-54" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 54: Which Java version was JavaFX 8 bundled with?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q54" value="A"> A. Java 7</label>
+              <label><input type="radio" name="q54" value="B"> B. Java 8</label>
+              <label><input type="radio" name="q54" value="C"> C. Java 11</label>
+              <label><input type="radio" name="q54" value="D"> D. Java 14</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Java 8</strong><br>• Phiên bản JavaFX 8 được tích hợp đồng bộ trực tiếp bên trong JDK 8 (bắt đầu tách ra làm thư viện rời từ Java 11).</div>
+          </div>
+          <!-- Question 55 -->
+          <div class="quiz-card" id="question-55" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 55: What is the primary function of the JavaFX Scene Graph?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q55" value="A"> A. Data storage</label>
+              <label><input type="radio" name="q55" value="B"> B. Handling user input</label>
+              <label><input type="radio" name="q55" value="C"> C. UI organization</label>
+              <label><input type="radio" name="q55" value="D"> D. Database management</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. UI organization</strong><br>• <strong>Scene Graph</strong> là mô hình cây chứa tất cả các thành phần giao diện (Nodes), đóng vai trò tổ chức và quản lý cấu trúc phân cấp đồ họa UI trong JavaFX.</div>
+          </div>
+          <!-- Question 56 -->
+          <div class="quiz-card" id="question-56" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 56: Which JavaFX component represents the main window of an application?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q56" value="A"> A. Node</label>
+              <label><input type="radio" name="q56" value="B"> B. Scene</label>
+              <label><input type="radio" name="q56" value="C"> C. Stage</label>
+              <label><input type="radio" name="q56" value="D"> D. Controller</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Stage</strong><br>• Đối tượng <code>Stage</code> đại diện cho cửa sổ ứng dụng cấp cao nhất (Top-level window / Frame) chứa <code>Scene</code> bên trong.</div>
+          </div>
+          <!-- Question 57 -->
+          <div class="quiz-card" id="question-57" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 57: What is the purpose of FXML in JavaFX applications?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q57" value="A"> A. Handling events</label>
+              <label><input type="radio" name="q57" value="B"> B. Defining UI layout</label>
+              <label><input type="radio" name="q57" value="C"> C. Implementing business logic</label>
+              <label><input type="radio" name="q57" value="D"> D. Managing database connections</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B. Defining UI layout</strong><br>• <strong>FXML</strong> là ngôn ngữ định dạng XML dùng để khai báo bố cục và cấu trúc các thành phần giao diện UI tách biệt khỏi mã nguồn xử lý Java.</div>
+          </div>
+          <!-- Question 58 -->
+          <div class="quiz-card" id="question-58" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 58: Which JavaFX feature allows developers to create visually appealing and interactive user experiences?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q58" value="A"> A. Event handling</label>
+              <label><input type="radio" name="q58" value="B"> B. 3D graphics</label>
+              <label><input type="radio" name="q58" value="C"> C. CSS styling</label>
+              <label><input type="radio" name="q58" value="D"> D. Layout managers</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. CSS styling</strong><br>• Tính năng <strong>CSS Styling</strong> cho phép tùy biến giao diện đồ họa rực rỡ, trang trí màu sắc, viền, font chữ sinh động cho các điều khiển UI.</div>
+          </div>
+          <!-- Question 59 -->
+          <div class="quiz-card" id="question-59" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 59: What does CSS provide in JavaFX?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q59" value="A"> A. Database connectivity</label>
+              <label><input type="radio" name="q59" value="B"> B. UI controls</label>
+              <label><input type="radio" name="q59" value="C"> C. Styling for UI elements</label>
+              <label><input type="radio" name="q59" value="D"> D. Animation support</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Styling for UI elements</strong><br>• CSS trong JavaFX cung cấp khả năng định kiểu trang trí (Styling) cho các phần tử đồ họa UI.</div>
+          </div>
+          <!-- Question 60 -->
+          <div class="quiz-card" id="question-60" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 60: What does JavaFX text allow developers to do?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q60" value="A"> A. Create 3D shapes</label>
+              <label><input type="radio" name="q60" value="B"> B. Display text in JavaFX applications</label>
+              <label><input type="radio" name="q60" value="C"> C. Apply transformations to objects</label>
+              <label><input type="radio" name="q60" value="D"> D. Create colorful gradients</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) Display text in JavaFX applications</strong><br>• Thành phần <code>Text</code> trong JavaFX dùng để hiển thị và định dạng các văn bản chữ trên màn hình.</div>
+          </div>
+          <!-- Question 61 -->
+          <div class="quiz-card" id="question-61" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 61: Which of the following is a property of JavaFX text?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q61" value="A"> A. Fill color</label>
+              <label><input type="radio" name="q61" value="B"> B. Translation</label>
+              <label><input type="radio" name="q61" value="C"> C. Rotation</label>
+              <label><input type="radio" name="q61" value="D"> D. Scaling factor</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (A) Fill color</strong><br>• Thuộc tính <code>fill</code> quyết định màu sắc tô bên trong chữ của thành phần Text.</div>
+          </div>
+          <!-- Question 62 -->
+          <div class="quiz-card" id="question-62" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 62: Which JavaFX transformation allows developers to change an object's position?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q62" value="A"> A. Scaling</label>
+              <label><input type="radio" name="q62" value="B"> B. Rotation</label>
+              <label><input type="radio" name="q62" value="C"> C. Translation</label>
+              <label><input type="radio" name="q62" value="D"> D. Shearing</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) Translation</strong><br>• Phép biến đổi <strong>Translation</strong> (<code>Translate</code>) thay đổi vị trí tọa độ X, Y, Z của một đối tượng đồ họa.</div>
+          </div>
+          <!-- Question 63 -->
+          <div class="quiz-card" id="question-63" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 63: Identify the property of a 2D shape that defines the outline of the shape.</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q63" value="A"> A. Fill color</label>
+              <label><input type="radio" name="q63" value="B"> B. Width</label>
+              <label><input type="radio" name="q63" value="C"> C. Height</label>
+              <label><input type="radio" name="q63" value="D"> D. Stroke color</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) Stroke color</strong><br>• Thuộc tính <code>stroke</code> / <code>strokeColor</code> quy định đường nét vẽ viền bao xung quanh hình dạng 2D.</div>
+          </div>
+          <!-- Question 64 -->
+          <div class="quiz-card" id="question-64" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 64: Which of these JavaFX classes is used to create 3D shapes?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q64" value="A"> A. Shape3D</label>
+              <label><input type="radio" name="q64" value="B"> B. Box</label>
+              <label><input type="radio" name="q64" value="C"> C. Rectangle3D</label>
+              <label><input type="radio" name="q64" value="D"> D. Circle3D</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) Box</strong><br>• Lớp <code>Box</code> (cùng với <code>Sphere</code>, <code>Cylinder</code>) kế thừa từ <code>Shape3D</code> dùng để tạo hình hộp khối 3D trong JavaFX.</div>
+          </div>
+          <!-- Question 65 -->
+          <div class="quiz-card" id="question-65" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 65: Which JavaFX layout manager is suitable for organizing components in five regions: top, bottom, left, right, and center?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q65" value="A"> A. HBox</label>
+              <label><input type="radio" name="q65" value="B"> B. VBox</label>
+              <label><input type="radio" name="q65" value="C"> C. GridPane</label>
+              <label><input type="radio" name="q65" value="D"> D. BorderPane</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) BorderPane</strong><br>• <strong>BorderPane</strong> chia bố cục màn hình thành 5 khu vực riêng biệt: Top, Bottom, Left, Right và Center.</div>
+          </div>
+          <!-- Question 66 -->
+          <div class="quiz-card" id="question-66" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 66: What is the primary purpose of using CSS in JavaFX applications?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q66" value="A"> A. Handling user input</label>
+              <label><input type="radio" name="q66" value="B"> B. Defining data models</label>
+              <label><input type="radio" name="q66" value="C"> C. Styling user interface components</label>
+              <label><input type="radio" name="q66" value="D"> D. Performing mathematical calculations</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) Styling user interface components</strong><br>• Mục đích chính của CSS trong JavaFX là trang trí và định dạng giao diện UI.</div>
+          </div>
+          <!-- Question 67 -->
+          <div class="quiz-card" id="question-67" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 67: What is the primary purpose of a JavaFX Label component?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q67" value="A"> A. Collecting user input</label>
+              <label><input type="radio" name="q67" value="B"> B. Displaying text or non-editable information</label>
+              <label><input type="radio" name="q67" value="C"> C. Managing layouts and alignment</label>
+              <label><input type="radio" name="q67" value="D"> D. Creating interactive charts</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) Displaying text or non-editable information</strong><br>• Thành phần <code>Label</code> dùng để hiển thị các văn bản/thông báo cố định không cho người dùng chỉnh sửa trực tiếp.</div>
+          </div>
+          <!-- Question 68 -->
+          <div class="quiz-card" id="question-68" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 68: What are JavaFX UI properties?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q68" value="A"> A. Visual effects applied to UI components</label>
+              <label><input type="radio" name="q68" value="B"> B. Observable and bindable attributes of UI components</label>
+              <label><input type="radio" name="q68" value="C"> C. External resources used in UI design</label>
+              <label><input type="radio" name="q68" value="D"> D. User interface layout managers</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) Observable and bindable attributes of UI components</strong><br>• JavaFX Properties là các thuộc tính đặc biệt có khả năng lắng nghe sự thay đổi (Observable) và liên kết dữ liệu tự động (Data Binding).</div>
+          </div>
+          <!-- Question 69 -->
+          <div class="quiz-card" id="question-69" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 69: When is a line chart in JavaFX typically used?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q69" value="A"> A. To display data as horizontal bars</label>
+              <label><input type="radio" name="q69" value="B"> B. To show proportions within a whole</label>
+              <label><input type="radio" name="q69" value="C"> C. To visualize trends and changes over time</label>
+              <label><input type="radio" name="q69" value="D"> D. To create pie-shaped data representations</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) To visualize trends and changes over time</strong><br>• Biểu đồ đường (<strong>LineChart</strong>) được dùng để trực quan hóa xu hướng và sự thay đổi của dữ liệu theo thời gian.</div>
+          </div>
+          <!-- Question 70 -->
+          <div class="quiz-card" id="question-70" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 70: What is an EventHandler in JavaFX used for?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q70" value="A"> A. To create UI components</label>
+              <label><input type="radio" name="q70" value="B"> B. To define event sources</label>
+              <label><input type="radio" name="q70" value="C"> C. To handle events when they occur</label>
+              <label><input type="radio" name="q70" value="D"> D. To specify event filters</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) To handle events when they occur</strong><br>• <code>EventHandler</code> chứa đoạn mã logic xử lý sự kiện khi có hành động (click, phím bấm, chuột) phát ra từ người dùng.</div>
+          </div>
+          <!-- Question 71 -->
+          <div class="quiz-card" id="question-71" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 71: Which method in JavaFX is typically used for handling button clicks and other action events?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q71" value="A"> A. setOnClick()</label>
+              <label><input type="radio" name="q71" value="B"> B. addEventFilter()</label>
+              <label><input type="radio" name="q71" value="C"> C. setOnAction()</label>
+              <label><input type="radio" name="q71" value="D"> D. setOnEventHandler()</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) setOnAction()</strong><br>• Phương thức <code>setOnAction(EventHandler&lt;ActionEvent&gt; value)</code> được dùng phổ biến nhất để bắt sự kiện click nút bấm (Button).</div>
+          </div>
+          <!-- Question 72 -->
+          <div class="quiz-card" id="question-72" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 72: When are event filters in JavaFX applied?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q72" value="A"> A. After events have reached their target node</label>
+              <label><input type="radio" name="q72" value="B"> B. During event capturing, before events reach their target node</label>
+              <label><input type="radio" name="q72" value="C"> C. Only when there is a mouse event</label>
+              <label><input type="radio" name="q72" value="D"> D. When the event source is a text field</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (B) During event capturing, before events reach their target node</strong><br>• <strong>Event Filters</strong> được kích hoạt trong giai đoạn Event Capturing (đi từ node gốc xuống), trước khi sự kiện tới Node mục tiêu.</div>
+          </div>
+          <!-- Question 73 -->
+          <div class="quiz-card" id="question-73" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 73: Event handlers in JavaFX are used to:</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q73" value="A"> A. Intercept events during the event capturing phase</label>
+              <label><input type="radio" name="q73" value="B"> B. Create event sources</label>
+              <label><input type="radio" name="q73" value="C"> C. Define convenience methods for event handling</label>
+              <label><input type="radio" name="q73" value="D"> D. Handle events after they have reached their target node</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (D) Handle events after they have reached their target node</strong><br>• <strong>Event Handlers</strong> xử lý sự kiện tại Node mục tiêu và trong giai đoạn Event Bubbling (đi ngược từ con lên cha).</div>
+          </div>
+          <!-- Question 74 -->
+          <div class="quiz-card" id="question-74" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 74: What is the purpose of the setOnMouseClicked method in JavaFX?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q74" value="A"> A. To set the text of a button</label>
+              <label><input type="radio" name="q74" value="B"> B. To create a new scene</label>
+              <label><input type="radio" name="q74" value="C"> C. To specify an event handler for mouse clicks</label>
+              <label><input type="radio" name="q74" value="D"> D. To add a filter for mouse events</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: (C) To specify an event handler for mouse clicks</strong><br>• Phương thức <code>setOnMouseClicked()</code> thiết lập bộ xử lý sự kiện cho các hành động click chuột vào thành phần đồ họa.</div>
+          </div>
+          <!-- Question 75 -->
+          <div class="quiz-card" id="question-75" data-correct="B" data-all-correct="B">
+            <div class="quiz-question">Câu 75: What is the primary JavaFX class used for managing media content?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q75" value="A"> A) MediaView</label>
+              <label><input type="radio" name="q75" value="B"> B) MediaPlayer</label>
+              <label><input type="radio" name="q75" value="C"> C) MediaContent</label>
+              <label><input type="radio" name="q75" value="D"> D) MediaStream</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: B) MediaPlayer</strong><br>• <code>MediaPlayer</code> là lớp điều khiển chính quản lý quá trình phát, dừng, tạm dừng âm thanh và video.</div>
+          </div>
+          <!-- Question 76 -->
+          <div class="quiz-card" id="question-76" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 76: Which JavaFX class represents the source of media, such as audio or video?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q76" value="A"> A) MediaSource</label>
+              <label><input type="radio" name="q76" value="B"> B) MediaStream</label>
+              <label><input type="radio" name="q76" value="C"> C) MediaFile</label>
+              <label><input type="radio" name="q76" value="D"> D) Media</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D) Media</strong><br>• Lớp <code>javafx.scene.media.Media</code> đại diện cho nguồn tập tin media (file nhạc MP3, MP4 hoặc URL).</div>
+          </div>
+          <!-- Question 77 -->
+          <div class="quiz-card" id="question-77" data-correct="A" data-all-correct="A">
+            <div class="quiz-question">Câu 77: How can you play media in JavaFX using a MediaPlayer object?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q77" value="A"> A) mediaPlayer.play();</label>
+              <label><input type="radio" name="q77" value="B"> B) mediaPlayer.start();</label>
+              <label><input type="radio" name="q77" value="C"> C) media.playMedia();</label>
+              <label><input type="radio" name="q77" value="D"> D) mediaPlayer.playMedia();</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A) mediaPlayer.play();</strong><br>• Phương thức <code>mediaPlayer.play()</code> được gọi để khởi động và phát media.</div>
+          </div>
+          <!-- Question 78 -->
+          <div class="quiz-card" id="question-78" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 78: Which method is used to set an event handler when the media is ready to play?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q78" value="A"> A) setOnPlay</label>
+              <label><input type="radio" name="q78" value="B"> B) setOnStart</label>
+              <label><input type="radio" name="q78" value="C"> C) setOnReady</label>
+              <label><input type="radio" name="q78" value="D"> D) setOnPause</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C) setOnReady</strong><br>• <code>setOnReady(Runnable value)</code> kích hoạt khi luồng media đã tải xong bộ đệm và sẵn sàng phát.</div>
+          </div>
+          <!-- Question 79 -->
+          <div class="quiz-card" id="question-79" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 79: In JavaFX, what is the purpose of the MediaView class?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q79" value="A"> A) To represent media content</label>
+              <label><input type="radio" name="q79" value="B"> B) To control media playback</label>
+              <label><input type="radio" name="q79" value="C"> C) To display media content in the UI</label>
+              <label><input type="radio" name="q79" value="D"> D) To handle media events</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C) To display media content in the UI</strong><br>• Lớp <code>MediaView</code> là một <code>Node</code> đồ họa hiển thị nội dung video lên giao diện ứng dụng JavaFX.</div>
           </div>
         </section>
       </main>
