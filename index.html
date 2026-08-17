@@ -465,24 +465,19 @@
         </div>
       </section>
 
-      <!-- 3D WebGL Dense Colorful Big-Tech Orbit Universe -->
+      <!-- Seamless 3D WebGL Canvas Container (Ultra-Minimalist) -->
       <section id="ai-3d-experience" class="ai-3d-container">
-        <div class="ai-3d-header">
-          <div class="badge-3d">Dense Neural Mesh &bull; Big-Tech Standard</div>
-          <h2 class="title-3d">Mạng Thần Kinh Công Nghệ &amp; AI Siêu Dày Đặt 3D</h2>
-        </div>
-
         <div class="canvas-3d-wrapper">
           <canvas id="webgl-canvas"></canvas>
 
           <div class="canvas-overlay">
             <div class="control-badge">
-              <span class="pulse-green"></span> 3D Dense Neural Cosmos Active &bull; Rê chuột để tương tác
+              <span class="pulse-green"></span> 3D Dense Neural Cosmos Active &bull; Di chuột để điều khiển 360&deg;
             </div>
 
             <div class="interactive-controls">
-              <button id="btn-toggle-mesh" class="btn-3d-control">🕸️ Hiện/Ẩn Mạng Thần Kinh Dày Đặt</button>
-              <button id="btn-toggle-speed" class="btn-3d-control">⚡ Tăng Tốc Xoay 3D Core</button>
+              <button id="btn-toggle-mesh" class="btn-3d-control" title="Bật/Tắt Mạng Thần Kinh 3D">🕸️</button>
+              <button id="btn-toggle-speed" class="btn-3d-control" title="Tăng Tốc Xoay Core 3D">⚡</button>
             </div>
           </div>
         </div>
@@ -774,14 +769,12 @@
         btnToggleMesh.addEventListener('click', () => {
           showMesh = !showMesh;
           if (lineMesh) lineMesh.visible = showMesh;
-          btnToggleMesh.innerText = showMesh ? "🕸️ Hiện/Ẩn Mạng Thần Kinh Dày Đặt" : "✨ Chế Độ Tech Badges Only";
         });
       }
 
       if (btnToggleSpeed) {
         btnToggleSpeed.addEventListener('click', () => {
           speedMultiplier = speedMultiplier === 1.0 ? 3.0 : 1.0;
-          btnToggleSpeed.innerText = speedMultiplier === 3.0 ? "⚡ Đang Tăng Tốc x3" : "⚡ Tăng Tốc Xoay 3D Core";
         });
       }
 
