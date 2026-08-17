@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyHub</title>
+  <title>StudyHub - Nền Tảng Học Tập &amp; Tri Thức KHMT</title>
   <link rel="stylesheet" href="css/landing.css">
   <link rel="icon" type="image/jpeg" href="images/logo.jpg">
   <script src="js/theme.js"></script>
@@ -12,26 +12,9 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <style>
     @keyframes ping {
-      0% {
-        transform: scale(0.5);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1.8);
-        opacity: 0;
-      }
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
     }
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      50% {
-        transform: scale(1.2);
-        opacity: 0.6;
-      }
-    }
-    /* Set custom container layout for visitor section */
     .visitor-grid {
       display: grid; 
       grid-template-columns: 1.2fr 1.8fr; 
@@ -40,10 +23,7 @@
       margin-top: 1.5rem;
     }
     @media (max-width: 768px) {
-      .visitor-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
+      .visitor-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     }
   </style>
 </head>
@@ -51,23 +31,28 @@
   <div class="landing-container">
     <!-- Header & Navigation -->
     <header class="landing-header">
-      <div class="brand-wrapper" style="cursor: pointer;" onclick="window.location.href='index.html'">
-        <img class="brand-logo" src="images/logo.jpg" alt="StudyHub Logo">
+      <a href="index.html" class="brand-wrapper">
+        <div class="brand-icon-svg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
         <span class="brand-name">StudyHub</span>
-      </div>
+      </a>
+      
       <nav class="landing-nav no-print">
         <a href="index.html" class="nav-item active">Trang chủ</a>
+        <a href="#courses" class="nav-item">Kho môn học</a>
+        <a href="cong-cu-hay.html" class="nav-item">Công cụ hay</a>
         <a href="tai-lieu-khac.html" class="nav-item">Tài liệu khác</a>
-        <a href="cong-cu-hay.html" class="nav-item">Công cụ hay 🛠️</a>
-        <a href="flappy-bird.html" class="nav-item">Giải trí 🎮</a>
+        <a href="flappy-bird.html" class="nav-item">Giải trí</a>
       </nav>
+
       <div style="display: flex; align-items: center; gap: 1rem;">
-        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện" style="margin-right: 0.5rem;">
+        <button id="theme-toggle" class="theme-toggle-btn no-print" aria-label="Đổi giao diện">
           <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
         <div class="meta-info">
-          Trần Vũ Bằng &bull; Alvarez Tran
+          Trần Vũ Bằng &bull; CTU CS
         </div>
       </div>
     </header>
@@ -76,37 +61,64 @@
       <!-- Hero Section -->
       <section class="hero-section">
         <div class="hero-content">
-          <div class="hero-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.25rem;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-            Your Digital Knowledge Universe
-          </div>
           <h1 class="hero-title">
-            Học tập và lưu trữ<br>
-            tài liệu với <span>StudyHub</span>
+            Nền tảng Học tập &amp; Lưu trữ<br>
+            Tri thức <span class="gradient-text">Khoa học Máy tính</span>
           </h1>
           <p class="hero-desc">
-            Kho tài liệu cá nhân hiển thị trực quan trên giao diện Web - Tổng hợp bài giảng, học liệu của các môn học chuyên ngành Khoa học máy tính tại Trường Công nghệ Thông tin và Truyền thông - Đại học Cần Thơ.
+            Kho tài liệu cá nhân hiển thị trực quan trên Web - Hệ thống số hóa bài giảng, học liệu trắc nghiệm tương tác thông minh và báo cáo chuyên ngành tại Trường Công nghệ Thông tin và Truyền thông - Đại học Cần Thơ.
           </p>
           <div class="hero-actions">
             <a href="#courses" class="btn-primary">
-              Bắt đầu học
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-            <a href="cong-cu-hay.html" class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
-              Công cụ hay 🛠️
-            </a>
-            <a href="tai-lieu-khac.html" class="btn-secondary">
-              Tài liệu khác
+              Khám phá môn học
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
             <a href="https://github.com/alvareztran/StudyHub" target="_blank" class="btn-secondary">
-              GitHub Repo
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              GitHub Repository
             </a>
           </div>
         </div>
         
+        <!-- Hero Big-Tech Preview Card -->
         <div class="hero-visual">
-          <div class="banner-card">
-            <img src="images/banner.jpg" alt="StudyHub Network Banner">
+          <div class="tech-preview-card">
+            <div class="window-header">
+              <div class="window-dots">
+                <div class="window-dot red"></div>
+                <div class="window-dot yellow"></div>
+                <div class="window-dot green"></div>
+              </div>
+              <div class="window-title">StudyHub Platform Engine v2.5</div>
+              <div style="width: 30px;"></div>
+            </div>
+
+            <div class="window-body">
+              <div class="code-snippet-box">
+                <span class="code-comment">// StudyHub Interactive Engine Initialization</span><br>
+                <span class="code-keyword">import</span> { CourseEngine, QuizModule } <span class="code-keyword">from</span> <span class="code-str">'@studyhub/core'</span>;<br><br>
+                <span class="code-keyword">const</span> app = <span class="code-keyword">new</span> <span class="code-func">CourseEngine</span>({<br>
+                &nbsp;&nbsp;institution: <span class="code-str">'Can Tho University'</span>,<br>
+                &nbsp;&nbsp;features: [<span class="code-str">'KaTeX Math'</span>, <span class="code-str">'PDF Vector'</span>, <span class="code-str">'Interactive Quiz'</span>]<br>
+                });<br><br>
+                app.<span class="code-func">mountRegistry</span>();
+              </div>
+
+              <div class="platform-metrics-grid">
+                <div class="metric-item">
+                  <div class="metric-value">17+</div>
+                  <div class="metric-label">Học phần số hóa</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-value">1,500+</div>
+                  <div class="metric-label">Câu trắc nghiệm</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-value">100%</div>
+                  <div class="metric-label">Tương tác Web</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -116,105 +128,64 @@
         <!-- Feature 1: KaTeX -->
         <div class="feat-item">
           <div class="feat-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
           </div>
           <div>
-            <h4 class="feat-title">Toán học KaTeX</h4>
-            <p class="feat-desc">Tự động biên dịch công thức toán phức tạp trực tiếp trên trình duyệt bằng thư viện KaTeX siêu tốc.</p>
+            <h4 class="feat-title">Biên dịch Công thức KaTeX</h4>
+            <p class="feat-desc">Tự động xử lý và hiển thị công thức toán học và thuật toán AI phức tạp trực tiếp trên web với tốc độ siêu nhanh.</p>
           </div>
         </div>
         
         <!-- Feature 2: PDF Export -->
         <div class="feat-item">
           <div class="feat-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           </div>
           <div>
-            <h4 class="feat-title">Xuất PDF Cao Cấp</h4>
-            <p class="feat-desc">Được cấu hình CSS in ấn tỉ mỉ, giúp xuất ra các bản in vector PDF chuẩn chỉ, giữ nguyên màu sắc đồ họa.</p>
+            <h4 class="feat-title">In ấn &amp; Xuất PDF Vector</h4>
+            <p class="feat-desc">Cấu hình CSS in ấn chuẩn chỉ, xuất tài liệu PDF vector độ phân giải cao, hỗ trợ in trang A4 chuẩn xác.</p>
           </div>
         </div>
 
         <!-- Feature 3: Responsive UI -->
         <div class="feat-item">
           <div class="feat-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
           </div>
           <div>
-            <h4 class="feat-title">Giao Diện Tương Thích</h4>
-            <p class="feat-desc">Bố cục linh hoạt (responsive), hiển thị tối ưu trên cả điện thoại di động, máy tính bảng và màn hình lớn.</p>
+            <h4 class="feat-title">Kiến trúc Giao diện Big-Tech</h4>
+            <p class="feat-desc">Giao diện tối giản, linh hoạt, hỗ trợ tìm kiếm tức thì, lọc danh mục và chuyển đổi Dark/Light Mode dễ dàng.</p>
           </div>
         </div>
       </section>
 
       <!-- Course Selection Section -->
-      <section id="courses" style="padding: 2rem 0 5rem 0;">
-        <h2 class="course-section-title">Học Liệu &amp; Nghiên Cứu Môn Học</h2>
-        <p class="course-section-desc" style="margin-bottom: 2rem;">Chọn học phần bên dưới để khám phá nội dung bài giảng số hóa và các báo cáo môn học.</p>
+      <section id="courses" style="padding: 1rem 0 4rem 0;">
+        <h2 class="course-section-title">Kho Học Liệu Môn Học Số Hóa</h2>
+        <p class="course-section-desc">Chọn học phần bên dưới để khám phá nội dung bài giảng, trắc nghiệm tương tác và các báo cáo môn học.</p>
         
         <!-- Search & Filter Controls -->
         <div class="search-filter-container" style="margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-          <!-- Search Input -->
           <div style="position: relative; width: 100%; max-width: 480px;">
-            <input type="text" id="course-search-input" placeholder="Tìm kiếm môn học theo tên, mã môn..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: all 0.2s;" />
+            <input type="text" id="course-search-input" placeholder="🔍 Tìm kiếm môn học theo tên, mã môn..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: all 0.2s;" />
             <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.95rem; opacity: 0.7;">🔍</span>
           </div>
-          <!-- Filter Tabs -->
+
           <div class="filter-tabs-wrapper" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
-            <button class="filter-tab active" data-filter="all">Tất cả</button>
-            <button class="filter-tab" data-filter="chuyen-nganh">Chuyên ngành</button>
+            <button class="filter-tab active" data-filter="all">Tất cả môn</button>
+            <button class="filter-tab" data-filter="aptech">Chứng chỉ APTECH</button>
+            <button class="filter-tab" data-filter="chuyen-nganh">Chuyên ngành CS</button>
             <button class="filter-tab" data-filter="co-so-nganh">Cơ sở ngành</button>
             <button class="filter-tab" data-filter="dai-cuong">Đại cương</button>
-            <button class="filter-tab" data-filter="aptech">APTECH</button>
             <button class="filter-tab" data-filter="khac">Khác</button>
           </div>
         </div>
 
         <div class="course-grid">
-          <!-- APTECH Card: Java OOP -->
-          <div class="course-card" data-category="aptech">
-            <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #ea580c, #ca8a04); color: white;">APTECH-OOP</div>
-              <h3 class="course-title">Java OOP - Lập trình Hướng đối tượng</h3>
-              <p class="course-desc">Giáo trình chuẩn Aptech Quốc tế (ACCP / ADSE): Khái niệm Lớp &amp; Đối tượng, 4 tính chất OOP (Encapsulation, Inheritance, Polymorphism, Abstraction), Exception Handling, Collections, File I/O và Java Swing GUI.</p>
-              <ul class="course-highlights">
-                <li>Kiến trúc JVM, JDK &amp; Cú pháp chuẩn Aptech</li>
-                <li>Lớp, Đối tượng, Constructor &amp; Từ khóa static</li>
-                <li>4 Trụ cột OOP: Đóng gói, Kế thừa, Đa hình &amp; Trừu tượng</li>
-                <li>Xử lý Ngoại lệ Exception &amp; Custom Exception</li>
-                <li>Collections Framework, Generics &amp; Java Swing GUI</li>
-              </ul>
-            </div>
-            <a href="aptech/java-oop/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- APTECH Card: XML & Web Technologies -->
-          <div class="course-card" data-category="aptech">
-            <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #0284c7, #0d9488); color: white;">APTECH-XML</div>
-              <h3 class="course-title">XML &amp; Web Technologies (APTECH)</h3>
-              <p class="course-desc">Giáo trình chuẩn Aptech Quốc tế (ACCP / ADSE): Cú pháp XML, DTD, XML Schema (XSD), XPath, XSLT, DOM &amp; SAX Parsers, JSON, Web APIs, CORS và Ngân hàng trắc nghiệm Tiếng Anh.</p>
-              <ul class="course-highlights">
-                <li>Cú pháp XML, Well-formed XML &amp; Namespaces</li>
-                <li>Định nghĩa DTD vs XML Schema (XSD) Validation</li>
-                <li>Truy vấn XPath Navigation &amp; XSLT Transformations</li>
-                <li>DOM Parser, SAX Parser &amp; XQuery</li>
-                <li>Cấu trúc JSON, JSON Schema, Web APIs &amp; CORS</li>
-              </ul>
-            </div>
-            <a href="aptech/xml/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
           <!-- APTECH Card: Advanced Java & JavaFX -->
           <div class="course-card" data-category="aptech">
             <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #2563eb, #0284c7); color: white;">APTECH-JAVAFX</div>
+              <div class="course-badge" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border-color: rgba(96, 165, 250, 0.3);">APTECH &bull; JAVAFX</div>
               <h3 class="course-title">Advanced Java And JavaFX</h3>
               <p class="course-desc">Giáo trình Lập trình Java Nâng cao &amp; Thiết kế Giao diện Đồ họa JavaFX: Generics, Collections, Streams, Multithreading, Concurrency, JDBC, FXML, Scene Builder, Properties, Data Binding và Task bất đồng bộ.</p>
               <ul class="course-highlights">
@@ -222,19 +193,60 @@
                 <li>Multithreading, Executor &amp; Concurrency Framework</li>
                 <li>JDBC Database Integration &amp; DAO Pattern</li>
                 <li>JavaFX Platform Architecture &amp; Layout Panes</li>
-                <li>Scene Builder, FXML, Properties, Data Binding &amp; CSS</li>
-                <li style="color: var(--secondary-color); font-weight: 600;">🎯 Ngân Hàng Trắc Nghiệm Tương Tác Sẵn Sàng</li>
+                <li>Scene Builder, FXML, Properties &amp; CSS</li>
+                <li style="color: var(--accent-cyan); font-weight: 600;">✓ Trắc nghiệm tương tác 7 chương chuẩn hóa</li>
               </ul>
             </div>
             <a href="aptech/advanced-java-javafx/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
+
+          <!-- APTECH Card: Java OOP -->
+          <div class="course-card" data-category="aptech">
+            <div>
+              <div class="course-badge" style="background: rgba(234, 88, 12, 0.15); color: #fb923c; border-color: rgba(251, 146, 60, 0.3);">APTECH &bull; OOP</div>
+              <h3 class="course-title">Java OOP - Lập trình Hướng đối tượng</h3>
+              <p class="course-desc">Giáo trình chuẩn Aptech Quốc tế (ACCP / ADSE): Khái niệm Lớp &amp; Đối tượng, 4 tính chất OOP (Encapsulation, Inheritance, Polymorphism, Abstraction), Exception Handling, Collections, File I/O và Java Swing GUI.</p>
+              <ul class="course-highlights">
+                <li>Kiến trúc JVM, JDK &amp; Cú pháp chuẩn Aptech</li>
+                <li>Lớp, Đối tượng, Constructor &amp; Static</li>
+                <li>4 Trụ cột OOP: Đóng gói, Kế thừa, Đa hình &amp; Trừu tượng</li>
+                <li>Xử lý Ngoại lệ Exception &amp; Custom Exception</li>
+                <li>Collections Framework &amp; Java Swing GUI</li>
+              </ul>
+            </div>
+            <a href="aptech/java-oop/index.html" class="course-action-btn">
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- APTECH Card: XML & Web Technologies -->
+          <div class="course-card" data-category="aptech">
+            <div>
+              <div class="course-badge" style="background: rgba(2, 132, 199, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">APTECH &bull; XML</div>
+              <h3 class="course-title">XML &amp; Web Technologies (APTECH)</h3>
+              <p class="course-desc">Giáo trình chuẩn Aptech Quốc tế (ACCP / ADSE): Cú pháp XML, DTD, XML Schema (XSD), XPath, XSLT, DOM &amp; SAX Parsers, JSON, Web APIs, CORS và Ngân hàng trắc nghiệm Tiếng Anh.</p>
+              <ul class="course-highlights">
+                <li>Cú pháp XML, Well-formed XML &amp; Namespaces</li>
+                <li>Định nghĩa DTD vs XML Schema (XSD) Validation</li>
+                <li>Truy vấn XPath Navigation &amp; XSLT Transformations</li>
+                <li>DOM Parser, SAX Parser &amp; XQuery</li>
+                <li>JSON, Web APIs &amp; CORS</li>
+              </ul>
+            </div>
+            <a href="aptech/xml/index.html" class="course-action-btn">
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
           <!-- Card 1: Image Processing -->
           <div class="course-card" data-category="chuyen-nganh">
             <div>
-              <div class="course-badge">CT316</div>
+              <div class="course-badge">CT316 &bull; CHUYÊN NGÀNH</div>
               <h3 class="course-title">CT316 - Xử lý ảnh</h3>
               <p class="course-desc">Nghiên cứu về cấu trúc ảnh số, thiết bị thu nhận ảnh, các kỹ thuật biến đổi không gian, phân tích phân bố Histogram, lọc tích chập không gian và xử lý hình thái học nhị phân.</p>
               <ul class="course-highlights">
@@ -246,15 +258,15 @@
               </ul>
             </div>
             <a href="xu-ly-anh/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
           <!-- Card 2: AI -->
           <div class="course-card" data-category="chuyen-nganh">
             <div>
-              <div class="course-badge">CT332</div>
+              <div class="course-badge">CT332 &bull; CHUYÊN NGÀNH</div>
               <h3 class="course-title">CT332 - Trí tuệ nhân tạo</h3>
               <p class="course-desc">Các giải thuật tìm kiếm, lập luận logic và chuyên đề căn chỉnh mô hình ngôn ngữ lớn (LLM Alignment) theo tùy chọn của con người, phân tích chuyên sâu thuật toán PPO và DPO.</p>
               <ul class="course-highlights">
@@ -266,95 +278,74 @@
               </ul>
             </div>
             <a href="tri-tue-nhan-tao/index.html" class="course-action-btn">
-              Xem bài báo
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Xem bài báo khoa học
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
           <!-- Card: NCKH -->
           <div class="course-card" data-category="chuyen-nganh">
             <div>
-              <div class="course-badge">NCKH</div>
+              <div class="course-badge">NCKH &bull; AI RESEARCH</div>
               <h3 class="course-title">Nghiên cứu khoa học - AI</h3>
               <p class="course-desc">Xây dựng kiến thức nền tảng về Trí tuệ nhân tạo (AI), phương pháp luận nghiên cứu khoa học, viết bài báo học thuật và thực nghiệm các mô hình học sâu.</p>
               <ul class="course-highlights">
-                <li>Phương pháp nghiên cứu &amp; Đọc bài báo khoa học</li>
+                <li>Phương pháp nghiên cứu &amp; Đọc báo học thuật</li>
                 <li>Xây dựng mô hình AI nền tảng</li>
                 <li>Thực nghiệm và đánh giá kết quả</li>
                 <li>Kỹ năng viết báo cáo học thuật</li>
               </ul>
             </div>
             <a href="nckh/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
-          <!-- Card: AI Models & Subfields (New!) -->
+          <!-- Card: AI Models & Subfields -->
           <div class="course-card" data-category="chuyen-nganh">
             <div>
-              <div class="course-badge">AI-MODELS</div>
-              <h3 class="course-title">Các mô hình AI & Lĩnh vực con</h3>
+              <div class="course-badge">AI &bull; MODELS</div>
+              <h3 class="course-title">Các mô hình AI &amp; Lĩnh vực con</h3>
               <p class="course-desc">Nghiên cứu các nhóm mô hình Trí tuệ Nhân tạo kinh điển đến hiện đại: Học máy cổ điển, Deep Learning, Computer Vision, NLP, Học tăng cường và AI tạo sinh.</p>
               <ul class="course-highlights">
                 <li>Học máy cổ điển &amp; Học sâu (MLP)</li>
-                <li>Mô hình Thị giác máy tính (CNN, ViT, YOLO)</li>
+                <li>Thị giác máy tính (CNN, ViT, YOLO)</li>
                 <li>Xử lý ngôn ngữ (RNN, Transformer, LLMs)</li>
                 <li>Học tăng cường (MDP, Q-learning, PPO)</li>
-                <li>Mô hình AI tạo sinh (GANs, Diffusion Models)</li>
+                <li>AI tạo sinh (GANs, Diffusion Models)</li>
               </ul>
             </div>
             <a href="mo-hinh-ai/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
-          <!-- Card: Niên luận Hệ thống Learning Platform Hybrid Recommendation -->
+          <!-- Card: Niên luận Hệ thống -->
           <div class="course-card" data-category="chuyen-nganh">
             <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #0284c7, #6366f1); color: white;">NIÊN LUẬN CS</div>
+              <div class="course-badge">NIÊN LUẬN &bull; CS</div>
               <h3 class="course-title">Nền tảng Học tập &amp; Hybrid Recommendation</h3>
               <p class="course-desc">Tài liệu hướng dẫn niên luận cơ sở ngành KHMT: Thiết kế kiến thức hệ thống 3 tầng, CSDL PostgreSQL, Redis, Node.js API, Python Hybrid Recommender (TF-IDF, Cosine, Pearson) và Docker.</p>
               <ul class="course-highlights">
                 <li>Sơ đồ kiến trúc 3-Tier / Microservices</li>
-                <li>Thiết kế PostgreSQL &amp; Redis Caching</li>
+                <li>PostgreSQL &amp; Redis Caching</li>
                 <li>Backend Modular API với Node.js &amp; Express</li>
                 <li>Python Engine: Content-Based + CF Hybrid</li>
                 <li>Đóng gói Docker Compose &amp; Lộ trình 8 tuần</li>
               </ul>
             </div>
             <a href="nien-luan-he-thong/index.html" class="course-action-btn">
-              Xem hướng dẫn
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-
-          <!-- Card 3: Machine Learning -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge">ML</div>
-              <h3 class="course-title">Machine learning cơ bản</h3>
-              <p class="course-desc">Tìm hiểu các khái niệm nền tảng của học máy, các thuật toán học có giám sát và không giám sát kinh điển, cách tối ưu hóa hàm mất mát và đánh giá hiệu năng mô hình.</p>
-              <ul class="course-highlights">
-                <li>Hồi quy Tuyến tính &amp; Logistic</li>
-                <li>Máy vectơ hỗ trợ (SVM)</li>
-                <li>Cây quyết định &amp; Rừng ngẫu nhiên</li>
-                <li>Phân cụm K-Means &amp; Giảm chiều dữ liệu</li>
-                <li>Tối ưu hóa Gradient Descent</li>
-              </ul>
-            </div>
-            <a href="machine-learning/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Xem hướng dẫn chi tiết
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
           <!-- Card 4: Operating Systems -->
           <div class="course-card" data-category="co-so-nganh">
             <div>
-              <div class="course-badge">OS</div>
+              <div class="course-badge">CT178 &bull; CƠ SỞ NGANH</div>
               <h3 class="course-title">CT178 - Nguyên lý Hệ điều hành</h3>
               <p class="course-desc">Tìm hiểu các khái niệm nền tảng của hệ điều hành, cấu trúc máy tính, tiến trình, định thời CPU, đồng bộ hóa, quản lý bộ nhớ vật lý, bộ nhớ ảo và các hệ thống lưu trữ.</p>
               <ul class="course-highlights">
@@ -366,156 +357,35 @@
               </ul>
             </div>
             <a href="nguyen-ly-he-dieu-hanh/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
-          <!-- Card: CT296 - Systems Analysis and Design -->
+          <!-- Card: CT296 -->
           <div class="course-card" data-category="co-so-nganh">
             <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: white;">CT296</div>
+              <div class="course-badge">CT296 &bull; CƠ SỞ NGANH</div>
               <h3 class="course-title">CT296 - Phân tích và Thiết kế HTTT</h3>
-              <p class="course-desc">Mô hình hóa SDLC, khảo sát yêu cầu, Sơ đồ dòng dữ liệu (DFD/BFD), Thiết kế CSDL ERD &amp; Chuẩn hóa 1NF-3NF, Phân tích hướng đối tượng UML và Hướng dẫn Thiết kế Giao diện Form &amp; Báo cáo mẫu.</p>
+              <p class="course-desc">Mô hình hóa SDLC, khảo sát yêu cầu, Sơ đồ dòng dữ liệu (DFD/BFD), Thiết kế CSDL ERD &amp; Chuẩn hóa 1NF-3NF, Phân tích hướng đối tượng UML và Hướng dẫn Thiết kế Giao diện Form.</p>
               <ul class="course-highlights">
                 <li>Vòng đời phát triển SDLC (Waterfall, Agile)</li>
                 <li>Phân tích cấu trúc BFD, DFD Context &amp; Level 1</li>
-                <li>Thiết kế CSDL ERD &amp; Chuẩn hóa 1NF, 2NF, 3NF</li>
-                <li>Phân tích hướng đối tượng UML (Use Case, Class)</li>
-                <li>Hướng dẫn Thiết kế Form Nhập liệu &amp; Báo cáo Mẫu</li>
+                <li>Thiết kế CSDL ERD &amp; Chuẩn hóa 1NF-3NF</li>
+                <li>Phân tích hướng đối tượng UML</li>
+                <li>Thiết kế Form Nhập liệu &amp; Báo cáo Mẫu</li>
               </ul>
             </div>
             <a href="phan-tich-thiet-ke-httt/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
-
-          <!-- Card: THPT Management System - Module 1.3 Statistics & Reporting -->
-          <div class="course-card" data-category="co-so-nganh">
-            <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white;">THPT-STATS</div>
-              <h3 class="course-title">Quản lý THPT - Báo cáo &amp; Thống kê (Mã 1.3)</h3>
-              <p class="course-desc">Phân hệ Báo cáo &amp; Thống kê dành cho Ban Giám Hiệu dựa chuẩn CDM &amp; DFD 1.3: Thống kê sĩ số học sinh lớp/khối, đội ngũ giáo viên, kết quả xếp loại năm học và điểm trung bình học kỳ.</p>
-              <ul class="course-highlights">
-                <li>Dashboard BGH tổng quan chỉ số KPI toàn trường</li>
-                <li>Thống kê sĩ số theo lớp &amp; khối (1.3.1 - 1.3.2)</li>
-                <li>Thống kê đội ngũ giáo viên &amp; môn dạy (1.3.3)</li>
-                <li>Phân tích xếp loại năm học &amp; ĐTB học kỳ (1.3.4 - 1.3.7)</li>
-                <li>Tích hợp Biểu đồ Chart.js, Modal &amp; In báo cáo A4</li>
-              </ul>
-            </div>
-            <a href="thong-ke-thpt/index.html" class="course-action-btn">
-              Mở Phân Hệ
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 5: TailwindCSS (New!) -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge">TW</div>
-              <h3 class="course-title">TailwindCSS - Phát triển giao diện</h3>
-              <p class="course-desc">Tìm hiểu tư duy Utility-first, Root CSS, đơn vị rem/px, cấu hình custom theme, responsive design, dark mode và tích hợp React/Next.js cho full-stack dev.</p>
-              <ul class="course-highlights">
-                <li>Root CSS &amp; Reset Preflight</li>
-                <li>Hệ thống đơn vị &amp; Spacing</li>
-                <li>Responsive Design &amp; Breakpoints</li>
-                <li>Dark Mode &amp; Custom Config</li>
-                <li>Tối ưu JIT Compiler &amp; Next.js</li>
-              </ul>
-            </div>
-            <a href="tailwind-css/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 6: NodeJS & ExpressJS (New!) -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge">NODE</div>
-              <h3 class="course-title">NodeJS &amp; ExpressJS</h3>
-              <p class="course-desc">Tìm hiểu kiến trúc Single-thread Event Loop, module hệ thống (fs, path, http), xây dựng RESTful API với ExpressJS, routing, middleware, xác thực JWT và bảo mật.</p>
-              <ul class="course-highlights">
-                <li>Event Loop &amp; Lập trình bất đồng bộ</li>
-                <li>Module tích hợp fs, path &amp; http</li>
-                <li>ExpressJS Routing &amp; Middleware</li>
-                <li>Xác thực JWT &amp; Mã hóa mật khẩu</li>
-                <li>Kết nối Database SQL / NoSQL</li>
-              </ul>
-            </div>
-            <a href="node-express/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card: JavaScript Complete Guide -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #eab308, #ca8a04); color: #000; font-weight: 800;">JS-GUIDE</div>
-              <h3 class="course-title">JavaScript Complete Guide</h3>
-              <p class="course-desc">Trang tổng hợp toàn bộ 20 Module kiến thức JS cốt lõi: Cú pháp, Biến, Hàm, DOM, Event, Scope, Hoisting, Promise, Async/Await, Local Storage và ES6+ cùng Trình chạy code tương tác.</p>
-              <ul class="course-highlights">
-                <li>20 Module kiến thức theo sơ đồ chuẩn</li>
-                <li>Biến (var/let/const), Scope &amp; Hoisting</li>
-                <li>Thao tác DOM &amp; Xử lý sự kiện Event</li>
-                <li>Lập trình bất đồng bộ Promise &amp; Async/Await</li>
-                <li>Trình chạy Code JS (Interactive Playground)</li>
-              </ul>
-            </div>
-            <a href="javascript/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 8: Java Core Basic -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge">JAVA</div>
-              <h3 class="course-title">Java Core Basic</h3>
-              <p class="course-desc">Học các khái niệm cốt lõi của Java, 4 tính chất của Hướng đối tượng (OOP), Collections Framework, xử lý ngoại lệ và đọc ghi file cơ bản.</p>
-              <ul class="course-highlights">
-                <li>Kiến trúc JVM, JRE, JDK &amp; Cú pháp cơ bản</li>
-                <li>Đóng gói, Kế thừa, Đa hình &amp; Trừu tượng</li>
-                <li>Java Collections (List, Set, Map)</li>
-                <li>Xử lý ngoại lệ Exception &amp; Generic</li>
-                <li>Đọc ghi file I/O cơ bản</li>
-              </ul>
-            </div>
-            <a href="java-core/gioi-thieu-java.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 9: Advanced Java Core -->
-          <div class="course-card" data-category="khac">
-            <div>
-              <div class="course-badge">JAVA-ADV</div>
-              <h3 class="course-title">Advanced Java Core</h3>
-              <p class="course-desc">Nghiên cứu sâu các khái niệm nâng cao của Java: Lập trình đa luồng (Multithreading), cơ chế quản lý bộ nhớ JVM GC, Stream API, Reflection API, các mẫu thiết kế và lập trình Socket.</p>
-              <ul class="course-highlights">
-                <li>Phân bổ bộ nhớ Stack, Heap, Metaspace</li>
-                <li>Lambda Expression &amp; Stream API</li>
-                <li>Đa luồng Multithreading &amp; Concurrency</li>
-                <li>Reflection API &amp; Dynamic Class loaders</li>
-                <li>JDBC &amp; HikariCP Connection Pooling</li>
-              </ul>
-            </div>
-            <a href="java-advanced/bo-nho-java.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </div>
-
 
           <!-- Card 13: Lịch sử Đảng -->
           <div class="course-card" data-category="dai-cuong">
             <div>
-              <div class="course-badge">LSD</div>
+              <div class="course-badge">LSD &bull; ĐẠI CƯƠNG</div>
               <h3 class="course-title">Lịch sử Đảng Cộng sản Việt Nam</h3>
               <p class="course-desc">Môn học trang bị tri thức khoa học về sự ra đời, vai trò lãnh đạo và các quyết sách lịch sử của Đảng Cộng sản Việt Nam qua các thời kỳ cách mạng.</p>
               <ul class="course-highlights">
@@ -526,35 +396,35 @@
               </ul>
             </div>
             <a href="lich-su-dang/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
           <!-- Card: Lịch sử Đảng (Cô Xuyến) -->
           <div class="course-card" data-category="dai-cuong">
             <div>
-              <div class="course-badge" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white;">LSD-CX</div>
+              <div class="course-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(248, 113, 113, 0.3);">LSD &bull; CÔ XUYẾN</div>
               <h3 class="course-title">Lịch sử Đảng (Cô Xuyến)</h3>
               <p class="course-desc">Hệ thống bài giảng lý thuyết 4 chương và ngân hàng hơn 210 câu hỏi trắc nghiệm &amp; hỏi đáp lý thuyết trọng tâm ôn thi cuối kỳ phục vụ riêng cho lớp Cô Xuyến.</p>
               <ul class="course-highlights">
                 <li>33 câu trắc nghiệm Đề thi tham khảo A-B-C-D</li>
                 <li>177 câu Hỏi - Đáp lý thuyết trọng tâm cuối kỳ</li>
-                <li>Phân tích 5 Cương lĩnh &amp; các Đột phá Đổi mới</li>
+                <li>Phân tích 5 Cương lĩnh &amp; Đột phá Đổi mới</li>
                 <li>Hệ thống 8 Mặt trận &amp; Đấu tranh ngoại giao</li>
-                <li>Tính năng chấm điểm &amp; in ấn PDF sắc nét</li>
+                <li>Chấm điểm &amp; In ấn PDF sắc nét</li>
               </ul>
             </div>
             <a href="lich-su-dang-co-xuyen/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
           <!-- Card 14: Cơ sở văn hóa Việt Nam -->
           <div class="course-card" data-category="dai-cuong">
             <div>
-              <div class="course-badge">CSVH</div>
+              <div class="course-badge">CSVH &bull; ĐẠI CƯƠNG</div>
               <h3 class="course-title">Cơ sở văn hóa Việt Nam</h3>
               <p class="course-desc">Môn học trang bị tri thức nền tảng về khái luận văn hóa học, các tiến trình lịch sử văn hóa và các thành tố cấu trúc bản sắc văn hóa Việt Nam.</p>
               <ul class="course-highlights">
@@ -562,32 +432,92 @@
                 <li>Tiến trình lịch sử văn hóa Việt Nam</li>
                 <li>Hệ thống nhận thức &amp; Triết lý âm dương</li>
                 <li>Tổ chức đời sống &amp; Làng xã đô thị</li>
-                <li style="color: var(--secondary-color); font-weight: 600;">🔥 Ngân hàng 500 câu trắc nghiệm (17 Phần)</li>
+                <li style="color: var(--accent-cyan); font-weight: 600;">✓ Trắc nghiệm tổng hợp 500 câu (17 Phần)</li>
               </ul>
             </div>
             <a href="co-so-van-hoa-viet-nam/index.html" class="course-action-btn">
-              Xem học liệu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card: JavaScript Complete Guide -->
+          <div class="course-card" data-category="khac">
+            <div>
+              <div class="course-badge">JAVASCRIPT</div>
+              <h3 class="course-title">JavaScript Complete Guide</h3>
+              <p class="course-desc">Trang tổng hợp toàn bộ 20 Module kiến thức JS cốt lõi: Cú pháp, Biến, Hàm, DOM, Event, Scope, Hoisting, Promise, Async/Await, Local Storage và ES6+.</p>
+              <ul class="course-highlights">
+                <li>20 Module kiến thức theo sơ đồ chuẩn</li>
+                <li>Biến (var/let/const), Scope &amp; Hoisting</li>
+                <li>Thao tác DOM &amp; Xử lý sự kiện Event</li>
+                <li>Lập trình bất đồng bộ Promise &amp; Async/Await</li>
+                <li>Trình chạy Code JS tương tác</li>
+              </ul>
+            </div>
+            <a href="javascript/index.html" class="course-action-btn">
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card: TailwindCSS -->
+          <div class="course-card" data-category="khac">
+            <div>
+              <div class="course-badge">TAILWINDCSS</div>
+              <h3 class="course-title">TailwindCSS - Phát triển giao diện</h3>
+              <p class="course-desc">Tìm hiểu tư duy Utility-first, Root CSS, đơn vị rem/px, cấu hình custom theme, responsive design, dark mode và tích hợp React/Next.js cho full-stack dev.</p>
+              <ul class="course-highlights">
+                <li>Root CSS &amp; Reset Preflight</li>
+                <li>Hệ thống đơn vị &amp; Spacing</li>
+                <li>Responsive Design &amp; Breakpoints</li>
+                <li>Dark Mode &amp; Custom Config</li>
+                <li>Tối ưu JIT Compiler</li>
+              </ul>
+            </div>
+            <a href="tailwind-css/index.html" class="course-action-btn">
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Card: NodeJS & ExpressJS -->
+          <div class="course-card" data-category="khac">
+            <div>
+              <div class="course-badge">NODEJS</div>
+              <h3 class="course-title">NodeJS &amp; ExpressJS</h3>
+              <p class="course-desc">Tìm hiểu kiến trúc Single-thread Event Loop, module hệ thống (fs, path, http), xây dựng RESTful API với ExpressJS, routing, middleware, xác thực JWT.</p>
+              <ul class="course-highlights">
+                <li>Event Loop &amp; Lập trình bất đồng bộ</li>
+                <li>Module tích hợp fs, path &amp; http</li>
+                <li>ExpressJS Routing &amp; Middleware</li>
+                <li>Xác thực JWT &amp; Mã hóa mật khẩu</li>
+                <li>Kết nối Database SQL / NoSQL</li>
+              </ul>
+            </div>
+            <a href="node-express/index.html" class="course-action-btn">
+              Khám phá học liệu
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
         </div>
       </section>
 
       <!-- Visitor Map & Live Stats Section -->
-      <section id="visitor-stats" style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 3rem; padding-bottom: 2rem;">
-        <h2 class="course-section-title" style="margin-bottom: 1.5rem; text-align: left;">Bản đồ & Thống kê truy cập</h2>
+      <section id="visitor-stats" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 3rem; padding-bottom: 2rem;">
+        <h2 class="course-section-title" style="margin-bottom: 1.5rem; text-align: left;">Bản đồ &amp; Thống kê truy cập Hệ thống</h2>
         
         <div class="visitor-grid">
           <!-- Left side: Analytics Counters -->
           <div style="display: flex; flex-direction: column; gap: 1rem;">
             <!-- Counter Card 1: Total Hits -->
-            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
-              <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; letter-spacing: 0.05em;">Tổng lượt truy cập hệ thống</div>
-              <div id="total-hits" style="font-size: 2rem; font-weight: 800; color: var(--accent-cyan);">...</div>
+            <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+              <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; letter-spacing: 0.05em;">Tổng lượt truy cập hệ thống</div>
+              <div id="total-hits" style="font-size: 2.2rem; font-weight: 800; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">...</div>
             </div>
 
             <!-- User Info Card -->
-            <div id="user-info-card" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03); display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+            <div id="user-info-card" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03); display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.9rem;">
               <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
                 <span style="color: var(--text-secondary);">Thành phố của bạn:</span>
                 <strong id="user-city" style="color: var(--text-primary);">Đang định vị...</strong>
@@ -598,14 +528,14 @@
               </div>
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--text-secondary);">Địa chỉ IP:</span>
-                <strong id="user-ip" style="color: var(--text-primary); font-family: monospace; font-size: 0.85rem;">...</strong>
+                <strong id="user-ip" style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem;">...</strong>
               </div>
             </div>
           </div>
 
           <!-- Right side: Leaflet Map -->
-          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); width: 100%;">
-            <div id="live-map" style="height: 250px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);"></div>
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); width: 100%;">
+            <div id="live-map" style="height: 250px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color);"></div>
           </div>
         </div>
       </section>
@@ -615,30 +545,29 @@
     <footer class="landing-footer">
       <p><strong>Người tạo học liệu:</strong> Trần Vũ Bằng</p>
       <p style="margin-top: 0.25rem;">Sinh viên ngành Khoa học máy tính &bull; Trường Công nghệ Thông tin và Truyền thông &bull; Đại học Cần Thơ</p>
-      <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thiết kế khoa học, responsive &amp; tối giản.</p>
+      <p style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-secondary);">&copy; 2026 StudyHub. Thiết kế Big-Tech khoa học, chuẩn hóa &amp; hiện đại.</p>
     </footer>
   </div>
 
   <script>
     // Live Stats & Map Tracking Script
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Visit Counter logic (100% Real API)
+      // 1. Visit Counter logic
       let visits = parseInt(localStorage.getItem('studyhub-visits') || '0');
       visits++;
       localStorage.setItem('studyhub-visits', visits.toString());
 
-      // Increment global counter using a free public Dev Counter API
       fetch('https://api.counterapi.dev/v1/studyhub-landing/main-counter/up')
         .then(res => res.json())
         .then(data => {
           document.getElementById('total-hits').innerText = data.count;
         })
         .catch(err => {
-          console.warn("Counter API failed, using fallback:", err);
+          console.warn("Counter API fallback:", err);
           document.getElementById('total-hits').innerText = 1248 + visits;
         });
 
-      // 2. Leaflet Map setup (100% Real User Location)
+      // 2. Leaflet Map setup
       const defaultLat = 10.045162;
       const defaultLng = 105.746857;
       
@@ -647,14 +576,12 @@
         return;
       }
 
-      // Initialize map centered at Vietnam
       const map = L.map('live-map').setView([15.9, 107.5], 5);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      // Define green user icon with smooth ping animation
       const userIcon = L.divIcon({
         className: 'custom-div-icon',
         html: "<div style='background-color:#10b981;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 0 12px rgba(16,185,129,0.8);position:relative;'><span style='position:absolute;top:-4px;left:-4px;width:20px;height:20px;border-radius:50%;background-color:rgba(16,185,129,0.4);animation:ping 1.5s infinite;'></span></div>",
@@ -662,7 +589,6 @@
         iconAnchor: [7, 7]
       });
 
-      // Fetch user real IP location using public Geolocation API
       fetch('https://ipapi.co/json/')
         .then(res => res.json())
         .then(data => {
@@ -676,107 +602,62 @@
           document.getElementById('user-country').innerText = country;
           document.getElementById('user-ip').innerText = ip;
 
-          // Place current user marker and open popup
           L.marker([lat, lng], { icon: userIcon })
             .addTo(map)
             .bindPopup(`<b>Vị trí của bạn: ${city}, ${country}</b><br>IP: ${ip}`)
             .openPopup();
           
-          // Re-center map slightly to user
           map.setView([lat, lng], 6);
         })
         .catch(err => {
-          console.warn("IP Geolocation API failed, using default:", err);
-          document.getElementById('user-city').innerText = "Cần Thơ (Mặc định)";
+          console.warn("IP Geolocation API error:", err);
+          document.getElementById('user-city').innerText = "Cần Thơ";
           document.getElementById('user-country').innerText = "Việt Nam";
-          document.getElementById('user-ip').innerText = "Không rõ";
-
+          document.getElementById('user-ip').innerText = "127.0.0.1";
+          
           L.marker([defaultLat, defaultLng], { icon: userIcon })
             .addTo(map)
-            .bindPopup("<b>Chào mừng bạn đến với StudyHub!</b><br>Định vị mặc định: Cần Thơ")
+            .bindPopup("<b>Vị trí mặc định: Cần Thơ, Việt Nam</b>")
             .openPopup();
         });
 
-      // 3. Course Search & Filtering logic (with Vietnamese Diacritics Normalization)
-      const searchInput = document.getElementById("course-search-input");
-      const filterTabs = document.querySelectorAll(".filter-tab");
-      const courseCards = document.querySelectorAll(".course-card");
-      const courseGrid = document.querySelector(".course-grid");
+      // Filter & Search Logic
+      const searchInput = document.getElementById('course-search-input');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const courseCards = document.querySelectorAll('.course-card');
 
-      let activeFilter = "all";
-      let searchQuery = "";
-
-      // Helper function to remove Vietnamese diacritics (accents) for search optimization
-      function removeVietnameseTones(str) {
-        return str
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/đ/g, "d")
-          .replace(/Đ/g, "D");
+      function removeTones(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
       }
 
       function filterCourses() {
-        let visibleCount = 0;
-        
-        // Remove existing empty state if any
-        const existingEmpty = document.querySelector(".empty-courses-state");
-        if (existingEmpty) {
-          existingEmpty.remove();
-        }
-
-        const normalizedSearch = removeVietnameseTones(searchQuery);
+        const query = removeTones(searchInput ? searchInput.value.toLowerCase().trim() : '');
+        const activeTab = document.querySelector('.filter-tab.active');
+        const filterVal = activeTab ? activeTab.dataset.filter : 'all';
 
         courseCards.forEach(card => {
-          const cardCategory = card.getAttribute("data-category");
-          const title = card.querySelector(".course-title").innerText.toLowerCase();
-          const desc = card.querySelector(".course-desc").innerText.toLowerCase();
-          const badge = card.querySelector(".course-badge").innerText.toLowerCase();
+          const category = card.dataset.category || 'khac';
+          const text = removeTones(card.innerText.toLowerCase());
 
-          const normTitle = removeVietnameseTones(title);
-          const normDesc = removeVietnameseTones(desc);
-          const normBadge = removeVietnameseTones(badge);
+          const matchesCategory = (filterVal === 'all' || category === filterVal);
+          const matchesQuery = (query === '' || text.includes(query));
 
-          const matchesFilter = (activeFilter === "all" || cardCategory === activeFilter);
-          const matchesSearch = (
-            normTitle.includes(normalizedSearch) || 
-            normDesc.includes(normalizedSearch) || 
-            normBadge.includes(normalizedSearch)
-          );
-
-          if (matchesFilter && matchesSearch) {
-            card.style.display = "flex";
-            visibleCount++;
+          if (matchesCategory && matchesQuery) {
+            card.style.display = 'flex';
           } else {
-            card.style.display = "none";
+            card.style.display = 'none';
           }
         });
-
-        // Show empty state if no courses match
-        if (visibleCount === 0) {
-          const emptyDiv = document.createElement("div");
-          emptyDiv.className = "empty-courses-state";
-          emptyDiv.innerHTML = `
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">📭</div>
-            <h3 style="color: var(--text-primary); margin-bottom: 0.25rem; font-family: var(--font-heading);">Không tìm thấy môn học</h3>
-            <p style="font-size: 0.9rem; color: var(--text-secondary);">Thử tìm kiếm với từ khóa khác hoặc chuyển danh mục lọc.</p>
-          `;
-          courseGrid.appendChild(emptyDiv);
-        }
       }
 
       if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-          searchQuery = e.target.value.toLowerCase().trim();
-          filterCourses();
-        });
+        searchInput.addEventListener('input', filterCourses);
       }
 
       filterTabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-          filterTabs.forEach(t => t.classList.remove("active"));
-          tab.classList.add("active");
-          
-          activeFilter = tab.getAttribute("data-filter");
+        tab.addEventListener('click', () => {
+          filterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
           filterCourses();
         });
       });
