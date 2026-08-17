@@ -215,7 +215,7 @@
       </div>
       <h1>NGÂN HÀNG TRẮC NGHIỆM TƯƠNG TÁC ADVANCED JAVA &amp; JAVAFX</h1>
       <p style="color: var(--text-light); margin-top: 0.5rem;">
-        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Java Collections, Multithreading, Concurrency, JDBC và JavaFX GUI.
+        Hệ thống trắc nghiệm tương tác thông minh hỗ trợ ôn thi Lập trình Java Nâng cao, Java Collections, Generics, Wildcards, Multithreading, Concurrency, JDBC và JavaFX GUI.
       </p>
     </header>
 
@@ -234,14 +234,14 @@
     <div style="background-color: var(--highlight-bg); border: 1px solid var(--secondary-color); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <strong style="font-size: 1.05rem; color: var(--secondary-color);">📊 Tiến Độ Hoàn Thành &amp; Điểm Số Tổng Thể</strong>
-        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 5 câu (Chính xác: 0%)</p>
+        <p style="margin-top: 0.2rem; font-size: 0.88rem; color: var(--text-light);" id="overall-desc">Đã làm: 0 / 11 câu (Chính xác: 0%)</p>
       </div>
-      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 5</div>
+      <div style="font-size: 1.4rem; font-weight: 700; color: var(--secondary-color);" id="overall-score">0 / 11</div>
     </div>
 
     <!-- Search Input -->
     <div class="no-print" style="margin-top: 1.5rem; position: relative;">
-      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa câu hỏi trắc nghiệm (ví dụ: Collection, List, Vector, Set, HashSet, Map, TreeMap, HashMap)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
+      <input type="text" id="quiz-search-input" placeholder="🔍 Tìm kiếm từ khóa (ví dụ: Generics, Wildcards, Erasure, Binary compatibility, Collection, Vector, HashSet)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-dark); font-size: 0.95rem; outline: none;" />
       <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
     </div>
 
@@ -254,6 +254,12 @@
           <li><a href="#question-3"><span>Câu 3: The getFirst() method ________...</span></a></li>
           <li><a href="#question-4"><span>Câu 4: Which of these statements abou...</span></a></li>
           <li><a href="#question-5"><span>Câu 5: Which of these statements rela...</span></a></li>
+          <li><a href="#question-6"><span>Câu 6: Which of these statements stat...</span></a></li>
+          <li><a href="#question-7"><span>Câu 7: Which of the following stateme...</span></a></li>
+          <li><a href="#question-8"><span>Câu 8: Which of the following stateme...</span></a></li>
+          <li><a href="#question-9"><span>Câu 9: When an existing piece of code...</span></a></li>
+          <li><a href="#question-10"><span>Câu 10: In the generic class declarati...</span></a></li>
+          <li><a href="#question-11"><span>Câu 11: Which one of the following pre...</span></a></li>
         </ul>
         <h3>Tùy Chọn Luyện Tập</h3>
         <button onclick="revealAllAnswers()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: var(--highlight-bg); border: 1px solid var(--secondary-color); color: var(--secondary-color); border-radius: 6px; cursor: pointer; font-weight: 600;">👁️ Hiện Tất Cả Đáp Án</button>
@@ -262,7 +268,7 @@
 
       <main id="quiz-main-container">
         <section id="questions-section">
-          <h2 class="section-banner">CÂU HỎI TRẮC NGHIỆM CHUYÊN ĐỀ JAVA COLLECTIONS FRAMEWORK</h2>
+          <h2 class="section-banner">CÂU HỎI TRẮC NGHIỆM ADVANCED JAVA &amp; JAVAFX</h2>
           <!-- Question 1 -->
           <div class="quiz-card" id="question-1" data-correct="A" data-all-correct="A,B">
             <div class="quiz-question">Câu 1: Which of these statements related to java.util package are true?</div>
@@ -272,7 +278,7 @@
               <label><input type="radio" name="q1" value="C"> C. Collections Framework was developed to have low degree of interoperability.</label>
               <label><input type="radio" name="q1" value="D"> D. Collections Framework does not contain Collection interface at the top of the hierarchy.</label>
             </div>
-            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br>• <strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.<br>• <strong>B đúng:</strong> Java Collections Framework cung cấp tập hợp đồng bộ các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) để lưu trữ và thao tác dữ liệu.<br>• <strong>C sai:</strong> Collections Framework được thiết kế để có tính tương thích và chuyển đổi cao (high interoperability).<br>• <strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp (Collection Hierarchy) cho List, Set, Queue.</div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A &amp; B</strong><br>• <strong>A đúng:</strong> Giao diện <code>Collection</code> đại diện cho một nhóm các đối tượng (phần tử) được quản lý như một đơn vị duy nhất.<br>• <strong>B đúng:</strong> Collections Framework cung cấp tập hợp đồng bộ các Interfaces (List, Set, Map, Queue) và Classes (ArrayList, HashSet, HashMap...) để lưu trữ và thao tác dữ liệu.<br>• <strong>C sai:</strong> Collections Framework được thiết kế để có tính tương thích và chuyển đổi cao (high interoperability).<br>• <strong>D sai:</strong> Giao diện <code>Collection</code> nằm ở đỉnh của phân cấp khung tập hợp (Collection Hierarchy) cho List, Set, Queue.</div>
           </div>
           <!-- Question 2 -->
           <div class="quiz-card" id="question-2" data-correct="A" data-all-correct="A,D">
@@ -318,6 +324,75 @@
               <label><input type="radio" name="q5" value="E"> E. LinkedHashMap returns values in the order they were added to the Map.</label>
             </div>
             <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E (và B nếu tính 1 null key)</strong><br>• <strong>A đúng:</strong> <code>TreeMap</code> sắp xếp các Keys theo thứ tự tự nhiên (Natural ordering) hoặc theo <code>Comparator</code>.<br>• <strong>B đúng/chú ý:</strong> <code>HashMap</code> cho phép 1 key bằng <code>null</code> và nhiều value bằng <code>null</code>.<br>• <strong>C đúng:</strong> <code>TreeMap</code> lưu trữ dữ liệu dưới dạng cấu trúc Cây đỏ-đen (Red-Black Tree).<br>• <strong>D đúng:</strong> <code>LinkedHashMap</code> là sự kết hợp giữa Bảng băm (Hash map) và Danh sách liên kết (Linked list).<br>• <strong>E đúng:</strong> <code>LinkedHashMap</code> duyệt các phần tử theo đúng thứ tự chúng được thêm vào Map (Insertion order).</div>
+          </div>
+          <!-- Question 6 -->
+          <div class="quiz-card" id="question-6" data-correct="C" data-all-correct="C,E">
+            <div class="quiz-question">Câu 6: Which of these statements stating the advantages of Generics are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q6" value="A"> A. Generics allow flexibility of dynamic binding.</label>
+              <label><input type="radio" name="q6" value="B"> B. In Generics you cannot create generic constructors.</label>
+              <label><input type="radio" name="q6" value="C"> C. In Generics the compiler detected errors are less time consuming to fix than runtime errors.</label>
+              <label><input type="radio" name="q6" value="D"> D. A local variable cannot be declared where the key and value types are different from each other.</label>
+              <label><input type="radio" name="q6" value="E"> E. The code reviews are simpler in Generics as the ambiguity is less between containers.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C &amp; E</strong><br>• <strong>C đúng:</strong> Ưu điểm cốt lõi của Generics là phát hiện lỗi kiểm tra kiểu dữ liệu ở thời điểm biên dịch (Compile-time type checking), giúp lập trình viên sửa lỗi nhanh hơn rất nhiều so với lỗi thời điểm thực thi (Runtime Exception như <code>ClassCastException</code>).<br>• <strong>E đúng:</strong> Generics giúp code rõ ràng minh bạch hơn, việc đánh giá code (code review) đơn giản hơn vì kiểu dữ liệu của container được chỉ định rõ ràng.<br>• <strong>A sai:</strong> Generics là tính năng kiểm tra kiểu tĩnh (Static Type Checking) ở thời điểm biên dịch, không liên quan đến dynamic binding.<br>• <strong>B sai:</strong> Bạn hoàn toàn có thể tạo Generic Constructor (ví dụ: <code>public &lt;T&gt; MyClass(T item)</code>).<br>• <strong>D sai:</strong> Hoàn toàn khai báo được Key và Value khác kiểu (ví dụ: <code>Map&lt;String, Integer&gt; map</code>).</div>
+          </div>
+          <!-- Question 7 -->
+          <div class="quiz-card" id="question-7" data-correct="A" data-all-correct="A,B,C,E">
+            <div class="quiz-question">Câu 7: Which of the following statements explaining the use of wildcards with Generics are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q7" value="A"> A. "?" denotes the set of all types or any one type in Generics.</label>
+              <label><input type="radio" name="q7" value="B"> B. "? extends Type" denotes a family of subtypes which extends "Type".</label>
+              <label><input type="radio" name="q7" value="C"> C. "? extends Type" denotes a family of subtypes of type "Type".</label>
+              <label><input type="radio" name="q7" value="D"> D. "? super Type" denotes a family of supertypes which is a subtype of "Type".</label>
+              <label><input type="radio" name="q7" value="E"> E. "? super Type" denotes a family of supertypes of type "Type".</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, B, C, E</strong><br>• <strong>A đúng:</strong> Ký tự đại diện <code>?</code> (Unbounded Wildcard) biểu thị cho bất kỳ kiểu dữ liệu nào.<br>• <strong>B &amp; C đúng:</strong> <code>? extends Type</code> (Upper Bounded Wildcard) đại diện cho tập hợp các kiểu con (subtypes) kế thừa hoặc là chính kiểu <code>Type</code>.<br>• <strong>E đúng:</strong> <code>? super Type</code> (Lower Bounded Wildcard) đại diện cho tập hợp các kiểu cha (supertypes) của <code>Type</code>.<br>• <strong>D sai:</strong> Khái niệm 'supertypes which is a subtype of Type' là mâu thuẫn về mặt thuật ngữ.</div>
+          </div>
+          <!-- Question 8 -->
+          <div class="quiz-card" id="question-8" data-correct="A" data-all-correct="A,C,D,E">
+            <div class="quiz-question">Câu 8: Which of the following statements specifying the use of Legacy code in Generics are true?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q8" value="A"> A. Java generates an unchecked conversion warning when a value of raw type is passed where a parameterized type is expected.</label>
+              <label><input type="radio" name="q8" value="B"> B. Erasure adds all generic type information.</label>
+              <label><input type="radio" name="q8" value="C"> C. When a generic type such as collection is used without a type parameter, it is called a raw type.</label>
+              <label><input type="radio" name="q8" value="D"> D. Erasure removes all generic type information.</label>
+              <label><input type="radio" name="q8" value="E"> E. The change in method signature can be performed by making minimal change or by creating a skeleton.</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: A, C, D, E</strong><br>• <strong>A đúng:</strong> Khi truyền một <code>Raw Type</code> vào nơi yêu cầu <code>Parameterized Type</code>, Trình biên dịch Java sẽ phát ra cảnh báo <i>Unchecked conversion warning</i>.<br>• <strong>C đúng:</strong> Khi sử dụng một Lớp Generic (như Collection) mà không khai báo tham số kiểu (Type parameter), nó được gọi là <code>Raw Type</code> (ví dụ: <code>List list = new ArrayList();</code>).<br>• <strong>D đúng:</strong> Cơ chế <strong>Type Erasure</strong> xóa bỏ tất cả thông tin kiểu Generic trong quá trình biên dịch để tạo ra Bytecode tương thích với các phiên bản Java cũ.<br>• <strong>B sai:</strong> Erasure LÀM XÓA BỎ (removes) thông tin kiểu generic, chứ KHÔNG phải thêm vào (adds).</div>
+          </div>
+          <!-- Question 9 -->
+          <div class="quiz-card" id="question-9" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 9: When an existing piece of code works with both legacy and generic versions of the library, this is called ________ .</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q9" value="A"> A. Platform compatibility</label>
+              <label><input type="radio" name="q9" value="B"> B. Upward compatibility</label>
+              <label><input type="radio" name="q9" value="C"> C. Binary compatibility</label>
+              <label><input type="radio" name="q9" value="D"> D. Parameterized type</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Binary compatibility</strong><br>• Trong quy chuẩn Java Generics, <strong>Binary compatibility</strong> (Tương thích nhị phân) là khả năng giúp mã nguồn cũ đã biên dịch trước đó vẫn tiếp tục chạy bình thường khi nâng cấp thư viện lên phiên bản có sử dụng Generics mà không cần phải biên dịch lại mã nguồn.</div>
+          </div>
+          <!-- Question 10 -->
+          <div class="quiz-card" id="question-10" data-correct="C" data-all-correct="C">
+            <div class="quiz-question">Câu 10: In the generic class declaration, the class name is followed by a ________ .</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q10" value="A"> A. Binary literals</label>
+              <label><input type="radio" name="q10" value="B"> B. String object</label>
+              <label><input type="radio" name="q10" value="C"> C. Type parameter section</label>
+              <label><input type="radio" name="q10" value="D"> D. Numeric literals</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: C. Type parameter section</strong><br>• Cú pháp khai báo Lớp Generic chuẩn trong Java: <code>public class ClassName&lt;T, E&gt; { ... }</code>.<br>• Trong đó, theo sau tên lớp (class name) là phần khai báo các tham số kiểu dữ liệu được đặt trong cặp dấu ngoặc nhọn <code>&lt;&gt;</code> (gọi là <strong>Type Parameter Section</strong>).</div>
+          </div>
+          <!-- Question 11 -->
+          <div class="quiz-card" id="question-11" data-correct="D" data-all-correct="D">
+            <div class="quiz-question">Câu 11: Which one of the following prefix should be added to the number to specify a binary literal?</div>
+            <div class="quiz-options">
+              <label><input type="radio" name="q11" value="A"> A. 0NL</label>
+              <label><input type="radio" name="q11" value="B"> B. 0N</label>
+              <label><input type="radio" name="q11" value="C"> C. 0BL</label>
+              <label><input type="radio" name="q11" value="D"> D. 0B</label>
+            </div>
+            <div class="quiz-feedback"><strong>Giải thích chi tiết:</strong><br><strong>Đáp án đúng: D. 0B</strong><br>• Từ Java 7 trở đi, Java hỗ trợ hằng số nhị phân (Binary Literals).<br>• Để khai báo một số nguyên dưới dạng nhị phân, ta thêm tiền tố <code>0b</code> hoặc <code>0B</code> vào trước chuỗi chữ số 0 và 1 (ví dụ: <code>int byteVal = 0B1010;</code> đại diện cho giá trị 10 trong hệ thập phân).</div>
           </div>
         </section>
       </main>
